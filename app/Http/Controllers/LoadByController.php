@@ -36,7 +36,7 @@ class LoadByController extends Controller {
         } else {
             $loaders = LoadedBy::orderBy('id', 'desc');
         }
-        $loaders = $loaders->paginate(10);
+        $loaders = $loaders->paginate(20);
         $loaders->setPath('loaded-by');
         return view('loaded_by')->with('loaders', $loaders)->with('performance_index', true);
     }

@@ -7,9 +7,12 @@ use App\Receipt;
 use App\Customer;
 use App\Debited_to;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use View;
 
 class ReceiptMasterController extends Controller {
 
@@ -19,10 +22,10 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
-        $receipts = Receipt::all();
+        $receipts = Receipt::orderBy('id', 'desc')->get();
 //        $receipts = $receipts->paginate(1);
 //        $receipts->setPath('receipt-master');
-        return view('receipt_master.index')->with('receipts',$receipts);
+        return view('receipt_master.index')->with('receipts', $receipts);
     }
 
     /**
@@ -45,8 +48,8 @@ class ReceiptMasterController extends Controller {
 //        foreach($customers as $customer){
 //            $tally_users[$customer->id] = $customer->tally_name.'+'.$customer->phone_number1;
 //        }
-        $tally_users = Customer::where('tally_name','!=','')->select('id', 'tally_name', 'phone_number1')->get();
-        return view('receipt_master.create_journal',  compact('tally_users'));
+        $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
+        return view('receipt_master.create_journal', compact('tally_users'));
     }
 
     /**
@@ -81,8 +84,36 @@ class ReceiptMasterController extends Controller {
      *
      * @return Response
      */
-    public function store_jouranl() {
-        //
+    public function store_journal(Request $request) {
+        if (Input::has('tally_users')) {
+            $tally_users = Input::get('tally_users');
+            $settle_amount = Input::get('settle_amount');
+            $debited_to = Input::get('debited_to');
+            $users = [];
+            foreach ($tally_users as $tally_user) {
+                foreach ($settle_amount as $amount) {
+                    if(array_key_exists($tally_user, $settle_amount)){
+                        $users[$tally_user] = $amount;
+                    }
+                }
+            }
+            if(isset($users)){
+                foreach($users as $key => $user){
+                    $userObj = new Receipt();
+                    $userObj->user_id = $key;
+                    $userObj->settled_amount = $user;
+                    $userObj->type_id = 1;
+                    $userObj->debited_to = $debited_to;
+                    $userObj->save();
+                }
+                if($userObj)
+                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
+                else
+                    return redirect('receipt-master')->with('error', 'Some error occoured while saving customer');
+            }
+        }else {
+            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
+        }
     }
 
     /**
@@ -139,8 +170,19 @@ class ReceiptMasterController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request, $id) {
+        if (isset($id) && !empty($id)) {
+            if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
+                $receipt = Receipt::find($id);
+                if ($receipt->delete()) {
+                    return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
+                } else {
+                    return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer.');
+                }
+            } else {
+                return redirect('receipt-master')->with('error', 'Please enter a correct password.');
+            }
+        }
     }
 
 }

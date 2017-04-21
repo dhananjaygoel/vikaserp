@@ -384,9 +384,9 @@ Route::get('dropbax-demo-functionality', function() {
 Route::get('receipt-master/journal', 'ReceiptMasterController@create_journal_receipt');
 Route::get('receipt-master/bank', 'ReceiptMasterController@create_bank_receipt');
 Route::get('receipt-master/cash', 'ReceiptMasterController@create_cash_receipt');
-Route::get('receipt-master/store-journal', 'ReceiptMasterController@store-journal');
-Route::get('receipt-master/store-bank', 'ReceiptMasterController@store_bank');
-Route::get('receipt-master/store-cash', 'ReceiptMasterController@store_cash');
+Route::post('receipt-master/store-journal', 'ReceiptMasterController@store_journal');
+Route::post('receipt-master/store-bank', 'ReceiptMasterController@store_bank');
+Route::post('receipt-master/store-cash', 'ReceiptMasterController@store_cash');
 
 Route::resource('receipt-master', 'ReceiptMasterController');
 

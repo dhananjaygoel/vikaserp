@@ -47,6 +47,13 @@ $(document).ready(function () {
         $('#delete_teritory_form').attr('action', url);
         $('#delete_location_modal').modal('show');
     });
+    
+    $(document).on('click', '.delete-receipt', function (event) {
+        var receipt_id = $(this).data('id');
+        var url = $('#baseurl').attr('name') + "/receipt-master/" + receipt_id;
+        $('#delete_receipt_form').attr('action', url);
+        $('#delete_receipt_modal').modal('show');
+    });
 
 //    $.validator.addMethod("noSpace", function (value, element) {
 //        return $.trim(value) != "";

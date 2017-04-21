@@ -61,9 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                $i = 1;
-                                ?>
+                                <?php $i = ($loaders->currentPage() - 1 ) * $loaders->perPage() + 1; ?>
                                 @foreach ($loaders as $loader)
                                 <tr>
                                     <td class="col-md-1">{{ $i }}</td>
@@ -82,7 +80,7 @@
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                             </span>
-                                        </a>                                        
+                                        </a>
                                         <a href="#" class="table-link danger delete-loader" data-id="{{$loader->id}}">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>

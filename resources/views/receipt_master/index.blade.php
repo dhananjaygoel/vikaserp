@@ -70,7 +70,16 @@
                                         <td>{{ $i }}</td>
                                         <td>{{date("Y-m-d", strtotime($receipt['created_at'])) }}</td>
                                         <td>{{date("H:i:s", strtotime($receipt['created_at'])) }}</td>
-                                        <td><a href="#"><i class="fa fa-pencil"></i></a></td>
+                                        <td class="text-center">
+                                            <a href="{{URL::action('ReceiptMasterController@edit',['id'=> $receipt->id])}}" class="table-link" title="Edit">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            @if(Auth::user()->role_id == 0) 
+                                            <a href="#" class="table-link danger delete-receipt" data-id="{{$receipt->id}}"  class="table-link" title="Delete">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                            @endif
+                                        </td>
                                     </tr>
                                     <?php 
                                     $i++; ?>
@@ -111,6 +120,42 @@
                     </div>
                 </div>    
             </div>            
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete_receipt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_receipt_form'))!!}
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <div class="delete">
+                    <?php
+                    $us = Auth::user();
+                    $us['mobile_number']
+                    ?>
+                    <div><b>Mobile:</b>
+                        {{$us['mobile_number']}}
+                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                        <input type="hidden" name="receipt_id" value=""/>
+                    </div>
+                    <div class="pwd">
+                        <div class="pwdl"><b>Password:</b></div>
+                        <div class="pwdr"><input class="form-control" id="model_pass" name="model_pass" placeholder="" required="required" type="password"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-default" id="yes">Yes</button>
+                {!! Form::close() !!}
+            </div>
         </div>
     </div>
 </div>
