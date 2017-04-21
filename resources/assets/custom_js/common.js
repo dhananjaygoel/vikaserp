@@ -250,8 +250,8 @@ $(document).on('change', '#labour_chart_filter', function () {
             $('.day-wise').css('display', 'none');
             $('.month-wise').css('display', 'block');
         }
-        var baseurl = $('#baseurl').attr('name');
-        var url = baseurl + '/performance/loaded-by/loaded-by-performance';
+//        var baseurl = $('#baseurl').attr('name');
+//        var url = baseurl + '/performance/loaded-by/loaded-by-performance';
 //        $.ajax({
 //            url: url,
 //            type: 'get',
@@ -286,6 +286,11 @@ $(document).on('change', '#labour_chart_filter', function () {
                 month: month_val
             },
             success: function (data) {
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];           
+                var date = new Date(data.date);
+                var Date_final = monthNames[date.getMonth()] +'-'+date.getFullYear();               
+                $('#performance-days').val(Date_final);                
                 $('.report_table').html(data.html)
             },
             complete: function () {

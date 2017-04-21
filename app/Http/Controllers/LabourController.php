@@ -270,13 +270,16 @@ class LabourController extends Controller {
         $labours = Labour::all();
         $date = date('Y-m-01', time());
         
-
+        
         if (Input::has('val')) {
             $val = Input::get('val');
-            if ($val == "Month") {
+            if ($val == "Month") {               
                 $year = trim(Input::get('month'));
                 $date = date("$year-01-01");
-                $enddate = date("$year-12-t");
+                $enddate = date("$year-12-31",strtotime($year));
+                if($year == date('Y')){
+                    $enddate = date("$year-m-t");
+                }               
                 $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
