@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12">                
                 <div class="form-group col-md-12 col-lg-12 pull-right">
-                    <h1 class="pull-left">Labours by chart</h1>
+                    <h1 class="pull-left">Labours performance</h1>
                     <div class="form-group pull-right">
 
                         <div class="col-md-12">
