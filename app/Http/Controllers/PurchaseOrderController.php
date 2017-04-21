@@ -57,7 +57,7 @@ class PurchaseOrderController extends Controller {
             $excel_name = 'Purchase-Order-Completed-' . date('dmyhis');
         } elseif ($data['order_status'] == 'cancelled') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
-            $order_status = 'cancelled';
+            $order_status = 'canceled';
             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Purchase-Order-Cancelled-' . date('dmyhis');
         }
@@ -133,7 +133,7 @@ class PurchaseOrderController extends Controller {
                $excel_name = 'Purchase-Order-' . date('dmyhis');
             }
         }
-
+        
         if (count($order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
         } else {

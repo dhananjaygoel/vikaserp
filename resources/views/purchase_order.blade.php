@@ -66,7 +66,7 @@
                         <input type="hidden" name="order_status" value="pending">
                         @elseif(sizeof($purchase_orders)!=0 && $qstring_sort_type_order=='completed')
                         <input type="hidden" name="order_status" value="completed">
-                        @elseif(sizeof($purchase_orders)!=0 && $qstring_sort_type_order=='cancelled')
+                        @elseif($qstring_sort_type_order=='canceled')
                         <input type="hidden" name="order_status" value="cancelled">
                         @else
                         <input type="hidden" name="order_status" value="pending">
