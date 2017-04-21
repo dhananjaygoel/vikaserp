@@ -3,13 +3,11 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-
         <div class="row">
-            <div class="col-lg-12">
-                <h1 class="pull-left">Loaded by chart</h1>
-                <div class="form-group pull-right">
-
-                    <div class="col-md-12">
+            <div class="col-lg-12">                
+                <div class="form-group col-md-12 col-lg-12 pull-right">
+                    <h1 class="pull-left">Loaded by chart</h1>
+                    <div class="col-md-2 pull-right">
                         <form method="GET" action="javascript:;">
                             <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
                                 <option value="Day" selected="selected">Day wise</option>
@@ -17,36 +15,35 @@
                             </select>
                         </form>
                     </div>
-
-                </div>
-                <div class="col-lg-12" id="month_div">
-                    <div class="form-group pull-right">
-                        <div class="col-md-10 pull-right">
-                            <form class="search_form loaded_by_performance_search_form" method="GET" action="javascript:;">
-                                <div class="col-md-8">
-                                    <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
-                                </div>
-                                <div class="col-md-4  pull-right">
-                                    <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                                </div>
-                             </form>
+                    <div class="col-md-4 pull-right" id="month_div">
+                        <div class="form-group">
+                            <div class="col-md-10 pull-right">
+                                <form class="search_form loaded_by_performance_search_form" method="GET" action="javascript:;">
+                                    <div class="col-md-8">
+                                        <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                                    </div>
+                                    <div class="col-md-4  pull-right">
+                                        <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                    </div>
+                                 </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-12" id="year_div" style="display: none;">
-                    <div class="form-group pull-right">
-                        <div class="col-md-10 pull-right">
-                            <form class="search_form loaded_by_performance_search_form" id="loaded_by_performance_months_from" method="GET" action="javascript:;">
-                                <div class="col-md-8">
-                                    <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
-                                </div>
-                                <div class="col-md-4  pull-right">
-                                    <input type="submit" disabled="" name="search_data"  id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                                </div>
-                             </form>
+                    <div class="col-md-4 pull-right" id="year_div" style="display: none;">
+                        <div class="form-group">
+                            <div class="col-md-10 pull-right">
+                                <form class="search_form loaded_by_performance_search_form" id="loaded_by_performance_months_from" method="GET" action="javascript:;">
+                                    <div class="col-md-8">
+                                        <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
+                                    </div>
+                                    <div class="col-md-4  pull-right">
+                                        <input type="submit" disabled="" name="search_data"  id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                                    </div>
+                                 </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div>                
             </div>
             <div class="row">
                 <div class="col-lg-12">
