@@ -261,7 +261,9 @@ class LabourController extends Controller {
     }
 
     public function labourPerformance(Request $request) {
-
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('/');
+        }
 
         $var = 0;
         $loader_arr = array();

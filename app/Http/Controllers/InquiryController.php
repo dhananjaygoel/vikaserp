@@ -1006,11 +1006,11 @@ class InquiryController extends Controller {
             $order->location_difference = $input_data['location_difference'];
         }
         
-         if ($order->is_approved == 'no') {
+         
             if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {
                 $order->is_approved = 'yes';
             }
-        }
+     
         /*
          * ------------------- --------------
          * SEND SMS TO CUSTOMER FOR NEW ORDER
