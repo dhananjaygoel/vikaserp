@@ -4838,14 +4838,19 @@ class HomeController extends Controller {
                     array_push($size_array, $sub_cat->size);
                 }
             }
-            foreach ($thickness_array as $thickness) {
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $total_price = 0;
-                    if ($sub_cat->thickness == $thickness) {
-                        $inventory = $sub_cat['product_inventory'];
-                        $total_price = $product_price + $sub_cat->difference;
-
-                        $report_arr[$sub_cat->size][$sub_cat->thickness] = $total_price;
+            foreach ($size_array as $size) {
+                foreach ($thickness_array as $thickness) {
+                    foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                        if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
+                            $inventory = $sub_cat['product_inventory'];
+                            $total_qnty = 0;
+                            if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                            } else {
+                                $total_qnty = "-";
+                            }
+                            $report_arr[$size][$thickness] = $total_qnty;
+                        }
                     }
                 }
             }
@@ -4860,10 +4865,14 @@ class HomeController extends Controller {
             }
             foreach ($thickness_array as $thickness) {
                 foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $total_price = 0;
                     $inventory = $sub_cat['product_inventory'];
-                    $total_price = $product_price + $sub_cat->difference;
-                    $report_arr[$sub_cat->alias_name][$thickness] = $total_price;
+                    $total_qnty = 0;
+                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                    } else {
+                        $total_qnty = "-";
+                    }
+                    $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
                 }
             }
         }
@@ -4879,6 +4888,7 @@ class HomeController extends Controller {
         }
 
         $report_arr = $final_arr;
+
 
 
         if (!empty($report_arr)) {
@@ -4982,16 +4992,16 @@ class HomeController extends Controller {
 
             $size = Input::get('size');
             $thickness = Input::get('thickness');
-            $new_price = Input::get('new_price');            
-          
+            $new_price = Input::get('new_price');
+
 
             if ($product_type == 1) {
                 if (isset($product_id) && !empty($size) && !empty($thickness)) {
                     $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
                                     ->where('thickness', '=', $thickness)
-                                    ->where('size', '=', $size)->get(); 
-                    if(isset($subproduct))
-                    $sub_prod_id = $subproduct[0]->id;
+                                    ->where('size', '=', $size)->get();
+                    if (isset($subproduct))
+                        $sub_prod_id = $subproduct[0]->id;
                 } else {
                     return json_encode(array('result' => false, 'message' => 'Some error occured1. Please try again'));
                 }
@@ -5013,12 +5023,9 @@ class HomeController extends Controller {
             $update_sub_prod->difference = $difference;
             $update_sub_prod->save();
             return json_encode(array('result' => true, 'product_category_id' => $update_sub_prod->id, 'message' => 'Price Updated successfully.'));
-            
         } else {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
         }
-
-
     }
 
 }
