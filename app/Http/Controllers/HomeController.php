@@ -3540,6 +3540,172 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
+    
+    
+    
+     /*
+      |------------------------------------------------
+      | SEND SMS TO THE CUSTOMER If Admin Approved Inquiry
+      |------------------------------------------------
+     */
+
+    function appsyncinquiryapproved_sms() {
+        $input = Input::all();
+        if (Input::has('inquiry') && Input::has('customer') && Input::has('inquiry_product') && Input::has('sendsms') && Input::has('user')) {
+            $inquiries = (json_decode($input['inquiry']));
+            $customers = (json_decode($input['customer']));
+            $inquiryproduct = (json_decode($input['inquiry_product']));
+            $user = (json_decode($input['user']));
+            $customer_id = $customers[0]->id;
+            
+           
+
+            if (Input::has('sendsms')) {
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items. ";                    
+                    
+                    foreach ($inquiryproduct as $product_data) {
+                        $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
+
+                       
+                        if (isset($product_details['inquiry_product_details']->alias_name) && $product_details['inquiry_product_details']->alias_name != "") {
+                            $str .= $product_details['inquiry_product_details']->alias_name . ' - ' . $product_data->quantity . ', ';
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Inquiry not found.";
+                            return json_encode($result);
+                        }
+                    }
+                    $str .= " prices and avlblty will be qtd shortly. \nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = \Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+
+                    if (count($customer['manager']) > 0) {
+                        $str = "Dear '" . $customer->manager->first_name . "'\nDT " . date("j M, Y") . "\n" . $user[0]->first_name . " has Approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly chk and qt.\nVIKAS ASSOCIATES";
+                        if (App::environment('development')) {
+                            $phone_number = \Config::get('smsdata.send_sms_to');
+                        } else {
+                            $phone_number = $customer->manager->mobile_number;
+                        }
+                        $msg = urlencode($str);
+                        $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
+                        if (SEND_SMS === true) {
+                            $ch = curl_init($url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_scraped_page = curl_exec($ch);
+                            curl_close($ch);
+                        }
+                    }
+                }
+            }
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+        } else {
+            $result['send_message'] = "Error";
+        }
+
+        return json_encode($result);
+    }
+    
+    
+    
+    
+     /*
+      |------------------------------------------------
+      | SEND SMS TO THE CUSTOMER If Admin Approved Inquiry
+      |------------------------------------------------
+     */
+
+    function appsyncinquiryreject_sms() {
+        $input = Input::all();
+        if (Input::has('inquiry') && Input::has('customer') && Input::has('inquiry_product') && Input::has('sendsms') && Input::has('user')) {
+            $inquiries = (json_decode($input['inquiry']));
+            $customers = (json_decode($input['customer']));
+            $inquiryproduct = (json_decode($input['inquiry_product']));
+            $user = (json_decode($input['user']));
+            $customer_id = $customers[0]->id;
+            
+           
+
+            if (Input::has('sendsms')) {
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items";                    
+                    
+                    foreach ($inquiryproduct as $product_data) {
+                        $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
+
+                       
+                        if (isset($product_details['inquiry_product_details']->alias_name) && $product_details['inquiry_product_details']->alias_name != "") {
+                            $str .= $product_details['inquiry_product_details']->alias_name . ' - ' . $product_data->quantity . ', ';
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Inquiry not found.";
+                            return json_encode($result);
+                        }
+                    }
+                    $str .= " prices and avlblty will be qtd shortly. \nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = \Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+
+                    if (count($customer['manager']) > 0) {
+                        $str = "Dear '" . $customer->manager->first_name . "'\nDT " . date("j M, Y") . "\n" . $user[0]->first_name . " has Approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly chk and qt.\nVIKAS ASSOCIATES";
+                        if (App::environment('development')) {
+                            $phone_number = \Config::get('smsdata.send_sms_to');
+                        } else {
+                            $phone_number = $customer->manager->mobile_number;
+                        }
+                        $msg = urlencode($str);
+                        $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
+                        if (SEND_SMS === true) {
+                            $ch = curl_init($url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_scraped_page = curl_exec($ch);
+                            curl_close($ch);
+                        }
+                    }
+                }
+            }
+            $result['send_message'] = "Success";
+            $result['message_body'] = $str;
+        } else {
+            $result['send_message'] = "Error";
+        }
+
+        return json_encode($result);
+    }
+    
+    
+    
 
     /*
      * ------------------- --------------

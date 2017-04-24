@@ -56,6 +56,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'userotp_sms',
         'appsyncinquiry_sms',
         'appsyncinquiryedit_sms',
+        'appsyncinquiryapproved_sms',
         'appsyncorder_sms',
         'appsyncorderedit_sms',
         'appsyncdeliveryorder_sms',

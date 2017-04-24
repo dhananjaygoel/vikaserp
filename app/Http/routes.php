@@ -93,6 +93,7 @@ Route::post('export_inventory_report', 'InventoryController@exportinventoryRepor
 Route::post('test_sms', 'HomeController@test_sms');
 Route::post('appsyncinquiry_sms', 'HomeController@appsyncinquiry_sms');
 Route::post('appsyncinquiryedit_sms', 'HomeController@appsyncinquiryedit_sms');
+Route::post('appsyncinquiryapproved_sms', 'HomeController@appsyncinquiryapproved_sms');
 Route::post('appsyncorder_sms', 'HomeController@appsyncorder_sms');
 Route::post('appsyncorderedit_sms', 'HomeController@appsyncorderedit_sms');
 Route::post('appsyncdeliveryorder_sms', 'HomeController@appsyncdeliveryorder_sms');
