@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('UserRolesSeeder');
         $this->call('ProductTypeSeeder');
         $this->call('UnitsSeeder');
+        $this->call('debitedToSeeder');
     }
 
 }
