@@ -4592,8 +4592,6 @@ class HomeController extends Controller {
      * App to save collection
      */
     public function appaddcollection_admin() {
-
-
         $collection_check = User::where('mobile_number', '=', Input::get('mobile_number'))
                 ->where('first_name', '=', Input::get('first_name'))
                 ->where('last_name', '=', Input::get('last_name'))
@@ -4647,12 +4645,14 @@ class HomeController extends Controller {
                 ->where('first_name', '=', Input::get('first_name'))
                 ->where('last_name', '=', Input::get('last_name'))
                 ->where('role_id', '=', '6')
+                ->where('id', '<>', Input::get('collection_id'))
                 ->first();
         if (isset($collection_check->id)) {
             return json_encode(array('result' => false, 'collection_id' => $collection_check->id, 'message' => 'Collection user already exist'));
         }
 
         $collection_check = User::where('mobile_number', '=', Input::get('mobile_number'))
+                ->where('id', '<>', Input::get('collection_id'))
                 ->first();
         if (isset($collection_check->id)) {
             return json_encode(array('result' => false, 'collection' => $collection_check->id, 'message' => 'Mobile already exist'));
@@ -4660,37 +4660,53 @@ class HomeController extends Controller {
 
         if (Input::has('location')) {
             $locations = (json_decode(Input::get('location')));
-            $Users_data = new User();
-            $Users_data->role_id = 6;
-            if (Input::has('first_name'))
-                $Users_data->first_name = Input::get('first_name');
-            if (Input::has('last_name'))
-                $Users_data->last_name = Input::get('last_name');
-            if (Input::has('password'))
-                $Users_data->password = Hash::make(Input::get('password'));
-            if (Input::has('mobile_number'))
-                $Users_data->mobile_number = Input::get('mobile_number');
-            if (Input::has('email'))
-                $Users_data->email = Input::get('email');
-
-            if ($Users_data->save()) {
-
-                foreach ($locations as $loc) {
-                    if (isset($loc)) {
-                        $CLocation = new CollectionUser();
-                        $CLocation->user_id = $Users_data->id;
-                        $CLocation->location_id = $loc;
-                        $CLocation->save();
+            $id = Input::get('collection_id');
+            $user = User::where('id', $id);
+             if (isset($user)) {
+                 $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email')]);
+                 if ($user_res) {
+                   
+                    $del_res = CollectionUser::where('user_id', '=', $id)->delete();
+                    
+                    foreach ($locations as $loc) {
+                        if (isset($loc)) {
+                            $collectionuser = new CollectionUser();
+                            $collectionuser->user_id = $id;
+                            $collectionuser->location_id = $loc;
+                            $collectionuser->save();
+                        }
                     }
                 }
-            }
+             }
 
-
-            return json_encode(array('result' => true, 'collection_id' => $Users_data->id, 'message' => 'Collection User added successfully'));
+            return json_encode(array('result' => true, 'collection_id' => $id, 'message' => 'Collection User Updated successfully'));
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    public function appdeletecollection_admin() {
+        if (Input::has('collection_id')) {
+            $id = Input::get('collection_id');
+
+            $del_res = User::destroy($id);
+            if ($del_res) {
+                CollectionUser::where('id', $id)->delete();
+            }
+            $del_res = CollectionUser::where('user_id', '=', $id)->delete();
+//            foreach ($del_res as $loc) {
+//                $collection_old = TerritoryLocation::find($loc->id);
+//                $collection_old->delete();
+//            }           
+
+            return json_encode(array('result' => true, 'collection_id' => $id, 'message' => 'Collection User deleted successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
+    
+    
+    
     /**
      * App get all territory
      */
@@ -4793,5 +4809,5 @@ class HomeController extends Controller {
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-
+    
 }

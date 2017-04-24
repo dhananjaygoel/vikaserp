@@ -69,9 +69,11 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appaddloadedby',
         'appupdateloadedby',        
         'appaddcollection_admin',        
+        'appupdatecollection_admin',        
+        'appdeletecollection_admin',        
         'appaddterritory_admin',        
         'appupdateterritory_admin',        
-        'appdeleteterritory_admin',        
+        'appupdateprice',        
     ];
 
     /**

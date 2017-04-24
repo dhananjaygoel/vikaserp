@@ -129,17 +129,24 @@ Route::get('apploadedbyperformance', 'HomeController@apploadedbyperformance');
 //account module- Collection
 Route::get('appallcollection_admin', 'HomeController@appallcollection_admin');
 Route::post('appaddcollection_admin', 'HomeController@appaddcollection_admin');
+Route::post('appupdatecollection_admin', 'HomeController@appupdatecollection_admin');
+Route::post('appdeletecollection_admin', 'HomeController@appdeletecollection_admin');
 
 
 
-//account module- Territory
+//Territory module- 
 Route::get('appallterritory_admin', 'HomeController@appallterritory_admin');
 Route::post('appaddterritory_admin', 'HomeController@appaddterritory_admin');
 Route::post('appupdateterritory_admin', 'HomeController@appupdateterritory_admin');
 Route::post('appdeleteterritory_admin', 'HomeController@appdeleteterritory_admin');
 
 
+//Inventory module- inventory 
+Route::get('appallinventory_admin', 'HomeController@appallinventory_admin');
 
+//Price module-  
+Route::get('appallprice_admin', 'HomeController@appallprice_admin');
+Route::post('appupdateprice', 'HomeController@appupdateprice');
 
 
 
