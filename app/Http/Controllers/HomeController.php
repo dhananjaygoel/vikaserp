@@ -4662,12 +4662,12 @@ class HomeController extends Controller {
             $locations = (json_decode(Input::get('location')));
             $id = Input::get('collection_id');
             $user = User::where('id', $id);
-             if (isset($user)) {
-                 $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email')]);
-                 if ($user_res) {
-                   
+            if (isset($user)) {
+                $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email')]);
+                if ($user_res) {
+
                     $del_res = CollectionUser::where('user_id', '=', $id)->delete();
-                    
+
                     foreach ($locations as $loc) {
                         if (isset($loc)) {
                             $collectionuser = new CollectionUser();
@@ -4677,7 +4677,7 @@ class HomeController extends Controller {
                         }
                     }
                 }
-             }
+            }
 
             return json_encode(array('result' => true, 'collection_id' => $id, 'message' => 'Collection User Updated successfully'));
         } else
@@ -4693,20 +4693,12 @@ class HomeController extends Controller {
                 CollectionUser::where('id', $id)->delete();
             }
             $del_res = CollectionUser::where('user_id', '=', $id)->delete();
-//            foreach ($del_res as $loc) {
-//                $collection_old = TerritoryLocation::find($loc->id);
-//                $collection_old->delete();
-//            }           
 
             return json_encode(array('result' => true, 'collection_id' => $id, 'message' => 'Collection User deleted successfully'));
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-    
-    
+
     /**
      * App get all territory
      */
@@ -4793,6 +4785,9 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
+    /**
+     * App delete territory
+     */
     public function appdeleteterritory_admin() {
         if (Input::has('territory_id')) {
             $id = Input::get('territory_id');
@@ -4803,11 +4798,95 @@ class HomeController extends Controller {
             foreach ($territory_loc as $loc) {
                 $territory_old = TerritoryLocation::find($loc->id);
                 $territory_old->delete();
-            }           
+            }
 
             return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory deleted successfully'));
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
+
+    /**
+     * App Inventory
+     */
+    public function appallinventory_admin() {
+
+        if (Input::has('product_category_id')) {
+            $product_id = Input::get('product_category_id');
+            $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
+        } else {
+            $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->limit(1)->get();
+        }
+       
+       
+        $product_price = $product_last[0]->price;
+        $size_array = [];
+        $thickness_array = [];
+        $report_arr = [];
+        $final_arr = [];
+        $product_type = $product_last[0]->product_type_id;
+       
+
+        if ($product_type == 1) {
+            $product_column = "Size";
+            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                if (!in_array($sub_cat->thickness, $thickness_array)) {
+                    array_push($thickness_array, $sub_cat->thickness);
+                }
+            }
+            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                if (!in_array($sub_cat->size, $size_array)) {
+                    array_push($size_array, $sub_cat->size);
+                }
+            }
+            foreach ($thickness_array as $thickness) {
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    $total_price = 0;
+                    if ($sub_cat->thickness == $thickness) {
+                        $inventory = $sub_cat['product_inventory'];
+                        $total_price = $product_price + $sub_cat->difference;
+
+                        $report_arr[$sub_cat->size][$sub_cat->thickness] = $total_price;
+                    }
+                }
+            }
+        }
+        if ($product_type == 2) {
+            $product_column = "Product Alias";
+            array_push($thickness_array, "NA");
+            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                if (!in_array($sub_cat->alias_name, $size_array)) {
+                    array_push($size_array, $sub_cat->alias_name);
+                }
+            }
+            foreach ($thickness_array as $thickness) {
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    $total_price = 0;
+                    $inventory = $sub_cat['product_inventory'];
+                    $total_price = $product_price + $sub_cat->difference;
+                    $report_arr[$sub_cat->alias_name][$thickness] = $total_price;
+                }
+            }
+        }
+
+        foreach ($size_array as $size) {
+            foreach ($thickness_array as $thickness) {
+                if (isset($report_arr[$size][$thickness])) {
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                } else {
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }
+
+        $report_arr = $final_arr;
+
+        
+        if (!empty($report_arr)) {
+           return json_encode($report_arr);
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+        
+    }
+
 }
