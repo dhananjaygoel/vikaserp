@@ -11,12 +11,12 @@ class AlterDebitedTosTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::table('debited_tos', function(Blueprint $table) {
-            if (Schema::hasColumn('debited_tos', 'debited_by')) {
-                $table->renameColumn('debited_by', 'debited_to');
-            }
-            $table->string('debited_to_type')->after('debited_by');
-        });
+//        Schema::table('debited_tos', function(Blueprint $table) {
+//            if (Schema::hasColumn('debited_tos', 'debited_by')) {
+//                $table->renameColumn('debited_by', 'debited_to');
+//            }
+//            $table->string('debited_to_type')->after('debited_by');
+//        });
     }
 
     /**
@@ -25,10 +25,10 @@ class AlterDebitedTosTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::table('debited_tos', function(Blueprint $table) {
-            $table->dropColumn('debited_to_type');
-            $table->renameColumn('debited_to', 'debited_by');
-        });
+//        Schema::table('debited_tos', function(Blueprint $table) {
+//            $table->dropColumn('debited_to_type');
+//            $table->renameColumn('debited_to', 'debited_by');
+//        });
     }
 
 }
