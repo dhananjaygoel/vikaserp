@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Add Receipt')
+@section('title','Edit Receipt')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -33,7 +33,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         <hr>
-                        {!! Form::open(array('id'=>'add_receipt','method'=>'post','action'=>'ReceiptMasterController@store'))!!}
+                        {!! Form::open(array('id'=>'edit_receipt','method'=>'put','action'=>array('ReceiptMasterController@update',$receipt_id)))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="receipt_type" value="{{$type}}">
                             @if (count($errors) > 0)
@@ -61,7 +61,7 @@
                                                     <option value="">Select Tally User</option>
                                                     @if(isset($tally_users))
                                                         @foreach($tally_users as $tally_user)
-                                                            <option value="{{$tally_user->id}}" data-amount="{{$tally_user->phone_number1}}" >{{$tally_user->tally_name}}</option>
+                                                            <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
                                                         @endforeach
                                                     @endif
                                                 </select>
@@ -84,7 +84,7 @@
                                             @if(isset($tally_users) && $type == 1)
                                                 <option value="">Select Tally User</option>
                                                 @foreach($tally_users as $tally_user)
-                                                    <option value="{{$tally_user->id}}">{{$tally_user->tally_name}}</option>
+                                                    <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
                                                 @endforeach
                                             @endif
                                             @if(isset($debited_to) && $type != 1)
@@ -94,8 +94,8 @@
                                                 @endforeach
                                             @endif
                                         </select>
-                                    </div>    
-                                </div>    
+                                    </div>
+                                </div>
                             </div>                          
                             <hr>
                             <div >

@@ -7,6 +7,7 @@ use App\Receipt;
 use App\Customer;
 use App\Debited_to;
 use App\Http\Requests;
+use App\Customer_receipts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -48,8 +49,9 @@ class ReceiptMasterController extends Controller {
 //        foreach($customers as $customer){
 //            $tally_users[$customer->id] = $customer->tally_name.'+'.$customer->phone_number1;
 //        }
+        $type = 1; //journal
         $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
-        return view('receipt_master.create_journal', compact('tally_users'));
+        return view('receipt_master.create_journal', compact('tally_users', 'type'));
     }
 
     /**
@@ -58,7 +60,11 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_bank_receipt() {
-        return View::make('receipt_master.createb');
+        $type = 2; //bank
+        $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
+        $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
+        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
+//        return View::make('receipt_master.createb');
     }
 
     /**
@@ -67,7 +73,10 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_cash_receipt() {
-        return View::make('receipt_master.createc');
+        $type = 3; //cash
+        $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
+        $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
+        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
     }
 
     /**
@@ -75,63 +84,41 @@ class ReceiptMasterController extends Controller {
      *
      * @return Response
      */
-    public function store() {
-        //
-    }
-
-    /**
-     * Store a newly created journal receipt resource in storage.
-     *
-     * @return Response
-     */
-    public function store_journal(Request $request) {
+    public function store(Request $request) {
         if (Input::has('tally_users')) {
             $tally_users = Input::get('tally_users');
             $settle_amount = Input::get('settle_amount');
             $debited_to = Input::get('debited_to');
-            $users = [];
-            foreach ($tally_users as $tally_user) {
-                foreach ($settle_amount as $amount) {
-                    if(array_key_exists($tally_user, $settle_amount)){
-                        $users[$tally_user] = $amount;
-                    }
+            $receipt_type = Input::get('receipt_type');
+            if (isset($settle_amount) && count($settle_amount)>0) {
+                $receiptObj = new Receipt();
+                foreach ($settle_amount as $key => $user) {
+                    if ($receiptObj->save()) {
+                        $customerReceiptObj = new Customer_receipts();
+                        $customerReceiptObj->customer_id = $key;
+                        $customerReceiptObj->settled_amount = $user;
+                        $customerReceiptObj->debited_to = $debited_to;
+                        $customerReceiptObj->receipt_id = $receiptObj->id;
+                        if ($receipt_type == 1)
+                            $customerReceiptObj->debited_by_type = 1;
+                        elseif ($receipt_type == 2)
+                            $customerReceiptObj->debited_by_type = 2;
+                        elseif ($receipt_type == 3)
+                            $customerReceiptObj->debited_by_type = 3;
+                        
+                        $customerReceiptObj->save();
+                    } else
+                        return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
                 }
-            }
-            if(isset($users)){
-                foreach($users as $key => $user){
-                    $userObj = new Receipt();
-                    $userObj->user_id = $key;
-                    $userObj->settled_amount = $user;
-                    $userObj->type_id = 1;
-                    $userObj->debited_to = $debited_to;
-                    $userObj->save();
-                }
-                if($userObj)
+                if ($customerReceiptObj)
                     return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 else
-                    return redirect('receipt-master')->with('error', 'Some error occoured while saving customer');
-            }
+                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
+            } else
+                return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
         }else {
-            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
+            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving receipt');
         }
-    }
-
-    /**
-     * Store a newly created journal receipt resource in storage.
-     *
-     * @return Response
-     */
-    public function store_bank() {
-        //
-    }
-
-    /**
-     * Store a newly created journal receipt resource in storage.
-     *
-     * @return Response
-     */
-    public function store_cash() {
-        //
     }
 
     /**
@@ -151,7 +138,46 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        //
+        if (isset($id) && !empty($id)) {
+            $receiptObj = Receipt::where('id', '=', $id)->with('customer_receipts')->get();
+//            dd($receiptObj);
+            $customer_arr = [];
+            $val = 0;
+            foreach($receiptObj as $obj){
+                    $receipt_id = $obj['id'];
+//                    echo($receipt_id);
+                    foreach($obj->customer_receipts as $customer){
+                        $debited_id = $customer['debited_to'];
+                        $receipt_type = $customer['debited_by_type'];
+                        $customer_arr[$val] = $customer['customer_id'];
+                    }                    
+                    $val++;
+            }
+//            dd($customer_arr);
+            if (isset($receiptObj)) {
+                if ($receipt_type == 1) {
+                    $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
+                    return view('receipt_master.edit_receipt')->with('tally_users', $tally_users)
+                                    ->with('receiptObj', $receiptObj)
+                                    ->with('type', $receipt_type)
+                                    ->with('debited_id',$debited_id)->with('receipt_id',$receipt_id);
+                } else {
+                    if ($receipt_type == 2)
+                        $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
+                    if ($receipt_type == 3)
+                        $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
+                    
+                    $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
+//                    dd($receipt_id);
+                    return view('receipt_master.edit_receipt')
+                                    ->with('tally_users', $tally_users)->with('receiptObj', $receiptObj)
+                                    ->with('type', $receipt_type)->with('debited_to', $debited_to)
+                                    ->with('debited_id',$debited_id)->with('receipt_id',$receipt_id);
+                }
+            }
+        }else {
+            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving receipt.');
+        }
     }
 
     /**
@@ -160,8 +186,48 @@ class ReceiptMasterController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {
-        //
+    public function update(Request $request, $id) {
+        if (isset($id) && !empty($id)) {
+            $receiptObj = Receipt::find($id);
+            if (isset($receiptObj)) {
+                $tally_users = Input::get('tally_users');
+                $settle_amount = Input::get('settle_amount');
+                $debited_to = Input::get('debited_to');
+                $receipt_type = $receiptObj->debited_by_type;
+                $users = [];
+                foreach ($tally_users as $tally_user) {
+                    foreach ($settle_amount as $amount) {
+//                        var_dump($tally_user,$amount);
+                        if (array_key_exists($tally_user, $settle_amount))
+                            $users[$tally_user] = $amount;
+                    }
+                }
+//                dd($users);
+                if (isset($users) && count($users) > 0) {
+                    foreach ($users as $key => $user) {
+                        $receiptObj->customer_id = $key;
+                        $receiptObj->settled_amount = $user;
+                        $receiptObj->debited_to = $debited_to;
+                        $receiptObj->updated_at = new \DateTime();
+                        if ($receipt_type == 1)
+                            $receiptObj->debited_by_type = 1;
+                        elseif ($receipt_type == 2)
+                            $receiptObj->debited_by_type = 2;
+                        elseif ($receipt_type == 3)
+                            $receiptObj->debited_by_type = 3;
+
+                        $receiptObj->save();
+                    }
+                    if ($receiptObj)
+                        return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
+                    else
+                        return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt.');
+                } else
+                    return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt.');
+            }
+        }else {
+            return Redirect::back()->withInput()->with('error', 'Some error occoured while updating receipt.');
+        }
     }
 
     /**
