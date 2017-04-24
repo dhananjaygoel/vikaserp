@@ -4816,15 +4816,15 @@ class HomeController extends Controller {
         } else {
             $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->limit(1)->get();
         }
-       
-       
+
+
         $product_price = $product_last[0]->price;
         $size_array = [];
         $thickness_array = [];
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-       
+
 
         if ($product_type == 1) {
             $product_column = "Size";
@@ -4880,13 +4880,145 @@ class HomeController extends Controller {
 
         $report_arr = $final_arr;
 
-        
+
         if (!empty($report_arr)) {
-           return json_encode($report_arr);
+            return json_encode($report_arr);
         } else {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
         }
-        
+    }
+
+    /**
+     * App Price show
+     */
+    public function appallprice_admin() {
+
+        if (Input::has('product_category_id')) {
+            $product_id = Input::get('product_category_id');
+            $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
+        } else {
+            $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->limit(1)->get();
+        }
+
+
+        $product_price = $product_last[0]->price;
+        $size_array = [];
+        $thickness_array = [];
+        $report_arr = [];
+        $final_arr = [];
+        $product_type = $product_last[0]->product_type_id;
+        if ($product_type == 1) {
+            $product_column = "Size";
+            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                if (!in_array($sub_cat->thickness, $thickness_array)) {
+                    array_push($thickness_array, $sub_cat->thickness);
+                }
+            }
+            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                if (!in_array($sub_cat->size, $size_array)) {
+                    array_push($size_array, $sub_cat->size);
+                }
+            }
+            foreach ($thickness_array as $thickness) {
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    $total_price = 0;
+                    if ($sub_cat->thickness == $thickness) {
+                        $inventory = $sub_cat['product_inventory'];
+                        $total_price = $product_price + $sub_cat->difference;
+
+                        $report_arr[$sub_cat->size][$sub_cat->thickness] = $total_price;
+                    }
+                }
+            }
+        }
+        if ($product_type == 2) {
+            $product_column = "Product Alias";
+            array_push($thickness_array, "NA");
+            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                if (!in_array($sub_cat->alias_name, $size_array)) {
+                    array_push($size_array, $sub_cat->alias_name);
+                }
+            }
+            foreach ($thickness_array as $thickness) {
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    $total_price = 0;
+                    $inventory = $sub_cat['product_inventory'];
+                    $total_price = $product_price + $sub_cat->difference;
+                    $report_arr[$sub_cat->alias_name][$thickness] = $total_price;
+                }
+            }
+        }
+
+        foreach ($size_array as $size) {
+            foreach ($thickness_array as $thickness) {
+                if (isset($report_arr[$size][$thickness])) {
+                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                } else {
+                    $final_arr[$size][$thickness] = "-";
+                }
+            }
+        }
+
+        $report_arr = $final_arr;
+
+
+        if (!empty($report_arr)) {
+            return json_encode($report_arr);
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+    }
+
+    /**
+     * App Price update
+     */
+    public function appupdateprice() {
+
+        if (Input::has('product_category_id')) {
+            $product_id = Input::get('product_category_id');
+            $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
+
+            $product_type = $product_last[0]->product_type_id;
+
+            $size = Input::get('size');
+            $thickness = Input::get('thickness');
+            $new_price = Input::get('new_price');            
+          
+
+            if ($product_type == 1) {
+                if (isset($product_id) && !empty($size) && !empty($thickness)) {
+                    $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
+                                    ->where('thickness', '=', $thickness)
+                                    ->where('size', '=', $size)->get(); 
+                    if(isset($subproduct))
+                    $sub_prod_id = $subproduct[0]->id;
+                } else {
+                    return json_encode(array('result' => false, 'message' => 'Some error occured1. Please try again'));
+                }
+            }
+            if ($product_type == 2) {
+                if (empty($product_id) && empty($size)) {
+                    $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
+                                    ->where('alias_name', '=', $size)->get();
+                    $sub_prod_id = $subproduct[0]->id;
+                } else {
+                    return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+                }
+            }
+
+            $product_category = ProductCategory::where('id', '=', $product_id)->get();
+            $product_base_price = $product_category[0]->price;
+            $difference = $new_price - $product_base_price;
+            $update_sub_prod = ProductSubCategory::find($sub_prod_id);
+            $update_sub_prod->difference = $difference;
+            $update_sub_prod->save();
+            return json_encode(array('result' => true, 'product_category_id' => $update_sub_prod->id, 'message' => 'Price Updated successfully.'));
+            
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+
+
     }
 
 }
