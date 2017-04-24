@@ -12,11 +12,11 @@ class CreateReceiptsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('receipts', function(Blueprint $table)
-		{
-			$table->increments('id')->comment('Primary key');                        
-			$table->timestamps();
-		});
+//		Schema::create('receipts', function(Blueprint $table)
+//		{
+//			$table->increments('id')->comment('Primary key');                        
+//			$table->timestamps();
+//		});
 	}
 
 	/**
@@ -26,7 +26,7 @@ class CreateReceiptsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('receipts');
+//		Schema::drop('receipts');
 	}
 
 }

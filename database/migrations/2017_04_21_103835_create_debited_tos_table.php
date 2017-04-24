@@ -28,7 +28,7 @@ class CreateDebitedTosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('debited_tos');
+//		Schema::drop('debited_tos');
 	}
 
 }
