@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\DB;
 class debitedToSeeder extends Seeder {
 
     public function run() {
-        DB::table('debited_bies')->truncate();
-        DB::table('debited_bies')->insert(
+        DB::table('debited_tos')->truncate();
+        DB::table('debited_tos')->insert(
                 array(
                     array('id' => '1', 'debited_by_type' => '1', 'debited_by' => 'User'),
                     array('id' => '2', 'debited_by_type' => '2', 'debited_by' => '12345'),
