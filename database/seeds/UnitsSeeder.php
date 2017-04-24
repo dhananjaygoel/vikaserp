@@ -21,7 +21,7 @@ class UnitsSeeder extends Seeder {
                         'id' => '3',
                         'unit_name' => 'Meter'
                     )
-        ));
+        ));               
     }
 
 }
