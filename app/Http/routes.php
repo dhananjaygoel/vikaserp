@@ -412,6 +412,7 @@ Route::get('dropbax-demo-functionality', function() {
 //    $r->codeRequest('sms'); // could be 'voice' too
 //});
 
+Route::get('receipt-master/get-amount', 'ReceiptMasterController@get_amount');
 Route::get('receipt-master/journal', 'ReceiptMasterController@create_journal_receipt');
 Route::get('receipt-master/bank', 'ReceiptMasterController@create_bank_receipt');
 Route::get('receipt-master/cash', 'ReceiptMasterController@create_cash_receipt');

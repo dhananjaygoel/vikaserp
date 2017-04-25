@@ -49,7 +49,7 @@
                                     <option value="">Select Tally User</option>
                                     @if(isset($tally_users))
                                         @foreach($tally_users as $tally_user)
-                                            <option value="{{$tally_user->id}}" data-amount="{{$tally_user->phone_number1}}">{{$tally_user->tally_name}}</option>
+                                            <option value="{{$tally_user['challan_id']}}" data-amount="" data-challan_id="{{$tally_user['id']}}">{{$tally_user['tally_name']}}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -61,7 +61,7 @@
                                                     <option value="">Select Tally User</option>
                                                     @if(isset($tally_users))
                                                         @foreach($tally_users as $tally_user)
-                                                            <option value="{{$tally_user->id}}" data-amount="{{$tally_user->phone_number1}}" >{{$tally_user->tally_name}}</option>
+                                                            <option value="{{$tally_user['challan_id']}}" data-amount="" data-user_id="{{$tally_user['id']}}">{{$tally_user['tally_name']}}</option>
                                                         @endforeach
                                                     @endif
                                                 </select>
@@ -83,8 +83,8 @@
                                         <select class="form-control" name="debited_to" id="debited_to">                                            
                                             @if(isset($tally_users) && $type == 1)
                                                 <option value="">Select Tally User</option>
-                                                @foreach($tally_users as $tally_user)
-                                                    <option value="{{$tally_user->id}}">{{$tally_user->tally_name}}</option>
+                                                @foreach($debited_users as $tally_user)
+                                                    <option value="{{$tally_user['id']}}" >{{$tally_user['tally_name']}}</option>
                                                 @endforeach
                                             @endif
                                             @if(isset($debited_to) && $type != 1)

@@ -135,6 +135,8 @@
         var lastselelem = $(elem).clone(true);
         var lastsel = $(lastselelem).attr('data-lastsel');
         var amount = $(this).select2().find(":selected").data("amount");
+        var user_id = $(this).select2().find(":selected").data("user_id");
+        var baseurl = $('#baseurl').attr('name');
         $('#st-settle-container .st-settle-block').each(function () {
             if (!$(this).find('.st_select_tally_user').is($(elem)) && ($(this).find('.st_select_tally_user').val() != '' && $(elem).val() != '') && $(this).find('.st_select_tally_user').val() == $(elem).val()) {
                 flag = false;
@@ -143,6 +145,35 @@
         var block = $(this).closest('.st-settle-block').find('.settle-input-elem');
         if (flag) {
             if ($(this).val() != '') {
+                var url = baseurl+'/receipt-master/get-amount';
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    data: {
+                        'user_id': user_id,
+                        'challan_id': val,
+                    },
+                    success: function (data) {
+                        if(data){
+                            amount = data['challan_price'];
+                            var challan = data['challan_id'];
+//                            amount = data['users'][0]['grand_price'];
+//                            var challan = data['users'][0]['challan_id'];
+//                            console.log(amount);
+                            $('.st_select_tally_user').select2().find(":selected").attr('data-amount', amount);
+                            $('.st_select_tally_user').select2().find(":selected").data('amount', amount);
+                            $(document).find('.st_select_tally_user').attr('data-lastsel', val);
+                            $(document).find('.st_select_tally_user').data('lastsel', val);
+                            var block1 = $(elem).closest('.st-settle-block').find('.settle-input-elem');
+                            $(block1).html('<input class="form-control" placeholder="Settle Amount" name="settle_amount[' + val + ']" value="' + amount + '" type="text">');
+                            $('.st_select_tally_user').select2().find(":selected").attr('data-challan_id', challan);
+                            $('.st_select_tally_user').select2().find(":selected").data('challan_id', challan);
+                        }
+                        else{
+                            console.log(data);
+                        }
+                    }
+                });
                 $(this).attr('data-lastsel', $(this).val());
                 $(block).html('<input class="form-control" placeholder="Settle Amount" name="settle_amount[' + $(this).val() + ']" value="' + amount + '" type="text">');
             } else {
@@ -179,7 +210,7 @@
         var element = $('#st-settle-container').find('.st-settle-block').last();
         $('#st-settle-container .st-settle-block').each(function () {
             var tval = $(this).find('.st_select_tally_user').val();
-            console.log(tval);
+//            console.log(tval);
             if (tval != '') {
                 if ($(element).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 0)
                 {
