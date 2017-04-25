@@ -5033,9 +5033,9 @@ class HomeController extends Controller {
     public function appallterritory_admin() {
 
         if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '') {
-            $territories['all'] = Territory::where('updated_at', '>', Input::get('territory_sync_date'))->get();
+            $territories['all'] = Territory::with('territorylocation')->where('updated_at', '>', Input::get('territory_sync_date'))->get();
         } else {
-            $territories['all'] = Territory::get();
+            $territories['all'] = Territory::with('territorylocation')->get();
         }
         $territory_date = Territory::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($territory_date)) {
