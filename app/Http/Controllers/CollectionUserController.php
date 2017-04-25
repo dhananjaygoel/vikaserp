@@ -151,8 +151,9 @@ class CollectionUserController extends Controller {
             return Redirect::to('/')->with('error', 'You do not have permission.');
         }
         $user = User::with('locations')->find($id);
+        $territories = Territory::orderBy('created_at', 'DESC')->get();
         if ($user) {
-            return View::make('collection_user.show', array('user' => $user));
+            return View::make('collection_user.show', array('user' => $user,'territories'=>$territories));
         } else {
             
         }

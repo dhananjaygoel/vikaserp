@@ -41,6 +41,20 @@
                                         <td><span>Email: </span> {{($user->email)?$user->email:''}}</td>
                                     </tr>
                                     <tr>
+                                        <td><span>Territory: </span> 
+                                            <?php
+                                            if(isset($user->locations[0])){
+                                                $territory_id=$user->locations[0]->teritory_id;
+                                            }                                            
+                                            ?>
+                                            @foreach($territories as $territory)
+                                                @if($territory_id == $territory->id)
+                                                    {{ $territory->teritory_name}}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>
                                             <span>Location :</span>
                                             <ul>
