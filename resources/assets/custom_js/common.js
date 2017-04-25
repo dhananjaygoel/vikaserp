@@ -176,6 +176,33 @@ $(document).ready(function () {
         $('#settle_due_modal').modal('show');
     });
     
+    $(document).on('change','#collection_territory_select',function(){        
+        var teritory_id = $(this).val();
+        if(teritory_id==""){
+            teritory_id = 0;
+        }
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/get_territory_locations';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                teritory_id: teritory_id,
+            },
+            success: function (data) {                
+                $('#assign-territory-location').html(data.html)  
+                $('#assign-territory-location').find('#assign_location').multiselect({
+                    onInitialized: function (select, container) {
+                        $(container).find('.multiselect').addClass('form-control').removeClass('btn btn-default');
+                        $(container).find('.multiselect-container').css({'max-height': '200px', 'overflow-y': 'auto'});
+                    }
+                });
+            },
+            complete: function () {
+            }
+        })
+    });
+    
     $(document).on('click','.modal-price-save',function(){
         var new_price = $('#inventory_price_form').find('#modal_price').val();
         var product_id = $('#inventory_price_form').find('#modal_price').data('id');

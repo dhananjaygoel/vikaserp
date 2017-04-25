@@ -97,8 +97,9 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
-                                        <th>Mobile</th>              
-                                        <th>Location</th>              
+                                        <th>Mobile</th>
+                                        <th>Territory</th>
+                                        <th>Location</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -111,6 +112,18 @@
                                         <td>{{ $user->last_name }}</td>
                                         <td>{{ $user->email }}</td>                
                                         <td>{{ $user->mobile_number }}</td>
+                                        <td>
+                                            <?php
+                                            if(isset($user->locations[0])){
+                                                $territory_id=$user->locations[0]->teritory_id;
+                                            }                                            
+                                            ?>
+                                            @foreach($territories as $territory)
+                                                @if($territory_id == $territory->id)
+                                                    {{ $territory->teritory_name}}
+                                                @endif
+                                            @endforeach
+                                        </td>
                                         <td>
                                             {{count($user->locations)}}
                                         </td>
