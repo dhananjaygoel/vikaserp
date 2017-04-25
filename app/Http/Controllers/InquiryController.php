@@ -682,7 +682,7 @@ class InquiryController extends Controller {
 
                 if (count($customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has rejected your order for following items.\n";
+                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items.\n";
                     foreach ($input_data as $product_data) {
 
                         if ($product_data['inquiry_product_details']->alias_name != "") {
