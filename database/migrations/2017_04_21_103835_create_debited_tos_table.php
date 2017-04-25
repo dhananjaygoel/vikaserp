@@ -12,13 +12,13 @@ class CreateDebitedTosTable extends Migration {
 	 */
 	public function up()
 	{
-//		Schema::create('debited_tos', function(Blueprint $table)
-//		{
-//			$table->increments('id');
-//                        $table->string('debited_to');
-//                        $table->integer('debited_to_type')->unsigned();
-//			$table->timestamps();
-//		});
+		Schema::create('debited_tos', function(Blueprint $table)
+		{
+			$table->increments('id');
+                        $table->string('debited_to');
+                        $table->integer('debited_to_type')->unsigned();
+			$table->timestamps();
+		});
 	}
 
 	/**
