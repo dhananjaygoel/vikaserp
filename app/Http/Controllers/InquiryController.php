@@ -303,7 +303,7 @@ class InquiryController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show($id) {
+    public function show($id, InquiryRequest $request) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -385,8 +385,12 @@ class InquiryController extends Controller {
             $flash_message = "Message sent successfully";
             return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
         }
+        
+         $is_approval = $request->input();
+        
+        
 //        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
-        return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message));
+        return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message, 'is_approval' => $is_approval));
 //        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
     }
 

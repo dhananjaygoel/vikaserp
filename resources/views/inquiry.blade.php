@@ -181,7 +181,7 @@
                                          @endif
                                         @endif
                                         <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
-                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="btn btn-primary btn-sm /*table-link*/">View
+                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
 <!--                                                <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>

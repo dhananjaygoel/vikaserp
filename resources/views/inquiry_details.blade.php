@@ -146,7 +146,14 @@
                             </div>
                             <hr>
                             <div>
-                                <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
+                                 <?php 
+                                        if(isset($is_approval['way']) && $is_approval['way'] == 'approval'){ ?>
+                                <a href="{{URL::to('inquiry?inquiry_filter=Approval')}}" class="btn btn-default form_button_footer">Back</a>
+                                
+                                        <?php }else{  ?> 
+                                  <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>                                  
+                                        <?php } ?>                               
+                                
                                 <!--<a href="{{url('inquiry/'.$inquiry->id.'?sendsms=true' )}}" title="SMS would be sent to Party and Relationship Manager" type="button" class="btn btn-primary smstooltip" >Send SMS</a><span title="SMS has been sent 5 times" class="badge enquirybadge smstooltip">0</span>-->
                                 <span id="send_sms_button">
                                     <span title="You can not click unless you save all prices" type="button" class="btn btn-default smstooltip normal_cursor" >Send SMS</span>
