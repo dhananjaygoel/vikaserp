@@ -561,10 +561,34 @@ class InventoryController extends Controller {
     /*
      * Export inventory details in excel file
      */
+    public function export_inventory($input = null) {
 
-    public function export_inventory() {
+        $query = Inventory::query();
+        if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
 
-        $inventorys = Inventory::with('product_sub_category')->get();
+//                $query->where('minimal','<','physical_closing_qty'-'pending_delivery_order_qty'-'pending_sales_order_qty'+'pending_purchase_advise_qty');
+            $query->whereRaw('minimal < physical_closing_qty-pending_delivery_order_qty-pending_sales_order_qty+pending_purchase_advise_qty');
+        }
+        if (Input::has('product_category_filter') && Input::get('product_category_filter') != '') {
+            $categoryid = Input::get('product_category_filter');
+            $query->whereHas('product_sub_category', function($q) use($categoryid) {
+                $q->where('product_category_id', '=', $categoryid);
+            });
+        }
+
+        if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
+            $alias_name = '%' . Input::get('search_inventory') . '%';
+            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
+            $query->where('product_sub_category_id', '=', $product_sub_id->id);
+        } else {
+            $query = Inventory::query();
+        }
+
+
+        $inventorys = $query->with('product_sub_category')
+                ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
+                ->orderBy('product_sub_category.alias_name', 'ASC')
+                ->get();
         Excel::create('Inventory List', function($excel) use($inventorys) {
             $excel->sheet('Inventory-List', function($sheet) use($inventorys) {
                 $sheet->loadView('excelView.inventory', array('inventorys' => $inventorys));
@@ -572,6 +596,18 @@ class InventoryController extends Controller {
         })->export('xls');
         exit();
     }
+
+
+//    public function export_inventory() {
+//
+//        $inventorys = Inventory::with('product_sub_category')->get();
+//        Excel::create('Inventory List', function($excel) use($inventorys) {
+//            $excel->sheet('Inventory-List', function($sheet) use($inventorys) {
+//                $sheet->loadView('excelView.inventory', array('inventorys' => $inventorys));
+//            });
+//        })->export('xls');
+//        exit();
+//    }
 
     /*
      * Fill product sub category reference in inventory table with 0.00 opening stock

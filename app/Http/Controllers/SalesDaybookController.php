@@ -41,13 +41,13 @@ class SalesDaybookController extends Controller {
             if ($date1 == $date2) {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                                 ->where('updated_at', 'like', $date1 . '%')
-                                ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
+                                ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user','challan_loaded_by','challan_labours')
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             } else {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                                 ->where('updated_at', '>=', $date1)
                                 ->where('updated_at', '<=', $date2.' 23:59:59')
-                                ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
+                                ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user','challan_loaded_by','challan_labours')
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             }
             $search_dates = [
@@ -56,7 +56,7 @@ class SalesDaybookController extends Controller {
             ];
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
-                            ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user')
+                            ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user','challan_loaded_by','challan_labours')
                             ->orderBy('updated_at', 'desc')->Paginate(20);
         }
         $supplier = Customer::all();

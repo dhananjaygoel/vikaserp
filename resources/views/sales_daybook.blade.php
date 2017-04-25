@@ -153,8 +153,9 @@
                                                 {{$challan->delivery_order->user['first_name']." ".$challan->delivery_order->user['last_name']}}
                                                 @endif
                                             </td>
-                                            <td>{{isset($challan->loaded_by)?$challan->loaded_by:''}}</td>
-                                            <td>{{$challan->labours}}</td>
+                                            
+                                            <td>{{isset($challan['challan_loaded_by'])?count($challan['challan_loaded_by']):'0'}}</td>
+                                            <td>{{isset($challan['challan_labours'])?count($challan['challan_labours']):''}}</td>
                                             <td>
                                                 <?php
                                                 $total_qunatity = 0;
