@@ -95,7 +95,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" name="existing_customer_name" id="existing_customer_name" tabindex="1" >
-                                        <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="" type="hidden">
+                                        <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="" type="hidden">                                     
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
                                 </div>
@@ -133,8 +133,11 @@
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
                                 @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
-                                 @endif
+                                @endif
                             </div>
+                            <?php if (isset($is_approval['way']) && $is_approval['way'] == 'approval') { ?>                                      
+                                <input id="way" class="form-control way" name="way" value="{{$is_approval['way']}}" type="hidden">
+                            <?php } ?>
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
@@ -143,11 +146,11 @@
                                         @endif
                                         @if(Auth::user()->role_id == 5 & $order['createdby']->role_id == 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order['customer']->tally_name}}" id="existing_customer_name1" disabled="" tabindex="1" >
-                                        
+
                                         @endif
                                         @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id == 5 )
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order['customer']->tally_name}}" id="existing_customer_name1" disabled="" tabindex="1" >
-                                        
+
                                         @endif
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$order['customer']->id}}" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->
@@ -322,7 +325,8 @@
                                                         <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
                                                             <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
-                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                                <?php
+                                                                // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
                                                             }
                                                             ?>                                                 
                                                         </select>
@@ -390,51 +394,51 @@
                             </div>
                         </div>
                         @if($order->vat_percentage == 0)
-                        
-<!--                        <div class="form-group">
-                            <div class="radio">
-                                <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
-                                <label for="optionsRadios3">All Inclusive</label>
-                                <input value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
-                                <label for="optionsRadios4">Plus VAT</label>
-                            </div>
-                        </div>-->
-<!--                        <div class="plusvat " style="display: none">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->other_location}}" type="text"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>-->
-                        
+
+                        <!--                        <div class="form-group">
+                                                    <div class="radio">
+                                                        <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
+                                                        <label for="optionsRadios3">All Inclusive</label>
+                                                        <input value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
+                                                        <label for="optionsRadios4">Plus VAT</label>
+                                                    </div>
+                                                </div>-->
+                        <!--                        <div class="plusvat " style="display: none">
+                                                    <div class="form-group">
+                                                        <table id="table-example" class="table ">
+                                                            <tbody>
+                                                                <tr class="cdtable">
+                                                                    <td class="cdfirst">VAT Percentage:</td>
+                                                                    <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->other_location}}" type="text"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>-->
+
                         @elseif($order->vat_percentage != 0)
-                        
-<!--                        <div class="form-group">
-                            <div class="radio">
-                                <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
-                                <label for="optionsRadios3">All Inclusive</label>
-                                <input checked="" value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
-                                <label for="optionsRadios4">Plus VAT</label>
-                            </div>
-                        </div>-->
-<!--                        <div class="plusvat">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>-->
-                        
+
+                        <!--                        <div class="form-group">
+                                                    <div class="radio">
+                                                        <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
+                                                        <label for="optionsRadios3">All Inclusive</label>
+                                                        <input checked="" value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
+                                                        <label for="optionsRadios4">Plus VAT</label>
+                                                    </div>
+                                                </div>-->
+                        <!--                        <div class="plusvat">
+                                                    <div class="form-group">
+                                                        <table id="table-example" class="table ">
+                                                            <tbody>
+                                                                <tr class="cdtable">
+                                                                    <td class="cdfirst">VAT Percentage:</td>
+                                                                    <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>-->
+
                         @endif
                         <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate">
@@ -452,11 +456,20 @@
                         <div class="checkbox customer_select" style="display: none">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                         </div>
-                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_edit_order_sms" id="edit_order_sendSMS" >Save and Send SMS</button>
-                        <hr>
+                        <?php if (!isset($is_approval['way'])) { ?>
+                            <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_edit_order_sms" id="edit_order_sendSMS" >Save and Send SMS</button>
+                            <hr>
+                        <?php } ?>
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer btn_edit_order">Submit</button>
-                            <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
+                            <?php if (isset($is_approval['way']) && $is_approval['way'] == 'approval') { ?>
+
+                                <a href="{{url('orders?order_filter=approval')}}" class="btn btn-default form_button_footer">Back</a>      
+                            <?php } else { ?> 
+
+                                <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
+                            <?php } ?>  
+
                         </div>
                         <div class="clearfix"></div>
                         </form>

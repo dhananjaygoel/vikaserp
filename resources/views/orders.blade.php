@@ -324,9 +324,15 @@
                                         <td>{{ ($order['createdby']->id  !== null? $order['createdby']->first_name." ".$order['createdby']->last_name:'' ) }}</td>
                                         <td> 
                                             @if( Auth::user()->role_id == 0)
-                                            <a href="{{url('orders/'.$order->id.'/edit')}}" class="btn btn-primary btn-sm" href="" title="Approve" > Approve </a>
+                                            <a href="{{ Url::action('OrderController@show', ['id' => $order->id,'way' => 'approval']) }}" class="/*table-link/ btn btn-primary btn-sm" title="view">View
+<!--                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>-->
+                                            </a>
+                                            <a href="{{ Url::action('OrderController@edit', ['id' => $order->id,'way' => 'approval']) }}" class="btn btn-primary btn-sm" href="" title="Approve" > Approve </a>
 
-                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order->id}})">
+                                            <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="reject_order_row({{$order->id}})">
                                                 Reject </a>
                                             @else
                                              <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
@@ -561,6 +567,7 @@
                                         </div>
                                         <form method="post" class="delete_order_form" action="#" id="delete_order_row">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input class="form-control" name="way" id="way" type="hidden"/>
 <!--                                            <input name="_method" type="hidden" value="DELETE">-->
                                             <div class="modal-body">
                                                 <div class="delete">
