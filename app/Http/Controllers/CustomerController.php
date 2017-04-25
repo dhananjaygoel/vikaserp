@@ -905,8 +905,10 @@ class CustomerController extends Controller {
             $customers->where('delivery_location_id','=',$location_id);            
         }
         
-        $customers=$customers->paginate(20)->setPath('customer-list');
-
+        $customers=$customers->paginate(20)->setPath('customer-list');        
+        if (Auth::user()->role_id == 6){
+            dd($customers);
+        }
         $city = City::all();
         $territories = Territory::orderBy('created_at', 'DESC')->get();
         return View('customer_list')->with('customers',$customers)->with('city',$city)
@@ -931,7 +933,7 @@ class CustomerController extends Controller {
                                 
         }        
         $city = City::all();
-        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();   
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         return View('customer_details_view')->with('customers',$customers)->with('city',$city)
                                     ->with('delivery_location',$delivery_location);
     }
