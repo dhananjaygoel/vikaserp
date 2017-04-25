@@ -227,6 +227,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('territory', 'TerritoryController');
     Route::get('inventory_report', 'InventoryController@inventoryReport');
     Route::get('inventory_price_list', 'InventoryController@inventoryPriceList');
+    Route::get('customer-list', 'CustomerController@get_customers_list');
+    Route::get('customer_details/{id}', 'CustomerController@get_customer_details');
 
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');

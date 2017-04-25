@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-lg-9">
                         <form method="GET" action=" {{url()}}/account" id="st_collection_user_form">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="input-group pull-right">
                                     <input type="text" class="form-control" name="search" id="search" placeholder="Search Collection User" value="{{ Request::get('search') }}">
                                     <span class="input-group-btn">
@@ -27,10 +27,20 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">                                                          
+                                <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
+                                    <option value="" selected="">Select Territory</option>
+                                    @foreach($territories as $territory)
+                                    @if($territory->id!=0)
+                                    <option <?php if (Input::get('territory_filter') == $territory->id) echo 'selected=""'; ?> value="{{$territory->id}}">{{$territory->teritory_name}}</option>
+                                    @endif
+                                    @endforeach
+                                </select>                                
+                            </div> 
+                            <div class="col-lg-2">
                             <div class="form-group">
                                 <select class="form-control" name="location" id="cuser_location">
-                                    <option value="">Search By Location</option>
+                                    <option value="">Select Location</option>
                                     @if(isset($locations))
                                     @foreach($locations as $loc)
                                     <option value="{{ $loc->id }}" <?php echo(Request::get('location')? Request::get('location')==$loc->id ? 'selected' : '': ''); ?> >{{ $loc->area_name }}</option>

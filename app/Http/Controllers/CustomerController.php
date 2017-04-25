@@ -28,6 +28,8 @@ use App\PurchaseAdvise;
 use App\PurchaseChallan;
 use Config;
 use App\ProductType;
+use App\Territory;
+use App\TerritoryLocation;
 
 class CustomerController extends Controller {
 
@@ -875,4 +877,62 @@ class CustomerController extends Controller {
         return redirect('bulk_set_price?page = ' . $page . '&product_filter = ' . $product_filter)->with('success', 'Customer Set price for the product successfully updated');
     }
 
+    public function get_customers_list() {
+        $customers = '';
+        $loc_arr = [];
+        $search = Input::get('search');
+        $territory_id = Input::get('territory_filter');
+        $location_id = Input::get('location_filter');
+        $date_filter = Input::get('date_filter');
+        $customers = Customer::with('delivery_challan.challan_receipt')->orderBy('created_at', 'desc')
+                                ->whereHas('delivery_challan', function ($query) {
+                                $query->where('challan_status','=', 'completed');
+                                });
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        if (isset($search) && !empty($search)) {
+            $term = '%' . $search . '%';            
+            $customers->orWhere('tally_name', 'like', $term);
+        }
+        if (isset($territory_id) && !empty($territory_id)) {
+            $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
+            foreach ($territory_locations as $loc){
+                array_push($loc_arr, $loc->location_id);
+            }
+            $customers ->whereIn('delivery_location_id',$loc_arr);                                                        
+            $delivery_location = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
+        }
+        if (isset($location_id) && !empty($location_id)) {          
+            $customers->where('delivery_location_id','=',$location_id);            
+        }
+        
+        $customers=$customers->paginate(20)->setPath('customer-list');
+
+        $city = City::all();
+        $territories = Territory::orderBy('created_at', 'DESC')->get();
+        return View('customer_list')->with('customers',$customers)->with('city',$city)
+                                    ->with('delivery_location',$delivery_location)
+                                    ->with('territories',$territories);
+    }
+    
+    public function get_customer_details($id) {        
+        $customers = '';
+        if (Input::get('search') != '') {
+            $term = '%' . Input::get('search') . '%';            
+            $customers = Customer::with('Delivery_challan.challan_receipt')->where('id','=',$id)
+                                ->orWhere('tally_name', 'like', $term)
+                                ->whereHas('Delivery_challan', function ($query) {
+                                $query->where('challan_status','=', 'completed');
+                                })->get();
+        } else {
+            $customers = Customer::with('Delivery_challan.challan_receipt')->where('id','=',$id)
+                                ->whereHas('Delivery_challan', function ($query) {
+                                $query->where('challan_status','=', 'completed');
+                                })->get();
+                                
+        }        
+        $city = City::all();
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();   
+        return View('customer_details_view')->with('customers',$customers)->with('city',$city)
+                                    ->with('delivery_location',$delivery_location);
+    }
 }

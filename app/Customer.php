@@ -33,6 +33,14 @@ class Customer extends Model {
 
     public function customerproduct() {
         return $this->hasMany('App\CustomerProductDifference', 'customer_id', 'id');
+    }  
+    
+    public function customer_receipt() {
+        return $this->hasMany('App\Customer', 'customer_id', 'id');
+    }
+    
+    public function delivery_challan() {
+        return $this->hasMany('App\DeliveryChallan', 'customer_id', 'id');
     }
 
     public function city() {

@@ -50,7 +50,10 @@ class DeliveryChallanController extends Controller {
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
-
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('customer-list');
+        }
+        
 
 
         $data = Input::all();

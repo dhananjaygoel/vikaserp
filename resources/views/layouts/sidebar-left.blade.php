@@ -81,7 +81,7 @@
                     </li>
                     @endif
                     @endif
-                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*due-payment*'))
+                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*due-payment*') || Request::is('*customer-list*'))
                         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                         <li class="{{ (Request::is('account') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
                             <a href="{{url('account')}}">
@@ -105,6 +105,15 @@
                             <a href="{{url('due-payment')}}">
                                 <i class="fa fa-money"></i>
                                 <span>Due Payment</span>
+                                <span class="label label-info label-circle pull-right"></span>
+                            </a>
+                        </li>
+                        @endif
+                        @if(Auth::user()->role_id == 0|| Auth::user()->role_id == 1)
+                        <li class="{{ (Request::is('customer-list') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Customers">
+                            <a href="{{url('customer-list')}}">
+                                <i class="fa fa-male"></i>
+                                <span>Customers</span>
                                 <span class="label label-info label-circle pull-right"></span>
                             </a>
                         </li>
@@ -169,11 +178,12 @@
                         echo 'active';
                     }
                     ?>">
+                        @if(Auth::user()->role_id != 6)
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Order</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
-                        </a>
+                        </a>                        
                         <ul class="submenu">
                             @if(Auth::user()->role_id == 5)
                             <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
@@ -224,6 +234,7 @@
                                                             </a>
                                                         </li>-->
                         </ul>
+                        @endif
                     </li>
                     @endif
 
@@ -233,11 +244,13 @@
                         echo 'active';
                     }
                     ?>">
+                        @if(Auth::user()->role_id != 6)
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Purchase Order</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
+                        @endif
                         <ul class="submenu">
                             @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*purchase_orders*') ? 'active' : '') }}">
@@ -412,6 +425,15 @@
                     </li>
                     @endif
                     @endif
+                    @endif
+                    @if(Auth::user()->role_id == 6)
+                    <li class="{{ (Request::is('customer-list*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Customers">
+                        <a href="{{url('customer-list')}}">
+                            <i class="fa fa-male"></i>
+                            <span>Customers</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </div>

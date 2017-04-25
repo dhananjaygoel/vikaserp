@@ -17,6 +17,8 @@ use Validator;
 use App\CollectionUser;
 use App\DeliveryLocation;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Territory;
+use App\TerritoryLocation;
 
 class CollectionUserController extends Controller {
 
@@ -35,8 +37,11 @@ class CollectionUserController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('/')->with('error', 'You do not have permission.');
         }
+        $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $search_field = Input::get('search');
         $location_id = Input::get('location');
+        $territory_id = Input::get('territory_filter');
+        $loc_arr = [];
         $collection_users = User::with('locations.location_data');
         if (isset($search_field) && !empty($search_field)) {
             $collection_users->where(function($query) use ($search_field) {
@@ -46,14 +51,25 @@ class CollectionUserController extends Controller {
                 $query->orwhere('email', 'like', '%' . $search_field . '%');
             });
         }
+        if (isset($territory_id) && !empty($territory_id)) {
+            $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
+            foreach ($territory_locations as $loc){
+                array_push($loc_arr, $loc->location_id);
+            }
+            $collection_users->whereHas('locations', function($query) use ($loc_arr) {
+                $query->whereIn('location_id',$loc_arr);
+            });
+            $locations = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
+//            $delivery_location = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
+        }
         if (isset($location_id) && !empty($location_id)) {
             $collection_users->whereHas('locations', function($query) use ($location_id) {
                 $query->where('location_id', $location_id);
             });
-        }
+        }        
         $collection_users = $collection_users->where('role_id', '=', 6)->get();
-        $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return View::make('collection_user.index', array('users' => $collection_users, 'locations' => $locations));
+        $territories = Territory::orderBy('created_at', 'DESC')->get();        
+        return View::make('collection_user.index', array('users' => $collection_users, 'locations' => $locations,'territories'=> $territories));
     }
 
     /**

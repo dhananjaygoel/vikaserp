@@ -82,6 +82,10 @@ class DeliveryChallan extends Model {
     public function product_sub_category() {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id');
     }
+    
+    public function challan_receipt() {
+        return $this->hasMany('App\Customer_receipts', 'challan_id', 'id');
+    }
 
     //for sales Daybook Date filter
     public static $challan_date_rules = array(

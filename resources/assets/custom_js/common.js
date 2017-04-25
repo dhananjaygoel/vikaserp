@@ -167,6 +167,15 @@ $(document).ready(function () {
         $('#price_list_modal').modal('show');
     });
     
+    $(document).on('click','.settle-payment',function(){
+        var due_amount = $(this).data('due_amount');
+        var serial_no = $(this).data('serial_no');            
+        $('#modal_price').attr("value",due_amount);        
+        $('#serial-no').html(serial_no);                
+
+        $('#settle_due_modal').modal('show');
+    });
+    
     $(document).on('click','.modal-price-save',function(){
         var new_price = $('#inventory_price_form').find('#modal_price').val();
         var product_id = $('#inventory_price_form').find('#modal_price').data('id');
