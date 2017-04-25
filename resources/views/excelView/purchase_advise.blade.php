@@ -53,17 +53,36 @@
             <td>{{$order->other_location}}</td>
             <td>{{$order->location_difference}}</td>
             @endif
-            
+            @if(isset($order['purchase_products'][0]))  
             <td>{{$order['purchase_products'][0]['purchase_product_details']->alias_name}}</td>
+            @else 
+            <td>{{'N/A'}}</td>
+            @endif
+            @if(isset($order['purchase_products'][0]))
             <td>{{$order['purchase_products'][0]->quantity}}</td>
+             @else 
+            <td>{{'0'}}</td>
+            @endif
+            @if(isset($order['purchase_products'][0]))
             <td>
                 @foreach($units as $unit)
                 {{($unit->id == $order['purchase_products'][0]->unit_id)? $unit->unit_name:''}}
                 @endforeach
             </td>
+             @else 
+            <td></td>
+            @endif
+            @if(isset($order['purchase_products'][0]))
             <td>{{$order['purchase_products'][0]->price}}</td>
+             @else 
+            <td></td>
+            @endif
             <td>{{$order->vat_percentage}}</td>
+            @if(isset($order['purchase_products'][0]))
             <td>{{$order['purchase_products'][0]->remarks}}</td>
+             @else 
+            <td></td>
+            @endif
             <?php $product = isset($order['purchase_products']) && isset($order['purchase_products'][0]) ? $order['purchase_products'][0]['purchase_product_details'] : ''; ?>
 <!--            @if(isset($product) && $product!='' && $product->order_type =='purchase_advice')
             <td>{{$product->alias_name}}</td>
@@ -82,7 +101,7 @@
             
             <td>{{$order->updated_at}}</td>
         </tr>
-        
+       
         
         
         
