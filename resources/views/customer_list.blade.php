@@ -135,11 +135,11 @@
                             </table>
                             <span class="pull-right">
                                 <?php
-//                                if (isset($_GET['search']) && Request::get('search') != '') {
-//                                    echo $customers->appends(array('search' => Request::get('search')))->render();
-//                                } else {
-//                                    echo $customers->render();
-//                                }
+                                if (isset($_GET['search']) && Request::get('search') != '') {
+                                    echo $customers->appends(array('search' => Request::get('search')))->render();
+                                } else {
+                                    echo $customers->render();
+                                }
                                 ?>
                             </span>
                             <span class="clearfix"></span>
