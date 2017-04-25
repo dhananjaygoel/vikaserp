@@ -3540,10 +3540,8 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-    
-    
-    
-     /*
+
+    /*
       |------------------------------------------------
       | SEND SMS TO THE CUSTOMER If Admin Approved Inquiry
       |------------------------------------------------
@@ -3557,20 +3555,20 @@ class HomeController extends Controller {
             $inquiryproduct = (json_decode($input['inquiry_product']));
             $user = (json_decode($input['user']));
             $customer_id = $customers[0]->id;
-            
-           
+
+
 
             if (Input::has('sendsms')) {
                 $customer = Customer::with('manager')->find($customer_id);
                 if (count($customer) > 0) {
                     $total_quantity = '';
 
-                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items. ";                    
-                    
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items. ";
+
                     foreach ($inquiryproduct as $product_data) {
                         $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
 
-                       
+
                         if (isset($product_details['inquiry_product_details']->alias_name) && $product_details['inquiry_product_details']->alias_name != "") {
                             $str .= $product_details['inquiry_product_details']->alias_name . ' - ' . $product_data->quantity . ', ';
                             $total_quantity = $total_quantity + $product_data->quantity;
@@ -3621,11 +3619,8 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-    
-    
-    
-    
-     /*
+
+    /*
       |------------------------------------------------
       | SEND SMS TO THE CUSTOMER If Admin Reject Inquiry
       |------------------------------------------------
@@ -3639,20 +3634,20 @@ class HomeController extends Controller {
             $inquiryproduct = (json_decode($input['inquiry_product']));
             $user = (json_decode($input['user']));
             $customer_id = $customers[0]->id;
-            
-           
+
+
 
             if (Input::has('sendsms')) {
                 $customer = Customer::with('manager')->find($customer_id);
                 if (count($customer) > 0) {
                     $total_quantity = '';
 
-                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items";                    
-                    
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items";
+
                     foreach ($inquiryproduct as $product_data) {
                         $product_details = InquiryProducts::with('inquiry_product_details')->find($product_data->id);
 
-                       
+
                         if (isset($product_details['inquiry_product_details']->alias_name) && $product_details['inquiry_product_details']->alias_name != "") {
                             $str .= $product_details['inquiry_product_details']->alias_name . ' - ' . $product_data->quantity . ', ';
                             $total_quantity = $total_quantity + $product_data->quantity;
@@ -3662,7 +3657,7 @@ class HomeController extends Controller {
                             return json_encode($result);
                         }
                     }
-                    
+
                     if (App::environment('development')) {
                         $phone_number = \Config::get('smsdata.send_sms_to');
                     } else {
@@ -3703,9 +3698,6 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-    
-    
-    
 
     /*
      * ------------------- --------------
@@ -3888,9 +3880,8 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-    
-    
-   function appsyncorderapproved_sms() {
+
+    function appsyncorderapproved_sms() {
 
         $input = Input::all();
 
@@ -3968,10 +3959,8 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-    
-    
-    
-     function appsyncorderreject_sms() {
+
+    function appsyncorderreject_sms() {
 
         $input = Input::all();
 
@@ -4049,7 +4038,6 @@ class HomeController extends Controller {
 
         return json_encode($result);
     }
-    
 
     /*
       |------------------- -----------------------
@@ -4513,7 +4501,10 @@ class HomeController extends Controller {
             $inquiries_stats_all[$i]['structure'] = round($inquiries_stats_all[$i]['structure'] / 1000, 2);
         }
 
-
+        foreach ($inquiries_stats_all as $key => $part) {
+            $sort[$key] = strtotime($part['day']);
+        }
+        array_multisort($sort, SORT_ASC, $inquiries_stats_all);
         return json_encode($inquiries_stats_all);
     }
 
@@ -4554,7 +4545,10 @@ class HomeController extends Controller {
             $orders_stats_all[$i]['structure'] = round($orders_stats_all[$i]['structure'] / 1000, 2);
         }
 
-
+        foreach ($orders_stats_all as $key => $part) {
+            $sort[$key] = strtotime($part['day']);
+        }
+        array_multisort($sort, SORT_ASC, $orders_stats_all);
         return ($orders_stats_all);
     }
 
@@ -4595,7 +4589,10 @@ class HomeController extends Controller {
             $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
             $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
         }
-
+        foreach ($delivery_challan_stats_all as $key => $part) {
+            $sort[$key] = strtotime($part['day']);
+        }
+        array_multisort($sort, SORT_ASC, $delivery_challan_stats_all);
 
         return ($delivery_challan_stats_all);
     }
