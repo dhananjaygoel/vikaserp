@@ -594,7 +594,7 @@ class InventoryController extends Controller {
     public function inventoryReport() {
 
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'Asc')->limit(1)->get();
+        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->limit(1)->get();
 //        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $size_array=[];
         $thickness_array=[];
