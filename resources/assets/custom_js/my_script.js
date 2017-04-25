@@ -675,9 +675,9 @@ $('.print_delivery_order').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function () {
-                $('.print_delivery_order').removeprop('disabled');
+            printWindow.onunload = function () {               
                 location.reload();
+                $('.print_delivery_order').removeprop('disabled');
             };
         }
     });
