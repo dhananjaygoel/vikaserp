@@ -104,8 +104,7 @@
                                             $due_date = date('Y-m-d', strtotime($challan_date. " + ".$credit_period." days"));
                                         }
                                         $current_date = date('Y-m-d');
-                                    ?>
-                                    @if($due_date>=$current_date)
+                                    ?>                                    
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td><a href="{{url('customer_details/'.$c->id)}}">@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif</a></td>
@@ -129,7 +128,6 @@
                                             @endforeach
                                         </td>                                        
                                     </tr>
-                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>
