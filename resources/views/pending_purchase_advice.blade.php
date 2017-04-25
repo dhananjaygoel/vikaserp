@@ -74,6 +74,7 @@
                             <span class="pull-right">
                                 <?php echo $pending_advise->render(); ?>
                             </span>
+                            <div class="clearfix"></div>
                             @if($pending_advise->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('pending_purchase_advice')}}" id="filter_search">

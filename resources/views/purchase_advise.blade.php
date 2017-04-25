@@ -298,6 +298,7 @@
                             <span class="pull-right">
                                 <?php echo $purchase_advise->appends(Input::except('page'))->render(); ?>
                             </span>
+                             <div class="clearfix"></div>
                             @if($purchase_advise->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('purchaseorder_advise')}}" id="filter_search">

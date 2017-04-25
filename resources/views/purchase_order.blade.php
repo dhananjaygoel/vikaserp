@@ -297,6 +297,7 @@
                                 }
                                 ?>
                             </span>
+                            <div class="clearfix"></div>
                             @if($purchase_orders->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('purchase_orders')}}" id="filter_search">
