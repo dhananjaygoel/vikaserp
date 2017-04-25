@@ -22,16 +22,16 @@ $('.export_from_date').datepicker({
     format: 'mm-dd-yyyy',
     autoclose: true,
     endDate: new Date()
-}).on('changeDate', function(){
+}).on('changeDate', function () {
     // set the "toDate" start to not be later than "fromDate" ends:
     $('.export_to_date').datepicker('setStartDate', new Date($(this).val()));
-}); 
+});
 
 $('.export_to_date').datepicker({
     format: 'mm-dd-yyyy',
     autoclose: true,
     endDate: new Date()
-}).on('changeDate', function(){
+}).on('changeDate', function () {
     // set the "fromDate" end to not be later than "toDate" starts:
     $('.export_from_date').datepicker('setEndDate', new Date($(this).val()));
 });
@@ -194,7 +194,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
                 }
             }
         }
-         if ($("#purchase_other_location").val() == "-1") {
+        if ($("#purchase_other_location").val() == "-1") {
             console.log("hii");
             if ($("#location_difference").val() == "") {
                 $('#location_difference').addClass('error_validation');
@@ -256,7 +256,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
                 }
             }
         }
-       
+
         if ($("#purchase_other_location").val() == "-1") {
             console.log("hii");
             if ($("#location_difference").val() == "") {
@@ -426,7 +426,7 @@ $('body').delegate("#sendSMSPurchaseOrder", "click", function () {
                     status_form = 0;
             }
         }
-        
+
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -562,7 +562,7 @@ $('body').delegate(".btn_add_purchase_advice", "click", function () {
 $('body').delegate(".btn_edit_purchase_advice", "click", function () {
 
     var status_form = 0;
-   
+
     if ($('input:text[name=vehicle_number]').val() == "") {
         $('input:text[name=vehicle_number]').addClass('error_validation');
         status_form = 1;
@@ -593,42 +593,42 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function () {
             }
         }
     }
-    
+
     for (var i = 0; i <= tot_products - 1; i++) {
-        
-        if ($("#actual_pieces" + i).val() == '0'  | $("#actual_pieces" + i).val() =="") {
+
+        if ($("#actual_pieces" + i).val() == '0' | $("#actual_pieces" + i).val() == "") {
             actual_pieces_count++;
         }
     }
-    if ((tot_products-1) == actual_pieces_count) {
+    if ((tot_products - 1) == actual_pieces_count) {
         console.log("hi");
-        for (var j = 0; j <= tot_products-1; j++) {
+        for (var j = 0; j <= tot_products - 1; j++) {
             $('#actual_pieces' + j).addClass('error_validation');
         }
         status_form = 1;
-    }else{
-        for (var j = 1; j <= tot_products-1; j++) {
+    } else {
+        for (var j = 1; j <= tot_products - 1; j++) {
             $('#actual_pieces' + j).removeClass('error_validation');
         }
     }
-   
-   for (var i = 0; i <= tot_products - 1; i++) {
-        if ($("#present_shipping" + i).val() == 0  | $("#present_shipping" + i).val() =="") {
+
+    for (var i = 0; i <= tot_products - 1; i++) {
+        if ($("#present_shipping" + i).val() == 0 | $("#present_shipping" + i).val() == "") {
             present_shipping_zero_count++;
         }
     }
-    if ((tot_products-1) == present_shipping_zero_count) {
-        
-        for (var j = 0; j <= tot_products-1; j++) {
+    if ((tot_products - 1) == present_shipping_zero_count) {
+
+        for (var j = 0; j <= tot_products - 1; j++) {
             $('#present_shipping' + j).addClass('error_validation');
         }
         status_form = 1;
-    }else{
-        for (var j = 1; j <= tot_products-1; j++) {
+    } else {
+        for (var j = 1; j <= tot_products - 1; j++) {
             $('#present_shipping' + j).removeClass('error_validation');
         }
     }
-    
+
 //    if ((tot_products-1) == present_shipping_zero_count) {
 //        for (var j = 0; j <= tot_products-1 ; j++) {
 //            $('#present_shipping' + j).addClass('error_validation');
@@ -675,10 +675,12 @@ $('.print_delivery_order').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function () {               
-                location.reload();
-                $('.print_delivery_order').removeprop('disabled');
+            printWindow.onunload = function () {
+//                location.reload();
+               
             };
+            $('.print_delivery_order').html('Generate DO').prop("disabled", false);
+            location.reload();
         }
     });
 });
@@ -702,10 +704,10 @@ $('.print_delivery_challan').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function () {
-                $('.print_delivery_challan').html('Generate Challan').prop("disabled", false);
-                location.reload();
+            printWindow.onunload = function () { 
             };
+            $('.print_delivery_challan').html('Generate Challan').prop("disabled", false);
+            location.reload();
         }
     });
 });
@@ -713,7 +715,7 @@ $('.print_delivery_challan').click(function () {
 $('.print_inventory_report_list').click(function () {
 //    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
-    var base_url = $('#baseurl').attr('name');    
+    var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
         url: base_url + '/print_inventory_report/' + product_id,
@@ -723,9 +725,10 @@ $('.print_inventory_report_list').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function () {                
+            printWindow.onunload = function () {
                 location.reload();
             };
+             location.reload();
         }
     });
 });
@@ -733,7 +736,7 @@ $('.print_inventory_report_list').click(function () {
 $('.print_inventory_price_list').click(function () {
 //    $('.print_inventory_price_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
-    var base_url = $('#baseurl').attr('name');    
+    var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
         url: base_url + '/print_inventory_price_list/' + product_id,
@@ -743,9 +746,10 @@ $('.print_inventory_price_list').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function () {                
+            printWindow.onunload = function () {
                 location.reload();
             };
+             location.reload();
         }
     });
 });
@@ -763,6 +767,7 @@ $('.print_sales_order_daybook').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
+             location.reload();
         }
     });
 });
@@ -787,6 +792,7 @@ $('.print_purchase_challan').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
+             location.reload();
         }
     });
 });
@@ -819,6 +825,7 @@ $('.print_purchase_advise').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
+             location.reload();
         }
     });
 });
@@ -836,6 +843,7 @@ $('.print_purchase_daybook').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
+            location.reload();
         }
     });
 });
