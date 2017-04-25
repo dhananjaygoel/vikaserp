@@ -927,6 +927,12 @@ function delete_inquiry_row(inquiry_id) {
     $('#inquiry_id').focus();
 }
 
+function reject_inquiry_row(inquiry_id) {
+    $('#inquiry_id').val(inquiry_id);
+    $('#way').val("reject");
+    $('#inquiry_id').focus();
+}
+
 /*Code use to delete inquiry*/
 $('.delete_inquiry_form_submit').click(function () {
 
@@ -970,6 +976,10 @@ $('.delete_inquiry_form_submit').click(function () {
  * @returns {undefined}
  */
 function delete_order_row(order_id) {
+    $('.delete_orders_modal_submit').val(order_id);
+}
+
+function reject_order_row(order_id) {
     $('.delete_orders_modal_submit').val(order_id);
 }
 /*
@@ -1067,6 +1077,12 @@ function delete_delivery_order(deliver_order_id) {
 function delete_order_row(order_id) {
     $("#delete_order_row").attr('action', baseurl + '/order/' + order_id + '-delete');
     $('#user_id').val(order_id);
+}
+
+function reject_order_row(order_id) {
+    $("#delete_order_row").attr('action', baseurl + '/order/' + order_id + '-delete');
+    $('#user_id').val(order_id);
+    $('#way').val("reject");
 }
 
 /*

@@ -582,7 +582,7 @@ class InquiryController extends Controller {
                         $total_quantity = $total_quantity + $product_data['quantity'];
                     }
                 }
-                $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
+                $str .= "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -719,7 +719,7 @@ class InquiryController extends Controller {
                     }
                 }
             }
-
+      
             InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
             Inquiry::find(Input::get('inquiry_id'))->delete();
             return redirect('inquiry')->with('flash_success_message', 'Inquiry deleted successfully.');
