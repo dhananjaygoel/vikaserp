@@ -113,11 +113,11 @@
                                                 foreach($c['delivery_challan'] as $challan){
                                                     $total_due_amount=$total_due_amount+$challan->grand_price;
                                                     $settled_amount=0;
-                                                    if(isset($challan['challan_receipt'])){
-                                                        foreach($challan['challan_receipt'] as $receipt){
-                                                            $settled_amount=$settled_amount+$receipt->settled_amount;
-                                                        }
-                                                    }
+//                                                    if(isset($challan['challan_receipt'])){
+//                                                        foreach($challan['challan_receipt'] as $receipt){
+//                                                            $settled_amount=$settled_amount+$receipt->settled_amount;
+//                                                        }
+//                                                    }
                                                 }
                                             ?>
                                         <td>{{$total_due_amount}}</td>
