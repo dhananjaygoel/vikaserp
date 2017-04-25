@@ -181,8 +181,15 @@
                                          @endif
                                         @endif
                                         <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
-                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}">Approve</a>                                   
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="delete_inquiry_row({{$inquiry['id']}})">Reject</a>  
+                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="btn btn-primary btn-sm /*table-link*/">View
+<!--                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>-->
+                                            </a>
+                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id'],'way' => 'approval']) }}">Approve</a>                                   
+                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="reject_inquiry_row({{$inquiry['id']}})">Reject</a>  
+                                            
                                             @else
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
@@ -240,6 +247,7 @@
                                                 <div class="modal-body">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                                                     <input class="form-control" name="inquiry_id" id="inquiry_id" type="hidden"/>
+                                                    <input class="form-control" name="way" id="way" type="hidden"/>
                                                     <div class="delete">
                                                         <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                         <div class="pwd">
