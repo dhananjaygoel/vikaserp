@@ -164,8 +164,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</div> 
+    </div> 
 <div class="modal" id="confirm">
     <div class="modal-dialog">
         <div class="modal-content">
