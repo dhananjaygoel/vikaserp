@@ -884,7 +884,7 @@ class CustomerController extends Controller {
         $territory_id = Input::get('territory_filter');
         $location_id = Input::get('location_filter');
         $date_filter = Input::get('date_filter');
-        $customers = Customer::with('delivery_challan.challan_receipt')->orderBy('created_at', 'desc')
+        $customers = Customer::with('delivery_challan')->orderBy('created_at', 'desc')
                                 ->whereHas('delivery_challan', function ($query) {
                                 $query->where('challan_status','=', 'completed');
                                 });
@@ -905,10 +905,7 @@ class CustomerController extends Controller {
             $customers->where('delivery_location_id','=',$location_id);            
         }
         
-        $customers=$customers->paginate(20)->setPath('customer-list');        
-        if (Auth::user()->role_id == 6){
-            dd($customers);
-        }
+        $customers=$customers->paginate(20)->setPath('customer-list');
         $city = City::all();
         $territories = Territory::orderBy('created_at', 'DESC')->get();
         return View('customer_list')->with('customers',$customers)->with('city',$city)
