@@ -3662,7 +3662,7 @@ class HomeController extends Controller {
                             return json_encode($result);
                         }
                     }
-                    $str .= " prices and avlblty will be qtd shortly. \nVIKAS ASSOCIATES";
+                    
                     if (App::environment('development')) {
                         $phone_number = \Config::get('smsdata.send_sms_to');
                     } else {

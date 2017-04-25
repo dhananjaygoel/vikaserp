@@ -112,7 +112,11 @@
                                         @endif
 
 
-
+                                        <?php 
+                                        if(isset($is_approval['way']) && $is_approval['way'] == 'approval'){ ?>
+                                            <input id="way" class="form-control way" name="way" value="{{$is_approval['way']}}" type="hidden">
+                             <?php            } ?>
+  
                                         <input id="existing_customer_id" class="form-control" name="existing_customer_name" value="{{$inquiry['customer']->id}}" type="hidden">
                                         <!--<i class="fa fa-search search-icon"></i>-->
                                     </div>
@@ -429,8 +433,10 @@
                             <label for="inquiry_remark">Remark</label>
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
+                        <?php if(!isset($is_approval['way'])){ ?>
                         <button type="button" class="btn btn-primary btn_edit_inquiry_sms" id="edit_inquiry_sendSMS" >Save and Send SMS</button>
                         <hr>
+                        <?php } ?>
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer btn_edit_inquiry">Submit</button>
                             <!--<input type="submit" class="btn btn-primary form_button_footer btn_edit_inquiry" value="Submit">-->
