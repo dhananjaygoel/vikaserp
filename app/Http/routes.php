@@ -229,7 +229,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('inventory_price_list', 'InventoryController@inventoryPriceList');
     Route::get('customer-list', 'CustomerController@get_customers_list');
     Route::get('customer_details/{id}', 'CustomerController@get_customer_details');
-
+    Route::get('get_territory_locations', 'CollectionUserController@get_territory_locations');
+    
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
     Route::post('add_pending_customers/{id}', 'PendingCustomerController@add_pending_customers');

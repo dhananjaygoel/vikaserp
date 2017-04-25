@@ -68,8 +68,30 @@
                                 <label for="password_confirmation">Confirm Password<span class="mandatory">*</span></label>
                                 <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="{{ old('password_confirmation') }}" type="password">
                             </div>
-                            <?php }?>
+                            <?php }?>                                                        
                             <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="assign_location">Territory<span class="mandatory">*</span></label>    
+                                </div>
+                                <div class="col-md-2">
+                                    
+                                <select class="form-control" id="collection_territory_select" name="territory">
+                                    <?php 
+                                    $teritory_arr=[];
+                                    if(isset($data)){
+                                        $teritory_arr = array_column($data[0]->locations->toArray(), 'teritory_id');                                        
+                                    }                                    
+                                    ?>
+                                    <option value="" selected="">--Select Territory--</option>
+                                    @foreach($territories as $territory)
+                                    @if($territory->id!=0)
+                                    <option <?php if (in_array($territory->id,$teritory_arr)) echo 'selected=""'; ?> value="{{$territory->id}}">{{$territory->teritory_name}}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="assign-territory-location">
                                 <div class="col-md-12">
                                     <label for="assign_location">Assign Location<span class="mandatory">*</span></label>    
                                 </div>

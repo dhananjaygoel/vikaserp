@@ -27,7 +27,8 @@ class CollectionUser extends Model {
         'password' => 'required|min:6|max:100',
         'password_confirmation' => 'required|min:6|max:100|same:password',
         'mobile_number' => 'integer|digits_between:10,15|required|unique:users',
-        'location' => 'required|array|min:1'       
+        'location' => 'required|array|min:1',
+        'territory' => 'required'
     );
     
     public static $update_password = array(
