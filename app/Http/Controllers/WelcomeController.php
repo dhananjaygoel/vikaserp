@@ -1170,7 +1170,25 @@ class WelcomeController extends Controller {
         $db_username = "root";
         $db_password = "root123";
         $database = "erp";
-        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $filename = "backup-local" . date("d-m-Y") . ".sql.gz";
+        $mime = "application/x-gzip";
+
+        header("Content-Type: " . $mime);
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";
+
+        passthru($cmd);
+
+        exit(0);
+    }
+    
+    public function database_backup_hvikas() {
+
+        $db_username = "vikaserp_hvuser";
+        $db_password = "Rq3GRDawDgcgj2Xi";
+        $database = "vikaserp_hvikas";
+        $filename = "backup-hvikas" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
 
         header("Content-Type: " . $mime);
@@ -1188,7 +1206,7 @@ class WelcomeController extends Controller {
         $db_username = "vikasags_vikuser";
         $db_password = "CFpNH.#JblZe";
         $database = "vikasags_vikasdb";
-        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $filename = "backup-test" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
 
         header("Content-Type: " . $mime);
@@ -1206,7 +1224,7 @@ class WelcomeController extends Controller {
         $db_username = "vikaserp_agsus";
         $db_password = "passags756";
         $database = "vikaserp_ags";
-        $filename = "backup-" . date("d-m-Y") . ".sql.gz";
+        $filename = "backup-erp" . date("d-m-Y") . ".sql.gz";
         $mime = "application/x-gzip";
 
         header("Content-Type: " . $mime);

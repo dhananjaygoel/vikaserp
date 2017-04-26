@@ -360,6 +360,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::any('database_backup_test', 'WelcomeController@database_backup_test');
     Route::any('database_backup_live', 'WelcomeController@database_backup_live');
     Route::any('database_backup_local', 'WelcomeController@database_backup_local');
+    Route::any('database_backup_hvikas', 'WelcomeController@database_backup_hvikas');
     
     /*Use ones approved orders and inquiry module*/
     Route::get('make_approved', 'WelcomeController@make_approved');
