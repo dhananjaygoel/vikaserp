@@ -417,6 +417,7 @@ Route::get('dropbax-demo-functionality', function() {
 Route::get('receipt-master/journal', 'ReceiptMasterController@create_journal_receipt');
 Route::get('receipt-master/bank', 'ReceiptMasterController@create_bank_receipt');
 Route::get('receipt-master/cash', 'ReceiptMasterController@create_cash_receipt');
+Route::delete('receipt-master/delete-customer-receipt/{id}', 'ReceiptMasterController@delete_customer_receipt');
 Route::resource('receipt-master', 'ReceiptMasterController');
 
 Route::resource('account', 'CollectionUserController');

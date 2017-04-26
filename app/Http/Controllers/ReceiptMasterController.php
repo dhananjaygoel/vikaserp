@@ -16,7 +16,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
-use App\DeliveryChallan;
 
 class ReceiptMasterController extends Controller {
 
@@ -139,38 +138,39 @@ class ReceiptMasterController extends Controller {
     public function edit($id) {
         if (isset($id) && !empty($id)) {
             $receiptObj = Receipt::where('id', '=', $id)->with('customer_receipts')->get();
-//            dd($receiptObj);
+            if (!isset($receiptObj)) {
+                return Redirect::back()->withInput()->with('error', 'Some error occoured while saving receipt.');
+            }
+            if (isset($receiptObj->customer_receipts) && count($receiptObj->customer_receipts) > 0) {
+                return Redirect::back()->withInput()->with('error', 'Some error occoured while saving receipt.');
+            }
             $customer_arr = [];
-            $val = 0;
             foreach ($receiptObj as $obj) {
                 $receipt_id = $obj['id'];
-//                    echo($receipt_id);
-                foreach ($obj->customer_receipts as $customer) {
+                foreach ($obj->customer_receipts as $key => $customer) {
                     $debited_id = $customer['debited_to'];
                     $receipt_type = $customer['debited_by_type'];
-                    $customer_arr[$val] = $customer['customer_id'];
+                    $customer_arr[$customer['customer_id']] = $customer['settled_amount'];
                 }
-                $val++;
             }
-//            dd($customer_arr);
             if (isset($receiptObj)) {
                 if ($receipt_type == 1) {
-                    $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
+                    $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name')->get();
                     return view('receipt_master.edit_receipt')->with('tally_users', $tally_users)
                                     ->with('receiptObj', $receiptObj)
-                                    ->with('type', $receipt_type)
-                                    ->with('debited_id', $debited_id)->with('receipt_id', $receipt_id);
+                                    ->with('customer_arr', $customer_arr)
+                                    ->with('type', $receipt_type)->with('debited_id', $debited_id)->with('receipt_id', $receipt_id);
                 } else {
                     if ($receipt_type == 2)
                         $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
                     if ($receipt_type == 3)
                         $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
 
-                    $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
-//                    dd($receipt_id);
+                    $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name')->get();
                     return view('receipt_master.edit_receipt')
                                     ->with('tally_users', $tally_users)->with('receiptObj', $receiptObj)
                                     ->with('type', $receipt_type)->with('debited_to', $debited_to)
+                                    ->with('customer_arr', $customer_arr)
                                     ->with('debited_id', $debited_id)->with('receipt_id', $receipt_id);
                 }
             }
@@ -187,42 +187,40 @@ class ReceiptMasterController extends Controller {
      */
     public function update(Request $request, $id) {
         if (isset($id) && !empty($id)) {
-            $receiptObj = Receipt::find($id);
+            $receiptObj = Receipt::with('customer_receipts')->find($id);
             if (isset($receiptObj)) {
                 $tally_users = Input::get('tally_users');
                 $settle_amount = Input::get('settle_amount');
                 $debited_to = Input::get('debited_to');
-                $receipt_type = $receiptObj->debited_by_type;
-                $users = [];
-                foreach ($tally_users as $tally_user) {
-                    foreach ($settle_amount as $amount) {
-//                        var_dump($tally_user,$amount);
-                        if (array_key_exists($tally_user, $settle_amount))
-                            $users[$tally_user] = $amount;
+                $receipt_type = Input::get('receipt_type');
+                if (isset($receiptObj->customer_receipts)) {
+                    foreach ($receiptObj->customer_receipts as $customers) {
+                        $customerObj = Customer_receipts::find($customers->id);
+                        $customerObj->delete();
                     }
                 }
-//                dd($users);
-                if (isset($users) && count($users) > 0) {
-                    foreach ($users as $key => $user) {
-                        $receiptObj->customer_id = $key;
-                        $receiptObj->settled_amount = $user;
-                        $receiptObj->debited_to = $debited_to;
-                        $receiptObj->updated_at = new \DateTime();
+                if (isset($settle_amount) && count($settle_amount) > 0) {
+                    foreach ($settle_amount as $key => $user) {
+                        $customerReceiptObj = new Customer_receipts();
+                        $customerReceiptObj->customer_id = $key;
+                        $customerReceiptObj->settled_amount = $user;
+                        $customerReceiptObj->debited_to = $debited_to;
+                        $customerReceiptObj->receipt_id = $receiptObj->id;
                         if ($receipt_type == 1)
-                            $receiptObj->debited_by_type = 1;
+                            $customerReceiptObj->debited_by_type = 1;
                         elseif ($receipt_type == 2)
-                            $receiptObj->debited_by_type = 2;
+                            $customerReceiptObj->debited_by_type = 2;
                         elseif ($receipt_type == 3)
-                            $receiptObj->debited_by_type = 3;
+                            $customerReceiptObj->debited_by_type = 3;
 
-                        $receiptObj->save();
+                        $customerReceiptObj->save();
                     }
-                    if ($receiptObj)
+                    if ($customerReceiptObj)
                         return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
                     else
-                        return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt.');
+                        return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
                 } else
-                    return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt.');
+                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
             }
         }else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while updating receipt.');
@@ -250,14 +248,27 @@ class ReceiptMasterController extends Controller {
         }
     }
 
-    public function get_amount(Request $request) {
-        if (Input::has('challan_id')) {
-            $challan_id = Input::get('challan_id');
-            $dc = DeliveryChallan::find($challan_id);
-            $challan_price = $dc->grand_price;
-            return Response::json(['success' => true, 'challan_id' => $challan_id, 'challan_price' => $challan_price]);
-        } else {
-            return Response::json(['success' => true, 'challan_id' => '', 'challan_price' => '']);
+    public function delete_customer_receipt(Request $request, $id) {
+        if (isset($id) && !empty($id)) {
+            if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
+                $customer_id = Input::get('customer_id');
+                $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
+                                ->where('receipt_id', '=', $id)->first();
+                if ($receipt->delete()) {
+                    $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
+                    if (count($receipt_id) > 0) {
+                        return redirect("receipt-master/$id/edit");
+                    } else {
+                        $receiptObj = Receipt::find($id);
+                        $receiptObj->delete();
+                        return redirect("receipt-master");
+                    }
+                } else {
+                    return redirect("receipt-master/$id/edit");
+                }
+            } else {
+                return redirect('receipt-master')->with('error', 'Please enter a correct password.');
+            }
         }
     }
 
@@ -266,11 +277,11 @@ class ReceiptMasterController extends Controller {
             $unsettle_amount = Input::get('model_price');
             $challan_id = Input::get('challan_id');
             $customer_id = Input::get('customer_id');
-            if(isset($challan_id)){
-                $challan_obj = DeliveryChallan::find($challan_id);                
+            if (isset($challan_id)) {
+                $challan_obj = DeliveryChallan::find($challan_id);
                 $challan_obj->settle_amount = $unsettle_amount;
                 $challan_obj->save();
-            }           
+            }
         }
         return Redirect::back();
     }
