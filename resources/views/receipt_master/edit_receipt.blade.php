@@ -90,13 +90,13 @@
                                             @if(isset($tally_users) && $type == 1)
                                                 <option value="">Select Tally User</option>
                                                 @foreach($tally_users as $tally_user)
-                                                    <option value="{{$tally_user->id}}" selected="@if(isset($debited_id) && $debited_id == $tally_user->id) selected @endif">{{$tally_user->tally_name}}</option>
+                                                    <option value="{{$tally_user->id}}" @if(isset($debited_id) && $debited_id == $tally_user->id) selected @endif>{{$tally_user->tally_name}}</option>
                                                 @endforeach
                                             @endif
                                             @if(isset($debited_to) && $type != 1)
                                                 <option value="">Select {{$val}} List</option>
                                                 @foreach($debited_to as $debite)
-                                                    <option value="{{$debite->id}}" selected="@if(isset($debited_id) && $debited_id == $debite->id) selected @endif">{{$debite->debited_to}}</option>
+                                                    <option value="{{$debite->id}}" @if(isset($debited_id) && $debited_id == $debite->id) selected @endif>{{$debite->debited_to}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
