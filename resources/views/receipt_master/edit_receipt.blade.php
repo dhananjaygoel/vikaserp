@@ -49,33 +49,39 @@
                                     <option value="">Select Tally User</option>
                                     @if(isset($tally_users))
                                         @foreach($tally_users as $tally_user)
-                                            <option value="{{$tally_user->id}}" data-amount="{{$tally_user->phone_number1}}">{{$tally_user->tally_name}}</option>
+                                            <option value="{{$tally_user->id}}">{{$tally_user->tally_name}}</option>
                                         @endforeach
                                     @endif
-                                </select>
-                                <div class="row" id="st-settle-container">
+                                </select>                                
+                                <div class="row edit_receipt" id="st-settle-container">
+                                @if(isset($customer_arr))
+                                @foreach($customer_arr as $key=>$customer)
                                     <div class="st-settle-block">
                                         <div class="col-md-12" style="margin:10px 0;padding:0">
                                             <div class="col-md-3">
                                                 <select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">
-                                                    <option value="">Select Tally User</option>
                                                     @if(isset($tally_users))
-                                                        @foreach($tally_users as $tally_user)
-                                                            <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
-                                                        @endforeach
+                                                    @foreach($tally_users as $tally_user)
+                                                        @if($tally_user->id == $key)
+                                                            <option value="{{$tally_user->id}}" <?php echo($tally_user->id == $key ? 'selected' : '')?> >{{$tally_user->tally_name}}</option>
+                                                        @endif
+                                                    @endforeach
                                                     @endif
                                                 </select>
                                             </div>
                                             <div class="col-md-4 settle-input-elem">
-                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[]" value="" type="text">
+                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$key}}]" value="{{$customer}}" type="text">
                                             </div>
                                             <div class="col-md-1 action_btn">
                                                 <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
+                                                <a href="javascript:void(0)" style="border-bottom:none" class="btn st-border-bottom-none delete_customer_receipts" data-receipt_id='{{$receipt_id}}' data-customer_id='{{$key}}'><i class="fa fa-trash-o"></i></a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                                
-                            </div>  
+                                @endforeach
+                                @endif
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-3">
@@ -84,13 +90,13 @@
                                             @if(isset($tally_users) && $type == 1)
                                                 <option value="">Select Tally User</option>
                                                 @foreach($tally_users as $tally_user)
-                                                    <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
+                                                    <option value="{{$tally_user->id}}" selected="@if(isset($debited_id) && $debited_id == $tally_user->id) selected @endif">{{$tally_user->tally_name}}</option>
                                                 @endforeach
                                             @endif
                                             @if(isset($debited_to) && $type != 1)
                                                 <option value="">Select {{$val}} List</option>
                                                 @foreach($debited_to as $debite)
-                                                    <option value="{{$debite->id}}">{{$debite->debited_to}}</option>
+                                                    <option value="{{$debite->id}}" selected="@if(isset($debited_id) && $debited_id == $debite->id) selected @endif">{{$debite->debited_to}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -108,6 +114,43 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete_customer_receipt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                {!! Form::open(array('method'=>'DELETE', 'id'=>'delete_customer_receipt_form'))!!}
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" name="customer_id" value="" id="customer_id">
+                <div class="delete">
+                    <?php
+                    $us = Auth::user();
+                    $us['mobile_number']
+                    ?>
+                    <div><b>Mobile:</b>
+                        {{$us['mobile_number']}}
+                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                        <input type="hidden" name="receipt_id" value=""/>
+                    </div>
+                    <div class="pwd">
+                        <div class="pwdl"><b>Password:</b></div>
+                        <div class="pwdr"><input class="form-control" id="model_pass" name="model_pass" placeholder="" required="required" type="password"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-default submit_customer_receipts_button" data-receipt_id="" id="yes" >Yes</button>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

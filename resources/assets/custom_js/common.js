@@ -54,6 +54,24 @@ $(document).ready(function () {
         $('#delete_receipt_form').attr('action', url);
         $('#delete_receipt_modal').modal('show');
     });
+    
+    $(document).on('click', '.delete_customer_receipts', function (event) {
+        var receipt_id = $(this).data('receipt_id');
+        var customer_id = $(this).data('customer_id');
+        var url = $('#baseurl').attr('name') + "/receipt-master/delete-customer-receipt/" + receipt_id;
+        $('#delete_customer_receipt_form').attr('action', url);
+        $('#customer_id').val(customer_id);
+        $('.submit_customer_receipts_button').data('receipt_id',receipt_id);
+        $('.submit_customer_receipts_button').attr('data-receipt_id',receipt_id);
+        $('#delete_customer_receipt_modal').modal('show');
+    });
+    $(document).on('click', '.submit_customer_receipts_button', function (event) {
+//        event.preventDefault();
+        $('#delete_customer_receipt_modal').modal('hide');
+        var receipt_id = $(this).data('receipt_id');
+        var url = $('#baseurl').attr('name') + "/receipt-master/" + receipt_id +'/edit';
+        window.location.href = url;
+    });
 
 //    $.validator.addMethod("noSpace", function (value, element) {
 //        return $.trim(value) != "";
