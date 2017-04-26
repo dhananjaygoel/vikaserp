@@ -311,8 +311,8 @@ class LabourController extends Controller {
 
             if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
-                    $deliver_sum = 0;
-                    $money = 0;
+                    $deliver_sum = 0.00;
+                    $money = 0.00;
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
 
@@ -333,7 +333,7 @@ class LabourController extends Controller {
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
-                    $loader_arr['tonnage'] = $all_tonnage;
+                    $loader_arr['tonnage'] = round($all_tonnage,2);
                     $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
                 }
             }
