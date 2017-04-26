@@ -169,8 +169,11 @@ $(document).ready(function () {
     
     $(document).on('click','.settle-payment',function(){
         var due_amount = $(this).data('due_amount');
-        var serial_no = $(this).data('serial_no');            
-        $('#modal_price').attr("value",due_amount);        
+        var serial_no = $(this).data('serial_no');       
+        var challan_id= $(this).data('challan_id');       
+        $('#modal_price').attr("value",due_amount);
+        $('#modal-challan').attr("value",challan_id);
+        $('#modal-challan').val(challan_id);                        
         $('#serial-no').html(serial_no);                
 
         $('#settle_due_modal').modal('show');

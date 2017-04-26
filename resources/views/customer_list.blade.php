@@ -96,7 +96,7 @@
                                     $i = ($customers->currentPage() - 1) * $customers->perPage() + 1;
                                     ?>
                                     @foreach($customers as $c)
-                                    <?php
+                                    <?php                                        
                                         $total_due_amount=0;
                                         $credit_period = $c->credit_period;
                                         foreach($c['delivery_challan'] as $challan){
@@ -104,7 +104,8 @@
                                             $due_date = date('Y-m-d', strtotime($challan_date. " + ".$credit_period." days"));
                                         }
                                         $current_date = date('Y-m-d');
-                                    ?>                                    
+                                    ?>
+                                    @if($due_date>=$current_date)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td><a href="{{url('customer_details/'.$c->id)}}">@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif</a></td>
@@ -113,15 +114,15 @@
                                                 foreach($c['delivery_challan'] as $challan){
                                                     $total_due_amount=$total_due_amount+$challan->grand_price;
                                                     $settled_amount=0;
-//                                                    if(isset($challan['challan_receipt'])){
-//                                                        foreach($challan['challan_receipt'] as $receipt){
-//                                                            $settled_amount=$settled_amount+$receipt->settled_amount;
-//                                                        }
-//                                                    }
+                                                    foreach($challan['challan_receipt'] as $receipt){
+                                                        $settled_amount=$settled_amount+$receipt->settled_amount;
+                                                    }
                                                 }
                                             ?>
                                         <td>{{$total_due_amount}}</td>
-                                        <td>{{$total_due_amount-$settled_amount}}</td>
+                                        <td>
+                                            {{$total_due_amount-$settled_amount}}
+                                        </td>
                                         <td>
                                             @foreach($city as $town)
                                             @if($town->id == $c->city)
@@ -130,6 +131,7 @@
                                             @endforeach
                                         </td>                                        
                                     </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>

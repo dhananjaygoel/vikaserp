@@ -230,6 +230,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('customer-list', 'CustomerController@get_customers_list');
     Route::get('customer_details/{id}', 'CustomerController@get_customer_details');
     Route::get('get_territory_locations', 'CollectionUserController@get_territory_locations');
+    Route::post('settle_amount', 'ReceiptMasterController@settle_amount');
     
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');

@@ -153,9 +153,9 @@
                                             <td>
                                                 {{$total_due_amount-$settled_amount}}
                                             </td>
-                                            @if(Auth::user()->role_id ==0 )
+                                            @if(Auth::user()->role_id ==6 )
                                             <td>
-                                                <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >
+                                                <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >
                                                     Settle
                                                 </button>
                                             </td>
@@ -179,8 +179,9 @@
 </div>
 <div class="modal fade" id="settle_due_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="settle_price_form">
+        <div class="modal-content">            
+            <form id="settle_price_form" method="post" action="{{URL::action('ReceiptMasterController@settle_amount')}}" accept-charset="UTF-8" >    
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     <h4 class="modal-title" id="myModalLabel"></h4>
@@ -189,8 +190,8 @@
                         <h4 id="amount_label">Enter amount to settle For <span id="serial-no"></span></h4>
                         <div class=" modal-settle-div text-center">
                             <input class="form-control" id="modal_price" name="model_price"  onkeypress=" return numbersOnly(this,event,true,true);">                            
-                            <input type="hidden" id="prod-thickness" name="thickness">
-                            <input type="hidden" id="prod-size" name="size">
+                            <input type="hidden" id="modal-challan" name="challan_id">
+                            <input type="hidden" value="{{$customers[0]->id}}" name="customer_id">
                         </div>
                 </div>
                 <div class="modal-footer">
