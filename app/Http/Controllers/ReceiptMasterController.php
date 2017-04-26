@@ -16,7 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
-
+use App\DeliveryChallan;
 class ReceiptMasterController extends Controller {
 
     /**

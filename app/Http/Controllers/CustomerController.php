@@ -886,10 +886,10 @@ class CustomerController extends Controller {
         $location_id = Input::get('location_filter');
         $date_filter = Input::get('date_filter');
         if(Auth::user()->role_id ==0){
-            $customers = Customer::with('delivery_challan.challan_receipt')->orderBy('created_at', 'desc')
+            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('delivery_location.collection_users')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
                                     $query->where('challan_status','=', 'completed');
-                                    });
+                                    });                                   
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             if (isset($search) && !empty($search)) {
                 $term = '%' . $search . '%';            
@@ -909,7 +909,7 @@ class CustomerController extends Controller {
         }
         if(Auth::user()->role_id ==6){
             $territory_id=Auth::user()->teritory_id;
-            $customers = Customer::with('delivery_challan.challan_receipt')->orderBy('created_at', 'desc')
+            $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
                                     $query->where('challan_status','=', 'completed');
                                     });
@@ -940,7 +940,7 @@ class CustomerController extends Controller {
            
     public function get_customer_details($id) {        
         $customer = '';
-        $customer = Customer::find($id);
+        $customer = Customer::with('customer_receipt')->find($id);
         $settle_filter = Input::get('settle_filter');        
         $delivery_challans = DeliveryChallan::where('customer_id','=',$id)                                              
                                              ->whereRaw('grand_price!=settle_amount')->get();                            

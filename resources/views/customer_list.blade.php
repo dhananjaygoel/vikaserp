@@ -92,6 +92,9 @@
                                         <th>Due Amount</th>
                                         <th>Unsettled Amount</th>
                                         <th>Location</th>
+<!--                                        @if(Auth::user()->role_id ==0)
+                                            <th>Collection User</th>
+                                        @endif-->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -114,17 +117,17 @@
                                         <td><a href="{{url('customer_details/'.$c->id)}}">@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif</a></td>
                                            <?php
                                                 $total_due_amount=0;
+                                                $unsettled_amount=0;
                                                 foreach($c['delivery_challan'] as $challan){
-                                                    $total_due_amount=$total_due_amount+$challan->grand_price;
-                                                    $settled_amount=0;
-                                                    foreach($challan['challan_receipt'] as $receipt){
-                                                        $settled_amount=$settled_amount+$receipt->settled_amount;
-                                                    }
+                                                    $total_due_amount=$total_due_amount+$challan->grand_price;                                                                                                       
+                                                }
+                                                foreach($c['customer_receipt'] as $receipt){
+                                                   $unsettled_amount=$unsettled_amount+$receipt->settled_amount;
                                                 }
                                             ?>
                                         <td>{{$total_due_amount}}</td>
                                         <td>
-                                            {{$total_due_amount-$settled_amount}}
+                                            {{$unsettled_amount}}
                                         </td>
                                         <td>                                            
                                             @foreach($delivery_location as $location)
