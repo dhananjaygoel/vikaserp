@@ -24,16 +24,24 @@
                     <li class="active"><span>Customer Details</span></li>
                 </ol>
                 <div class="filter-block">
-                   <form action="{{url('customer_list')}}" method="GET" id="orderForm">
+                   <form action="{{URL::action('CustomerController@get_customer_details', ['id' => $customer->id])}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Customer Details</h1>
+                        @if(Auth::user()->role_id ==0 )
                         <div class="col-md-2 pull-right">                              
-                            <select class="form-control" id="user_filter3" name="fulfilled_filter" onchange="this.form.submit();">
+                            <select class="form-control" id="settle-filter" name="settle_filter" onchange="this.form.submit();">
+                                <option value="Unsettled" >Unsettled</option>
+                                <option value="Settled" >Settled</option>                                
+                            </select>                            
+                        </div>
+                        @endif
+                        <div class="col-md-2 pull-right">                              
+                            <select class="form-control" id="user_filter3" name="date_filter" onchange="this.form.submit();">
                                 <option value="As of Today" >As of Today</option>
                                 <option value="3 days" >3 days</option>
                                 <option value="A Week" >A Week</option>
                             </select>                            
                         </div>                        
-                    </form>
+                    </form>                    
                 </div>
             </div>
         </div>
@@ -55,54 +63,41 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                        @if(count($customers) > 0)
+                        @if(isset($customer) > 0)
                         <div class="table-responsive customer-detail-table">
                             <table id="table-example" class="table table-hover">                                
-                                <tbody>                                    
-                                    @foreach($customers as $c)
+                                <tbody>
                                     <?php
                                         $total_due_amount=0;
-                                        $credit_period = $c->credit_period;
-                                        foreach($c['delivery_challan'] as $challan){
-                                            $challan_date = $challan->created_at;
-                                            $due_date = date('Y-m-d', strtotime($challan_date. " + ".$credit_period." days"));
-                                        }
-                                        $current_date = date('Y-m-d');
-                                    ?>
-                                    @if($due_date>=$current_date)
+                                        $credit_period = $customer->credit_period; 
+                                    ?>                                                                        
                                     <tr>
                                         <td><b>Customer Name:</b>
-                                            @if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif
+                                            @if(isset($customer[0]->tally_name) && !empty($customer[0]->tally_name)){{$customer[0]->tally_name}}@else Test User @endif
                                         </td>
                                     </tr>
                                     <?php
                                         $total_due_amount=0;
-                                        foreach($c['delivery_challan'] as $challan){
-                                            $total_due_amount=$total_due_amount+$challan->grand_price;
-                                            $settled_amount=0;
-                                            foreach($challan['challan_receipt'] as $receipt){
-                                                $settled_amount=$settled_amount+$receipt->settled_amount;
-                                            }
+                                        foreach($delivery_challans as $challan){
+                                            $total_due_amount=$total_due_amount+$challan->grand_price;                                            
                                         }
                                     ?>
                                     <tr><td><b>Due Amount: </b>{{$total_due_amount}}</td></tr>
                                     <tr>
-                                        <td><b>Unsettled Amount:</b> {{$total_due_amount-$settled_amount}}</td>
+                                        <td><b>Unsettled Amount:</b> </td>
                                     </tr>
                                     <tr>
                                         <td><b>Location: </b>
-                                            @foreach($city as $town)
-                                            @if($town->id == $c->city)
-                                            {{ $town->city_name }}
-                                            @endif
+                                            @foreach($delivery_location as $location)
+                                                @if($customer->delivery_location_id==$location->id)
+                                                        {{$location->area_name}}                                                         
+                                                @endif
                                             @endforeach
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><b>Credit Period:</b> {{$credit_period}} days</td>
                                     </tr>
-                                    @endif
-                                @endforeach
                                 </tbody>
                             </table>                            
                             <span class="clearfix"></span><br>
@@ -120,18 +115,16 @@
                                         <th>Action</th>                                        
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($customers as $c)                                        
-                                        @foreach($c['delivery_challan'] as $challan)
+                                <tbody>                                    
+                                        @foreach($delivery_challans as $challan)
                                             <?php
-                                                $i=1;$total_due_amount=0;                                             
+                                                $i=1;$total_due_amount=0; $settled_amount=0;                                            
                                             ?>
                                             <?php    
-                                                $total_due_amount=$total_due_amount+$challan->grand_price;
-                                                $settled_amount=0;
-                                                foreach($challan['challan_receipt'] as $receipt){
-                                                    $settled_amount=$settled_amount+$receipt->settled_amount;
-                                                }                                                 
+                                                $total_due_amount=$total_due_amount+$challan->grand_price;                                                
+                                                if(isset($challan->settle_amount) && $challan->settle_amount!=""){
+                                                    $settled_amount=$challan->settle_amount;
+                                                }                                              
                                             ?>                                        
                                         <tr>
                                             <td>{{$i++}}</td>
@@ -146,7 +139,7 @@
                                                 {{$total_due_amount}}
                                             </td>
                                             <td>
-                                                {{$settled_amount}}
+                                                 {{$settled_amount}}
                                             </td>
                                             <td>
                                                 {{$total_due_amount-$settled_amount}}
@@ -166,8 +159,7 @@
                                             </td>
                                             @endif
                                         </tr>                                        
-                                        @endforeach                                    
-                                    @endforeach
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -197,12 +189,17 @@
                         <div class=" modal-settle-div text-center">
                             <input class="form-control" id="modal_price" name="model_price"  onkeypress=" return numbersOnly(this,event,true,true);">                            
                             <input type="hidden" id="modal-challan" name="challan_id">
-                            <input type="hidden" value="{{$customers[0]->id}}" name="customer_id">
+                            <input type="hidden" value="{{$customer->id}}" name="customer_id">
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary modal-price-save" >Settle</button>
-                    <button class="btn btn-primary modal-price-save" data-dismiss="modal">Back</button>
+                    @if(Auth::user()->role_id ==6)
+                        <button class="btn btn-primary modal-price-save" >Settle</button>
+                    @endif
+                    @if(Auth::user()->role_id ==0)
+                        <button class="btn btn-primary modal-price-save" >Update</button>
+                    @endif
+                    <button class="btn btn-primary" data-dismiss="modal">Back</button>
                 </div>
             </form>    
         </div>
