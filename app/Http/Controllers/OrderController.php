@@ -270,7 +270,7 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customers = new Customer();
-                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period']);
+                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'],$input_data['add_order_location']);
                 $customer_id = $newcustomer->id;
             } else {
                 $error_msg = $validator->messages();
@@ -589,7 +589,7 @@ class OrderController extends Controller {
                     $customer_id = $input_data['pending_user_id'];
                 } else {
                     $customers = new Customer();
-                    $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period']);
+                    $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'],$input_data['add_order_location']);
                     $customer_id = $newcustomer->id;
                 }
             } else {
