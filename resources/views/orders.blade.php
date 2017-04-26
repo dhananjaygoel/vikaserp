@@ -14,14 +14,14 @@
                     } elseif (Input::get('order_status') != "") {
                         $qstring_sort_type_order = Input::get('order_status');
                     }
-                } 
+                }
                 if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                     $qstring_sort_type_order = $qstring_sort_type_order;
                 } else {
                     $qstring_sort_type_order = $session_sort_type_order;
                 }
                 ?>
-                
+
                 <ol class="breadcrumb pull-left">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
@@ -29,15 +29,15 @@
                 <div class="search_form_wrapper orders_search_wrapper">
                     <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
                         <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
-                if (Input::get('export_from_date') != "") {
-                    echo "value='" . Input::get('export_from_date') . "'";
-                }
-                ?>>
+                        if (Input::get('export_from_date') != "") {
+                            echo "value='" . Input::get('export_from_date') . "'";
+                        }
+                        ?>>
                         <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
-                ?>>
+                        ?>>
                         @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
                         <input type="hidden" name="order_status" value="pending">
                         @elseif($qstring_sort_type_order == 'completed')
@@ -55,12 +55,12 @@
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_from_date') . "'";
                         }
-                ?>>
+                        ?>>
                         <input type="hidden"  name="export_to_date" id="export_to_date" <?php
                         if (Input::get('export_to_date') != "") {
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
-                ?>>
+                        ?>>
                         @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
                         <input type="hidden" name="order_status" value="pending">
                         @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
@@ -177,15 +177,13 @@
                             Currently no orders have been added.
                         </div>
                         @else  
-                        @if( Auth::user()->role_id <> 5)
+                        @if( Auth::user()->role_id <> 5) 
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover order-data-table">
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                @foreach($allorders as $order)                              
-                                @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes')
-                                @if($k==1)
+                                @if(Input::get('order_filter') == 'pending' | Input::get('order_filter') == "")
                                 <thead>
                                     <tr>
                                         @if(Input::has('flag') && Input::get('flag') == 'true')
@@ -199,7 +197,7 @@
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
-                                         @if( Auth::user()->role_id <> 5)
+                                        @if( Auth::user()->role_id <> 5)
                                         <th class="text-center">Create Delivery Order</th>
                                         @endif
                                         <th class="text-center" style="width: 15%">Actions</th>
@@ -207,6 +205,58 @@
                                 </thead>
                                 <tbody>
                                     @endif
+                                    @if(Input::get('order_filter') == 'approval')
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tally Name</th>
+                                        <th>Mobile</th>
+                                        <th>Delivery Location</th>
+                                        <th>Total Quantity</th>
+                                        <th>Created By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @endif
+                                    @if(Input::get('order_filter') == 'completed')
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tally Name</th>
+                                        <th>Total Quantity</th>
+                                        <th>Mobile </th>
+                                        <th>Delivery Location</th>
+                                        <th>Order By</th>
+                                        <th class="text-center">Actions</th>
+                                        @if(Auth::user()->role_id == 5)
+                                        <th class="text-center">Track Order</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                @endif
+                                @if(Input::get('order_filter') == 'cancelled')
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tally Name</th>
+                                        <th>Total Quantity</th>
+                                        <th>Mobile </th>
+                                        <th>Delivery Location</th>
+                                        <th>Order By</th>
+                                        <th>Cancel By</th>
+                                        <th>Reason</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @endif
+
+
+
+                                    @foreach($allorders as $order)                              
+                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes')
+
                                     <tr id="order_row_{{$order->id}}">
                                         <td>
                                             <span class="{{($order->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$order->id}}" ></span>
@@ -232,11 +282,11 @@
                                         <td class="text">{{$order['other_location']}}</td>
                                         @else
                                         <td class="text">{{Other}}</td>
-                                        
+
                                         @endif
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
-                                         @if( Auth::user()->role_id <> 5)
+                                        @if( Auth::user()->role_id <> 5)
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
@@ -261,7 +311,7 @@
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id <> 5)
-                                            
+
                                             <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -281,22 +331,12 @@
                                         </td>
                                     </tr>
                                     @endif
+                                    @endforeach
 
-
+                                    @foreach($allorders as $order)  
                                     @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='no')
                                     @if($k==1)                                   
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tally Name</th>
-                                        <th>Mobile</th>
-                                        <th>Delivery Location</th>
-                                        <th>Total Quantity</th>
-                                        <th>Created By</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
                                     <tr id="order_row_{{$order->id}}">
@@ -325,7 +365,7 @@
                                         <td> 
                                             @if( Auth::user()->role_id == 0)
                                             <a href="{{ Url::action('OrderController@show', ['id' => $order->id,'way' => 'approval']) }}" class="/*table-link/ btn btn-primary btn-sm" title="view">View
-<!--                                                <span class="fa-stack">
+    <!--                                                <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>-->
@@ -335,131 +375,104 @@
                                             <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="reject_order_row({{$order->id}})">
                                                 Reject </a>
                                             @else
-                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
+                                            <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                           
+
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                                
+
                                             @endif
                                         </td>
-                                        
+
                                     </tr> 
 
 
                                     </tr>
 
                                     @endif
-
-
-
-
-
-                                    @if(isset($order->order_status) && $order->order_status == 'completed')
-                                    @if($k==1)
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tally Name</th>
-                                        <th>Total Quantity</th>
-                                        <th>Mobile </th>
-                                        <th>Delivery Location</th>
-                                        <th>Order By</th>
-                                        <th class="text-center">Actions</th>
-                                       @if(Auth::user()->role_id == 5)
-                                       <th class="text-center">Track Order</th>
-                                       @endif
-                                    </tr>
-                                </thead>
-                                @endif
-                                <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
-                                    <td>{{isset($k)?$k++:''}}</td>                                    
-                                    <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : (isset($order["customer"]->owner_name) && $order["customer"]->owner_name != "")?$order["customer"]->owner_name:''}}</td>
-                                    @if(count($pending_orders) > 0)
-                                    @foreach($pending_orders as $porder)
-                                    @if($porder['id'] == $order->id)
-                                    <td>{{ isset($porder['total_quantity']) ? round($porder['total_quantity'], 2):'0.00' }}</td>
-                                    @endif
                                     @endforeach
-                                    @else
-                                    <td></td>
-                                    @endif
-                                    <td>{{isset($order['customer']['phone_number1']) ? $order['customer']['phone_number1']:''}}</td>
-                                    @if(isset($order['delivery_location']) && $order['delivery_location']['area_name'] !="")
-                                    <td class="text">{{$order['delivery_location']['area_name']}}</td>
-                                    @else
-                                    <td class="text">{{isset($order['other_location']) ? $order['other_location']:''}}</td>
-                                    @endif
-                                    <td class="text"><?php
-                                foreach ($users as $u) {
-                                    if ($u['id'] == $order['created_by']) {
-                                        echo $u['first_name'];
-                                    }
-                                }
-                                ?></td>
-                                    <td class="text-center">
-                                        <?php $order_id = isset($order->id) ? $order->id : ''; ?>
-                                        <a href="{{url('orders/'.$order_id)}}" class="table-link" title="view">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
-                                        @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                                        <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order_id}})">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
-                                        @endif
-                                    </td>
-                                     <td class="text-center">
-                                        <?php $order_id = isset($order->id) ? $order->id : ''; ?>
-                                      
-                                        @if(Auth::user()->role_id == 5 )
-<!--                                        <a href="#" class="table-link" title="track_order" data-toggle="modal" data-target="#track_orders_modal" onclick="track_order_row({{$order_id}})">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>-->
 
-                                         <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
+
+
+                                    @foreach($allorders as $order)
+                                    @if(isset($order->order_status) && $order->order_status == 'completed')
+
+                                    <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
+                                        <td>{{isset($k)?$k++:''}}</td>                                    
+                                        <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : (isset($order["customer"]->owner_name) && $order["customer"]->owner_name != "")?$order["customer"]->owner_name:''}}</td>
+                                        @if(count($pending_orders) > 0)
+                                        @foreach($pending_orders as $porder)
+                                        @if($porder['id'] == $order->id)
+                                        <td>{{ isset($porder['total_quantity']) ? round($porder['total_quantity'], 2):'0.00' }}</td>
+                                        @endif
+                                        @endforeach
+                                        @else
+                                        <td></td>
+                                        @endif
+                                        <td>{{isset($order['customer']['phone_number1']) ? $order['customer']['phone_number1']:''}}</td>
+                                        @if(isset($order['delivery_location']) && $order['delivery_location']['area_name'] !="")
+                                        <td class="text">{{$order['delivery_location']['area_name']}}</td>
+                                        @else
+                                        <td class="text">{{isset($order['other_location']) ? $order['other_location']:''}}</td>
+                                        @endif
+                                        <td class="text"><?php
+                                            foreach ($users as $u) {
+                                                if ($u['id'] == $order['created_by']) {
+                                                    echo $u['first_name'];
+                                                }
+                                            }
+                                            ?></td>
+                                        <td class="text-center">
+                                            <?php $order_id = isset($order->id) ? $order->id : ''; ?>
+                                            <a href="{{url('orders/'.$order_id)}}" class="table-link" title="view">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_orders_modal" onclick="delete_order_row({{$order_id}})">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <?php $order_id = isset($order->id) ? $order->id : ''; ?>
+
+                                            @if(Auth::user()->role_id == 5 )
+                                            <!--                                        <a href="#" class="table-link" title="track_order" data-toggle="modal" data-target="#track_orders_modal" onclick="track_order_row({{$order_id}})">
+                                                                                        <span class="fa-stack">
+                                                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                                                            <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                                                                        </span>
+                                                                                    </a>-->
+
+                                            <a href="{{url('order/'.$order->id.'-track')}}" class="table-link" title="Track Order">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                        </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endif
-                                @if(isset($order->order_status) && $order->order_status == 'cancelled')
-                                @if($k==1)
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tally Name</th>
-                                        <th>Total Quantity</th>
-                                        <th>Mobile </th>
-                                        <th>Delivery Location</th>
-                                        <th>Order By</th>
-                                        <th>Cancel By</th>
-                                        <th>Reason</th>
-                                        <th class="text-center">Actions</th>
+                                            </a>
+                                            @endif
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
                                     @endif
+                                    @endforeach
+
+
+                                    @foreach($allorders as $order)
+                                    @if(isset($order->order_status) && $order->order_status == 'cancelled')
                                     <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
@@ -469,7 +482,7 @@
 //                                                $total_quantity = $total_quantity + $product['quantity'];
 //                                            }
 //                                            echo $total_quantity;
-                                        ?>
+                                            ?>
                                             {{ round($order['total_quantity'], 2) }}
                                         </td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
@@ -591,8 +604,8 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            
+
+
                             <div class="modal fade" id="track_orders_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -625,10 +638,10 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            
-                            
-                            
+
+
+
+
                             <span class="pull-right">
                                 <?php
 //                                if (Input::get('order_filter') != '') {
@@ -670,36 +683,33 @@
                             @endif
                         </div>
                         @endif
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         @if( Auth::user()->role_id == 5)
-                            
+
                         
-                            <div class="table-responsive tablepending">
+                        <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                @foreach($allorders as $order)                              
-                                @if(isset($order->order_status))
-                                @if($k==1)
                                 <thead>
                                     <tr>
                                         @if(Input::has('flag') && Input::get('flag') == 'true')
@@ -714,13 +724,17 @@
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
                                         <th>Pending Quantity</th>
-                                         @if( Auth::user()->role_id <> 5)
+                                        @if( Auth::user()->role_id <> 5)
                                         <th class="text-center">Create Delivery Order</th>
                                         @endif
                                         <th class="text-center" style="width: 15%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($allorders as $order)                              
+                                @if(isset($order->order_status))
+                                @if($k==1)
+                                
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
                                         <td>
@@ -749,7 +763,7 @@
                                         @endif
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
-                                         @if( Auth::user()->role_id <> 5)
+                                        @if( Auth::user()->role_id <> 5)
                                         <td class="text-center">
                                             <a href="{{url('create_delivery_order/'.$order->id)}}" class="table-link" title="Create Delivery order">
                                                 <span class="fa-stack">
@@ -768,7 +782,7 @@
                                                 </span>
                                             </a>
                                             @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
-                                            
+
                                             @if($order->order_status == 'pending')
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
@@ -778,7 +792,7 @@
                                             </a>
                                             @endif
                                             @if($order->order_status == 'cancelled')
-                                                 <a href="javascript:void(0)" class="table-link" title="Non Editible">
+                                            <a href="javascript:void(0)" class="table-link" title="Non Editible">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -786,9 +800,9 @@
                                                 </span>
                                             </a>
                                             @endif
-                                            
+
                                             @if($order->order_status == 'completed')
-                                                  <a href="javascript:void(0)" class="table-link" title="Non Editible">
+                                            <a href="javascript:void(0)" class="table-link" title="Non Editible">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -796,10 +810,10 @@
                                                 </span>
                                             </a>
                                             @endif
-                                            
-                                            
+
+
                                             @if(Auth::user()->role_id <> 5)
-                                            
+
                                             <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -830,21 +844,42 @@
                                         </td>
                                     </tr>
                                     @endif
- 
+
                                     @endforeach
                                 </tbody>
                             </table>
-                            
-                        
-                            
-                            
-                           
-                           
-                          
+
+                                                        <span class="pull-right">
+                                <?php
+//                               
+                                echo $allorders->appends(Input::except('page'))->render();
+//                                echo $allorders->render();
+                                ?>
+                            </span>
+                            <div class="clearfix"></div>
+                            @if($allorders->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('orders')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $allorders->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span>
+                            @endif
+
+
+
+
+
                         </div>
-                        
-                        
-                            
+
+
+
                         @endif
                         @endif
                     </div>
