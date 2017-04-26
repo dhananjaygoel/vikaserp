@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
+use App\DeliveryChallan;
 
 class ReceiptMasterController extends Controller {
 
@@ -261,24 +262,17 @@ class ReceiptMasterController extends Controller {
     }
 
     public function settle_amount(Request $request) {
-        if (Input::has('model_price')) {
+        if (Input::has('model_price') && Input::has('challan_id')) {
             $unsettle_amount = Input::get('model_price');
             $challan_id = Input::get('challan_id');
             $customer_id = Input::get('customer_id');
-            $receiptObj = new Receipt();
-            if ($receiptObj->save()) {
-                $customerReceiptObj = new Customer_receipts();
-                $customerReceiptObj->customer_id = $customer_id;
-                $customerReceiptObj->settled_amount = $unsettle_amount;
-                $customerReceiptObj->receipt_id = $receiptObj->id;
-                $customerReceiptObj->debited_to = 1;
-                $customerReceiptObj->challan_id = $challan_id;
-                $customerReceiptObj->debited_by_type = 1;
-
-                $customerReceiptObj->save();
-            }
-            return Redirect::back();
+            if(isset($challan_id)){
+                $challan_obj = DeliveryChallan::find($challan_id);                
+                $challan_obj->settle_amount = $unsettle_amount;
+                $challan_obj->save();
+            }           
         }
+        return Redirect::back();
     }
 
 }
