@@ -123,11 +123,11 @@
                                         <td>
                                             {{$total_due_amount-$settled_amount}}
                                         </td>
-                                        <td>
-                                            @foreach($city as $town)
-                                            @if($town->id == $c->city)
-                                            {{ $town->city_name }}
-                                            @endif
+                                        <td>                                            
+                                            @foreach($delivery_location as $location)
+                                                @if($c->delivery_location_id==$location->id)
+                                                        {{$location->area_name}}                                                         
+                                                @endif
                                             @endforeach
                                         </td>                                        
                                     </tr>

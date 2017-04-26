@@ -81,7 +81,7 @@
                     </li>
                     @endif
                     @endif
-                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*due-payment*') || Request::is('*customer-list*'))
+                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*due-payment*') || Request::is('*customer-list*') || Request::is('*customer_details*'))
                         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                         <li class="{{ (Request::is('account') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
                             <a href="{{url('account')}}">

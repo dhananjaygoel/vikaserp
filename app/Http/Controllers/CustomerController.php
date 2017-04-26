@@ -914,24 +914,24 @@ class CustomerController extends Controller {
     }
            
     public function get_customer_details($id) {        
-        $customers = '';
-        if (Input::get('search') != '') {
-            $term = '%' . Input::get('search') . '%';            
-            $customers = Customer::with('Delivery_challan.challan_receipt')->where('id','=',$id)
-                                ->orWhere('tally_name', 'like', $term)
-                                ->whereHas('Delivery_challan', function ($query) {
-                                $query->where('challan_status','=', 'completed');
-                                })->get();
-        } else {
-            $customers = Customer::with('Delivery_challan.challan_receipt')->where('id','=',$id)
-                                ->whereHas('Delivery_challan', function ($query) {
-                                $query->where('challan_status','=', 'completed');
-                                })->get();
-                                
+        $customer = '';
+        $customer = Customer::find($id);
+        $settle_filter = Input::get('settle_filter');
+        $delivery_challans = DeliveryChallan::where('customer_id','=',$id)                                              
+                                              ->whereRaw('grand_price!=settle_amount')->get();
+        if (isset($settle_filter) && $settle_filter!='' && $settle_filter='Settled') {
+            $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
+                                              ->whereRaw('grand_price = settle_amount')->get();
+        }
+        if (isset($settle_filter) && $settle_filter= 'Unsettled') {
+            $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
+                                              ->whereRaw('grand_price != settle_amount')->get();
         }        
         $city = City::all();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return View('customer_details_view')->with('customers',$customers)->with('city',$city)
-                                    ->with('delivery_location',$delivery_location);
+        return View('customer_details_view')->with('customer',$customer)
+                                            ->with('city',$city)
+                                            ->with('delivery_challans',$delivery_challans)
+                                            ->with('delivery_location',$delivery_location);
     }
 }
