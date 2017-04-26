@@ -584,9 +584,7 @@ class InventoryController extends Controller {
             $alias_name = '%' . Input::get('search_inventory') . '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
             $query->where('product_sub_category_id', '=', $product_sub_id->id);
-        } else {
-            $query = Inventory::query();
-        }
+        } 
 
 
         $inventorys = $query->with('product_sub_category')
