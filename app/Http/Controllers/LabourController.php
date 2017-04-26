@@ -343,7 +343,10 @@ class LabourController extends Controller {
         $loaders_data = array_values($loaders_data);
 
 
-
+        echo "<pre>";
+        print_r($loaders_data);
+        echo "</pre>";
+        exit;
 
         $final_array = array();
         $k = 0;
