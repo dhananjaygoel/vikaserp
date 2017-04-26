@@ -91,7 +91,7 @@
                             </a>
                         </li>
                         @endif
-                        @if(Auth::user()->role_id == 0|| Auth::user()->role_id == 1)
+                        @if(Auth::user()->role_id == 0|| Auth::user()->role_id == 1 || Auth::user()->role_id == 4)
                         <li class="{{ (Request::is('receipt-master') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Receipt Master">
                             <a href="{{url('receipt-master')}}">
                                 <i class="fa fa-print"></i>
