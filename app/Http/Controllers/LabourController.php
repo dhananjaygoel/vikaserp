@@ -333,7 +333,7 @@ class LabourController extends Controller {
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
-                    $loader_arr['tonnage'] = round($all_tonnage,2);
+                    $loader_arr['tonnage'] = $all_tonnage;
                     $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
                 }
             }

@@ -4735,7 +4735,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => $data['tonnage'],
+                            'tonnage' => round($data['tonnage'],2),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
