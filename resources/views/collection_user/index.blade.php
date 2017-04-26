@@ -118,11 +118,13 @@
                                                 $territory_id=$user->locations[0]->teritory_id;
                                             }                                            
                                             ?>
+                                            @if(isset($territory_id) && !empty($territory_id))
                                             @foreach($territories as $territory)
                                                 @if($territory_id == $territory->id)
                                                     {{ $territory->teritory_name}}
                                                 @endif
                                             @endforeach
+                                            @endif
                                         </td>
                                         <td>
                                             {{count($user->locations)}}
