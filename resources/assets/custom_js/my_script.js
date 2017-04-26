@@ -733,6 +733,25 @@ $('.print_inventory_report_list').click(function () {
     });
 });
 
+$('.print_account_customers').click(function () { 
+    var base_url = $('#baseurl').attr('name');    
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_account_customers',
+        success: function (data) {
+            $('#print_account_customers').modal('hide');
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            printWindow.onunload = function () {
+                location.reload();
+            };
+             location.reload();
+        }
+    });
+});
+
 $('.print_inventory_price_list').click(function () {
 //    $('.print_inventory_price_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');

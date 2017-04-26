@@ -29,8 +29,8 @@
                         @if(Auth::user()->role_id ==0 )
                         <div class="col-md-2 pull-right">                              
                             <select class="form-control" id="settle-filter" name="settle_filter" onchange="this.form.submit();">
-                                <option value="Unsettled" >Unsettled</option>
-                                <option value="Settled" >Settled</option>                                
+                                <option value="Unsettled" <?php if(Input::get('settle_filter')=='Unsettled') echo "selected=''"; ?> >Unsettled</option>
+                                <option value="Settled" <?php if(Input::get('settle_filter')=='Settled') echo "selected=''"; ?>>Settled</option>                                
                             </select>                            
                         </div>
                         @endif
@@ -76,16 +76,6 @@
                                             @if(isset($customer[0]->tally_name) && !empty($customer[0]->tally_name)){{$customer[0]->tally_name}}@else Test User @endif
                                         </td>
                                     </tr>
-                                    <?php
-                                        $total_due_amount=0;
-                                        foreach($delivery_challans as $challan){
-                                            $total_due_amount=$total_due_amount+$challan->grand_price;                                            
-                                        }
-                                    ?>
-                                    <tr><td><b>Due Amount: </b>{{$total_due_amount}}</td></tr>
-                                    <tr>
-                                        <td><b>Unsettled Amount:</b> </td>
-                                    </tr>
                                     <tr>
                                         <td><b>Location: </b>
                                             @foreach($delivery_location as $location)
@@ -94,7 +84,17 @@
                                                 @endif
                                             @endforeach
                                         </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td><b>Unsettled Amount:</b> </td>
                                     </tr>
+                                    <?php
+                                        $total_due_amount=0;
+                                        foreach($delivery_challans as $challan){
+                                            $total_due_amount=$total_due_amount+$challan->grand_price;                                            
+                                        }
+                                    ?>
+                                    <tr><td><b>Due Amount: </b>{{$total_due_amount}}</td></tr>
                                     <tr>
                                         <td><b>Credit Period:</b> {{$credit_period}} days</td>
                                     </tr>

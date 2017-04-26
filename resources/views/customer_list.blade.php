@@ -10,9 +10,12 @@
                     <li class="active"><span>Customers</span></li>
                 </ol>
    
-                <div class="filter-block">
+                <div class="filter-block">                    
                    <form action="{{url('customer-list')}}" method="GET" id="orderForm">
-                        <h1 class="pull-left">Customers</h1>                                                                       
+                        <h1 class="pull-left">Customers</h1> 
+                        <a href="" id="print-account-customers" data-toggle="modal" data-target="#print_acount_customers" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
+                            Print
+                        </a>
                         <div class="col-md-2 pull-right">
                             @if(Auth::user()->role_id ==6 ||Auth::user()->role_id ==0)
                             <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
@@ -57,7 +60,7 @@
                             </span>
                             @endif
                         </div>
-                    </form>
+                    </form>                    
                 </div>
             </div>
         </div>
@@ -169,6 +172,29 @@
                         @endif
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="print_acount_customers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row print_time ">
+                    <div class="col-md-12"> Print By <br>
+                        <span class="current_time"></span>
+                    </div>
+                </div>                
+                <hr>
+                <div>
+                    <button type="button"  class="btn btn-primary form_button_footer print_account_customers" >Print</button>
+                    <button type="button" class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
