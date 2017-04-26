@@ -116,10 +116,8 @@
                                         <th>Due date</th>
                                         <th>Total Amount</th>
                                         <th>Settled Amount</th>
-                                        <th>Due Payment</th>
-                                        @if(Auth::user()->role_id ==0 )
-                                        <th>Action</th>
-                                        @endif
+                                        <th>Due Payment</th>                                        
+                                        <th>Action</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -134,7 +132,7 @@
                                                 foreach($challan['challan_receipt'] as $receipt){
                                                     $settled_amount=$settled_amount+$receipt->settled_amount;
                                                 }                                                 
-                                            ?>
+                                            ?>                                        
                                         <tr>
                                             <td>{{$i++}}</td>
                                             <td>{{$challan->serial_number}}</td>
@@ -160,6 +158,14 @@
                                                 </button>
                                             </td>
                                             @endif
+                                            @if(Auth::user()->role_id ==0 )
+                                            <td>
+                                                <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >
+                                                    Update
+                                                </button>
+                                            </td>
+                                            @endif
+                                        </tr>                                        
                                         @endforeach                                    
                                     @endforeach
                                 </tbody>
