@@ -125,7 +125,9 @@
                                         <th>Action</th>                                        
                                     </tr>
                                 </thead>
-                                <tbody>                                    
+                                <?php //dd($delivery_challans); ?>
+                                <tbody>                                        
+                                        @if(isset($delivery_challans) && count($delivery_challans)>0 && $delivery_challans!="")
                                         @foreach($delivery_challans as $challan)
                                             <?php
                                                 $i=1;$total_due_amount=0; $settled_amount=0;                                            
@@ -170,6 +172,9 @@
                                             @endif
                                         </tr>                                        
                                         @endforeach
+                                        @else
+                                        <tr><td></td><td>No records Available</td></tr>
+                                        @endif
                                 </tbody>
                             </table>
                         </div>

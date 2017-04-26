@@ -63,7 +63,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $i = 1; ?>
+                                <?php $i = ($receipts->currentPage() - 1 ) * $receipts->perPage() + 1; ?>
                                 @foreach($receipts as $receipt)
                                 <tr>
                                     <td>{{ $i }}</td>
