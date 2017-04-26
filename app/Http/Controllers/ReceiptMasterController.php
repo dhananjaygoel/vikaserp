@@ -25,8 +25,25 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
-        $receipts = Receipt::orderBy('id', 'desc');
-        $receipts = $receipts->paginate(20);
+        if (Input::has('search_from_date') && Input::has('search_to_date')) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', Input::get('search_from_date'))->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', Input::get('search_to_date'))->format('Y-m-d');
+            $q = Receipt::query();
+            if ($date1 == $date2) {
+                $q->where('created_at', 'like', $date1 . '%');
+            } else {
+                $q->where('created_at', '>=', $date1);
+                $q->where('created_at', '<=', $date2 . ' 23:59:59');
+            }
+            $search_dates = [
+                'export_from_date' => Input::get('search_from_date'),
+                'export_to_date' => Input::get('search_to_date')
+            ];
+            $receipts = $q->paginate(20);
+        } else {
+            $receipts = Receipt::orderBy('id', 'desc');
+            $receipts = $receipts->paginate(20);
+        }
         $receipts->setPath('receipt-master');
         return view('receipt_master.index')->with('receipts', $receipts);
     }
