@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use View;
 use App\User;
 use App\Receipt;
 use App\Customer;
 use App\Debited_to;
 use App\Http\Requests;
-use App\DeliveryChallan;
 use App\Customer_receipts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use View;
 use Illuminate\Support\Facades\Redirect;
 
 class ReceiptMasterController extends Controller {
@@ -26,9 +25,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
-        $receipts = Receipt::orderBy('id', 'desc')->get();
-//        $receipts = $receipts->paginate(1);
-//        $receipts->setPath('receipt-master');
+        $receipts = Receipt::orderBy('id', 'desc');
+        $receipts = $receipts->paginate(20);
+        $receipts->setPath('receipt-master');
         return view('receipt_master.index')->with('receipts', $receipts);
     }
 
@@ -49,35 +48,7 @@ class ReceiptMasterController extends Controller {
     public function create_journal_receipt() {
 
         $type = 1; //journal
-        $customers = Customer::where('tally_name', '!=', '')
-                ->with(['delivery_challan' => function($q) {
-                        $q->where('challan_status', '=', 'completed');
-                    }])
-                ->whereHas('delivery_challan', function ($query) {
-                    $query->where('challan_status', '=', 'completed');
-                })
-                ->select('id', 'tally_name')
-                ->get();
-
-        $tally_users = [];
-        if (isset($customers)) {
-            $customers_arr = [];
-            foreach ($customers as $key1 => $data) {
-                if (isset($data->delivery_challan)) {
-                    $challan = [];
-                    foreach ($data->delivery_challan as $key => $val) {
-                        $challan[$key]['id'] = $data['id'];
-                        $challan[$key]['tally_name'] = $data['tally_name'] . ' ' . $val['id'];
-                        $challan[$key]['challan_id'] = $val['id'];
-                        $challan[$key]['grand_price'] = $val['grand_price'];
-                    }
-                }
-                $customers_arr[$key1] = $challan;
-            }
-            foreach ($customers_arr as $key => $arr) {
-                $tally_users[$key] = $arr;
-            }
-        }
+        $tally_users = Customer::select('id', 'tally_name')->get();
         $debited_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_users'));
     }
@@ -90,38 +61,8 @@ class ReceiptMasterController extends Controller {
     public function create_bank_receipt() {
         $type = 2; //bank
         $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
-//        $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
-        $customers = Customer::where('tally_name', '!=', '')
-                ->with(['delivery_challan' => function($q) {
-                        $q->where('challan_status', '=', 'completed');
-                    }])
-                ->whereHas('delivery_challan', function ($query) {
-                    $query->where('challan_status', '=', 'completed');
-                })
-                ->select('id', 'tally_name')
-                ->get();
-
-        $tally_users = [];
-        if (isset($customers)) {
-            $customers_arr = [];
-            foreach ($customers as $key1 => $data) {
-                if (isset($data->delivery_challan)) {
-                    $challan = [];
-                    foreach ($data->delivery_challan as $key => $val) {
-                        $challan[$key]['id'] = $data['id'];
-                        $challan[$key]['tally_name'] = $data['tally_name'] . ' ' . $val['id'];
-                        $challan[$key]['challan_id'] = $val['id'];
-                        $challan[$key]['grand_price'] = $val['grand_price'];
-                    }
-                }
-                $customers_arr[$key1] = $challan;
-            }
-            foreach ($customers_arr as $key => $arr) {
-                $tally_users[$key] = $arr;
-            }
-        }
+        $tally_users = Customer::select('id', 'tally_name')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
-//        return View::make('receipt_master.createb');
     }
 
     /**
@@ -132,36 +73,7 @@ class ReceiptMasterController extends Controller {
     public function create_cash_receipt() {
         $type = 3; //cash
         $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
-//        $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name', 'phone_number1')->get();
-        $customers = Customer::where('tally_name', '!=', '')
-                ->with(['delivery_challan' => function($q) {
-                        $q->where('challan_status', '=', 'completed');
-                    }])
-                ->whereHas('delivery_challan', function ($query) {
-                    $query->where('challan_status', '=', 'completed');
-                })
-                ->select('id', 'tally_name')
-                ->get();
-
-        $tally_users = [];
-        if (isset($customers)) {
-            $customers_arr = [];
-            foreach ($customers as $key1 => $data) {
-                if (isset($data->delivery_challan)) {
-                    $challan = [];
-                    foreach ($data->delivery_challan as $key => $val) {
-                        $challan[$key]['id'] = $data['id'];
-                        $challan[$key]['tally_name'] = $data['tally_name'] . ' ' . $val['id'];
-                        $challan[$key]['challan_id'] = $val['id'];
-                        $challan[$key]['grand_price'] = $val['grand_price'];
-                    }
-                }
-                $customers_arr[$key1] = $challan;
-            }
-            foreach ($customers_arr as $key => $arr) {
-                $tally_users[$key] = $arr;
-            }
-        }
+        $tally_users = Customer::select('id', 'tally_name')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
     }
 
@@ -181,22 +93,18 @@ class ReceiptMasterController extends Controller {
                 foreach ($settle_amount as $key => $user) {
                     if ($receiptObj->save()) {
                         $customerReceiptObj = new Customer_receipts();
-                        $delivery_challan = DeliveryChallan::find($key);
-                        if (isset($delivery_challan)) {
-                            $customerReceiptObj->customer_id = $delivery_challan->customer_id;
-                            $customerReceiptObj->settled_amount = $user;
-                            $customerReceiptObj->debited_to = $debited_to;
-                            $customerReceiptObj->challan_id = $key;
-                            $customerReceiptObj->receipt_id = $receiptObj->id;
-                            if ($receipt_type == 1)
-                                $customerReceiptObj->debited_by_type = 1;
-                            elseif ($receipt_type == 2)
-                                $customerReceiptObj->debited_by_type = 2;
-                            elseif ($receipt_type == 3)
-                                $customerReceiptObj->debited_by_type = 3;
+                        $customerReceiptObj->customer_id = $key;
+                        $customerReceiptObj->settled_amount = $user;
+                        $customerReceiptObj->debited_to = $debited_to;
+                        $customerReceiptObj->receipt_id = $receiptObj->id;
+                        if ($receipt_type == 1)
+                            $customerReceiptObj->debited_by_type = 1;
+                        elseif ($receipt_type == 2)
+                            $customerReceiptObj->debited_by_type = 2;
+                        elseif ($receipt_type == 3)
+                            $customerReceiptObj->debited_by_type = 3;
 
-                            $customerReceiptObj->save();
-                        }
+                        $customerReceiptObj->save();
                     } else
                         return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
                 }
@@ -356,7 +264,7 @@ class ReceiptMasterController extends Controller {
         if (Input::has('model_price')) {
             $unsettle_amount = Input::get('model_price');
             $challan_id = Input::get('challan_id');
-            $customer_id = Input::get('customer_id');  
+            $customer_id = Input::get('customer_id');
             $receiptObj = new Receipt();
             if ($receiptObj->save()) {
                 $customerReceiptObj = new Customer_receipts();
@@ -364,12 +272,13 @@ class ReceiptMasterController extends Controller {
                 $customerReceiptObj->settled_amount = $unsettle_amount;
                 $customerReceiptObj->receipt_id = $receiptObj->id;
                 $customerReceiptObj->debited_to = 1;
-                $customerReceiptObj->challan_id = $challan_id;                               
-                $customerReceiptObj->debited_by_type = 1;                
+                $customerReceiptObj->challan_id = $challan_id;
+                $customerReceiptObj->debited_by_type = 1;
 
                 $customerReceiptObj->save();
             }
-           return Redirect::back();
+            return Redirect::back();
+        }
     }
-    }
+
 }

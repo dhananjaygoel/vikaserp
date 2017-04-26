@@ -17,83 +17,83 @@
                     <h4><strong>RECEIPT DATES</strong></h4>
                 </div>
                 <div class="col-lg-8">
-                    <div class="search_form_wrapper receipt_master_search_wrapper pull-right">
-                        <form class="search_form" method="GET" action="javascript:void(0);">
-                            <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date">
-                            <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date">
-                            <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary">
-                        </form>                    
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#add-receipt"><i class="fa fa-plus"></i> Add</button>
-                    </div>                    
-                </div>
+                    <form class="search_form" method="GET" id="searchCustomerForm">
+                        <input type="text" placeholder="From" name="search_from_date" class="form-control export_from_date" id="export_from_date" value="{{Request::get('search_from')}}">
+                        <input type="text" placeholder="To" name="search_to_date" class="form-control export_to_date" id="export_to_date" value="{{Request::get('search_to')}}">
+                        <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary">
+                    </form>                    
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#add-receipt"><i class="fa fa-plus"></i> Add</button>
+                </div>                    
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="main-box clearfix">
-                    <div class="main-box-body main_contents clearfix">
-                        <div id="flash_message" class="alert no_data_msg_container"></div>
-                        @if(Session::has('error'))
-                        <div class="clearfix"> &nbsp;</div>
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <strong> {{ Session::get('error') }} </strong>
-                        </div>
-                        @endif
-                        @if (Session::has('success'))
-                        <div class="alert alert-success alert-success1">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
-                            {{Session::get('success')}}
-                        </div>
-                        @endif
-                        @if (Session::has('flash_message'))
-                        <div id="flash_error" class="alert alert-info no_data_msg_container">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
-                            {{ Session::get('flash_message') }}
-                        </div>
-                        @endif
-                        @if(count($receipts)>0)
-                        <div class="table-responsive tablepending">
-                            <table id="table-example" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th class="text-center" style="width: 15%">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $i = 1; ?>
-                                    @foreach($receipts as $receipt)
-                                    <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{date("Y-m-d", strtotime($receipt['created_at'])) }}</td>
-                                        <td>{{date("H:i:s", strtotime($receipt['created_at'])) }}</td>
-                                        <td class="text-center">
-                                            <a href="{{URL::action('ReceiptMasterController@edit',['id'=> $receipt->id])}}" class="table-link" title="Edit">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                            @if(Auth::user()->role_id == 0) 
-                                            <a href="#" class="table-link danger delete-receipt" data-id="{{$receipt->id}}"  class="table-link" title="Delete">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <?php 
-                                    $i++; ?>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        @else
-                        <div class="alert alert-info no_data_msg_container">
-                            Currently no user available.
-                        </div>
-                        @endif
-                    </div>    
-                </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="main-box-body main_contents clearfix">
+                    <div id="flash_message" class="alert no_data_msg_container"></div>
+                    @if(Session::has('error'))
+                    <div class="clearfix"> &nbsp;</div>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong> {{ Session::get('error') }} </strong>
+                    </div>
+                    @endif
+                    @if (Session::has('success'))
+                    <div class="alert alert-success alert-success1">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
+                        {{Session::get('success')}}
+                    </div>
+                    @endif
+                    @if (Session::has('flash_message'))
+                    <div id="flash_error" class="alert alert-info no_data_msg_container">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('flash_message') }}
+                    </div>
+                    @endif
+                    @if(count($receipts)>0)
+                    <div class="table-responsive tablepending">
+                        <table id="table-example" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th class="text-center" style="width: 15%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $i = 1; ?>
+                                @foreach($receipts as $receipt)
+                                <tr>
+                                    <td>{{ $i }}</td>
+                                    <td>{{date("Y-m-d", strtotime($receipt['created_at'])) }}</td>
+                                    <td>{{date("H:i:s", strtotime($receipt['created_at'])) }}</td>
+                                    <td class="text-center">
+                                        <a href="{{URL::action('ReceiptMasterController@edit',['id'=> $receipt->id])}}" class="table-link" title="Edit">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        @if(Auth::user()->role_id == 0) 
+                                        <a href="#" class="table-link danger delete-receipt" data-id="{{$receipt->id}}"  class="table-link" title="Delete">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <?php $i++; ?>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <span class="pull-right">
+                            <?php echo $receipts->render(); ?>
+                        </span>
+                    </div>
+                    @else
+                    <div class="alert alert-info no_data_msg_container">
+                        Currently no user available.
+                    </div>
+                    @endif
+                </div>    
             </div>
         </div>
     </div>
