@@ -51,9 +51,9 @@ class ProductsubController extends Controller {
 
     public function index() {
         if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }
-        
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+         
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
@@ -88,6 +88,17 @@ class ProductsubController extends Controller {
                             ->orWhere('alias_name', 'like', '%' . $blanck . '%');
                 });
             }
+        }
+
+        if (Input::has('export_data') && Input::get('export_data') == 'Export') {
+           
+            $product_size_list = $q->orderBy('id', 'asc')->get();
+            Excel::create('Product Sizes', function($excel) use($product_size_list) {
+                $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
+                    $sheet->loadView('excelView.productsize', array('product_size_list' => $product_size_list));
+                });
+            })->export('xls');
+            exit();
         }
 
         $product_sub_cat = $q->orderBy('id', 'asc')->paginate(20);
@@ -129,7 +140,7 @@ class ProductsubController extends Controller {
         echo json_encode(array('prod' => $prod));
         exit;
     }
-    
+
     public function get_product_type() {
 
         $product_cat = ProductType::get();
@@ -219,7 +230,7 @@ class ProductsubController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-       
+
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             $product_cat = ProductSubCategory::find($id);
             $order_count = AllOrderProducts::where('product_category_id', $id)->count();
@@ -333,53 +344,53 @@ class ProductsubController extends Controller {
 
     public function update_difference() {
         ProductSubCategory::where('id', Input::get('id'))->update(array('difference' => Input::get('difference')));
-        
-  /*
+
+        /*
          * ------------------- -----------------------
          * SEND SMS TO ALL ADMINS FOR NEW PRODUCT SIZE
          * -------------------------------------------
          */
         $input = Input::all();
-      
-            $admins = User::where('role_id', '=', 0)->get();
-            if (count($admins) > 0) {
-                foreach ($admins as $key => $admin) {
-                    $productsubcategory=ProductSubCategory::find(Input::get('id'));
-                    $product_category = ProductCategory::with('product_type')->find($productsubcategory->product_category_id);
-                    
-                    
-                    $str = "Dear " . $admin->first_name . " \n" .
-                            "DT " . date("j M, Y") . "\n" .
-                            Auth::user()->first_name . " has edited a new size as "
-                            . "'" . $productsubcategory->size . "', "
-                            . "'" . $productsubcategory->thickness . "', "
-                            . "'" . $productsubcategory->weight . "', "
-                            . "'" . $productsubcategory->alias_name . "', "
-                            . "'" . $productsubcategory->difference . "' "
-                            . "under "
-                            . "'" . $product_category->product_category_name . "' "
-                            . "& "
-                            . "'" . $product_category['product_type']->name . "' "
-                            . "kindly check. \nVIKAS ASSOCIATES";
+
+        $admins = User::where('role_id', '=', 0)->get();
+        if (count($admins) > 0) {
+            foreach ($admins as $key => $admin) {
+                $productsubcategory = ProductSubCategory::find(Input::get('id'));
+                $product_category = ProductCategory::with('product_type')->find($productsubcategory->product_category_id);
 
 
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $admin->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
+                $str = "Dear " . $admin->first_name . " \n" .
+                        "DT " . date("j M, Y") . "\n" .
+                        Auth::user()->first_name . " has edited a new size as "
+                        . "'" . $productsubcategory->size . "', "
+                        . "'" . $productsubcategory->thickness . "', "
+                        . "'" . $productsubcategory->weight . "', "
+                        . "'" . $productsubcategory->alias_name . "', "
+                        . "'" . $productsubcategory->difference . "' "
+                        . "under "
+                        . "'" . $product_category->product_category_name . "' "
+                        . "& "
+                        . "'" . $product_category['product_type']->name . "' "
+                        . "kindly check. \nVIKAS ASSOCIATES";
+
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $admin->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
                 }
             }
-       
-        
+        }
+
+
 //        return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
     }
 

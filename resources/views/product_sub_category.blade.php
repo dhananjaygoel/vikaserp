@@ -19,7 +19,8 @@
                                         <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
                                             <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
                                         </a>
-                                        <a href="{{url('export_product_size')}}" class="btn btn-primary form_button_footer">Export</a>
+                                        <!--<a href="{{url('export_product_size')}}" class="btn btn-primary form_button_footer">Export</a>-->
+                                         <input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer">
                                     </div>
                                     @endif
                                     <div class="form-group col-md-3  pull-right">
