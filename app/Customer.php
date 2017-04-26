@@ -58,7 +58,7 @@ class Customer extends Model {
     public static $new_customer_inquiry_rules = array(
         'customer_name' => 'required|min:2|max:100',
         'contact_person' => 'required|min:2|max:100',
-        'mobile_number' => 'integer|digits_between:10,15|required',
+        'mobile_number' => 'integer|digits_between:10,15|required|unique:customers,phone_number1',
         'credit_period' => 'integer|required',
     );
     public static $existing_customer_inquiry_rules = array(
@@ -87,13 +87,14 @@ class Customer extends Model {
         'price' => 'required|max:6|min:1'
     );
 
-    public function addNewCustomer($owner_name, $contact_person, $phone_number1, $credit_period) {
+    public function addNewCustomer($owner_name, $contact_person, $phone_number1, $credit_period, $devlivery_location_id = '444') {
 
         $this->owner_name = $owner_name;
         $this->contact_person = $contact_person;
         $this->phone_number1 = $phone_number1;
         $this->credit_period = $credit_period;
         $this->customer_status = 'pending';
+        $this->delivery_location_id = $devlivery_location_id;
         $this->save();
         return $this;
     }
