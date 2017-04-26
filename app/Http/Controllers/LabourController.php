@@ -341,12 +341,8 @@ class LabourController extends Controller {
             $var++;
         }
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
-        $loaders_data = array_values($loaders_data);
-        
-        echo "<pre>";
-        print_r($loaders_data);
-        echo "</pre>";
-        exit;
+        $loaders_data = array_values($loaders_data);       
+       
 
         $final_array = array();
         $k = 0;
