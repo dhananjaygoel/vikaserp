@@ -1689,7 +1689,7 @@ $.widget("custom.combobox1", {
                                 $("#product_all_"+id).val(term);
                                 $("#product_price_"+id).val(obj.data_array[0].product_price);
                                 $("#add_product_name_"+id).val(term);
-                                $("#add_purchase_product_name_"+id).val(obj.data_array[0].id);
+                                $("#add_purchase_product_name_"+id).val(term);
                                 $("#add_product_id_"+id).attr('data-curname',term);
                                 $("#quantity_"+id).val('50');
                                 $("#present_shipping_"+id).val('50');
@@ -1920,8 +1920,8 @@ function getProductDetails() {
                                 $("#add_product_id_"+id).val(obj.data_array[0].id);
                                 $("#product_all_"+id).val(term);
                                 $("#product_price_"+id).val(obj.data_array[0].product_price);
-                                $("#add_product_name_"+id).val(obj.data_array[0].value);
-                                 $("#add_purchase_product_name_"+id).val(obj.data_array[0].id);
+                                $("#add_product_name_"+id).val(term);
+                                $("#add_purchase_product_name_"+id).val(term);
                                 $("#add_product_id_"+id).attr('data-curname',term);
                                 $("#quantity_"+id).val('50');
                                 $("#present_shipping_"+id).val('50');
