@@ -18,8 +18,8 @@
                 </div>
                 <div class="col-lg-8">
                     <form class="search_form" method="GET" id="searchCustomerForm">
-                        <input type="text" placeholder="From" name="search_from_date" class="form-control export_from_date" id="export_from_date" value="{{Request::get('search_from')}}">
-                        <input type="text" placeholder="To" name="search_to_date" class="form-control export_to_date" id="export_to_date" value="{{Request::get('search_to')}}">
+                        <input type="text" placeholder="From" name="search_from_date" class="form-control export_from_date" id="export_from_date" value="{{ Input::get('search_from_date')!= '' ? Input::get('search_from_date') : '' }}">
+                        <input type="text" placeholder="To" name="search_to_date" class="form-control export_to_date" id="export_to_date" value="{{Input::get('search_to_date')!= '' ? Input::get('search_to_date') : ''}}">
                         <input type="submit" name="search_data" value="Search" class="search_button btn btn-primary">
                     </form>                    
                     <button class="btn btn-primary" data-toggle="modal" data-target="#add-receipt"><i class="fa fa-plus"></i> Add</button>

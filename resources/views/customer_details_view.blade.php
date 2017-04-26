@@ -69,6 +69,7 @@
                                 <tbody>
                                     <?php
                                         $total_due_amount=0;
+                                        $unsettled_amount=0;
                                         $credit_period = $customer->credit_period; 
                                     ?>                                                                        
                                     <tr>
@@ -86,7 +87,16 @@
                                         </td>
                                     </tr>                                    
                                     <tr>
-                                        <td><b>Unsettled Amount:</b> </td>
+                                        <?php
+                                            foreach($customer['customer_receipt'] as $receipt){
+                                                $unsettled_amount=$unsettled_amount+$receipt->settled_amount;
+                                            }
+                                        ?>
+                                        <td><b>Unsettled Amount:</b> 
+                                            @if(isset($unsettled_amount))
+                                                {{$unsettled_amount}}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <?php
                                         $total_due_amount=0;

@@ -36,7 +36,7 @@ class Customer extends Model {
     }  
     
     public function customer_receipt() {
-        return $this->hasMany('App\Customer', 'customer_id', 'id');
+        return $this->hasMany('App\Customer_receipts', 'customer_id', 'id');
     }
     
     public function delivery_challan() {
