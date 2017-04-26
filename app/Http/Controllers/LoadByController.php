@@ -205,7 +205,7 @@ class LoadByController extends Controller {
                     $all_tonnage = $all_kg/1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
-                    $loader_arr['tonnage'] = round( $all_tonnage, 2);
+                    $loader_arr['tonnage'] = $all_tonnage;
 //                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                 }
@@ -225,7 +225,7 @@ class LoadByController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'loader_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => $data['tonnage']
+                            'tonnage' => round($data['tonnage'],2)
                         ];
                     }
                 }
