@@ -78,6 +78,10 @@ class InventoryController extends Controller {
         }
 
 
+        if(Input::has('export_data') && Input::get('export_data') == 'Export Inventory List'){
+           $this->export_inventory(Input::get());
+        }
+        
         $this->updateOpeningStock();
 
         /* find latested updated records */
