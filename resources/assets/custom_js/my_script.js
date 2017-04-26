@@ -24,7 +24,7 @@ $('.export_from_date').datepicker({
     endDate: new Date()
 }).on('changeDate', function () {
     // set the "toDate" start to not be later than "fromDate" ends:
-    $('.export_to_date').datepicker('setStartDate', new Date($(this).val()));
+    $('.export_to_date').datepicker('setStartDate', ($(this).val()));
 });
 
 $('.export_to_date').datepicker({
@@ -33,7 +33,7 @@ $('.export_to_date').datepicker({
     endDate: new Date()
 }).on('changeDate', function () {
     // set the "fromDate" end to not be later than "toDate" starts:
-    $('.export_from_date').datepicker('setEndDate', new Date($(this).val()));
+    $('.export_from_date').datepicker('setEndDate', ($(this).val()));
 });
 
 
