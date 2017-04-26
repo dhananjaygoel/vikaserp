@@ -8,6 +8,7 @@ use App\Receipt;
 use App\Customer;
 use App\Debited_to;
 use App\Http\Requests;
+use App\DeliveryChallan;
 use App\Customer_receipts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Redirect;
-use App\DeliveryChallan;
+use Illuminate\Support\Facades\Validator;
+
 class ReceiptMasterController extends Controller {
 
     /**
@@ -105,6 +107,10 @@ class ReceiptMasterController extends Controller {
             $settle_amount = Input::get('settle_amount');
             $debited_to = Input::get('debited_to');
             $receipt_type = Input::get('receipt_type');
+            $validator = Validator::make($request->input(), Customer_receipts::$ValidateNewReceipt, Customer_receipts::$validatorMessages);
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator->errors());
+            }
             if (isset($settle_amount) && count($settle_amount) > 0) {
                 $receiptObj = new Receipt();
                 foreach ($settle_amount as $key => $user) {
@@ -294,11 +300,11 @@ class ReceiptMasterController extends Controller {
             $unsettle_amount = Input::get('model_price');
             $challan_id = Input::get('challan_id');
             $customer_id = Input::get('customer_id');
-            if(isset($challan_id)){
-                $challan_obj = DeliveryChallan::find($challan_id);                
+            if (isset($challan_id)) {
+                $challan_obj = DeliveryChallan::find($challan_id);
                 $challan_obj->settle_amount = sprintf("%.2f", $unsettle_amount);
                 $challan_obj->save();
-            }           
+            }
         }
         return Redirect::back()->withInput();
     }

@@ -17,7 +17,20 @@ class Customer_receipts extends Model {
     public function customers() {
         return $this->hasMany('App\Customer', 'id', 'customer_id');
     }
-    public function debited_to(){
+
+    public function debited_to() {
         return $this->hasMany('App\Customer', 'id', 'customer_id');
     }
+
+    public static $validatorMessages = array(
+        'tally_users.required' => 'Tally user is required.',
+        'settle_amount.required' => 'settled amount is required.',
+        'debited_to.required' => 'Debited to is required.',
+    );
+    public static $ValidateNewReceipt = array(
+        'tally_users' => 'required',
+        'settle_amount' => 'required',
+        'debited_to' => 'required',
+    );
+
 }
