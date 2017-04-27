@@ -81,7 +81,7 @@
                     </li>
                     @endif
                     @endif
-                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*customer-list*') || Request::is('*customer_details*'))
+                    @elseif(Request::is('*account*') || Request::is('*receipt-master*') || Request::is('*due-payment*') || Request::is('*customer_details*'))
                         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                         <li class="{{ (Request::is('account') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Collection Users">
                             <a href="{{url('account')}}">
@@ -110,8 +110,8 @@
                         </li>
                         @endif-->
                         @if(Auth::user()->role_id == 0|| Auth::user()->role_id == 1)
-                        <li class="{{ (Request::is('customer-list') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Due Payment">
-                            <a href="{{url('customer-list')}}">
+                        <li class="{{ (Request::is('due-payment') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Due Payment">
+                            <a href="{{url('due-payment')}}">
                                 <i class="fa fa-money"></i>
                                 <span>Customers</span>
                                 <span class="label label-info label-circle pull-right"></span>
@@ -427,8 +427,8 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 6)
-                    <li class="{{ (Request::is('customer-list*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Due Payment">
-                        <a href="{{url('customer-list')}}">
+                    <li class="{{ (Request::is('due-payment*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Due Payment">
+                        <a href="{{url('due-payment')}}">
                             <i class="fa fa-money"></i>
                             <span>Customers</span>
                             <span class="label label-info label-circle pull-right"></span>
