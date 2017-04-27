@@ -968,7 +968,8 @@ class CustomerController extends Controller {
         $search = Input::get('search');
         $territory_id = Input::get('territory_filter');        
         $location_id = Input::get('location_filter');
-        $date_filter = Input::get('date_filter');        
+        $date_filter = Input::get('date_filter'); 
+        dd($territory_id);
         if(Auth::user()->role_id ==0){
             $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
@@ -980,7 +981,7 @@ class CustomerController extends Controller {
                 $customers->Where('tally_name', 'like', $term);
             }
             if (isset($territory_id) && !empty($territory_id)) {
-                $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
+                $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();                
                 foreach ($territory_locations as $loc){
                     array_push($loc_arr, $loc->location_id);
                 }
