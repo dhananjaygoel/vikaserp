@@ -759,6 +759,7 @@ $('.print_account_customers').click(function () {
     });
 });
 
+
 $('.print_inventory_price_list').click(function () {
 //    $('.print_inventory_price_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
