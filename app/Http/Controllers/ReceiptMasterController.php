@@ -51,14 +51,13 @@ class ReceiptMasterController extends Controller {
 //            ];
             $receipts = $q->paginate(20);
             $receipts->setPath('receipt-master');
-            return view('receipt_master.index')->with('receipts', $receipts)->with('from_date',$from_date)->with('to_date', $to_date);
+            return view('receipt_master.index')->with('receipts', $receipts)->with('from_date', $from_date)->with('to_date', $to_date);
         } else {
             $receipts = Receipt::orderBy('id', 'desc');
             $receipts = $receipts->paginate(20);
             $receipts->setPath('receipt-master');
             return view('receipt_master.index')->with('receipts', $receipts);
         }
-        
     }
 
     /**
@@ -301,7 +300,8 @@ class ReceiptMasterController extends Controller {
                         return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
                 } else
                     return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
-            }
+            } else
+                return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
         }else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while updating receipt.');
         }
@@ -332,19 +332,32 @@ class ReceiptMasterController extends Controller {
         if (isset($id) && !empty($id)) {
             if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
                 $customer_id = Input::get('customer_id');
-                $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
-                                ->where('receipt_id', '=', $id)->first();
-                if ($receipt->delete()) {
-                    $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
-                    if (count($receipt_id) > 0) {
+                if (Auth::user()->role_id == 4) {
+//                    $receipt = Customer_receipts::where('customer_id', '=', $customer_id)->get();
+                    $receipt = Receipt::with('customer_receipts')->find($id);
+                    if (count($receipt->customer_receipts) > 1) {
+                        $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
+                                        ->where('receipt_id', '=', $id)->first();
+                        $receipt->delete();
                         return redirect("receipt-master/$id/edit");
                     } else {
-                        $receiptObj = Receipt::find($id);
-                        $receiptObj->delete();
-                        return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
+                        return redirect("receipt-master/$id/edit")->with('error', 'Receipt could not delete.');
                     }
-                } else {
-                    return redirect("receipt-master/$id/edit");
+                } else if (Auth::user()->role_id == 1 || Auth::user()->role_id == 0) {
+                    $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
+                                    ->where('receipt_id', '=', $id)->first();
+                    if ($receipt->delete()) {
+                        $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
+                        if (count($receipt_id) > 0) {
+                            return redirect("receipt-master/$id/edit");
+                        } else {
+                            $receiptObj = Receipt::find($id);
+                            $receiptObj->delete();
+                            return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
+                        }
+                    } else {
+                        return redirect("receipt-master/$id/edit");
+                    }
                 }
             } else {
                 return redirect('receipt-master')->with('error', 'Please enter a correct password.');
