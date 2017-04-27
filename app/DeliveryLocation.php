@@ -31,9 +31,6 @@ class DeliveryLocation extends Model {
     public function states() {
         return $this->hasOne('App\States', 'id', 'state_id');
     }
-    
-    public function collection_users() {
-        return $this->hasMany('App\CollectionUser', 'location_id', 'delivery_location_id');
-    }
+       
 
 }

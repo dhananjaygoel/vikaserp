@@ -178,7 +178,7 @@ $(document).ready(function () {
         var price = $(this).val();
         $('#modal_price').attr("value",price);        
         $('#modal_price').val(price);                
-        $('#modal_price').data("id",product_id);
+        $('#modal_price').data("id",product_id);        
         $('#modal_price').attr("data-id",product_id);
         $('#prod-thickness').val(thickness);
         $('#prod-size').val(size);
@@ -190,10 +190,13 @@ $(document).ready(function () {
         var serial_no = $(this).data('serial_no');       
         var challan_id= $(this).data('challan_id');       
         $('#modal_price').attr("value",due_amount);
-        $('#modal-challan').attr("value",challan_id);
+        $('#modal_price').val(due_amount);
+        $('#modal_price').data("price",due_amount);
+        $('#modal_price').attr("data-price",due_amount);
+        $('#modal-challan').attr("value",challan_id);        
         $('#modal-challan').val(challan_id);                        
-        $('#serial-no').html(serial_no);                
-
+        $('#serial-no').html(serial_no);
+        $('#amount-error').css('display','none');
         $('#settle_due_modal').modal('show');
     });
     
@@ -239,6 +242,22 @@ $(document).ready(function () {
              },
              complete: function() {}
         })
+    });
+    
+    $(document).on('click','.modal-settle-price',function(event){
+        event.preventDefault();
+        var entered_price = $('#settle_price_form').find('#modal_price').val();
+        var due_amount = $('#settle_price_form').find('#modal_price').data('price');
+        if(entered_price>due_amount){
+            $('#amount-error').html('Entered amount is greater than Due amount');
+            $('#amount-error').css('display','block');
+        }
+        else if(entered_price==0){            
+            $('#amount-error').html('Please Enter valid amount');
+            $('#amount-error').css('display','block');
+        }else{
+            $('#settle_price_form').submit();
+        }               
     });
     
     $(document).on('change', '#loaded_by_chart_filter', function () {

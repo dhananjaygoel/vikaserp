@@ -92,9 +92,9 @@
                                         <th>Due Amount</th>
                                         <th>Unsettled Amount</th>
                                         <th>Location</th>
-<!--                                        @if(Auth::user()->role_id ==0)
+                                        @if(Auth::user()->role_id ==0)
                                             <th>Collection User</th>
-                                        @endif-->
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -109,9 +109,10 @@
                                             $challan_date = $challan->created_at;
                                             $due_date = date('Y-m-d', strtotime($challan_date. " + ".$credit_period." days"));
                                         }
-                                        $current_date = date('Y-m-d');
+                                        $current_date = date('Y-m-d'); 
+                                                                                
                                     ?>
-                                    @if($due_date>=$current_date)
+                                    @if($due_date<=$current_date)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td><a href="{{url('customer_details/'.$c->id)}}">@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif</a></td>
@@ -135,8 +136,24 @@
                                                         {{$location->area_name}}                                                         
                                                 @endif
                                             @endforeach
-                                        </td>                                        
-                                    </tr>
+                                        </td>
+                                        @if(Auth::user()->role_id ==0)
+                                        <td>
+                                            <?php 
+                                                if(isset($c['collection_user_location'])){
+                                                    $del_locations = $c['collection_user_location'];
+                                                    foreach($del_locations as $del_loc){
+                                                        if(isset($del_loc['collection_user'][0])){
+                                                            echo $del_loc['collection_user'][0]->first_name;
+                                                            echo " ";
+                                                            echo $del_loc['collection_user'][0]->last_name;
+                                                        }
+                                                    }
+                                                }
+                                            ?>
+                                        </td>
+                                        @endif
+                                    </tr>                                    
                                     @endif
                                 @endforeach
                                 </tbody>
