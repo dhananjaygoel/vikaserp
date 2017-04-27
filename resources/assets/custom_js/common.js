@@ -253,7 +253,7 @@ $(document).ready(function () {
             $('#amount-error').css('display','block');
         }
         else if(entered_price==0){            
-            $('#amount-error').html('Entered valid amount');
+            $('#amount-error').html('Please Enter valid amount');
             $('#amount-error').css('display','block');
         }else{
             $('#settle_price_form').submit();
