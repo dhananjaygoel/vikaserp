@@ -50,7 +50,7 @@
                                 <p>{{ $error }}</p>
                                 @endforeach
                             </div>
-                            @endif                            
+                            @endif
                             <div class="form-group">
                                 <select style="display:none" id="st_select_tally_user_master" name="tally_users">
                                     <option value="">Select Tally User</option>
@@ -59,17 +59,21 @@
                                             <option value="{{$tally_user->id}}">{{$tally_user->tally_name}}</option>
                                         @endforeach
                                     @endif
-                                </select>                                
+                                </select>
+                                <?php 
+                                    $old_tally_user = Input::old('tally_users');
+                                    $old_settle_amount = Input::old('settle_amount');
+                                ?>
                                 <div class="row edit_receipt" id="st-settle-container">
-                                @if(isset($customer_arr))
-                                @foreach($customer_arr as $key=>$customer)
+                                @if(isset($old_tally_user) && !empty($old_tally_user))
+                                    @foreach($old_tally_user as $key=>$otu)
                                     <div class="st-settle-block">
                                         <div class="col-md-12" style="margin:10px 0;padding:0">
                                             <div class="col-md-3">
                                                 <select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">
                                                     @if(isset($tally_users))
                                                     @foreach($tally_users as $tally_user)
-                                                        @if($tally_user->id == $key)
+                                                        @if($tally_user->id == $otu)
                                                             <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
                                                         @endif
                                                     @endforeach
@@ -77,7 +81,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 settle-input-elem">
-                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$key}}]" value="{{$customer}}" type="text">
+                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
                                             </div>
                                             <div class="col-md-1 action_btn">
                                                 <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
@@ -85,8 +89,35 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-                                @endif
+                                    @endforeach
+                                @else
+                                    @if(isset($customer_arr))
+                                    @foreach($customer_arr as $key=>$customer)
+                                        <div class="st-settle-block">
+                                            <div class="col-md-12" style="margin:10px 0;padding:0">
+                                                <div class="col-md-3">
+                                                    <select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">
+                                                        @if(isset($tally_users))
+                                                        @foreach($tally_users as $tally_user)
+                                                            @if($tally_user->id == $key)
+                                                                <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 settle-input-elem">
+                                                    <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$key}}]" value="{{$customer}}" type="text">
+                                                </div>
+                                                <div class="col-md-1 action_btn">
+                                                    <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
+                                                    <a href="javascript:void(0)" style="border-bottom:none" class="btn st-border-bottom-none delete_customer_receipts" data-receipt_id='{{$receipt_id}}' data-customer_id='{{$key}}'><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    @endif
+                                @endif                                
                                 </div>
                             </div>
                             <div class="form-group">
@@ -97,13 +128,21 @@
                                             @if(isset($tally_users) && $type == 1)
                                                 <option value="">Select Tally User</option>
                                                 @foreach($tally_users as $tally_user)
-                                                    <option value="{{$tally_user->id}}" @if(isset($debited_id) && $debited_id == $tally_user->id) selected @endif>{{$tally_user->tally_name}}</option>
+                                                    @if(isset($old_settle_amount))
+                                                        <option value="{{$tally_user->id}}" {!! Input::old('debited_to') ? (Input::old('debited_to') == $tally_user->id ? 'selected' : '') : '' !!}>{{$tally_user->tally_name}}</option>
+                                                    @else
+                                                        <option value="{{$tally_user->id}}" @if(isset($debited_id) && $debited_id == $tally_user->id) selected @endif>{{$tally_user->tally_name}}</option>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                             @if(isset($debited_to) && $type != 1)
                                                 <option value="">Select {{$val}} List</option>
                                                 @foreach($debited_to as $debite)
-                                                    <option value="{{$debite->id}}" @if(isset($debited_id) && $debited_id == $debite->id) selected @endif>{{$debite->debited_to}}</option>
+                                                    @if(isset($old_settle_amount))
+                                                        <option value="{{$debite->id}}" {!! Input::old('debited_to') ? (Input::old('debited_to') == $debite->id ? 'selected' : '') : '' !!}>{{$debite->debited_to}}</option>
+                                                    @else
+                                                        <option value="{{$debite->id}}" @if(isset($debited_id) && $debited_id == $debite->id) selected @endif>{{$debite->debited_to}}</option>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </select>
