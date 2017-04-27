@@ -110,7 +110,11 @@
                                             $due_date = date('Y-m-d', strtotime($challan_date. " + ".$credit_period." days"));
                                         }
                                         $current_date = date('Y-m-d'); 
-                                                                                
+                                        $limit_date = date('Y-m-d');
+//                                        if(Input::get('date_filter')!=""){
+//                                            $days = Input::get('date_filter');
+//                                            $limit_date = date('Y-m-d', strtotime($current_date. " + ".$days." days"));
+//                                        }                                        
                                     ?>
                                     @if($due_date<=$current_date)
                                     <tr>
