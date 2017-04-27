@@ -92,19 +92,22 @@
                                                 $unsettled_amount=$unsettled_amount+$receipt->settled_amount;
                                             }
                                         ?>
+                                        <?php
+                                            $total_due_amount=0;
+                                            $settled_challan_amount=0;
+                                            foreach($customer['delivery_challan'] as $challan){
+                                                $total_due_amount=$total_due_amount+$challan->grand_price;
+                                                $settled_challan_amount= $settled_challan_amount+$challan->settle_amount;
+                                            }
+                                            $total_due_amount=$total_due_amount-$settled_challan_amount;
+                                            $unsettled_amount= $unsettled_amount-$settled_challan_amount;
+                                        ?>
                                         <td><b>Unsettled Amount:</b> 
                                             @if(isset($unsettled_amount))
                                                 {{$unsettled_amount}}
                                             @endif
                                         </td>
-                                    </tr>
-                                    <?php
-                                        $total_due_amount=0;
-                                        foreach($customer['delivery_challan'] as $challan){
-                                            $total_due_amount=$total_due_amount+$challan->grand_price;                                            
-                                        }                                                                                
-                                                                                
-                                    ?>
+                                    </tr>                                    
                                     <tr>
                                         <td><b>@if(Auth::user()->role_id ==6 )
                                                     Total Due Amount: 
@@ -132,7 +135,9 @@
                                         <th>Due date</th>
                                         <th>Total Amount</th>
                                         <th>Settled Amount</th>
-                                        <th>Due Payment</th>                                        
+                                        @if(Input::get('settle_filter')!='Settled')
+                                            <th>Due Payment</th>
+                                        @endif
                                         <th>Action</th>                                        
                                     </tr>
                                 </thead>
@@ -164,9 +169,11 @@
                                             <td>
                                                  {{$settled_amount}}
                                             </td>
+                                            @if(Input::get('settle_filter')!='Settled')
                                             <td>
                                                 {{$total_due_amount-$settled_amount}}
                                             </td>
+                                            @endif
                                             @if(Auth::user()->role_id ==6 )
                                             <td>
                                                 <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >

@@ -734,10 +734,17 @@ $('.print_inventory_report_list').click(function () {
 });
 
 $('.print_account_customers').click(function () { 
-    var base_url = $('#baseurl').attr('name');    
+    var base_url = $('#baseurl').attr('name');
+    var search = $('#due-payment-form').find('#search_filter').val();
+    var territory_filter = $('#due-payment-form').find('#territory_filter').val();
+    var date_filter = $('#due-payment-form').find('#date_filter').val();
+    var location_filter = $('#due-payment-form').find('#location_filter').val();    
     $.ajax({
         type: "GET",
         url: base_url + '/print_account_customers',
+        data: {
+                search: search,territory_filter:territory_filter,date_filter:date_filter,location_filter:location_filter,
+            },
         success: function (data) {
             $('#print_account_customers').modal('hide');
             var printWindow = window.open('', '');
@@ -751,6 +758,7 @@ $('.print_account_customers').click(function () {
         }
     });
 });
+
 
 $('.print_inventory_price_list').click(function () {
 //    $('.print_inventory_price_list').html('Please wait..').prop('disabled', 'disabled');
