@@ -98,7 +98,7 @@
                                         <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Mobile</th>
-                                        <th>Territory</th>
+                                        <!--<th>Territory</th>-->
                                         <th>Location</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
@@ -112,11 +112,11 @@
                                         <td>{{ $user->last_name }}</td>
                                         <td>{{ $user->email }}</td>                
                                         <td>{{ $user->mobile_number }}</td>
-                                        <td>
+<!--                                        <td>
                                             <?php
-                                            if(isset($user->locations[0])){
-                                                $territory_id=$user->locations[0]->teritory_id;
-                                            }                                            
+//                                            if(isset($user->locations[0])){
+//                                                $territory_id=$user->locations[0]->teritory_id;
+//                                            }                                            
                                             ?>
                                             @if(isset($territory_id) && !empty($territory_id))
                                             @foreach($territories as $territory)
@@ -125,7 +125,7 @@
                                                 @endif
                                             @endforeach
                                             @endif
-                                        </td>
+                                        </td>-->
                                         <td>
                                             {{count($user->locations)}}
                                         </td>
