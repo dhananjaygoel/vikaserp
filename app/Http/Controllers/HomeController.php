@@ -1043,6 +1043,91 @@ class HomeController extends Controller {
     }
 
     /**
+     * API SMS delievry order
+     */
+    function deliverychallan_sms() {
+        $data = Input::all();
+        if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product')) {
+            $delivery_challans = (json_decode($data['delivery_challan']));
+            $customers = (json_decode($data['customer']));
+            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
+
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $delivery_challans;
+            }
+
+            if (isset($delivery_challans[0]->sms_role) && $delivery_challans[0]->sms_role == '1') {
+                $message_body_cust_first = "Your material has been dispatched as follows1\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has dispatched material for";
+            } elseif (isset($delivery_challans[0]->sms_role) && $delivery_challans[0]->sms_role == '2') {
+                $message_body_cust_first = "Your material has been edited as follows\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has edited material for";
+            }
+
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($deliverychallanproducts as $product_data) {
+
+                    $str .= $s = $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $do = DeliveryOrder::find($delivery_challans[0]->server_del_order_id);
+
+                $str .= $s .= "\nVehicle No. " . (!empty($do->vehicle_number) ? $do->vehicle_number : 'N/A') .
+                        ", Drv No. " . (!empty($do->driver_contact_no) ? $do->driver_contact_no : 'N/A') .
+                        ", Quantity " . (isset($delivery_challans[0]->total_quantity) ? $delivery_challans[0]->total_quantity : $total_quantity) .
+                        ", Amount " . (isset($delivery_challans[0]->grand_price) ? $delivery_challans[0]->grand_price : 'N/A') .
+                        ", Due by: " . date("j F, Y", strtotime($do->expected_delivery_date)) .
+                        "\nVIKAS ASSOCIATES";
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->customer_mobile;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($delivery_challans[0]->customer_server_id > 0) {
+                $customer = Customer::with('manager')->find($delivery_challans[0]->customer_server_id);
+                if (!empty($customer->manager)) {
+                   $str = "Dear " .$customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first." " . $customer->owner_name . " as follows\n" . $s;
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }       
+        return ;
+    }
+
+    /**
      * App sync delievry challan
      */
     public function appSyncDeliveryChallan() {
@@ -1052,7 +1137,13 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('delivery_challan')) {
             $delivery_challans = (json_decode($data['delivery_challan']));
+            foreach ($delivery_challans as $delivery_challan) {
+                if (isset($delivery_challan->send_sms) && $delivery_challan->send_sms == 'true') {
+                    $this->deliverychallan_sms();
+                }
+            }
         }
+        exit;
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
         }
@@ -1247,11 +1338,10 @@ class HomeController extends Controller {
 //                    }
                 }
             }
-           
         } else {
-           
-        }       
-        return ;
+            
+        }
+        return;
     }
 
     /**
@@ -1270,7 +1360,7 @@ class HomeController extends Controller {
                 }
             }
         }
-        
+
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
         }
@@ -1514,12 +1604,12 @@ class HomeController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-//                    if (SEND_SMS === true) {
-//                        $ch = curl_init($url);
-//                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                        $curl_scraped_page = curl_exec($ch);
-//                        curl_close($ch);
-//                    }
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
 
                     if ($orders[0]->customer_server_id > 0) {
                         $customer = Customer::with('manager')->find($orders[0]->customer_server_id);
@@ -1533,12 +1623,12 @@ class HomeController extends Controller {
                             }
                             $msg = urlencode($str);
                             $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-//                            if (SEND_SMS === true) {
-//                                $ch = curl_init($url);
-//                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//                                $curl_scraped_page = curl_exec($ch);
-//                                curl_close($ch);
-//                            }
+                            if (SEND_SMS === true) {
+                                $ch = curl_init($url);
+                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                $curl_scraped_page = curl_exec($ch);
+                                curl_close($ch);
+                            }
                         }
                     }
                 }
@@ -1546,8 +1636,6 @@ class HomeController extends Controller {
         } else {
             
         }
-
-
         return;
     }
 
@@ -4361,65 +4449,65 @@ class HomeController extends Controller {
       | -------------------------------------------
      */
 
-    function appsyncdeliveryorder_sms() {
-
-        $data = Input::all();
-
-        if (Input::has('delivery_order') && Input::has('customer') && Input::has('delivery_order_product') && Input::has('user') && Input::has('sendsms')) {
-
-
-            $delivery_orders = (json_decode($data['delivery_order']));
-            $customers = (json_decode($data['customer']));
-            $deliveryorderproducts = (json_decode($data['delivery_order_product']));
-            $user = (json_decode($data['user']));
-            $customer_id = $customers[0]->id;
-
-            $send_sms = Input::get('sendsms');
-            if ($send_sms == 'true') {
-
-                $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "'\nDT" . date("j M, Y") . "\nYour DO has been created as follows ";
-                    foreach ($deliveryorderproducts as $product_data) {
-
-                        $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
-
-
-                        if (isset($product_details['order_product_details']->alias_name) && $product_details['order_product_details']->alias_name != "") {
-                            $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
-                        } else {
-                            $result['send_message'] = "Error";
-                            $result['reasons'] = "Delivery Order not found.";
-                            return json_encode($result);
-                        }
-
-                        $total_quantity = $total_quantity + $product_data->quantity;
-                    }
-                    $str .= " Trk No. " . $delivery_orders[0]->vehicle_number . ", Drv No. " . $delivery_orders[0]->driver_contact_no . ". \nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer->phone_number1;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                }
-            }
-            $result['send_message'] = "Success";
-            $result['message_body'] = $str;
-        } else {
-            $result['send_message'] = "Error";
-        }
-
-        return json_encode($result);
-    }
+//    function appsyncdeliveryorder_sms() {
+//
+//        $data = Input::all();
+//
+//        if (Input::has('delivery_order') && Input::has('customer') && Input::has('delivery_order_product') && Input::has('user') && Input::has('sendsms')) {
+//
+//
+//            $delivery_orders = (json_decode($data['delivery_order']));
+//            $customers = (json_decode($data['customer']));
+//            $deliveryorderproducts = (json_decode($data['delivery_order_product']));
+//            $user = (json_decode($data['user']));
+//            $customer_id = $customers[0]->id;
+//
+//            $send_sms = Input::get('sendsms');
+//            if ($send_sms == 'true') {
+//
+//                $customer = Customer::with('manager')->find($customer_id);
+//                if (count($customer) > 0) {
+//                    $total_quantity = '';
+//                    $str = "Dear '" . $customer->owner_name . "'\nDT" . date("j M, Y") . "\nYour DO has been created as follows ";
+//                    foreach ($deliveryorderproducts as $product_data) {
+//
+//                        $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
+//
+//
+//                        if (isset($product_details['order_product_details']->alias_name) && $product_details['order_product_details']->alias_name != "") {
+//                            $str .= $product_details['order_product_details']->alias_name . ' - ' . $product_data->quantity . ',';
+//                        } else {
+//                            $result['send_message'] = "Error";
+//                            $result['reasons'] = "Delivery Order not found.";
+//                            return json_encode($result);
+//                        }
+//
+//                        $total_quantity = $total_quantity + $product_data->quantity;
+//                    }
+//                    $str .= " Trk No. " . $delivery_orders[0]->vehicle_number . ", Drv No. " . $delivery_orders[0]->driver_contact_no . ". \nVIKAS ASSOCIATES";
+//                    if (App::environment('development')) {
+//                        $phone_number = Config::get('smsdata.send_sms_to');
+//                    } else {
+//                        $phone_number = $customer->phone_number1;
+//                    }
+//                    $msg = urlencode($str);
+//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+//                    if (SEND_SMS === true) {
+//                        $ch = curl_init($url);
+//                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                        $curl_scraped_page = curl_exec($ch);
+//                        curl_close($ch);
+//                    }
+//                }
+//            }
+//            $result['send_message'] = "Success";
+//            $result['message_body'] = $str;
+//        } else {
+//            $result['send_message'] = "Error";
+//        }
+//
+//        return json_encode($result);
+//    }
 
     /*
       | ------------------- -----------------------
@@ -4427,81 +4515,72 @@ class HomeController extends Controller {
       | -------------------------------------------
      */
 
-    function appsyncdeliverychallan_sms() {
-        $data = Input::all();
-
-
-//         $deliveryorder = DeliveryChallan::with('customer','all_order_products')->find(1);
-//        echo "<pre>";
-//        print_r(json_encode($deliveryorder));
-//        echo "</pre>";
-//        exit;
-
-
-        if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product') && Input::has('user') && Input::has('sendsms')) {
-            $delivery_challans = (json_decode($data['delivery_challan']));
-            $customers = (json_decode($data['customer']));
-            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
-            $user = (json_decode($data['user']));
-            $customer_id = $customers[0]->id;
-
-
-            $send_sms = Input::get('sendsms');
-            if ($send_sms == 'true') {
-
-                $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
-                    $total_quantity = '';
-                    $total_actual_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
-                    foreach ($deliverychallanproducts as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-
-                        $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
-                        $total_actual_quantity = $total_actual_quantity + $product_data->actual_quantity;
-                    }
-
-                    $delivery_order = DeliveryOrder::find($delivery_challans[0]->delivery_order_id);
-
-                    if (isset($delivery_order)) {
-                        $str .= " Trk No. " . $delivery_order->vehicle_number .
-                                ", Drv No. " . $delivery_order->driver_contact_no .
-//                            ", Qty " . $product_data->sum('actual_quantity') .
-                                ", Qty " . $total_actual_quantity .
-                                ", Amt " . $delivery_challans[0]->grand_price .
-                                ", Due by: " . date("jS F, Y", strtotime($delivery_order->expected_delivery_date)) .
-                                "\nVIKAS ASSOCIATES";
-                    } else {
-                        $result['send_message'] = "Error";
-                        $result['reasons'] = "Delivery Challan not found.";
-                        return json_encode($result);
-                    }
-
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer->phone_number1;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                }
-            }
-            $result['send_message'] = "Success";
-            $result['message_body'] = $str;
-        } else {
-            $result['send_message'] = "Error";
-        }
-
-        return json_encode($result);
-    }
+//    function appsyncdeliverychallan_sms() {
+//        $data = Input::all();
+//        if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product') && Input::has('user') && Input::has('sendsms')) {
+//            $delivery_challans = (json_decode($data['delivery_challan']));
+//            $customers = (json_decode($data['customer']));
+//            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
+//            $user = (json_decode($data['user']));
+//            $customer_id = $customers[0]->id;
+//
+//
+//            $send_sms = Input::get('sendsms');
+//            if ($send_sms == 'true') {
+//
+//                $customer = Customer::with('manager')->find($customer_id);
+//                if (count($customer) > 0) {
+//                    $total_quantity = '';
+//                    $total_actual_quantity = '';
+//                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
+//                    foreach ($deliverychallanproducts as $product_data) {
+//                        $product = ProductSubCategory::find($product_data->product_category_id);
+//
+//                        $product_details = AllOrderProducts::with('order_product_details')->find($product_data->id);
+////                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+//                        $total_quantity = $total_quantity + $product_data->quantity;
+//                        $total_actual_quantity = $total_actual_quantity + $product_data->actual_quantity;
+//                    }
+//
+//                    $delivery_order = DeliveryOrder::find($delivery_challans[0]->delivery_order_id);
+//
+//                    if (isset($delivery_order)) {
+//                        $str .= " Trk No. " . $delivery_order->vehicle_number .
+//                                ", Drv No. " . $delivery_order->driver_contact_no .
+////                            ", Qty " . $product_data->sum('actual_quantity') .
+//                                ", Qty " . $total_actual_quantity .
+//                                ", Amt " . $delivery_challans[0]->grand_price .
+//                                ", Due by: " . date("jS F, Y", strtotime($delivery_order->expected_delivery_date)) .
+//                                "\nVIKAS ASSOCIATES";
+//                    } else {
+//                        $result['send_message'] = "Error";
+//                        $result['reasons'] = "Delivery Challan not found.";
+//                        return json_encode($result);
+//                    }
+//
+//                    if (App::environment('development')) {
+//                        $phone_number = Config::get('smsdata.send_sms_to');
+//                    } else {
+//                        $phone_number = $customer->phone_number1;
+//                    }
+//                    $msg = urlencode($str);
+//                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+//                    if (SEND_SMS === true) {
+//                        $ch = curl_init($url);
+//                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                        $curl_scraped_page = curl_exec($ch);
+//                        curl_close($ch);
+//                    }
+//                }
+//            }
+//            $result['send_message'] = "Success";
+//            $result['message_body'] = $str;
+//        } else {
+//            $result['send_message'] = "Error";
+//        }
+//
+//        return json_encode($result);
+//    }
 
     /*
      * ------------------- ------------------------

@@ -461,7 +461,7 @@ class DeliveryChallanController extends Controller {
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been edited as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
-//                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
