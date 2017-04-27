@@ -48,7 +48,7 @@ table {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $i = 1;
+                                    $i =1;
                                     ?>
                                     @foreach($customers as $c)
                                     <?php                                        
@@ -68,7 +68,7 @@ table {
                                     @if($due_date<=$current_date)
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
-                                        <td>@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}} @endif</a></td>
+                                        <td>@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@endif</td>
                                            <?php
                                                 $total_due_amount=0;
                                                 $unsettled_amount=0;
