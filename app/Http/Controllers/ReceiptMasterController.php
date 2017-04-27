@@ -43,17 +43,22 @@ class ReceiptMasterController extends Controller {
                 $q->where('created_at', '>=', $date1);
                 $q->where('created_at', '<=', $date2 . ' 23:59:59');
             }
-            $search_dates = [
-                'export_from_date' => Input::get('search_from_date'),
-                'export_to_date' => Input::get('search_to_date')
-            ];
+            $from_date = Input::get('search_from_date');
+            $to_date = Input::get('search_to_date');
+//            $search_dates = [
+//                'export_from_date' => Input::get('search_from_date'),
+//                'export_to_date' => Input::get('search_to_date')
+//            ];
             $receipts = $q->paginate(20);
+            $receipts->setPath('receipt-master');
+            return view('receipt_master.index')->with('receipts', $receipts)->with('from_date',$from_date)->with('to_date', $to_date);
         } else {
             $receipts = Receipt::orderBy('id', 'desc');
             $receipts = $receipts->paginate(20);
+            $receipts->setPath('receipt-master');
+            return view('receipt_master.index')->with('receipts', $receipts);
         }
-        $receipts->setPath('receipt-master');
-        return view('receipt_master.index')->with('receipts', $receipts);
+        
     }
 
     /**
@@ -97,7 +102,7 @@ class ReceiptMasterController extends Controller {
      */
     public function create_cash_receipt() {
         $type = 3; //cash
-        $debited_to = Debited_to::where('tally_name', '!=', '')->whereNotNull('tally_name')->where('debited_to_type', '=', 3)->get();
+        $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
         $tally_users = Customer::select('id', 'tally_name')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
     }
@@ -113,13 +118,26 @@ class ReceiptMasterController extends Controller {
             $settle_amount = Input::get('settle_amount');
             $debited_to = Input::get('debited_to');
             $receipt_type = Input::get('receipt_type');
-            $validator = Validator::make($request->input(), Customer_receipts::$ValidateNewReceipt, Customer_receipts::$validatorMessages);            
+            $validator = Validator::make($request->input(), Customer_receipts::$ValidateNewReceipt, Customer_receipts::$validatorMessages);
             foreach ($tally_users as $key => $tallyuser) {
                 if ($tallyuser == '') {
-                $validator->after(function($validator) {              
+                    $validator->after(function($validator) {
                         $validator->errors()->add('tally_users', 'Please select tally user.');
                     });
                 }
+            }
+            if (isset($settle_amount) && !empty($settle_amount)) {
+                foreach ($settle_amount as $key => $settleamount) {
+                    if ($settleamount == '') {
+                        $validator->after(function($validator) {
+                            $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                        });
+                    }
+                }
+            } else {
+                $validator->after(function($validator) {
+                    $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                });
             }
             if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator->errors());
@@ -231,6 +249,30 @@ class ReceiptMasterController extends Controller {
                 $settle_amount = Input::get('settle_amount');
                 $debited_to = Input::get('debited_to');
                 $receipt_type = Input::get('receipt_type');
+                $validator = Validator::make($request->input(), Customer_receipts::$ValidateNewReceipt, Customer_receipts::$validatorMessages);
+                foreach ($tally_users as $key => $tallyuser) {
+                    if ($tallyuser == '') {
+                        $validator->after(function($validator) {
+                            $validator->errors()->add('tally_users', 'Please select tally user.');
+                        });
+                    }
+                }
+                if (isset($settle_amount) && !empty($settle_amount)) {
+                    foreach ($settle_amount as $key => $settleamount) {
+                        if ($settleamount == '') {
+                            $validator->after(function($validator) {
+                                $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                            });
+                        }
+                    }
+                } else {
+                    $validator->after(function($validator) {
+                        $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                    });
+                }
+                if ($validator->fails()) {
+                    return redirect()->back()->withInput()->withErrors($validator->errors());
+                }
                 if (isset($receiptObj->customer_receipts)) {
                     foreach ($receiptObj->customer_receipts as $customers) {
                         $customerObj = Customer_receipts::find($customers->id);
@@ -317,14 +359,15 @@ class ReceiptMasterController extends Controller {
             $customer_id = Input::get('customer_id');
             if (isset($challan_id)) {
                 $challan_obj = DeliveryChallan::find($challan_id);
-                if($challan_obj->settle_amount && $challan_obj->settle_amount!=""){
-                     $pre_amount = $challan_obj->settle_amount;
-                     $curr_amount = sprintf("%.2f", $unsettle_amount);
-                     $total_amount = $pre_amount + $curr_amount;
-                }else{
+                if ($challan_obj->settle_amount && $challan_obj->settle_amount != "") {
+                    $pre_amount = $challan_obj->settle_amount;
+                    $curr_amount = sprintf("%.2f", $unsettle_amount);
+                    $total_amount = $pre_amount + $curr_amount;
+                } else {
                     $total_amount = sprintf("%.2f", $unsettle_amount);
-                }      
-                $challan_obj->settle_amount = sprintf("%.2f", $total_amount);;
+                }
+                $challan_obj->settle_amount = sprintf("%.2f", $total_amount);
+                ;
                 $challan_obj->save();
             }
         }
@@ -332,4 +375,3 @@ class ReceiptMasterController extends Controller {
     }
 
 }
-
