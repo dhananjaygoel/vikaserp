@@ -63,8 +63,6 @@
                                 <?php 
                                     $old_tally_user = Input::old('tally_users');
                                     $old_settle_amount = Input::old('settle_amount');
-                                    print_r($old_settle_amount);
-                                    echo (isset($old_settle_amount));
                                 ?>
                                 <div class="row edit_receipt" id="st-settle-container">
                                 @if(isset($old_tally_user) && !empty($old_tally_user))
