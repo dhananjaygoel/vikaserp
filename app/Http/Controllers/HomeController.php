@@ -1702,16 +1702,131 @@ class HomeController extends Controller {
         }
     }
 
+    
+    
+    /**
+     * API SMS Inquiry - Add
+    */    
+    function inquiry_sms() {
+        $data = Input::all();
+        if (Input::has('inquiry') && Input::has('customer') && Input::has('inquiry_product')) {
+            $inquiries = (json_decode($data['inquiry']));
+            $customers = (json_decode($data['customer']));
+            $inquiryproduct = (json_decode($data['inquiry_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $inquiries;
+            }
+            
+            if (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '1') {
+               
+                 $message_body_cust_first = "Your inquiry has been logged for following";      
+                 $message_body_cust_last = "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
+                 $message_body_manager_first = "Admin has logged an inquiry for";      
+                        
+            }elseif (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '2') {
+                 $message_body_cust_first = "Your inquiry has been edited for following";  
+                  $message_body_cust_last = "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";  
+                  $message_body_manager_first = "Admin has edited an enquiry for"; 
+                        
+            }elseif (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '3') {
+                 $message_body_cust_first = "Admin has approved your inquiry for following items."; 
+                  $message_body_cust_last = "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES"; 
+                  $message_body_manager_first = "Admin has approved an enquiry for"; 
+                        
+            }elseif (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '4') {
+                 $message_body_cust_first = "Admin has rejected your inquiry for following items.";
+                  $message_body_cust_last = "VIKAS ASSOCIATES";
+                  $message_body_manager_first = "Admin has rejected an inquiry for"; 
+                        
+            }
+            
+                        
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n".$message_body_cust_first." \n";
+                foreach ($inquiryproduct as $product_data) {
+
+                    if (isset($product_data->product_name)) {
+                        $product_size = ProductSubCategory::find($product_data->id);
+
+                        $str .= $product_data->product_name . '- ' . $product_data->quantity . ', ';
+                        if ($product_data->unit_id == 1) {
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        }
+                        if ($product_data->unit_id == 2) {
+                            $total_quantity = $total_quantity + $product_data->quantity * $product_size->weight;
+                        }
+                        if ($product_data->unit_id == 3) {
+                            $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
+                    } else {
+                        $result['send_message'] = "Error";
+                        $result['reasons'] = "Inquiry not found.";
+                        return json_encode($result);
+                    }
+                }
+                $datetime = $inquiries[0]->expected_delivery_date;
+
+                $str .= $message_body_cust_last;
+                if (App::environment('development')) {
+                    $phone_number = \Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->customer_mobile;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($inquiries[0]->customer_server_id > 0) {
+
+                $customer = Customer::with('manager')->find($inquiries[0]->customer_server_id);
+                if (!empty($customer->manager)) {
+                    $str = "Dear '" . $customer->manager->first_name . "', " . $message_body_manager_first." " . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+
+                    if (App::environment('development')) {
+                        $phone_number = \Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+            
+        } else {
+            return false;
+        }
+        
+        return true;
+    }
+
     /**
      * App sync inquiries
      */
-// All Functions added by user 157 for android request //
-//    public function appsyncinquiry($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
     public function appsyncinquiry() {
 
         $data = Input::all();
         if (Input::has('inquiry')) {
             $inquiries = (json_decode($data['inquiry']));
+            foreach ($inquiries as $inquiry) {
+                if (isset($inquiry->send_sms) && $inquiry->send_sms == 'true') {
+                     $this->inquiry_sms();                    
+                }
+            }            
         }
 //        else {
 //            if ($inquiryies != NULL) {
@@ -4708,7 +4823,7 @@ class HomeController extends Controller {
 
                     array_push($loader_array, $loaders);
                     $all_kg = $deliver_sum / count($loaders);
-                    $all_tonnage = $all_kg/1000;
+                    $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
@@ -4735,7 +4850,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => round($data['tonnage'],2),
+                            'tonnage' => round($data['tonnage'], 2),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
@@ -4852,7 +4967,7 @@ class HomeController extends Controller {
                     array_push($arr, $deliver_sum);
                     array_push($loader_array, $loaders);
                     $all_kg = $deliver_sum / count($loaders);
-                    $all_tonnage = $all_kg/1000;
+                    $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['tonnage'] = $all_tonnage;
@@ -4875,7 +4990,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'loader_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => round($data['tonnage'],2)
+                            'tonnage' => round($data['tonnage'], 2)
                         ];
                     }
                 }
