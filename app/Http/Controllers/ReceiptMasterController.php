@@ -302,7 +302,14 @@ class ReceiptMasterController extends Controller {
             $customer_id = Input::get('customer_id');
             if (isset($challan_id)) {
                 $challan_obj = DeliveryChallan::find($challan_id);
-                $challan_obj->settle_amount = sprintf("%.2f", $unsettle_amount);
+                if($challan_obj->settle_amount && $challan_obj->settle_amount!=""){
+                     $pre_amount = $challan_obj->settle_amount;
+                     $curr_amount = sprintf("%.2f", $unsettle_amount);
+                     $total_amount = $pre_amount + $curr_amount;
+                }else{
+                    $total_amount = sprintf("%.2f", $unsettle_amount);
+                }      
+                $challan_obj->settle_amount = sprintf("%.2f", $total_amount);;
                 $challan_obj->save();
             }
         }
