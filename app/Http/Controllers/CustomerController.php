@@ -966,7 +966,7 @@ class CustomerController extends Controller {
         $customers = '';
         $loc_arr = [];
         $search = Input::get('search');
-        $territory_id = Input::get('territory_filter');
+        $territory_id = Input::get('territory_filter');        
         $location_id = Input::get('location_filter');
         $date_filter = Input::get('date_filter');        
         if(Auth::user()->role_id ==0){
