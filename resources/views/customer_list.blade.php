@@ -10,15 +10,15 @@
                     <li class="active"><span>Customers</span></li>
                 </ol>
    
-                <div class="filter-block">                    
-                   <form action="{{url('due-payment')}}" method="GET" id="orderForm">
+                <div class="filter-block">
+                   <form action="{{url('due-payment')}}" method="GET" id="due-payment-form">
                         <h1 class="pull-left">Customers</h1> 
                         <a href="" id="print-account-customers" data-toggle="modal" data-target="#print_acount_customers" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
                             Print
                         </a>
                         <div class="col-md-2 pull-right">
                             @if(Auth::user()->role_id ==6 ||Auth::user()->role_id ==0)
-                            <select class="form-control" id="user_filter3" name="location_filter" onchange="this.form.submit();">
+                            <select class="form-control" id="location_filter" name="location_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Select Location--</option>
                                 @foreach($delivery_location as $location)
                                 @if($location->id!=0)
@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-md-2 pull-right" style="padding: 0; margin-right: 15px">
                             @if(Auth::user()->role_id ==6 ||Auth::user()->role_id ==0)                            
-                            <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
+                            <select class="form-control" id="territory_filter" name="territory_filter" onchange="this.form.submit();">
                                 <option value="" selected="">--Select Territory--</option>
                                 @foreach($territories as $territory)
                                 @if($territory->id!=0)
@@ -51,7 +51,7 @@
                         </div>
                         <div class="input-group col-md-2 pull-right" style="margin-right: 10px">
                             @if(Auth::user()->role_id ==6 ||Auth::user()->role_id ==0)
-                            <input class="form-control order_filter " placeholder="Customer Name" name="search" value="{{Input::get('search')}}"  type="text">
+                            <input class="form-control " id="search_filter" placeholder="Customer Name" name="search" value="{{Input::get('search')}}"  type="text">
                             <input type='hidden' placeholder="Customer Name" value="{{Input::get('size_filter')}}" id="order_size_temp" autocomplete="off" name="size_filter" type="text">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" onclick="javascript:document.getElementById('orderForm').submit();">
