@@ -58,4 +58,7 @@ class CollectionUser extends Model {
         return $this->hasOne('App\DeliveryLocation', 'id', 'location_id');
     }
 
+    public function collection_user() {
+        return $this->hasMany('App\User', 'id', 'user_id');
+    }
 }

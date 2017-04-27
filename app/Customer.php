@@ -42,6 +42,10 @@ class Customer extends Model {
     public function delivery_challan() {
         return $this->hasMany('App\DeliveryChallan', 'customer_id', 'id');
     }
+    
+    public function collection_user_location() {
+        return $this->hasMany('App\CollectionUser', 'location_id', 'delivery_location_id');
+    }
 
     public function city() {
         return $this->hasOne('App\City', 'id', 'city');
