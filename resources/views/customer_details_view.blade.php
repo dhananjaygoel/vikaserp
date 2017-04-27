@@ -35,10 +35,10 @@
                         </div>
                         @endif
                         <div class="col-md-2 pull-right">                              
-                            <select class="form-control" id="user_filter3" name="date_filter" onchange="this.form.submit();">
-                                <option value="As of Today" >As of Today</option>
-                                <option value="3 days" >3 days</option>
-                                <option value="A Week" >A Week</option>
+                            <select class="form-control" id="date_filter" name="date_filter" onchange="this.form.submit();">
+                                <option value="1" <?php if(Input::get('date_filter')==1) echo "selected=''"; ?>>As of Today</option>
+                                <option value="3" <?php if(Input::get('date_filter')==3) echo "selected=''"; ?>>3 days</option>
+                                <option value="7" <?php if(Input::get('date_filter')==7) echo "selected=''"; ?>>A Week</option>
                             </select>                            
                         </div>                        
                     </form>                    
