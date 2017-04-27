@@ -217,20 +217,21 @@
                 <div class="modal-body text-center">
                         <h4 id="amount_label">Enter amount to settle For <span id="serial-no"></span></h4>
                         <div class=" modal-settle-div text-center">
-                            <input class="form-control" id="modal_price" name="model_price"  onkeypress=" return numbersOnly(this,event,true,true);">                            
+                            <input class="form-control" id="modal_price" name="model_price" data-price="" onkeypress=" return numbersOnly(this,event,true,true);">
                             <input type="hidden" id="modal-challan" name="challan_id">
                             <input type="hidden" value="{{$customer->id}}" name="customer_id">
                         </div>
+                        <span id="amount-error" style="display:none; color:red"></span>
                 </div>
                 <div class="modal-footer">
                     @if(Auth::user()->role_id ==6)
-                        <button class="btn btn-primary modal-price-save" >Settle</button>
+                        <button class="btn btn-primary modal-settle-price" >Settle</button>
                     @endif
                     @if(Auth::user()->role_id ==0)
-                        @if(Input::get('settle_filter')=='Settled'))
-                            <button class="btn btn-primary modal-price-save" >Update</button>
+                        @if(Input::get('settle_filter')=='Settled')
+                            <button class="btn btn-primary modal-settle-price" >Update</button>
                         @else
-                            <button class="btn btn-primary modal-price-save" >Settle</button>
+                            <button class="btn btn-primary modal-settle-price" >Settle</button>
                         @endif
                     @endif
                     <button class="btn btn-primary" data-dismiss="modal">Back</button>
