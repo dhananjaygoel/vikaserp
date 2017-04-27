@@ -24,7 +24,7 @@ class Customer_receipts extends Model {
 
     public static $validatorMessages = array(
         'tally_users.required' => 'Tally user is required.',
-        'settle_amount.required' => 'settled amount is required.',
+        'settle_amount.required' => 'Settled amount is required.',
         'debited_to.required' => 'Debited to is required.',
     );
     public static $ValidateNewReceipt = array(
