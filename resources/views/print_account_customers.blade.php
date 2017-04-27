@@ -57,7 +57,7 @@ table {
             }
             $current_date = date('Y-m-d');
         ?>
-        @if($due_date>=$current_date)
+        @if($due_date<=$current_date)
         <tr>
             <td class="col-md-1">{{$i++}}</td>
             <td>@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@endif</a></td>
