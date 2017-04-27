@@ -113,6 +113,17 @@ class ReceiptMasterController extends Controller {
             $settle_amount = Input::get('settle_amount');
             $debited_to = Input::get('debited_to');
             $receipt_type = Input::get('receipt_type');
+            $validator = Validator::make($request->input(), Customer_receipts::$ValidateNewReceipt, Customer_receipts::$validatorMessages);            
+            foreach ($tally_users as $key => $tallyuser) {
+                if ($tallyuser == '') {
+                $validator->after(function($validator) {              
+                        $validator->errors()->add('tally_users', 'Please select tally user.');
+                    });
+                }
+            }
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator->errors());
+            }
             if (isset($settle_amount) && count($settle_amount) > 0) {
                 $receiptObj = new Receipt();
                 foreach ($settle_amount as $key => $user) {
@@ -288,7 +299,7 @@ class ReceiptMasterController extends Controller {
                     } else {
                         $receiptObj = Receipt::find($id);
                         $receiptObj->delete();
-                        return redirect("receipt-master");
+                        return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
                     }
                 } else {
                     return redirect("receipt-master/$id/edit");
