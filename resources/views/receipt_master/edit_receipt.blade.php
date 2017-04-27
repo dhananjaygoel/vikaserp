@@ -63,16 +63,21 @@
                                 <?php 
                                     $old_tally_user = Input::old('tally_users');
                                     $old_settle_amount = Input::old('settle_amount');
+                                    print_r($old_settle_amount);
+                                    echo (isset($old_settle_amount));
                                 ?>
                                 <div class="row edit_receipt" id="st-settle-container">
                                 @if(isset($old_tally_user) && !empty($old_tally_user))
                                     @foreach($old_tally_user as $key=>$otu)
+                                    @if(!isset($old_settle_amount[$otu]))
+                                        <?php $old_settle_amount = $customer_arr; ?>
+                                    @endif
                                     <div class="st-settle-block">
                                         <div class="col-md-12" style="margin:10px 0;padding:0">
                                             <div class="col-md-3">
                                                 <select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">
                                                     @if(isset($tally_users))
-                                                    @foreach($tally_users as $tally_user)
+                                                    @foreach($tally_users as $key_val=>$tally_user)
                                                         @if($tally_user->id == $otu)
                                                             <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
                                                         @endif

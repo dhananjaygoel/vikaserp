@@ -56,7 +56,6 @@
                                 <?php 
                                     $old_tally_user = Input::old('tally_users');
                                        $old_settle_amount = Input::old('settle_amount');
-                                    
                                 ?>                                
                                 <div class="row" id="st-settle-container">
                                     @if(isset($old_tally_user) && !empty($old_tally_user))
@@ -74,7 +73,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 settle-input-elem">
-                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
+                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
                                             </div>
                                             <div class="col-md-1 action_btn">
                                                 <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
