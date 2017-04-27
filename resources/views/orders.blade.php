@@ -364,7 +364,7 @@
                                         <td>{{ ($order['createdby']->id  !== null? $order['createdby']->first_name." ".$order['createdby']->last_name:'' ) }}</td>
                                         <td> 
                                             @if( Auth::user()->role_id == 0)
-                                            <a href="{{ Url::action('OrderController@show', ['id' => $order->id,'way' => 'approval']) }}" class="/*table-link/ btn btn-primary btn-sm" title="view">View
+                                            <a href="{{ Url::action('OrderController@show', ['id' => $order->id,'way' => 'approval']) }}" class="/*table-link*/ btn btn-primary btn-sm" title="view">View
     <!--                                                <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>

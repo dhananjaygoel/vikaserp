@@ -921,8 +921,11 @@ class OrderController extends Controller {
                 }
                 AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
                 Order::find($id)->delete();
-                Session::put('order-sort-type', $order_sort_type);
+                Session::put('order-sort-type', $order_sort_type);     
+                if (Input::has('way') && Input::get('way') == 'reject') {
 
+                return Redirect::to('orders?order_filter=approval')->with('success', 'Record deleted successfully.');
+                }
                 return Redirect::to('orders')->with('success', 'Record deleted successfully.');
             }
             return array('message' => 'success');
