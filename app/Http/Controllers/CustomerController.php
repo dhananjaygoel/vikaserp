@@ -980,11 +980,11 @@ class CustomerController extends Controller {
                 $customers->Where('tally_name', 'like', $term);
             }
             if (isset($territory_id) && !empty($territory_id)) {
-                $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();                
+                $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
                 foreach ($territory_locations as $loc){
                     array_push($loc_arr, $loc->location_id);
                 }
-                $customers ->whereIn('delivery_location_id',$loc_arr);                                                     
+                $customers ->whereIn('delivery_location_id',$loc_arr);                                                        
                 $delivery_location = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
             }
             if (isset($location_id) && !empty($location_id)) {          
@@ -992,8 +992,8 @@ class CustomerController extends Controller {
             }
         }
         if(Auth::user()->role_id ==6){
-            $territory_id=Auth::user()->teritory_id;
-            $customers = Customer::with('delivery_challan.challan_receipt')->orderBy('created_at', 'desc')
+            $territory_id = Input::get('territory_filter');
+            $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
                                     $query->where('challan_status','=', 'completed');
                                     });
