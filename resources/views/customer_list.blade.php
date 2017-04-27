@@ -11,7 +11,7 @@
                 </ol>
    
                 <div class="filter-block">                    
-                   <form action="{{url('customer-list')}}" method="GET" id="orderForm">
+                   <form action="{{url('due-payment')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Customers</h1> 
                         <a href="" id="print-account-customers" data-toggle="modal" data-target="#print_acount_customers" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
                             Print
@@ -175,7 +175,7 @@
 
                             @if($customers->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('customer-list')}}" id="filter_search">
+                                <form class="form-inline" method="GET" action="{{url('due-payment')}}" id="filter_search">
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;

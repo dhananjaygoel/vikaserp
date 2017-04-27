@@ -31,6 +31,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
+                    @if(Session::has('error'))
+                    <div class="clearfix"> &nbsp;</div>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong> {{ Session::get('error') }} </strong>
+                    </div>
+                    @endif
                     <div class="main-box-body clearfix">
                         <hr>
                         {!! Form::open(array('id'=>'edit_receipt','method'=>'put','action'=>array('ReceiptMasterController@update',$receipt_id)))!!}
@@ -63,7 +70,7 @@
                                                     @if(isset($tally_users))
                                                     @foreach($tally_users as $tally_user)
                                                         @if($tally_user->id == $key)
-                                                            <option value="{{$tally_user->id}}" <?php echo($tally_user->id == $key ? 'selected' : '')?> >{{$tally_user->tally_name}}</option>
+                                                            <option value="{{$tally_user->id}}" >{{$tally_user->tally_name}}</option>
                                                         @endif
                                                     @endforeach
                                                     @endif
