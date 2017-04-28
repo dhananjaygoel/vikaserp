@@ -81,6 +81,11 @@
                                 <strong> {{ Session::get('error') }} </strong>
                             </div>
                             @endif
+                            @if(!isset($report_arr))
+                            <div class="alert alert-info no_data_msg_container">
+                                Currently no inventory have been added.
+                            </div>
+                            @else 
 
                             <div class="table-responsive report-table-content">
                                 <table id="day-wise" class="table table-bordered text-center complex-data-table">
@@ -112,6 +117,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -71,6 +71,7 @@
                                     $old_tally_user = Input::old('tally_users');
                                     $old_settle_amount = Input::old('settle_amount');   
                                     $edit_key = [];
+//                                    echo $amount;
                                 ?>
                                 <div class="row edit_receipt" id="st-settle-container">
                                 @if(isset($customer_arr))
@@ -187,7 +188,9 @@
                 {!! Form::open(array('id'=>'delete_customer_receipt_form'))!!}
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <input type="hidden" name="customer_id" value="" id="customer_id">
+                <input type="hidden" name="receipt_id" value="" id="receipt_id">
                 <input type="hidden" name="_method" value="DELETE" id="method">
+                <input type="hidden" name="amount" value="" id="amount">
                 <div class="delete">
                     <?php
                     $us = Auth::user();
@@ -208,7 +211,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                <button type="submit" class="btn btn-default submit_customer_receipts_button" data-receipt_id="" id="yes" >Yes</button>
+                <button type="button" class="btn btn-default submit_customer_receipts_button" id="yes" >Yes</button>
                 {!! Form::close() !!}
             </div>
         </div>

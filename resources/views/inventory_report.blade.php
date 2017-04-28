@@ -2,21 +2,21 @@
 @section('title','Inventory Report')
 @section('content')
 <style>
-.crossout{
-    /*width: 120px;*/
-   min-width: 150px;
-   min-width: 150px;
-   width: 150px;
-   background-image: linear-gradient(to bottom left,  transparent calc(50% - 1px), #DDDDDD, transparent calc(50% + 1px));
-}
-.thickness-head{
-   float: right;
-   margin-top: -10px;
-}
-.size-head{
-    float: left;
-    margin-top: 20px;
-}
+    .crossout{
+        /*width: 120px;*/
+        min-width: 150px;
+        min-width: 150px;
+        width: 150px;
+        background-image: linear-gradient(to bottom left,  transparent calc(50% - 1px), #DDDDDD, transparent calc(50% + 1px));
+    }
+    .thickness-head{
+        float: right;
+        margin-top: -10px;
+    }
+    .size-head{
+        float: left;
+        margin-top: 20px;
+    }
 </style>
 <div class="row">
     <div class="col-lg-12">
@@ -30,7 +30,7 @@
                                 <!--<option value="">Product Name</option>-->
                                 @if(isset($product_cat))
                                 @foreach($product_cat as $product)
-                                    <option value="{{$product->id}}">{{$product->product_category_name}}</option> 
+                                <option value="{{$product->id}}">{{$product->product_category_name}}</option> 
                                 @endforeach
                                 @endif
                             </select>
@@ -39,10 +39,10 @@
                 </div>
                 <form class="pull-right" method="POST" action="{{URL::action('InventoryController@exportinventoryReport')}}">
                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                    <input type="hidden" id="export_product_id" name="product_id" value="<?php echo $product_id;?>">
+                    <input type="hidden" id="export_product_id" name="product_id" value="<?php echo $product_id; ?>">
                     <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
                 </form>
-                <a href="" id="print-inventory-report" data-toggle="modal" data-target="#print_inventory_modal" class="btn btn-primary pull-right" data-id="<?php echo $product_id;?>" style=" margin-right: 8px !important;">
+                <a href="" id="print-inventory-report" data-toggle="modal" data-target="#print_inventory_modal" class="btn btn-primary pull-right" data-id="<?php echo $product_id; ?>" style=" margin-right: 8px !important;">
                     Print
                 </a>
             </div>
@@ -64,36 +64,42 @@
                                 <strong> {{ Session::get('error') }} </strong>
                             </div>
                             @endif
+                            @if(!isset($report_arr))
+                            <div class="alert alert-info no_data_msg_container">
+                                Currently no inventory have been added.
+                            </div>
+                            @else 
                             <div class="table-responsive report-table-content">
                                 <table id="day-wise" class="table table-bordered text-center complex-data-table">
                                     <tbody>
                                         <tr style="width:50px; height:50px;">
                                             <td class="crossout" colspan="1" rowspan="1"><span class="size-head">{{$product_column}}</span><span class="thickness-head">Thickness</span></td> 
                                             @if(isset($thickness_array))
-                                                @foreach($thickness_array as $thickness)
-                                                   <td>{{$thickness}}</td>
-                                                @endforeach
+                                            @foreach($thickness_array as $thickness)
+                                            <td>{{$thickness}}</td>
+                                            @endforeach
                                             @endif                                            
-                                        </tr>                                        
+                                        </tr>  
                                         @foreach($report_arr as $key=>$record)
                                         <tr>                                            
                                             <td>{{$key}}</td>                                                                                        
                                             @if(isset($record))
-                                                @foreach($record as $value)
-                                                <td>
-                                                   @if(isset($value))
-                                                        {{$value}}
-                                                   @else
-                                                        {{"-"}}     
-                                                   @endif
-                                                </td>
-                                                @endforeach                                         
+                                            @foreach($record as $value)
+                                            <td>
+                                                @if(isset($value))
+                                                {{$value}}
+                                                @else
+                                                {{"-"}}     
+                                                @endif
+                                            </td>
+                                            @endforeach                                         
                                             @endif                                            
                                         </tr>
-                                        @endforeach                                        
+                                        @endforeach 
                                     </tbody>
                                 </table>
                             </div>
+                             @endif 
                         </div>
                     </div>
                 </div>
@@ -124,4 +130,4 @@
         </div>
     </div>
 </div>
-    @stop
+@stop

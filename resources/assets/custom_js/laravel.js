@@ -138,6 +138,7 @@
             if (!$(this).find('.st_select_tally_user').is($(elem)) && ($(this).find('.st_select_tally_user').val() != '' && $(elem).val() != '') && $(this).find('.st_select_tally_user').val() == $(elem).val()) {
                 flag = false;
             }
+            
         });
         var block = $(this).closest('.st-settle-block').find('.settle-input-elem');
         if (flag) {
@@ -158,6 +159,8 @@
             $(block).find('.st_select_tally_user').find('select option[value="' + lastsel + '"]').attr("selected", true);
             $(block).find('.st_select_tally_user').select2();
         }
+        var element = $('#st-settle-container').find('.st-settle-block').last();
+        $(element).find(".add-tally_u" ).trigger( "click" );
     });
     $(document).on('click', '.add-tally_u', function (event) {
         event.preventDefault();
@@ -178,7 +181,7 @@
         var element = $('#st-settle-container').find('.st-settle-block').last();
         $('#st-settle-container .st-settle-block').each(function () {
             var tval = $(this).find('.st_select_tally_user').val();
-            console.log(tval);
+//            console.log(tval);
             if (tval != '') {
                 if ($(element).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 0)
                 {
@@ -192,13 +195,13 @@
     });        
     $(document).on('click', '#edit_receipt .del-tally_u', function (event) {
         event.preventDefault();
-        $(this).closest('.st-settle-block').remove();
+        $(this).closest('.st-settle-block').remove();        
     });
     $(document).on('click', '#add_receipt .del-tally_u', function (event) {
         event.preventDefault();
-        var tval = $(document).find('.st_select_tally_user').val();
-        if ($(document).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 1) {
+//        var tval = $(document).find('.st_select_tally_user').val();
+//        if ($(document).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 1) {
             $(this).closest('.st-settle-block').remove();
-        }
+//        }
     });
 })();

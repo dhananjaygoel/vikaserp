@@ -149,7 +149,7 @@ $('.form_button_footer').click(function () {
     }
 });
 
-$('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
+$('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "click", function () {
 
     var status_form = 0;
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
@@ -290,7 +290,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder", "click", function () {
     }
 });
 
-$('body').delegate("#sendSMSPurchaseOrder", "click", function () {
+$('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", function () {
     var status_form = 0;
 
     if ($('#datepickerDate').val() == "") {

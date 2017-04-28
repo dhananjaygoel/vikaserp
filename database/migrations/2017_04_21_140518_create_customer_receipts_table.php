@@ -23,9 +23,9 @@ class CreateCustomerReceiptsTable extends Migration {
                         $table->integer('challan_id')->unsigned();
                         $table->integer('debited_by_type')->unsigned();
                         $table->integer('debited_to')->unsigned()->comment('debited_tos table primary key');
-                        $table->foreign('debited_to')->references('id')->on('debited_tos')->onDelete('cascade');
+//                        $table->foreign('debited_to')->references('id')->on('debited_tos')->onDelete('cascade');
                         $table->integer('receipt_id')->unsigned()->comment('receipts table primary key');
-                        $table->foreign('receipt_id')->references('id')->on('receipts')->onDelete('cascade');
+//                        $table->foreign('receipt_id')->references('id')->on('receipts')->onDelete('cascade');
 			$table->timestamps();
 		});
 	}
