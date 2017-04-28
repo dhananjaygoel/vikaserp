@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterInquiryProducts01 extends Migration {
+class AlterInquiryProducts03 extends Migration {
 
 	/**
 	 * Run the migrations.

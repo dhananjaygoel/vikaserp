@@ -40,7 +40,7 @@ class AlterReceiptTable extends Migration {
      * @return void
      */
     public function down() {
-        if (Schema::hasTable('debited_tos')) {
+        if (Schema::hasTable('receipts')) {
             Schema::table('receipts', function(Blueprint $table) {
                 $table->string('user_id')->after('id');
                 $table->string('settled_amount')->after('user_id');
