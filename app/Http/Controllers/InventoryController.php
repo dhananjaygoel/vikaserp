@@ -632,6 +632,8 @@ class InventoryController extends Controller {
     public function inventoryReport() {
 
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
+        
+        if(count($product_cat) > 0){
         $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
 //        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         
@@ -713,6 +715,14 @@ class InventoryController extends Controller {
                                        ->with('thickness_array',$thickness_array)
                                        ->with('report_arr',$report_arr)
                                        ->with('product_column',$product_column);
+        }
+        $product_id =0 ;
+        $product_column = 0;
+       
+        return view('inventory_report')
+               
+                ->with('product_column',$product_column)
+                ->with('product_id',$product_id);
     }
     
     public function getInventoryReport(Request $request) {
@@ -800,6 +810,8 @@ class InventoryController extends Controller {
     
     public function inventoryPriceList() {
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
+        
+        if(count($product_cat) > 0 ){
         $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
 //        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $product_id=$product_last[0]->id;
@@ -868,6 +880,13 @@ class InventoryController extends Controller {
                                        ->with('thickness_array',$thickness_array)
                                        ->with('product_column',$product_column) 
                                        ->with('report_arr',$report_arr);
+        
+        }
+        $product_id = 0;
+        $product_column = 0;
+        return view('inventory_price_list')->with('product_id',$product_id)
+            ->with('product_column',$product_column) ;
+        
     }
     
     public function getInventoryPriceList(Request $request) {
