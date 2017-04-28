@@ -38,6 +38,13 @@
                         <strong> {{ Session::get('error') }} </strong>
                     </div>
                     @endif
+                    @if(Session::has('flash_message'))
+                    <div class="clearfix"> &nbsp;</div>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong> {{ Session::get('flash_message') }} </strong>
+                    </div>
+                    @endif
                     <div class="main-box-body clearfix">
                         <hr>
                         {!! Form::open(array('id'=>'edit_receipt','method'=>'put','action'=>array('ReceiptMasterController@update',$receipt_id)))!!}
@@ -83,7 +90,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4 settle-input-elem">
-                                                    <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text">
+                                                    <input class="form-control" placeholder="Amount" onkeydown="alert('fsdgfdg');" name="settle_amount[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text">
                                                 </div>
                                                 <div class="col-md-1 action_btn">
                                                     <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
@@ -112,7 +119,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4 settle-input-elem">
-                                                    <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
+                                                    <input class="form-control" placeholder="Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
                                                 </div>
                                                 <div class="col-md-1 action_btn">
                                                     <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>

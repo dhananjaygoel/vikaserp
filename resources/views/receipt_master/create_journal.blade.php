@@ -73,7 +73,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 settle-input-elem">
-                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
+                                                <input class="form-control" placeholder="Amount" onkeypress=" return numbersOnly(this,event,false,false);" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
                                             </div>
                                             <div class="col-md-1 action_btn">
                                                 <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
@@ -96,7 +96,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 settle-input-elem">
-                                                <input class="form-control" placeholder="Settle Amount" name="settle_amount[]" value="" type="text">
+                                                <input class="form-control" placeholder="Amount" onkeypress=" return numbersOnly(this,event,false,false);" name="settle_amount[]" value="" type="text">
                                             </div>
                                             <div class="col-md-1 action_btn">
                                                 <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>

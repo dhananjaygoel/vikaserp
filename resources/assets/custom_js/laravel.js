@@ -143,9 +143,9 @@
         if (flag) {
             if ($(this).val() != '') {                
                 $(this).attr('data-lastsel', $(this).val());
-                $(block).html('<input class="form-control" placeholder="Settle Amount" name="settle_amount[' + $(this).val() + ']" value="" type="text">');
+                $(block).html('<input class="form-control" placeholder="Amount" name="settle_amount[' + $(this).val() + ']" value="" onkeypress=" return numbersOnly(this,event,false,false);" type="text">');
             } else {
-                $(block).html('<input class="form-control" placeholder="Settle Amount" name="settle_amount" value="" type="text">');
+                $(block).html('<input class="form-control" placeholder="Amount" name="settle_amount" onkeypress=" return numbersOnly(this,event,false,false);" value="" type="text">');
             }
         } else {
             alert('Already Selected');
@@ -168,7 +168,7 @@
                 '</select>' +
                 '</div>' +
                 '<div class="col-md-4 settle-input-elem">' +
-                '<input class="form-control" placeholder="Settle Amount" name="settle_amount" value="" type="text">' +
+                '<input class="form-control" placeholder="Amount" name="settle_amount[]" value="" onkeypress=" return numbersOnly(this,event,false,false);" type="text">' +
                 '</div>' +
                 '<div class="col-md-1 action_btn">' +
                 '<a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>' +
@@ -178,7 +178,7 @@
         var element = $('#st-settle-container').find('.st-settle-block').last();
         $('#st-settle-container .st-settle-block').each(function () {
             var tval = $(this).find('.st_select_tally_user').val();
-//            console.log(tval);
+            console.log(tval);
             if (tval != '') {
                 if ($(element).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 0)
                 {
@@ -189,9 +189,16 @@
         $(element).find('.del-tally_u').remove();
         $(element).find('.action_btn').append('<a href="javascript:void(0)" style="border-bottom:none" class="btn del-tally_u st-border-bottom-none"><i class="fa fa-trash-o"></i></a>');
         $(element).find('.st_select_tally_user').select2();
-    });
-    $(document).on('click', '.del-tally_u', function (event) {
+    });        
+    $(document).on('click', '#edit_receipt .del-tally_u', function (event) {
         event.preventDefault();
         $(this).closest('.st-settle-block').remove();
+    });
+    $(document).on('click', '#add_receipt .del-tally_u', function (event) {
+        event.preventDefault();
+        var tval = $(document).find('.st_select_tally_user').val();
+        if ($(document).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 1) {
+            $(this).closest('.st-settle-block').remove();
+        }
     });
 })();

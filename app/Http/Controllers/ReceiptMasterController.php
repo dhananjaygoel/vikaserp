@@ -143,24 +143,27 @@ class ReceiptMasterController extends Controller {
             }
             if (isset($settle_amount) && count($settle_amount) > 0) {
                 $receiptObj = new Receipt();
-                foreach ($settle_amount as $key => $user) {
-                    if ($receiptObj->save()) {
-                        $customerReceiptObj = new Customer_receipts();
-                        $customerReceiptObj->customer_id = $key;
-                        $customerReceiptObj->settled_amount = $user;
-                        $customerReceiptObj->debited_to = $debited_to;
-                        $customerReceiptObj->receipt_id = $receiptObj->id;
-                        if ($receipt_type == 1)
-                            $customerReceiptObj->debited_by_type = 1;
-                        elseif ($receipt_type == 2)
-                            $customerReceiptObj->debited_by_type = 2;
-                        elseif ($receipt_type == 3)
-                            $customerReceiptObj->debited_by_type = 3;
+                if ($receiptObj->save()) {
+                    foreach ($settle_amount as $key => $user) {
+                        if ($key != '') {
+                            $customerReceiptObj = new Customer_receipts();
+                            $customerReceiptObj->customer_id = $key;
+                            $customerReceiptObj->settled_amount = $user;
+                            $customerReceiptObj->debited_to = $debited_to;
+                            $customerReceiptObj->receipt_id = $receiptObj->id;
+                            if ($receipt_type == 1)
+                                $customerReceiptObj->debited_by_type = 1;
+                            elseif ($receipt_type == 2)
+                                $customerReceiptObj->debited_by_type = 2;
+                            elseif ($receipt_type == 3)
+                                $customerReceiptObj->debited_by_type = 3;
 
-                        $customerReceiptObj->save();
-                    } else
-                        return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
-                }
+                            $customerReceiptObj->save();
+                        }
+                    }
+                } else
+                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
+                
                 if ($customerReceiptObj)
                     return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 else
@@ -280,19 +283,21 @@ class ReceiptMasterController extends Controller {
                 }
                 if (isset($settle_amount) && count($settle_amount) > 0) {
                     foreach ($settle_amount as $key => $user) {
-                        $customerReceiptObj = new Customer_receipts();
-                        $customerReceiptObj->customer_id = $key;
-                        $customerReceiptObj->settled_amount = $user;
-                        $customerReceiptObj->debited_to = $debited_to;
-                        $customerReceiptObj->receipt_id = $receiptObj->id;
-                        if ($receipt_type == 1)
-                            $customerReceiptObj->debited_by_type = 1;
-                        elseif ($receipt_type == 2)
-                            $customerReceiptObj->debited_by_type = 2;
-                        elseif ($receipt_type == 3)
-                            $customerReceiptObj->debited_by_type = 3;
+                        if ($key != '') {
+                            $customerReceiptObj = new Customer_receipts();
+                            $customerReceiptObj->customer_id = $key;
+                            $customerReceiptObj->settled_amount = $user;
+                            $customerReceiptObj->debited_to = $debited_to;
+                            $customerReceiptObj->receipt_id = $receiptObj->id;
+                            if ($receipt_type == 1)
+                                $customerReceiptObj->debited_by_type = 1;
+                            elseif ($receipt_type == 2)
+                                $customerReceiptObj->debited_by_type = 2;
+                            elseif ($receipt_type == 3)
+                                $customerReceiptObj->debited_by_type = 3;
 
-                        $customerReceiptObj->save();
+                            $customerReceiptObj->save();
+                        }
                     }
                     if ($customerReceiptObj)
                         return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
@@ -349,18 +354,18 @@ class ReceiptMasterController extends Controller {
                     if ($receipt->delete()) {
                         $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
                         if (count($receipt_id) > 0) {
-                            return redirect("receipt-master/$id/edit");
+                            return redirect("receipt-master/$id/edit")->withInput();
                         } else {
                             $receiptObj = Receipt::find($id);
                             $receiptObj->delete();
                             return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
                         }
                     } else {
-                        return redirect("receipt-master/$id/edit");
+                        return redirect("receipt-master/$id/edit")->withInput();
                     }
                 }
             } else {
-                return redirect('receipt-master')->with('error', 'Please enter a correct password.');
+                return redirect("receipt-master/$id/edit")->withInput()->with('flash_message', 'Please enter a correct password.');
             }
         }
     }
