@@ -479,14 +479,23 @@ class HomeController extends Controller {
     public function appdeleteinquiry() {
 
         $input_data = Input::all();
-        $inquiries = (json_decode($input_data['inquiry_deleted']));
-        if (count($inquiries) > 0) {
-            foreach ($inquiries as $inquiry) {
+        $inquiries_data = (json_decode($input_data['inquiry_deleted']));
+        if (count($inquiries_data) > 0) {
+            if (Input::has('inquiry')) {
+                $inquiries = (json_decode($data['inquiry']));
+                foreach ($inquiries as $inquiry) {
+                    if (isset($inquiry->send_sms) && $inquiry->send_sms == 'true') {
+                        $this->inquiry_sms();
+                    }
+                }
+            }
+            foreach ($inquiries_data as $inquiry) {
                 $inquiry_details = Inquiry::find($inquiry);
                 if ($inquiry_details && !empty($inquiry_details)) {
                     $inquiry_details->delete();
                 }
             }
+           
             return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
         } else {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
@@ -522,6 +531,14 @@ class HomeController extends Controller {
         $input_data = Input::all();
         $orders = (json_decode($input_data['order_deleted']));
         if (count($orders) > 0) {
+            if (Input::has('order')) {
+                $orders = (json_decode($data['order']));
+                foreach ($orders as $order) {
+                    if (isset($order->send_sms) && $order->send_sms == 'true') {
+                        $this->order_sms();
+                    }
+                }
+            }
             foreach ($orders as $order) {
                 $order_details = Order::find($order);
                 if ($order_details && !empty($order_details)) {
@@ -694,6 +711,94 @@ class HomeController extends Controller {
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
 
+    function purchasechallan_sms() {
+        $input_data = Input::all();
+
+        if (Input::has('purchase_challan') && Input::has('customer') && Input::has('purchase_challan_product')) {
+            $purchasechallans = (json_decode($input_data['purchase_challan']));
+            $customers = (json_decode($input_data['customer']));
+            $purchasechallanproducts = (json_decode($input_data['purchase_challan_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $purchasechallans;
+            }
+
+            if (isset($purchasechallans[0]->sms_role) && $purchasechallans[0]->sms_role == '1') {
+
+                $message_body_cust_first = "Your material has been dispatched as follows\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has dispatched for";
+            } elseif (isset($purchasechallans[0]->sms_role) && $purchasechallans[0]->sms_role == '2') {
+                $message_body_cust_first = "Your material has been edited as follows\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has edited material for";
+            }
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($purchasechallanproducts as $product_data) {
+                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number) ? $purchasechallans[0]->vehicle_number : 'N/A')
+                        . ", Quantity. " . (isset($purchasechallans[0]->total_quantity) ? round($purchasechallans[0]->total_quantity, 2) : '')
+                        . ", Amount " . (isset($purchasechallans[0]->grand_total) ? $purchasechallans[0]->grand_total : '0')
+                        . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
+                        . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->supplier_mobile;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            if ($purchasechallans[0]->server_supplier_id > 0) {
+                $customer = Customer::with('manager')->find($purchasechallans[0]->server_supplier_id);
+                if (!empty($customer->manager)) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
+                    foreach ($purchasechallanproducts as $product_data) {
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number) ? $purchasechallans[0]->vehicle_number : 'N/A')
+                            . ", Quantity. " . (isset($purchasechallans[0]->total_quantity) ? round($purchasechallans[0]->total_quantity, 2) : '')
+                            . ", Amount " . (isset($purchasechallans[0]->grand_total) ? $purchasechallans[0]->grand_total : '0')
+                            . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
+                            . ".\nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }
+        return;
+    }
+
     /**
      * App sync purchase challan
      */
@@ -706,7 +811,7 @@ class HomeController extends Controller {
             $purchasechallan = (json_decode($input_data['purchase_challan']));
             foreach ($purchasechallan as $pc) {
                 if (isset($pc->send_sms) && $pc->send_sms == 'true') {
-                    $this->deliverychallan_sms();
+                    $this->purchasechallan_sms();
                 }
             }
         }
@@ -818,6 +923,9 @@ class HomeController extends Controller {
         return json_encode($purchase_challan_response);
     }
 
+    /**
+     * API SMS Purchase Advise
+     */
     function purchaseadvise_sms() {
         $input_data = Input::all();
 
@@ -893,13 +1001,11 @@ class HomeController extends Controller {
                     }
                 }
             }
-
-            
         } else {
-           
+            
         }
 
-        return ;
+        return;
     }
 
     /**
@@ -918,8 +1024,6 @@ class HomeController extends Controller {
                 }
             }
         }
-
-        exit;
         if (Input::has('customer')) {
             $customers = (json_decode($input_data['customer']));
         }
@@ -1029,6 +1133,102 @@ class HomeController extends Controller {
     }
 
     /**
+     * API SMS Purchase Order
+     */
+    function purchaseorder_sms() {
+        $input = Input::all();
+
+        if (Input::has('purchase_order') && Input::has('customer') && Input::has('purchase_order_product')) {
+            $purchaseorders = (json_decode($input['purchase_order']));
+            $customers = (json_decode($input['customer']));
+            $purchaseorderproducts = (json_decode($input['purchase_order_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $purchaseorders;
+            }
+
+
+            if (isset($purchaseorders[0]->sms_role) && $purchaseorders[0]->sms_role == '1') {
+
+                $message_body_cust_first = "Your purchase order has been logged for following \n";
+                $message_body_cust_last = "material will be dispatched by " . date("j M, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has logged purchase order for";
+            } elseif (isset($purchaseorders[0]->sms_role) && $purchaseorders[0]->sms_role == '2') {
+                $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
+                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has edited Purchase Advise for";
+            }
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "'\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($purchaseorderproducts as $product_data) {
+                    if (isset($product_data->product_name) && $product_data->product_name != "") {
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    } else {
+                        $result['send_message'] = "Error";
+                        $result['reasons'] = "Purchase Order not found.";
+                        return;
+                    }
+                }
+                $str .= $message_body_cust_last;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $phone_number = $customer[0]->supplier_mobile;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($purchaseorders[0]->server_supplier_id > 0) {
+                $customer = Customer::with('manager')->find($purchaseorders[0]->server_supplier_id);
+                if (!empty($customer->manager)) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
+                    foreach ($purchaseorderproducts as $product_data) {
+                        if (isset($product_data->product_name) && $product_data->product_name != "") {
+                            $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Purchase Order not found.";
+                            return;
+                        }
+                    }
+
+                    $str .= $message_body_cust_last;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }
+
+        return;
+    }
+
+    /**
      * App sync purchase order
      */
     public function appSyncPurchaseOrder() {
@@ -1038,6 +1238,11 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('purchase_order')) {
             $purchaseorders = (json_decode($data['purchase_order']));
+            foreach ($purchaseorders as $purchaseorder) {
+                if (isset($purchaseorder->send_sms) && $purchaseorder->send_sms == 'true') {
+                    $this->purchaseorder_sms();
+                }
+            }
         }
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
