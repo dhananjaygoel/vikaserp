@@ -482,7 +482,7 @@ class HomeController extends Controller {
         $inquiries_data = (json_decode($input_data['inquiry_deleted']));
         if (count($inquiries_data) > 0) {
             if (Input::has('inquiry')) {
-                $inquiries = (json_decode($data['inquiry']));
+                $inquiries = (json_decode($input_data['inquiry']));
                 foreach ($inquiries as $inquiry) {
                     if (isset($inquiry->send_sms) && $inquiry->send_sms == 'true') {
                         $this->inquiry_sms();
@@ -532,7 +532,7 @@ class HomeController extends Controller {
         $orders = (json_decode($input_data['order_deleted']));
         if (count($orders) > 0) {
             if (Input::has('order')) {
-                $orders = (json_decode($data['order']));
+                $orders = (json_decode($input_data['order']));
                 foreach ($orders as $order) {
                     if (isset($order->send_sms) && $order->send_sms == 'true') {
                         $this->order_sms();
