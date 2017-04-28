@@ -40,6 +40,8 @@
                         ?>>
                         @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
                         <input type="hidden" name="order_status" value="pending">
+                        @elseif($qstring_sort_type_order == 'approval')
+                        <input type="hidden" name="order_status" value="approval">
                         @elseif($qstring_sort_type_order == 'completed')
                         <input type="hidden" name="order_status" value="completed">
                         @elseif($qstring_sort_type_order == 'cancelled')
@@ -65,6 +67,8 @@
                         <input type="hidden" name="order_status" value="pending">
                         @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
                         <input type="hidden" name="order_status" value="completed">
+                        @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='approval')
+                        <input type="hidden" name="order_status" value="approval">
                         @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
                         <input type="hidden" name="order_status" value="cancelled">
                         @else
@@ -183,7 +187,7 @@
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                @if(Input::get('order_filter') == 'pending' | Input::get('order_filter') == "")
+                                @if(Input::get('order_filter') == 'pending' | Input::get('order_status') == 'pending' | (Input::get('order_status') == '' && Input::get('order_filter') == ''))
                                 <thead>
                                     <tr>
                                         @if(Input::has('flag') && Input::get('flag') == 'true')
@@ -219,7 +223,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    @if(Input::get('order_filter') == 'completed')
+                                    @if(Input::get('order_filter') == 'completed' | Input::get('order_status') == 'completed')
                                 <thead>
                                     <tr>
                                         <th>#</th>

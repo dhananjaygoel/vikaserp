@@ -95,7 +95,16 @@ class OrderController extends Controller {
                     $q->where('order_status', '=', $data['order_filter']);
                 }
             } elseif (isset($data['order_status']) && $data['order_status'] != '') {
-                $q->where('order_status', '=', $data['order_status']);
+                 if ($data['order_status'] == 'approval') {
+                    $q->where('is_approved', '=', 'no')
+                            ->where('order_status', '=', 'pending');
+                } elseif ($data['order_status'] == 'pending') {
+                    $q->where('is_approved', '=', 'yes')
+                            ->where('order_status', '=', 'pending');
+                } else {
+                    $q->where('order_status', '=', $data['order_filter']);
+                }
+//                $q->where('order_status', '=', $data['order_status']);
             } else {
                 $q->where('order_status', '=', 'pending')
                         ->where('is_approved', '=', 'yes');
@@ -166,7 +175,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
         }
-
+        
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
         $product_size = ProductSubCategory::all();
@@ -1301,6 +1310,7 @@ class OrderController extends Controller {
 
     public function exportOrderBasedOnStatus() {
         $data = Input::all();
+        $is_approved = 'yes';
         if ($data['order_status'] == 'pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'pending';
@@ -1311,6 +1321,12 @@ class OrderController extends Controller {
             $order_status = 'completed';
             $excel_sheet_name = 'Completed';
             $excel_name = 'Order-Completed-' . date('dmyhis');
+        } elseif ($data['order_status'] == 'approval') {
+//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
+            $is_approved = 'no';
+            $order_status = 'completed';
+            $excel_sheet_name = 'Approval';
+            $excel_name = 'Order-Pending-Approval' . date('dmyhis');
         } elseif ($data['order_status'] == 'cancelled') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'cancelled';
@@ -1324,12 +1340,14 @@ class OrderController extends Controller {
             if (Auth::user()->role_id <> 5) {
                 if ($date1 == $date2) {
                     $order_objects = Order::where('order_status', $order_status)
+                            ->where('is_approved', '=', $is_approved)
                             ->where('updated_at', 'like', $date1 . '%')
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 } else {
                     $order_objects = Order::where('order_status', $order_status)
+                            ->where('is_approved', '=', $is_approved)
                             ->where('updated_at', '>=', $date1)
                             ->where('updated_at', '<=', $date2 . ' 23:59:59')
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
