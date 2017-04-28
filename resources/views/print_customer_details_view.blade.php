@@ -116,8 +116,7 @@
             <th>Settled Amount</th>
             @if(Input::get('settle_filter')!='Settled')
                 <th>Due Payment</th>
-            @endif
-            <th>Action</th>                                        
+            @endif                                           
         </tr>
     </thead>
     <?php //dd($delivery_challans); ?>
@@ -159,18 +158,7 @@
                         Settle
                     </button>
                 </td>
-                @endif
-                @if(Auth::user()->role_id ==0 )
-                <td>
-                    <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >
-                        @if(Input::get('settle_filter')=='Settled')
-                            Update
-                        @else
-                            Settle
-                        @endif
-                    </button>
-                </td>
-                @endif
+                @endif                
             </tr>                                        
             @endforeach
             @else
