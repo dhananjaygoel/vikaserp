@@ -24,14 +24,14 @@
                     <li class="active"><span>Customer Details</span></li>
                 </ol>
                 <div class="filter-block">
-                   <form action="{{URL::action('CustomerController@get_customer_details', ['id' => $customer->id])}}" method="GET" id="orderForm">
+                   <form action="{{URL::action('CustomerController@get_customer_details', ['id' => $customer->id])}}" method="GET" id="customer-details-form">
                         <h1 class="pull-left">Customer Details</h1>
                         @if(Auth::user()->role_id ==0 )
-<!--                        <a href="" id="print-customer-details" data-toggle="modal" data-target="#print_acount_customers" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
+                        <a href="" id="print-customer-details" data-toggle="modal" data-target="#print_customers_details" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
                             Print
-                        </a>-->
+                        </a>
                         <div class="col-md-2 pull-right">                              
-                            <select class="form-control" id="settle-filter" name="settle_filter" onchange="this.form.submit();">
+                            <select class="form-control" id="settle_filter" name="settle_filter" onchange="this.form.submit();">
                                 <option value="Unsettled" <?php if(Input::get('settle_filter')=='Unsettled') echo "selected=''"; ?> >Unsettled</option>
                                 <option value="Settled" <?php if(Input::get('settle_filter')=='Settled') echo "selected=''"; ?>>Settled</option>                                
                             </select>                            
@@ -247,6 +247,29 @@
                     <button class="btn btn-primary" data-dismiss="modal">Back</button>
                 </div>
             </form>    
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="print_customers_details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row print_time ">
+                    <div class="col-md-12"> Print By <br>
+                        <span class="current_time"></span>
+                    </div>
+                </div>                
+                <hr>
+                <div>
+                    <button type="button"  data-id="{{$customer->id}}" class="btn btn-primary form_button_footer print_customers_details" >Print</button>
+                    <button type="button" class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
 </div>
