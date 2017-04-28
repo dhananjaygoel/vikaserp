@@ -704,6 +704,11 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('purchase_challan')) {
             $purchasechallan = (json_decode($input_data['purchase_challan']));
+            foreach ($purchasechallan as $pc) {
+                if (isset($pc->send_sms) && $pc->send_sms == 'true') {
+                    $this->deliverychallan_sms();
+                }
+            }
         }
         if (Input::has('customer')) {
             $customers = (json_decode($input_data['customer']));
@@ -813,6 +818,90 @@ class HomeController extends Controller {
         return json_encode($purchase_challan_response);
     }
 
+    function purchaseadvise_sms() {
+        $input_data = Input::all();
+
+        if (Input::has('purchase_advice') && Input::has('customer') && Input::has('purchase_advice_product')) {
+            $purchaseadvices = (json_decode($input_data['purchase_advice']));
+            $customers = (json_decode($input_data['customer']));
+            $purchaseadviceproducts = (json_decode($input_data['purchase_advice_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $purchaseadvices;
+            }
+
+            if (isset($purchaseadvices[0]->sms_role) && $purchaseadvices[0]->sms_role == '1') {
+
+                $message_body_cust_first = "Your purchase Advise has been created as follows\n";
+                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has created Purchase Advise for";
+            } elseif (isset($purchaseadvices[0]->sms_role) && $purchaseadvices[0]->sms_role == '2') {
+                $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
+                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has edited Purchase Advise for";
+            }
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($purchaseadviceproducts as $product_data) {
+                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= $message_body_cust_last;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->supplier_mobile;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($purchaseadvices[0]->server_supplier_id > 0) {
+                $customer = Customer::with('manager')->find($purchaseadvices[0]->server_supplier_id);
+                if (!empty($customer->manager)) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
+                    foreach ($purchaseadviceproducts as $product_data) {
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= $message_body_cust_last;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+
+            
+        } else {
+           
+        }
+
+        return ;
+    }
+
     /**
      * App sync purchase advise
      */
@@ -823,7 +912,14 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('purchase_advice')) {
             $purchaseadvices = (json_decode($input_data['purchase_advice']));
+            foreach ($purchaseadvices as $purchaseadvice) {
+                if (isset($purchaseadvice->send_sms) && $purchaseadvice->send_sms == 'true') {
+                    $this->purchaseadvise_sms();
+                }
+            }
         }
+
+        exit;
         if (Input::has('customer')) {
             $customers = (json_decode($input_data['customer']));
         }
@@ -1104,7 +1200,7 @@ class HomeController extends Controller {
             if ($delivery_challans[0]->customer_server_id > 0) {
                 $customer = Customer::with('manager')->find($delivery_challans[0]->customer_server_id);
                 if (!empty($customer->manager)) {
-                   $str = "Dear " .$customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first." " . $customer->owner_name . " as follows\n" . $s;
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n" . $s;
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1123,8 +1219,8 @@ class HomeController extends Controller {
             }
         } else {
             
-        }       
-        return ;
+        }
+        return;
     }
 
     /**
@@ -1143,7 +1239,6 @@ class HomeController extends Controller {
                 }
             }
         }
-        exit;
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
         }
