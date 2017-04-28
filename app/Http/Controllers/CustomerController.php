@@ -33,6 +33,9 @@ use App\TerritoryLocation;
 use App\Repositories\DropboxStorageRepository;
 use App\CollectionUser;
 use Illuminate\Support\Facades\DB;
+use App\Customer_receipts;
+use App\Receipt;
+use Response;
 
 class CustomerController extends Controller {
 
@@ -1160,4 +1163,35 @@ class CustomerController extends Controller {
                                             ->with('delivery_challans',$delivery_challans)
                                             ->with('delivery_location',$delivery_location);
     }
+    
+    public function change_unsettled_amount() {        
+        $customer_id = Input::get('customer_id');
+        $old_amount = Input::get('old_amount');
+        $new_amount = Input::get('new_amount');
+        $difference = $new_amount-$old_amount;
+        
+        
+        $receipts = Customer_receipts::where('customer_id','=',$customer_id)->orderBy('created_at','DESC')->first();
+        if(isset($receipts) && !empty($receipts)){
+            $receipt_id = $receipts->id;            
+            $receipt = Customer_receipts::find($receipt_id); 
+            $receipt_amount = $receipt->settled_amount;            
+            $new_unsettle_amount= $receipt_amount+$difference;            
+            $receipt->settled_amount = $new_unsettle_amount;
+            $receipt->save();
+        } else{
+            $receiptObj = new Receipt();
+            if ($receiptObj->save()) {                
+                $customerReceiptObj = new Customer_receipts();
+                $customerReceiptObj->customer_id = $customer_id;
+                $customerReceiptObj->settled_amount = $new_amount;
+                $customerReceiptObj->debited_to = 1;
+                $customerReceiptObj->receipt_id = $receiptObj->id;                       
+                $customerReceiptObj->save();
+            }            
+        }    
+        
+        return Response::json(['success' => true]);
+    }
+    
 }

@@ -185,6 +185,26 @@ $(document).ready(function () {
         $('#price_list_modal').modal('show');
     });
     
+    $(document).on('click','.save-unsettled-amount',function(){
+        var customer_id = $(this).data('id');
+        var new_amount = $(this).closest('td').find('.input-unsettled').val();
+        var old_amount = $(this).closest('td').find('.input-unsettled').data('price');       
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/change_unsettled_amount';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                customer_id: customer_id,new_amount:new_amount,old_amount:old_amount
+            },
+            success: function (data) {
+                          
+            },
+            complete: function () {
+            }
+        })
+    });
+    
     $(document).on('click','.settle-payment',function(){
         var due_amount = $(this).data('due_amount');
         var serial_no = $(this).data('serial_no');       

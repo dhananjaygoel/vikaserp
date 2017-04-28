@@ -12,6 +12,15 @@
     .modal-settle-div{
          width: 40%;
          margin-left: 30%
+    }    
+    .save-unsettled-amount{
+        font-size: 17px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+    .input-unsettled{
+        display: inline; 
+        width: 10%;
     }
 </style>
 
@@ -106,8 +115,14 @@
                                             $unsettled_amount= $unsettled_amount-$settled_challan_amount;
                                         ?>
                                         <td><b>Unsettled Amount:</b> 
+                                            
                                             @if(isset($unsettled_amount))
-                                                {{$unsettled_amount}}
+                                                @if(Auth::user()->role_id ==0)
+                                                    <input type="text" class="form-control input-unsettled" data-price="{{$unsettled_amount}}" value="{{$unsettled_amount}}"> <i class="fa fa-save save-unsettled-amount" data-id="{{$customer->id}}"></i>
+                                                @endif
+                                                @if(Auth::user()->role_id ==6)
+                                                    {{$unsettled_amount}}
+                                                @endif                                                
                                             @endif
                                         </td>
                                     </tr>                                    
@@ -147,9 +162,10 @@
                                 <?php //dd($delivery_challans); ?>
                                 <tbody>                                        
                                         @if(isset($delivery_challans) && count($delivery_challans)>0 && $delivery_challans!="")
+                                        <?php $i=1;?>
                                         @foreach($delivery_challans as $challan)
                                             <?php
-                                                $i=1;$total_due_amount=0; $settled_amount=0;                                            
+                                                $total_due_amount=0; $settled_amount=0;                                            
                                             ?>
                                             <?php    
                                                 $total_due_amount=$total_due_amount+$challan->grand_price;                                                
