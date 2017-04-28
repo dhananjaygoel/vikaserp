@@ -171,7 +171,7 @@
                                     @foreach($purchase_orders as $purchase_order)
                                     <tr id="purchase_order_row_{{$purchase_order->id}}">
                                         <td>{{$i++}}</td>
-                                        <td>{{$purchase_order['customer']->owner_name}}</td>
+                                        <td>{{(isset($purchase_order['customer']->owner_name)? $purchase_order['customer']->owner_name :'N/A')}}</td>
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
                                         <td>{{isset($purchase_order['delivery_location'])?$purchase_order['delivery_location']['area_name']: $purchase_order->other_location}}</td>
                                         <td>{{$purchase_order['user']->first_name}}</td>

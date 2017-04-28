@@ -98,10 +98,10 @@
                             <div class="col-md-12">
                                 <div class="form-group searchproduct">
                                     <!--<input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name" value="{{$purchase_order['customer']->owner_name}}{{'-'.$purchase_order['customer']->tally_name}}">-->
-                                     <input class="form-control focus_on_enter" placeholder="Enter Supplier Name " type="text" id="existing_customer_name" name="existing_supplier_name" value="{{$purchase_order['customer']->tally_name}}" tabindex="1" >
+                                    <input class="form-control focus_on_enter" placeholder="Enter Supplier Name " type="text" id="existing_customer_name" name="existing_supplier_name" value="{{$purchase_order['customer']->tally_name}}" tabindex="1" >
                                     <input type="hidden" id="existing_customer_id" name="autocomplete_supplier_id" value="{{$purchase_order['customer']->id}}">
-                                    
-                                    <!--<i class="fa fa-search search-icon"></i>-->
+
+<!--<i class="fa fa-search search-icon"></i>-->
                                 </div>
                             </div>
                         </div>
@@ -246,30 +246,30 @@
                                 </tbody>
                             </table>
 
-                             <table>
-                                        <tbody>
-                                            <tr class="row5">
-                                                <td>
-                                                    <div class="add_button1">
-                                                        <div class="form-group pull-left">
-                                                            <label for="addmore"></label>
-                                                            <a class="table-link" title="add more" id="add_purchase_product_row">
-                                                                <span class="fa-stack more_button" >
-                                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <table>
+                                <tbody>
+                                    <tr class="row5">
+                                        <td>
+                                            <div class="add_button1">
+                                                <div class="form-group pull-left">
+                                                    <label for="addmore"></label>
+                                                    <a class="table-link" title="add more" id="add_purchase_product_row">
+                                                        <span class="fa-stack more_button" >
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="row col-md-4">
@@ -397,12 +397,20 @@
                     <div class="checkbox">
                         <label><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email to Party</span></label>
                     </div>
-                    <hr>
+                    
                     <div>
                         <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" >Save and Send SMS</button>
                         <!--<input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" value="Save and Send SMS">-->
-                        <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
+                       
                     </div>
+                     <hr>
+                    <div>
+                        <button type="submit" class="btn btn-primary form_button_footer btn_edit_purchase_order">Submit</button>
+
+                             <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
+
+                    </div>
+                    
                     <div class="clearfix"></div>
                     </form>
                     <div class="clearfix"></div>
