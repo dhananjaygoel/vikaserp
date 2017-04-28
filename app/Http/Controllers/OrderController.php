@@ -102,7 +102,7 @@ class OrderController extends Controller {
                     $q->where('is_approved', '=', 'yes')
                             ->where('order_status', '=', 'pending');
                 } else {
-                    $q->where('order_status', '=', $data['order_filter']);
+                    $q->where('order_status', '=', $data['order_status']);
                 }
 //                $q->where('order_status', '=', $data['order_status']);
             } else {
