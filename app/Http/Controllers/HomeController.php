@@ -479,14 +479,23 @@ class HomeController extends Controller {
     public function appdeleteinquiry() {
 
         $input_data = Input::all();
-        $inquiries = (json_decode($input_data['inquiry_deleted']));
-        if (count($inquiries) > 0) {
-            foreach ($inquiries as $inquiry) {
+        $inquiries_data = (json_decode($input_data['inquiry_deleted']));
+        if (count($inquiries_data) > 0) {
+            if (Input::has('inquiry')) {
+                $inquiries = (json_decode($data['inquiry']));
+                foreach ($inquiries as $inquiry) {
+                    if (isset($inquiry->send_sms) && $inquiry->send_sms == 'true') {
+                        $this->inquiry_sms();
+                    }
+                }
+            }
+            foreach ($inquiries_data as $inquiry) {
                 $inquiry_details = Inquiry::find($inquiry);
                 if ($inquiry_details && !empty($inquiry_details)) {
                     $inquiry_details->delete();
                 }
             }
+           
             return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
         } else {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
@@ -522,6 +531,14 @@ class HomeController extends Controller {
         $input_data = Input::all();
         $orders = (json_decode($input_data['order_deleted']));
         if (count($orders) > 0) {
+            if (Input::has('order')) {
+                $orders = (json_decode($data['order']));
+                foreach ($orders as $order) {
+                    if (isset($order->send_sms) && $order->send_sms == 'true') {
+                        $this->order_sms();
+                    }
+                }
+            }
             foreach ($orders as $order) {
                 $order_details = Order::find($order);
                 if ($order_details && !empty($order_details)) {
@@ -693,9 +710,7 @@ class HomeController extends Controller {
         });
         return json_encode(array('result' => true, 'message' => 'Email send successfully'));
     }
-    
-    
-    
+
     function purchasechallan_sms() {
         $input_data = Input::all();
 
@@ -721,15 +736,15 @@ class HomeController extends Controller {
             }
 
             if (count($customer) > 0) {
-                $total_quantity = '';                
+                $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
                 foreach ($purchasechallanproducts as $product_data) {
                     $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
-                $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number)?$purchasechallans[0]->vehicle_number:'N/A')
-                        . ", Quantity. " . (isset($purchasechallans[0]->total_quantity)?round($purchasechallans[0]->total_quantity, 2):'')
-                        . ", Amount " . (isset($purchasechallans[0]->grand_total)?$purchasechallans[0]->grand_total:'0')
+                $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number) ? $purchasechallans[0]->vehicle_number : 'N/A')
+                        . ", Quantity. " . (isset($purchasechallans[0]->total_quantity) ? round($purchasechallans[0]->total_quantity, 2) : '')
+                        . ", Amount " . (isset($purchasechallans[0]->grand_total) ? $purchasechallans[0]->grand_total : '0')
                         . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
                         . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
@@ -737,7 +752,7 @@ class HomeController extends Controller {
                 } else {
                     $phone_number = $customer[0]->supplier_mobile;
                 }
-               
+
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
@@ -753,14 +768,14 @@ class HomeController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
                     foreach ($purchasechallanproducts as $product_data) {
-                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number)?$purchasechallans[0]->vehicle_number:'N/A')
-                        . ", Quantity. " . (isset($purchasechallans[0]->total_quantity)?round($purchasechallans[0]->total_quantity, 2):'')
-                        . ", Amount " . (isset($purchasechallans[0]->grand_total)?$purchasechallans[0]->grand_total:'0')
-                        . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
-                        . ".\nVIKAS ASSOCIATES";
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number) ? $purchasechallans[0]->vehicle_number : 'N/A')
+                            . ", Quantity. " . (isset($purchasechallans[0]->total_quantity) ? round($purchasechallans[0]->total_quantity, 2) : '')
+                            . ", Amount " . (isset($purchasechallans[0]->grand_total) ? $purchasechallans[0]->grand_total : '0')
+                            . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
+                            . ".\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -778,14 +793,11 @@ class HomeController extends Controller {
                     }
                 }
             }
-
-            
         } else {
-           
-        }        
-        return ;
+            
+        }
+        return;
     }
-
 
     /**
      * App sync purchase challan
@@ -1212,7 +1224,7 @@ class HomeController extends Controller {
         } else {
             
         }
-       
+
         return;
     }
 
