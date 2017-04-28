@@ -178,7 +178,7 @@
         var element = $('#st-settle-container').find('.st-settle-block').last();
         $('#st-settle-container .st-settle-block').each(function () {
             var tval = $(this).find('.st_select_tally_user').val();
-            console.log(tval);
+//            console.log(tval);
             if (tval != '') {
                 if ($(element).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 0)
                 {
@@ -192,7 +192,7 @@
     });        
     $(document).on('click', '#edit_receipt .del-tally_u', function (event) {
         event.preventDefault();
-        $(this).closest('.st-settle-block').remove();
+        $(this).closest('.st-settle-block').remove();        
     });
     $(document).on('click', '#add_receipt .del-tally_u', function (event) {
         event.preventDefault();

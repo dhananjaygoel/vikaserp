@@ -61,16 +61,43 @@ $(document).ready(function () {
         var url = $('#baseurl').attr('name') + "/receipt-master/delete-customer-receipt/" + receipt_id;
         $('#delete_customer_receipt_form').attr('action', url);
         $('#customer_id').val(customer_id);
-        $('.submit_customer_receipts_button').data('receipt_id',receipt_id);
-        $('.submit_customer_receipts_button').attr('data-receipt_id',receipt_id);
+        $('#receipt_id').val(receipt_id);
         $('#delete_customer_receipt_modal').modal('show');
+        $(this).closest('.st-settle-block').addClass('current_row');
     });
     $(document).on('click', '.submit_customer_receipts_button', function (event) {
-//        event.preventDefault();
+        event.preventDefault();
+        $('#flash_message_div').remove();
         $('#delete_customer_receipt_modal').modal('hide');
-        var receipt_id = $(this).data('receipt_id');
-        var url = $('#baseurl').attr('name') + "/receipt-master/" + receipt_id +'/edit';
-        window.location.href = url;
+        var receipt_id = $('#delete_customer_receipt_form').find('#receipt_id').val();
+        var url = $('#baseurl').attr('name') + "/receipt-master/delete-customer-receipt/" + receipt_id;
+        $.ajax({
+            url: url,
+            type: 'delete',
+            dataType: 'JSON',
+            data: $('#delete_customer_receipt_form').serialize(),
+            success: function (data) {
+                if (data.success) {
+                    if(data.receipt){
+//                        var msg = '<div class="alert alert-success alert-success1">'+
+//                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>'+
+//                            '<p> Receipt deleted succesfully.</p>'+
+//                            '</div>'
+//                        $('#table_responsive_msg').prepend(msg);
+                        window.location.href = $('#baseurl').attr('name') + "/receipt-master";                        
+                    }
+                    $('#st-settle-container').find('.current_row').remove();
+                }else{
+                    var error_msg = '<div class="alert alert-warning" id="flash_message_div">'+
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>'+
+                                '<p>'+ data.flash_message +'</p>'+
+                            '</div>';
+                    $('#edit_receipt').prepend(error_msg);
+                    $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
+                }
+            }
+        });
+
     });
 
 //    $.validator.addMethod("noSpace", function (value, element) {

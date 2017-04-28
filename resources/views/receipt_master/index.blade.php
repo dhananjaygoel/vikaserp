@@ -44,6 +44,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
                         {{Session::get('success')}}
                     </div>
+                    {{--*/ Session::forget('success') /*--}}
                     @endif
                     @if (Session::has('flash_message'))
                     <div id="flash_error" class="alert alert-info no_data_msg_container">
