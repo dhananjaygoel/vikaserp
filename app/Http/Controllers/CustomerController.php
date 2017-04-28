@@ -886,7 +886,7 @@ class CustomerController extends Controller {
         $search = Input::get('search');
         $territory_id = Input::get('territory_filter');
         $location_id = Input::get('location_filter');
-        $date_filter = Input::get('date_filter');        
+        $date_filter = Input::get('date_filter');
         if(Auth::user()->role_id ==0){
             $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
@@ -911,12 +911,13 @@ class CustomerController extends Controller {
             if (isset($date_filter) && !empty($date_filter)) {
                 if($date_filter==1){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                     });
                 }else
                 if($date_filter==3){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) < DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)")
+                              ->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) > DATE_ADD(CURDATE(),INTERVAL 0 DAY)");
                     });
                 }else
                 if($date_filter==7){
@@ -926,7 +927,7 @@ class CustomerController extends Controller {
                 }
             }else{
                 $customers->whereHas('delivery_challan', function ($query) {
-                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
                                    
 //               dd($customers->toSql());  
@@ -958,12 +959,13 @@ class CustomerController extends Controller {
             if (isset($date_filter) && !empty($date_filter)) {
                 if($date_filter==1){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                     });
                 }else
                 if($date_filter==3){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) < DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)")
+                              ->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) > DATE_ADD(CURDATE(),INTERVAL 0 DAY)");
                     });
                 }else
                 if($date_filter==7){
@@ -973,7 +975,7 @@ class CustomerController extends Controller {
                 }
             }else{
                 $customers->whereHas('delivery_challan', function ($query) {
-                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
                                    
 //               dd($customers->toSql());  
@@ -988,24 +990,40 @@ class CustomerController extends Controller {
                                     ->with('territories',$territories);
     }
            
-    public function get_customer_details($id) {        
+    public function get_customer_details($id) {
+        $date_filter = Input::get('date_filter');        
         $customer = '';
-        $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id);        
+        $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id); 
+        $credit_period=$customer->credit_period;        
         $settle_filter = Input::get('settle_filter');        
         $delivery_challans = DeliveryChallan::where('customer_id','=',$id)                                              
-                                             ->whereRaw('grand_price!=settle_amount')->get();                            
+                                             ->whereRaw('grand_price!=settle_amount');                            
         if (isset($settle_filter) && $settle_filter!='' && $settle_filter=='Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
-                                              ->whereRaw('grand_price=settle_amount')->get();
+                                ->whereRaw('grand_price=settle_amount');                             
         }
         if (isset($settle_filter) && $settle_filter== 'Unsettled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
-                                              ->whereRaw('grand_price != settle_amount')->get();
+                                              ->whereRaw('grand_price != settle_amount');
+        }        
+        
+        if (isset($date_filter) && !empty($date_filter)) {
+                if($date_filter==1){
+                    $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= CURDATE()");
+                }else
+                if($date_filter==3){
+                    $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)")
+                                      ->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) > DATE_ADD(CURDATE(),INTERVAL 0 DAY)");
+                }else
+                if($date_filter==7){
+                    $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) >= DATE_ADD(CURDATE(),INTERVAL 7 DAY)");
+                }
+            }else{
+                $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= CURDATE()");
         }
-        $city = City::all();
+        $delivery_challans=$delivery_challans->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return View('customer_details_view')->with('customer',$customer)
-                                            ->with('city',$city)
+        return View('customer_details_view')->with('customer',$customer)                                            
                                             ->with('delivery_challans',$delivery_challans)
                                             ->with('delivery_location',$delivery_location);
     }
@@ -1041,12 +1059,12 @@ class CustomerController extends Controller {
             if (isset($date_filter) && !empty($date_filter)) {
                 if($date_filter==1){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                     });
                 }else
                 if($date_filter==3){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) < DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
                     });
                 }else
                 if($date_filter==7){
@@ -1056,7 +1074,7 @@ class CustomerController extends Controller {
                 }
             }else{
                 $customers->whereHas('delivery_challan', function ($query) {
-                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
                                    
 //               dd($customers->toSql());  
@@ -1088,12 +1106,12 @@ class CustomerController extends Controller {
             if (isset($date_filter) && !empty($date_filter)) {
                 if($date_filter==1){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                     });
                 }else
                 if($date_filter==3){
                     $customers->whereHas('delivery_challan', function ($query) {
-                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) < DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
                     });
                 }else
                 if($date_filter==7){
@@ -1103,7 +1121,7 @@ class CustomerController extends Controller {
                 }
             }else{
                 $customers->whereHas('delivery_challan', function ($query) {
-                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) = CURDATE()");
+                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
                                    
 //               dd($customers->toSql());  
