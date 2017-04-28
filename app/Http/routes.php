@@ -312,7 +312,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
-    Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+    Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');    
+    Route::get('print_customers_details', 'CustomerController@print_customer_details');
 //    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');

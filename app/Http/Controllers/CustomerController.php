@@ -32,6 +32,7 @@ use App\Territory;
 use App\TerritoryLocation;
 use App\Repositories\DropboxStorageRepository;
 use App\CollectionUser;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller {
 
@@ -908,12 +909,12 @@ class CustomerController extends Controller {
                 $customers->where('delivery_location_id','=',$location_id);            
             }
             if (isset($date_filter) && !empty($date_filter)) {
-                if($date_filter==1){
+                if($date_filter==1){                    
                     $customers->where('credit_period','=',0);
-                }
+                }else
                 if($date_filter==3){
-                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
-                }
+                    $customers->where('credit_period','<',3); 
+                }else
                 if($date_filter==7){
                     $customers->where('credit_period','>',7);
                 }
@@ -944,12 +945,12 @@ class CustomerController extends Controller {
                 $customers->where('delivery_location_id','=',$location_id);            
             }
             if (isset($date_filter) && !empty($date_filter)) {
-                if($date_filter==1){
+                if($date_filter==1){                    
                     $customers->where('credit_period','=',0);
-                }
+                }else
                 if($date_filter==3){
-                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
-                }
+                    $customers->where('credit_period','<',4);
+                }else
                 if($date_filter==7){
                     $customers->where('credit_period','>',7);
                 }
@@ -1020,7 +1021,7 @@ class CustomerController extends Controller {
                     $customers->where('credit_period','=',0);
                 }
                 if($date_filter==3){
-                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
+                    $customers->where('credit_period','<',4);
                 }
                 if($date_filter==7){
                     $customers->where('credit_period','>',7);
@@ -1056,7 +1057,7 @@ class CustomerController extends Controller {
                     $customers->where('credit_period','=',0);
                 }
                 if($date_filter==3){
-                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
+                    $customers->where('credit_period','<',4);
                 }
                 if($date_filter==7){
                     $customers->where('credit_period','>',7);
@@ -1072,4 +1073,27 @@ class CustomerController extends Controller {
                                     ->with('delivery_location',$delivery_location)
                                     ->with('territories',$territories);
     }    
+    
+    public function print_customer_details(DropboxStorageRepository $connection) {        
+        $customer = '';
+        $id = Input::get('customer_id');
+        $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id);        
+        $settle_filter = Input::get('settle_filter');        
+        $delivery_challans = DeliveryChallan::where('customer_id','=',$id)                                              
+                                             ->whereRaw('grand_price!=settle_amount')->get();                            
+        if (isset($settle_filter) && $settle_filter!='' && $settle_filter=='Settled') {
+            $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
+                                              ->whereRaw('grand_price=settle_amount')->get();
+        }
+        if (isset($settle_filter) && $settle_filter== 'Unsettled') {
+            $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
+                                              ->whereRaw('grand_price != settle_amount')->get();
+        }
+        $city = City::all();
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        return View('print_customer_details_view')->with('customer',$customer)
+                                            ->with('city',$city)
+                                            ->with('delivery_challans',$delivery_challans)
+                                            ->with('delivery_location',$delivery_location);
+    }
 }
