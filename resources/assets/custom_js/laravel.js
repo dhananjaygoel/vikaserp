@@ -138,6 +138,7 @@
             if (!$(this).find('.st_select_tally_user').is($(elem)) && ($(this).find('.st_select_tally_user').val() != '' && $(elem).val() != '') && $(this).find('.st_select_tally_user').val() == $(elem).val()) {
                 flag = false;
             }
+            
         });
         var block = $(this).closest('.st-settle-block').find('.settle-input-elem');
         if (flag) {
@@ -158,7 +159,8 @@
             $(block).find('.st_select_tally_user').find('select option[value="' + lastsel + '"]').attr("selected", true);
             $(block).find('.st_select_tally_user').select2();
         }
-//        $(".add-tally_u" ).trigger( "click" );
+        var element = $('#st-settle-container').find('.st-settle-block').last();
+        $(element).find(".add-tally_u" ).trigger( "click" );
     });
     $(document).on('click', '.add-tally_u', function (event) {
         event.preventDefault();
