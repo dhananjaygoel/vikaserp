@@ -158,6 +158,7 @@
             $(block).find('.st_select_tally_user').find('select option[value="' + lastsel + '"]').attr("selected", true);
             $(block).find('.st_select_tally_user').select2();
         }
+//        $(".add-tally_u" ).trigger( "click" );
     });
     $(document).on('click', '.add-tally_u', function (event) {
         event.preventDefault();
@@ -196,9 +197,9 @@
     });
     $(document).on('click', '#add_receipt .del-tally_u', function (event) {
         event.preventDefault();
-        var tval = $(document).find('.st_select_tally_user').val();
-        if ($(document).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 1) {
+//        var tval = $(document).find('.st_select_tally_user').val();
+//        if ($(document).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 1) {
             $(this).closest('.st-settle-block').remove();
-        }
+//        }
     });
 })();

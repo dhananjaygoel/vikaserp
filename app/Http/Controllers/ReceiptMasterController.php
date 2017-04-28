@@ -166,13 +166,14 @@ class ReceiptMasterController extends Controller {
                             $customerReceiptObj->save();
                         }
                     }
+                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 } else
                     return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
                 
-                if ($customerReceiptObj)
-                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
-                else
-                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
+//                if ($customerReceiptObj)
+//                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
+//                else
+//                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
             } else
                 return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
         }else {
@@ -363,7 +364,7 @@ class ReceiptMasterController extends Controller {
                     if ($receipt->delete()) {
                         $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
                         if (count($receipt_id) > 0) {
-                            return Response::json(['success' => true,'receipt' => true]);
+                            return Response::json(['success' => true]);
                         } else {
                             $receiptObj = Receipt::find($id);
                             $receiptObj->delete();
