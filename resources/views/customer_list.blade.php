@@ -115,8 +115,7 @@
 //                                            $days = Input::get('date_filter');
 //                                            $limit_date = date('Y-m-d', strtotime($current_date. " + ".$days." days"));
 //                                        }                                        
-                                    ?>
-                                    @if($due_date<=$current_date)
+                                    ?>                                    
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td><a href="{{url('customer_details/'.$c->id)}}">@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif</a></td>
@@ -157,8 +156,7 @@
                                             ?>
                                         </td>
                                         @endif
-                                    </tr>                                    
-                                    @endif
+                                    </tr>
                                 @endforeach
                                 </tbody>
                             </table>

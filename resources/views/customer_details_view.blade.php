@@ -27,6 +27,9 @@
                    <form action="{{URL::action('CustomerController@get_customer_details', ['id' => $customer->id])}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Customer Details</h1>
                         @if(Auth::user()->role_id ==0 )
+<!--                        <a href="" id="print-customer-details" data-toggle="modal" data-target="#print_acount_customers" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
+                            Print
+                        </a>-->
                         <div class="col-md-2 pull-right">                              
                             <select class="form-control" id="settle-filter" name="settle_filter" onchange="this.form.submit();">
                                 <option value="Unsettled" <?php if(Input::get('settle_filter')=='Unsettled') echo "selected=''"; ?> >Unsettled</option>

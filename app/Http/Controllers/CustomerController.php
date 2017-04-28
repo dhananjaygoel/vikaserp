@@ -885,7 +885,7 @@ class CustomerController extends Controller {
         $search = Input::get('search');
         $territory_id = Input::get('territory_filter');
         $location_id = Input::get('location_filter');
-        $date_filter = Input::get('date_filter');
+        $date_filter = Input::get('date_filter');        
         if(Auth::user()->role_id ==0){
             $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
@@ -904,12 +904,24 @@ class CustomerController extends Controller {
                 $customers ->whereIn('delivery_location_id',$loc_arr);                                                        
                 $delivery_location = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
             }
-            if (isset($location_id) && !empty($location_id)) {          
+            if (isset($location_id) && !empty($location_id)) {
                 $customers->where('delivery_location_id','=',$location_id);            
             }
-        }
+            if (isset($date_filter) && !empty($date_filter)) {
+                if($date_filter==1){
+                    $customers->where('credit_period','=',0);
+                }
+                if($date_filter==3){
+                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
+                }
+                if($date_filter==7){
+                    $customers->where('credit_period','>',7);
+                }
+            }else{
+                $customers->where('credit_period','=',0);
+            }
+        }    
         if(Auth::user()->role_id ==6){
-//            $territory_id=Auth::user()->teritory_id;
             $territory_id = Input::get('territory_filter');
             $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
@@ -930,6 +942,19 @@ class CustomerController extends Controller {
             }
             if (isset($location_id) && !empty($location_id)) {          
                 $customers->where('delivery_location_id','=',$location_id);            
+            }
+            if (isset($date_filter) && !empty($date_filter)) {
+                if($date_filter==1){
+                    $customers->where('credit_period','=',0);
+                }
+                if($date_filter==3){
+                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
+                }
+                if($date_filter==7){
+                    $customers->where('credit_period','>',7);
+                }
+            }else{
+                $customers->where('credit_period','=',0);
             }
         }
         $customers=$customers->paginate(20)->setPath('due-payment');        
@@ -990,6 +1015,19 @@ class CustomerController extends Controller {
             if (isset($location_id) && !empty($location_id)) {          
                 $customers->where('delivery_location_id','=',$location_id);            
             }
+            if (isset($date_filter) && !empty($date_filter)) {
+                if($date_filter==1){
+                    $customers->where('credit_period','=',0);
+                }
+                if($date_filter==3){
+                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
+                }
+                if($date_filter==7){
+                    $customers->where('credit_period','>',7);
+                }
+            }else{
+                $customers->where('credit_period','=',0);
+            }
         }
         if(Auth::user()->role_id ==6){
             $territory_id = Input::get('territory_filter');
@@ -1012,6 +1050,19 @@ class CustomerController extends Controller {
             }
             if (isset($location_id) && !empty($location_id)) {          
                 $customers->where('delivery_location_id','=',$location_id);            
+            }
+            if (isset($date_filter) && !empty($date_filter)) {
+                if($date_filter==1){
+                    $customers->where('credit_period','=',0);
+                }
+                if($date_filter==3){
+                    $customers->where('credit_period','<=',3)->where('credit_period','>',0);                                
+                }
+                if($date_filter==7){
+                    $customers->where('credit_period','>',7);
+                }
+            }else{
+                $customers->where('credit_period','=',0);
             }
         }
         $customers=$customers->get();        
