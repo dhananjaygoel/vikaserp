@@ -273,6 +273,40 @@ class ReceiptMasterController extends Controller {
                         }
                     }
                 }
+                if (Input::has('customer_ids_array')) {
+                    $old_customers = Input::get('customer_ids_array');
+                    if (isset($old_customers) && !empty($old_customers)) {
+                        $old_customers = str_replace("[", '', $old_customers);
+                        $old_customers = str_replace("]", '', $old_customers);
+                        $old_customers = explode(",", $old_customers);
+//                        dd($old_customers);
+//                        foreach ($old_customers as $old_customer) {
+                        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 0) {
+                            foreach ($old_customers as $old_customer) {
+                                $customer_receipt = Customer_receipts::where('customer_id', '=', $old_customer)
+                                                ->where('receipt_id', '=', $id)->first();
+                                if (isset($customer_receipt)) {
+                                    $customer_receipt->delete();
+                                }
+                            }
+                        } elseif (Auth::user()->role_id == 4) {
+                            foreach ($old_customers as $old_customer) {
+                                $customer_receipt = Receipt::with('customer_receipts')->find($id);
+//                                    dd($customer_receipt);
+                                if (count($customer_receipt->customer_receipts) > 1) {
+                                    $customer_receipt_obj = Customer_receipts::where('customer_id', '=', $old_customer)
+                                                    ->where('receipt_id', '=', $id)->first();
+                                    if (isset($customer_receipt_obj)) {
+                                        $customer_receipt_obj->delete();
+                                    }
+                                } else {
+                                    return Response::json(['success' => false, 'user' => 'account', 'receipt' => false]);
+                                }
+                            }
+                        }
+//                        }
+                    }
+                }
                 if (isset($settle_amount) && !empty($settle_amount)) {
                     foreach ($settle_amount as $key => $settleamount) {
                         if ($settleamount == '') {
@@ -314,20 +348,20 @@ class ReceiptMasterController extends Controller {
                             $customerReceiptObj->save();
                         }
                     }
-                    if ($customerReceiptObj){
+                    if ($customerReceiptObj) {
                         Session::set('succcess_msg', true);
                         Session::set('succcess_flag', true);
                         return Response::json(['success' => true, 'receipt' => true]);
 //                        return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
-                    }else{
-                        return Response::json(['success' => false, 'receipt' => true]);
+                    } else {
+                        return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while updating receipt']);
 //                        return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
                     }
                 } else
                     return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
             } else
                 return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
-        }else {
+        }else {            
             return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after sometime');
         }
     }

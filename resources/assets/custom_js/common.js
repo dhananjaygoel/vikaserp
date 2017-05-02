@@ -68,7 +68,12 @@ $(document).ready(function () {
         var new_id = $(this).data("customer_id");
         customer_ids.push(new_id);
         $('#edit_receipt').find('#customer_ids_array').val(JSON.stringify(customer_ids));
-        $(this).closest('.st-settle-block').remove();
+//        $(this).closest('.st-settle-block').remove();
+        var tval = $('#st-settle-container').find('.st-settle-block').length;
+        if (tval > 1) {
+            $(this).closest('.st-settle-block').remove();
+        }
+
     });
     $(document).on('click', '#edit_receipt_btn', function (event) {
         event.preventDefault();
@@ -82,6 +87,12 @@ $(document).ready(function () {
                 if (data.success) {
                     if (data.receipt) {
                         window.location.href = $('#baseurl').attr('name') + "/receipt-master";
+                    } else if (data.user == "account") {
+                        var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                                '<p>' + data.flash_message + '</p>' +
+                                '</div>';
+                        $('#edit_receipt').prepend(error_msg);
                     }
                 } else {
                     var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
