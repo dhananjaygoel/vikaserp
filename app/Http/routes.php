@@ -23,6 +23,7 @@ Route::post('appsync', 'HomeController@appsync');
 Route::post('appsyncinquiry', 'HomeController@appsyncinquiry');
 Route::post('appsyncinquiry_customer', 'HomeController@appsyncinquiry_customer');
 Route::post('appSyncLabours', 'HomeController@appSyncLabours');
+Route::post('appsyncterritory', 'HomeController@appsyncterritory');
 Route::post('appsyncorder', 'HomeController@appSyncOrder');
 Route::post('appsyncorder_customer', 'HomeController@appSyncOrder_customer');
 Route::post('appsyncdeliveryorder', 'HomeController@appSyncDeliveryOrder');
@@ -116,9 +117,6 @@ Route::get('appssyncgraph_delivery_challan', 'HomeController@appssyncgraph_deliv
 
 
 //app aproval process - inquiry
-
-
-
 //performance module- labours
 Route::get('appalllabours', 'HomeController@appalllabours');
 Route::post('appaddlabour', 'HomeController@appaddlabour');
@@ -233,7 +231,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('customer_details/{id}', 'CustomerController@get_customer_details');
     Route::get('get_territory_locations', 'CollectionUserController@get_territory_locations');
     Route::post('settle_amount', 'ReceiptMasterController@settle_amount');
-    
+
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
     Route::post('add_pending_customers/{id}', 'PendingCustomerController@add_pending_customers');
@@ -313,10 +311,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
-    Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');    
+    Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
     Route::get('print_customers_details', 'CustomerController@print_customer_details');
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
-    
+
 //    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
@@ -333,19 +331,21 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('import_delivery_location', 'WelcomeController@import_delivery_location');
     Route::post('process_import_delivery_location', 'WelcomeController@process_import_delivery_location');
     Route::get('getMyIP', 'WelcomeController@getMyIP');
-    
+
     Route::get('performance/loaded-by/loaded-by-performance', 'LoadByController@performance');
     Route::resource('performance/loaded-by', 'LoadByController');
-    
-    /*Labour*/
-     Route::get('performance/labours/labour-performance', 'LabourController@labourPerformance');
+
+    /* Labour */
+    Route::get('performance/labours/labour-performance', 'LabourController@labourPerformance');
 
     Route::resource('performance/labours', 'LabourController');
-        Route::get('performance', 'LabourController@index');
-    
-    
-    
-    
+    Route::get('performance', 'LabourController@index');
+
+
+    /* Account */
+    Route::resource('account', 'CollectionUserController');
+    Route::post('account/export_collection_user', 'CollectionUserController@export_collection_users');
+
     /* Helpful routes for developers */
     Route::get('delete_reports', 'WelcomeController@delete_reports');
     Route::get('removedata/{tablename}', 'WelcomeController@removedata');
@@ -366,11 +366,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::any('database_backup_live', 'WelcomeController@database_backup_live');
     Route::any('database_backup_local', 'WelcomeController@database_backup_local');
     Route::any('database_backup_hvikas', 'WelcomeController@database_backup_hvikas');
-    
-    /*Use ones approved orders and inquiry module*/
+
+    /* Use ones approved orders and inquiry module */
     Route::get('make_approved', 'WelcomeController@make_approved');
     Route::get('get_set_labours', 'WelcomeController@get_set_labours');
-    
 });
 
 Route::get('export/{type}', 'WelcomeController@exportExcel');
@@ -425,8 +424,7 @@ Route::get('receipt-master/cash', 'ReceiptMasterController@create_cash_receipt')
 Route::delete('receipt-master/delete-customer-receipt/{id}', 'ReceiptMasterController@delete_customer_receipt');
 Route::resource('receipt-master', 'ReceiptMasterController');
 
-Route::resource('account', 'CollectionUserController');
-Route::post('account/export_collection_user','CollectionUserController@export_collection_users');
+
 
 
 
