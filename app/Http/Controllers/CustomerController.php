@@ -81,6 +81,7 @@ class CustomerController extends Controller {
                                 ->where('customer_status', '=', 'permanent');
                         });
                     })
+                    ->orWhere('tally_name', 'like', $term)
                     ->orWhere('phone_number1', 'like', $term)
                     ->orWhere('phone_number2', 'like', $term)
                     ->where('customer_status', '=', 'permanent')        
