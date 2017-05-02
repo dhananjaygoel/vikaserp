@@ -65,21 +65,25 @@ class CustomerController extends Controller {
             $customers = Customer::orderBy('tally_name', 'asc')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
-                            $q->where('city_name', 'like', $term);
+                            $q->where('city_name', 'like', $term)
+                              ->where('customer_status', '=', 'permanent');
                         });
                     })
                     ->orWhere(function($query) use($term) {
                         $query->whereHas('deliverylocation', function($q) use ($term) {
-                            $q->where('area_name', 'like', $term);
+                            $q->where('area_name', 'like', $term)
+                              ->where('customer_status', '=', 'permanent');
                         });
                     })
                     ->orWhere(function($query) use($term) {
                         $query->whereHas('manager', function($q) use ($term) {
-                            $q->where('first_name', 'like', $term);
+                            $q->where('first_name', 'like', $term)
+                                ->where('customer_status', '=', 'permanent');
                         });
                     })
-                    ->orWhere('tally_name', 'like', $term)
-                    ->where('customer_status', '=', 'permanent')
+                    ->orWhere('phone_number1', 'like', $term)
+                    ->orWhere('phone_number2', 'like', $term)
+                    ->where('customer_status', '=', 'permanent')        
                     ->paginate(20);
         } else {
             $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->paginate(20);

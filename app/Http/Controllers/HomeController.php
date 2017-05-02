@@ -2950,70 +2950,7 @@ class HomeController extends Controller {
         return json_encode($territory_response);
     }
 
-    public function appaddterritory_admin1() {
-
-        if (Input::has('territory_name') && Input::has('location')) {
-            $territory_check = Territory::where('teritory_name', '=', Input::get('territory_name'))->first();
-            if (isset($territory_check->id)) {
-                return json_encode(array('result' => false, 'territory_check' => $territory_check->id, 'message' => 'Territory already exist'));
-            }
-
-            $territory = new Territory();
-            $locations = (json_decode(Input::get('location')));
-            $territory->teritory_name = Input::get('territory_name');
-            $territory->save();
-            $teritory_id = $territory->id;
-
-            if (isset($teritory_id)) {
-                foreach ($locations as $loc) {
-
-                    $territory_loc = new TerritoryLocation();
-                    $territory_loc->teritory_id = $teritory_id;
-                    $territory_loc->location_id = $loc;
-                    $territory_loc->save();
-                }
-            } else {
-                return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
-            }
-            return json_encode(array('result' => true, 'territory_id' => $territory->id, 'message' => 'Territory added successfully'));
-        }
-
-        return json_encode(array('result' => false, 'message' => 'Territory Name and Location are required. Please try again'));
-    }
-
-    /**
-     * App update territory
-     */
-    public function appupdateterritory_admin1() {
-        if (Input::has('territory_name') && Input::has('location') && Input::has('territory_id')) {
-            $id = Input::get('territory_id');
-
-
-            $territory = Territory::find($id);
-            if (!isset($territory->id)) {
-                return json_encode(array('result' => false, 'message' => 'Territory not found'));
-            }
-            $territory->teritory_name = Input::get('territory_name');
-            $territory->save();
-            $locations = (json_decode(Input::get('location')));
-
-            $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
-            foreach ($territory_loc as $loc) {
-                $territory_old = TerritoryLocation::find($loc->id);
-                $territory_old->delete();
-            }
-            foreach ($locations as $loc) {
-                $territory_loc = new TerritoryLocation();
-                $territory_loc->teritory_id = $id;
-                $territory_loc->location_id = $loc;
-                $territory_loc->save();
-            }
-
-            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory details updated successfully'));
-        } else
-            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
-    }
-
+    
     /**
      * App sync and comare last sync dated and send updated date
      */
@@ -5565,6 +5502,24 @@ class HomeController extends Controller {
             return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour details updated successfully'));
         else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+    }
+    
+    
+    public function appdeletelabour() {
+        
+        
+        
+         if (Input::has('labour_id')) {
+            $id = Input::get('labour_id');
+
+            $labour = Labour::find($id);
+            $labour->delete();          
+
+            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Labour deleted successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+
+        
     }
 
     public function applabourperformance() {
