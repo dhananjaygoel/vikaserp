@@ -495,7 +495,7 @@ class HomeController extends Controller {
                     $inquiry_details->delete();
                 }
             }
-           
+
             return json_encode(array('result' => true, 'message' => 'Inquiries deleted successfully.'));
         } else {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
@@ -2617,7 +2617,6 @@ class HomeController extends Controller {
     /**
      * customer App sync inquiries
      */
-//    public function appsyncinquiry($inquiryies = NULL, $inquiry_customers = NULL, $inquiryiesproduct = NULL) {
     public function appsyncinquiry_customer() {
 
         $data = Input::all();
@@ -2802,6 +2801,79 @@ class HomeController extends Controller {
                 }
             }
         }
+    }
+    
+    /**
+     * App sync performance- labours
+     */
+    public function appSyncLabours() {
+
+        $data = Input::all();
+        $labour_response = [];
+        $customer_list = [];
+        if (Input::has('labours')) {
+            $labours = (json_decode($data['labours']));
+        }
+
+        if (Input::has('labours_sync_date') && Input::get('labours_sync_date') != '') {
+            $last_sync_date = Input::get('labours_sync_date');
+            $labour_server = Labour::where('created_at', '>', $last_sync_date)->get();
+            $labour_response['labour_server_added'] = ($labour_server && count($labour_server) > 0) ? $labour_server : array();
+
+            $labour_updated_server = Labour::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $labour_response['labour_server_updated'] = ($labour_updated_server && count($labour_updated_server) > 0) ? $labour_updated_server : array();
+        } else {
+            $labour_server = Labour::get();
+            $labour_response['labour_server_added'] = ($labour_server && count($labour_server) > 0) ? $labour_server : array();
+        }
+
+        foreach ($labours as $key => $value) {
+            if ($value->server_id == 0) {
+                $labour_check = Labour::where('phone_number', '=', $value->phone_number)
+                        ->where('first_name', '=', $value->first_name)
+                        ->where('last_name', '=', $value->last_name)
+                        ->first();
+                if (!isset($labour_check->id)) {
+                    $labour = new Labour();
+                    if (isset($value->first_name))
+                        $labour->first_name = $value->first_name;
+                    if (isset($value->last_name))
+                        $labour->last_name = $value->last_name;
+                    if (isset($value->password))
+                        $labour->password = Hash::make($value->password);
+                    if (isset($value->phone_number))
+                        $labour->phone_number = $value->phone_number;
+                    $labour->save();
+                    $labour_id = $labour->id;
+                    $labour_response[$value->id] = $labour_id;
+                }
+            } else {
+                $labour = Labour::find($value->server_id);
+                if (Input::has('first_name') && Input::get('first_name') != "")
+                    $labour->first_name = Input::get('first_name');
+                if (Input::has('last_name') && Input::get('last_name') != "")
+                    $labour->last_name = Input::get('last_name');
+                if (Input::has('phone_number') && Input::get('phone_number') != "")
+                    $labour->phone_number = Input::get('phone_number');
+                if (Input::has('password') && Input::get('password') != "")
+                    $labour->password = Hash::make(Input::get('password'));
+                $labour_id = $labour->id;
+                $delivery_order_products = array();
+                $labour->save();
+                $labour_response[$value->server_id] = Labour::find($delivery_order->id);
+            }
+        }
+
+        if (Input::has('labours_sync_date') && Input::get('labours_sync_date') != '' && Input::get('labours_sync_date') != NULL) {
+            $labour_response['labour_deleted'] = Labour::where('deleted_at', '>=', Input::get('labours_sync_date'))->select('id')->get();
+        }
+        $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($labour_date))
+            $labour_response['latest_date'] = $labour_date->updated_at->toDateTimeString();
+        else
+            $labour_response['latest_date'] = "";
+
+        return json_encode($labour_response);
     }
 
     /**
