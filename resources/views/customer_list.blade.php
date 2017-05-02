@@ -1,6 +1,17 @@
 @extends('layouts.master')
 @section('title','Customer List')
 @section('content')
+<style>
+    .save-unsettled-amount{
+        font-size: 17px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+    .input-unsettled{
+        display: inline; 
+        width: 50%;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -131,7 +142,12 @@
                                             ?>
                                         <td>{{$total_due_amount}}</td>
                                         <td>
-                                            {{$unsettled_amount}}
+                                            @if(Auth::user()->role_id ==0)
+                                                <input type="text" class="form-control input-unsettled" value="{{$unsettled_amount}}" data-price="{{$unsettled_amount}}"> <i class="fa fa-save save-unsettled-amount" data-id="{{$c->id}}" data-amount="{{$c->id}}"></i>
+                                            @endif
+                                            @if(Auth::user()->role_id ==6)
+                                                {{$unsettled_amount}}
+                                            @endif
                                         </td>
                                         <td>                                            
                                             @foreach($delivery_location as $location)
