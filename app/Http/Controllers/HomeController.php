@@ -2802,7 +2802,7 @@ class HomeController extends Controller {
             }
         }
     }
-    
+
     /**
      * App sync performance- labours
      */
@@ -2874,6 +2874,144 @@ class HomeController extends Controller {
             $labour_response['latest_date'] = "";
 
         return json_encode($labour_response);
+    }
+
+    /**
+     * App sync Territory
+     */
+    public function appsyncterritory() {
+
+        $data = Input::all();
+        if (Input::has('territories')) {
+            $territories = (json_decode($data['territories']));
+        }
+        if (Input::has('territory_locations')) {
+            $territorylocations = (json_decode($data['territory_locations']));
+        }
+        $territory_response = [];
+        if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '' && Input::get('territory_sync_date') != NULL) {
+            $last_sync_date = Input::get('territory_sync_date');
+            $territory_added_server = Territory::where('created_at', '>', $last_sync_date)->with('territorylocation')->get();
+            $territory_response['territory_server_added'] = ($territory_added_server && count($territory_added_server) > 0) ? $territory_added_server : array();
+
+            $inquiry_updated_server = Territory::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('territorylocation')->get();
+            $territory_response['territory_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
+        } else {
+            $territory_added_server = Territory::with('territorylocation')->get();
+            $territory_response['territory_server_added'] = ($territory_added_server && count($territory_added_server) > 0) ? $territory_added_server : array();
+        }
+        
+        if (isset($territories)) {
+            foreach ($territories as $key => $value) {
+                
+                if ($value->teritory_server_id > 0) {
+                    $territory = Territory::find($value->teritory_server_id);
+                    $territory->teritory_name = $value->territory_name;
+                    $delete_old_territory_location = TerritoryLocation::where('teritory_id', '=', $value->teritory_server_id)->delete();
+                    foreach ($territorylocations as $product_data) {
+                        $inquiry_products = array();
+                        if ($product_data->local_territory_id == $value->local_territory_id) {
+                            $territory_loc = new TerritoryLocation();
+                            $territory_loc->teritory_id = $teritory_id;
+                            $territory_loc->location_id = $product_data->location_id;
+                            $territory_loc->save();
+                        }
+                    }
+                    $territory_response[$value->teritory_server_id] = Territory::find($value->teritory_server_id);
+//                    $territory_response[$value->teritory_server_id]['territory_locations'] = InquiryProducts::where('inquiry_id', '=', $value->teritory_server_id)->get();
+                } else {
+
+                    $territory = new Territory();                    
+                    $territory->teritory_name = $value->teritory_name;
+                    $territory->save();
+                    $teritory_id = $territory->id;
+                    foreach ($territorylocations as $product_data) {
+                        $inquiry_products = array();
+                        if ($product_data->local_territory_id == $value->local_territory_id) {
+                            $territory_loc = new TerritoryLocation();
+                            $territory_loc->teritory_id = $teritory_id;
+                            $territory_loc->location_id = $product_data->location_id;
+                            $territory_loc->save();
+                        }
+                    }
+                    $territory_response[$value->local_territory_id] = $teritory_id;
+                }
+            }
+        }
+        if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '' && Input::get('territory_sync_date') != NULL) {
+            $territory_response['territory_deleted'] = Territory::where('deleted_at', '>=', Input::get('territory_sync_date'))->select('id')->get();
+        }
+        $territory_date = Territory::select('updated_at')->
+                        orderby('updated_at', 'DESC')->first();
+        if (!empty($territory_date))
+            $territory_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
+        else
+            $territory_response['latest_date'] = "";
+        return json_encode($territory_response);
+    }
+
+    public function appaddterritory_admin1() {
+
+        if (Input::has('territory_name') && Input::has('location')) {
+            $territory_check = Territory::where('teritory_name', '=', Input::get('territory_name'))->first();
+            if (isset($territory_check->id)) {
+                return json_encode(array('result' => false, 'territory_check' => $territory_check->id, 'message' => 'Territory already exist'));
+            }
+
+            $territory = new Territory();
+            $locations = (json_decode(Input::get('location')));
+            $territory->teritory_name = Input::get('territory_name');
+            $territory->save();
+            $teritory_id = $territory->id;
+
+            if (isset($teritory_id)) {
+                foreach ($locations as $loc) {
+
+                    $territory_loc = new TerritoryLocation();
+                    $territory_loc->teritory_id = $teritory_id;
+                    $territory_loc->location_id = $loc;
+                    $territory_loc->save();
+                }
+            } else {
+                return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+            }
+            return json_encode(array('result' => true, 'territory_id' => $territory->id, 'message' => 'Territory added successfully'));
+        }
+
+        return json_encode(array('result' => false, 'message' => 'Territory Name and Location are required. Please try again'));
+    }
+
+    /**
+     * App update territory
+     */
+    public function appupdateterritory_admin1() {
+        if (Input::has('territory_name') && Input::has('location') && Input::has('territory_id')) {
+            $id = Input::get('territory_id');
+
+
+            $territory = Territory::find($id);
+            if (!isset($territory->id)) {
+                return json_encode(array('result' => false, 'message' => 'Territory not found'));
+            }
+            $territory->teritory_name = Input::get('territory_name');
+            $territory->save();
+            $locations = (json_decode(Input::get('location')));
+
+            $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
+            foreach ($territory_loc as $loc) {
+                $territory_old = TerritoryLocation::find($loc->id);
+                $territory_old->delete();
+            }
+            foreach ($locations as $loc) {
+                $territory_loc = new TerritoryLocation();
+                $territory_loc->teritory_id = $id;
+                $territory_loc->location_id = $loc;
+                $territory_loc->save();
+            }
+
+            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory details updated successfully'));
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
     /**
