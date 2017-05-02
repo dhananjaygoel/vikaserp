@@ -26,9 +26,7 @@ class ReceiptMasterController extends Controller {
         date_default_timezone_set("Asia/Calcutta");
         //Check authorization of user with current ip address
         $this->middleware('validIP');
-        if (!Auth::check()) {
-            return Redirect::to('/')->with('error', 'You do not have permission.');
-        }
+        $this->middleware('auth');
     }
 
     /**
