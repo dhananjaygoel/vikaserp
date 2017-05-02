@@ -26,6 +26,7 @@ class ReceiptMasterController extends Controller {
         date_default_timezone_set("Asia/Calcutta");
         //Check authorization of user with current ip address
         $this->middleware('validIP');
+        $this->middleware('auth');
     }
 
     /**
@@ -50,13 +51,18 @@ class ReceiptMasterController extends Controller {
 //                'export_from_date' => Input::get('search_from_date'),
 //                'export_to_date' => Input::get('search_to_date')
 //            ];
+            $q = $q->orderBy('id', 'desc');
             $receipts = $q->paginate(20);
             $receipts->setPath('receipt-master');
             return view('receipt_master.index')->with('receipts', $receipts)->with('from_date', $from_date)->with('to_date', $to_date);
         } else {
-            if(Session::has('succcess_msg')){
-               Session::flash('flash_message','Receipt deleted succesfully.');
-               Session::forget('succcess_msg');
+            if (Session::has('succcess_msg')) {
+                Session::flash('flash_message', 'Receipt deleted succesfully.');
+                Session::forget('succcess_msg');
+            }
+            if (Session::has('flash_message')) {
+                Session::flash('flash_message', 'Receipt updated succesfully.');
+                Session::forget('succcess_flag');
             }
             $receipts = Receipt::orderBy('id', 'desc');
             $receipts = $receipts->paginate(20);
@@ -134,13 +140,13 @@ class ReceiptMasterController extends Controller {
                 foreach ($settle_amount as $key => $settleamount) {
                     if ($settleamount == '') {
                         $validator->after(function($validator) {
-                            $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                            $validator->errors()->add('settle amount', 'Please enter amount.');
                         });
                     }
                 }
             } else {
                 $validator->after(function($validator) {
-                    $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                    $validator->errors()->add('settle amount', 'Please enter amount.');
                 });
             }
             if ($validator->fails()) {
@@ -169,7 +175,7 @@ class ReceiptMasterController extends Controller {
                     return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 } else
                     return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
-                
+
 //                if ($customerReceiptObj)
 //                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
 //                else
@@ -258,29 +264,32 @@ class ReceiptMasterController extends Controller {
                 $debited_to = Input::get('debited_to');
                 $receipt_type = Input::get('receipt_type');
                 $validator = Validator::make($request->input(), Customer_receipts::$ValidateNewReceipt, Customer_receipts::$validatorMessages);
-                foreach ($tally_users as $key => $tallyuser) {
-                    if ($tallyuser == '') {
-                        $validator->after(function($validator) {
-                            $validator->errors()->add('tally_users', 'Please select tally user.');
-                        });
+                if (isset($tally_users) && !empty($tally_users)) {
+                    foreach ($tally_users as $key => $tallyuser) {
+                        if ($tallyuser == '') {
+                            $validator->after(function($validator) {
+                                $validator->errors()->add('tally_users', 'Please select tally user.');
+                            });
+                        }
                     }
                 }
                 if (isset($settle_amount) && !empty($settle_amount)) {
                     foreach ($settle_amount as $key => $settleamount) {
                         if ($settleamount == '') {
                             $validator->after(function($validator) {
-                                $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                                $validator->errors()->add('settle amount', 'Please enter amount.');
                             });
                         }
                     }
                 } else {
                     $validator->after(function($validator) {
-                        $validator->errors()->add('settle amount', 'Please enter settle amount.');
+                        $validator->errors()->add('settle amount', 'Please enter amount.');
                     });
                 }
                 if ($validator->fails()) {
                     return redirect()->back()->withInput()->withErrors($validator->errors());
                 }
+                $receiptObj = Receipt::with('customer_receipts')->find($id);
                 if (isset($receiptObj->customer_receipts)) {
                     foreach ($receiptObj->customer_receipts as $customers) {
                         $customerObj = Customer_receipts::find($customers->id);
@@ -305,10 +314,15 @@ class ReceiptMasterController extends Controller {
                             $customerReceiptObj->save();
                         }
                     }
-                    if ($customerReceiptObj)
-                        return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
-                    else
-                        return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
+                    if ($customerReceiptObj){
+                        Session::set('succcess_msg', true);
+                        Session::set('succcess_flag', true);
+                        return Response::json(['success' => true, 'receipt' => true]);
+//                        return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
+                    }else{
+                        return Response::json(['success' => false, 'receipt' => true]);
+//                        return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
+                    }
                 } else
                     return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
             } else
@@ -329,8 +343,8 @@ class ReceiptMasterController extends Controller {
             if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
                 $receipt = Receipt::find($id);
                 if ($receipt) {
-                    $customer_recripts = Customer_receipts::where('receipt_id','=',$id)->get();
-                    foreach($customer_recripts as $customer_recript){
+                    $customer_recripts = Customer_receipts::where('receipt_id', '=', $id)->get();
+                    foreach ($customer_recripts as $customer_recript) {
                         $customer_recript->delete();
                     }
                     $receipt->delete();
@@ -353,31 +367,30 @@ class ReceiptMasterController extends Controller {
                     if (count($receipt->customer_receipts) > 1) {
                         $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
                                         ->where('receipt_id', '=', $id)->first();
-                        $receipt->delete();
-                        return Response::json(['success' => true]);
+//                        $receipt->delete();
+                        return Response::json(['success' => true, 'user' => 'account']);
                     } else {
-                        return Response::json(['success' => true, 'error'=>'Receipt could not delete.']);
+                        return Response::json(['success' => true, 'user' => 'account', 'error' => 'Receipt could not delete.']);
                     }
                 } else if (Auth::user()->role_id == 1 || Auth::user()->role_id == 0) {
                     $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
                                     ->where('receipt_id', '=', $id)->first();
-                    if ($receipt->delete()) {
-                        $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
-                        if (count($receipt_id) > 0) {
-                            return Response::json(['success' => true]);
-                        } else {
-                            $receiptObj = Receipt::find($id);
-                            $receiptObj->delete();
-                            Session::set('succcess_msg', true);
-                            return Response::json(['success' => true,'receipt' => true]);
-//                            return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
-                        }
+//                    if ($receipt->delete()) {
+                    $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
+                    if (count($receipt_id) > 0) {
+                        return Response::json(['success' => true, 'user' => 'admin']);
                     } else {
-                        return Response::json(['success' => false,'flash_message' => 'Receipt could not delete.']);
+                        $receiptObj = Receipt::find($id);
+//                            $receiptObj->delete();
+                        Session::set('succcess_msg', true);
+                        return Response::json(['success' => true, 'user' => 'admin', 'receipt' => true]);
                     }
+//                    } else {
+//                        return Response::json(['success' => false, 'flash_message' => 'Receipt could not delete.']);
+//                    }
                 }
             } else {
-                return Response::json(['success' => false,'flash_message' => 'Please enter a correct password.']);
+                return Response::json(['success' => false, 'flash_message' => 'Please enter a correct password.']);
             }
         }
     }
