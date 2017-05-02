@@ -47,8 +47,9 @@
                     @endif
                     <div class="main-box-body clearfix">
                         <hr>
-                        {!! Form::open(array('id'=>'edit_receipt','method'=>'put','action'=>array('ReceiptMasterController@update',$receipt_id)))!!}
+                        {!! Form::open(array('id'=>'edit_receipt','action'=>array('ReceiptMasterController@update',$receipt_id)))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="_method" value="put">
                             <input type="hidden" name="receipt_type" value="{{$type}}">
                             <input type="hidden" name="receipt_id" value="{{$receipt_id}}" id="receipt_id">
                             <input type="hidden" name="customer_ids_array" value='' id="customer_ids_array">

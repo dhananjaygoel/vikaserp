@@ -51,6 +51,7 @@ class ReceiptMasterController extends Controller {
 //                'export_from_date' => Input::get('search_from_date'),
 //                'export_to_date' => Input::get('search_to_date')
 //            ];
+            $q = $q->orderBy('id', 'desc');
             $receipts = $q->paginate(20);
             $receipts->setPath('receipt-master');
             return view('receipt_master.index')->with('receipts', $receipts)->with('from_date', $from_date)->with('to_date', $to_date);
