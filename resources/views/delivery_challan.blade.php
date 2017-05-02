@@ -105,7 +105,9 @@
                                     <tr>
                                         <th class="text-center">#</th>
                                         <th class="text-center">Tally Name</th>
+                                        <?php if ($qstring_sort_type_order == 'completed') { ?>
                                         <th class="text-center">Serial Number</th>
+                                        <?php } ?>
                                         <th class="text-center">Present Shipping</th>
                                         <th class="text-center">Pending Order</th>
                                         <th class="text-center">VAT PERCENTAGE</th>
@@ -128,9 +130,9 @@
                                         <td class="text-center">
                                             {{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}
                                         </td>
-                                        <td class="text-center">
+<!--                                        <td class="text-center">
                                             {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
-                                        </td>
+                                        </td>-->
                                         <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
                                         <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
                                         <td class="text-center">{{ (round($challan->vat_percentage, 2)<>"")? round($challan->vat_percentage, 2):0}}</td>
