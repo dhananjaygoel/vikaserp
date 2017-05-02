@@ -1837,7 +1837,7 @@ class HomeController extends Controller {
      */
     function order_sms() {
         $input = Input::all();
-
+         
         if (Input::has('order') && Input::has('customer') && Input::has('order_product')) {
             $orders = (json_decode($input['order']));
             $customers = (json_decode($input['customer']));
@@ -1847,7 +1847,7 @@ class HomeController extends Controller {
             } else {
                 $customer = $orders;
             }
-
+            
             if (isset($orders[0]->sms_role) && $orders[0]->sms_role == '1') {
                 $message_body_cust_first = "Your order has been created as following";
                 $message_body_cust_last = "meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
@@ -1875,9 +1875,7 @@ class HomeController extends Controller {
                     $str = "Dear " . strtoupper($customer[0]->customer_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                     foreach ($orderproduct as $product_data) {
 
-
                         if (isset($product_data) && $product_data->product_name != "") {
-
 
                             $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", \n";
                             if ($product_data->unit_id == 1) {
