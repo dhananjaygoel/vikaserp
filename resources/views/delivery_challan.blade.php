@@ -117,13 +117,6 @@
                                 <tbody>
                                     <?php $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1; ?>
                                     @foreach($allorders as $challan)
-                                    <?php
-//                            echo "<pre>";
-//print_r($challan['customer']);
-//echo "</pre>";
-//exit;
-                                    ?>
-                                    
                                     @if($challan->challan_status == 'pending')
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
