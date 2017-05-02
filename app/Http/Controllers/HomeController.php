@@ -529,8 +529,8 @@ class HomeController extends Controller {
     public function appdeleteorder() {
 
         $input_data = Input::all();
-        $orders = (json_decode($input_data['order_deleted']));
-        if (count($orders) > 0) {
+        $orders_del = (json_decode($input_data['order_deleted']));        
+        if (count($orders_del) > 0) {
             if (Input::has('order')) {
                 $orders = (json_decode($input_data['order']));
                 foreach ($orders as $order) {
@@ -539,7 +539,7 @@ class HomeController extends Controller {
                     }
                 }
             }
-            foreach ($orders as $order) {
+            foreach ($orders_del as $order) {
                 $order_details = Order::find($order);
                 if ($order_details && !empty($order_details)) {
                     $order_details->delete();
