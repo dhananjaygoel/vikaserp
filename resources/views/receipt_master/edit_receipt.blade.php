@@ -50,6 +50,8 @@
                         {!! Form::open(array('id'=>'edit_receipt','method'=>'put','action'=>array('ReceiptMasterController@update',$receipt_id)))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="receipt_type" value="{{$type}}">
+                            <input type="hidden" name="receipt_id" value="{{$receipt_id}}" id="receipt_id">
+                            <input type="hidden" name="customer_ids_array" value='' id="customer_ids_array">
                             @if (count($errors) > 0)
                             <div class="alert alert-warning">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
@@ -91,7 +93,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4 settle-input-elem">
-                                                    <input class="form-control" placeholder="Amount" onkeydown="alert('fsdgfdg');" name="settle_amount[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text">
+                                                    <input class="form-control" placeholder="Amount" name="settle_amount[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text">
                                                 </div>
                                                 <div class="col-md-1 action_btn">
                                                     <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
@@ -164,7 +166,7 @@
                             </div>                          
                             <hr>
                             <div >
-                                <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                                <button type="submit" class="btn btn-primary form_button_footer" id="edit_receipt_btn" >Submit</button>
                                 <a href="{{url()}}/receipt-master" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
