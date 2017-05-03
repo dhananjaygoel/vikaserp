@@ -340,7 +340,7 @@ $(document).ready(function () {
             $('#amount-error').html('Entered amount is greater than Total amount');
             $('#amount-error').css('display','block');
         }
-        else if(entered_price==0 || entered_price==""){            
+        else if(entered_price<0 || entered_price==""){            
             $('#amount-error').html('Please Enter valid amount');
             $('#amount-error').css('display','block');
         }else{            
