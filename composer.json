@@ -10,7 +10,8 @@
         "maatwebsite/excel": "~2.0.0",
         "doctrine/dbal": "~2.3",
         "barryvdh/laravel-dompdf": "0.6.*",
-        "sukohi/form-autocomplete": "2.*"
+        "sukohi/form-autocomplete": "2.*",
+        "jenssegers/rollbar": "^1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",

@@ -135,6 +135,7 @@ return [
         'App\Providers\RouteServiceProvider',
         'Sukohi\FormAutocomplete\FormAutocompleteServiceProvider',
         'Xaamin\Whatsapi\WhatsapiServiceProvider',
+        'Jenssegers\Rollbar\RollbarServiceProvider',
     ],
     /*
       |--------------------------------------------------------------------------
