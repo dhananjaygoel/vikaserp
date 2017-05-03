@@ -105,11 +105,12 @@ $(document).ready(function () {
     });
     $(document).on('click', '#edit_receipt_btn', function (event) {
         event.preventDefault();
+        $('#edit_receipt').find('#flash_message_div').css('display','none');
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
+        $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
-//            console.log("sdfa");
             $('#delete_customer_receipt_modal_new').modal('show');
         } else {
             $.ajax({
@@ -134,18 +135,17 @@ $(document).ready(function () {
                                 '<p>' + data.flash_message + '</p>' +
                                 '</div>';
                         if (data.errors) {
-//                            var response = JSON.parse(data.responseText);
                             var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>'+
-                            $.each(data.errors, function( key, value) {
-                                console.log(key, value);
-                                error_msg += '<li>' + key + '</li>';
-                            });
-                            +'</div>';
-//                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-//                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
-//                                    '<ul><li>' + data.errors['tally_users'] + '</li></ul>' +
-//                                    '</div>';
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';
+                            var msg = "";
+                            if(typeof data.errors['tally_users'] != "undefined")
+                                msg = data.errors['tally_users'][0] +'</br>';
+                            if(typeof data.errors['settle amount'] != "undefined")
+                                msg +=data.errors['settle amount'][0]+'</br>';
+                            if(typeof data.errors['debited_to'] != "undefined")
+                                msg +=data.errors['debited_to'][0];
+                            error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>'+ msg +'</p></div>';                            
                         }
                         $('#edit_receipt').prepend(error_msg);
                         $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
@@ -153,7 +153,6 @@ $(document).ready(function () {
                 }
             });
         }
-
     });
 
 //    $.validator.addMethod("noSpace", function (value, element) {
