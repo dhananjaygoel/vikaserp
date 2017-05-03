@@ -38,9 +38,6 @@ class DashboardController extends Controller {
      */
 
     public function index() {
-        try {
-
-
 
             if (Auth::user()->role_id == 5) {
                 return Redirect::to('inquiry');
@@ -104,7 +101,7 @@ class DashboardController extends Controller {
 //                }
 //            }
 //        }
-            foreach ($delivery_order as $delivery_order_info) {
+            foreach ($delivery_order1 as $delivery_order_info) {
                 if ($delivery_order_info->order_status == 'pending') {
                     foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
                         if ($delivery_order_productinfo->unit_id == 1)
@@ -167,10 +164,7 @@ class DashboardController extends Controller {
 
 
             return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
-        } catch (\Exception $e) {
-            Rollbar::log(Level::error(), $e);
-
-        }
+        
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
 
