@@ -59,7 +59,7 @@ class DashboardController extends Controller {
 
 //        $pending_order = Order::where('order_status', 'pending')->count();
 
-            foreach ($orders1 as $order) {
+            foreach ($orders as $order) {
                 if ($order->order_status == 'pending') {
                     foreach ($order->all_order_products as $all_order_products) {
                         if ($all_order_products->unit_id == 1)
@@ -169,9 +169,7 @@ class DashboardController extends Controller {
             return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
         } catch (\Exception $e) {
             Rollbar::log(Level::error(), $e);
-//            \Log::error($e);
-//            \Log::debug($e);
-//            \Log::warning($e);
+
         }
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
