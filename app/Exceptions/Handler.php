@@ -29,10 +29,8 @@ class Handler extends ExceptionHandler {
      * @return void
      */
     public function report(Exception $e) {
-//        return parent::report($e);
-        \Log::error($e); 
-        \Log::debug($e);
-        \Log::warning($e);
+        return parent::report($e);
+        Rollbar::log(Level::error(), $e);
         return parent::report($e);
     }
 
