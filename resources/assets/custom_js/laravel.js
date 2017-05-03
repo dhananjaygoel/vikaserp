@@ -207,12 +207,15 @@
     });        
     $(document).on('click', '#edit_receipt .del-tally_u', function (event) {
         event.preventDefault();
-        var tval = $('#st-settle-container').find('.st-settle-block').length;
-        if (tval > 1) {
-            $(this).closest('.st-settle-block').remove();
-        }else{
+        $('#edit_receipt').find('#flash_message_div').css('display','none');
+        var tval = $('#st-settle-container').find('.st-settle-block').length;        
         var last = $('#edit_receipt').find('#user_type').val();
-            if(last=="account"){
+        if(last=="admin"){
+            $(this).closest('.st-settle-block').remove();
+        }else if(last=="account"){
+            if (tval > 1) {
+                $(this).closest('.st-settle-block').remove();
+            }else{
                 var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
                         '<p>Receipt could not delete.</p>' +

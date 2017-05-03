@@ -104,15 +104,17 @@ $(document).ready(function () {
 
     });
     $(document).on('click', '#edit_receipt_btn', function (event) {
-        event.preventDefault();
-        $('#edit_receipt').find('#flash_message_div').css('display','none');
+        event.preventDefault();        
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
         $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
-            $('#delete_customer_receipt_modal_new').modal('show');
+            var last = $('#edit_receipt').find('#user_type').val();
+            if(last=="admin")
+                $('#delete_customer_receipt_modal_new').modal('show');
         } else {
+            $('#edit_receipt').find('#flash_message_div').css('display','none');
             $.ajax({
                 url: $('#baseurl').attr('name') + '/receipt-master/' + receipt_id,
                 type: 'put',
