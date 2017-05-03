@@ -201,14 +201,12 @@
                                             </td>
                                             @endif
                                             @if(Auth::user()->role_id ==0 )
-                                            <td>
-                                                <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >
-                                                    @if(Input::get('settle_filter')=='Settled')
-                                                        Update
-                                                    @else
-                                                        Settle
-                                                    @endif
-                                                </button>
+                                            <td>                                                
+                                                @if(Input::get('settle_filter')=='Settled')
+                                                    <button class="btn btn-primary update-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-settle_amount="{{$settled_amount}}" >Update</button>
+                                                @else
+                                                    <button class="btn btn-primary settle-payment"  data-serial_no="{{$challan->serial_number}}" data-challan_id="{{$challan->id}}" data-due_amount="{{$total_due_amount-$settled_amount}}" >Settle</button>
+                                                @endif                                                
                                             </td>
                                             @endif
                                         </tr>                                        
@@ -234,7 +232,7 @@
 <div class="modal fade" id="settle_due_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">            
-            <form id="settle_price_form" method="post" action="{{URL::action('ReceiptMasterController@settle_amount')}}" accept-charset="UTF-8" >    
+            <form id="settle_price_form" method="post" action="@if(Input::get('settle_filter')=='Settled'){{URL::action('ReceiptMasterController@update_settle_amount')}}@else {{URL::action('ReceiptMasterController@settle_amount')}} @endif" accept-charset="UTF-8" >    
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -243,7 +241,11 @@
                 <div class="modal-body text-center">
                         <h4 id="amount_label">Enter amount to settle For <span id="serial-no"></span></h4>
                         <div class=" modal-settle-div text-center">
-                            <input class="form-control" id="modal_price" name="model_price" data-price="" onkeypress=" return numbersOnly(this,event,true,true);">
+                            @if(Input::get('settle_filter')=='Settled')
+                                <input class="form-control" id="modal_update_price" name="model_price" data-price="" onkeypress=" return numbersOnly(this,event,true,true);">
+                            @else
+                                <input class="form-control" id="modal_price" name="model_price" data-price="" onkeypress=" return numbersOnly(this,event,true,true);">
+                            @endif    
                             <input type="hidden" id="modal-challan" name="challan_id">
                             <input type="hidden" value="{{$customer->id}}" name="customer_id">
                         </div>
@@ -255,7 +257,7 @@
                     @endif
                     @if(Auth::user()->role_id ==0)
                         @if(Input::get('settle_filter')=='Settled')
-                            <button class="btn btn-primary modal-settle-price" >Update</button>
+                            <button class="btn btn-primary modal_update_settle_price" >Update</button>
                         @else
                             <button class="btn btn-primary modal-settle-price" >Settle</button>
                         @endif

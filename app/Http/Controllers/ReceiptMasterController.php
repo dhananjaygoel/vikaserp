@@ -491,5 +491,19 @@ class ReceiptMasterController extends Controller {
         }
         return Redirect::back()->withInput();
     }
+    
+    public function update_settle_amount(Request $request) {
+        if (Input::has('model_price') && Input::has('challan_id') && Input::get('customer_id')) {
+            $new_settle_amount = Input::get('model_price');
+            $challan_id = Input::get('challan_id');
+            $customer_id = Input::get('customer_id');
+            if (isset($challan_id)) {
+                $challan_obj = DeliveryChallan::find($challan_id);                
+                $challan_obj->settle_amount = sprintf("%.2f", $new_settle_amount);                
+                $challan_obj->save();
+            }
+        }
+        return Redirect::back()->withInput();
+    }
 
 }

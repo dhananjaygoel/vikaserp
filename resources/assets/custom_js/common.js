@@ -303,6 +303,51 @@ $(document).ready(function () {
         $('#settle_due_modal').modal('show');
     });
 
+    $(document).on('click','.update-payment',function(){
+        var settle_amount = $(this).data('settle_amount');
+        var serial_no = $(this).data('serial_no');       
+        var challan_id= $(this).data('challan_id');        
+        $('#modal_update_price').data("price",settle_amount);
+        $('#modal_update_price').attr("data-price",settle_amount);
+        $('#modal-challan').attr("value",challan_id);        
+        $('#modal-challan').val(challan_id);                        
+        $('#serial-no').html(serial_no);
+        $('#amount-error').css('display','none');
+        $('#settle_due_modal').modal('show');
+    });
+    
+    $(document).on('click','.modal-settle-price',function(event){
+        event.preventDefault();
+        var entered_price = $('#settle_price_form').find('#modal_price').val();
+        var due_amount = $('#settle_price_form').find('#modal_price').data('price');
+        if(entered_price>due_amount){
+            $('#amount-error').html('Entered amount is greater than Due amount');
+            $('#amount-error').css('display','block');
+        }
+        else if(entered_price==0){            
+            $('#amount-error').html('Please Enter valid amount');
+            $('#amount-error').css('display','block');
+        }else{
+            $('#settle_price_form').submit();
+        }               
+    });
+    
+    $(document).on('click','.modal_update_settle_price',function(event){
+        event.preventDefault();
+        var entered_price = $('#settle_price_form').find('#modal_update_price').val();
+        var settle_price = $('#settle_price_form').find('#modal_update_price').data('price');        
+        if(entered_price>settle_price){
+            $('#amount-error').html('Entered amount is greater than Total amount');
+            $('#amount-error').css('display','block');
+        }
+        else if(entered_price==0 || entered_price==""){            
+            $('#amount-error').html('Please Enter valid amount');
+            $('#amount-error').css('display','block');
+        }else{            
+            $('#settle_price_form').submit();
+        }               
+    });
+    
     $(document).on('change', '#collection_territory_select', function () {
         var teritory_id = $(this).val();
         if (teritory_id == "") {
@@ -347,22 +392,7 @@ $(document).ready(function () {
             }
         })
     });
-
-    $(document).on('click', '.modal-settle-price', function (event) {
-        event.preventDefault();
-        var entered_price = $('#settle_price_form').find('#modal_price').val();
-        var due_amount = $('#settle_price_form').find('#modal_price').data('price');
-        if (entered_price > due_amount) {
-            $('#amount-error').html('Entered amount is greater than Due amount');
-            $('#amount-error').css('display', 'block');
-        }
-        else if (entered_price == 0) {
-            $('#amount-error').html('Please Enter valid amount');
-            $('#amount-error').css('display', 'block');
-        } else {
-            $('#settle_price_form').submit();
-        }
-    });
+    
 
     $(document).on('change', '#loaded_by_chart_filter', function () {
         var val = $(this).val();
