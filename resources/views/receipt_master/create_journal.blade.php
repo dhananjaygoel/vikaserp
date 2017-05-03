@@ -129,7 +129,7 @@
                             </div>                          
                             <hr>
                             <div >
-                                <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
+                                <button type="submit" class="btn btn-primary form_button_footer" id="add_receipt_btn" >Submit</button>
                                 <a href="{{url()}}/receipt-master" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
