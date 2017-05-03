@@ -164,7 +164,8 @@ class ReceiptMasterController extends Controller {
                 });
             }
             if ($validator->fails()) {
-                return redirect()->back()->withInput()->withErrors($validator->errors());
+                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+//                return redirect()->back()->withInput()->withErrors($validator->errors());
             }
             if (isset($settle_amount) && count($settle_amount) > 0) {
                 $receiptObj = new Receipt();
@@ -186,9 +187,12 @@ class ReceiptMasterController extends Controller {
                             $customerReceiptObj->save();
                         }
                     }
-                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
+                    Session::set('succcess_msg', true);
+                    return Response::json(['success' => true, 'receipt' => true]);
+//                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 } else
-                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
+                    return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while updating receipt']);
+//                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
 
 //                if ($customerReceiptObj)
 //                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');

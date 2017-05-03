@@ -154,6 +154,56 @@ $(document).ready(function () {
             });
         }
     });
+    $(document).on('click', '#add_receipt_btn', function (event) {
+        event.preventDefault();
+        $('#add_receipt').find('#flash_message_div').css('display','none');
+        var action_length = $(document).find('#st-settle-container').find('.st-settle-block').first().find('.action_btn').find('.del-tally_u').length;
+        if(action_length<1)
+            $(document).find('#st-settle-container').find('.st-settle-block').first().find('.action_btn').append('<a href="javascript:void(0)" style="border-bottom:none" class="btn del-tally_u st-border-bottom-none"><i class="fa fa-trash-o"></i></a>');
+        var tval = $('#st-settle-container').find('.st-settle-block').length;
+        if(tval>1){
+            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
+        }
+        $.ajax({
+            url: $('#baseurl').attr('name') + '/receipt-master',
+            type: 'POST',
+            dataType: 'JSON',
+            data: $('#add_receipt').serialize(),
+            success: function (data) {
+                if (data.success) {
+                    if (data.receipt) {
+                        window.location.href = $('#baseurl').attr('name') + "/receipt-master";
+                    } else if (data.user == "account") {
+                        var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                                '<p>' + data.flash_message + '</p>' +
+                                '</div>';
+                        $('#edit_receipt').prepend(error_msg);
+                    }
+                } else {
+                    var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                            '<p>' + data.flash_message + '</p>' +
+                            '</div>';
+                    if (data.errors) {
+                        var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';
+                        var msg = "";
+                        if(typeof data.errors['tally_users'] != "undefined")
+                            msg = data.errors['tally_users'][0] +'</br>';
+                        if(typeof data.errors['settle amount'] != "undefined")
+                            msg +=data.errors['settle amount'][0]+'</br>';
+                        if(typeof data.errors['debited_to'] != "undefined")
+                            msg +=data.errors['debited_to'][0];
+                        error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>'+ msg +'</p></div>';                            
+                    }
+                    $('#add_receipt').prepend(error_msg);
+                    $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
+                }
+            }
+        });
+    });
 
 //    $.validator.addMethod("noSpace", function (value, element) {
 //        return $.trim(value) != "";

@@ -215,10 +215,6 @@
     });
     $(document).on('click', '#add_receipt .del-tally_u', function (event) {
         event.preventDefault();
-//        var tval = $(document).find('.st_select_tally_user').val();
-//        if ($(document).find('.st_select_tally_user').find('option[value=' + tval + ']').length > 1) {
-//            $(this).closest('.st-settle-block').remove();
-//        }
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval > 1) {
             $(this).closest('.st-settle-block').remove();
