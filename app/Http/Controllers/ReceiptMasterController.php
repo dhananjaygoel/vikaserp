@@ -92,8 +92,8 @@ class ReceiptMasterController extends Controller {
             $user_type = 'account';
         }
         $type = 1; //journal
-        $tally_users = Customer::where('tally_name', '!=', '')->whereNotNull('tally_name')->select('id', 'tally_name')->get();
-        $debited_users = Customer::where('tally_name', '!=', '')->whereNotNull('tally_name')->select('id', 'tally_name')->get();
+        $tally_users = Customer::where('customer_status','permanent')->get();
+        $debited_users = Customer::where('customer_status','permanent')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_users','user_type'));
     }
 
@@ -110,7 +110,7 @@ class ReceiptMasterController extends Controller {
             $user_type = 'account';
         }
         $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
-        $tally_users = Customer::where('tally_name', '!=', '')->whereNotNull('tally_name')->select('id', 'tally_name')->get();
+        $tally_users = Customer::where('customer_status','permanent')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to','user_type'));
     }
 
@@ -127,7 +127,7 @@ class ReceiptMasterController extends Controller {
             $user_type = 'account';
         }
         $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
-        $tally_users = Customer::select('id', 'tally_name')->get();
+        $tally_users = Customer::where('customer_status','permanent')->get();
         return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to','user_type'));
     }
 
