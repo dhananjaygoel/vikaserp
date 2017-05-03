@@ -119,6 +119,7 @@ $(document).ready(function () {
                 dataType: 'JSON',
                 data: $('#edit_receipt').serialize(),
                 success: function (data) {
+                    
                     if (data.success) {
                         if (data.receipt) {
                             window.location.href = $('#baseurl').attr('name') + "/receipt-master";
@@ -134,19 +135,22 @@ $(document).ready(function () {
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
                                 '<p>' + data.flash_message + '</p>' +
                                 '</div>';
-                        if (data.errors) {
+                        var msg = "";
+//                        if(data.user == "account"){
+//                            msg += 'Receipt could not be deleted.'
+//                        }
+                        if (data.errors) {                            
                             var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';
-                            var msg = "";
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';                            
                             if(typeof data.errors['tally_users'] != "undefined")
                                 msg = data.errors['tally_users'][0] +'</br>';
                             if(typeof data.errors['settle amount'] != "undefined")
                                 msg +=data.errors['settle amount'][0]+'</br>';
                             if(typeof data.errors['debited_to'] != "undefined")
-                                msg +=data.errors['debited_to'][0];
-                            error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>'+ msg +'</p></div>';                            
+                                msg +=data.errors['debited_to'][0];                                                        
                         }
+                        error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>'+ msg +'</p></div>';
                         $('#edit_receipt').prepend(error_msg);
                         $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
                     }
