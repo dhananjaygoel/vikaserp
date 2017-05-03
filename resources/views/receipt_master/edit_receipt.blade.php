@@ -51,6 +51,7 @@
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="_method" value="put">
                             <input type="hidden" name="receipt_type" value="{{$type}}">
+                            <input type="hidden" name="user_type" value="{{$user_type}}" id="user_type">
                             <input type="hidden" name="receipt_id" value="{{$receipt_id}}" id="receipt_id">
                             <input type="hidden" name="customer_ids_array" value='' id="customer_ids_array">
                             @if (count($errors) > 0)
@@ -180,7 +181,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="delete_customer_receipt_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete_customer_receipt_modal_new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,33 +189,20 @@
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body">
-                {!! Form::open(array('id'=>'delete_customer_receipt_form'))!!}
-                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                {!! Form::open(array('id'=>'confirm_customer_receipt_form'))!!}
+                <input type="hidden" name="_token" value="{{csrf_token()}}" id="token">
                 <input type="hidden" name="customer_id" value="" id="customer_id">
                 <input type="hidden" name="receipt_id" value="" id="receipt_id">
-                <input type="hidden" name="_method" value="DELETE" id="method">
+                <input type="hidden" name="_method" value="delete" id="method">
                 <input type="hidden" name="amount" value="" id="amount">
                 <div class="delete">
-                    <?php
-                    $us = Auth::user();
-                    $us['mobile_number']
-                    ?>
-                    <div><b>Mobile:</b>
-                        {{$us['mobile_number']}}
-                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
-                        <input type="hidden" name="receipt_id" value=""/>
-                    </div>
-                    <div class="pwd">
-                        <div class="pwdl"><b>Password:</b></div>
-                        <div class="pwdr"><input class="form-control" id="model_pass" name="model_pass" placeholder="" required="required" type="password"></div>
-                    </div>
                     <div class="clearfix"></div>
                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-default submit_customer_receipts_button" id="yes" >Yes</button>
+                <button type="button" class="btn btn-default confirm_customer_receipt_form_btn" id="yes" >Yes</button>
                 {!! Form::close() !!}
             </div>
         </div>

@@ -53,12 +53,38 @@ $(document).ready(function () {
         $('#delete_receipt_form').attr('action', url);
         $('#delete_receipt_modal').modal('show');
     });
+    $(document).on('click', '.confirm_customer_receipt_form_btn', function (event) {
+        event.preventDefault();
+        var receipt_id = $('#edit_receipt').find('#receipt_id').val();
+        var token = $('#confirm_customer_receipt_form').find('#token').val();
+        var url = $('#baseurl').attr('name') + '/receipt-master/' + receipt_id;
+//        var url = $('#baseurl').attr('name') + '/receipt-master/delete-customer-receipt/' + receipt_id;
+        $.ajax({
+            url: url,
+            type: 'delete',
+            dataType: 'json',
+            data: {_mothod: '_delete', _token: token},
+            success: function (data) {
+                if (data.success) {
+                    window.location.href = $('#baseurl').attr('name') + "/receipt-master";
+                } else {
+                    var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                            '<p> Some error occoured. Please try after somtime.</p>' +
+                            '</div>';
+                    $('#edit_receipt').prepend(error_msg);
+                }
+            }
+        });
+        $('#delete_customer_receipt_modal_new').modal('hide');
+    });
 
     $(document).on('click', '.delete_customer_receipts', function (event) {
         var customer_ids = [];
         var receipt_id = $(this).data('receipt_id');
         var customer_id = $(this).data('customer_id');
         var old_ids = $('#edit_receipt').find('#customer_ids_array').val();
+        var user_type = $('#edit_receipt').find('#user_type').val();
         if (old_ids !== '') {
             old_ids = $.parseJSON(old_ids);
             $.each(old_ids, function (i) {
@@ -72,38 +98,62 @@ $(document).ready(function () {
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval > 1) {
             $(this).closest('.st-settle-block').remove();
+        } else if (user_type == "admin") {
+            $(this).closest('.st-settle-block').remove();
         }
 
     });
     $(document).on('click', '#edit_receipt_btn', function (event) {
         event.preventDefault();
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
-        $.ajax({
-            url: $('#baseurl').attr('name') + '/receipt-master/' + receipt_id,
-            type: 'put',
-            dataType: 'JSON',
-            data: $('#edit_receipt').serialize(),
-            success: function (data) {
-                if (data.success) {
-                    if (data.receipt) {
-                        window.location.href = $('#baseurl').attr('name') + "/receipt-master";
-                    } else if (data.user == "account") {
+        var token = $('#confirm_customer_receipt_form').find('#token').val();
+        var tval = $('#st-settle-container').find('.st-settle-block').length;
+        if (tval < 1) {
+//            console.log("sdfa");
+            $('#delete_customer_receipt_modal_new').modal('show');
+        } else {
+            $.ajax({
+                url: $('#baseurl').attr('name') + '/receipt-master/' + receipt_id,
+                type: 'put',
+                dataType: 'JSON',
+                data: $('#edit_receipt').serialize(),
+                success: function (data) {
+                    if (data.success) {
+                        if (data.receipt) {
+                            window.location.href = $('#baseurl').attr('name') + "/receipt-master";
+                        } else if (data.user == "account") {
+                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                                    '<p>' + data.flash_message + '</p>' +
+                                    '</div>';
+                            $('#edit_receipt').prepend(error_msg);
+                        }
+                    } else {
                         var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
                                 '<p>' + data.flash_message + '</p>' +
                                 '</div>';
+                        if (data.errors) {
+//                            var response = JSON.parse(data.responseText);
+                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>'+
+                            $.each(data.errors, function( key, value) {
+                                console.log(key, value);
+                                error_msg += '<li>' + key + '</li>';
+                            });
+                            +'</div>';
+//                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+//                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+//                                    '<ul><li>' + data.errors['tally_users'] + '</li></ul>' +
+//                                    '</div>';
+                        }
                         $('#edit_receipt').prepend(error_msg);
+                        $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
                     }
-                } else {
-                    var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
-                            '<p>' + data.flash_message + '</p>' +
-                            '</div>';
-                    $('#edit_receipt').prepend(error_msg);
-                    $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
                 }
-            }
-        });
+            });
+        }
+
     });
 
 //    $.validator.addMethod("noSpace", function (value, element) {

@@ -86,11 +86,15 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_journal_receipt() {
-
+        if (Auth::user()->role_id == 0) {
+            $user_type = 'admin';
+        }else{
+            $user_type = 'account';
+        }
         $type = 1; //journal
         $tally_users = Customer::where('tally_name', '!=', '')->whereNotNull('tally_name')->select('id', 'tally_name')->get();
         $debited_users = Customer::where('tally_name', '!=', '')->whereNotNull('tally_name')->select('id', 'tally_name')->get();
-        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_users'));
+        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_users','user_type'));
     }
 
     /**
@@ -100,9 +104,14 @@ class ReceiptMasterController extends Controller {
      */
     public function create_bank_receipt() {
         $type = 2; //bank
+        if (Auth::user()->role_id == 0) {
+            $user_type = 'admin';
+        }else{
+            $user_type = 'account';
+        }
         $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
         $tally_users = Customer::where('tally_name', '!=', '')->whereNotNull('tally_name')->select('id', 'tally_name')->get();
-        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
+        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to','user_type'));
     }
 
     /**
@@ -112,9 +121,14 @@ class ReceiptMasterController extends Controller {
      */
     public function create_cash_receipt() {
         $type = 3; //cash
+        if (Auth::user()->role_id == 0) {
+            $user_type = 'admin';
+        }else{
+            $user_type = 'account';
+        }
         $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
         $tally_users = Customer::select('id', 'tally_name')->get();
-        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to'));
+        return view('receipt_master.create_journal', compact('tally_users', 'type', 'debited_to','user_type'));
     }
 
     /**
@@ -206,6 +220,11 @@ class ReceiptMasterController extends Controller {
     public function edit($id) {
         if (isset($id) && !empty($id)) {
             $receiptObj = Receipt::where('id', '=', $id)->with('customer_receipts')->get();
+            if (Auth::user()->role_id == 0) {
+                $user_type = 'admin';
+            }else{
+                $user_type = 'account';
+            }
             if (isset($receiptObj) && $receiptObj != '' && !empty($receiptObj) && count($receiptObj)) {
                 $customer_arr = [];
                 foreach ($receiptObj as $obj) {
@@ -226,11 +245,12 @@ class ReceiptMasterController extends Controller {
                         return view('receipt_master.edit_receipt')->with('tally_users', $tally_users)
                                         ->with('receiptObj', $receiptObj)
                                         ->with('customer_arr', $customer_arr)
+                                        ->with('user_type', $user_type)
                                         ->with('type', $receipt_type)->with('debited_id', $debited_id)->with('receipt_id', $receipt_id);
                     } else {
                         if ($receipt_type == 2)
                             $debited_to = Debited_to::where('debited_to_type', '=', 2)->get();
-                        if ($receipt_type == 3)
+                        if ($receipt_type == 3)   
                             $debited_to = Debited_to::where('debited_to_type', '=', 3)->get();
 
                         $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name')->get();
@@ -238,6 +258,7 @@ class ReceiptMasterController extends Controller {
                                         ->with('tally_users', $tally_users)->with('receiptObj', $receiptObj)
                                         ->with('type', $receipt_type)->with('debited_to', $debited_to)
                                         ->with('customer_arr', $customer_arr)
+                                        ->with('user_type', $user_type)
                                         ->with('debited_id', $debited_id)->with('receipt_id', $receipt_id);
                     }
                 }
@@ -321,7 +342,8 @@ class ReceiptMasterController extends Controller {
                     });
                 }
                 if ($validator->fails()) {
-                    return redirect()->back()->withInput()->withErrors($validator->errors());
+                    return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+//                    return redirect()->back()->withInput()->withErrors($validator->errors());
                 }
                 $receiptObj = Receipt::with('customer_receipts')->find($id);
                 if (isset($receiptObj->customer_receipts)) {
@@ -350,7 +372,7 @@ class ReceiptMasterController extends Controller {
                     }
                     if ($customerReceiptObj) {
                         Session::set('succcess_msg', true);
-                        Session::set('succcess_flag', true);
+//                        Session::set('succcess_flag', true);
                         return Response::json(['success' => true, 'receipt' => true]);
 //                        return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
                     } else {
@@ -374,7 +396,23 @@ class ReceiptMasterController extends Controller {
      */
     public function destroy(Request $request, $id) {
         if (isset($id) && !empty($id)) {
-            if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
+            if (Input::has('model_pass')) {
+                if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
+                    $receipt = Receipt::find($id);
+                    if ($receipt) {
+                        $customer_recripts = Customer_receipts::where('receipt_id', '=', $id)->get();
+                        foreach ($customer_recripts as $customer_recript) {
+                            $customer_recript->delete();
+                        }
+                        $receipt->delete();
+                        return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');                        
+                    } else {
+                        return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after somtime.');
+                    }
+                } else {
+                    return redirect('receipt-master')->with('error', 'Please enter a correct password.');
+                }
+            }else{
                 $receipt = Receipt::find($id);
                 if ($receipt) {
                     $customer_recripts = Customer_receipts::where('receipt_id', '=', $id)->get();
@@ -382,18 +420,21 @@ class ReceiptMasterController extends Controller {
                         $customer_recript->delete();
                     }
                     $receipt->delete();
-                    return redirect('receipt-master')->with('success', 'Receipt deleted succesfully.');
+                    Session::set('succcess_msg', true);
+                    return Response::json(['success' => true, 'receipt' => true]);
                 } else {
-                    return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after somtime.');
+                    return Response::json(['success' => false]);
+//                    return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after somtime.');
                 }
-            } else {
-                return redirect('receipt-master')->with('error', 'Please enter a correct password.');
             }
+            
         }
     }
 
     public function delete_customer_receipt(Request $request, $id) {
+        dd($id);
         if (isset($id) && !empty($id)) {
+            
             if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
                 $customer_id = Input::get('customer_id');
                 if (Auth::user()->role_id == 4) {
