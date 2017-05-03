@@ -2904,13 +2904,13 @@ class HomeController extends Controller {
                 
                 if ($value->teritory_server_id > 0) {
                     $territory = Territory::find($value->teritory_server_id);
-                    $territory->teritory_name = $value->territory_name;
+                    $territory->teritory_name = $value->teritory_name;
                     $delete_old_territory_location = TerritoryLocation::where('teritory_id', '=', $value->teritory_server_id)->delete();
                     foreach ($territorylocations as $product_data) {
                         $inquiry_products = array();
                         if ($product_data->local_territory_id == $value->local_territory_id) {
                             $territory_loc = new TerritoryLocation();
-                            $territory_loc->teritory_id = $teritory_id;
+                            $territory_loc->teritory_id = $value->teritory_server_id;
                             $territory_loc->location_id = $product_data->location_id;
                             $territory_loc->save();
                         }
