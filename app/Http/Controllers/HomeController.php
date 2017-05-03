@@ -35,6 +35,9 @@ use App\LoadedBy;
 use App\CollectionUser;
 use App\Territory;
 use App\TerritoryLocation;
+use App\Receipt;
+use App\Customer_receipts;
+use App\Debited_to;
 
 class HomeController extends Controller {
     /*
@@ -529,7 +532,7 @@ class HomeController extends Controller {
     public function appdeleteorder() {
 
         $input_data = Input::all();
-        $orders_del = (json_decode($input_data['order_deleted']));        
+        $orders_del = (json_decode($input_data['order_deleted']));
         if (count($orders_del) > 0) {
             if (Input::has('order')) {
                 $orders = (json_decode($input_data['order']));
@@ -1837,7 +1840,7 @@ class HomeController extends Controller {
      */
     function order_sms() {
         $input = Input::all();
-         
+
         if (Input::has('order') && Input::has('customer') && Input::has('order_product')) {
             $orders = (json_decode($input['order']));
             $customers = (json_decode($input['customer']));
@@ -1847,7 +1850,7 @@ class HomeController extends Controller {
             } else {
                 $customer = $orders;
             }
-            
+
             if (isset($orders[0]->sms_role) && $orders[0]->sms_role == '1') {
                 $message_body_cust_first = "Your order has been created as following";
                 $message_body_cust_last = "meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
@@ -2875,6 +2878,110 @@ class HomeController extends Controller {
     }
 
     /**
+     * App sync Receipt Master
+     */
+    public function appsyncreceipt() {
+
+        $data = Input::all();
+        $receipt_response = [];
+        $customer_list = [];
+        if (Input::has('receipt')) {
+            $receipt = (json_decode($data['receipt']));
+        }
+
+        if (Input::has('receipt_customer')) {
+            $receipt_customer = (json_decode($data['receipt_customer']));
+        }
+
+        if (Input::has('receipt_sync_date') && Input::get('receipt_sync_date') != '') {
+            $last_sync_date = Input::get('receipt_sync_date');
+            $receipt_server = Receipt::where('created_at', '>', $last_sync_date)->get();
+            $receipt_response['receipt_server_added'] = ($receipt_server && count($receipt_server) > 0) ? $receipt_server : array();
+
+            $labour_updated_server = Labour::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $receipt_response['receipt_server_updated'] = ($labour_updated_server && count($labour_updated_server) > 0) ? $labour_updated_server : array();
+        } else {
+            $receipt_server = Receipt::orderBy('id', 'desc')->get();
+            $receipt_response['receipt_server_added'] = ($receipt_server && count($receipt_server) > 0) ? $receipt_server : array();
+        }
+
+        foreach ($receipt as $key => $value) {
+            if ($value->server_id == 0) {
+                $receiptObj = new Receipt();
+                if ($receiptObj->save()) {
+                    foreach ($receipt_customer as $key => $user) {
+                        if ($value->id == $user->local_receipt_id) {
+                            $customerReceiptObj = new Customer_receipts();
+                            $customerReceiptObj->customer_id = $user->server_cutomer_id;
+                            $customerReceiptObj->settled_amount = $user->settled_amount;
+                            $customerReceiptObj->debited_to = $user->debited_to;
+                            $customerReceiptObj->receipt_id = $receiptObj->id;
+                            $customerReceiptObj->debited_by_type = $user->debited_by_type;
+                            $customerReceiptObj->save();
+                        }
+                    }
+                }
+
+                $receipt_id = $receiptObj->id;
+                $receipt_response[$value->id] = $receipt_id;
+            } else {
+
+                $receiptObj = Receipt::with('customer_receipts')->find($value->server_id);
+                if (isset($receiptObj->customer_receipts)) {
+                    foreach ($receiptObj->customer_receipts as $customers) {
+                        $customerObj = Customer_receipts::find($customers->id);
+                        $customerObj->delete();
+                    }
+                }
+                foreach ($receipt_customer as $key => $user) {
+                    if ($value->id == $user->local_receipt_id) {
+                        $customerReceiptObj = new Customer_receipts();
+                        $customerReceiptObj->customer_id = $user->server_cutomer_id;
+                        $customerReceiptObj->settled_amount = $user->settled_amount;
+                        $customerReceiptObj->debited_to = $user->debited_to;
+                        $customerReceiptObj->receipt_id = $receiptObj->id;
+                        $customerReceiptObj->debited_by_type = $user->debited_by_type;
+                        $customerReceiptObj->save();
+                    }
+                }
+
+                $receipt_id = $receiptObj->id;
+                $delivery_order_products = array();
+                $receiptObj->save();
+                $receipt_response[$value->server_id] = Receipt::with('customer_receipts')->find($value->server_id);
+            }
+        }
+
+        if (Input::has('receipt_sync_date') && Input::get('receipt_sync_date') != '' && Input::get('receipt_sync_date') != NULL) {
+            $receipt_response['receipt_server_deleted'] = array();
+        }
+        $receipt_date = Receipt::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($receipt_date))
+            $receipt_response['latest_date'] = $receipt_date->updated_at->toDateTimeString();
+        else
+            $receipt_response['latest_date'] = "";
+
+        return json_encode($receipt_response);
+    }
+
+    public function appsyncreceiptcustomerlist() {
+        $receipt_customer_list_response = [];
+        $tally_users = Customer::where('customer_status','permanent')->get(); 
+        $debited_to_journal = $tally_users;
+        $debited_to_bank = Debited_to::where('debited_to_type', '=', 2)->get();
+        $debited_to_cash = Debited_to::where('debited_to_type', '=', 3)->get();
+        
+        $receipt_customer_list_response['journal']['tally_user']=$tally_users;
+        $receipt_customer_list_response['journal']['debited_to']=$debited_to_journal;
+        $receipt_customer_list_response['bank']['tally_user']=$tally_users;
+        $receipt_customer_list_response['bank']['debited_to']=$debited_to_bank;
+        $receipt_customer_list_response['cash']['tally_user']=$tally_users;
+        $receipt_customer_list_response['cash']['debited_to']=$debited_to_cash;
+        return json_encode($receipt_customer_list_response);
+        
+    }
+
+    /**
      * App sync Territory
      */
     public function appsyncterritory() {
@@ -2898,10 +3005,10 @@ class HomeController extends Controller {
             $territory_added_server = Territory::with('territorylocation')->get();
             $territory_response['territory_server_added'] = ($territory_added_server && count($territory_added_server) > 0) ? $territory_added_server : array();
         }
-        
+
         if (isset($territories)) {
             foreach ($territories as $key => $value) {
-                
+
                 if ($value->teritory_server_id > 0) {
                     $territory = Territory::find($value->teritory_server_id);
                     $territory->teritory_name = $value->teritory_name;
@@ -2920,7 +3027,7 @@ class HomeController extends Controller {
 //                    $territory_response[$value->teritory_server_id]['territory_locations'] = InquiryProducts::where('inquiry_id', '=', $value->teritory_server_id)->get();
                 } else {
 
-                    $territory = new Territory();                    
+                    $territory = new Territory();
                     $territory->teritory_name = $value->teritory_name;
                     $territory->save();
                     $teritory_id = $territory->id;
@@ -2949,7 +3056,6 @@ class HomeController extends Controller {
         return json_encode($territory_response);
     }
 
-    
     /**
      * App sync and comare last sync dated and send updated date
      */
@@ -5502,23 +5608,20 @@ class HomeController extends Controller {
         else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
+
     public function appdeletelabour() {
-        
-        
-        
-         if (Input::has('labour_id')) {
+
+
+
+        if (Input::has('labour_id')) {
             $id = Input::get('labour_id');
 
             $labour = Labour::find($id);
-            $labour->delete();          
+            $labour->delete();
 
             return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Labour deleted successfully'));
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
-
-        
     }
 
     public function applabourperformance() {

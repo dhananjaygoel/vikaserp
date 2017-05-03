@@ -81,7 +81,7 @@
                                 @if(isset($customer_arr))
                                     @foreach($customer_arr as $key=>$customer)
                                         <?php array_push($edit_key,$key);  ?>
-                                        <div class="st-settle-block">
+                                        <div class="st-settle-block temp_tally_user">
                                             <div class="col-md-12" style="margin:10px 0;padding:0">
                                                 <div class="col-md-3">
                                                     <select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">
