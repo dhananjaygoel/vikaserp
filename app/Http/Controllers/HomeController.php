@@ -2905,6 +2905,7 @@ class HomeController extends Controller {
                 if ($value->teritory_server_id > 0) {
                     $territory = Territory::find($value->teritory_server_id);
                     $territory->teritory_name = $value->teritory_name;
+                    $territory->save();
                     $delete_old_territory_location = TerritoryLocation::where('teritory_id', '=', $value->teritory_server_id)->delete();
                     foreach ($territorylocations as $product_data) {
                         $inquiry_products = array();
