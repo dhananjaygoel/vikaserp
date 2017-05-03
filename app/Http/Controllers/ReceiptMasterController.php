@@ -60,7 +60,11 @@ class ReceiptMasterController extends Controller {
                 Session::flash('flash_message', 'Receipt deleted succesfully.');
                 Session::forget('succcess_msg');
             }
-            if (Session::has('flash_message')) {
+            if (Session::has('create_msg')) {
+                Session::flash('flash_message', 'Receipt created succesfully.');
+                Session::forget('create_msg');
+            }
+            if (Session::has('succcess_flag')) {
                 Session::flash('flash_message', 'Receipt updated succesfully.');
                 Session::forget('succcess_flag');
             }
@@ -154,13 +158,13 @@ class ReceiptMasterController extends Controller {
                 foreach ($settle_amount as $key => $settleamount) {
                     if ($settleamount == '') {
                         $validator->after(function($validator) {
-                            $validator->errors()->add('settle amount', 'Please enter amount.');
+                            $validator->errors()->add('settle amount', 'Please enter the amount.');
                         });
                     }
                 }
             } else {
                 $validator->after(function($validator) {
-                    $validator->errors()->add('settle amount', 'Please enter amount.');
+                    $validator->errors()->add('settle amount', 'Please enter the amount.');
                 });
             }
             if ($validator->fails()) {
@@ -187,7 +191,7 @@ class ReceiptMasterController extends Controller {
                             $customerReceiptObj->save();
                         }
                     }
-                    Session::set('succcess_msg', true);
+                    Session::set('create_msg', true);
                     return Response::json(['success' => true, 'receipt' => true]);
 //                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 } else
@@ -317,7 +321,6 @@ class ReceiptMasterController extends Controller {
                         } elseif (Auth::user()->role_id == 4) {
                             foreach ($old_customers as $old_customer) {
                                 $customer_receipt = Receipt::with('customer_receipts')->find($id);
-//                                    dd($customer_receipt);
                                 if (count($customer_receipt->customer_receipts) > 1) {
                                     $customer_receipt_obj = Customer_receipts::where('customer_id', '=', $old_customer)
                                                     ->where('receipt_id', '=', $id)->first();
@@ -329,13 +332,13 @@ class ReceiptMasterController extends Controller {
                                         foreach ($settle_amount as $key => $settleamount) {
                                             if ($settleamount == '') {
                                                 $validator->after(function($validator) {
-                                                    $validator->errors()->add('settle amount', 'Please enter amount.');
+                                                    $validator->errors()->add('settle amount', 'Please enter the amount.');
                                                 });
                                             }
                                         }
                                     } else {
                                         $validator->after(function($validator) {
-                                            $validator->errors()->add('settle amount', 'Please enter amount.');
+                                            $validator->errors()->add('settle amount', 'Please enter the amount.');
                                         });
                                     }
                                     if ($validator->fails()) {
@@ -352,13 +355,13 @@ class ReceiptMasterController extends Controller {
                     foreach ($settle_amount as $key => $settleamount) {
                         if ($settleamount == '') {
                             $validator->after(function($validator) {
-                                $validator->errors()->add('settle amount', 'Please enter amount.');
+                                $validator->errors()->add('settle amount', 'Please enter the amount.');
                             });
                         }
                     }
                 } else {
                     $validator->after(function($validator) {
-                        $validator->errors()->add('settle amount', 'Please enter amount.');
+                        $validator->errors()->add('settle amount', 'Please enter the amount.');
                     });
                 }
                 if ($validator->fails()) {
@@ -391,7 +394,7 @@ class ReceiptMasterController extends Controller {
                         }
                     }
                     if ($customerReceiptObj) {
-                        Session::set('succcess_msg', true);
+                        Session::set('succcess_flag', true);
 //                        Session::set('succcess_flag', true);
                         return Response::json(['success' => true, 'receipt' => true]);
 //                        return redirect('receipt-master')->with('success', 'Receipt succesfully updated.');
