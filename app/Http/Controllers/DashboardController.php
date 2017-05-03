@@ -15,12 +15,19 @@ use App\DeliveryChallan;
 use App\PurchaseOrder;
 use App\ProductSubCategory;
 use DB;
-use Jenssegers\Rollbar\Facades\Rollbar;
+use Rollbar\Rollbar;
+use Rollbar\Payload\Level;
 
 class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        $config = array(
+            // required
+            'access_token' => '78dc7ff331d54376812062ed00b8b555',
+            'environment' => 'production'
+        );
+        Rollbar::init($config);
     }
 
     /*
@@ -161,10 +168,10 @@ class DashboardController extends Controller {
 
             return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
         } catch (\Exception $e) {
-//            Rollbar::log(Level::error(), $e);  
-            \Log::error($e);
-            \Log::debug($e);
-            \Log::warning($e);
+            Rollbar::log(Level::error(), $e);
+//            \Log::error($e);
+//            \Log::debug($e);
+//            \Log::warning($e);
         }
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
