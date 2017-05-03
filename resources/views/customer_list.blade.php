@@ -133,12 +133,16 @@
                                            <?php
                                                 $total_due_amount=0;
                                                 $unsettled_amount=0;
+                                                $settled_challan_amount=0;
                                                 foreach($c['delivery_challan'] as $challan){
-                                                    $total_due_amount=$total_due_amount+$challan->grand_price;                                                                                                       
+                                                    $total_due_amount=$total_due_amount+$challan->grand_price;
+                                                    $settled_challan_amount= $settled_challan_amount+$challan->settle_amount;
                                                 }
                                                 foreach($c['customer_receipt'] as $receipt){
                                                    $unsettled_amount=$unsettled_amount+$receipt->settled_amount;
                                                 }
+                                                $total_due_amount=$total_due_amount-$settled_challan_amount;
+                                                $unsettled_amount= $unsettled_amount-$settled_challan_amount;
                                             ?>
                                         <td>{{$total_due_amount}}</td>
                                         <td>
