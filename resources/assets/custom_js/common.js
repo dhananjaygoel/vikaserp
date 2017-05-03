@@ -53,12 +53,38 @@ $(document).ready(function () {
         $('#delete_receipt_form').attr('action', url);
         $('#delete_receipt_modal').modal('show');
     });
+    $(document).on('click', '.confirm_customer_receipt_form_btn', function (event) {
+        event.preventDefault();
+        var receipt_id = $('#edit_receipt').find('#receipt_id').val();
+        var token = $('#confirm_customer_receipt_form').find('#token').val();
+        var url = $('#baseurl').attr('name') + '/receipt-master/' + receipt_id;
+//        var url = $('#baseurl').attr('name') + '/receipt-master/delete-customer-receipt/' + receipt_id;
+        $.ajax({
+            url: url,
+            type: 'delete',
+            dataType: 'json',
+            data: {_mothod: '_delete', _token: token},
+            success: function (data) {
+                if (data.success) {
+                    window.location.href = $('#baseurl').attr('name') + "/receipt-master";
+                } else {
+                    var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                            '<p> Some error occoured. Please try after somtime.</p>' +
+                            '</div>';
+                    $('#edit_receipt').prepend(error_msg);
+                }
+            }
+        });
+        $('#delete_customer_receipt_modal_new').modal('hide');
+    });
 
     $(document).on('click', '.delete_customer_receipts', function (event) {
         var customer_ids = [];
         var receipt_id = $(this).data('receipt_id');
         var customer_id = $(this).data('customer_id');
         var old_ids = $('#edit_receipt').find('#customer_ids_array').val();
+        var user_type = $('#edit_receipt').find('#user_type').val();
         if (old_ids !== '') {
             old_ids = $.parseJSON(old_ids);
             $.each(old_ids, function (i) {
@@ -72,38 +98,62 @@ $(document).ready(function () {
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval > 1) {
             $(this).closest('.st-settle-block').remove();
+        } else if (user_type == "admin") {
+            $(this).closest('.st-settle-block').remove();
         }
 
     });
     $(document).on('click', '#edit_receipt_btn', function (event) {
         event.preventDefault();
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
-        $.ajax({
-            url: $('#baseurl').attr('name') + '/receipt-master/' + receipt_id,
-            type: 'put',
-            dataType: 'JSON',
-            data: $('#edit_receipt').serialize(),
-            success: function (data) {
-                if (data.success) {
-                    if (data.receipt) {
-                        window.location.href = $('#baseurl').attr('name') + "/receipt-master";
-                    } else if (data.user == "account") {
+        var token = $('#confirm_customer_receipt_form').find('#token').val();
+        var tval = $('#st-settle-container').find('.st-settle-block').length;
+        if (tval < 1) {
+//            console.log("sdfa");
+            $('#delete_customer_receipt_modal_new').modal('show');
+        } else {
+            $.ajax({
+                url: $('#baseurl').attr('name') + '/receipt-master/' + receipt_id,
+                type: 'put',
+                dataType: 'JSON',
+                data: $('#edit_receipt').serialize(),
+                success: function (data) {
+                    if (data.success) {
+                        if (data.receipt) {
+                            window.location.href = $('#baseurl').attr('name') + "/receipt-master";
+                        } else if (data.user == "account") {
+                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                                    '<p>' + data.flash_message + '</p>' +
+                                    '</div>';
+                            $('#edit_receipt').prepend(error_msg);
+                        }
+                    } else {
                         var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
                                 '<p>' + data.flash_message + '</p>' +
                                 '</div>';
+                        if (data.errors) {
+//                            var response = JSON.parse(data.responseText);
+                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>'+
+                            $.each(data.errors, function( key, value) {
+                                console.log(key, value);
+                                error_msg += '<li>' + key + '</li>';
+                            });
+                            +'</div>';
+//                            var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+//                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+//                                    '<ul><li>' + data.errors['tally_users'] + '</li></ul>' +
+//                                    '</div>';
+                        }
                         $('#edit_receipt').prepend(error_msg);
+                        $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
                     }
-                } else {
-                    var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
-                            '<p>' + data.flash_message + '</p>' +
-                            '</div>';
-                    $('#edit_receipt').prepend(error_msg);
-                    $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
                 }
-            }
-        });
+            });
+        }
+
     });
 
 //    $.validator.addMethod("noSpace", function (value, element) {
@@ -253,6 +303,51 @@ $(document).ready(function () {
         $('#settle_due_modal').modal('show');
     });
 
+    $(document).on('click','.update-payment',function(){
+        var settle_amount = $(this).data('settle_amount');
+        var serial_no = $(this).data('serial_no');       
+        var challan_id= $(this).data('challan_id');        
+        $('#modal_update_price').data("price",settle_amount);
+        $('#modal_update_price').attr("data-price",settle_amount);
+        $('#modal-challan').attr("value",challan_id);        
+        $('#modal-challan').val(challan_id);                        
+        $('#serial-no').html(serial_no);
+        $('#amount-error').css('display','none');
+        $('#settle_due_modal').modal('show');
+    });
+    
+    $(document).on('click','.modal-settle-price',function(event){
+        event.preventDefault();
+        var entered_price = $('#settle_price_form').find('#modal_price').val();
+        var due_amount = $('#settle_price_form').find('#modal_price').data('price');
+        if(entered_price>due_amount){
+            $('#amount-error').html('Entered amount is greater than Due amount');
+            $('#amount-error').css('display','block');
+        }
+        else if(entered_price==0){            
+            $('#amount-error').html('Please Enter valid amount');
+            $('#amount-error').css('display','block');
+        }else{
+            $('#settle_price_form').submit();
+        }               
+    });
+    
+    $(document).on('click','.modal_update_settle_price',function(event){
+        event.preventDefault();
+        var entered_price = $('#settle_price_form').find('#modal_update_price').val();
+        var settle_price = $('#settle_price_form').find('#modal_update_price').data('price');        
+        if(entered_price>settle_price){
+            $('#amount-error').html('Entered amount is greater than Total amount');
+            $('#amount-error').css('display','block');
+        }
+        else if(entered_price==0 || entered_price==""){            
+            $('#amount-error').html('Please Enter valid amount');
+            $('#amount-error').css('display','block');
+        }else{            
+            $('#settle_price_form').submit();
+        }               
+    });
+    
     $(document).on('change', '#collection_territory_select', function () {
         var teritory_id = $(this).val();
         if (teritory_id == "") {
@@ -297,22 +392,7 @@ $(document).ready(function () {
             }
         })
     });
-
-    $(document).on('click', '.modal-settle-price', function (event) {
-        event.preventDefault();
-        var entered_price = $('#settle_price_form').find('#modal_price').val();
-        var due_amount = $('#settle_price_form').find('#modal_price').data('price');
-        if (entered_price > due_amount) {
-            $('#amount-error').html('Entered amount is greater than Due amount');
-            $('#amount-error').css('display', 'block');
-        }
-        else if (entered_price == 0) {
-            $('#amount-error').html('Please Enter valid amount');
-            $('#amount-error').css('display', 'block');
-        } else {
-            $('#settle_price_form').submit();
-        }
-    });
+    
 
     $(document).on('change', '#loaded_by_chart_filter', function () {
         var val = $(this).val();
