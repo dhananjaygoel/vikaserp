@@ -990,7 +990,7 @@ class CustomerController extends Controller {
 //                dd($customers->get());
             }
         }
-        $customers=$customers->paginate(20)->setPath('due-payment');        
+        $customers=$customers->paginate(20)->setPath('due-payment');
         $city = City::all();
         $territories = Territory::orderBy('created_at', 'DESC')->get();
         return View('customer_list')->with('customers',$customers)->with('city',$city)
