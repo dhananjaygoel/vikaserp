@@ -325,7 +325,23 @@ class ReceiptMasterController extends Controller {
                                         $customer_receipt_obj->delete();
                                     }
                                 } else {
-                                    return Response::json(['success' => false, 'user' => 'account', 'receipt' => false]);
+                                    if (isset($settle_amount) && !empty($settle_amount)) {
+                                        foreach ($settle_amount as $key => $settleamount) {
+                                            if ($settleamount == '') {
+                                                $validator->after(function($validator) {
+                                                    $validator->errors()->add('settle amount', 'Please enter amount.');
+                                                });
+                                            }
+                                        }
+                                    } else {
+                                        $validator->after(function($validator) {
+                                            $validator->errors()->add('settle amount', 'Please enter amount.');
+                                        });
+                                    }
+                                    if ($validator->fails()) {
+                                        return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                                    }
+//                                    return Response::json(['success' => false, 'user' => 'account', 'receipt' => false]);
                                 }
                             }
                         }
@@ -449,7 +465,7 @@ class ReceiptMasterController extends Controller {
 //                        $receipt->delete();
                         return Response::json(['success' => true, 'user' => 'account']);
                     } else {
-                        return Response::json(['success' => true, 'user' => 'account', 'error' => 'Receipt could not delete.']);
+                        return Response::json(['success' => true, 'user' => 'account', 'error' => 'Receipt could not be deleted.']);
                     }
                 } else if (Auth::user()->role_id == 1 || Auth::user()->role_id == 0) {
                     $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
