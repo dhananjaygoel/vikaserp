@@ -167,12 +167,11 @@
             $(block).find('.st_select_tally_user').select2();
         }
         var element = $('#st-settle-container').find('.st-settle-block').last();
-//        console.log(val);
-//        if(val>0){
-//            $(elem).closest('.st-settle-block').find(".add-tally_u" ).addClass("add-tally_u_new");
-//        }else{
-//            $(elem).closest('.st-settle-block').find(".add-tally_u" ).removeClass("add-tally_u_new");
-//        }
+        if(val>0){
+            $(elem).closest('.st-settle-block').addClass("temp_tally_user");
+        }else{
+            $(elem).closest('.st-settle-block').removeClass("temp_tally_user");
+        }
         $(element).find(".add-tally_u" ).trigger( "click" );
     });
     $(document).on('click', '.add-tally_u', function (event) {

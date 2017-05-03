@@ -108,9 +108,9 @@ $(document).ready(function () {
         $('#edit_receipt').find('#flash_message_div').css('display','none');
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
+        $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
-//            console.log("sdfa");
             $('#delete_customer_receipt_modal_new').modal('show');
         } else {
             $.ajax({
