@@ -100,6 +100,7 @@
                                             </div>
                                             <div class="col-md-1 action_btn">
                                                 <a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>
+                                                <a href="javascript:void(0)" style="border-bottom:none" class="btn del-tally_u st-border-bottom-none"><i class="fa fa-trash-o"></i></a>
                                             </div>
                                         </div>
                                     </div>

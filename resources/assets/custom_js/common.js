@@ -157,9 +157,6 @@ $(document).ready(function () {
     $(document).on('click', '#add_receipt_btn', function (event) {
         event.preventDefault();
         $('#add_receipt').find('#flash_message_div').css('display','none');
-        var action_length = $(document).find('#st-settle-container').find('.st-settle-block').first().find('.action_btn').find('.del-tally_u').length;
-        if(action_length<1)
-            $(document).find('#st-settle-container').find('.st-settle-block').first().find('.action_btn').append('<a href="javascript:void(0)" style="border-bottom:none" class="btn del-tally_u st-border-bottom-none"><i class="fa fa-trash-o"></i></a>');
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if(tval>1){
             $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
