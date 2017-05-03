@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Rollbar\Rollbar;
+use Rollbar\Payload\Level;
 
 //use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -28,7 +30,9 @@ class Handler extends ExceptionHandler {
      */
     public function report(Exception $e) {
 //        return parent::report($e);
-        \Log::error($e);
+        \Log::error($e); 
+        \Log::debug($e);
+        \Log::warning($e);
         return parent::report($e);
     }
 

@@ -15,8 +15,7 @@ use App\DeliveryChallan;
 use App\PurchaseOrder;
 use App\ProductSubCategory;
 use DB;
-use Rollbar\Rollbar;
-use Rollbar\Payload\Level;
+use Jenssegers\Rollbar\Facades\Rollbar;
 
 class DashboardController extends Controller {
 
@@ -49,11 +48,11 @@ class DashboardController extends Controller {
 //        $order = Order::all()->count();
             $orders = Order::with('all_order_products')->get();
             $order_pending_sum = 0;
-            sdfsdfsd
+
 
 //        $pending_order = Order::where('order_status', 'pending')->count();
 
-            foreach ($orders as $order) {
+            foreach ($orders1 as $order) {
                 if ($order->order_status == 'pending') {
                     foreach ($order->all_order_products as $all_order_products) {
                         if ($all_order_products->unit_id == 1)
@@ -162,7 +161,10 @@ class DashboardController extends Controller {
 
             return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
         } catch (\Exception $e) {
-            Rollbar::log(Level::error(), $e);            
+//            Rollbar::log(Level::error(), $e);  
+            \Log::error($e);
+            \Log::debug($e);
+            \Log::warning($e);
         }
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
