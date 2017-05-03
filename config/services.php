@@ -31,7 +31,7 @@ return [
         'secret' => '',
     ],
     'rollbar' => [
-        'access_token' => 'e9b8125f7584473784540f13c939e75e',
+        'access_token' => '78dc7ff331d54376812062ed00b8b555',
         'level' => 'debug',
     ],
 ];
