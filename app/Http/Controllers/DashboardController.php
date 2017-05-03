@@ -101,7 +101,7 @@ class DashboardController extends Controller {
 //                }
 //            }
 //        }
-            foreach ($delivery_order1 as $delivery_order_info) {
+            foreach ($delivery_order as $delivery_order_info) {
                 if ($delivery_order_info->order_status == 'pending') {
                     foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
                         if ($delivery_order_productinfo->unit_id == 1)
