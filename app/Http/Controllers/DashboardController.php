@@ -15,6 +15,8 @@ use App\DeliveryChallan;
 use App\PurchaseOrder;
 use App\ProductSubCategory;
 use DB;
+use Rollbar\Rollbar;
+use Rollbar\Payload\Level;
 
 class DashboardController extends Controller {
 
@@ -29,58 +31,62 @@ class DashboardController extends Controller {
       | Counts of total Inquiries
      */
 
-    public function index() {  
-      
-        if (Auth::user()->role_id == 5 ) {            
-           return Redirect::to('inquiry');           
-        }
-        
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
-            return Redirect::to('customers');
-        }
-        $inquiries_stats_all = [];
-        $orders_stats_all = [];
-        $delivery_challan_stats_all = [];
+    public function index() {
+        try {
+
+
+
+            if (Auth::user()->role_id == 5) {
+                return Redirect::to('inquiry');
+            }
+
+            if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
+                return Redirect::to('customers');
+            }
+            $inquiries_stats_all = [];
+            $orders_stats_all = [];
+            $delivery_challan_stats_all = [];
 //        $order = Order::all()->count();
-        $orders = Order::with('all_order_products')->get();
-        $order_pending_sum =0;
-        
+            $orders = Order::with('all_order_products')->get();
+            $order_pending_sum = 0;
+            sdfsdfsd
+
 //        $pending_order = Order::where('order_status', 'pending')->count();
-        
-        foreach ($orders as $order) {
-            if ($order->order_status == 'pending') {
-                foreach ($order->all_order_products as $all_order_products) {                    
-                    if ($all_order_products->unit_id == 1)
-                        $order_pending_sum += $all_order_products->quantity;
-                    elseif (($all_order_products->unit_id == 2) || ($all_order_products->unit_id == 3))
-                        $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
+
+            foreach ($orders as $order) {
+                if ($order->order_status == 'pending') {
+                    foreach ($order->all_order_products as $all_order_products) {
+                        if ($all_order_products->unit_id == 1)
+                            $order_pending_sum += $all_order_products->quantity;
+                        elseif (($all_order_products->unit_id == 2) || ($all_order_products->unit_id == 3))
+                            $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
+                    }
                 }
             }
-        }
-        
-        $order_pending_sum = $order_pending_sum / 1000;
-        
-        $inquiry = Inquiry::all()->count();
-        $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
-        $inquiry_pending_sum = 0;
-        $inquiries = Inquiry::with('inquiry_products')->get();
-        foreach ($inquiries as $inquiry) {
-            foreach ($inquiry->inquiry_products as $all_inquiry_products) {                   
-            if ($inquiry->inquiry_status == 'pending') {
-                
-                    if ($all_inquiry_products->unit_id == 1)
-                        $inquiry_pending_sum += $all_inquiry_products->quantity;
-                    elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))
-                        $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity);
+
+            $order_pending_sum = $order_pending_sum / 1000;
+
+            $inquiry = Inquiry::all()->count();
+            $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
+            $inquiry_pending_sum = 0;
+            $inquiries = Inquiry::with('inquiry_products')->get();
+            foreach ($inquiries as $inquiry) {
+                foreach ($inquiry->inquiry_products as $all_inquiry_products) {
+                    if ($inquiry->inquiry_status == 'pending') {
+
+                        if ($all_inquiry_products->unit_id == 1)
+                            $inquiry_pending_sum += $all_inquiry_products->quantity;
+                        elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))
+                            $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity);
+                    }
                 }
             }
-        }
-        
-        $inquiry_pending_sum = $inquiry_pending_sum / 1000;
-        
-        $delivery_order = DeliveryOrder::with('delivery_product')->get();
-        $deliver_sum = 0;
-        $deliver_pending_sum = 0;
+
+            $inquiry_pending_sum = $inquiry_pending_sum / 1000;
+
+            $delivery_order = DeliveryOrder::with('delivery_product')->get();
+            $deliver_sum = 0;
+            $deliver_pending_sum = 0;
 //        foreach ($delivery_order as $qty) {
 //            if ($qty->order_status == 'pending') {
 //                foreach ($qty['delivery_product'] as $qty_val) {
@@ -92,26 +98,26 @@ class DashboardController extends Controller {
 //                }
 //            }
 //        }
-        foreach ($delivery_order as $delivery_order_info) {
-            if ($delivery_order_info->order_status == 'pending') {
-                foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
-                    if ($delivery_order_productinfo->unit_id == 1)
-                        $deliver_pending_sum += $delivery_order_productinfo->quantity;
-                    elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                        $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+            foreach ($delivery_order as $delivery_order_info) {
+                if ($delivery_order_info->order_status == 'pending') {
+                    foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
+                        if ($delivery_order_productinfo->unit_id == 1)
+                            $deliver_pending_sum += $delivery_order_productinfo->quantity;
+                        elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                            $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                    }
                 }
-            }
 //            foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
 //                if ($delivery_order_productinfo->unit_id == 1)
 //                    $deliver_sum += $delivery_order_productinfo->quantity;
 //                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
 //                    $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
 //            }
-        }
-        $deliver_sum = $deliver_sum / 1000;
-        $deliver_pending_sum = $deliver_pending_sum / 1000;
-        
-        
+            }
+            $deliver_sum = $deliver_sum / 1000;
+            $deliver_pending_sum = $deliver_pending_sum / 1000;
+
+
 //        $delivery_challan = DeliveryChallan::with('delivery_challan_products')->get();
 //        $delivery_challan_sum = 0;
 //       
@@ -150,12 +156,14 @@ class DashboardController extends Controller {
 //            }
 //        }
 //        $purc_order_sum = $purc_order_sum / 1000;
-        
 //        dd(DB::getQueryLog());           
 //            exit;
-        
-        
-        return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum','deliver_pending_sum'));
+
+
+            return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
+        } catch (\Exception $e) {
+            Rollbar::log(Level::error(), $e);            
+        }
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
 
@@ -164,30 +172,28 @@ class DashboardController extends Controller {
         $kg_qty = 0;
         $product_info = ProductSubCategory::find($product_category_id);
         if ($unit_id == 1) {
-            if(isset($product_info->quantity)){
-                 $kg_qty = $product_info->quantity;
-            }else{
+            if (isset($product_info->quantity)) {
+                $kg_qty = $product_info->quantity;
+            } else {
                 $kg_qty = 0;
             }
-           
         } elseif ($unit_id == 2) {
-            if(isset($product_info->weight)){
-                    $weight = $product_info->weight;
-            }else{
-                 $weight =0;
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+            } else {
+                $weight = 0;
             }
             $kg_qty = $kg_qty + ($product_qty * $weight);
         } elseif ($unit_id == 3) {
-            if(!isset($weight) )
-            {
-                $weight=1;
+            if (!isset($weight)) {
+                $weight = 1;
             }
-            if(isset($product_info->standard_length)){
+            if (isset($product_info->standard_length)) {
                 $std_length = $product_info->standard_length;
-            }else{
-                $std_length =  0;
+            } else {
+                $std_length = 0;
             }
-            $kg_qty = $kg_qty + (($product_qty /  $std_length ) * $weight);
+            $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
         }
         return $kg_qty;
     }
@@ -207,14 +213,13 @@ class DashboardController extends Controller {
     public function homeredirect() {
         return redirect('dashboard');
     }
-    
-    
-    public function graph_inquiry() {
-        
-          /* To get Inquiry stats for graph*/
-        
 
-        for ($i = 1; $i <= 7; $i++) {           
+    public function graph_inquiry() {
+
+        /* To get Inquiry stats for graph */
+
+
+        for ($i = 1; $i <= 7; $i++) {
             $inquiries_stats_all[$i]['pipe'] = 0;
             $inquiries_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
@@ -225,7 +230,7 @@ class DashboardController extends Controller {
                     ->get();
 
             foreach ($inquiries_stats as $inquiry) {
-                
+
                 foreach ($inquiry['inquiry_products'] as $inquiry_products) {
                     if (isset($inquiry_products['inquiry_product_details']['product_category']['product_type_id'])) {
                         if ($inquiry_products['inquiry_product_details']['product_category']['product_type_id'] == 1) {
@@ -245,21 +250,19 @@ class DashboardController extends Controller {
 
             $inquiries_stats_all[$i]['pipe'] = round($inquiries_stats_all[$i]['pipe'] / 1000, 2);
             $inquiries_stats_all[$i]['structure'] = round($inquiries_stats_all[$i]['structure'] / 1000, 2);
-        }  
-        
-        
-        return ($inquiries_stats_all);
-        
-    }
-    
-    
-    public function graph_order() {
-        
-          /* To get Order stats for graph*/
-        
-        
+        }
 
-        for ($i = 1; $i <= 7; $i++) {            
+
+        return ($inquiries_stats_all);
+    }
+
+    public function graph_order() {
+
+        /* To get Order stats for graph */
+
+
+
+        for ($i = 1; $i <= 7; $i++) {
             $orders_stats_all[$i]['pipe'] = 0;
             $orders_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
@@ -268,12 +271,12 @@ class DashboardController extends Controller {
                     ->where('order_status', '=', 'completed')
                     ->where('updated_at', 'like', $date_search . '%')
                     ->get();
-            
+
             foreach ($orders_stats as $order) {
-                
+
                 foreach ($order['all_order_products'] as $order_products) {
-                    
-                    
+
+
                     if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
                         if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
                             if ($order_products['unit_id'] == 1)
@@ -292,21 +295,18 @@ class DashboardController extends Controller {
 
             $orders_stats_all[$i]['pipe'] = round($orders_stats_all[$i]['pipe'] / 1000, 2);
             $orders_stats_all[$i]['structure'] = round($orders_stats_all[$i]['structure'] / 1000, 2);
-        }         
-        
-        
+        }
+
+
         return ($orders_stats_all);
-        
     }
-    
-    
-    
+
     public function graph_delivery_challan() {
 
-         /* To get Delivery Challan stats for graph*/        
-         
+        /* To get Delivery Challan stats for graph */
 
-        for ($i = 1; $i <= 7; $i++) {            
+
+        for ($i = 1; $i <= 7; $i++) {
             $delivery_challan_stats_all[$i]['pipe'] = 0;
             $delivery_challan_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
@@ -315,17 +315,16 @@ class DashboardController extends Controller {
                     ->where('challan_status', '=', 'completed')
                     ->where('updated_at', 'like', $date_search . '%')
                     ->get();
-  
+
             foreach ($delivery_challan_stats as $delivery_challan) {
                 foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
-                   
+
                     if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
                         if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
                             if ($delivery_challan_products['unit_id'] == 1)
                                 $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
                             elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
                                 $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
-                                                     
                         }else {
                             if ($delivery_challan_products['unit_id'] == 1)
                                 $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
@@ -335,16 +334,13 @@ class DashboardController extends Controller {
                     }
                 }
             }
-          
+
             $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
             $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
-        }        
-        
-        
+        }
+
+
         return ($delivery_challan_stats_all);
-        
     }
-    
-    
 
 }
