@@ -24,6 +24,7 @@ return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'League\\Flysystem\\Dropbox\\' => array($vendorDir . '/league/flysystem-dropbox/src'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Jenssegers\\Rollbar\\' => array($vendorDir . '/jenssegers/rollbar/src'),
     'Illuminate\\Html\\' => array($vendorDir . '/illuminate/html'),
     'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
