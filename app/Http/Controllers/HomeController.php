@@ -2964,21 +2964,50 @@ class HomeController extends Controller {
         return json_encode($receipt_response);
     }
 
+    /**
+     * App Receipt Master delete
+     */
+    public function appsyncreceiptdelete() {
+        $input_data = Input::all();
+        $receipts = (json_decode($input_data['receipt_deleted']));  
+        
+        if (count($receipts) > 0) {
+            foreach ($receipts as $receipt) {
+                
+                $receipt_data = Receipt::find($receipt);
+               
+                if ($receipt_data) {
+                    $customer_recripts = Customer_receipts::where('receipt_id', '=', $receipt)->get();                   
+                    foreach ($customer_recripts as $customer_recript) {
+                        $customer_recript->delete();
+                    }
+                    $receipt_data->delete();                    
+                }
+  
+            }
+            return json_encode(array('result' => true, 'message' => 'Receipts deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
+        }
+    }
+
+    /**
+     * App Receipt customer list
+     */
     public function appsyncreceiptcustomerlist() {
         $receipt_customer_list_response = [];
-        $tally_users = Customer::where('customer_status','permanent')->get(); 
+        $tally_users = Customer::where('customer_status', 'permanent')->get();
         $debited_to_journal = $tally_users;
         $debited_to_bank = Debited_to::where('debited_to_type', '=', 2)->get();
         $debited_to_cash = Debited_to::where('debited_to_type', '=', 3)->get();
-        
-        $receipt_customer_list_response['journal']['tally_user']=$tally_users;
-        $receipt_customer_list_response['journal']['debited_to']=$debited_to_journal;
-        $receipt_customer_list_response['bank']['tally_user']=$tally_users;
-        $receipt_customer_list_response['bank']['debited_to']=$debited_to_bank;
-        $receipt_customer_list_response['cash']['tally_user']=$tally_users;
-        $receipt_customer_list_response['cash']['debited_to']=$debited_to_cash;
+
+        $receipt_customer_list_response['journal']['tally_user'] = $tally_users;
+        $receipt_customer_list_response['journal']['debited_to'] = $debited_to_journal;
+        $receipt_customer_list_response['bank']['tally_user'] = $tally_users;
+        $receipt_customer_list_response['bank']['debited_to'] = $debited_to_bank;
+        $receipt_customer_list_response['cash']['tally_user'] = $tally_users;
+        $receipt_customer_list_response['cash']['debited_to'] = $debited_to_cash;
         return json_encode($receipt_customer_list_response);
-        
     }
 
     /**

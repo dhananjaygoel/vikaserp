@@ -21,6 +21,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appSyncLabours',
         'appsyncterritory',
         'appsyncreceipt',
+        'appsyncreceiptdelete',
         'app_customer_login',
         'app_contactus',
         'app_addcustomer',
