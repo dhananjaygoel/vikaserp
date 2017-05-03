@@ -209,8 +209,37 @@
         event.preventDefault();
 //        $(this).closest('.st-settle-block').remove();
         var tval = $('#st-settle-container').find('.st-settle-block').length;
+        console.log(tval);
+        alert("dsfg");
         if (tval > 1) {
             $(this).closest('.st-settle-block').remove();
+        }else{
+        var last = $('#edit_receipt').find('#user_type').val();
+        console.log(last);
+            if(last=="account"){
+                var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                        '<p>Receipt could not delete.</p>' +
+                        '</div>';
+                $('#edit_receipt').prepend(error_msg);
+            }
+        }
+    });
+    $(document).on('click', '#edit_receipt .delete_customer_receipts', function (event) {
+        event.preventDefault();
+        $('#edit_receipt').find('#flash_message_div').css('display','none');
+        var tval = $('#st-settle-container').find('.st-settle-block').length;
+        if (tval > 1) {
+            $(this).closest('.st-settle-block').remove();
+        }else{
+        var last = $('#edit_receipt').find('#user_type').val();
+            if(last=="account"){
+                var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                        '<p>Receipt could not delete.</p>' +
+                        '</div>';
+                $('#edit_receipt').prepend(error_msg);
+            }
         }
     });
     $(document).on('click', '#add_receipt .del-tally_u', function (event) {
