@@ -37,6 +37,7 @@ use App\Territory;
 use App\TerritoryLocation;
 use App\Receipt;
 use App\Customer_receipts;
+use App\Debited_to;
 
 class HomeController extends Controller {
     /*
@@ -2933,7 +2934,7 @@ class HomeController extends Controller {
                     }
                 }
                 foreach ($receipt_customer as $key => $user) {
-                    if ($value->id == $user->local_receipt_id) {                        
+                    if ($value->id == $user->local_receipt_id) {
                         $customerReceiptObj = new Customer_receipts();
                         $customerReceiptObj->customer_id = $user->server_cutomer_id;
                         $customerReceiptObj->settled_amount = $user->settled_amount;
@@ -2952,7 +2953,7 @@ class HomeController extends Controller {
         }
 
         if (Input::has('receipt_sync_date') && Input::get('receipt_sync_date') != '' && Input::get('receipt_sync_date') != NULL) {
-            $receipt_response['receipt_deleted'] = array();
+            $receipt_response['receipt_server_deleted'] = array();
         }
         $receipt_date = Receipt::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($receipt_date))
@@ -2961,6 +2962,23 @@ class HomeController extends Controller {
             $receipt_response['latest_date'] = "";
 
         return json_encode($receipt_response);
+    }
+
+    public function appsyncreceiptcustomerlist() {
+        $receipt_customer_list_response = [];
+        $tally_users = Customer::where('customer_status','permanent')->get(); 
+        $debited_to_journal = $tally_users;
+        $debited_to_bank = Debited_to::where('debited_to_type', '=', 2)->get();
+        $debited_to_cash = Debited_to::where('debited_to_type', '=', 3)->get();
+        
+        $receipt_customer_list_response['journal']['tally_user']=$tally_users;
+        $receipt_customer_list_response['journal']['debited_to']=$debited_to_journal;
+        $receipt_customer_list_response['bank']['tally_user']=$tally_users;
+        $receipt_customer_list_response['bank']['debited_to']=$debited_to_bank;
+        $receipt_customer_list_response['cash']['tally_user']=$tally_users;
+        $receipt_customer_list_response['cash']['debited_to']=$debited_to_cash;
+        return json_encode($receipt_customer_list_response);
+        
     }
 
     /**
