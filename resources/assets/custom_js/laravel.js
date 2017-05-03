@@ -101,6 +101,7 @@
         event.preventDefault();
         var search_text = $('#st_collection_user_form').find('input[name="search"]').val();
         var location = $('#st_collection_user_form').find('select[name="location"]').val();
+        var territory = $('#st_collection_user_form').find('select[name="territory_filter"]').val();        
         var form =
                 $('<form>', {
                     'method': 'POST',
@@ -125,7 +126,13 @@
                     'type': 'hidden',
                     'value': search_text
                 });
-        form.append(token, locationInput, searchInput).appendTo('body');
+        var territoryInput =
+                $('<input>', {
+                    'name': 'territory',
+                    'type': 'hidden',
+                    'value': territory
+                });        
+        form.append(token, locationInput, searchInput,territoryInput).appendTo('body');
         form.submit();
     });
     $(document).on('change', '.st_select_tally_user', function (event) {

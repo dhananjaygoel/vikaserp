@@ -244,6 +244,9 @@ class CollectionUserController extends Controller {
     public function export_collection_users() {
         $search_field = Input::get('search');
         $location_id = Input::get('location');
+        $territory_id = Input::get('territory');    
+        $loc_arr = [];
+        $territory_arr = [];
         $collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
         if (isset($search_field) && !empty($search_field)) {
             $collection_users->where(function($query) use ($search_field) {
@@ -258,7 +261,20 @@ class CollectionUserController extends Controller {
                 $query->where('location_id', $location_id);
             });
         }
-        $collection_users = $collection_users->where('role_id', '=', 6)->get();
+        if (isset($territory_id) && !empty($territory_id)) {
+            $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
+            foreach ($territory_locations as $loc){
+                if(!in_array($loc->teritory_id, $loc_arr)){
+                   array_push($territory_arr, $loc->teritory_id);
+                }
+                array_push($loc_arr, $loc->location_id);
+            }
+            $collection_users->whereHas('locations', function($query) use ($territory_arr) {
+                $query->whereIn('teritory_id',$territory_arr);
+            });
+            
+        }
+        $collection_users = $collection_users->where('role_id', '=', 6)->orderBy('created_at', 'DESC')->get();
 
         $excel_name = 'Collectionuser-' . date('dmyhis');
 
