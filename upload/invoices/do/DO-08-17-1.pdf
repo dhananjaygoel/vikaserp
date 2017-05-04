@@ -1,0 +1,95 @@
+%PDF-1.3
+1 0 obj
+<< /Type /Catalog
+/Outlines 2 0 R
+/Pages 3 0 R
+/Names <</JavaScript 9 0 R>> >>
+endobj
+2 0 obj
+<< /Type /Outlines /Count 0 >>
+endobj
+3 0 obj
+<< /Type /Pages
+/Kids [6 0 R
+]
+/Count 1
+/Resources <<
+/ProcSet 4 0 R
+/Font << 
+/F1 8 0 R
+>>
+>>
+/MediaBox [0.000 0.000 595.280 841.890]
+ >>
+endobj
+4 0 obj
+[/PDF /Text ]
+endobj
+5 0 obj
+<<
+/Creator (DOMPDF)
+/CreationDate (D:20160817135029+05'30')
+/ModDate (D:20160817135029+05'30')
+/Title (Delivery Order)
+>>
+endobj
+6 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Contents 7 0 R
+>>
+endobj
+7 0 obj
+<< /Filter /FlateDecode
+/Length 502 >>
+stream
+xœÍ”]oÓ0†ïó+ŞKÀµãï\1Ø¨TD+FÄ.¦]dKºVôCd+…ÏiÖ$ÎfM½D‘œèÍñããã×'áÌqp¼'œY=8&¸nè£L„LYí%ÊCÏ\ª
+Å¤æ¨+|O~5aNË&LÓïC·‡0ÉoÂ®°I^.[ßGDÊ¥Z—2eÖPôåSÛ)«@‘Œò!¥ŸÕ*˜Ÿ7ä~¤E?æH­fÖS°' 7ÈKŒ>X¦‘Ïë7çÕjù»ªÿbV—Uıöùy"F8¯]ÙhÃ¤ê ˜~Úş<¾ù~eN…ûl•Õ@á>Üg¯ÿy
+!êIùÿQšég¨V	PVzæİÀG%ğ„"7Ë':åOaÉ¯l¨ø2æ‰¦»õmUg8Ÿ¸	;5B‚v”HŒP<VÎv÷»‡Gû)&N ÌD„/×Dè¦¼ê++4“é VG%¨•0WƒZuÊ)µJ	¨#yN‹Cgø‚¼.è=à=>-–›»Å¾(OKß8AMiàš£¸†Şš\Ó)§¤Ï93±ëÿ£Z,ïV¦Ûã‰¦³ò*vNÆSF.vÒõ¡}àëö6ƒwÇ‡Gd75KÛ‚>d¸øƒñ¶Üî7Q‚TÔñ"„Ëj]Ô?»4“ÚnM'Çc«È›Ã®÷íçV»
+endstream
+endobj
+8 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Times-Bold
+/Encoding /WinAnsiEncoding
+>>
+endobj
+9 0 obj
+<< 
+/Names [(EmbeddedJS) 10 0 R]
+>>
+endobj
+10 0 obj
+<< 
+/S /JavaScript
+/JS (
+                        var x = new Date\(\)
+                        var current_time = x.getHours\(\)+":"+x.getMinutes\(\)+":"+x.getSeconds\(\)
+                        document.write\(current_time\)
+                        )
+>>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000009 00000 n 
+0000000103 00000 n 
+0000000149 00000 n 
+0000000303 00000 n 
+0000000332 00000 n 
+0000000470 00000 n 
+0000000533 00000 n 
+0000001107 00000 n 
+0000001215 00000 n 
+0000001266 00000 n 
+trailer
+<<
+/Size 11
+/Root 1 0 R
+/Info 5 0 R
+>>
+startxref
+1536
+%%EOF
