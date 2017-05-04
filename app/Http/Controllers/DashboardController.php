@@ -24,13 +24,13 @@ class DashboardController extends Controller {
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
         define('SEND_LOG', Config::get('rollbar.send'));
-        if (SEND_LOG === true) {
-            $config = array(
-                'access_token' => Config::get('rollbar.access_token'),
-                'environment' => 'production'
-            );
-            Rollbar::init($config);
-        }
+//        if (SEND_LOG === true) {
+//            $config = array(
+//                'access_token' => Config::get('rollbar.access_token'),
+//                'environment' => 'delevopment'
+//            );
+//            Rollbar::init($config);
+//        }
     }
 
     /*
@@ -167,7 +167,7 @@ class DashboardController extends Controller {
 //            exit;
 
 
-            return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
+            return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum1', 'deliver_pending_sum'));
         
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }

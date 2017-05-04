@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
+use Config;
 
 //use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -29,8 +30,13 @@ class Handler extends ExceptionHandler {
      * @return void
      */
     public function report(Exception $e) {
-        return parent::report($e);
-        Rollbar::log(Level::error(), $e);
+        //return parent::report($e);
+         $config = array(
+                'access_token' => Config::get('rollbar.access_token'),
+                'environment' => 'production'
+            );
+            Rollbar::init($config);
+//        Rollbar::log(Level::error(), $e);
         return parent::report($e);
     }
 
