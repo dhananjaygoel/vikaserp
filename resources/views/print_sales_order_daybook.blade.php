@@ -134,8 +134,10 @@
                     <div class="divCell">{{ isset($obj->grand_price) ? round($obj->grand_price, 2) : '' }}</div>
                     <div class="divCell">{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</div>
                     <div class="divCell">{{ isset($obj['delivery_order']->vehicle_number) ? $obj['delivery_order']->vehicle_number : '' }}</div>
-                    <div class="divCell">{{ isset($obj->loaded_by) ? $obj->loaded_by : '' }}</div>
-                    <div class="divCell">{{ isset($obj->labours) ? $obj->labours : '' }}</div>
+                    <div class="divCell">{{ isset($obj['challan_loaded_by']) ? $obj['challan_loaded_by'] : '0' }}</div>
+                    <div class="divCell">{{ isset($obj['challan_labours']) ? $obj['challan_labours'] : '0' }}</div>
+<!--                    <div class="divCell">{{ isset($obj->loaded_by) ? $obj->loaded_by : '' }}</div>-->
+<!--                    <div class="divCell">{{ isset($obj->labours) ? $obj->labours : '' }}</div>-->
                     <div class="divCell">{{ isset($obj->remarks) ? $obj->remarks : '' }}</div>
                 </div>
                 @endforeach

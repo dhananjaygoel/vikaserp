@@ -327,7 +327,7 @@ class SalesDaybookController extends Controller {
      */
 
     public function print_sales_order_daybook() {
-
+        set_time_limit(0);
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -354,10 +354,6 @@ class SalesDaybookController extends Controller {
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location')->orderBy('updated_at', 'desc')->get();
         }
-
-
-
-
 
         return view('print_sales_order_daybook', compact('allorders'));
     }
