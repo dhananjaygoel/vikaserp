@@ -268,7 +268,7 @@
 
 
                                     @foreach($allorders as $order)                              
-                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes')
+                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes' &&  Input::get('territory_filter') == '')
 
                                     <tr id="order_row_{{$order->id}}">
                                         <td>
@@ -347,7 +347,7 @@
                                     @endforeach
 
                                     @foreach($allorders as $order)  
-                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='no')
+                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='no' && Input::get('territory_filter') == '')
                                     @if($k==1)                                   
 
                                     @endif
@@ -485,7 +485,7 @@
 
 
                                     @foreach($allorders as $order)
-                                    @if(isset($order->order_status) && $order->order_status == 'cancelled')
+                                    @if(isset($order->order_status) && $order->order_status == 'cancelled' && Input::get('territory_filter') == '')
                                     <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
