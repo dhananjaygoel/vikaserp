@@ -29,6 +29,8 @@ use App\ProductSubCategory;
 use DateTime;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Territory;
+use App\TerritoryLocation;
 
 class OrderController extends Controller {
 
@@ -104,7 +106,20 @@ class OrderController extends Controller {
                 } else {
                     $q->where('order_status', '=', $data['order_status']);
                 }
-//                $q->where('order_status', '=', $data['order_status']);
+            }else if (isset($data["territory_filter"])) {
+                $loc_arr = [];
+                $territory_arr = [];
+                $territory_id = $data["territory_filter"];
+                $territory_locations = TerritoryLocation::where('teritory_id', '=', $territory_id)->get();
+                if (isset($territory_locations)) {
+                    foreach ($territory_locations as $loc) {
+                        if (!in_array($loc->teritory_id, $loc_arr)) {
+                            array_push($territory_arr, $loc->teritory_id);
+                        }
+                        array_push($loc_arr, $loc->location_id);
+                    }
+                    $q->whereIn('delivery_location_id', $loc_arr);
+                }
             } else {
                 $q->where('order_status', '=', 'pending')
                         ->where('is_approved', '=', 'yes');
@@ -152,7 +167,7 @@ class OrderController extends Controller {
             }
         } else {
             $q->with('all_order_products');
-        }
+        }               
         if (Input::has('flag') && Input::get('flag') == 'true') {
             if (Auth::user()->role_id <> 5) {
                 $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
@@ -167,7 +182,7 @@ class OrderController extends Controller {
             if (Auth::user()->role_id == 5) {
                 $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
             }
-        }
+        }    
         $users = User::all();
         if (Auth::user()->role_id <> 5) {
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -182,7 +197,6 @@ class OrderController extends Controller {
 
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
-
 //        $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location', 'createdby')
 //                ->where('is_approved', '=', 'no')
 //                ->where('order_status', '=', 'pending')
@@ -194,8 +208,8 @@ class OrderController extends Controller {
 //        if (isset($data['order_filter']) && $data['order_filter'] != '' && $data['order_filter'] == 'approval') {
 //            $allorders = $non_approved_orders;
 //        }
-
-        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates'));
+        $all_territories = Territory::get();
+        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
 
     /**
