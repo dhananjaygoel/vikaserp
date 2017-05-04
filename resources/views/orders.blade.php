@@ -26,7 +26,7 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
                 </ol>
-                <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:65%">
+                <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">
                         <div class="col-lg-4">
                             <form method="GET" action="{{url()}}/orders">
                                 <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">

@@ -45,7 +45,9 @@ $('.export_to_date').datepicker({
 //    endDate: new Date()
 //});
 $('.export_to_date,.export_from_date').keypress(function (event) {
-    event.preventDefault();
+    if (event.keyCode != 8) {
+        event.preventDefault();
+    }
 });
 $('.export_to_date,.export_from_date').bind('cut copy paste', function (e) {
     e.preventDefault();
