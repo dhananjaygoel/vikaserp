@@ -50,9 +50,9 @@ class UserRolesSeeder extends Seeder {
         DB::table('debited_tos')->insert(
                 array(
                     array('id' => '1', 'debited_to_type' => '1', 'debited_to' => 'User'),
-                    array('id' => '2', 'debited_to_type' => '2', 'debited_to' => '12345'),
-                    array('id' => '3', 'debited_to_type' => '2', 'debited_to' => '56789'),
-                    array('id' => '4', 'debited_to_type' => '2', 'debited_to' => '01234'),
+                    array('id' => '2', 'debited_to_type' => '2', 'debited_to' => 'Bank 1'),
+                    array('id' => '3', 'debited_to_type' => '2', 'debited_to' => 'Bank 2'),
+                    array('id' => '4', 'debited_to_type' => '2', 'debited_to' => 'Bank 3'),
                     array('id' => '5', 'debited_to_type' => '3', 'debited_to' => 'Petty Cash'),
                     array('id' => '6', 'debited_to_type' => '3', 'debited_to' => 'Regular Cash'),
         ));

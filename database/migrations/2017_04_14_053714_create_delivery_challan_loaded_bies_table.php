@@ -14,9 +14,9 @@ class CreateDeliveryChallanLoadedBiesTable extends Migration {
         Schema::create('delivery_challan_loaded_bies', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('delivery_challan_id')->unsigned()->comment('delivery challan table primary key');
-            $table->foreign('delivery_challan_id')->references('id')->on('delivery_challan')->onDelete('cascade');
+//            $table->foreign('delivery_challan_id')->references('id')->on('delivery_challan')->onDelete('cascade');
             $table->integer('loaded_by_id')->unsigned()->comment('loaded bies table primary key');
-            $table->foreign('loaded_by_id')->references('id')->on('loaded_bies')->onDelete('cascade');
+//            $table->foreign('loaded_by_id')->references('id')->on('loaded_bies')->onDelete('cascade');
             $table->timestamps();
         });
     }
