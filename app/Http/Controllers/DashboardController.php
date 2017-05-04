@@ -15,6 +15,7 @@ use App\DeliveryChallan;
 use App\PurchaseOrder;
 use App\ProductSubCategory;
 use DB;
+use Config;
 use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
 
@@ -22,12 +23,14 @@ class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        $config = array(
-            // required
-            'access_token' => '78dc7ff331d54376812062ed00b8b555',
-            'environment' => 'production'
-        );
-        Rollbar::init($config);
+        define('SEND_LOG', Config::get('rollbar.send'));
+        if (SEND_LOG === true) {
+            $config = array(
+                'access_token' => Config::get('rollbar.access_token'),
+                'environment' => 'production'
+            );
+            Rollbar::init($config);
+        }
     }
 
     /*
@@ -50,9 +53,10 @@ class DashboardController extends Controller {
             $orders_stats_all = [];
             $delivery_challan_stats_all = [];
 //        $order = Order::all()->count();
-            $orders = Order::with('all_order_products')->get();
+            
+            $orders = Order::where('order_status','pending')->with('all_order_products')->get();           
             $order_pending_sum = 0;
-
+            
 
 //        $pending_order = Order::where('order_status', 'pending')->count();
 
@@ -87,7 +91,7 @@ class DashboardController extends Controller {
 
             $inquiry_pending_sum = $inquiry_pending_sum / 1000;
 
-            $delivery_order = DeliveryOrder::with('delivery_product')->get();
+            $delivery_order = DeliveryOrder::where('order_status','pending')->with('delivery_product')->get();
             $deliver_sum = 0;
             $deliver_pending_sum = 0;
 //        foreach ($delivery_order as $qty) {
