@@ -951,6 +951,8 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
                 $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has edited Purchase Advise for";
+            }else{
+                return;
             }
 
             if (count($customer) > 0) {
@@ -1161,6 +1163,8 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
                 $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has edited Purchase Advise for";
+            }else{
+                return;
             }
 
             if (count($customer) > 0) {
@@ -1370,6 +1374,8 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your material has been edited as follows\n";
                 $message_body_cust_last = "";
                 $message_body_manager_first = "Admin has edited material for";
+            }else{
+                return;
             }
 
 
@@ -1591,6 +1597,8 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your DO has been edited for following";
                 $message_body_cust_last = "";
                 $message_body_manager_first = "Admin has edited an DO for";
+            }else{
+                return;
             }
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -1867,6 +1875,8 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Admin has rejected your order for following items.";
                 $message_body_cust_last = "VIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has rejected an order for";
+            }else{
+                return;
             }
 
 
@@ -2316,7 +2326,9 @@ class HomeController extends Controller {
             } else {
                 $customer = $inquiries;
             }
-
+            
+            $addon_message ="";
+            $datetime = $inquiries[0]->expected_delivery_date;
             if (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '1') {
 
                 $message_body_cust_first = "Your inquiry has been logged for following";
@@ -2334,18 +2346,26 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Admin has rejected your inquiry for following items.";
                 $message_body_cust_last = "VIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has rejected an inquiry for";
+            } elseif (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '5') {
+                $message_body_cust_first = "Prices for your inquiry are as follows";
+                $message_body_cust_last = "\nmaterials will be dispatched by " . date('j M, Y', strtotime($datetime)) . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has logged an enquiry for";
+            }else{
+                return;
             }
 
-
+            
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . " \n";
+                $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                 foreach ($inquiryproduct as $product_data) {
 
                     if (isset($product_data->product_name)) {
                         $product_size = ProductSubCategory::find($product_data->id);
-
-                        $str .= $product_data->product_name . '- ' . $product_data->quantity . ', ';
+                        if(isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '5'){
+                            $addon_message = '- '.$product_data->price;
+                        }
+                        $str .= $product_data->product_name . '- ' . $product_data->quantity . $addon_message.', ';
                         if ($product_data->unit_id == 1) {
                             $total_quantity = $total_quantity + $product_data->quantity;
                         }
@@ -2360,9 +2380,7 @@ class HomeController extends Controller {
                         $result['reasons'] = "Inquiry not found.";
                         return json_encode($result);
                     }
-                }
-                $datetime = $inquiries[0]->expected_delivery_date;
-
+                } 
                 $str .= $message_body_cust_last;
                 if (App::environment('development')) {
                     $phone_number = \Config::get('smsdata.send_sms_to');
@@ -2383,7 +2401,7 @@ class HomeController extends Controller {
 
                 $customer = Customer::with('manager')->find($inquiries[0]->customer_server_id);
                 if (!empty($customer->manager)) {
-                    $str = "Dear '" . $customer->manager->first_name . "', " . $message_body_manager_first . " " . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly chk and qt. Vikas Associates";
+                    $str = "Dear " . $customer->manager->first_name . ", " . $message_body_manager_first . " " . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
 
                     if (App::environment('development')) {
                         $phone_number = \Config::get('smsdata.send_sms_to');
