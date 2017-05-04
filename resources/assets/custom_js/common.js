@@ -166,11 +166,15 @@ $(document).ready(function () {
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if(tval>1){
             var cnt = $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').length;
+            console.log(cnt);
             cnt = cnt-1;
-            if(cnt>1)
+            console.log(cnt);
+            if(cnt>1){
+                console.log($('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove().length);
                 $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove();
-            else
+            }else{
                 $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
+            }
         }
         $.ajax({
             url: $('#baseurl').attr('name') + '/receipt-master',
