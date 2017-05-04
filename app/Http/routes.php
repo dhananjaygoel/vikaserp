@@ -145,7 +145,8 @@ Route::post('appdeletecollection_admin', 'HomeController@appdeletecollection_adm
 Route::get('appallterritory_admin', 'HomeController@appallterritory_admin');
 Route::post('appaddterritory_admin', 'HomeController@appaddterritory_admin');
 Route::post('appupdateterritory_admin', 'HomeController@appupdateterritory_admin');
-Route::post('appdeleteterritory_admin', 'HomeController@appdeleteterritory_admin');
+//Route::post('appdeleteterritory_admin', 'HomeController@appdeleteterritory_admin');
+Route::post('appdeleteterritory', 'HomeController@appdeleteterritory');
 
 
 //Inventory module- inventory 

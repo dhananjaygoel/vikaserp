@@ -951,7 +951,7 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
                 $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has edited Purchase Advise for";
-            }else{
+            } else {
                 return;
             }
 
@@ -1163,7 +1163,7 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
                 $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has edited Purchase Advise for";
-            }else{
+            } else {
                 return;
             }
 
@@ -1374,7 +1374,7 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your material has been edited as follows\n";
                 $message_body_cust_last = "";
                 $message_body_manager_first = "Admin has edited material for";
-            }else{
+            } else {
                 return;
             }
 
@@ -1597,7 +1597,7 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Your DO has been edited for following";
                 $message_body_cust_last = "";
                 $message_body_manager_first = "Admin has edited an DO for";
-            }else{
+            } else {
                 return;
             }
             if (count($customer) > 0) {
@@ -1875,7 +1875,7 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Admin has rejected your order for following items.";
                 $message_body_cust_last = "VIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has rejected an order for";
-            }else{
+            } else {
                 return;
             }
 
@@ -2326,8 +2326,8 @@ class HomeController extends Controller {
             } else {
                 $customer = $inquiries;
             }
-            
-            $addon_message ="";
+
+            $addon_message = "";
             $datetime = $inquiries[0]->expected_delivery_date;
             if (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '1') {
 
@@ -2350,11 +2350,11 @@ class HomeController extends Controller {
                 $message_body_cust_first = "Prices for your inquiry are as follows";
                 $message_body_cust_last = "\nmaterials will be dispatched by " . date('j M, Y', strtotime($datetime)) . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has logged an enquiry for";
-            }else{
+            } else {
                 return;
             }
 
-            
+
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
@@ -2362,10 +2362,10 @@ class HomeController extends Controller {
 
                     if (isset($product_data->product_name)) {
                         $product_size = ProductSubCategory::find($product_data->id);
-                        if(isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '5'){
-                            $addon_message = '- '.$product_data->price;
+                        if (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '5') {
+                            $addon_message = '- ' . $product_data->price;
                         }
-                        $str .= $product_data->product_name . '- ' . $product_data->quantity . $addon_message.', ';
+                        $str .= $product_data->product_name . '- ' . $product_data->quantity . $addon_message . ', ';
                         if ($product_data->unit_id == 1) {
                             $total_quantity = $total_quantity + $product_data->quantity;
                         }
@@ -2380,7 +2380,7 @@ class HomeController extends Controller {
                         $result['reasons'] = "Inquiry not found.";
                         return json_encode($result);
                     }
-                } 
+                }
                 $str .= $message_body_cust_last;
                 if (App::environment('development')) {
                     $phone_number = \Config::get('smsdata.send_sms_to');
@@ -2987,21 +2987,20 @@ class HomeController extends Controller {
      */
     public function appsyncreceiptdelete() {
         $input_data = Input::all();
-        $receipts = (json_decode($input_data['receipt_deleted']));  
-        
+        $receipts = (json_decode($input_data['receipt_deleted']));
+
         if (count($receipts) > 0) {
             foreach ($receipts as $receipt) {
-                
+
                 $receipt_data = Receipt::find($receipt);
-               
+
                 if ($receipt_data) {
-                    $customer_recripts = Customer_receipts::where('receipt_id', '=', $receipt)->get();                   
+                    $customer_recripts = Customer_receipts::where('receipt_id', '=', $receipt)->get();
                     foreach ($customer_recripts as $customer_recript) {
                         $customer_recript->delete();
                     }
-                    $receipt_data->delete();                    
+                    $receipt_data->delete();
                 }
-  
             }
             return json_encode(array('result' => true, 'message' => 'Receipts deleted successfully.'));
         } else {
@@ -3101,6 +3100,33 @@ class HomeController extends Controller {
         else
             $territory_response['latest_date'] = "";
         return json_encode($territory_response);
+    }
+
+    /**
+     * App sync Territory delete
+     */
+    public function appdeleteterritory() {
+
+        $data = Input::all();
+        if (Input::has('territories')) {
+            $territories = (json_decode($data['territories']));
+
+            if (isset($territories)) {
+                foreach ($territories as $key => $value) {
+                    if ($value->teritory_server_id > 0) {
+                        $territory = Territory::find($value->teritory_server_id);
+                        $territory->delete();
+                        $territory_loc = TerritoryLocation::where('teritory_id', '=', $value->teritory_server_id)->get();
+                        foreach ($territory_loc as $loc) {
+                            $territory_old = TerritoryLocation::find($loc->id);
+                            $territory_old->delete();
+                        }
+                    }
+                }
+                return json_encode(array('result' => true, 'territory_id' => $territory->id, 'message' => 'Territory deleted successfully'));
+            }
+        } else
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
 
     /**
@@ -5666,7 +5692,7 @@ class HomeController extends Controller {
             $labour = Labour::find($id);
             $labour->delete();
 
-            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Labour deleted successfully'));
+            return json_encode(array('result' => true, 'labour_id' => $labour->id, 'message' => 'Labour deleted successfully'));
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
@@ -6120,22 +6146,22 @@ class HomeController extends Controller {
     /**
      * App delete territory
      */
-    public function appdeleteterritory_admin() {
-        if (Input::has('territory_id')) {
-            $id = Input::get('territory_id');
-
-            $territory = Territory::find($id);
-            $territory->delete();
-            $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
-            foreach ($territory_loc as $loc) {
-                $territory_old = TerritoryLocation::find($loc->id);
-                $territory_old->delete();
-            }
-
-            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory deleted successfully'));
-        } else
-            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
-    }
+//    public function appdeleteterritory_admin() {
+//        if (Input::has('territory_id')) {
+//            $id = Input::get('territory_id');
+//
+//            $territory = Territory::find($id);
+//            $territory->delete();
+//            $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
+//            foreach ($territory_loc as $loc) {
+//                $territory_old = TerritoryLocation::find($loc->id);
+//                $territory_old->delete();
+//            }
+//
+//            return json_encode(array('result' => true, 'labour_id' => $territory->id, 'message' => 'Territory deleted successfully'));
+//        } else
+//            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+//    }
 
     /**
      * App Inventory

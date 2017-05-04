@@ -83,6 +83,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appdeletecollection_admin',        
         'appaddterritory_admin',        
         'appupdateterritory_admin',        
+        'appdeleteterritory',        
         'appupdateprice',        
     ];
 
