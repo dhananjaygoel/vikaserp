@@ -107,7 +107,13 @@ $(document).ready(function () {
         event.preventDefault();        
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
-        $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
+        var temp = $('#st-settle-container').find('.temp_tally_user').length;
+        if(temp==0){
+            temp -= 1;
+            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,temp).remove();
+        }else{
+            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
+        }
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
             var last = $('#edit_receipt').find('#user_type').val();
