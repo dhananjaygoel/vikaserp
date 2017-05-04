@@ -321,7 +321,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 //    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
-    Route::get('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
+    Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
     Route::get('fetch_product_price', 'DeliveryOrderController@product_price');
     Route::post('upload_excel', 'WelcomeController@upload_excel');

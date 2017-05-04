@@ -821,8 +821,12 @@ $('.print_inventory_price_list').click(function () {
 
 $('.print_sales_order_daybook').click(function () {
     var base_url = $('#baseurl').attr('name');
+    var export_from_date = $('#export_from_date').val();
+    var export_to_date = $('#export_to_date').val();
+    var _token = $('#_token').val();   
     $.ajax({
-        type: "GET",
+        type: "POST",
+        data: { export_from_date: export_from_date, export_to_date : export_to_date, _token:_token} ,
         url: base_url + '/print_sales_order_daybook',
         success: function (data) {
             var printWindow = window.open('', '');

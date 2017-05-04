@@ -31,11 +31,14 @@ class Handler extends ExceptionHandler {
      */
     public function report(Exception $e) {
         //return parent::report($e);
-         $config = array(
+        define('SEND_LOG', Config::get('rollbar.send'));
+        if (SEND_LOG === true) {
+        $config = array(
                 'access_token' => Config::get('rollbar.access_token'),
                 'environment' => 'production'
             );
             Rollbar::init($config);
+        }
 //        Rollbar::log(Level::error(), $e);
         return parent::report($e);
     }
