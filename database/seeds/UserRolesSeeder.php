@@ -39,7 +39,7 @@ class UserRolesSeeder extends Seeder {
                         'role_id' => '5',
                         'name' => 'Customer'
                     ),
-                     array(
+                    array(
                         'id' => '7',
                         'role_id' => '6',
                         'name' => 'Collection User'
