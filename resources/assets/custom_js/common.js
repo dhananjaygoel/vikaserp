@@ -166,12 +166,21 @@ $(document).ready(function () {
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if(tval>1){
             var cnt = $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').length;
-            console.log(cnt);
-            cnt = cnt-1;
-            console.log(cnt);
+//            cnt = cnt-1;
             if(cnt>1){
-                console.log($('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove().length);
-                $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove();
+//                console.log(cnt);
+                var temp = $('#st-settle-container').find('.temp_tally_user').length;
+//                console.log("temp sds"+temp);
+                if(temp==0){
+                    console.log( $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(1,cnt).remove().length);
+                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(1,cnt).remove();
+                }else{
+                    console.log("temp"+temp);
+                    console.log( $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove());
+                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove()
+                }
+//                console.log($('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove().length);
+//                $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove();
             }else{
                 $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
             }
