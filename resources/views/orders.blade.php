@@ -416,7 +416,7 @@
 
 
                                     @foreach($allorders as $order)
-                                    @if(isset($order->order_status) && $order->order_status == 'completed')
+                                    @if((isset($order->order_status) && $order->order_status == 'completed') || (Input::get('territory_filter') != ''))
 
                                     <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
                                         <td>{{isset($k)?$k++:''}}</td>                                    
