@@ -107,21 +107,10 @@ $(document).ready(function () {
         event.preventDefault();        
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
-        var last = $('#edit_receipt').find('#user_type').val();        
-        if(last=="account"){
-            var tval = $('#st-settle-container').find('.st-settle-block').length;
-            if (tval < 1) {
-                var a = $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').length;
-                if(a<1)
-                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').last().remove(); 
-                else
-                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
-            }
-        }else if(last=="admin"){
-            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
-        }
+        $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
+            var last = $('#edit_receipt').find('#user_type').val();
             if(last=="admin")
                 $('#delete_customer_receipt_modal_new').modal('show');
         } else {
@@ -176,7 +165,12 @@ $(document).ready(function () {
         $('#add_receipt').find('#flash_message_div').css('display','none');
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if(tval>1){
-            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
+            var cnt = $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').length;
+            cnt = cnt-1;
+            if(cnt>1)
+                $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove();
+            else
+                $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
         }
         $.ajax({
             url: $('#baseurl').attr('name') + '/receipt-master',
