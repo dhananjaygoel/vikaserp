@@ -11,7 +11,7 @@ class CreateReceiptsTable extends Migration {
      * @return void
      */
     public function up() {
-        if (!Schema::hasTable('debited_tos')) {
+        if (!Schema::hasTable('receipts')) {
             Schema::create('receipts', function(Blueprint $table) {
                 $table->increments('id')->comment('Primary key');
                 $table->timestamps();
@@ -25,7 +25,7 @@ class CreateReceiptsTable extends Migration {
      * @return void
      */
     public function down() {
-        if (Schema::hasTable('debited_tos')) {
+        if (Schema::hasTable('receipts')) {
             Schema::drop('receipts');
         }
     }
