@@ -64,7 +64,7 @@
                                     <th class="text-center" style="width: 15%">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody>                                
                                 <?php $i = ($receipts->currentPage() - 1 ) * $receipts->perPage() + 1; ?>
                                 @foreach($receipts as $receipt)
                                 <tr>
@@ -87,7 +87,7 @@
                             </tbody>
                         </table>
                         <span class="pull-right">
-                            <?php echo $receipts->render(); ?>
+                            <?php echo $receipts->appends(\Input::except('page'))->render(); ?>
                         </span>
                     </div>
                     @else
