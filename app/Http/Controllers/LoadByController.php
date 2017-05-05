@@ -165,7 +165,10 @@ class LoadByController extends Controller {
             if ($val == "Month") {
                 $year = trim(Input::get('month'));
                 $date = date("$year-01-01");
-                $enddate = date("$year-12-t");
+                $enddate = date("$year-12-31", strtotime($year));
+                if ($year == date('Y')) {
+                    $enddate = date("$year-m-t");
+                }
                 $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
@@ -175,12 +178,14 @@ class LoadByController extends Controller {
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
                 $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
-                        ->where('created_at', '>', "$date")
-                        ->where('created_at', '<', "$enddate")
+//                        ->where('created_at', '>', "$date")
+//                        ->where('created_at', '<', "$enddate")
                         ->get();
             }
         } else {
-            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')->get();
+            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+//                    ->where('created_at', '>', "$date")
+                    ->get();
         }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
@@ -216,16 +221,18 @@ class LoadByController extends Controller {
         $loaders_data = array_values($loaders_data);
         $final_array = array();
         $k = 0;
-        foreach ($loaded_by as $key => $labour) {
-            foreach ($loaders_data as $key_data => $data) {
-                foreach ($data['loaders'] as $key_value => $value) {
-                    if ($value == $labour['id']) {
-                        $final_array[$k++] = [
-                            'delivery_id' => $data['delivery_id'],
-                            'loader_id' => $value,
-                            'date' => $data['delivery_date'],
-                            'tonnage' => round($data['tonnage'],2)
-                        ];
+        if(isset($loaded_by)){
+            foreach ($loaded_by as $key => $labour) {
+                foreach ($loaders_data as $key_data => $data) {
+                    foreach ($data['loaders'] as $key_value => $value) {
+                        if ($value == $labour['id']) {
+                            $final_array[$k++] = [
+                                'delivery_id' => $data['delivery_id'],
+                                'loader_id' => $value,
+                                'date' => $data['delivery_date'],
+                                'tonnage' => round($data['tonnage'],2)
+                            ];
+                        }
                     }
                 }
             }
