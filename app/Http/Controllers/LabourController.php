@@ -296,11 +296,9 @@ class LabourController extends Controller {
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
                 $realenddate = date('Y-m-d', time());
-
                
                 $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
-                        ->where('created_at', '>', "$date")
-                        ->where('created_at', '<', "$realenddate")
+                       
                         ->get();
             }
         } else {      
