@@ -23,8 +23,8 @@ class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('SEND_LOG', Config::get('rollbar.send'));
-//        if (SEND_LOG === true) {
+
+//        if (Config::get('rollbar.send') === true) {
 //            $config = array(
 //                'access_token' => Config::get('rollbar.access_token'),
 //                'environment' => 'delevopment'
