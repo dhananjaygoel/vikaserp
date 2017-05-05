@@ -217,21 +217,23 @@ class LoadByController extends Controller {
             $loaders_data[$var] = $loader_arr;
             $var++;
         }
-        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
-        $loaders_data = array_values($loaders_data);
+//        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+//        $loaders_data = array_values($loaders_data);
         $final_array = array();
         $k = 0;
-        if(isset($loaded_by)){
+        if (isset($loaded_by) && isset($loaders_data)) {
             foreach ($loaded_by as $key => $labour) {
                 foreach ($loaders_data as $key_data => $data) {
-                    foreach ($data['loaders'] as $key_value => $value) {
-                        if ($value == $labour['id']) {
-                            $final_array[$k++] = [
-                                'delivery_id' => $data['delivery_id'],
-                                'loader_id' => $value,
-                                'date' => $data['delivery_date'],
-                                'tonnage' => round($data['tonnage'],2)
-                            ];
+                    if (isset($data['loaders'])) {
+                        foreach ($data['loaders'] as $key_value => $value) {
+                            if ($value == $labour['id']) {
+                                $final_array[$k++] = [
+                                    'delivery_id' => $data['delivery_id'],
+                                    'loader_id' => $value,
+                                    'date' => $data['delivery_date'],
+                                    'tonnage' => round($data['tonnage'], 2)
+                                ];
+                            }
                         }
                     }
                 }
@@ -244,7 +246,7 @@ class LoadByController extends Controller {
                         ->with('final_array', $final_array)
                         ->with('loaded_by', $loaded_by)
                         ->with('performance_index', true)
-                        ->with('filter_with',"months")
+                        ->with('filter_with', "months")
                         ->render();
             } else {
                 $html = view('_loaded_by_performance')
@@ -252,7 +254,7 @@ class LoadByController extends Controller {
                         ->with('final_array', $final_array)
                         ->with('loaded_by', $loaded_by)
                         ->with('performance_index', true)
-                        ->with('filter_with',"days")
+                        ->with('filter_with', "days")
                         ->render();
             }
             return Response::json(['success' => true, 'date' => $date, 'final_array' => $final_array, 'loaded_by' => $loaded_by, 'performance_index', true, 'html' => $html]);
