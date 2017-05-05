@@ -195,7 +195,7 @@
                                                 }else{
                                                     $temp_month = $i;
                                                 }
-                                                $start_limit = $year . '-' . $temp_month . '-1';
+                                                $start_limit = $year . '-' . $temp_month . '-01';
                                                 $end_limit = $year . '-' . $temp_month . '-31';
 
                                                 foreach ($data as $key => $value) {
