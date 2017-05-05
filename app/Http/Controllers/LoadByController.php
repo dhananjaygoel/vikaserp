@@ -169,7 +169,7 @@ class LoadByController extends Controller {
                 if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
                 }
-                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
@@ -177,17 +177,18 @@ class LoadByController extends Controller {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
-                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
 //                        ->where('created_at', '>', "$date")
 //                        ->where('created_at', '<', "$enddate")
                         ->get();
             }
         } else {
-            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+//            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
 //                    ->where('created_at', '>', "$date")
                     ->get();
         }
-        foreach ($delivery_order_data as $delivery_order_info) {
+        foreach ($delivery_order_data as $delivery_order_info) {           
             $arr = array();
             $loaders = array();
             if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
@@ -195,15 +196,14 @@ class LoadByController extends Controller {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
-                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
-                            $dashboard = new DashboardController();
-                            if ($delivery_order_productinfo->unit_id == 1)
-                                $deliver_sum += $delivery_order_productinfo->quantity;
-                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+                                $dashboard = new DashboardController();
+                                if ($delivery_order_productinfo->unit_id == 1)
+                                    $deliver_sum += $delivery_order_productinfo->quantity;
+                                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                                    $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                         }
                     }
-//                    array_push($arr, $deliver_sum);
                     array_push($loader_array, $loaders);
                     $all_kg = $deliver_sum / count($loaders);
                     $all_tonnage = $all_kg / 1000;
@@ -214,11 +214,10 @@ class LoadByController extends Controller {
                     $loader_arr['loaders'] = $loaders;
                 }
             }
-            $loaders_data[$var] = $loader_arr;
-            $var++;
+            $loaders_data[$var++] = $loader_arr;
         }
-//        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
-//        $loaders_data = array_values($loaders_data);
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
         $final_array = array();
         $k = 0;
         if (isset($loaded_by) && isset($loaders_data)) {
