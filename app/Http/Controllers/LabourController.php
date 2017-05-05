@@ -74,7 +74,7 @@ class LabourController extends Controller {
             $labours->setPath('performance/labours');
         }
 
-        
+
         $city = City::all();
 
 
@@ -287,47 +287,44 @@ class LabourController extends Controller {
                 if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
                 }
-                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_challan_products')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
-            } else if ($val == "Day") { 
+            } else if ($val == "Day") {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
                 $realenddate = date('Y-m-d', time());
-               
-                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
-                       
+
+                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_challan_products')
                         ->get();
             }
-        } else {      
+        } else {
             $enddate = date("Y-m-d");
-            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')                    
+//            $delivery_order_data = DeliveryChallan::with('challan_labours','delivery_challan_products')
+            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_challan_products')
+//            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                     ->get();
         }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
-            $loaders = array();
-           
-
+            $loaders = array();            
             if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
                     $deliver_sum = 0.00;
                     $money = 0.00;
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
-
-
-                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
                             $dashboard = new DashboardController();
                             if ($delivery_order_productinfo->unit_id == 1)
-                                $deliver_sum += $delivery_order_productinfo->quantity;
-                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                                    $deliver_sum += $delivery_order_productinfo->quantity;
+                                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                                    $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                            }
                         }
-                    }
 
 
                     array_push($loader_array, $loaders);
@@ -337,7 +334,7 @@ class LabourController extends Controller {
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
                     $loader_arr['tonnage'] = $all_tonnage;
-                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
                 }
             }
             $loaders_data[$var] = $loader_arr;
@@ -346,7 +343,7 @@ class LabourController extends Controller {
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
 
-
+       
         $final_array = array();
         $k = 0;
         foreach ($labours as $key => $labour) {
