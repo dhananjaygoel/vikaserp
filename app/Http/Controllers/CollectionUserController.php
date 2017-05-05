@@ -72,7 +72,8 @@ class CollectionUserController extends Controller {
                 $query->where('location_id', $location_id);
             });
         }        
-        $collection_users = $collection_users->where('role_id', '=', 6)->orderBy('created_at', 'DESC')->get();
+        $collection_users = $collection_users->where('role_id', '=', 6)->orderBy('created_at', 'DESC')->paginate(20);
+        $collection_users->setPath('account');
         $territories = Territory::orderBy('created_at', 'DESC')->get();        
         return View::make('collection_user.index', array('users' => $collection_users, 'locations' => $locations,'territories'=> $territories));
     }

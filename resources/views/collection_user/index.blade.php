@@ -161,6 +161,31 @@
                                     
                                 </tbody>
                             </table>
+                            <span class="pull-right">
+                                <?php
+                                if (isset($_GET['search']) && Request::get('search') != '') {
+                                    echo $users->appends(array('search' => Request::get('search')))->render();
+                                } else {
+                                    echo $users->render();
+                                }
+                                ?>
+                            </span>
+                            <span class="clearfix"></span>
+
+                            @if($users->lastPage() > 1)
+                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                                <form class="form-inline" method="GET" action="{{url('due-payment')}}" id="filter_search">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2"><b>Go To</b></label>
+                                        &nbsp;
+                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
+                                        &nbsp;
+                                        <label for="exampleInputName2"><b>of {{ $users->lastPage()}} </b></label>
+                                        <a onclick="this.form.submit()"></a>
+                                    </div>
+                                </form>
+                            </span>
+                            @endif
                         </div>                        
                     </div>
                 </div>
