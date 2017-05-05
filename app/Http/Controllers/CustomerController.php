@@ -949,7 +949,7 @@ class CustomerController extends Controller {
             $collection_user_locations = CollectionUser::where('user_id','=',$user_id)->get();
             foreach ($collection_user_locations as $loc){
                 array_push($user_loc_arr, $loc->location_id);
-                if(in_array($loc->teritory_id, $user_territory_arr)){
+                if(!in_array($loc->teritory_id, $user_territory_arr)){
                     array_push($user_territory_arr, $loc->teritory_id);
                 }                
             }
