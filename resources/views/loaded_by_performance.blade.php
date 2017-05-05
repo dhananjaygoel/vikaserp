@@ -7,14 +7,7 @@
             <div class="col-lg-12">                
                 <div class="form-group col-md-12 col-lg-12 pull-right">
                     <h1 class="pull-left">Loaded by performance</h1>
-                    <div class="form-group pull-right">
-                        <form method="GET" action="javascript:;">
-                            <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
-                                <option value="Day" selected="selected">Day wise</option>
-                                <option value="Month">Month wise</option>
-                            </select>
-                        </form>
-                    </div>
+                    
                     <div class="col-md-4 pull-right" id="month_div">
                         <div class="form-group">
                             <div class="col-md-10 pull-right">
@@ -42,6 +35,14 @@
                                  </form>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group pull-right">
+                        <form method="GET" action="javascript:;">
+                            <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
+                                <option value="Day" selected="selected">Day wise</option>
+                                <option value="Month">Month wise</option>
+                            </select>
+                        </form>
                     </div>
                 </div>                
             </div>
@@ -91,7 +92,7 @@
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($final_array as $key => $value) {
-                                                    if($i<=9){ $i = "0".$i; }
+                                                    if($i<=9){ $i = sprintf("%02d", $i); }
                                                     if ($value['date'] == "$date_val" . $i) {
                                                         if ($value['loader_id'] == $loader_val->id) {
                                                             $k++;
@@ -109,7 +110,7 @@
                                                    $k=0;
                                                    $tangage=0;
                                                        foreach ($final_array as $key => $value) {
-                                                           if($i<=9){ $i = "0".$i; }
+                                                           if($i<=9){ $i = sprintf("%02d", $i); }
                                                            if($value['date']=="$date_val".$i){
                                                                if($value['loader_id'] == $loader_val->id){
                                                                    $k++;

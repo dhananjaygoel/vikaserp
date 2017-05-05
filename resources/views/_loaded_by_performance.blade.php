@@ -28,7 +28,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 $k = 0;
                 $tangage = 0;
                 foreach ($final_array as $key => $value) {
-                    if($i<=9){ $i = "0".$i; }
+                    if($i<=9){ $i = sprintf("%02d", $i); }
                     if ($value['date'] == "$date_val" . $i) {
                         if ($value['loader_id'] == $loader_val->id) {
                             $k++;
@@ -46,7 +46,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 $k = 0;
                 $tangage = 0;
                 foreach ($final_array as $key => $value) {
-                    if($i<=9){ $i = "0".$i; }
+                    if($i<=9){ $i = sprintf("%02d", $i); }
                     if ($value['date'] == "$date_val" . $i) {
                         if ($value['loader_id'] == $loader_val->id) {
                             $k++;
@@ -93,7 +93,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     $k = 0;
                     $tangage = 0;
                     if ($i < 10) {
-                        $temp_month = '0' . $i;
+                        $temp_month =  sprintf("%02d", $i);
                     }else{
                         $temp_month = $i;
                     }
@@ -119,7 +119,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     $k = 0;
                     $tangage = 0;
                     if ($i < 10) {
-                        $temp_month = '0' . $i;
+                        $temp_month =  sprintf("%02d", $i);
                     }else{
                         $temp_month = $i;
                     }
