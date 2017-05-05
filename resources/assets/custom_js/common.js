@@ -104,30 +104,30 @@ $(document).ready(function () {
 
     });
     $(document).on('click', '#edit_receipt_btn', function (event) {
-        event.preventDefault();        
+        event.preventDefault();
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
         var temp = $('#st-settle-container').find('.temp_tally_user').length;
-        if(temp==0){
+        if (temp == 0) {
             temp -= 1;
-            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,temp).remove();
-        }else{
-            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove(); 
+            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0, temp).remove();
+        } else {
+            $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
         }
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
             var last = $('#edit_receipt').find('#user_type').val();
-            if(last=="admin")
+            if (last == "admin")
                 $('#delete_customer_receipt_modal_new').modal('show');
         } else {
-            $('#edit_receipt').find('#flash_message_div').css('display','none');
+            $('#edit_receipt').find('#flash_message_div').css('display', 'none');
             $.ajax({
                 url: $('#baseurl').attr('name') + '/receipt-master/' + receipt_id,
                 type: 'put',
                 dataType: 'JSON',
                 data: $('#edit_receipt').serialize(),
                 success: function (data) {
-                    
+
                     if (data.success) {
                         if (data.receipt) {
                             window.location.href = $('#baseurl').attr('name') + "/receipt-master";
@@ -147,18 +147,18 @@ $(document).ready(function () {
 //                        if(data.user == "account"){
 //                            msg += 'Receipt could not be deleted.'
 //                        }
-                        if (data.errors) {                            
+                        if (data.errors) {
                             var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';                            
-                            if(typeof data.errors['tally_users'] != "undefined")
-                                msg = data.errors['tally_users'][0] +'</br>';
-                            if(typeof data.errors['settle amount'] != "undefined")
-                                msg +=data.errors['settle amount'][0]+'</br>';
-                            if(typeof data.errors['debited_to'] != "undefined")
-                                msg +=data.errors['debited_to'][0];                                                        
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';
+                            if (typeof data.errors['tally_users'] != "undefined")
+                                msg = data.errors['tally_users'][0] + '</br>';
+                            if (typeof data.errors['settle amount'] != "undefined")
+                                msg += data.errors['settle amount'][0] + '</br>';
+                            if (typeof data.errors['debited_to'] != "undefined")
+                                msg += data.errors['debited_to'][0];
                         }
                         error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>'+ msg +'</p></div>';
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>' + msg + '</p></div>';
                         $('#edit_receipt').prepend(error_msg);
                         $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
                     }
@@ -168,26 +168,26 @@ $(document).ready(function () {
     });
     $(document).on('click', '#add_receipt_btn', function (event) {
         event.preventDefault();
-        $('#add_receipt').find('#flash_message_div').css('display','none');
+        $('#add_receipt').find('#flash_message_div').css('display', 'none');
         var tval = $('#st-settle-container').find('.st-settle-block').length;
-        if(tval>1){
+        if (tval > 1) {
             var cnt = $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').length;
 //            cnt = cnt-1;
-            if(cnt>1){
+            if (cnt > 1) {
 //                console.log(cnt);
                 var temp = $('#st-settle-container').find('.temp_tally_user').length;
 //                console.log("temp sds"+temp);
-                if(temp==0){
-                    console.log( $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(1,cnt).remove().length);
-                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(1,cnt).remove();
-                }else{
-                    console.log("temp"+temp);
-                    console.log( $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove());
-                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove()
+                if (temp == 0) {
+                    console.log($('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(1, cnt).remove().length);
+                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(1, cnt).remove();
+                } else {
+                    console.log("temp" + temp);
+                    console.log($('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0, cnt).remove());
+                    $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0, cnt).remove()
                 }
 //                console.log($('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove().length);
 //                $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove();
-            }else{
+            } else {
                 $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
             }
         }
@@ -216,14 +216,14 @@ $(document).ready(function () {
                         var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>';
                         var msg = "";
-                        if(typeof data.errors['tally_users'] != "undefined")
-                            msg = data.errors['tally_users'][0] +'</br>';
-                        if(typeof data.errors['settle amount'] != "undefined")
-                            msg +=data.errors['settle amount'][0]+'</br>';
-                        if(typeof data.errors['debited_to'] != "undefined")
-                            msg +=data.errors['debited_to'][0];
+                        if (typeof data.errors['tally_users'] != "undefined")
+                            msg = data.errors['tally_users'][0] + '</br>';
+                        if (typeof data.errors['settle amount'] != "undefined")
+                            msg += data.errors['settle amount'][0] + '</br>';
+                        if (typeof data.errors['debited_to'] != "undefined")
+                            msg += data.errors['debited_to'][0];
                         error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>'+ msg +'</p></div>';                            
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button><p>' + msg + '</p></div>';
                     }
                     $('#add_receipt').prepend(error_msg);
                     $('#st-settle-container').find('.st-settle-block').removeClass('current_row');
@@ -379,51 +379,51 @@ $(document).ready(function () {
         $('#settle_due_modal').modal('show');
     });
 
-    $(document).on('click','.update-payment',function(){
+    $(document).on('click', '.update-payment', function () {
         var settle_amount = $(this).data('settle_amount');
-        var serial_no = $(this).data('serial_no');       
-        var challan_id= $(this).data('challan_id');        
-        $('#modal_update_price').data("price",settle_amount);
-        $('#modal_update_price').attr("data-price",settle_amount);
-        $('#modal-challan').attr("value",challan_id);        
-        $('#modal-challan').val(challan_id);                        
+        var serial_no = $(this).data('serial_no');
+        var challan_id = $(this).data('challan_id');
+        $('#modal_update_price').data("price", settle_amount);
+        $('#modal_update_price').attr("data-price", settle_amount);
+        $('#modal-challan').attr("value", challan_id);
+        $('#modal-challan').val(challan_id);
         $('#serial-no').html(serial_no);
-        $('#amount-error').css('display','none');
+        $('#amount-error').css('display', 'none');
         $('#settle_due_modal').modal('show');
     });
-    
-    $(document).on('click','.modal-settle-price',function(event){
+
+    $(document).on('click', '.modal-settle-price', function (event) {
         event.preventDefault();
         var entered_price = $('#settle_price_form').find('#modal_price').val();
         var due_amount = $('#settle_price_form').find('#modal_price').data('price');
-        if(entered_price>due_amount){
+        if (entered_price > due_amount) {
             $('#amount-error').html('Entered amount is greater than Due amount');
-            $('#amount-error').css('display','block');
+            $('#amount-error').css('display', 'block');
         }
-        else if(entered_price==0){            
+        else if (entered_price == 0) {
             $('#amount-error').html('Please Enter valid amount');
-            $('#amount-error').css('display','block');
-        }else{
+            $('#amount-error').css('display', 'block');
+        } else {
             $('#settle_price_form').submit();
-        }               
+        }
     });
-    
-    $(document).on('click','.modal_update_settle_price',function(event){
+
+    $(document).on('click', '.modal_update_settle_price', function (event) {
         event.preventDefault();
         var entered_price = $('#settle_price_form').find('#modal_update_price').val();
-        var settle_price = $('#settle_price_form').find('#modal_update_price').data('price');        
-        if(entered_price>settle_price){
+        var settle_price = $('#settle_price_form').find('#modal_update_price').data('price');
+        if (entered_price > settle_price) {
             $('#amount-error').html('Entered amount is greater than Total amount');
-            $('#amount-error').css('display','block');
+            $('#amount-error').css('display', 'block');
         }
-        else if(entered_price<0 || entered_price==""){            
+        else if (entered_price < 0 || entered_price == "") {
             $('#amount-error').html('Please Enter valid amount');
-            $('#amount-error').css('display','block');
-        }else{            
+            $('#amount-error').css('display', 'block');
+        } else {
             $('#settle_price_form').submit();
-        }               
+        }
     });
-    
+
     $(document).on('change', '#collection_territory_select', function () {
         var teritory_id = $(this).val();
         if (teritory_id == "") {
@@ -468,7 +468,7 @@ $(document).ready(function () {
             }
         })
     });
-    
+
 
     $(document).on('change', '#loaded_by_chart_filter', function () {
         var val = $(this).val();
@@ -533,6 +533,11 @@ $(document).on('change', '#labour_chart_filter', function () {
         $('.month-wise').css('display', 'none');
     } else if (val == "Month") {
         month_val = "all";
+        var month_val_1 = new Date($('#performance-days').val());   
+        var year = month_val_1.getFullYear();
+          
+        $('#performance-months').val(year);
+        
         $('.day-wise').css('display', 'none');
         $('.month-wise').css('display', 'block');
     }
