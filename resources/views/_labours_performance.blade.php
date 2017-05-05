@@ -26,13 +26,20 @@ $today_month = date("m", strtotime($enddate));
             <?php foreach ($labours as $labour) { ?>
                 <tr>
                     <td rowspan="2"><b>{{$labour->first_name}} {{$labour->last_name}}</B></td>
-                    <td><b>Tonnage</b></td>
+                    <td><b>Tonnage1</b></td>
                     @for($i = 1; $i<= $today ; $i++ )
                     <?php
                     $k = 0;
                     $tangage = 0;
-                    foreach ($data as $key => $value) {
-                        if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
+                    if ($i < 10) {
+                        $temp_date = '0' . $i;
+                    }else{
+                       $temp_date = $i; 
+                    }
+                    foreach ($data as $key => $value) {                      
+                        if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
+                            
+                            
                             if ($value['labour_id'] == $labour->id) {
                                 $k++;
                                 $tangage +=$value['tonnage'];
@@ -52,8 +59,13 @@ $today_month = date("m", strtotime($enddate));
                     <?php
                     $k = 0;
                     $tangage = 0;
+                    if ($i < 10) {
+                        $temp_date = '0' . $i;
+                    }else{
+                       $temp_date = $i; 
+                    }
                     foreach ($data as $key => $value) {
-                        if ($value['date'] == $today_year.'-'.$today_month.'-' . $i) {
+                        if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
                             if ($value['labour_id'] == $labour->id) {
                                 $k++;
                                 $tangage +=$value['tonnage'];
@@ -78,9 +90,9 @@ $today_month = date("m", strtotime($enddate));
         <tbody>
             <?php
 
-           $month = date('m', strtotime($enddate));
-           $year = date('Y', strtotime($enddate));
-           
+            $month = date('m', strtotime($enddate));
+            $year = date('Y', strtotime($enddate));
+
             if (date('y') == date("y", strtotime($enddate))) {
                 $month = date('m');
             }
@@ -95,60 +107,67 @@ $today_month = date("m", strtotime($enddate));
                 <td>{{ date('F', mktime(0, 0, 0, $i)) }}</td>
                 @endfor
             </tr>
-<?php foreach ($labours as $labour) { ?>
+            <?php foreach ($labours as $labour) { ?>
                 <tr>
                     <td rowspan="2"><b>{{$labour->first_name}} {{$labour->last_name}}</B></td>
-                    <td><b>Tonnage</b></td>
+                    <td><b>Tonnage1</b></td>
                     @for($i = 1; $i<= $month ; $i++ )
-    <?php
-    $k = 0;
-    $tangage = 0;
-    if ($i < 10) {
-        $temp_month = '0' . $i;
-    }
-    $start_limit = $year.'-' . $temp_month . '-1';
+                    <?php
+                    $k = 0;
+                    $tangage = 0;
+                    if ($i < 10) {
+                        $temp_month = '0' . $i;
+                    }else{
+                         $temp_month =  $i;
+                    }
+    $start_limit = $year.'-' . $temp_month . '-01';
     $end_limit = $year.'-' . $temp_month . '-31';   
 
-    foreach ($data as $key => $value) {
-        if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
-            if ($value['labour_id'] == $labour->id) {
+                    foreach ($data as $key => $value) {
+//                        echo "<pre>";
+//                        print_r($value['date']);
+//                        echo "<br>";
+//                        echo "</pre>";
+                       
+                        if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
+                            if ($value['labour_id'] == $labour->id) {
 
-                $k++;
-                $tangage +=$value['tonnage'];
-            }
-        }
+                                $k++;
+                                $tangage +=$value['tonnage'];
+                            }
+                        }
 //                                                       
-    }
-    ?>
+                    }
+                    ?>
                     <td>{{$tangage}}</td>
                     @endfor
                 </tr>
                 <tr>
                     <td><b>Delivery</b></td>
                     @for($i = 1; $i<= $month ; $i++ )
-    <?php
-    $k = 0;
-    $tangage = 0;
-    if ($i < 10) {
-        $temp_month = '0' . $i;
-    }
+                    <?php
+                    $k = 0;
+                    $tangage = 0;
+                    if ($i < 10) {
+                        $temp_month = '0' . $i;
+                    }
     $start_limit = $year.'-' . $temp_month . '-1';
     $end_limit = $year.'-' . $temp_month . '-31';
 
-    foreach ($data as $key => $value) {
-        if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
-            if ($value['labour_id'] == $labour->id) {
+                    foreach ($data as $key => $value) {
+                        if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
+                            if ($value['labour_id'] == $labour->id) {
 
-                $k++;
-                $tangage +=$value['tonnage'];
-            }
-        }
-    }
-    ?>
+                                $k++;
+                                $tangage +=$value['tonnage'];
+                            }
+                        }
+                    }
+                    ?>
                     <td>{{$k}}</td>
                     @endfor
                 </tr>
-<?php } ?>
+            <?php } ?>
         </tbody>
     </table>          
 
