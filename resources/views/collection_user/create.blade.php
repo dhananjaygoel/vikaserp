@@ -58,17 +58,15 @@
                             <div class="form-group">
                                 <label for="email">Email<span class="mandatory">*</span></label>
                                 <input id="email" class="form-control" placeholder="Email Id" name="email" value="<?php echo(isset($data) ? $data[0]->email : old('email') )?>" type="email">
-                            </div>   
-                            <?php if(!isset($data)){ ?>                          
+                            </div>                                                         
                             <div class="form-group">
-                                <label for="password">Password<span class="mandatory">*</span></label>
+                                <label for="password">Password<?php if(!isset($data)){ ?><span class="mandatory">*</span> <?php }?></label>
                                 <input id="password" class="form-control" placeholder="Password" name="password" value="{{ old('password') }}" type="password">
                             </div>
                             <div class="form-group">
-                                <label for="password_confirmation">Confirm Password<span class="mandatory">*</span></label>
+                                <label for="password_confirmation">Confirm Password<?php if(!isset($data)){ ?><span class="mandatory">*</span><?php }?></label>
                                 <input id="password_confirmation" class="form-control" placeholder="Confirm Password" name="password_confirmation" value="{{ old('password_confirmation') }}" type="password">
-                            </div>
-                            <?php }?>                                                        
+                            </div>                                                                                   
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label for="assign_location">Territory<span class="mandatory">*</span></label>    

@@ -189,11 +189,28 @@ class CollectionUserController extends Controller {
                 'mobile_number' => 'integer|digits_between:10,15|required|unique:users,mobile_number,' . $id,
                 'location' => 'required|array|min:1'
             );
+            if (Input::has('password')) {
+                $input_password['password'] = Input::get('password');
+                $input_password['password_confirmation'] = Input::get('password_confirmation');
+
+                $validation1 = Validator::make($input_password, User::$update_password);
+
+                if ($validation1->fails()) {
+                    return Redirect::back()->withErrors($validation1);
+                } else {
+                    $user_data['password'] = Hash::make(Input::get('password'));
+                }
+            }
             $v = Validator::make(Input::all(), $updateuser_rules);
             if ($v->fails()) {
                 return back()->withErrors($v)->withInput();
             } else {
-                $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email')]);
+                if(Input::has('password') && Input::get('password')!=""){                    
+                    $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email'), 'password' => $user_data['password']]);
+                }else{
+                    $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email')]);
+                }
+                
                 if ($user_res) {
                     $locations = Input::get('location');
                     $territory_id = Input::get('territory');
