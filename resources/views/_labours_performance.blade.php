@@ -26,20 +26,18 @@ $today_month = date("m", strtotime($enddate));
             <?php foreach ($labours as $labour) { ?>
                 <tr>
                     <td rowspan="2"><b>{{$labour->first_name}} {{$labour->last_name}}</B></td>
-                    <td><b>Tonnage1</b></td>
+                    <td><b>Tonnage</b></td>
                     @for($i = 1; $i<= $today ; $i++ )
                     <?php
-                    $k = 0;
-                    $tangage = 0;
                     if ($i < 10) {
                         $temp_date = '0' . $i;
-                    }else{
-                       $temp_date = $i; 
+                    } else {
+                        $temp_date = $i;
                     }
-                    foreach ($data as $key => $value) {                      
+                    $k = 0;
+                    $tangage = 0;
+                    foreach ($data as $key => $value) {
                         if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
-                            
-                            
                             if ($value['labour_id'] == $labour->id) {
                                 $k++;
                                 $tangage +=$value['tonnage'];
@@ -61,8 +59,8 @@ $today_month = date("m", strtotime($enddate));
                     $tangage = 0;
                     if ($i < 10) {
                         $temp_date = '0' . $i;
-                    }else{
-                       $temp_date = $i; 
+                    } else {
+                        $temp_date = $i;
                     }
                     foreach ($data as $key => $value) {
                         if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
@@ -89,7 +87,6 @@ $today_month = date("m", strtotime($enddate));
     <table  class="table table-bordered complex-data-table" >
         <tbody>
             <?php
-
             $month = date('m', strtotime($enddate));
             $year = date('Y', strtotime($enddate));
 
@@ -117,18 +114,18 @@ $today_month = date("m", strtotime($enddate));
                     $tangage = 0;
                     if ($i < 10) {
                         $temp_month = '0' . $i;
-                    }else{
-                         $temp_month =  $i;
+                    } else {
+                        $temp_month = $i;
                     }
-    $start_limit = $year.'-' . $temp_month . '-01';
-    $end_limit = $year.'-' . $temp_month . '-31';   
+                    $start_limit = $year . '-' . $temp_month . '-01';
+                    $end_limit = $year . '-' . $temp_month . '-31';
 
                     foreach ($data as $key => $value) {
 //                        echo "<pre>";
 //                        print_r($value['date']);
 //                        echo "<br>";
 //                        echo "</pre>";
-                       
+
                         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                             if ($value['labour_id'] == $labour->id) {
 
@@ -151,8 +148,8 @@ $today_month = date("m", strtotime($enddate));
                     if ($i < 10) {
                         $temp_month = '0' . $i;
                     }
-    $start_limit = $year.'-' . $temp_month . '-1';
-    $end_limit = $year.'-' . $temp_month . '-31';
+                    $start_limit = $year . '-' . $temp_month . '-1';
+                    $end_limit = $year . '-' . $temp_month . '-31';
 
                     foreach ($data as $key => $value) {
                         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
