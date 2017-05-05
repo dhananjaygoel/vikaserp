@@ -196,7 +196,7 @@
                                 <?php                                
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                @if(Input::get('order_filter') == 'pending' | Input::get('order_status') == 'pending' | (Input::get('order_status') == '' && Input::get('order_filter') == '' && Input::get('territory_filter') == ''))
+                                @if(Input::get('order_filter') == 'pending' | Input::get('order_status') == 'pending' | (Input::get('order_status') == '' && Input::get('order_filter') == '' && Input::get('territory_filter') == '') && $qstring_sort_type_order<>'completed')
                                 <thead>
                                     <tr>
                                         @if(Input::has('flag') && Input::get('flag') == 'true')
@@ -232,7 +232,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    @if((Input::get('order_filter') == 'completed' | Input::get('order_status') == 'completed') || Input::get('territory_filter') != '')
+                                    @if((Input::get('order_filter') == 'completed' | Input::get('order_status') == 'completed') || Input::get('territory_filter') != '' || $qstring_sort_type_order == 'completed')
                                 <thead>
                                     <tr>
                                         <th>#</th>
