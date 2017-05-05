@@ -30,8 +30,6 @@ use Config;
 use App\ProductType;
 use App\Labour;
 use Illuminate\Support\Facades\Validator;
-
-
 use Illuminate\Support\Facades\Response;
 
 class LabourController extends Controller {
@@ -51,7 +49,8 @@ class LabourController extends Controller {
      *
      * @return Response
      */
-    public function index() {
+    public function index(Request $request) {
+        $request->url();
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders');
         }
@@ -69,7 +68,13 @@ class LabourController extends Controller {
             $labours = Labour::orderBy('updated_at', 'desc')->paginate(20);
         }
 
-        $labours->setPath('labours');
+        if ($request->is('*labours*')) {
+            $labours->setPath('labours');
+        } else {
+            $labours->setPath('performance/labours');
+        }
+
+        
         $city = City::all();
 
 
@@ -271,17 +276,17 @@ class LabourController extends Controller {
         $loaders_data = array();
         $labours = Labour::all();
         $date = date('Y-m-01', time());
-        
-        
+
+
         if (Input::has('val')) {
             $val = Input::get('val');
-            if ($val == "Month") {               
+            if ($val == "Month") {
                 $year = trim(Input::get('month'));
                 $date = date("$year-01-01");
-                $enddate = date("$year-12-31",strtotime($year));
-                if($year == date('Y')){
+                $enddate = date("$year-12-31", strtotime($year));
+                if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
-                }               
+                }
                 $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
@@ -329,7 +334,7 @@ class LabourController extends Controller {
 
                     array_push($loader_array, $loaders);
                     $all_kg = $deliver_sum / count($loaders);
-                    $all_tonnage = $all_kg/1000;
+                    $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
@@ -341,8 +346,8 @@ class LabourController extends Controller {
             $var++;
         }
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
-        $loaders_data = array_values($loaders_data);       
-       
+        $loaders_data = array_values($loaders_data);
+
 
         $final_array = array();
         $k = 0;
@@ -354,7 +359,7 @@ class LabourController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => round($data['tonnage'],2),
+                            'tonnage' => round($data['tonnage'], 2),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
