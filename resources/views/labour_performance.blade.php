@@ -85,10 +85,13 @@
                                                 <td><b>Tonnage</b></td>
                                                 @for($i = 1; $i<= $today ; $i++ )
                                                 <?php
+                                                if ($i < 10) {
+                                                    $temp_date = '0' . $i;
+                                                }
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $i) {
+                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
@@ -108,8 +111,11 @@
                                                 <?php
                                                 $k = 0;
                                                 $tangage = 0;
+                                                if ($i < 10) {
+                                                    $temp_date = '0' . $i;
+                                                }
                                                 foreach ($data as $key => $value) {
-                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $i) {
+                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
                                                             $tangage +=$value['tonnage'];
