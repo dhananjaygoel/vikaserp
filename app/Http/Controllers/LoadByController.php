@@ -180,8 +180,7 @@ class LoadByController extends Controller {
                         ->get();
             }
         } else {
-            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
-                            ->where('created_at', '>', "$date")->get();
+            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')->get();
         }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();

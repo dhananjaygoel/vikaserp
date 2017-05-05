@@ -291,28 +291,28 @@ class LabourController extends Controller {
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
-            } else if ($val == "Day") {
+            } else if ($val == "Day") { 
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
+                $realenddate = date('Y-m-d', time());
 
-
+               
                 $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>', "$date")
-                        ->where('created_at', '<', "$enddate")
+                        ->where('created_at', '<', "$realenddate")
                         ->get();
             }
-        } else {
+        } else {      
             $enddate = date("Y-m-d");
-            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
-                    ->where('created_at', '>', "$date")
+            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')                    
                     ->get();
         }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
             $loaders = array();
-
+           
 
             if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {

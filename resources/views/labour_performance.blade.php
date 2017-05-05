@@ -87,6 +87,8 @@
                                                 <?php
                                                 if ($i < 10) {
                                                     $temp_date = '0' . $i;
+                                                } else {
+                                                    $temp_date = $i;
                                                 }
                                                 $k = 0;
                                                 $tangage = 0;
@@ -113,6 +115,8 @@
                                                 $tangage = 0;
                                                 if ($i < 10) {
                                                     $temp_date = '0' . $i;
+                                                } else {
+                                                    $temp_date = $i;
                                                 }
                                                 foreach ($data as $key => $value) {
                                                     if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
@@ -160,10 +164,12 @@
                                                 $tangage = 0;
                                                 if ($i < 10) {
                                                     $temp_month = '0' . $i;
+                                                }else{
+                                                   $temp_month = $i; 
                                                 }
-                                                $start_limit = $year . '-' . $temp_month . '-1';
+                                                $start_limit = $year . '-' . $temp_month . '-01';
                                                 $end_limit = $year . '-' . $temp_month . '-31';
-
+                                               
                                                 foreach ($data as $key => $value) {
                                                     if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                                                         if ($value['labour_id'] == $labour->id) {
@@ -186,6 +192,8 @@
                                                 $tangage = 0;
                                                 if ($i < 10) {
                                                     $temp_month = '0' . $i;
+                                                }else{
+                                                    $temp_month = $i;
                                                 }
                                                 $start_limit = $year . '-' . $temp_month . '-1';
                                                 $end_limit = $year . '-' . $temp_month . '-31';

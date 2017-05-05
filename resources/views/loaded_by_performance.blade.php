@@ -91,6 +91,7 @@
                                                 $k = 0;
                                                 $tangage = 0;
                                                 foreach ($final_array as $key => $value) {
+                                                    if($i<=9){ $i = "0".$i; }
                                                     if ($value['date'] == "$date_val" . $i) {
                                                         if ($value['loader_id'] == $loader_val->id) {
                                                             $k++;
@@ -108,6 +109,7 @@
                                                    $k=0;
                                                    $tangage=0;
                                                        foreach ($final_array as $key => $value) {
+                                                           if($i<=9){ $i = "0".$i; }
                                                            if($value['date']=="$date_val".$i){
                                                                if($value['loader_id'] == $loader_val->id){
                                                                    $k++;

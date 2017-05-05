@@ -28,6 +28,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 $k = 0;
                 $tangage = 0;
                 foreach ($final_array as $key => $value) {
+                    if($i<=9){ $i = "0".$i; }
                     if ($value['date'] == "$date_val" . $i) {
                         if ($value['loader_id'] == $loader_val->id) {
                             $k++;
@@ -45,6 +46,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 $k = 0;
                 $tangage = 0;
                 foreach ($final_array as $key => $value) {
+                    if($i<=9){ $i = "0".$i; }
                     if ($value['date'] == "$date_val" . $i) {
                         if ($value['loader_id'] == $loader_val->id) {
                             $k++;
@@ -67,6 +69,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
         <tbody>
             <?php
                 $month = date('m', strtotime($date));
+                $year = date('Y', strtotime($date));
                 if (date('Y') == date("Y", strtotime($date))) {
                     $month = date('m');
                 }
@@ -91,14 +94,14 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     $tangage = 0;
                     if ($i < 10) {
                         $temp_month = '0' . $i;
+                    }else{
+                        $temp_month = $i;
                     }
-                    $start_limit = '2017-' . $temp_month . '-1';
-                    $end_limit = '2017-' . $temp_month . '-31';
-
+                    $start_limit = $year.'-' . $temp_month . '-01';
+                    $end_limit = $year.'-' . $temp_month . '-31';
                     foreach ($final_array as $key => $value) {
                         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                             if ($value['loader_id'] == $loader->id) {
-
                                 $k++;
                                 $tangage +=$value['tonnage'];
                             }
@@ -117,14 +120,15 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     $tangage = 0;
                     if ($i < 10) {
                         $temp_month = '0' . $i;
+                    }else{
+                        $temp_month = $i;
                     }
-                    $start_limit = '2017-' . $temp_month . '-1';
-                    $end_limit = '2017-' . $temp_month . '-31';
+                    $start_limit = $year.'-' . $temp_month . '-01';
+                    $end_limit = $year.'-' . $temp_month . '-31';
 
                     foreach ($final_array as $key => $value) {
                         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                             if ($value['loader_id'] == $loader->id) {
-
                                 $k++;
                                 $tangage +=$value['tonnage'];
                             }
