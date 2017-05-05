@@ -943,11 +943,15 @@ class CustomerController extends Controller {
         }    
         if(Auth::user()->role_id ==6){
             $territory_id = Input::get('territory_filter');
-            $user_id = Auth::user()->id;
+            $user_id = Auth::user()->id;                        
             $user_loc_arr = [];
+            $user_territory_arr = [];
             $collection_user_locations = CollectionUser::where('user_id','=',$user_id)->get();
             foreach ($collection_user_locations as $loc){
                 array_push($user_loc_arr, $loc->location_id);
+                if(in_array($loc->teritory_id, $user_territory_arr)){
+                    array_push($user_territory_arr, $loc->teritory_id);
+                }                
             }
                         
             $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
@@ -964,7 +968,7 @@ class CustomerController extends Controller {
             if (isset($territory_id) && !empty($territory_id)) {
                 $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
                 foreach ($territory_locations as $loc){
-                    array_push($loc_arr, $loc->location_id);
+                    array_push($loc_arr, $loc->location_id);                    
                 }
                 $customers ->whereIn('delivery_location_id',$loc_arr);                                                        
                 $delivery_location = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
@@ -999,7 +1003,11 @@ class CustomerController extends Controller {
         }
         $customers=$customers->paginate(20)->setPath('due-payment');        
         $city = City::all();
-        $territories = Territory::orderBy('created_at', 'DESC')->get();
+        if(isset($user_territory_arr)){
+            $territories = Territory::whereIn('id',$user_territory_arr)->orderBy('created_at', 'DESC')->get();
+        }else{
+            $territories = Territory::orderBy('created_at', 'DESC')->get();
+        }        
         return View('customer_list')->with('customers',$customers)->with('city',$city)
                                     ->with('delivery_location',$delivery_location)
                                     ->with('territories',$territories);
