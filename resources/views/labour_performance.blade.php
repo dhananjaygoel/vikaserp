@@ -7,9 +7,9 @@
             <div class="col-lg-12">                
                 <div class="form-group col-md-12 col-lg-12 pull-right">
                     <h1 class="pull-left">Labours performance</h1>                    
-                    <div class="col-md-4 pull-right" id="month_div">
+                    <div class="col-md-6 pull-right" id="month_div">
                         <div class="form-group">
-                            <div class="col-md-10 pull-right">
+                            <div class="col-md-6 pull-right">
                                 <form class="search_form labours_performance_search_form" method="GET" action="javascript:;">
                                     <div class="col-md-8 day-wise" id="day-wise">
                                         <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
@@ -22,18 +22,19 @@
                                     </div>
                                 </form>
                             </div>
+                            <div class="col-md-3 pull-right">
+                                <form method="GET" action="javascript:;">
+                                    <select class="form-control" id="labour_chart_filter" name="labour_chart_filter">
+                                        <option value="Day">Day wise</option>
+                                        <option value="Month">Month wise</option>
+                                    </select>
+                                </form>
+                        </div>
                         </div>
                     </div>
-                    <div class="form-group pull-right">
-                        <div class="col-md-12">
-                            <form method="GET" action="javascript:;">
-                                <select class="form-control" id="labour_chart_filter" name="labour_chart_filter">
-                                    <option value="Day">Day wise</option>
-                                    <option value="Month">Month wise</option>
-                                </select>
-                            </form>
-                        </div>
-                    </div>
+<!--                    <div class="form-group pull-right">
+                        
+                    </div>-->
                 </div>                
             </div>           
 
