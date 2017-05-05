@@ -533,11 +533,11 @@ $(document).on('change', '#labour_chart_filter', function () {
         $('.month-wise').css('display', 'none');
     } else if (val == "Month") {
         month_val = "all";
-        var month_val_1 = new Date($('#performance-days').val());   
-        var year = month_val_1.getFullYear();
-          
-        $('#performance-months').val(year);
-        
+//        var month_val_1 = new Date($('#performance-days').val());   
+//        var year = month_val_1.getFullYear();        
+         var date_full = $('#performance-days').val();
+        $('#performance-months').val(date_full.split('-')[1]);
+
         $('.day-wise').css('display', 'none');
         $('.month-wise').css('display', 'block');
     }
