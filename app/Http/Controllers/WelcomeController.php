@@ -1117,6 +1117,8 @@ class WelcomeController extends Controller {
         DB::table('purchase_order_canceled')->truncate();
         DB::table('purchase_advice')->truncate();
         DB::table('purchase_challan')->truncate();
+        DB::table('delivery_challan_labours')->truncate();
+        DB::table('delivery_challan_loaded_bies')->truncate();
         echo 'truncate all data';
     }
 
