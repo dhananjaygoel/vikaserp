@@ -742,9 +742,9 @@ $('.print_inventory_report_list').click(function () {
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function () {
-                location.reload();
+//                location.reload();
             };
-             location.reload();
+//             location.reload();
         }
     });
 });
@@ -814,9 +814,9 @@ $('.print_inventory_price_list').click(function () {
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function () {
-                location.reload();
+//                location.reload();
             };
-             location.reload();
+//             location.reload();
         }
     });
 });
