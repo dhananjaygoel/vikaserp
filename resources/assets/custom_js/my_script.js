@@ -730,7 +730,7 @@ $('.print_delivery_challan').click(function () {
 
 $('.print_inventory_report_list').click(function () {
 //    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
-    var product_id = $(this).data('id');
+    var product_id = $(this).data('id');    
     var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
@@ -744,7 +744,7 @@ $('.print_inventory_report_list').click(function () {
             printWindow.onunload = function () {
 //                location.reload();
             };
-//             location.reload();
+//             window.location.reload();
         }
     });
 });
@@ -768,9 +768,9 @@ $('.print_account_customers').click(function () {
             printWindow.print();
             printWindow.close();
             printWindow.onunload = function () {
-                location.reload();
+//                location.reload();
             };
-             location.reload();
+//             location.reload();
         }
     });
 });

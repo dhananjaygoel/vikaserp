@@ -323,10 +323,13 @@ $(document).ready(function () {
     });
     $(document).on('click', '#print-inventory-report', function () {
         var product_id = $(this).data('id');
+        $('.print_inventory_report_list').data('id', product_id);
         $('.print_inventory_report_list').attr('data-id', product_id);
+        
     });
     $(document).on('click', '#print-inventory-price-list', function () {
         var product_id = $(this).data('id');
+        $('.print_inventory_price_list').data('id', product_id);
         $('.print_inventory_price_list').attr('data-id', product_id);
     });
 
