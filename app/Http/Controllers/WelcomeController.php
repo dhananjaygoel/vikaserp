@@ -1248,7 +1248,7 @@ class WelcomeController extends Controller {
         $order = \App\Order::with(['createdby'])
                 ->where('order_status', 'pending')
                 ->whereHas('createdby', function($query) {
-                    $query->where('role_id', '=', '0');
+                    $query->where('role_id', '<>', '5');
                 })
                 ->update(['is_approved' => 'yes']);
 
@@ -1260,7 +1260,7 @@ class WelcomeController extends Controller {
         $inquiry = \App\Inquiry::with(['createdby'])
                 ->where('inquiry_status', 'pending')
                 ->whereHas('createdby', function($query) {
-                    $query->where('role_id', '=', '0');
+                    $query->where('role_id', '<>', '5');
                 })
                 ->update(['is_approved' => 'yes']);
 
