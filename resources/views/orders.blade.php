@@ -26,8 +26,9 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Orders</span></li>
                 </ol>
-                <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">
+                <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">                        
                         <div class="col-lg-4">
+                            @if(Auth::user()->role_id != 5)
                             <form method="GET" action="{{url()}}/orders">
                                 <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
                                     <option value="" selected="">Select Territory</option>
@@ -38,7 +39,8 @@
                                     @endif
                                 </select>
                             </form>
-                        </div>
+                            @endif
+                        </div>                        
                         <div class="col-lg-8">
                             <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
                                 <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php

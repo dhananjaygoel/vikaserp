@@ -51,10 +51,9 @@ class LabourController extends Controller {
      */
     public function index(Request $request) {
         $request->url();
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
-
         $labours = '';
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
@@ -87,13 +86,10 @@ class LabourController extends Controller {
      * @return Response
      */
     public function create() {
-        if (Auth::user()->role_id != 0) {
-//            return Redirect::to('orders')->with('error', 'You do not have permission.');
-            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
-
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-
         return View::make('add_labours')->with('performance_index', true);
     }
 
@@ -103,8 +99,8 @@ class LabourController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
 
         $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules, Labour::$validatorMessages);
@@ -112,9 +108,6 @@ class LabourController extends Controller {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
         $labour = new \App\Labour();
-
-
-
         if (Input::has('first_name')) {
             $labour->first_name = trim(Input::get('first_name'));
         }
@@ -142,8 +135,8 @@ class LabourController extends Controller {
      * @return Response
      */
     public function show($id) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
         $labour = Labour::find($id);
         return View::make('labour_details', array('labour' => $labour))->with('performance_index', true);
@@ -156,8 +149,8 @@ class LabourController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
         $labour = Labour::find($id);
         if (count($labour) < 1) {
@@ -174,8 +167,8 @@ class LabourController extends Controller {
      * @return Response
      */
     public function update(Request $request, $id) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
         $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules);
         if ($validator->fails()) {
@@ -212,8 +205,8 @@ class LabourController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
         $password = Input::get('password');
         if ($password == '') {
@@ -266,10 +259,9 @@ class LabourController extends Controller {
     }
 
     public function labourPerformance(Request $request) {
-        if (Auth::user()->role_id != 0) {
-            return Redirect::to('/');
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
         }
-
         $var = 0;
         $loader_arr = array();
         $loader_array = array();

@@ -35,6 +35,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Input::has('search_from_date') && Input::has('search_to_date')) {
             $date1 = \DateTime::createFromFormat('m-d-Y', Input::get('search_from_date'))->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', Input::get('search_to_date'))->format('Y-m-d');
@@ -90,6 +93,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_journal_receipt() {
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Auth::user()->role_id == 0) {
             $user_type = 'admin';
         }else{
@@ -108,6 +114,9 @@ class ReceiptMasterController extends Controller {
      */
     public function create_bank_receipt() {
         $type = 2; //bank
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Auth::user()->role_id == 0) {
             $user_type = 'admin';
         }else{
@@ -125,6 +134,9 @@ class ReceiptMasterController extends Controller {
      */
     public function create_cash_receipt() {
         $type = 3; //cash
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Auth::user()->role_id == 0) {
             $user_type = 'admin';
         }else{
@@ -193,19 +205,14 @@ class ReceiptMasterController extends Controller {
                     }
                     Session::set('create_msg', true);
                     return Response::json(['success' => true, 'receipt' => true]);
-//                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
                 } else
-                    return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while updating receipt']);
-//                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
-
-//                if ($customerReceiptObj)
-//                    return redirect('receipt-master')->with('success', 'Receipt succesfully generated.');
-//                else
-//                    return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
+                    return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while saving receipt']);
             } else
-                return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
+                return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while saving receipt']);
+//                return redirect('receipt-master')->with('error', 'Some error occoured while saving receipt');
         }else {
-            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving receipt');
+            return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured. Please try after sometime.']);
+//            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving receipt');
         }
     }
 
@@ -226,6 +233,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (isset($id) && !empty($id)) {
             $receiptObj = Receipt::where('id', '=', $id)->with('customer_receipts')->get();
             if (Auth::user()->role_id == 0) {
@@ -308,7 +318,6 @@ class ReceiptMasterController extends Controller {
                         $old_customers = str_replace("[", '', $old_customers);
                         $old_customers = str_replace("]", '', $old_customers);
                         $old_customers = explode(",", $old_customers);
-//                        dd($old_customers);
 //                        foreach ($old_customers as $old_customer) {
                         if (Auth::user()->role_id == 1 || Auth::user()->role_id == 0) {
                             foreach ($old_customers as $old_customer) {
@@ -344,7 +353,6 @@ class ReceiptMasterController extends Controller {
                                     if ($validator->fails()) {
                                         return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
                                     }
-//                                    return Response::json(['success' => false, 'user' => 'account', 'receipt' => false]);
                                 }
                             }
                         }
@@ -403,11 +411,14 @@ class ReceiptMasterController extends Controller {
 //                        return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
                     }
                 } else
-                    return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
+                    return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while updating receipt']);
+//                    return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
             } else
-                return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
+                return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured while updating receipt']);
+//                return redirect('receipt-master')->with('error', 'Some error occoured while updating receipt');
         }else {            
-            return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after sometime');
+            return Response::json(['success' => false, 'receipt' => true, 'flash_message'=>'Some error occoured. Please try after sometime.']);
+//            return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after sometime');
         }
     }
 
@@ -451,45 +462,6 @@ class ReceiptMasterController extends Controller {
                 }
             }
             
-        }
-    }
-
-    public function delete_customer_receipt(Request $request, $id) {
-        dd($id);
-        if (isset($id) && !empty($id)) {
-            
-            if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
-                $customer_id = Input::get('customer_id');
-                if (Auth::user()->role_id == 4) {
-                    $receipt = Receipt::with('customer_receipts')->find($id);
-                    if (count($receipt->customer_receipts) > 1) {
-                        $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
-                                        ->where('receipt_id', '=', $id)->first();
-//                        $receipt->delete();
-                        return Response::json(['success' => true, 'user' => 'account']);
-                    } else {
-                        return Response::json(['success' => true, 'user' => 'account', 'error' => 'Receipt could not be deleted.']);
-                    }
-                } else if (Auth::user()->role_id == 1 || Auth::user()->role_id == 0) {
-                    $receipt = Customer_receipts::where('customer_id', '=', $customer_id)
-                                    ->where('receipt_id', '=', $id)->first();
-//                    if ($receipt->delete()) {
-                    $receipt_id = Customer_receipts::where('receipt_id', '=', $id)->get();
-                    if (count($receipt_id) > 0) {
-                        return Response::json(['success' => true, 'user' => 'admin']);
-                    } else {
-                        $receiptObj = Receipt::find($id);
-//                            $receiptObj->delete();
-                        Session::set('succcess_msg', true);
-                        return Response::json(['success' => true, 'user' => 'admin', 'receipt' => true]);
-                    }
-//                    } else {
-//                        return Response::json(['success' => false, 'flash_message' => 'Receipt could not delete.']);
-//                    }
-                }
-            } else {
-                return Response::json(['success' => false, 'flash_message' => 'Please enter a correct password.']);
-            }
         }
     }
 
