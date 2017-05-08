@@ -106,7 +106,7 @@ class OrderController extends Controller {
                 } else {
                     $q->where('order_status', '=', $data['order_status']);
                 }
-            }else if (isset($data["territory_filter"])) {
+            }else if (isset($data["territory_filter"]) && $data["territory_filter"] != '') {
                 $loc_arr = [];
                 $territory_arr = [];
                 $territory_id = $data["territory_filter"];
