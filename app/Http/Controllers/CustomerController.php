@@ -889,6 +889,9 @@ class CustomerController extends Controller {
     }
 
     public function get_customers_list() {
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         $customers = '';
         $loc_arr = [];
         $search = Input::get('search');

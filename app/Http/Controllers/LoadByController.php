@@ -30,6 +30,9 @@ class LoadByController extends Controller {
      */
     public function index() {
         $loader = '';
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
             $loaders = LoadedBy::where('first_name', 'like', $term)->orWhere('last_name', 'like', $term)->orderBy('created_at', 'DESC');
@@ -47,6 +50,9 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function create() {
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         return view('addedit_loaded_by')->with('performance_index', true);
     }
 
@@ -79,6 +85,9 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function show($id) {
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         if (isset($id) && !empty($id)) {
             $loader = LoadedBy::find($id);
             return view('view_loaded_by')->with('loader', $loader)->with('performance_index', true);
@@ -92,6 +101,9 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         if (isset($id) && !empty($id)) {
             $loader = LoadedBy::find($id);
             return view('addedit_loaded_by')->with('loader', $loader)->with('performance_index', true);
@@ -139,6 +151,9 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function destroy($id, Request $request) {
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         if (isset($id) && !empty($id)) {
             if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
                 $loader = LoadedBy::find($id);
@@ -154,6 +169,9 @@ class LoadByController extends Controller {
     }
 
     public function performance(Request $request) {
+        if(Auth::user()->role_id != 0){
+            return redirect()->back();
+        }
         $var = 0;
         $loader_arr = array();
         $loader_array = array();

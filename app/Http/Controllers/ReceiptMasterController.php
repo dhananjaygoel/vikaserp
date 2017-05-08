@@ -35,6 +35,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Input::has('search_from_date') && Input::has('search_to_date')) {
             $date1 = \DateTime::createFromFormat('m-d-Y', Input::get('search_from_date'))->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', Input::get('search_to_date'))->format('Y-m-d');
@@ -90,6 +93,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_journal_receipt() {
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Auth::user()->role_id == 0) {
             $user_type = 'admin';
         }else{
@@ -108,6 +114,9 @@ class ReceiptMasterController extends Controller {
      */
     public function create_bank_receipt() {
         $type = 2; //bank
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Auth::user()->role_id == 0) {
             $user_type = 'admin';
         }else{
@@ -125,6 +134,9 @@ class ReceiptMasterController extends Controller {
      */
     public function create_cash_receipt() {
         $type = 3; //cash
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (Auth::user()->role_id == 0) {
             $user_type = 'admin';
         }else{
@@ -221,6 +233,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+            return redirect()->back();
+        }
         if (isset($id) && !empty($id)) {
             $receiptObj = Receipt::where('id', '=', $id)->with('customer_receipts')->get();
             if (Auth::user()->role_id == 0) {
