@@ -35,7 +35,7 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
-        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 4){
             return redirect()->back();
         }
         if (Input::has('search_from_date') && Input::has('search_to_date')) {
