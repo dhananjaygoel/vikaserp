@@ -363,7 +363,7 @@ class DeliveryChallanController extends Controller {
         }
 
         $delivery_challan->bill_number = $input_data['billno'];
-        $delivery_challan->loaded_by = $input_data['loadedby'];
+        $delivery_challan->loaded_by = (isset($input_data['loadedby'])?$input_data['loadedby']:'');
 //        $delivery_challan->labours = $input_data['labour'];
         $delivery_challan->discount = $input_data['discount'];
         $delivery_challan->freight = $input_data['freight'];
