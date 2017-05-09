@@ -3128,6 +3128,93 @@ class HomeController extends Controller {
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
+    
+    
+    
+     /**
+     * App sync Collection
+     */
+    public function appsynccollection() {
+
+        $data = Input::all();
+        if (Input::has('collections')) {
+            $collections = (json_decode($data['collections']));
+        }
+//        if (Input::has('territory_locations')) {
+//            $territorylocations = (json_decode($data['territory_locations']));
+//        }
+        $collection_response = [];
+        if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
+            $last_sync_date = Input::get('collection_sync_date');
+            $collection_added_server = User::where('created_at', '>', $last_sync_date)->with('locations.location_data')->get();
+            $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
+
+            $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('locations.location_data')->get();
+            $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
+        } else {
+            $collection_added_server = User::with('locations.location_data')->get();
+            $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $territory_added_server : array();
+        }
+        
+        echo "<pre>";
+        print_r($collection_response);
+        echo "</pre>";
+        exit;
+
+        if (isset($collections)) {
+            foreach ($collections as $key => $value) {
+                if ($value->teritory_server_id > 0) {
+                    $territory = User::find($value->teritory_server_id);
+                    $territory->teritory_name = $value->teritory_name;
+                    $territory->save();
+                    $delete_old_territory_location = UserLocation::where('teritory_id', '=', $value->teritory_server_id)->delete();
+                    foreach ($territorylocations as $product_data) {
+                        $inquiry_products = array();
+                        if ($product_data->local_territory_id == $value->local_territory_id) {
+                            $territory_loc = new UserLocation();
+                            $territory_loc->teritory_id = $value->teritory_server_id;
+                            $territory_loc->location_id = $product_data->location_id;
+                            $territory_loc->save();
+                        }
+                    }
+                    $collection_response[$value->teritory_server_id] = User::find($value->teritory_server_id);
+//                    $collection_response[$value->teritory_server_id]['territory_locations'] = InquiryProducts::where('inquiry_id', '=', $value->teritory_server_id)->get();
+                } else {
+
+                    $territory = new User();
+                    $territory->teritory_name = $value->teritory_name;
+                    $territory->save();
+                    $teritory_id = $territory->id;
+                    foreach ($territorylocations as $product_data) {
+                        $inquiry_products = array();
+                        if ($product_data->local_territory_id == $value->local_territory_id) {
+                            $territory_loc = new TerritoryLocation();
+                            $territory_loc->teritory_id = $teritory_id;
+                            $territory_loc->location_id = $product_data->location_id;
+                            $territory_loc->save();
+                        }
+                    }
+                    $collection_response[$value->local_territory_id] = $teritory_id;
+                }
+            }
+        }
+        if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
+            $collection_response['territory_deleted'] = User::where('deleted_at', '>=', Input::get('collection_sync_date'))->select('id')->get();
+        }
+        $territory_date = User::select('updated_at')->
+                        orderby('updated_at', 'DESC')->first();
+        if (!empty($territory_date))
+            $collection_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
+        else
+            $collection_response['latest_date'] = "";
+        return json_encode($territory_response);
+    }
+    
+    
+    
+    
+    
+    
 
     /**
      * App sync and comare last sync dated and send updated date
@@ -5364,14 +5451,6 @@ class HomeController extends Controller {
 
     function appsyncpurchaseorder_sms() {
         $input = Input::all();
-
-//         $purchaseorder = PurchaseOrder::with('customer','purchase_products')->find(2);
-//        echo "<pre>";
-//        print_r(json_encode($purchaseorder));
-//        echo "</pre>";
-//        exit;
-
-
         if (Input::has('purchase_order') && Input::has('customer') && Input::has('purchase_order_product') && Input::has('user') && Input::has('sendsms')) {
             $purchaseorders = (json_decode($input['purchase_order']));
             $customers = (json_decode($input['customer']));
@@ -5683,9 +5762,6 @@ class HomeController extends Controller {
     }
 
     public function appdeletelabour() {
-
-
-
         if (Input::has('labour_id')) {
             $id = Input::get('labour_id');
 
@@ -6337,6 +6413,18 @@ class HomeController extends Controller {
         }
     }
 
+    
+    public function appgetproducttype() {
+
+        if (Input::has('product_category_id')) {
+            $product_id = Input::get('product_category_id');
+            $product_last = ProductCategory::find( $product_id);
+            $product_type = \App\ProductType::find($product_last->product_type_id);  
+           return ($product_type->name); 
+        }
+        
+    }
+    
     /**
      * App Price update
      */

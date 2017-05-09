@@ -138,6 +138,8 @@ Route::get('appallcollection_admin', 'HomeController@appallcollection_admin');
 Route::post('appaddcollection_admin', 'HomeController@appaddcollection_admin');
 Route::post('appupdatecollection_admin', 'HomeController@appupdatecollection_admin');
 Route::post('appdeletecollection_admin', 'HomeController@appdeletecollection_admin');
+Route::post('appsynccollection', 'HomeController@appsynccollection');
+
 
 
 
@@ -156,6 +158,7 @@ Route::get('appallinventory_admin', 'HomeController@appallinventory_admin');
 Route::get('appallprice_admin', 'HomeController@appallprice_admin');
 Route::post('appupdateprice', 'HomeController@appupdateprice');
 
+Route::get('appgetproducttype', 'HomeController@appgetproducttype');
 
 
 Route::get('getinfo', 'PasswordController@getinfo');
