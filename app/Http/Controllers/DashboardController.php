@@ -49,6 +49,9 @@ class DashboardController extends Controller {
             if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
                 return Redirect::to('customers');
             }
+            if (Auth::user()->role_id == 6) {
+                return Redirect::to('due-payment');
+            }
             $inquiries_stats_all = [];
             $orders_stats_all = [];
             $delivery_challan_stats_all = [];

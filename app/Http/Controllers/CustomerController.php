@@ -889,7 +889,7 @@ class CustomerController extends Controller {
     }
 
     public function get_customers_list() {
-        if(Auth::user()->role_id != 0){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 6){
             return redirect()->back();
         }
         $customers = '';
