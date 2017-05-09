@@ -173,7 +173,7 @@ class ProductsubController extends Controller {
         $ProductSubCategory->thickness = $request->input('thickness');
         $ProductSubCategory->standard_length = $request->input('standard_length');
         $ProductSubCategory->difference = $request->input('difference');
-        if($ProductSubCategory->save()){
+        if($ProductSubCategory->save() && isset($ProductSubCategory->id)){
             $inventory = new \App\Inventory();
             $inventory->product_sub_category_id = $ProductSubCategory->id;
             $inventory->save();
