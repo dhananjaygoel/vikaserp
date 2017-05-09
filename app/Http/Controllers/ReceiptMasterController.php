@@ -93,7 +93,7 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_journal_receipt() {
-        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 4){
             return redirect()->back();
         }
         if (Auth::user()->role_id == 0) {
@@ -114,7 +114,7 @@ class ReceiptMasterController extends Controller {
      */
     public function create_bank_receipt() {
         $type = 2; //bank
-        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 4){
             return redirect()->back();
         }
         if (Auth::user()->role_id == 0) {
@@ -134,7 +134,7 @@ class ReceiptMasterController extends Controller {
      */
     public function create_cash_receipt() {
         $type = 3; //cash
-        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 4){
             return redirect()->back();
         }
         if (Auth::user()->role_id == 0) {
@@ -233,7 +233,7 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 4){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 4){
             return redirect()->back();
         }
         if (isset($id) && !empty($id)) {
