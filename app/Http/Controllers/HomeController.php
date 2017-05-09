@@ -3185,11 +3185,7 @@ class HomeController extends Controller {
             $collection_added_server = User::with('locations.location_data')->get();
             $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $territory_added_server : array();
         }
-        
-        echo "<pre>";
-        print_r($collection_response);
-        echo "</pre>";
-        exit;
+        return json_encode($collection_response);
 
         if (isset($collections)) {
             foreach ($collections as $key => $value) {
@@ -3237,7 +3233,7 @@ class HomeController extends Controller {
             $collection_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
         else
             $collection_response['latest_date'] = "";
-        return json_encode($territory_response);
+        return json_encode($collection_response);
     }
     
     
@@ -6450,7 +6446,7 @@ class HomeController extends Controller {
             $product_id = Input::get('product_category_id');
             $product_last = ProductCategory::find( $product_id);
             $product_type = \App\ProductType::find($product_last->product_type_id);  
-           return ($product_type->name); 
+           return json_encode($product_type); 
         }
         
     }
