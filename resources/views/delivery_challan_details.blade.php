@@ -134,11 +134,32 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="loadedby"><b class="challan">Loaded By: </b></label> {{$allorder->loaded_by}}
+                            <label for="loadedby"><b class="challan">Loaded By: </b></label> <?php
+                            if (isset($allorder['challan_loaded_by'])) {
+                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                        echo ucfirst($loadedby->first_name) ." ". ucfirst($loadedby->last_name) .", ";
+                                    }
+                                }
+                            }
+                            ?>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="labour"><b class="challan">Labour: </b></label> {{$allorder->labours}}
+                            <label for="labour"><b class="challan">Labour: </b></label>
+                            
+                             <?php
+                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                foreach ($allorder['challan_labours'] as $challan_labour) {
+                                    foreach ($challan_labour['dc_labour'] as $labour) {
+                                        echo ucfirst($labour->first_name) ." ". ucfirst($labour->last_name) .", ";
+                                    }
+                                }
+                            }else{
+                             echo "N/A";
+                            }
+                            ?>
+                           
                         </div>
                         <hr>
 

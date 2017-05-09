@@ -293,10 +293,37 @@
                                 <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="loadedby"><b class="challan">Loaded By:</b></label>
+                                
+                                    <?php
+                            if (isset($allorder['challan_loaded_by'])) {
+                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                        echo ucfirst($loadedby->first_name) ." ". ucfirst($loadedby->last_name) .", ";
+                                    }
+                                }
+                            }
+                            ?>
+                                <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">-->
+                            </div>
 
                             <div class="form-group">
-                                <label for="loadedby"><b class="challan">Loaded By</b></label>
-                                <input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text">
+                                <label for="labours"><b class="challan">Labours:</b></label>
+                                
+                                    <?php
+                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                foreach ($allorder['challan_labours'] as $challan_labour) {
+                                    foreach ($challan_labour['dc_labour'] as $labour) {
+                                        echo ucfirst($labour->first_name) ." ". ucfirst($labour->last_name) .", ";
+                                    }
+                                }
+                            }else{
+                             echo "N/A";
+                            }
+                            ?>
+                               
                             </div>
                             <div class="form-group">
                                 <label for="roundoff"><b class="challan">Round Off</b></label>

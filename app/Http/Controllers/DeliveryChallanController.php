@@ -268,7 +268,7 @@ class DeliveryChallanController extends Controller {
      */
     public function show($id) {
 
-        $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->find($id);
+        $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
 
 
 
@@ -294,7 +294,7 @@ class DeliveryChallanController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order')
+        $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
 
