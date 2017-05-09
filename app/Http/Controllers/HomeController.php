@@ -2879,7 +2879,7 @@ class HomeController extends Controller {
                 $labour_id = $labour->id;
                 $delivery_order_products = array();
                 $labour->save();
-                $labour_response[$value->server_id] = Labour::find($delivery_order->id);
+                $labour_response[$value->server_id] = Labour::find($labour->id);
             }
         }
 
