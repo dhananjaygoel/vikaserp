@@ -12,7 +12,7 @@
                 <div class="clearfix">
                     <div class=" row col-md-12 pull-right top-page-ui">
                         <div class="filter-block col-md-12 productsub_filter pull-right">
-                            <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search">
+                            <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
                                 <div class="col-md-12 pull-right">
                                     @if( Auth::user()->role_id == 0 )
                                     <div class="col-md-3 form-group pull-right">
@@ -20,7 +20,7 @@
                                             <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
                                         </a>
                                         <!--<a href="{{url('export_product_size')}}" class="btn btn-primary form_button_footer">Export</a>-->
-                                         <input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer">
+                                         <!--<input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer">-->
                                     </div>
                                     @endif
                                     <div class="form-group col-md-3  pull-right">
@@ -42,6 +42,27 @@
                                         <a onclick="this.form.submit()" style="cursor: pointer;">
                                             <i class="fa fa-search search-icon" id="search_icon"></i>
                                         </a>
+                                    </div>
+                                </div>
+                            </form>
+                             <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
+                                <div class="col-md-12 pull-right">
+                                    @if( Auth::user()->role_id == 0 )
+                                    <div class="col-md-3 form-group pull-right">
+                                        <input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer" style="margin-top: -28%;">
+                                    </div>
+                                    @endif
+                                    <div class="form-group col-md-3  pull-right">
+                                        <input value="{{Input::get('product_size')}}" id="product_size"  name="product_size" type="hidden">
+                                       
+                                    </div>
+                                    <div class="form-group  col-md-2  pull-right">
+                                       <input value="{{Input::get('product_filter')}}" name="product_filter" type="hidden" >
+                                    </div>
+                                    <div class="form-group col-md-2 pull-right">
+                                        
+                                        <input value="{{Input::get('search_text')}}" name="search_text" type="hidden" >
+                                     
                                     </div>
                                 </div>
                             </form>

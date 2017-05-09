@@ -91,7 +91,7 @@ class ProductsubController extends Controller {
         }
 
         if (Input::has('export_data') && Input::get('export_data') == 'Export') {
-           
+           set_time_limit(0);
             $product_size_list = $q->orderBy('id', 'asc')->get();
             Excel::create('Product Sizes', function($excel) use($product_size_list) {
                 $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
