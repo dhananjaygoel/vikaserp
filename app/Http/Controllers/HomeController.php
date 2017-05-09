@@ -2867,15 +2867,15 @@ class HomeController extends Controller {
                     $labour_response[$value->id] = $labour_id;
                 }
             } else {
-                $labour = Labour::find($value->server_id);
-                if (Input::has('first_name') && Input::get('first_name') != "")
-                    $labour->first_name = Input::get('first_name');
-                if (Input::has('last_name') && Input::get('last_name') != "")
-                    $labour->last_name = Input::get('last_name');
-                if (Input::has('phone_number') && Input::get('phone_number') != "")
-                    $labour->phone_number = Input::get('phone_number');
-                if (Input::has('password') && Input::get('password') != "")
-                    $labour->password = Hash::make(Input::get('password'));
+                $labour = Labour::find($value->server_id);                
+                if (isset($value->first_name) && $value->first_name != "")
+                    $labour->first_name = $value->first_name;
+                if (isset($value->last_name) && $value->last_name != "")
+                    $labour->last_name = $value->last_name;
+                if (isset($value->phone_number) && $value->phone_number != "")
+                    $labour->phone_number = $value->phone_number;
+                if (isset($value->password) && $value->password != "")
+                    $labour->password = Hash::make($value->password);
                 $labour_id = $labour->id;
                 $delivery_order_products = array();
                 $labour->save();
