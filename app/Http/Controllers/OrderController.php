@@ -48,7 +48,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index() {
-
+     
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -97,7 +97,7 @@ class OrderController extends Controller {
                     $q->where('order_status', '=', $data['order_filter']);
                 }
             } elseif (isset($data['order_status']) && $data['order_status'] != '') {
-                 if ($data['order_status'] == 'approval') {
+                if ($data['order_status'] == 'approval') {
                     $q->where('is_approved', '=', 'no')
                             ->where('order_status', '=', 'pending');
                 } elseif ($data['order_status'] == 'pending') {
@@ -106,7 +106,11 @@ class OrderController extends Controller {
                 } else {
                     $q->where('order_status', '=', $data['order_status']);
                 }
-            }else if (isset($data["territory_filter"]) && $data["territory_filter"] != '') {
+            }else {
+                $q->where('order_status', '=', 'pending')
+                        ->where('is_approved', '=', 'yes');
+            }
+            if (isset($data["territory_filter"]) && $data["territory_filter"] != '') {
                 $loc_arr = [];
                 $territory_arr = [];
                 $territory_id = $data["territory_filter"];
@@ -120,9 +124,6 @@ class OrderController extends Controller {
                     }
                     $q->whereIn('delivery_location_id', $loc_arr);
                 }
-            } else {
-                $q->where('order_status', '=', 'pending')
-                        ->where('is_approved', '=', 'yes');
             }
             if (isset($data['party_filter']) && $data['party_filter'] != '') {
                 $q->where('customer_id', '=', $data['party_filter']);
@@ -139,7 +140,7 @@ class OrderController extends Controller {
                 $q->where('delivery_location_id', '=', $data['location_filter']);
             }
         }
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
@@ -167,7 +168,7 @@ class OrderController extends Controller {
             }
         } else {
             $q->with('all_order_products');
-        }               
+        }
         if (Input::has('flag') && Input::get('flag') == 'true') {
             if (Auth::user()->role_id <> 5) {
                 $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
@@ -182,7 +183,7 @@ class OrderController extends Controller {
             if (Auth::user()->role_id == 5) {
                 $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
             }
-        }    
+        }
         $users = User::all();
         if (Auth::user()->role_id <> 5) {
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -190,7 +191,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
         }
-        
+
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
         $product_size = ProductSubCategory::all();
@@ -209,6 +210,40 @@ class OrderController extends Controller {
 //            $allorders = $non_approved_orders;
 //        }
         $all_territories = Territory::get();
+       
+      
+        if (Input::has('export_data')) {
+            $data = Input::all();
+            $is_approved = 'yes';
+            if ($data['order_status'] == 'pending') {
+                $order_status = 'pending';
+                $excel_sheet_name = 'Pending';
+                $excel_name = 'Order-Pending-' . date('dmyhis');
+            } elseif ($data['order_status'] == 'completed') {
+                $order_status = 'completed';
+                $excel_sheet_name = 'Completed';
+                $excel_name = 'Order-Completed-' . date('dmyhis');
+            } elseif ($data['order_status'] == 'approval') {
+                $is_approved = 'no';
+                $order_status = 'pending';
+                $excel_sheet_name = 'Approval';
+                $excel_name = 'Order-Pending-Approval' . date('dmyhis');
+            } elseif ($data['order_status'] == 'cancelled') {
+                $order_status = 'cancelled';
+                $excel_sheet_name = 'Cancelled';
+                $excel_name = 'Order-Cancelled-' . date('dmyhis');
+            }
+            $units = Units::all();
+            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+            $customers = Customer::orderBy('tally_name', 'ASC')->get();
+            Excel::create($excel_name, function($excel) use($allorders, $units, $delivery_location, $customers, $excel_sheet_name) {
+                $excel->sheet('Order-' . $excel_sheet_name, function($sheet) use($allorders, $units, $delivery_location, $customers) {
+                    $sheet->loadView('excelView.order', array('order_objects' => $allorders, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
+                });
+            })->export('xls');
+        }
+
+      
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
 
@@ -293,7 +328,7 @@ class OrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customers = new Customer();
-                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'],$input_data['add_order_location']);
+                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_order_location']);
                 $customer_id = $newcustomer->id;
             } else {
                 $error_msg = $validator->messages();
@@ -612,7 +647,7 @@ class OrderController extends Controller {
                     $customer_id = $input_data['pending_user_id'];
                 } else {
                     $customers = new Customer();
-                    $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'],$input_data['add_order_location']);
+                    $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_order_location']);
                     $customer_id = $newcustomer->id;
                 }
             } else {
@@ -944,10 +979,10 @@ class OrderController extends Controller {
                 }
                 AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
                 Order::find($id)->delete();
-                Session::put('order-sort-type', $order_sort_type);     
+                Session::put('order-sort-type', $order_sort_type);
                 if (Input::has('way') && Input::get('way') == 'reject') {
 
-                return Redirect::to('orders?order_filter=approval')->with('success', 'Record deleted successfully.');
+                    return Redirect::to('orders?order_filter=approval')->with('success', 'Record deleted successfully.');
                 }
                 return Redirect::to('orders')->with('success', 'Record deleted successfully.');
             }
@@ -1322,7 +1357,7 @@ class OrderController extends Controller {
 
     /* Function used to export order details in excel */
 
-    public function exportOrderBasedOnStatus() {
+    public function exportOrderBasedOnStatus1() {
         $data = Input::all();
         $is_approved = 'yes';
         if ($data['order_status'] == 'pending') {

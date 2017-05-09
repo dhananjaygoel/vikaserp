@@ -27,76 +27,134 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">                        
-                        <div class="col-lg-4">
-                            @if(Auth::user()->role_id != 5)
-                            <form method="GET" action="{{url()}}/orders">
-                                <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
-                                    <option value="" selected="">Select Territory</option>
-                                    @if(isset($all_territories) && !empty($all_territories))
-                                        @foreach($all_territories as $territory)
-                                            <option value="{{$territory->id}}" @if(Input::get('territory_filter') == $territory->id) selected @endif> {{ucwords($territory->teritory_name)}}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </form>
+                    <div class="col-lg-4">
+                        @if(Auth::user()->role_id != 5)
+                        <form method="GET" action="{{url()}}/orders">
+                            <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
+                                <option value="" selected="">Select Territory</option>
+                                @if(isset($all_territories) && !empty($all_territories))
+                                @foreach($all_territories as $territory)
+                                <option value="{{$territory->id}}" @if(Input::get('territory_filter') == $territory->id) selected @endif> {{ucwords($territory->teritory_name)}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </form>
+                        @endif
+                    </div>                        
+                    <div class="col-lg-8">
+                        <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
+                            <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_from_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
+                            <input type="hidden" name="order_status" value="pending">
+                            @elseif($qstring_sort_type_order == 'approval')
+                            <input type="hidden" name="order_status" value="approval">
+                            @elseif($qstring_sort_type_order == 'completed')
+                            <input type="hidden" name="order_status" value="completed">
+                            @elseif($qstring_sort_type_order == 'cancelled')
+                            <input type="hidden" name="order_status" value="cancelled">
+                            @else
+                            <input type="hidden" name="order_status" value="pending">
                             @endif
-                        </div>                        
-                        <div class="col-lg-8">
-                            <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
-                                <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
-                                if (Input::get('export_from_date') != "") {
-                                    echo "value='" . Input::get('export_from_date') . "'";
-                                }
-                                ?>>
-                                <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
-                                if (Input::get('export_to_date') != "") {
-                                    echo "value='" . Input::get('export_to_date') . "'";
-                                }
-                                ?>>
-                                @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
-                                <input type="hidden" name="order_status" value="pending">
-                                @elseif($qstring_sort_type_order == 'approval')
-                                <input type="hidden" name="order_status" value="approval">
-                                @elseif($qstring_sort_type_order == 'completed')
-                                <input type="hidden" name="order_status" value="completed">
-                                @elseif($qstring_sort_type_order == 'cancelled')
-                                <input type="hidden" name="order_status" value="cancelled">
-                                @else
-                                <input type="hidden" name="order_status" value="pending">
-                                @endif
-                                <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                            </form>
-                            <form class="pull-left" method="POST" action="{{URL::action('OrderController@exportOrderBasedOnStatus')}}">
-                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                <input type="hidden" name="export_from_date" id="export_from_date" <?php
-                                if (Input::get('export_to_date') != "") {
-                                    echo "value='" . Input::get('export_from_date') . "'";
-                                }
-                                ?>>
-                                <input type="hidden"  name="export_to_date" id="export_to_date" <?php
-                                if (Input::get('export_to_date') != "") {
-                                    echo "value='" . Input::get('export_to_date') . "'";
-                                }
-                                ?>>
-                                @if(sizeof($allorders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
-                                <input type="hidden" name="order_status" value="pending">
-                                @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='completed')
-                                <input type="hidden" name="order_status" value="completed">
-                                @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='approval')
-                                <input type="hidden" name="order_status" value="approval">
-                                @elseif(sizeof($allorders)!=0 && $qstring_sort_type_order=='cancelled')
-                                <input type="hidden" name="order_status" value="cancelled">
-                                @else
-                                <input type="hidden" name="order_status" value="pending">
-                                @endif
-                                <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right">
-                            </form>
-                        </div>
+                            @if(Input::has('territory_filter'))
+                            <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}">
+                            @else
+
+                            @if(Input::has('order_filter'))
+                            <input type="hidden" name="order_filter" value="{{Input::get('order_filter')}}">
+                            @endif
+                            @if(Input::has('fulfilled_filter'))
+                            <input type="hidden" name="fulfilled_filter" value="{{Input::get('fulfilled_filter')}}">
+                            @endif
+                            @if(Input::has('party_filter'))
+                            <input type="hidden" name="party_filter" value="{{Input::get('party_filter')}}">
+                            @endif
+                            @if(Input::has('location_filter'))
+                            <input type="hidden" name="location_filter" value="{{Input::get('location_filter')}}">
+                            @endif
+                            @if(Input::has('size_filter'))
+                            <input type="hidden" name="size_filter" value="{{Input::get('size_filter')}}">
+                            @endif
+
+
+                            @endif
+
+
+                            <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                        </form>
+                        <form class="pull-left" method="get" action="{{URL::action('OrderController@index')}}">
+                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="hidden"  name="export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
+                            @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
+                            <input type="hidden" name="order_status" value="pending">
+                            @elseif($qstring_sort_type_order == 'approval')
+                            <input type="hidden" name="order_status" value="approval">
+                            @elseif($qstring_sort_type_order == 'completed')
+                            <input type="hidden" name="order_status" value="completed">
+                            @elseif($qstring_sort_type_order == 'cancelled')
+                            <input type="hidden" name="order_status" value="cancelled">
+                            @else
+                            <input type="hidden" name="order_status" value="pending">
+                            @endif
+
+
+                            @if(Input::has('territory_filter'))
+                            <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}">
+
+                            @else
+                            @if(Input::has('order_filter'))
+                            <input type="hidden" name="order_filter1" value="{{Input::get('order_filter')}}">
+                            @endif
+                            @if(Input::has('fulfilled_filter'))
+                            <input type="hidden" name="fulfilled_filter" value="{{Input::get('fulfilled_filter')}}">
+                            @endif
+                            @if(Input::has('party_filter'))
+                            <input type="hidden" name="party_filter" value="{{Input::get('party_filter')}}">
+                            @endif
+                            @if(Input::has('location_filter'))
+                            <input type="hidden" name="location_filter" value="{{Input::get('location_filter')}}">
+                            @endif
+                            @if(Input::has('size_filter'))
+                            <input type="hidden" name="size_filter" value="{{Input::get('size_filter')}}">
+                            @endif
+
+                            @endif
+
+                            <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right">
+                        </form>
+                    </div>
                 </div>
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
+                        <input type="hidden" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
+                            if (Input::get('export_from_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
+                            <input type="hidden" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
+                            if (Input::get('export_to_date') != "") {
+                                echo "value='" . Input::get('export_to_date') . "'";
+                            }
+                            ?>>
                         <div class="pull-right">
                             @if(Auth::user()->role_id != 3 )
                             <a href="{{url('orders/create')}}" class="btn btn-primary">
@@ -195,7 +253,7 @@
                         @if( Auth::user()->role_id <> 5) 
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover order-data-table">
-                                <?php                                
+                                <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
                                 @if(Input::get('order_filter') == 'pending' | Input::get('order_status') == 'pending' | (Input::get('order_status') == '' && Input::get('order_filter') == '' && Input::get('territory_filter') == '') && $qstring_sort_type_order<>'completed')
@@ -719,7 +777,7 @@
 
                         @if( Auth::user()->role_id == 5)
 
-                        
+
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <?php
@@ -746,10 +804,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($allorders as $order)                              
-                                @if(isset($order->order_status))
-                                @if($k==1)
-                                
+                                    @foreach($allorders as $order)                              
+                                    @if(isset($order->order_status))
+                                    @if($k==1)
+
                                     @endif
                                     <tr id="order_row_{{$order->id}}">
                                         <td>
@@ -864,7 +922,7 @@
                                 </tbody>
                             </table>
 
-                                                        <span class="pull-right">
+                            <span class="pull-right">
                                 <?php
 //                               
                                 echo $allorders->appends(Input::except('page'))->render();
