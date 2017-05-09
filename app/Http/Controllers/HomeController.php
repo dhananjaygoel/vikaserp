@@ -2894,6 +2894,36 @@ class HomeController extends Controller {
 
         return json_encode($labour_response);
     }
+    
+    /**
+     * App Receipt Master delete
+     */
+    public function appSyncLaboursdelete() {
+        $input_data = Input::all();
+        $labours = (json_decode($input_data['labours_deleted']));
+        
+        if (count($labours) > 0) {
+            foreach ($labours as $labour) {
+                $labour_data = Labour::find($labour);
+
+                if ($labour_data) {
+                    $labours_dcs = \App\DeliveryChallanLabours::where('labours_id', '=', $labour)->get();
+                    foreach ($labours_dcs as $labours_dc) {
+                        $labours_dc->delete();
+                    }
+                    $labour_data->delete();
+                }
+            }
+            return json_encode(array('result' => true, 'message' => 'labours deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
+        }
+    }
+    
+    
+    
+    
+    
 
     /**
      * App sync Receipt Master
