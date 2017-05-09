@@ -31,6 +31,7 @@ use App\ProductType;
 use App\Labour;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
+use App\ProductSubCategory;
 
 class LabourController extends Controller {
 
@@ -51,7 +52,7 @@ class LabourController extends Controller {
      */
     public function index(Request $request) {
         $request->url();
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $labours = '';
@@ -86,7 +87,7 @@ class LabourController extends Controller {
      * @return Response
      */
     public function create() {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -99,7 +100,7 @@ class LabourController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
 
@@ -135,7 +136,7 @@ class LabourController extends Controller {
      * @return Response
      */
     public function show($id) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $labour = Labour::find($id);
@@ -149,7 +150,7 @@ class LabourController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $labour = Labour::find($id);
@@ -167,7 +168,7 @@ class LabourController extends Controller {
      * @return Response
      */
     public function update(Request $request, $id) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $validator = Validator::make($request->input(), Labour::$new_labours_inquiry_rules);
@@ -205,7 +206,7 @@ class LabourController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $password = Input::get('password');
@@ -259,7 +260,7 @@ class LabourController extends Controller {
     }
 
     public function labourPerformance(Request $request) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $var = 0;
@@ -302,7 +303,7 @@ class LabourController extends Controller {
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
-            $loaders = array();            
+            $loaders = array();
             if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
                     $deliver_sum = 0.00;
@@ -310,13 +311,12 @@ class LabourController extends Controller {
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
                         foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-                            $dashboard = new DashboardController();
                             if ($delivery_order_productinfo->unit_id == 1)
-                                    $deliver_sum += $delivery_order_productinfo->quantity;
-                                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                    $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
-                            }
+                                $deliver_sum += $delivery_order_productinfo->quantity;
+                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                         }
+                    }
 
 
                     array_push($loader_array, $loaders);
@@ -379,6 +379,41 @@ class LabourController extends Controller {
                             ->with('enddate', $enddate)
                             ->with('performance_index', true);
         }
+    }
+
+    function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
+
+        $kg_qty = 0;
+        $product_info = ProductSubCategory::find($product_category_id);
+        if ($unit_id == 1) {
+            if (isset($product_info->quantity)) {
+                $kg_qty = $product_info->quantity;
+            } else {
+                $kg_qty = 0;
+            }
+        } elseif ($unit_id == 2) {
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+            } else {
+                $weight = 0;
+            }
+            $kg_qty = $kg_qty + ($product_qty * $weight);
+        } elseif ($unit_id == 3) {
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+            } else {
+                $weight = 1;
+            }
+            if (isset($product_info->standard_length)) {
+                $std_length = $product_info->standard_length;
+            } else {
+                $std_length = 0;
+            }
+            $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
+        }
+
+
+        return $kg_qty;
     }
 
 }
