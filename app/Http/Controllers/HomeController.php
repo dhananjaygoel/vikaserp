@@ -6482,13 +6482,13 @@ class HomeController extends Controller {
      * App Price update
      */
     public function appupdateprice() {
-
+        
         if (Input::has('product_category_id')) {
             $product_id = Input::get('product_category_id');
             $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
 
             $product_type = $product_last[0]->product_type_id;
-
+            
             $size = Input::get('size');
             $thickness = Input::get('thickness');
             $new_price = Input::get('new_price');
@@ -6505,8 +6505,8 @@ class HomeController extends Controller {
                     return json_encode(array('result' => false, 'message' => 'Some error occured1. Please try again'));
                 }
             }
-            if ($product_type == 2) {
-                if (empty($product_id) && empty($size)) {
+            if ($product_type == 2) {               
+                if (isset($product_id) && !empty($product_id) && !empty($size)) {
                     $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
                                     ->where('alias_name', '=', $size)->get();
                     $sub_prod_id = $subproduct[0]->id;
