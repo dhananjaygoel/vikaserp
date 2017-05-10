@@ -6569,7 +6569,7 @@ class HomeController extends Controller {
                 $difference = $new_amount - $old_amount;
 
                 $receipts = Customer_receipts::where('customer_id', '=', $customer_id)->orderBy('created_at', 'DESC')->first();
-               
+
                 if (isset($receipts) && !empty($receipts)) {
                     $receipt_id = $receipts->id;
 //                    $receipt = Customer_receipts::find($receipt_id);
@@ -6577,7 +6577,6 @@ class HomeController extends Controller {
                     $new_unsettle_amount = $receipt_amount + $difference;
                     $receipts->settled_amount = $new_unsettle_amount;
                     $receipts->save();
-                   
                 } else {
                     $receiptObj = new Receipt();
                     if ($receiptObj->save()) {
@@ -6592,7 +6591,43 @@ class HomeController extends Controller {
                 $customer_response['customer_details'] = ($receipts && count($receipts) > 0) ? Customer_receipts::where('customer_id', '=', $customer_id)->orderBy('created_at', 'DESC')->first() : array();
                 return json_encode($customer_response);
             }
-        }else{
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+    }
+
+    /*   API due payment - settle amount
+     * 
+     * */
+
+    public function appsettleamount_admin() {
+        if (Input::has('customer')) {
+            $customers = (json_decode(Input::get('customer')));
+        }
+        if (count($customers) > 0) {
+            $customer_response = [];
+            foreach ($customers as $customer) {
+                $customer_id = $customer->customer_id;
+                $unsettle_amount = $customer->model_price;
+                $challan_id = $customer->challan_id;
+
+                if (isset($challan_id)) {
+                    $challan_obj = DeliveryChallan::find($challan_id);
+                    if ($challan_obj->settle_amount && $challan_obj->settle_amount != "") {
+                        $pre_amount = $challan_obj->settle_amount;
+                        $curr_amount = sprintf("%.2f", $unsettle_amount);
+                        $total_amount = $pre_amount + $curr_amount;
+                    } else {
+                        $total_amount = sprintf("%.2f", $unsettle_amount);
+                    }
+                    $challan_obj->settle_amount = sprintf("%.2f", $total_amount);
+                    ;
+                    $challan_obj->save();
+                    $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = DeliveryChallan::find($challan_id) : array();
+                    return json_encode($customer_response);
+                }
+            }
+        } else {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
         }
     }

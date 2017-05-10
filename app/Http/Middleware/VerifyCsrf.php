@@ -88,6 +88,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appdeleteterritory',        
         'appupdateprice',        
         'appchangeunsettledamount_admin',        
+        'appsettleamount_admin',        
     ];
 
     /**
