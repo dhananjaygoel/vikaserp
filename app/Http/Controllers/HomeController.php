@@ -6533,7 +6533,7 @@ class HomeController extends Controller {
      * 
      * */
 
-    public function appduepaymentshow() {
+    public function appduepaymentshow_admin() {
 
         $duepayment_response = [];
         $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
@@ -6544,37 +6544,57 @@ class HomeController extends Controller {
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
 
         $territories = Territory::orderBy('created_at', 'DESC')->get();
-        
+
         $duepayment_response['customers_details'] = ($customers && count($customers) > 0) ? $customers : array();
         $duepayment_response['delivery_location'] = ($delivery_location && count($delivery_location) > 0) ? $delivery_location : array();
         $duepayment_response['territories'] = ($territories && count($territories) > 0) ? $territories : array();
-      
-        return ($duepayment_response);
+
+        return json_encode($duepayment_response);
     }
-    
-    
-    
+
     /*   API due payment - change unsettle amout (alos can affect receipt master)
      * 
      * */
 
-    public function appchangeunsettledamount() {
+    public function appchangeunsettledamount_admin() {
+        if (Input::has('customer')) {
+            $customers = (json_decode(Input::get('customer')));
+        }
+        if (count($customers) > 0) {
+            $customer_response = [];
+            foreach ($customers as $customer) {
+                $customer_id = $customer->customer_id;
+                $old_amount = $customer->old_amount;
+                $new_amount = $customer->new_amount;
+                $difference = $new_amount - $old_amount;
 
-        $duepayment_response = [];
-        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
-                        ->whereHas('delivery_challan', function ($query) {
-                            $query->where('challan_status', '=', 'completed');
-                        })->get();
-
-        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-
-        $territories = Territory::orderBy('created_at', 'DESC')->get();
-        
-        $duepayment_response['customers_details'] = ($customers && count($customers) > 0) ? $customers : array();
-        $duepayment_response['delivery_location'] = ($delivery_location && count($delivery_location) > 0) ? $delivery_location : array();
-        $duepayment_response['territories'] = ($territories && count($territories) > 0) ? $territories : array();
-      
-        return ($duepayment_response);
+                $receipts = Customer_receipts::where('customer_id', '=', $customer_id)->orderBy('created_at', 'DESC')->first();
+               
+                if (isset($receipts) && !empty($receipts)) {
+                    $receipt_id = $receipts->id;
+//                    $receipt = Customer_receipts::find($receipt_id);
+                    $receipt_amount = $receipts->settled_amount;
+                    $new_unsettle_amount = $receipt_amount + $difference;
+                    $receipts->settled_amount = $new_unsettle_amount;
+                    $receipts->save();
+                   
+                } else {
+                    $receiptObj = new Receipt();
+                    if ($receiptObj->save()) {
+                        $customerReceiptObj = new Customer_receipts();
+                        $customerReceiptObj->customer_id = $customer_id;
+                        $customerReceiptObj->settled_amount = $new_amount;
+                        $customerReceiptObj->debited_by_type = 1;
+                        $customerReceiptObj->receipt_id = $receiptObj->id;
+                        $customerReceiptObj->save();
+                    }
+                }
+                $customer_response['customer_details'] = ($receipts && count($receipts) > 0) ? Customer_receipts::where('customer_id', '=', $customer_id)->orderBy('created_at', 'DESC')->first() : array();
+                return json_encode($customer_response);
+            }
+        }else{
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
     }
 
 }

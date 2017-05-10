@@ -1219,7 +1219,9 @@ class CustomerController extends Controller {
                 $customerReceiptObj = new Customer_receipts();
                 $customerReceiptObj->customer_id = $customer_id;
                 $customerReceiptObj->settled_amount = $new_amount;
-                $customerReceiptObj->debited_to = 1;
+                $customerReceiptObj->debited_by_type = 1;
+//                $customerReceiptObj->debited_to = 1;
+//                $customerReceiptObj->debited_to = 1;
                 $customerReceiptObj->receipt_id = $receiptObj->id;                       
                 $customerReceiptObj->save();
             }            

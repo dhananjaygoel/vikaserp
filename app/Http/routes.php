@@ -145,7 +145,8 @@ Route::post('appsynccollection', 'HomeController@appsynccollection');
 /*
 API due payment
  *  */
-Route::get('appduepaymentshow', 'HomeController@appduepaymentshow');
+Route::get('appduepaymentshow_admin', 'HomeController@appduepaymentshow_admin');
+Route::post('appchangeunsettledamount_admin', 'HomeController@appchangeunsettledamount_admin');
 
 
 //Territory module- 
