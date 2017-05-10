@@ -2557,13 +2557,25 @@ class HomeController extends Controller {
 
                     if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
                         $add_customers = new Customer();
-                        $add_customers->owner_name = $value->customer_name;
-                        $add_customers->contact_person = $value->customer_contact_peron;
-                        $add_customers->phone_number1 = $value->customer_mobile;
-                        $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = $value->customer_status;
-                        $add_customers->save();
-                        $customer_list[$value->id] = $add_customers->id;
+
+                        foreach ($customers as $customer) {
+                            if ($value->customer_id == $customer->id) {
+                                $add_customers->owner_name = (isset($customer->owner_name) ? $customer->owner_name : $value->customer_name);
+                                $add_customers->contact_person = (isset($customer->contact_person) ? $customer->contact_person : $value->customer_contact_peron);
+                                $add_customers->phone_number1 = (isset($customer->phone_number1) ? $customer->phone_number1 : $value->customer_mobile);
+                                $add_customers->credit_period = (isset($customer->credit_period) ? $customer->credit_period : $value->customer_credit_period);
+                                $add_customers->customer_status = (isset($customer->customer_status) ? $customer->customer_status : $value->customer_status);
+                                $add_customers->save();
+                                $customer_list[$value->id] = $add_customers->id;
+                            }
+                        }
+//                        $add_customers->owner_name = $value->customer_name;
+//                        $add_customers->contact_person = $value->customer_contact_peron;
+//                        $add_customers->phone_number1 = $value->customer_mobile;
+//                        $add_customers->credit_period = $value->customer_credit_period;
+//                        $add_customers->customer_status = $value->customer_status;
+//                        $add_customers->save();
+//                        $customer_list[$value->id] = $add_customers->id;
                     }
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
@@ -2608,7 +2620,6 @@ class HomeController extends Controller {
                 }
             }
         }
-
 
 
         if (count($customer_list) > 0) {
@@ -2867,7 +2878,7 @@ class HomeController extends Controller {
                     $labour_response[$value->id] = $labour_id;
                 }
             } else {
-                $labour = Labour::find($value->server_id);                
+                $labour = Labour::find($value->server_id);
                 if (isset($value->first_name) && $value->first_name != "")
                     $labour->first_name = $value->first_name;
                 if (isset($value->last_name) && $value->last_name != "")
@@ -2894,14 +2905,14 @@ class HomeController extends Controller {
 
         return json_encode($labour_response);
     }
-    
+
     /**
      * App Receipt Master delete
      */
     public function appSyncLaboursdelete() {
         $input_data = Input::all();
         $labours = (json_decode($input_data['labours_deleted']));
-        
+
         if (count($labours) > 0) {
             foreach ($labours as $labour) {
                 $labour_data = Labour::find($labour);
@@ -2919,11 +2930,6 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
     }
-    
-    
-    
-    
-    
 
     /**
      * App sync Receipt Master
@@ -3158,10 +3164,8 @@ class HomeController extends Controller {
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-     /**
+
+    /**
      * App sync Collection
      */
     public function appsynccollection() {
@@ -3170,9 +3174,9 @@ class HomeController extends Controller {
         if (Input::has('collections')) {
             $collections = (json_decode($data['collections']));
         }
-//        if (Input::has('territory_locations')) {
-//            $territorylocations = (json_decode($data['territory_locations']));
-//        }
+        if (Input::has('collections_locations')) {
+            $collectionslocations = (json_decode($data['collections_locations']));
+        }
         $collection_response = [];
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
             $last_sync_date = Input::get('collection_sync_date');
@@ -3183,64 +3187,89 @@ class HomeController extends Controller {
             $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
         } else {
             $collection_added_server = User::with('locations.location_data')->get();
-            $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $territory_added_server : array();
+            $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
         }
-        return json_encode($collection_response);
+
 
         if (isset($collections)) {
             foreach ($collections as $key => $value) {
-                if ($value->teritory_server_id > 0) {
-                    $territory = User::find($value->teritory_server_id);
-                    $territory->teritory_name = $value->teritory_name;
-                    $territory->save();
-                    $delete_old_territory_location = UserLocation::where('teritory_id', '=', $value->teritory_server_id)->delete();
-                    foreach ($territorylocations as $product_data) {
-                        $inquiry_products = array();
-                        if ($product_data->local_territory_id == $value->local_territory_id) {
-                            $territory_loc = new UserLocation();
-                            $territory_loc->teritory_id = $value->teritory_server_id;
-                            $territory_loc->location_id = $product_data->location_id;
-                            $territory_loc->save();
+                if ($value->collection_server_id > 0) {
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
+                    if (isset($collection_check->id)) {
+                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                    } else {
+                        $collection = User::find($value->collection_server_id);
+                        $collection->role_id = 6;
+                        if (isset($value->first_name) && $value->first_name <> "")
+                            $collection->first_name = $value->first_name;
+                        if (isset($value->last_name) && $value->last_name <> "")
+                            $collection->last_name = $value->last_name;
+                        if (isset($value->password) && $value->password <> "")
+                            $collection->password = Hash::make($value->password);
+                        if (isset($value->mobile_number) && $value->mobile_number <> "")
+                            $collection->mobile_number = $value->mobile_number;
+                        if (isset($value->email) && $value->email <> "")
+                            $collection->email = $value->email;
+                        $collection->save();
+                        $delete_old_territory_location = CollectionUser::where('user_id', '=', $value->collection_server_id)->delete();
+
+                        foreach ($collectionslocations as $product_data) {
+                            if ($product_data->local_collection_id == $value->local_collection_id) {
+                                $collection_loc = new CollectionUser();
+                                $collection_loc->user_id = $value->collection_server_id;
+                                $collection_loc->location_id = $product_data->location_id;
+                                $collection_loc->teritory_id = $product_data->teritory_id;
+                                $collection_loc->save();
+                            }
                         }
+
+                        $collection_response[$value->collection_server_id] = User::find($value->collection_server_id);
                     }
-                    $collection_response[$value->teritory_server_id] = User::find($value->teritory_server_id);
-//                    $collection_response[$value->teritory_server_id]['territory_locations'] = InquiryProducts::where('inquiry_id', '=', $value->teritory_server_id)->get();
                 } else {
 
-                    $territory = new User();
-                    $territory->teritory_name = $value->teritory_name;
-                    $territory->save();
-                    $teritory_id = $territory->id;
-                    foreach ($territorylocations as $product_data) {
-                        $inquiry_products = array();
-                        if ($product_data->local_territory_id == $value->local_territory_id) {
-                            $territory_loc = new TerritoryLocation();
-                            $territory_loc->teritory_id = $teritory_id;
-                            $territory_loc->location_id = $product_data->location_id;
-                            $territory_loc->save();
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
+                    if (isset($collection_check->id)) {
+                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                    } else {
+                        $Users_data = new User();
+                        $Users_data->role_id = 6;
+                        if (isset($value->first_name))
+                            $Users_data->first_name = $value->first_name;
+                        if (isset($value->last_name))
+                            $Users_data->last_name = $value->last_name;
+                        if (isset($value->password))
+                            $Users_data->password = Hash::make($value->password);
+                        if (isset($value->mobile_number))
+                            $Users_data->mobile_number = $value->mobile_number;
+                        if (isset($value->email))
+                            $Users_data->email = $value->email;
+                        $Users_data->save();
+                        $collection_id = $Users_data->id;
+                        foreach ($collectionslocations as $product_data) {
+                            if ($product_data->local_collection_id == $value->local_collection_id) {
+                                $collection_loc = new CollectionUser();
+                                $collection_loc->user_id = $collection_id;
+                                $collection_loc->location_id = $product_data->location_id;
+                                $collection_loc->teritory_id = $product_data->teritory_id;
+                                $collection_loc->save();
+                            }
                         }
+                        $collection_response[$value->local_collection_id] = $collection_id;
                     }
-                    $collection_response[$value->local_territory_id] = $teritory_id;
                 }
             }
         }
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
-            $collection_response['territory_deleted'] = User::where('deleted_at', '>=', Input::get('collection_sync_date'))->select('id')->get();
+            $collection_response['collection_deleted'] = array();
         }
-        $territory_date = User::select('updated_at')->
+        $collection_date = User::select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
-        if (!empty($territory_date))
-            $collection_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
+        if (!empty($collection_date))
+            $collection_response['latest_date'] = $collection_date->updated_at->toDateTimeString();
         else
             $collection_response['latest_date'] = "";
         return json_encode($collection_response);
     }
-    
-    
-    
-    
-    
-    
 
     /**
      * App sync and comare last sync dated and send updated date
@@ -6439,18 +6468,16 @@ class HomeController extends Controller {
         }
     }
 
-    
     public function appgetproducttype() {
 
         if (Input::has('product_category_id')) {
             $product_id = Input::get('product_category_id');
-            $product_last = ProductCategory::find( $product_id);
-            $product_type = \App\ProductType::find($product_last->product_type_id);  
-           return json_encode($product_type); 
+            $product_last = ProductCategory::find($product_id);
+            $product_type = \App\ProductType::find($product_last->product_type_id);
+            return json_encode($product_type);
         }
-        
     }
-    
+
     /**
      * App Price update
      */
