@@ -3199,31 +3199,34 @@ class HomeController extends Controller {
                         $collection_response[$value->local_collection_id] = $collection_check->id;
                     } else {
                         $collection = User::find($value->collection_server_id);
-                        $collection->role_id = 6;
-                        if (isset($value->first_name) && $value->first_name <> "")
-                            $collection->first_name = $value->first_name;
-                        if (isset($value->last_name) && $value->last_name <> "")
-                            $collection->last_name = $value->last_name;
-                        if (isset($value->password) && $value->password <> "")
-                            $collection->password = Hash::make($value->password);
-                        if (isset($value->mobile_number) && $value->mobile_number <> "")
-                            $collection->mobile_number = $value->mobile_number;
-                        if (isset($value->email) && $value->email <> "")
-                            $collection->email = $value->email;
-                        $collection->save();
-                        $delete_old_territory_location = CollectionUser::where('user_id', '=', $value->collection_server_id)->delete();
+                        if ($value->updated_at >= $collection->updated_at) {
+                            $collection->role_id = 6;
+                            if (isset($value->first_name) && $value->first_name <> "")
+                                $collection->first_name = $value->first_name;
+                            if (isset($value->last_name) && $value->last_name <> "")
+                                $collection->last_name = $value->last_name;
+                            if (isset($value->password) && $value->password <> "")
+                                $collection->password = Hash::make($value->password);
+                            if (isset($value->mobile_number) && $value->mobile_number <> "")
+                                $collection->mobile_number = $value->mobile_number;
+                            if (isset($value->email) && $value->email <> "")
+                                $collection->email = $value->email;
+                            $collection->save();
 
-                        foreach ($collectionslocations as $product_data) {
-                            if ($product_data->local_collection_id == $value->local_collection_id) {
-                                $collection_loc = new CollectionUser();
-                                $collection_loc->user_id = $value->collection_server_id;
-                                $collection_loc->location_id = $product_data->location_id;
-                                $collection_loc->teritory_id = $product_data->teritory_id;
-                                $collection_loc->save();
+                            $delete_old_territory_location = CollectionUser::where('user_id', '=', $value->collection_server_id)->delete();
+
+                            foreach ($collectionslocations as $product_data) {
+                                if ($product_data->local_collection_id == $value->local_collection_id) {
+                                    $collection_loc = new CollectionUser();
+                                    $collection_loc->user_id = $value->collection_server_id;
+                                    $collection_loc->location_id = $product_data->location_id;
+                                    $collection_loc->teritory_id = $product_data->teritory_id;
+                                    $collection_loc->save();
+                                }
                             }
                         }
 
-                        $collection_response[$value->collection_server_id] = User::find($value->collection_server_id);
+                        $collection_response[$value->local_collection_id] = User::find($value->collection_server_id);
                     }
                 } else {
 
@@ -6482,13 +6485,13 @@ class HomeController extends Controller {
      * App Price update
      */
     public function appupdateprice() {
-        
+
         if (Input::has('product_category_id')) {
             $product_id = Input::get('product_category_id');
             $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
 
             $product_type = $product_last[0]->product_type_id;
-            
+
             $size = Input::get('size');
             $thickness = Input::get('thickness');
             $new_price = Input::get('new_price');
@@ -6505,7 +6508,7 @@ class HomeController extends Controller {
                     return json_encode(array('result' => false, 'message' => 'Some error occured1. Please try again'));
                 }
             }
-            if ($product_type == 2) {               
+            if ($product_type == 2) {
                 if (isset($product_id) && !empty($product_id) && !empty($size)) {
                     $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
                                     ->where('alias_name', '=', $size)->get();
