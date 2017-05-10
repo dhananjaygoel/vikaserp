@@ -258,6 +258,9 @@ class ReceiptMasterController extends Controller {
                     }
                 }
                 if (isset($receipt_type)) {
+                    if($receipt_type == 0){
+                        $receipt_type = 1;
+                    }
                     if ($receipt_type == 1) {
                         $tally_users = Customer::where('tally_name', '!=', '')->select('id', 'tally_name')->get();
                         return view('receipt_master.edit_receipt')->with('tally_users', $tally_users)
