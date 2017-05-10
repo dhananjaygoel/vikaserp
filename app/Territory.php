@@ -1,9 +1,11 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Territory extends Model {
 
+    use SoftDeletes;
     protected $table = 'territories';
     protected $fillable = ['teritory_name'];
     protected $dates = ['deleted_at'];

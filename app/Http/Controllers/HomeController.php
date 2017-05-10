@@ -3127,7 +3127,7 @@ class HomeController extends Controller {
             }
         }
         if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '' && Input::get('territory_sync_date') != NULL) {
-            $territory_response['territory_deleted'] = Territory::where('deleted_at', '>=', Input::get('territory_sync_date'))->select('id')->get();
+            $territory_response['territory_deleted'] = Territory::withTrashed()->where('deleted_at', '>=', Input::get('territory_sync_date'))->select('id')->get();
         }
         $territory_date = Territory::select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
