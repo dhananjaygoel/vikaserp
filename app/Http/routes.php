@@ -148,6 +148,7 @@ API due payment
 Route::get('appduepaymentshow_admin', 'HomeController@appduepaymentshow_admin');
 Route::post('appchangeunsettledamount_admin', 'HomeController@appchangeunsettledamount_admin');
 Route::post('appsettleamount_admin', 'HomeController@appsettleamount_admin');
+Route::post('appupdatesettleamount_admin', 'HomeController@appupdatesettleamount_admin');
 
 
 //Territory module- 

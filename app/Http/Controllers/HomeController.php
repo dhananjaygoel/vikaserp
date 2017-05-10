@@ -6624,9 +6624,40 @@ class HomeController extends Controller {
                     ;
                     $challan_obj->save();
                     $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = DeliveryChallan::find($challan_id) : array();
-                    return json_encode($customer_response);
+                    
+                }
+                return json_encode($customer_response);
+            }
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+    }
+
+    /*   API due payment - unsettle amount
+     * 
+     * */
+
+    public function appupdatesettleamount_admin() {
+        if (Input::has('customer')) {
+            $customers = (json_decode(Input::get('customer')));
+        }
+        if (count($customers) > 0) {
+            $customer_response = [];
+            foreach ($customers as $customer) {
+                $customer_id = $customer->customer_id;
+                $new_settle_amount = $customer->model_price;
+                $challan_id = $customer->challan_id;
+
+                if (isset($challan_id)) {                   
+                    if (isset($challan_id)) {
+                        $challan_obj = DeliveryChallan::find($challan_id);
+                        $challan_obj->settle_amount = sprintf("%.2f", $new_settle_amount);
+                        $challan_obj->save();
+                         $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = $challan_obj = DeliveryChallan::find($challan_id) : array();
+                    }
                 }
             }
+            return json_encode($customer_response);
         } else {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
         }
