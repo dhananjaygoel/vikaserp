@@ -6529,4 +6529,52 @@ class HomeController extends Controller {
         }
     }
 
+    /*   API due payment show
+     * 
+     * */
+
+    public function appduepaymentshow() {
+
+        $duepayment_response = [];
+        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
+                        ->whereHas('delivery_challan', function ($query) {
+                            $query->where('challan_status', '=', 'completed');
+                        })->get();
+
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+
+        $territories = Territory::orderBy('created_at', 'DESC')->get();
+        
+        $duepayment_response['customers_details'] = ($customers && count($customers) > 0) ? $customers : array();
+        $duepayment_response['delivery_location'] = ($delivery_location && count($delivery_location) > 0) ? $delivery_location : array();
+        $duepayment_response['territories'] = ($territories && count($territories) > 0) ? $territories : array();
+      
+        return ($duepayment_response);
+    }
+    
+    
+    
+    /*   API due payment - change unsettle amout (alos can affect receipt master)
+     * 
+     * */
+
+    public function appchangeunsettledamount() {
+
+        $duepayment_response = [];
+        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
+                        ->whereHas('delivery_challan', function ($query) {
+                            $query->where('challan_status', '=', 'completed');
+                        })->get();
+
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+
+        $territories = Territory::orderBy('created_at', 'DESC')->get();
+        
+        $duepayment_response['customers_details'] = ($customers && count($customers) > 0) ? $customers : array();
+        $duepayment_response['delivery_location'] = ($delivery_location && count($delivery_location) > 0) ? $delivery_location : array();
+        $duepayment_response['territories'] = ($territories && count($territories) > 0) ? $territories : array();
+      
+        return ($duepayment_response);
+    }
+
 }

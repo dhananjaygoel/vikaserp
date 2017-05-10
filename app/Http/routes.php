@@ -142,6 +142,10 @@ Route::post('appdeletecollection_admin', 'HomeController@appdeletecollection_adm
 Route::post('appsynccollection', 'HomeController@appsynccollection');
 
 
+/*
+API due payment
+ *  */
+Route::get('appduepaymentshow', 'HomeController@appduepaymentshow');
 
 
 //Territory module- 
