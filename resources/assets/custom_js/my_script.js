@@ -221,10 +221,15 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
                 scrollTop: $('.breadcrumb').offset().top
             }, 1000);
             return false;
-        } else {
-            var action = $(this).parents('form').attr('action');
-            $(this).parents('form').attr('action', action + '?sendsms=true');
-            $(this).parents('form').submit();
+        } else {            
+            var curid = $(this).attr("id");
+            if (curid == "sendSMSEditPurchaseOrder") {
+                var action = $(this).parents('form').attr('action');
+                $(this).parents('form').attr('action', action + '?sendsms=true');
+                $(this).parents('form').submit();
+            } else {
+                $(this).parents('form').submit();
+            }
         }
 
     } else {
@@ -284,10 +289,15 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
                 scrollTop: $('.breadcrumb').offset().top
             }, 1000);
             return false;
-        } else {
-            var action = $(this).parents('form').attr('action');
-            $(this).parents('form').attr('action', action + '?sendsms=true');
-            $(this).parents('form').submit();
+        } else {            
+            var curid = $(this).attr("id");
+            if (curid == "sendSMSEditPurchaseOrder") {
+                var action = $(this).parents('form').attr('action');
+                $(this).parents('form').attr('action', action + '?sendsms=true');
+                $(this).parents('form').submit();
+            } else {
+                $(this).parents('form').submit();
+            }
         }
     }
 });
@@ -372,7 +382,6 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             return false;
         } else {
             var curid = $(this).attr("id");
-            console.log(curid);
             if (curid == "sendSMSPurchaseOrder") {
                 var action = $(this).parents('form').attr('action');
                 $(this).parents('form').attr('action', action + '?sendsms=true');
@@ -455,8 +464,7 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             }, 1000);
             return false;
         } else {
-            var curid = $(this).attr("id");
-            console.log(curid);
+            var curid = $(this).attr("id");           
             if (curid == "sendSMSPurchaseOrder") {
                 var action = $(this).parents('form').attr('action');
                 $(this).parents('form').attr('action', action + '?sendsms=true');
