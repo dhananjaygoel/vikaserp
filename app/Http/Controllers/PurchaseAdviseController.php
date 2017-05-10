@@ -104,8 +104,7 @@ class PurchaseAdviseController extends Controller {
 
     public function exportPurchaseAdviseBasedOnStatus() {
         $data = Input::all();
-        
-               
+        set_time_limit(0);       
         if ($data['purchaseaAdviseFilter'] == 'Inprocess') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'in_process';
