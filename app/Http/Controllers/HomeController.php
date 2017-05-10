@@ -2895,7 +2895,7 @@ class HomeController extends Controller {
         }
 
         if (Input::has('labours_sync_date') && Input::get('labours_sync_date') != '' && Input::get('labours_sync_date') != NULL) {
-            $labour_response['labour_deleted'] = Labour::where('deleted_at', '>=', Input::get('labours_sync_date'))->select('id')->get();
+            $labour_response['labour_deleted'] = Labour::withTrashed()->where('deleted_at', '>=', Input::get('labours_sync_date'))->select('id')->get();
         }
         $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($labour_date))
@@ -3090,7 +3090,6 @@ class HomeController extends Controller {
 
         if (isset($territories)) {
             foreach ($territories as $key => $value) {
-
                 if ($value->teritory_server_id > 0) {
                     $territory = Territory::find($value->teritory_server_id);
                     $territory->teritory_name = $value->teritory_name;
