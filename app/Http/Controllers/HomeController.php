@@ -2907,7 +2907,7 @@ class HomeController extends Controller {
     }
 
     /**
-     * App Receipt Master delete
+     * App Labours Master delete
      */
     public function appSyncLaboursdelete() {
         $input_data = Input::all();
@@ -3012,7 +3012,30 @@ class HomeController extends Controller {
     
     
     
-    
+    /**
+     * App Loaded by Master delete
+     */
+    public function appSyncLoadedbydelete() {       
+        $input_data = Input::all();
+        $loadedby = (json_decode($input_data['loadedby_deleted']));
+
+        if (count($loadedby) > 0) {
+            foreach ($loadedby as $loadedby) {
+                $loadedby_data = LoadedBy::find($loadedby); 
+                if ($loadedby_data) {
+                   
+                    $loadedby_dcs = \App\DeliveryChallanLoadedBy::where('loaded_by_id', '=', $loadedby)->get();
+                    foreach ($loadedby_dcs as $loadedby_dc) {
+                        $loadedby_dc->delete();
+                    }
+                    $loadedby_data->delete();
+                }
+            }
+            return json_encode(array('result' => true, 'message' => 'Loader deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
+        }
+    }
     
     
 

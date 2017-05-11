@@ -134,6 +134,7 @@ Route::post('appaddloadedby', 'HomeController@appaddloadedby');
 Route::post('appupdateloadedby', 'HomeController@appupdateloadedby');
 Route::get('apploadedbyperformance', 'HomeController@apploadedbyperformance');
 Route::post('appSyncLoadedby', 'HomeController@appSyncLoadedby');
+Route::post('appSyncLoadedbydelete', 'HomeController@appSyncLoadedbydelete');
 
 
 //account module- Collection
