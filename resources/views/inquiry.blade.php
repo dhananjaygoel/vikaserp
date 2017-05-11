@@ -198,12 +198,14 @@
                                                 </span>
                                             </a>
                                             @if($inquiry->inquiry_status != 'completed')
+                                             @if( Auth::user()->role_id <> 2 || Auth::user()->role_id <> 3)
                                             <a title="Edit" href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>                                            
+                                            @endif
                                             @endif
 
 
