@@ -221,10 +221,15 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
                 scrollTop: $('.breadcrumb').offset().top
             }, 1000);
             return false;
-        } else {
-            var action = $(this).parents('form').attr('action');
-            $(this).parents('form').attr('action', action + '?sendsms=true');
-            $(this).parents('form').submit();
+        } else {            
+            var curid = $(this).attr("id");
+            if (curid == "sendSMSEditPurchaseOrder") {
+                var action = $(this).parents('form').attr('action');
+                $(this).parents('form').attr('action', action + '?sendsms=true');
+                $(this).parents('form').submit();
+            } else {
+                $(this).parents('form').submit();
+            }
         }
 
     } else {
@@ -284,10 +289,15 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
                 scrollTop: $('.breadcrumb').offset().top
             }, 1000);
             return false;
-        } else {
-            var action = $(this).parents('form').attr('action');
-            $(this).parents('form').attr('action', action + '?sendsms=true');
-            $(this).parents('form').submit();
+        } else {            
+            var curid = $(this).attr("id");
+            if (curid == "sendSMSEditPurchaseOrder") {
+                var action = $(this).parents('form').attr('action');
+                $(this).parents('form').attr('action', action + '?sendsms=true');
+                $(this).parents('form').submit();
+            } else {
+                $(this).parents('form').submit();
+            }
         }
     }
 });
@@ -336,7 +346,7 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
         if (j == tot_products) {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_purchase_product_name_1').addClass('error_validation');
-                $('#product_all_1' ).addClass('error_validation');
+                $('#product_all_1').addClass('error_validation');
             }
             if ($("#quantity_1").val() == "") {
                 $('#quantity_1').addClass('error_validation');
@@ -371,9 +381,14 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             }, 1000);
             return false;
         } else {
-            var action = $(this).parents('form').attr('action');
-            $(this).parents('form').attr('action', action + '?sendsms=true');
-            $(this).parents('form').submit();
+            var curid = $(this).attr("id");
+            if (curid == "sendSMSPurchaseOrder") {
+                var action = $(this).parents('form').attr('action');
+                $(this).parents('form').attr('action', action + '?sendsms=true');
+                $(this).parents('form').submit();
+            } else {
+                $(this).parents('form').submit();
+            }
         }
 
     } else {
@@ -381,14 +396,14 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             $('#existing_supplier_name').addClass('error_validation');
             $('.uploader').addClass('error_validation');
             status_form = 1;
-        }else{
+        } else {
             $('.uploader').removeClass('error_validation');
         }
-            
+
         if ($('#purchase_other_location').val() == "0") {
             $('#purchase_other_location').addClass('error_validation');
             status_form = 1;
-        }else{
+        } else {
             $('#purchase_other_location').removeClass('error_validation');
         }
         var tot_products = $(".add_product_row").length;
@@ -401,7 +416,7 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
                     $('#add_purchase_product_name_' + i).addClass('error_validation');
                     $('#product_all_' + i).addClass('error_validation');
                     status_form = 1;
-                }else{
+                } else {
                     $('#product_all_' + i).removeClass('error_validation');
                 }
                 if ($("#quantity_" + i).val() == "") {
@@ -414,7 +429,7 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             if ($("#add_product_id_1").val() == "") {
                 $('#add_purchase_product_name_1').addClass('error_validation');
                 $('#product_all_1').addClass('error_validation');
-            }else{
+            } else {
                 $('#product_all_1').removeClass('error_validation');
             }
             if ($("#quantity_1").val() == "") {
@@ -449,9 +464,14 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             }, 1000);
             return false;
         } else {
-            var action = $(this).parents('form').attr('action');
-            $(this).parents('form').attr('action', action + '?sendsms=true');
-            $(this).parents('form').submit();
+            var curid = $(this).attr("id");           
+            if (curid == "sendSMSPurchaseOrder") {
+                var action = $(this).parents('form').attr('action');
+                $(this).parents('form').attr('action', action + '?sendsms=true');
+                $(this).parents('form').submit();
+            } else {
+                $(this).parents('form').submit();
+            }
         }
     }
 });
@@ -693,7 +713,7 @@ $('.print_delivery_order').click(function () {
             printWindow.close();
             printWindow.onunload = function () {
 //                location.reload();
-               
+
             };
             $('.print_delivery_order').html('Generate DO').prop("disabled", false);
             location.reload();
@@ -720,7 +740,7 @@ $('.print_delivery_challan').click(function () {
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
-            printWindow.onunload = function () { 
+            printWindow.onunload = function () {
             };
             $('.print_delivery_challan').html('Generate Challan').prop("disabled", false);
             location.reload();
@@ -730,7 +750,7 @@ $('.print_delivery_challan').click(function () {
 
 $('.print_inventory_report_list').click(function () {
 //    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
-    var product_id = $(this).data('id');    
+    var product_id = $(this).data('id');
     var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
@@ -749,18 +769,18 @@ $('.print_inventory_report_list').click(function () {
     });
 });
 
-$('.print_account_customers').click(function () { 
+$('.print_account_customers').click(function () {
     var base_url = $('#baseurl').attr('name');
     var search = $('#due-payment-form').find('#search_filter').val();
     var territory_filter = $('#due-payment-form').find('#territory_filter').val();
     var date_filter = $('#due-payment-form').find('#date_filter').val();
-    var location_filter = $('#due-payment-form').find('#location_filter').val();    
+    var location_filter = $('#due-payment-form').find('#location_filter').val();
     $.ajax({
         type: "GET",
         url: base_url + '/print_account_customers',
         data: {
-                search: search,territory_filter:territory_filter,date_filter:date_filter,location_filter:location_filter,
-            },
+            search: search, territory_filter: territory_filter, date_filter: date_filter, location_filter: location_filter,
+        },
         success: function (data) {
             $('#print_account_customers').modal('hide');
             var printWindow = window.open('', '');
@@ -775,17 +795,17 @@ $('.print_account_customers').click(function () {
     });
 });
 
-$('.print_customers_details').click(function () { 
-    var base_url = $('#baseurl').attr('name');        
+$('.print_customers_details').click(function () {
+    var base_url = $('#baseurl').attr('name');
     var date_filter = $('#customer-details-form').find('#date_filter').val();
     var settle_filter = $('#customer-details-form').find('#settle_filter').val();
-    var customer_id = $(this).data('id');     
+    var customer_id = $(this).data('id');
     $.ajax({
         type: "GET",
         url: base_url + '/print_customers_details',
         data: {
-                date_filter:date_filter,settle_filter:settle_filter,customer_id:customer_id
-            },
+            date_filter: date_filter, settle_filter: settle_filter, customer_id: customer_id
+        },
         success: function (data) {
             $('#print_account_customers').modal('hide');
             var printWindow = window.open('', '');
@@ -795,7 +815,7 @@ $('.print_customers_details').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
-             location.reload();
+            location.reload();
         }
     });
 });
@@ -825,10 +845,10 @@ $('.print_sales_order_daybook').click(function () {
     var base_url = $('#baseurl').attr('name');
     var export_from_date = $('#export_from_date').val();
     var export_to_date = $('#export_to_date').val();
-    var _token = $('#_token').val();   
+    var _token = $('#_token').val();
     $.ajax({
         type: "POST",
-        data: { export_from_date: export_from_date, export_to_date : export_to_date, _token:_token} ,
+        data: {export_from_date: export_from_date, export_to_date: export_to_date, _token: _token},
         url: base_url + '/print_sales_order_daybook',
         success: function (data) {
             var printWindow = window.open('', '');
@@ -838,7 +858,7 @@ $('.print_sales_order_daybook').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
-             location.reload();
+            location.reload();
         }
     });
 });
@@ -863,7 +883,7 @@ $('.print_purchase_challan').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
-             location.reload();
+            location.reload();
         }
     });
 });
@@ -896,7 +916,7 @@ $('.print_purchase_advise').click(function () {
             printWindow.onunload = function () {
                 location.reload();
             };
-             location.reload();
+            location.reload();
         }
     });
 });

@@ -20,6 +20,8 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appsyncinquiry_customer',
         'appSyncLabours',
         'appSyncLaboursdelete',
+        'appSyncLoadedby',
+        'appSyncLoadedbydelete',
         'appsyncterritory',
         'appsyncreceipt',
         'appsyncreceiptdelete',
@@ -87,6 +89,9 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appupdateterritory_admin',        
         'appdeleteterritory',        
         'appupdateprice',        
+        'appchangeunsettledamount_admin',        
+        'appsettleamount_admin',        
+        'appupdatesettleamount_admin',        
     ];
 
     /**

@@ -121,6 +121,7 @@ Route::get('appssyncgraph_delivery_challan', 'HomeController@appssyncgraph_deliv
 
 
 //app aproval process - inquiry
+
 //performance module- labours
 Route::get('appalllabours', 'HomeController@appalllabours');
 Route::post('appaddlabour', 'HomeController@appaddlabour');
@@ -132,6 +133,8 @@ Route::get('appallloadedby', 'HomeController@appallloadedby');
 Route::post('appaddloadedby', 'HomeController@appaddloadedby');
 Route::post('appupdateloadedby', 'HomeController@appupdateloadedby');
 Route::get('apploadedbyperformance', 'HomeController@apploadedbyperformance');
+Route::post('appSyncLoadedby', 'HomeController@appSyncLoadedby');
+Route::post('appSyncLoadedbydelete', 'HomeController@appSyncLoadedbydelete');
 
 
 //account module- Collection
@@ -142,6 +145,13 @@ Route::post('appdeletecollection_admin', 'HomeController@appdeletecollection_adm
 Route::post('appsynccollection', 'HomeController@appsynccollection');
 
 
+/*
+API due payment
+ *  */
+Route::get('appduepaymentshow_admin', 'HomeController@appduepaymentshow_admin');
+Route::post('appchangeunsettledamount_admin', 'HomeController@appchangeunsettledamount_admin');
+Route::post('appsettleamount_admin', 'HomeController@appsettleamount_admin');
+Route::post('appupdatesettleamount_admin', 'HomeController@appupdatesettleamount_admin');
 
 
 //Territory module- 

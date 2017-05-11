@@ -2557,13 +2557,25 @@ class HomeController extends Controller {
 
                     if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
                         $add_customers = new Customer();
-                        $add_customers->owner_name = $value->customer_name;
-                        $add_customers->contact_person = $value->customer_contact_peron;
-                        $add_customers->phone_number1 = $value->customer_mobile;
-                        $add_customers->credit_period = $value->customer_credit_period;
-                        $add_customers->customer_status = $value->customer_status;
-                        $add_customers->save();
-                        $customer_list[$value->id] = $add_customers->id;
+
+                        foreach ($customers as $customer) {
+                            if ($value->customer_id == $customer->id) {
+                                $add_customers->owner_name = (isset($customer->owner_name) ? $customer->owner_name : $value->customer_name);
+                                $add_customers->contact_person = (isset($customer->contact_person) ? $customer->contact_person : $value->customer_contact_peron);
+                                $add_customers->phone_number1 = (isset($customer->phone_number1) ? $customer->phone_number1 : $value->customer_mobile);
+                                $add_customers->credit_period = (isset($customer->credit_period) ? $customer->credit_period : $value->customer_credit_period);
+                                $add_customers->customer_status = (isset($customer->customer_status) ? $customer->customer_status : $value->customer_status);
+                                $add_customers->save();
+                                $customer_list[$value->id] = $add_customers->id;
+                            }
+                        }
+//                        $add_customers->owner_name = $value->customer_name;
+//                        $add_customers->contact_person = $value->customer_contact_peron;
+//                        $add_customers->phone_number1 = $value->customer_mobile;
+//                        $add_customers->credit_period = $value->customer_credit_period;
+//                        $add_customers->customer_status = $value->customer_status;
+//                        $add_customers->save();
+//                        $customer_list[$value->id] = $add_customers->id;
                     }
                     $date_string = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
                     $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
@@ -2608,7 +2620,6 @@ class HomeController extends Controller {
                 }
             }
         }
-
 
 
         if (count($customer_list) > 0) {
@@ -2867,7 +2878,7 @@ class HomeController extends Controller {
                     $labour_response[$value->id] = $labour_id;
                 }
             } else {
-                $labour = Labour::find($value->server_id);                
+                $labour = Labour::find($value->server_id);
                 if (isset($value->first_name) && $value->first_name != "")
                     $labour->first_name = $value->first_name;
                 if (isset($value->last_name) && $value->last_name != "")
@@ -2884,7 +2895,7 @@ class HomeController extends Controller {
         }
 
         if (Input::has('labours_sync_date') && Input::get('labours_sync_date') != '' && Input::get('labours_sync_date') != NULL) {
-            $labour_response['labour_deleted'] = Labour::where('deleted_at', '>=', Input::get('labours_sync_date'))->select('id')->get();
+            $labour_response['labour_deleted'] = Labour::withTrashed()->where('deleted_at', '>=', Input::get('labours_sync_date'))->select('id')->get();
         }
         $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($labour_date))
@@ -2894,14 +2905,14 @@ class HomeController extends Controller {
 
         return json_encode($labour_response);
     }
-    
+
     /**
-     * App Receipt Master delete
+     * App Labours Master delete
      */
     public function appSyncLaboursdelete() {
         $input_data = Input::all();
         $labours = (json_decode($input_data['labours_deleted']));
-        
+
         if (count($labours) > 0) {
             foreach ($labours as $labour) {
                 $labour_data = Labour::find($labour);
@@ -2922,6 +2933,109 @@ class HomeController extends Controller {
     
     
     
+     /**
+     * App sync performance- loadedby
+     */
+    public function appSyncLoadedby() {
+
+        $data = Input::all();
+        $loadedby_response = [];
+        $customer_list = [];
+        if (Input::has('loadedby')) {
+            $loadedby = (json_decode($data['loadedby']));
+        }
+
+        if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '') {
+            $last_sync_date = Input::get('loadedby_sync_date');
+            $labour_server = LoadedBy::where('created_at', '>', $last_sync_date)->get();
+            $loadedby_response['labour_server_added'] = ($labour_server && count($labour_server) > 0) ? $labour_server : array();
+
+            $labour_updated_server = LoadedBy::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $loadedby_response['labour_server_updated'] = ($labour_updated_server && count($labour_updated_server) > 0) ? $labour_updated_server : array();
+        } else {
+            $labour_server = LoadedBy::get();
+            $loadedby_response['labour_server_added'] = ($labour_server && count($labour_server) > 0) ? $labour_server : array();
+        }
+
+        foreach ($loadedby as $key => $value) {
+            if ($value->server_id == 0) {
+                $labour_check = LoadedBy::where('phone_number', '=', $value->phone_number)
+                        ->where('first_name', '=', $value->first_name)
+                        ->where('last_name', '=', $value->last_name)
+                        ->first();
+               
+                if (!isset($labour_check->id)) {
+                    $labour = new LoadedBy();
+                    if (isset($value->first_name))
+                        $labour->first_name = $value->first_name;
+                    if (isset($value->last_name))
+                        $labour->last_name = $value->last_name;
+                    if (isset($value->password))
+                        $labour->password = Hash::make($value->password);
+                    if (isset($value->phone_number))
+                        $labour->phone_number = $value->phone_number;
+                    $labour->save();
+                    $labour_id = $labour->id;
+                   
+                }else{
+                     $labour_id = $labour_check->id;
+                }
+                 $loadedby_response[$value->id] = $labour_id;
+            } else {
+                $labour = LoadedBy::find($value->server_id);
+                if (isset($value->first_name) && $value->first_name != "")
+                    $labour->first_name = $value->first_name;
+                if (isset($value->last_name) && $value->last_name != "")
+                    $labour->last_name = $value->last_name;
+                if (isset($value->phone_number) && $value->phone_number != "")
+                    $labour->phone_number = $value->phone_number;
+                if (isset($value->password) && $value->password != "")
+                    $labour->password = Hash::make($value->password);
+                $labour_id = $labour->id;
+                $labour->save();
+                $loadedby_response[$value->server_id] = LoadedBy::find($labour->id);
+            }
+        }
+
+        if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '' && Input::get('loadedby_sync_date') != NULL) {
+//            $loadedby_response['labour_deleted'] = LoadedBy::withTrashed()->where('deleted_at', '>=', Input::get('loadedby_sync_date'))->select('id')->get();
+            $loadedby_response['labour_deleted'] = array();
+        }
+        $labour_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($labour_date))
+            $loadedby_response['latest_date'] = $labour_date->updated_at->toDateTimeString();
+        else
+            $loadedby_response['latest_date'] = "";
+
+        return json_encode($loadedby_response);
+    }
+    
+    
+    
+    /**
+     * App Loaded by Master delete
+     */
+    public function appSyncLoadedbydelete() {       
+        $input_data = Input::all();
+        $loadedby = (json_decode($input_data['loadedby_deleted']));
+
+        if (count($loadedby) > 0) {
+            foreach ($loadedby as $loadedby) {
+                $loadedby_data = LoadedBy::find($loadedby); 
+                if ($loadedby_data) {
+                   
+                    $loadedby_dcs = \App\DeliveryChallanLoadedBy::where('loaded_by_id', '=', $loadedby)->get();
+                    foreach ($loadedby_dcs as $loadedby_dc) {
+                        $loadedby_dc->delete();
+                    }
+                    $loadedby_data->delete();
+                }
+            }
+            return json_encode(array('result' => true, 'message' => 'Loader deleted successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
+        }
+    }
     
     
 
@@ -3084,7 +3198,6 @@ class HomeController extends Controller {
 
         if (isset($territories)) {
             foreach ($territories as $key => $value) {
-
                 if ($value->teritory_server_id > 0) {
                     $territory = Territory::find($value->teritory_server_id);
                     $territory->teritory_name = $value->teritory_name;
@@ -3121,7 +3234,7 @@ class HomeController extends Controller {
             }
         }
         if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '' && Input::get('territory_sync_date') != NULL) {
-            $territory_response['territory_deleted'] = Territory::where('deleted_at', '>=', Input::get('territory_sync_date'))->select('id')->get();
+            $territory_response['territory_deleted'] = Territory::withTrashed()->where('deleted_at', '>=', Input::get('territory_sync_date'))->select('id')->get();
         }
         $territory_date = Territory::select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
@@ -3158,10 +3271,8 @@ class HomeController extends Controller {
         } else
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
     }
-    
-    
-    
-     /**
+
+    /**
      * App sync Collection
      */
     public function appsynccollection() {
@@ -3170,9 +3281,9 @@ class HomeController extends Controller {
         if (Input::has('collections')) {
             $collections = (json_decode($data['collections']));
         }
-//        if (Input::has('territory_locations')) {
-//            $territorylocations = (json_decode($data['territory_locations']));
-//        }
+        if (Input::has('collections_locations')) {
+            $collectionslocations = (json_decode($data['collections_locations']));
+        }
         $collection_response = [];
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
             $last_sync_date = Input::get('collection_sync_date');
@@ -3183,64 +3294,92 @@ class HomeController extends Controller {
             $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
         } else {
             $collection_added_server = User::with('locations.location_data')->get();
-            $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $territory_added_server : array();
+            $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
         }
-        return json_encode($collection_response);
+
 
         if (isset($collections)) {
             foreach ($collections as $key => $value) {
-                if ($value->teritory_server_id > 0) {
-                    $territory = User::find($value->teritory_server_id);
-                    $territory->teritory_name = $value->teritory_name;
-                    $territory->save();
-                    $delete_old_territory_location = UserLocation::where('teritory_id', '=', $value->teritory_server_id)->delete();
-                    foreach ($territorylocations as $product_data) {
-                        $inquiry_products = array();
-                        if ($product_data->local_territory_id == $value->local_territory_id) {
-                            $territory_loc = new UserLocation();
-                            $territory_loc->teritory_id = $value->teritory_server_id;
-                            $territory_loc->location_id = $product_data->location_id;
-                            $territory_loc->save();
+                if ($value->collection_server_id > 0) {
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
+                    if (isset($collection_check->id)) {
+                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                    } else {
+                        $collection = User::find($value->collection_server_id);
+                        if ($value->updated_at >= $collection->updated_at) {
+                            $collection->role_id = 6;
+                            if (isset($value->first_name) && $value->first_name <> "")
+                                $collection->first_name = $value->first_name;
+                            if (isset($value->last_name) && $value->last_name <> "")
+                                $collection->last_name = $value->last_name;
+                            if (isset($value->password) && $value->password <> "")
+                                $collection->password = Hash::make($value->password);
+                            if (isset($value->mobile_number) && $value->mobile_number <> "")
+                                $collection->mobile_number = $value->mobile_number;
+                            if (isset($value->email) && $value->email <> "")
+                                $collection->email = $value->email;
+                            $collection->save();
+
+                            $delete_old_territory_location = CollectionUser::where('user_id', '=', $value->collection_server_id)->delete();
+
+                            foreach ($collectionslocations as $product_data) {
+                                if ($product_data->local_collection_id == $value->local_collection_id) {
+                                    $collection_loc = new CollectionUser();
+                                    $collection_loc->user_id = $value->collection_server_id;
+                                    $collection_loc->location_id = $product_data->location_id;
+                                    $collection_loc->teritory_id = $product_data->teritory_id;
+                                    $collection_loc->save();
+                                }
+                            }
                         }
+
+                        $collection_response[$value->local_collection_id] = User::find($value->collection_server_id);
                     }
-                    $collection_response[$value->teritory_server_id] = User::find($value->teritory_server_id);
-//                    $collection_response[$value->teritory_server_id]['territory_locations'] = InquiryProducts::where('inquiry_id', '=', $value->teritory_server_id)->get();
                 } else {
 
-                    $territory = new User();
-                    $territory->teritory_name = $value->teritory_name;
-                    $territory->save();
-                    $teritory_id = $territory->id;
-                    foreach ($territorylocations as $product_data) {
-                        $inquiry_products = array();
-                        if ($product_data->local_territory_id == $value->local_territory_id) {
-                            $territory_loc = new TerritoryLocation();
-                            $territory_loc->teritory_id = $teritory_id;
-                            $territory_loc->location_id = $product_data->location_id;
-                            $territory_loc->save();
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
+                    if (isset($collection_check->id)) {
+                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                    } else {
+                        $Users_data = new User();
+                        $Users_data->role_id = 6;
+                        if (isset($value->first_name))
+                            $Users_data->first_name = $value->first_name;
+                        if (isset($value->last_name))
+                            $Users_data->last_name = $value->last_name;
+                        if (isset($value->password))
+                            $Users_data->password = Hash::make($value->password);
+                        if (isset($value->mobile_number))
+                            $Users_data->mobile_number = $value->mobile_number;
+                        if (isset($value->email))
+                            $Users_data->email = $value->email;
+                        $Users_data->save();
+                        $collection_id = $Users_data->id;
+                        foreach ($collectionslocations as $product_data) {
+                            if ($product_data->local_collection_id == $value->local_collection_id) {
+                                $collection_loc = new CollectionUser();
+                                $collection_loc->user_id = $collection_id;
+                                $collection_loc->location_id = $product_data->location_id;
+                                $collection_loc->teritory_id = $product_data->teritory_id;
+                                $collection_loc->save();
+                            }
                         }
+                        $collection_response[$value->local_collection_id] = $collection_id;
                     }
-                    $collection_response[$value->local_territory_id] = $teritory_id;
                 }
             }
         }
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
-            $collection_response['territory_deleted'] = User::where('deleted_at', '>=', Input::get('collection_sync_date'))->select('id')->get();
+            $collection_response['collection_deleted'] = array();
         }
-        $territory_date = User::select('updated_at')->
+        $collection_date = User::select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
-        if (!empty($territory_date))
-            $collection_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
+        if (!empty($collection_date))
+            $collection_response['latest_date'] = $collection_date->updated_at->toDateTimeString();
         else
             $collection_response['latest_date'] = "";
         return json_encode($collection_response);
     }
-    
-    
-    
-    
-    
-    
 
     /**
      * App sync and comare last sync dated and send updated date
@@ -6439,18 +6578,16 @@ class HomeController extends Controller {
         }
     }
 
-    
     public function appgetproducttype() {
 
         if (Input::has('product_category_id')) {
             $product_id = Input::get('product_category_id');
-            $product_last = ProductCategory::find( $product_id);
-            $product_type = \App\ProductType::find($product_last->product_type_id);  
-           return json_encode($product_type); 
+            $product_last = ProductCategory::find($product_id);
+            $product_type = \App\ProductType::find($product_last->product_type_id);
+            return json_encode($product_type);
         }
-        
     }
-    
+
     /**
      * App Price update
      */
@@ -6479,7 +6616,7 @@ class HomeController extends Controller {
                 }
             }
             if ($product_type == 2) {
-                if (empty($product_id) && empty($size)) {
+                if (isset($product_id) && !empty($product_id) && !empty($size)) {
                     $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
                                     ->where('alias_name', '=', $size)->get();
                     $sub_prod_id = $subproduct[0]->id;
@@ -6495,6 +6632,140 @@ class HomeController extends Controller {
             $update_sub_prod->difference = $difference;
             $update_sub_prod->save();
             return json_encode(array('result' => true, 'product_category_id' => $update_sub_prod->id, 'message' => 'Price Updated successfully.'));
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+    }
+
+    /*   API due payment show
+     * 
+     * */
+
+    public function appduepaymentshow_admin() {
+
+        $duepayment_response = [];
+        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
+                        ->whereHas('delivery_challan', function ($query) {
+                            $query->where('challan_status', '=', 'completed');
+                        })->get();
+
+        $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+
+        $territories = Territory::orderBy('created_at', 'DESC')->get();
+
+        $duepayment_response['customers_details'] = ($customers && count($customers) > 0) ? $customers : array();
+        $duepayment_response['delivery_location'] = ($delivery_location && count($delivery_location) > 0) ? $delivery_location : array();
+        $duepayment_response['territories'] = ($territories && count($territories) > 0) ? $territories : array();
+
+        return json_encode($duepayment_response);
+    }
+
+    /*   API due payment - change unsettle amout (alos can affect receipt master)
+     * 
+     * */
+
+    public function appchangeunsettledamount_admin() {
+        if (Input::has('customer')) {
+            $customers = (json_decode(Input::get('customer')));
+        }
+        if (count($customers) > 0) {
+            $customer_response = [];
+            foreach ($customers as $customer) {
+                $customer_id = $customer->customer_id;
+                $old_amount = $customer->old_amount;
+                $new_amount = $customer->new_amount;
+                $difference = $new_amount - $old_amount;
+
+                $receipts = Customer_receipts::where('customer_id', '=', $customer_id)->orderBy('created_at', 'DESC')->first();
+
+                if (isset($receipts) && !empty($receipts)) {
+                    $receipt_id = $receipts->id;
+//                    $receipt = Customer_receipts::find($receipt_id);
+                    $receipt_amount = $receipts->settled_amount;
+                    $new_unsettle_amount = $receipt_amount + $difference;
+                    $receipts->settled_amount = $new_unsettle_amount;
+                    $receipts->save();
+                } else {
+                    $receiptObj = new Receipt();
+                    if ($receiptObj->save()) {
+                        $customerReceiptObj = new Customer_receipts();
+                        $customerReceiptObj->customer_id = $customer_id;
+                        $customerReceiptObj->settled_amount = $new_amount;
+                        $customerReceiptObj->debited_by_type = 1;
+                        $customerReceiptObj->receipt_id = $receiptObj->id;
+                        $customerReceiptObj->save();
+                    }
+                }
+                $customer_response['customer_details'] = ($receipts && count($receipts) > 0) ? Customer_receipts::where('customer_id', '=', $customer_id)->orderBy('created_at', 'DESC')->first() : array();
+                return json_encode($customer_response);
+            }
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+    }
+
+    /*   API due payment - settle amount
+     * 
+     * */
+
+    public function appsettleamount_admin() {
+        if (Input::has('customer')) {
+            $customers = (json_decode(Input::get('customer')));
+        }
+        if (count($customers) > 0) {
+            $customer_response = [];
+            foreach ($customers as $customer) {
+                $customer_id = $customer->customer_id;
+                $unsettle_amount = $customer->model_price;
+                $challan_id = $customer->challan_id;
+
+                if (isset($challan_id)) {
+                    $challan_obj = DeliveryChallan::find($challan_id);
+                    if ($challan_obj->settle_amount && $challan_obj->settle_amount != "") {
+                        $pre_amount = $challan_obj->settle_amount;
+                        $curr_amount = sprintf("%.2f", $unsettle_amount);
+                        $total_amount = $pre_amount + $curr_amount;
+                    } else {
+                        $total_amount = sprintf("%.2f", $unsettle_amount);
+                    }
+                    $challan_obj->settle_amount = sprintf("%.2f", $total_amount);
+                    ;
+                    $challan_obj->save();
+                    $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = DeliveryChallan::find($challan_id) : array();
+                    
+                }
+                return json_encode($customer_response);
+            }
+        } else {
+            return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
+        }
+    }
+
+    /*   API due payment - unsettle amount
+     * 
+     * */
+
+    public function appupdatesettleamount_admin() {
+        if (Input::has('customer')) {
+            $customers = (json_decode(Input::get('customer')));
+        }
+        if (count($customers) > 0) {
+            $customer_response = [];
+            foreach ($customers as $customer) {
+                $customer_id = $customer->customer_id;
+                $new_settle_amount = $customer->model_price;
+                $challan_id = $customer->challan_id;
+
+                if (isset($challan_id)) {                   
+                    if (isset($challan_id)) {
+                        $challan_obj = DeliveryChallan::find($challan_id);
+                        $challan_obj->settle_amount = sprintf("%.2f", $new_settle_amount);
+                        $challan_obj->save();
+                         $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = $challan_obj = DeliveryChallan::find($challan_id) : array();
+                    }
+                }
+            }
+            return json_encode($customer_response);
         } else {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
         }
