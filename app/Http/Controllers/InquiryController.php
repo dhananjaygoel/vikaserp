@@ -1050,7 +1050,7 @@ class InquiryController extends Controller {
                         'product_price' => ''
                     ];
                     foreach ($products as $product) {
-                        $mixed =  $product['weight']." * " .$product['thickness'];
+                        $mixed =  $product['thickness']." * " .$product['weight'];
                         $data_array[] = [
                             'value' => $mixed,
                             'id' => $product['id'],
