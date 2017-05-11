@@ -2930,6 +2930,91 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
     }
+    
+    
+    
+     /**
+     * App sync performance- loadedby
+     */
+    public function appSyncLoadedby() {
+
+        $data = Input::all();
+        $loadedby_response = [];
+        $customer_list = [];
+        if (Input::has('loadedby')) {
+            $loadedby = (json_decode($data['loadedby']));
+        }
+
+        if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '') {
+            $last_sync_date = Input::get('loadedby_sync_date');
+            $labour_server = LoadedBy::where('created_at', '>', $last_sync_date)->get();
+            $loadedby_response['labour_server_added'] = ($labour_server && count($labour_server) > 0) ? $labour_server : array();
+
+            $labour_updated_server = LoadedBy::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $loadedby_response['labour_server_updated'] = ($labour_updated_server && count($labour_updated_server) > 0) ? $labour_updated_server : array();
+        } else {
+            $labour_server = LoadedBy::get();
+            $loadedby_response['labour_server_added'] = ($labour_server && count($labour_server) > 0) ? $labour_server : array();
+        }
+
+        foreach ($loadedby as $key => $value) {
+            if ($value->server_id == 0) {
+                $labour_check = LoadedBy::where('phone_number', '=', $value->phone_number)
+                        ->where('first_name', '=', $value->first_name)
+                        ->where('last_name', '=', $value->last_name)
+                        ->first();
+               
+                if (!isset($labour_check->id)) {
+                    $labour = new LoadedBy();
+                    if (isset($value->first_name))
+                        $labour->first_name = $value->first_name;
+                    if (isset($value->last_name))
+                        $labour->last_name = $value->last_name;
+                    if (isset($value->password))
+                        $labour->password = Hash::make($value->password);
+                    if (isset($value->phone_number))
+                        $labour->phone_number = $value->phone_number;
+                    $labour->save();
+                    $labour_id = $labour->id;
+                   
+                }else{
+                     $labour_id = $labour_check->id;
+                }
+                 $loadedby_response[$value->id] = $labour_id;
+            } else {
+                $labour = LoadedBy::find($value->server_id);
+                if (isset($value->first_name) && $value->first_name != "")
+                    $labour->first_name = $value->first_name;
+                if (isset($value->last_name) && $value->last_name != "")
+                    $labour->last_name = $value->last_name;
+                if (isset($value->phone_number) && $value->phone_number != "")
+                    $labour->phone_number = $value->phone_number;
+                if (isset($value->password) && $value->password != "")
+                    $labour->password = Hash::make($value->password);
+                $labour_id = $labour->id;
+                $labour->save();
+                $loadedby_response[$value->server_id] = LoadedBy::find($labour->id);
+            }
+        }
+
+        if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '' && Input::get('loadedby_sync_date') != NULL) {
+//            $loadedby_response['labour_deleted'] = LoadedBy::withTrashed()->where('deleted_at', '>=', Input::get('loadedby_sync_date'))->select('id')->get();
+            $loadedby_response['labour_deleted'] = array();
+        }
+        $labour_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($labour_date))
+            $loadedby_response['latest_date'] = $labour_date->updated_at->toDateTimeString();
+        else
+            $loadedby_response['latest_date'] = "";
+
+        return json_encode($loadedby_response);
+    }
+    
+    
+    
+    
+    
+    
 
     /**
      * App sync Receipt Master

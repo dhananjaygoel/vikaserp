@@ -121,6 +121,7 @@ Route::get('appssyncgraph_delivery_challan', 'HomeController@appssyncgraph_deliv
 
 
 //app aproval process - inquiry
+
 //performance module- labours
 Route::get('appalllabours', 'HomeController@appalllabours');
 Route::post('appaddlabour', 'HomeController@appaddlabour');
@@ -132,6 +133,7 @@ Route::get('appallloadedby', 'HomeController@appallloadedby');
 Route::post('appaddloadedby', 'HomeController@appaddloadedby');
 Route::post('appupdateloadedby', 'HomeController@appupdateloadedby');
 Route::get('apploadedbyperformance', 'HomeController@apploadedbyperformance');
+Route::post('appSyncLoadedby', 'HomeController@appSyncLoadedby');
 
 
 //account module- Collection
