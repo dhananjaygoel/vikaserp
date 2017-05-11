@@ -69,6 +69,7 @@ Route::get('appinventory', 'HomeController@appinventory');
 Route::get('app_export_inventory', 'InventoryController@export_inventory');
 Route::get('app_export_salesdaybook', 'SalesDaybookController@export_sales_daybook');
 Route::get('app_export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
+Route::get('app_export_inventory_report', 'InventoryController@exportinventoryReport');
 
 Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
@@ -333,7 +334,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
     Route::get('print_customers_details', 'CustomerController@print_customer_details');
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
-
+   
 //    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
