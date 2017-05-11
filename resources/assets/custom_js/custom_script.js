@@ -11,15 +11,12 @@ $( document ).ready(function() {
     $('button[data-dismiss="modal"]').click(function () {
         $('input[type="password"]').val('');
     });
-    $.ajax({
-        url: baseurl + '/get-data',       
-        success: function (data) {
-           all_data = jQuery.parseJSON(data);
-//            $("#add_product_id_" + id).val(obj.data_array[0].id);
-//            console.log(all_data);
-                },
-    });
-    //alert(baseurl);
+//    $.ajax({
+//        url: baseurl + '/get-data',       
+//        success: function (data) {
+//           all_data = jQuery.parseJSON(data);
+//                },
+//    });
     
 });
 /*
@@ -577,6 +574,12 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
+     $.ajax({
+        url: baseurl + '/get-data',       
+        success: function (data) {
+           all_data = jQuery.parseJSON(data);
+                },
+    });
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
