@@ -1108,10 +1108,21 @@ class CustomerController extends Controller {
         }
         if(Auth::user()->role_id ==6){
             $territory_id = Input::get('territory_filter');
+            $user_id = Auth::user()->id;
+            $user_loc_arr = [];
+            $user_territory_arr = [];
+            $collection_user_locations = CollectionUser::where('user_id','=',$user_id)->get();
+            foreach ($collection_user_locations as $loc){
+                array_push($user_loc_arr, $loc->location_id);
+                if(!in_array($loc->teritory_id, $user_territory_arr)){
+                    array_push($user_territory_arr, $loc->teritory_id);
+                }                
+            }
+                        
             $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
                                     ->whereHas('delivery_challan', function ($query) {
                                     $query->where('challan_status','=', 'completed');
-                                    });
+                                    })->whereIn('delivery_location_id',$user_loc_arr);
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             if (isset($search) && !empty($search)) {
                 $term = '%' . $search . '%';            
