@@ -448,6 +448,7 @@
                                             <a href="#" class="btn btn-danger btn-sm" title="Reject" data-toggle="modal" data-target="#delete_orders_modal" onclick="reject_order_row({{$order->id}})">
                                                 Reject </a>
                                             @else
+                                            @if( Auth::user()->role_id <> 3 ||  Auth::user()->role_id <> 2 )
                                             <a href="{{url('orders/'.$order->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -461,7 +462,7 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
+                                            @endif
                                             @endif
                                         </td>
 
