@@ -1037,11 +1037,15 @@ class InquiryController extends Controller {
                         ->whereIn('id', $ids)
                         ->get();
                 $type_id = 1;                
+                $cat_id = 1;                
                 
                 if (isset($products[0]['product_category_id'])) {
                     $type_id = $products[0]['product_category_id'];                   
                 }
-
+                if (isset($products[0]['product_category']->product_type_id)) {
+                    $cat_id = $products[0]['product_category']->product_type_id;                  
+                }
+               
                 if (count($products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
@@ -1050,7 +1054,10 @@ class InquiryController extends Controller {
                         'product_price' => ''
                     ];
                     foreach ($products as $product) {
+                        
                         $mixed =  $product['thickness']." * " .$product['weight'];
+                        if($cat_id == 2)
+                            $mixed =  $product['weight'];
                         $data_array[] = [
                             'value' => $mixed,
                             'id' => $product['id'],
