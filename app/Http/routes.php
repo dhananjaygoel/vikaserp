@@ -70,6 +70,7 @@ Route::get('app_export_inventory', 'InventoryController@export_inventory');
 Route::get('app_export_salesdaybook', 'SalesDaybookController@export_sales_daybook');
 Route::get('app_export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
 Route::get('app_export_inventory_report', 'InventoryController@exportinventoryReport');
+Route::get('app_export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
 
 Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
