@@ -492,9 +492,12 @@ function create_purchase_challan_function() {
 /**
  * calutate_pending_order
  */
-function calutate_pending_order(qty, key) {   
+function calutate_pending_order(qty, key) {
 
     var shipping = $('#present_shipping' + key).val();
+    if (shipping == "") {
+        shipping = 0;
+    }
     var pending = $('#pending_order_org' + key).val();
     if (parseInt(shipping) <= parseInt(qty)) {
         $('#pending_order_' + key).val(qty - shipping);
@@ -1085,7 +1088,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
             $('#existing_customer_name').addClass('error_validation');
             $('.uploader').addClass('error_validation');
             status_form = 1;
-        }else{
+        } else {
             $('.uploader').removeClass('error_validation');
         }
         if ($('#add_order_location').val() == '0') {
@@ -1122,7 +1125,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     $('#add_product_name_' + i).addClass('error_validation');
                     $('#product_all_' + i).addClass('error_validation');
                     status_form = 1;
-                }else{
+                } else {
                     $('#product_all_' + i).removeClass('error_validation');
                 }
                 if ($("#quantity_" + i).val() == "") {
@@ -1140,7 +1143,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_product_name_1').addClass('error_validation');
                 $('#product_all_1').addClass('error_validation');
-            }else{
+            } else {
                 $('#product_all_1').removeClass('error_validation');
             }
             if ($("#quantity_1").val() == 0) {
