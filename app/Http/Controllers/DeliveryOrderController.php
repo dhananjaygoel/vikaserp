@@ -103,7 +103,7 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-        $delivery_data = $q->with('delivery_product', 'customer', 'order_details')->paginate(20);
+        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer')->paginate(20);
         $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
@@ -579,7 +579,7 @@ class DeliveryOrderController extends Controller {
      */
 
     public function store_delivery_challan_vat_wise($input_data, $id = "", $refid = NULL) {
-        
+
         $delivery_challan = new DeliveryChallan();
         $delivery_challan->order_id = $input_data['order_id'];
         $delivery_challan->delivery_order_id = $id;
@@ -622,19 +622,19 @@ class DeliveryOrderController extends Controller {
         }
         $delivery_challan->save();
         $delivery_challan_id = $delivery_challan->id;
-        if(isset($input_data['loaded_by'])){
+        if (isset($input_data['loaded_by'])) {
             $loaders = $input_data['loaded_by'];
-            foreach ($loaders as $loader){
-                $loaderObj = new DeliveryChallanLoadedBy(); 
+            foreach ($loaders as $loader) {
+                $loaderObj = new DeliveryChallanLoadedBy();
                 $loaderObj->delivery_challan_id = $delivery_challan_id;
                 $loaderObj->loaded_by_id = $loader;
                 $loaderObj->save();
             }
         }
-        if(isset($input_data['labour'])){
+        if (isset($input_data['labour'])) {
             $labours = $input_data['labour'];
-            foreach ($labours as $labour){
-                $labourObj = new App\DeliveryChallanLabours(); 
+            foreach ($labours as $labour) {
+                $labourObj = new App\DeliveryChallanLabours();
                 $labourObj->delivery_challan_id = $delivery_challan_id;
                 $labourObj->labours_id = $labour;
                 $labourObj->save();
@@ -1006,34 +1006,29 @@ class DeliveryOrderController extends Controller {
 
                         if (isset($popv)) {
                             $product_size = ProductSubCategory::find($popv->product_category_id);
-
-//                        $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
-//                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
-
-                            $do = DeliveryOrder::find($popv->order_id);
-                            $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
-//                            if(isset($prd_details[0]))
-//                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
-//                            else
-//                              $pending_order_temp =0;  
-//                                
-//                            if($pending_order ==0){
-//                                $pending_order = $pending_order_temp;
-//                            }
-//                            else{
-//                                $pending_order = $pending_order + $pending_order_temp;
-//                            }    
-
-
                             if ($popv->unit_id == 1) {
                                 $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+                                foreach ($del_order['track_order_product'] as $track_order_product) {
+                                    if ($popv->parent == $track_order_product->id) {
+                                        $prd_details = $track_order_product;
+                                    }
+                                }
+                                $is_slice = 0;
+                                $total_old_shipping = 0;
+                                foreach ($del_order['track_do_product'] as $track_do_product) {
 
-                                $do = DeliveryOrder::find($popv->order_id);
-                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+                                    if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
+                                        $is_slice++;
+                                        $total_old_shipping += $track_do_product->present_shipping;
+                                    }
+                                }
+                                if (isset($prd_details)) {
+                                    if ($is_slice == 0)
+                                        $pending_order_temp = $prd_details->quantity - $popv->quantity;
+                                    else
+                                        $pending_order_temp = $prd_details->quantity - $popv->quantity - $total_old_shipping;
 
-                                if (isset($prd_details[0])) {
-                                    $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
@@ -1043,18 +1038,29 @@ class DeliveryOrderController extends Controller {
                             } elseif ($popv->unit_id == 2) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+                                foreach ($del_order['track_order_product'] as $track_order_product) {
+                                    if ($popv->parent == $track_order_product->id) {
+                                        $prd_details = $track_order_product;
+                                    }
+                                }
+                                $is_slice = 0;
+                                $total_old_shipping = 0;
+                                foreach ($del_order['track_do_product'] as $track_do_product) {
 
-                                $do = DeliveryOrder::find($popv->order_id);
-                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
-
-                                if (isset($prd_details[0])) {
-                                    if ($prd_details[0]->quantity > $popv->quantity)
-                                        $remaining = $prd_details[0]->quantity - $popv->quantity;
-                                    else
-                                        $remaining = 0;
-
+                                    if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
+                                        $is_slice++;
+                                        $total_old_shipping += $track_do_product->present_shipping;
+                                    }
+                                }
+                                if (isset($prd_details)) {
+                                    $remaining = 0;
+                                    if ($prd_details->quantity > $popv->quantity) {
+                                        if ($is_slice == 0)
+                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                        else
+                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                    }
                                     $pending_order_temp = ($remaining * $product_size->weight);
-
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
@@ -1066,15 +1072,31 @@ class DeliveryOrderController extends Controller {
                                 $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
 
-                                $do = DeliveryOrder::find($popv->order_id);
+                                foreach ($del_order['track_order_product'] as $track_order_product) {
+                                    if ($popv->parent == $track_order_product->id) {
+                                        $prd_details = $track_order_product;
+                                    }
+                                }
+                                $is_slice = 0;
+                                $total_old_shipping = 0;
+                                foreach ($del_order['track_do_product'] as $track_do_product) {
 
-                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+                                    if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
+                                        $is_slice++;
+                                        $total_old_shipping += $track_do_product->present_shipping;
+                                    }
+                                }
 
-                                if (isset($prd_details[0])) {
-                                    if ($prd_details[0]->quantity > $popv->quantity)
-                                        $remaining = $prd_details[0]->quantity - $popv->quantity;
-                                    else
-                                        $remaining = 0;
+                                if (isset($prd_details)) {
+                                    $remaining = 0;
+                                    if ($prd_details->quantity > $popv->quantity) {
+                                        if ($is_slice == 0)
+                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                        else
+                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                    }
+
+
                                     $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
 
                                     if ($pending_order == 0) {
@@ -1092,8 +1114,6 @@ class DeliveryOrderController extends Controller {
                     }
                 }
 
-
-
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
                 $delivery_orders[$key]['pending_order'] = ($pending_order < 0 ? 0 : $pending_order);
@@ -1101,6 +1121,115 @@ class DeliveryOrderController extends Controller {
         }
         return $delivery_orders;
     }
+
+//    function checkpending_quantity($delivery_orders) {
+//
+//        if (count($delivery_orders) > 0) {
+//            foreach ($delivery_orders as $key => $del_order) {
+//                $delivery_order_quantity = 0;
+//                $delivery_order_present_shipping = 0;
+//                $pending_order_temp = 0;
+//                $pending_order = 0;
+//                if (count($del_order['delivery_product']) > 0) {
+//                    foreach ($del_order['delivery_product'] as $popk => $popv) {
+//
+//                        if (isset($popv)) {
+//                            $product_size = ProductSubCategory::find($popv->product_category_id);
+//
+////                        $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+////                            $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+//
+//                            $do = DeliveryOrder::find($popv->order_id);
+//                            $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+////                            if(isset($prd_details[0]))
+////                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+////                            else
+////                              $pending_order_temp =0;  
+////                                
+////                            if($pending_order ==0){
+////                                $pending_order = $pending_order_temp;
+////                            }
+////                            else{
+////                                $pending_order = $pending_order + $pending_order_temp;
+////                            }    
+//
+//
+//                            if ($popv->unit_id == 1) {
+//                                $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
+//                                $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+//
+//                                $do = DeliveryOrder::find($popv->order_id);
+//                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+//
+//                                if (isset($prd_details[0])) {
+//                                    $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
+//                                    if ($pending_order == 0) {
+//                                        $pending_order = $pending_order_temp;
+//                                    } else {
+//                                        $pending_order = $pending_order + $pending_order_temp;
+//                                    }
+//                                }
+//                            } elseif ($popv->unit_id == 2) {
+//                                $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+//                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+//
+//                                $do = DeliveryOrder::find($popv->order_id);
+//                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+//
+//                                if (isset($prd_details[0])) {
+//                                    if ($prd_details[0]->quantity > $popv->quantity)
+//                                        $remaining = $prd_details[0]->quantity - $popv->quantity;
+//                                    else
+//                                        $remaining = 0;
+//
+//                                    $pending_order_temp = ($remaining * $product_size->weight);
+//
+//                                    if ($pending_order == 0) {
+//                                        $pending_order = $pending_order_temp;
+//                                    } else {
+//                                        $pending_order = $pending_order + $pending_order_temp;
+//                                    }
+//                                }
+//                            } elseif ($popv->unit_id == 3) {
+//
+//                                $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+//                                $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+//
+//                                $do = DeliveryOrder::find($popv->order_id);
+//
+//                                $prd_details = AllOrderProducts::where('order_id', '=', $do->order_id)->where('order_type', '=', 'order')->where('product_category_id', '=', $popv->product_category_id)->get();
+//
+//                                if (isset($prd_details[0])) {
+//                                    if ($prd_details[0]->quantity > $popv->quantity)
+//                                        $remaining = $prd_details[0]->quantity - $popv->quantity;
+//                                    else
+//                                        $remaining = 0;
+//                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+//
+//                                    if ($pending_order == 0) {
+//                                        $pending_order = $pending_order_temp;
+//                                    } else {
+//                                        $pending_order = $pending_order + $pending_order_temp;
+//                                    }
+//                                }
+//                            }
+//                        } else {
+//                            $delivery_order_quantity = 0;
+//                            $delivery_order_present_shipping = 0;
+//                            $pending_order = 0;
+//                        }
+//                    }
+//                }
+//
+//
+//
+//                $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
+//                $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
+//                $delivery_orders[$key]['pending_order'] = ($pending_order < 0 ? 0 : $pending_order);
+//            }
+//        }
+//        return $delivery_orders;
+//    }
 
     /* Function used to export dilivery order list based on order status */
 
