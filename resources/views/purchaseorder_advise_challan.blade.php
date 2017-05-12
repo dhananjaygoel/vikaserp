@@ -80,11 +80,14 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group meter_list_{{$key}}" {{($products->unit_id==3)?'':'style=display:none'}}>
-                                    <!--<input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">-->
-                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
+                                <div class="form-group {{$key}}">
+                                      <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
                                 </div>
-                                <div class = "form-group kg_list_{{$key}}" {{($products->unit_id==1)?'':'style=display:none'}}>
+<!--                                <div class="form-group meter_list_{{$key}}" {{($products->unit_id==3)?'':'style=display:none'}}>
+                                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">
+                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
+                                </div>-->
+<!--                                <div class = "form-group kg_list_{{$key}}" {{($products->unit_id==1)?'':'style=display:none'}}>
                                     <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
                                         <?php for ($n = 50; $n <= 15000; $n++) { ?>
                                             <option {{($products->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
@@ -103,7 +106,7 @@
                                         }
                                         ?>                                                 
                                     </select>
-                                </div>
+                                </div>-->
                             </td>
 
                             <td>
