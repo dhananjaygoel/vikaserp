@@ -2354,10 +2354,10 @@ class HomeController extends Controller {
                 return;
             }
 
-
+           
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
+                $str = "Dear " . (isset($customer[0]->customer_name)?$customer[0]->customer_name:$customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                 foreach ($inquiryproduct as $product_data) {
 
                     if (isset($product_data->product_name)) {
@@ -2385,7 +2385,7 @@ class HomeController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = \Config::get('smsdata.send_sms_to');
                 } else {
-                    $phone_number = $customer[0]->customer_mobile;
+                    $phone_number = isset($customer[0]->customer_mobile)?$customer[0]->phone_number1:'';
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
