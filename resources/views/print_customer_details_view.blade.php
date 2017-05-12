@@ -122,9 +122,10 @@
     <?php //dd($delivery_challans); ?>
     <tbody>                                        
             @if(isset($delivery_challans) && count($delivery_challans)>0 && $delivery_challans!="")
+            <?php $i=1;?>
             @foreach($delivery_challans as $challan)
                 <?php
-                    $i=1;$total_due_amount=0; $settled_amount=0;                                            
+                    $total_due_amount=0; $settled_amount=0;                                            
                 ?>
                 <?php    
                     $total_due_amount=$total_due_amount+$challan->grand_price;                                                

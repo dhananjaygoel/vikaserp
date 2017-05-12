@@ -1176,18 +1176,20 @@ class CustomerController extends Controller {
         $customer = '';
         $id = Input::get('customer_id');
         $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id);        
+        $credit_period=$customer->credit_period;
         $settle_filter = Input::get('settle_filter');
         $date_filter = Input::get('date_filter');
         $delivery_challans = DeliveryChallan::where('customer_id','=',$id)                                              
-                                             ->whereRaw('grand_price!=settle_amount')->get();                            
+                                             ->whereRaw('grand_price!=settle_amount');                            
         if (isset($settle_filter) && $settle_filter!='' && $settle_filter=='Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
-                                              ->whereRaw('grand_price=settle_amount')->get();
+                                ->whereRaw('grand_price=settle_amount');                             
         }
         if (isset($settle_filter) && $settle_filter== 'Unsettled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
-                                              ->whereRaw('grand_price != settle_amount')->get();
-        }
+                                              ->whereRaw('grand_price != settle_amount');
+        }        
+        
         if (isset($date_filter) && !empty($date_filter)) {
                 if($date_filter==1){
                     $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= CURDATE()");
@@ -1201,10 +1203,9 @@ class CustomerController extends Controller {
             }else{
                 $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= CURDATE()");
         }
-        $city = City::all();
+        $delivery_challans=$delivery_challans->get();
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return View('print_customer_details_view')->with('customer',$customer)
-                                            ->with('city',$city)
+        return View('print_customer_details_view')->with('customer',$customer)                                            
                                             ->with('delivery_challans',$delivery_challans)
                                             ->with('delivery_location',$delivery_location);
     }
