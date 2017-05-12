@@ -492,9 +492,9 @@ function create_purchase_challan_function() {
 /**
  * calutate_pending_order
  */
-function calutate_pending_order(qty, key) {
+function calutate_pending_order(qty, key) {   
 
-    var shipping = $('#present_shipping_' + key).val();
+    var shipping = $('#present_shipping' + key).val();
     var pending = $('#pending_order_org' + key).val();
     if (parseInt(shipping) <= parseInt(qty)) {
         $('#pending_order_' + key).val(qty - shipping);
