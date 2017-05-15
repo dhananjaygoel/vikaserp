@@ -3280,10 +3280,10 @@ class HomeController extends Controller {
         $collection_response = [];
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
             $last_sync_date = Input::get('collection_sync_date');
-            $collection_added_server = User::where('created_at', '>', $last_sync_date)->with('locations.location_data')->get();
+            $collection_added_server = User::where('created_at', '>', $last_sync_date)->where('role_id','6')->with('locations.location_data')->get();
             $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
 
-            $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('locations.location_data')->get();
+            $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('role_id','6')->with('locations.location_data')->get();
             $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
         } else {
             $collection_added_server = User::with('locations.location_data')->get();
