@@ -2354,7 +2354,7 @@ class HomeController extends Controller {
                 return;
             }
 
-
+            
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->customer_name) ? $customer[0]->customer_name : $customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
@@ -2385,7 +2385,7 @@ class HomeController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = \Config::get('smsdata.send_sms_to');
                 } else {
-                    $phone_number = isset($customer[0]->customer_mobile) ? $customer[0]->phone_number1 : '';
+                    $phone_number = isset($customer[0]->customer_mobile) ? $customer[0]->customer_mobile : $customer[0]->phone_number1;
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -2394,6 +2394,10 @@ class HomeController extends Controller {
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
+                    echo "<pre>";
+                    print_r($url);
+                    echo "</pre>";
+                    exit;
                 }
             }
 
