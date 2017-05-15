@@ -59,10 +59,12 @@ class LabourController extends Controller {
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
 
-            $labours = \App\Labour::orderBy('first_name', 'asc')
-                    ->where('first_name', 'like', $term)
+            $labours = Labour::orderBy('first_name', 'asc')
+            ->where(function($query) use ($term) {
+                        $query->where('first_name', 'like', $term)
                     ->orWhere('last_name', 'like', $term)
-                    ->orWhere('phone_number', 'like', $term)
+                    ->orWhere('phone_number', 'like', $term);
+                    })                    
                     ->paginate(20);
         } else {
             $labours = Labour::orderBy('updated_at', 'desc')->paginate(20);
@@ -335,7 +337,7 @@ class LabourController extends Controller {
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
 
-       
+
         $final_array = array();
         $k = 0;
         foreach ($labours as $key => $labour) {
