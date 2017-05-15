@@ -2393,11 +2393,7 @@ class HomeController extends Controller {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                    echo "<pre>";
-                    print_r($url);
-                    echo "</pre>";
-                    exit;
+                    curl_close($ch);                   
                 }
             }
 
