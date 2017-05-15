@@ -2354,10 +2354,10 @@ class HomeController extends Controller {
                 return;
             }
 
-           
+
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . (isset($customer[0]->customer_name)?$customer[0]->customer_name:$customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
+                $str = "Dear " . (isset($customer[0]->customer_name) ? $customer[0]->customer_name : $customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                 foreach ($inquiryproduct as $product_data) {
 
                     if (isset($product_data->product_name)) {
@@ -2385,7 +2385,7 @@ class HomeController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = \Config::get('smsdata.send_sms_to');
                 } else {
-                    $phone_number = isset($customer[0]->customer_mobile)?$customer[0]->phone_number1:'';
+                    $phone_number = isset($customer[0]->customer_mobile) ? $customer[0]->phone_number1 : '';
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -2930,10 +2930,8 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
     }
-    
-    
-    
-     /**
+
+    /**
      * App sync performance- loadedby
      */
     public function appSyncLoadedby() {
@@ -2963,7 +2961,7 @@ class HomeController extends Controller {
                         ->where('first_name', '=', $value->first_name)
                         ->where('last_name', '=', $value->last_name)
                         ->first();
-               
+
                 if (!isset($labour_check->id)) {
                     $labour = new LoadedBy();
                     if (isset($value->first_name))
@@ -2976,11 +2974,10 @@ class HomeController extends Controller {
                         $labour->phone_number = $value->phone_number;
                     $labour->save();
                     $labour_id = $labour->id;
-                   
-                }else{
-                     $labour_id = $labour_check->id;
+                }else {
+                    $labour_id = $labour_check->id;
                 }
-                 $loadedby_response[$value->id] = $labour_id;
+                $loadedby_response[$value->id] = $labour_id;
             } else {
                 $labour = LoadedBy::find($value->server_id);
                 if (isset($value->first_name) && $value->first_name != "")
@@ -3009,21 +3006,19 @@ class HomeController extends Controller {
 
         return json_encode($loadedby_response);
     }
-    
-    
-    
+
     /**
      * App Loaded by Master delete
      */
-    public function appSyncLoadedbydelete() {       
+    public function appSyncLoadedbydelete() {
         $input_data = Input::all();
         $loadedby = (json_decode($input_data['loadedby_deleted']));
 
         if (count($loadedby) > 0) {
             foreach ($loadedby as $loadedby) {
-                $loadedby_data = LoadedBy::find($loadedby); 
+                $loadedby_data = LoadedBy::find($loadedby);
                 if ($loadedby_data) {
-                   
+
                     $loadedby_dcs = \App\DeliveryChallanLoadedBy::where('loaded_by_id', '=', $loadedby)->get();
                     foreach ($loadedby_dcs as $loadedby_dc) {
                         $loadedby_dc->delete();
@@ -3036,8 +3031,6 @@ class HomeController extends Controller {
             return json_encode(array('result' => false, 'message' => 'Nothing to delete. Please provide valid records to delete'));
         }
     }
-    
-    
 
     /**
      * App sync Receipt Master
@@ -3372,7 +3365,7 @@ class HomeController extends Controller {
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
             $collection_response['collection_deleted'] = array();
         }
-        $collection_date = User::select('updated_at')->
+        $collection_date = User::select('updated_at')->where('role_id','6')->
                         orderby('updated_at', 'DESC')->first();
         if (!empty($collection_date))
             $collection_response['latest_date'] = $collection_date->updated_at->toDateTimeString();
@@ -3440,6 +3433,11 @@ class HomeController extends Controller {
         $city_date = City::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $state_date = States::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $inventory_date = Inventory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $collection_user_date = User::select('updated_at')->where('role_id', '6')->orderby('updated_at', 'DESC')->first();
+        $terriroty_date = Territory::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        
+        $loadedby_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
 
         $sync = [];
         $syncdata = ( json_decode(Input::get('sync_info'), true) );
@@ -3473,14 +3471,25 @@ class HomeController extends Controller {
             if ($synckey == 'user' && !empty($user_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $user_date->updated_at->toDateTimeString()];
 
+            if ($synckey == 'collection_user' && !empty($collection_user_date))
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $collection_user_date->updated_at->toDateTimeString()];
+            
+            if ($synckey == 'territory' && !empty($terriroty_date))
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $terriroty_date->updated_at->toDateTimeString()];
+            
+            if ($synckey == 'labour_list' && !empty($labour_date))
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $labour_date->updated_at->toDateTimeString()];
+            
+            if ($synckey == 'loadedby_list' && !empty($loadedby_date))
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $loadedby_date->updated_at->toDateTimeString()];
+
             if ($synckey == 'product_cat' && !empty($product_category))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_category->updated_at->toDateTimeString()];
             if ($synckey == 'product_sub_cat' && !empty($product_subcategory_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $product_subcategory_date->updated_at->toDateTimeString
                     ()];
             if ($synckey == 'location' && !empty($location_date))
-                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $location_date->updated_at->
-                            toDateTimeString()];
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $location_date->updated_at->toDateTimeString()];
             if ($synckey == 'city' && !empty($city_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $city_date->updated_at->
                             toDateTimeString()];
@@ -6732,7 +6741,6 @@ class HomeController extends Controller {
                     ;
                     $challan_obj->save();
                     $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = DeliveryChallan::find($challan_id) : array();
-                    
                 }
                 return json_encode($customer_response);
             }
@@ -6756,12 +6764,12 @@ class HomeController extends Controller {
                 $new_settle_amount = $customer->model_price;
                 $challan_id = $customer->challan_id;
 
-                if (isset($challan_id)) {                   
+                if (isset($challan_id)) {
                     if (isset($challan_id)) {
                         $challan_obj = DeliveryChallan::find($challan_id);
                         $challan_obj->settle_amount = sprintf("%.2f", $new_settle_amount);
                         $challan_obj->save();
-                         $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = $challan_obj = DeliveryChallan::find($challan_id) : array();
+                        $customer_response['settle_details'] = ($challan_obj && count($challan_obj) > 0) ? $challan_obj = $challan_obj = DeliveryChallan::find($challan_id) : array();
                     }
                 }
             }
