@@ -3229,7 +3229,7 @@ class HomeController extends Controller {
         if (Input::has('territory_sync_date') && Input::get('territory_sync_date') != '' && Input::get('territory_sync_date') != NULL) {
             $territory_response['territory_deleted'] = Territory::withTrashed()->where('deleted_at', '>=', Input::get('territory_sync_date'))->select('id')->get();
         }
-        $territory_date = Territory::withTrashed()->select('updated_at')->
+        $territory_date = TerritoryLocation::withTrashed()->select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
         if (!empty($territory_date))
             $territory_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
