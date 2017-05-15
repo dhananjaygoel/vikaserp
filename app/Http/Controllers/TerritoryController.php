@@ -21,9 +21,7 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function __construct() {
-
         date_default_timezone_set("Asia/Calcutta");
-        
     }
 
     public function index() {
@@ -128,7 +126,7 @@ class TerritoryController extends Controller {
         }
         $territory = Territory::find($id);
         $territory->teritory_name = $request->input('territory_name');
-        $territory->save();
+
 
         $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
         foreach ($territory_loc as $loc) {
@@ -142,6 +140,9 @@ class TerritoryController extends Controller {
             $territory_loc->location_id = $loc;
             $territory_loc->save();
         }
+
+        $territory->updated_at = $territory_loc->updated_at;
+        $territory->save();
 
         return redirect('territory')->with('flash_success_message', 'Territory successfully modified.');
     }
