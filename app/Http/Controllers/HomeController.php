@@ -3363,7 +3363,7 @@ class HomeController extends Controller {
             }
         }
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
-            $collection_response['collection_deleted'] = array();
+            $collection_response['collection_deleted'] = User::where('role_id','6')->select('id')->get();;
         }
         $collection_date = User::select('updated_at')->where('role_id','6')->
                         orderby('updated_at', 'DESC')->first();
