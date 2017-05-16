@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LoadedBy extends Model {
 
     protected $table = 'loaded_bies';
+
+    use SoftDeletes;
 
     public function delivery_challans() {
         return $this->belongsTo('App\DeliveryChallanLoadedBy', 'id', 'loaded_by_id');

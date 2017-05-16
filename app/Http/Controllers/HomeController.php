@@ -2354,7 +2354,7 @@ class HomeController extends Controller {
                 return;
             }
 
-            
+
             if (count($customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->customer_name) ? $customer[0]->customer_name : $customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
@@ -2393,7 +2393,7 @@ class HomeController extends Controller {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);                   
+                    curl_close($ch);
                 }
             }
 
@@ -2942,7 +2942,7 @@ class HomeController extends Controller {
         if (Input::has('loadedby')) {
             $loadedby = (json_decode($data['loadedby']));
         }
-
+        
         if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '') {
             $last_sync_date = Input::get('loadedby_sync_date');
             $labour_server = LoadedBy::where('created_at', '>', $last_sync_date)->get();
@@ -2980,23 +2980,25 @@ class HomeController extends Controller {
                 $loadedby_response[$value->id] = $labour_id;
             } else {
                 $labour = LoadedBy::find($value->server_id);
-                if (isset($value->first_name) && $value->first_name != "")
-                    $labour->first_name = $value->first_name;
-                if (isset($value->last_name) && $value->last_name != "")
-                    $labour->last_name = $value->last_name;
-                if (isset($value->phone_number) && $value->phone_number != "")
-                    $labour->phone_number = $value->phone_number;
-                if (isset($value->password) && $value->password != "")
-                    $labour->password = Hash::make($value->password);
-                $labour_id = $labour->id;
-                $labour->save();
-                $loadedby_response[$value->server_id] = LoadedBy::find($labour->id);
+                if (count($labour) > 0) {
+                    if (isset($value->first_name) && $value->first_name != "")
+                        $labour->first_name = $value->first_name;
+                    if (isset($value->last_name) && $value->last_name != "")
+                        $labour->last_name = $value->last_name;
+                    if (isset($value->phone_number) && $value->phone_number != "")
+                        $labour->phone_number = $value->phone_number;
+                    if (isset($value->password) && $value->password != "")
+                        $labour->password = Hash::make($value->password);
+                    $labour_id = $labour->id;
+                    $labour->save();
+                    $loadedby_response[$value->server_id] = LoadedBy::find($labour->id);
+                }                
             }
         }
 
         if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '' && Input::get('loadedby_sync_date') != NULL) {
-//            $loadedby_response['labour_deleted'] = LoadedBy::withTrashed()->where('deleted_at', '>=', Input::get('loadedby_sync_date'))->select('id')->get();
-            $loadedby_response['labour_deleted'] = array();
+            $loadedby_response['labour_deleted'] = LoadedBy::withTrashed()->where('deleted_at', '>=', Input::get('loadedby_sync_date'))->select('id')->get();           
+//            $loadedby_response['labour_deleted'] = array();
         }
         $labour_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($labour_date))
@@ -3232,10 +3234,10 @@ class HomeController extends Controller {
         $territory_date = Territory::withTrashed()->select('updated_at')->orderby('updated_at', 'DESC')->first();
         $territory_date_tl = TerritoryLocation::select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
-        if($territory_date_tl->updated_at > $territory_date->updated_at){
+        if ($territory_date_tl->updated_at > $territory_date->updated_at) {
             $territory_date = $territory_date_tl;
         }
-        
+
         if (!empty($territory_date))
             $territory_response['latest_date'] = $territory_date->updated_at->toDateTimeString();
         else
@@ -3285,10 +3287,10 @@ class HomeController extends Controller {
         $collection_response = [];
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
             $last_sync_date = Input::get('collection_sync_date');
-            $collection_added_server = User::where('created_at', '>', $last_sync_date)->where('role_id','6')->with('locations.location_data')->get();
+            $collection_added_server = User::where('created_at', '>', $last_sync_date)->where('role_id', '6')->with('locations.location_data')->get();
             $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
 
-            $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('role_id','6')->with('locations.location_data')->get();
+            $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('role_id', '6')->with('locations.location_data')->get();
             $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
         } else {
             $collection_added_server = User::with('locations.location_data')->get();
@@ -3299,9 +3301,9 @@ class HomeController extends Controller {
         if (isset($collections)) {
             foreach ($collections as $key => $value) {
                 if ($value->collection_server_id > 0) {
-                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->where('id','<>',$value->collection_server_id)->first();                    
                     if (isset($collection_check->id)) {
-                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                        $collection_response[$value->local_collection_id] = 0;
                     } else {
                         $collection = User::find($value->collection_server_id);
                         if ($value->updated_at >= $collection->updated_at) {
@@ -3325,7 +3327,7 @@ class HomeController extends Controller {
                                     $collection_loc = new CollectionUser();
                                     $collection_loc->user_id = $value->collection_server_id;
                                     $collection_loc->location_id = $product_data->location_id;
-                                    $collection_loc->teritory_id = $product_data->teritory_id;
+                                    $collection_loc->teritory_id = $product_data->teritory_server_id;
                                     $collection_loc->save();
                                 }
                             }
@@ -3337,7 +3339,7 @@ class HomeController extends Controller {
 
                     $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
                     if (isset($collection_check->id)) {
-                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                        $collection_response[$value->local_collection_id] = 0;
                     } else {
                         $Users_data = new User();
                         $Users_data->role_id = 6;
@@ -3358,7 +3360,7 @@ class HomeController extends Controller {
                                 $collection_loc = new CollectionUser();
                                 $collection_loc->user_id = $collection_id;
                                 $collection_loc->location_id = $product_data->location_id;
-                                $collection_loc->teritory_id = $product_data->teritory_id;
+                                $collection_loc->teritory_id = $product_data->teritory_server_id;
                                 $collection_loc->save();
                             }
                         }
@@ -3368,9 +3370,10 @@ class HomeController extends Controller {
             }
         }
         if (Input::has('collection_sync_date') && Input::get('collection_sync_date') != '' && Input::get('collection_sync_date') != NULL) {
-            $collection_response['collection_non_deleted'] = User::where('role_id','6')->select('id')->get();;
+            $collection_response['collection_non_deleted'] = User::where('role_id', '6')->select('id')->get();
+            ;
         }
-        $collection_date = User::select('updated_at')->where('role_id','6')->
+        $collection_date = User::select('updated_at')->where('role_id', '6')->
                         orderby('updated_at', 'DESC')->first();
         if (!empty($collection_date))
             $collection_response['latest_date'] = $collection_date->updated_at->toDateTimeString();
@@ -3441,7 +3444,7 @@ class HomeController extends Controller {
         $collection_user_date = User::select('updated_at')->where('role_id', '6')->orderby('updated_at', 'DESC')->first();
         $terriroty_date = Territory::select('updated_at')->orderby('updated_at', 'DESC')->first();
         $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
-        
+
         $loadedby_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
 
         $sync = [];
@@ -3478,13 +3481,13 @@ class HomeController extends Controller {
 
             if ($synckey == 'collection_user' && !empty($collection_user_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $collection_user_date->updated_at->toDateTimeString()];
-            
+
             if ($synckey == 'territory' && !empty($terriroty_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $terriroty_date->updated_at->toDateTimeString()];
-            
+
             if ($synckey == 'labour_list' && !empty($labour_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $labour_date->updated_at->toDateTimeString()];
-            
+
             if ($synckey == 'loadedby_list' && !empty($loadedby_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $loadedby_date->updated_at->toDateTimeString()];
 
@@ -6021,7 +6024,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => round($data['tonnage'], 2),
+                            'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):'0'),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }

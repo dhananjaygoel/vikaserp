@@ -32,4 +32,3 @@ return array(
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
     '' => array($vendorDir . '/packfire/php5.3-compat/src'),
 );
- 
