@@ -3327,7 +3327,7 @@ class HomeController extends Controller {
                                     $collection_loc = new CollectionUser();
                                     $collection_loc->user_id = $value->collection_server_id;
                                     $collection_loc->location_id = $product_data->location_id;
-                                    $collection_loc->teritory_id = $product_data->teritory_id;
+                                    $collection_loc->teritory_id = $product_data->teritory_server_id;
                                     $collection_loc->save();
                                 }
                             }
@@ -3360,7 +3360,7 @@ class HomeController extends Controller {
                                 $collection_loc = new CollectionUser();
                                 $collection_loc->user_id = $collection_id;
                                 $collection_loc->location_id = $product_data->location_id;
-                                $collection_loc->teritory_id = $product_data->teritory_id;
+                                $collection_loc->teritory_id = $product_data->teritory_server_id;
                                 $collection_loc->save();
                             }
                         }
