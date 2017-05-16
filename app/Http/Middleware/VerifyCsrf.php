@@ -92,6 +92,8 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appchangeunsettledamount_admin',        
         'appsettleamount_admin',        
         'appupdatesettleamount_admin',        
+        'graph_order_temp',        
+        'graph-order',        
     ];
 
     /**

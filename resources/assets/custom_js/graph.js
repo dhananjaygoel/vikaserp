@@ -1,5 +1,5 @@
- 
-$(document).ready(function () {    
+
+$(document).ready(function () {
     $("#inquiry").removeClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
@@ -7,7 +7,7 @@ $(document).ready(function () {
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
             $("#inquiry").removeClass('loading_graph');
-            $(".dashboard-nav").removeClass ('nav-small');
+            $(".dashboard-nav").removeClass('nav-small');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'inquiry',
@@ -20,7 +20,7 @@ $(document).ready(function () {
                     {day: data[4]['day'], pipe: data[4]['pipe'], structure: data[4]['structure']},
                     {day: data[5]['day'], pipe: data[5]['pipe'], structure: data[5]['structure']},
                     {day: data[6]['day'], pipe: data[6]['pipe'], structure: data[6]['structure']},
-                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
+//                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
                 ],
                 // The name of the data record attribute that contains x-values.
                 xkey: 'day',
@@ -46,14 +46,14 @@ $(document).ready(function () {
 
 
 
-    var baseurl = $('#baseurl').attr('name');   
+    var baseurl = $('#baseurl').attr('name');
     $("#order").addClass('loading_graph');
     $.ajax({
-        type: 'get', url: baseurl + '/graph-order',
+        type: 'post', url: baseurl + '/graph-order',
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
             $("#order").removeClass('loading_graph');
-            $(".dashboard-nav").removeClass ('nav-small');
+            $(".dashboard-nav").removeClass('nav-small');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'order',
@@ -66,7 +66,7 @@ $(document).ready(function () {
                     {day: data[4]['day'], pipe: data[4]['pipe'], structure: data[4]['structure']},
                     {day: data[5]['day'], pipe: data[5]['pipe'], structure: data[5]['structure']},
                     {day: data[6]['day'], pipe: data[6]['pipe'], structure: data[6]['structure']},
-                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
+//                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
 
                 ],
                 // The name of the data record attribute that contains x-values.
@@ -85,20 +85,23 @@ $(document).ready(function () {
                 labels: ['Pipe', 'Structure'],
                 lineColors: ["#3498DB", "#2ECC71"]
             });
-           $(".dashboard-nav").addClass('nav-small'); 
+            $(".dashboard-nav").addClass('nav-small');
+        }, error: function (xhr, textStatus, errorThrown) {
+            console.log(xhr + " " + textStatus);
         }
     });
 
 
 
-    $("#deliverychallan").removeClass('loading_graph');
+    
     var baseurl = $('#baseurl').attr('name');
+    $("#deliverychallan").removeClass('loading_graph');
     $.ajax({
         type: 'get', url: baseurl + '/graph-delivery-challan',
 //        data: $('#save_all_price').serialize(),
         success: function (data) {
             $("#deliverychallan").removeClass('loading_graph');
-            $(".dashboard-nav").removeClass ('nav-small');
+            $(".dashboard-nav").removeClass('nav-small');
             new Morris.Line({
                 // ID of the element in which to draw the chart.
                 element: 'deliverychallan',
@@ -111,7 +114,7 @@ $(document).ready(function () {
                     {day: data[4]['day'], pipe: data[4]['pipe'], structure: data[4]['structure']},
                     {day: data[5]['day'], pipe: data[5]['pipe'], structure: data[5]['structure']},
                     {day: data[6]['day'], pipe: data[6]['pipe'], structure: data[6]['structure']},
-                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
+//                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
 
                 ],
                 // The name of the data record attribute that contains x-values.
@@ -132,9 +135,9 @@ $(document).ready(function () {
             });
             $(".dashboard-nav").addClass('nav-small');
         }
-        
+
     });
-    
+
 });
 
  

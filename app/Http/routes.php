@@ -231,7 +231,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
     Route::get('graph-inquiry', 'DashboardController@graph_inquiry');
-    Route::get('graph-order', 'DashboardController@graph_order');
+    Route::post('graph-order', 'DashboardController@graph_order');
 //    Route::get('graph-order', 'DashboardController@graph_order_temp');
     Route::get('graph-delivery-challan', 'DashboardController@graph_delivery_challan');
     Route::resource('unit', 'UnitController');
@@ -448,7 +448,7 @@ Route::resource('receipt-master', 'ReceiptMasterController');
 
 
 
-Route::get('graph_order_temp', 'DashboardController@graph_order_temp');
+Route::post('graph_order_temp', 'DashboardController@graph_order_temp');
 
 
 

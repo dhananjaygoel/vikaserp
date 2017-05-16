@@ -231,7 +231,7 @@ class DashboardController extends Controller {
         /* To get Inquiry stats for graph */
 
 
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             $inquiries_stats_all[$i]['pipe'] = 0;
             $inquiries_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
@@ -271,29 +271,50 @@ class DashboardController extends Controller {
     public function graph_order() {
 
         /* To get Order stats for graph */
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             $orders_stats_all[$i]['pipe'] = 0;
             $orders_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $orders_stats_all[$i]['day'] = $date_search;
-            $orders_stats = Order::with('all_order_products.order_product_details')
+            $orders_stats = Order::with('all_order_products')                    
                     ->where('order_status', '=', 'completed')
                     ->where('updated_at', 'like', $date_search . '%')
                     ->get();
-
-            foreach ($orders_stats as $order) {
-                foreach ($order['all_order_products'] as $order_products) {
-                    if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
-                        if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
-                            if ($order_products['unit_id'] == 1)
-                                $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
-                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
-                                $orders_stats_all[$i]['pipe'] += $this->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
-                        }else {
-                            if ($order_products['unit_id'] == 1)
-                                $orders_stats_all[$i]['structure'] += $order_products['quantity'];
-                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
-                                $orders_stats_all[$i]['structure'] += $this->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+            if (count($orders_stats) > 0) {
+                foreach ($orders_stats as $order) {
+                    foreach ($order['all_order_products'] as $order_products) {
+                        if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
+                            if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
+                                if ($order_products['unit_id'] == 1) {
+                                    $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
+                                } elseif (($order_products['unit_id'] == 2)) {
+                                    $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] * $order_products['order_product_details']['weight']);
+                                } 
+                                elseif (($order_products['unit_id'] == 3)) {
+                                    $standard_length = $order_products['order_product_details']['standard_length'];
+                                    if ($order_products['order_product_details']['standard_length'] == 0) {
+                                        $standard_length = 1;
+                                    }
+                                    $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] / $standard_length * $order_products['order_product_details']['weight']);
+                                }
+//                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+//                                $orders_stats_all[$i]['pipe'] += $this->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                            } else {
+                                if ($order_products['unit_id'] == 1) {
+                                    $orders_stats_all[$i]['structure'] += $order_products['quantity'];
+                                } 
+                                elseif (($order_products['unit_id'] == 2)) {
+                                    $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] * $order_products['order_product_details']['weight']);
+                                } elseif (($order_products['unit_id'] == 3)) {
+                                    $standard_length = $order_products['order_product_details']['standard_length'];
+                                    if ($order_products['order_product_details']['standard_length'] == 0) {
+                                        $standard_length = 1;
+                                    }
+                                    $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] / $standard_length * $order_products['order_product_details']['weight']);
+                                }
+//                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+//                                $orders_stats_all[$i]['structure'] += $this->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                            }
                         }
                     }
                 }
@@ -312,7 +333,7 @@ class DashboardController extends Controller {
         /* To get Delivery Challan stats for graph */
 
 
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             $delivery_challan_stats_all[$i]['pipe'] = 0;
             $delivery_challan_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
@@ -349,114 +370,119 @@ class DashboardController extends Controller {
         return ($delivery_challan_stats_all);
     }
 
-    public function graph_order_temp() {
-
-        $date = new Carbon\Carbon;
-        $date_search = $date->subDays(7);
-        $orders_stats_all;
-
-        $orders_stats = Order::where('order_status', '=', 'completed')
-                ->where('updated_at', '>', $date_search)
-                ->orderBy('updated_at')
-                ->get();       
-       
-
-        $list_with_ids = [];
-        $list_with_date_and_ids = [];
-        foreach ($orders_stats as $orders_stat) {
-            $list_with_ids[] = $orders_stat->id;
-            $list_with_date_and_ids[$orders_stat->id] = date_format(date_create($orders_stat->updated_at), "Y-m-d");
-        }
-        
-//        $product_list = \App\AllOrderProducts::with('order_product_details')
-//                        ->whereIn('order_id', $list_with_ids)
-//                        ->where('order_type', 'order')->get(); 
-        
-        set_time_limit(0);
-        $product_list = AllOrderProducts::paginate(20000);
-        
-        echo "<pre>";
-        print_r($product_list->toArray());
-        echo "</pre>";
-        exit;
-
-        $i = 1;
-        $list[$i]['pipe'] = 0;
-        $list[$i]['structure'] = 0;
-        $list[$i]['day'] = "";
-        $list = [];
-       
-        foreach ($product_list as $order_product) {
-            $list[$i]['day'] = $list_with_date_and_ids[$order_product->order_id];
-            if ($order_product['order_product_details']['product_category']->product_type_id == 1) {
-                if ($order_product['unit_id'] == 1)
-                    $list[$i]['pipe'] = $order_product['quantity'];
-                elseif (($order_product['unit_id'] == 2) || ($order_product['unit_id'] == 3)) {
-                    $list[$i]['pipe'] = $this->checkpending_quantity($order_product['unit_id'], $order_product['product_category_id'], $order_product['quantity']);
-                }
-                $list[$i]['structure'] = 0;
-            } else {
-                $list[$i]['pipe'] = 0;
-                if ($order_product['unit_id'] == 1)
-                    $list[$i]['structure'] = $order_product['quantity'];
-                elseif (($order_product['unit_id'] == 2) || ($order_product['unit_id'] == 3)) {
-                    $list[$i]['structure'] = $this->checkpending_quantity($order_product['unit_id'], $order_product['product_category_id'], $order_product['quantity']);
-                }
-            }
-            $i++;
-        }
-        
-         $date_search=[];
-         for ($i = 7; $i >= 1; $i--) {
-            $date_search[] = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
-         }
-        
-        $j = 1;
-        $orders_stats_temp[$j]['pipe'] = 0;
-        $orders_stats_temp[$j]['structure'] = 0;
-        $orders_stats_temp[$j]['day'] = "";
-        $orders_stats_temp[0]['day'] = "";
-        foreach ($list as $k => $subArray) {
-            $pipe = 0;
-            $structure = 0;
-            if ($orders_stats_temp[$j - 1]['day'] <> $subArray['day']) {
-                $orders_stats_temp[$j]['day'] = $subArray['day'];
-                foreach($date_search as $key=>$temp){
-                    if($temp == $subArray['day'] ){
-                        unset($date_search[$key]);
-                    }
-                    
-                }
-                foreach ($list as $k1 => $subArray_1) {
-                    if ($subArray['day'] == $subArray_1['day']) {
-                        $pipe += $subArray_1['pipe'];
-                        $structure += $subArray_1['structure'];
-                    }
-                }
-                $orders_stats_temp[$j]['pipe'] = round($pipe / 1000, 2);
-                $orders_stats_temp[$j]['structure'] = round($structure / 1000, 2);
-                $j++;
-            }
-        }
-        
-        if(count($date_search)){
-            $k=count($orders_stats_temp)+1;
-           foreach($date_search as $key=>$temp){
-               $orders_stats_temp[$k]['day']=$temp;
-               $orders_stats_temp[$k]['pipe']=0;
-               $orders_stats_temp[$k]['structure']=0;
-               $k++;
-           } 
-        }
-
-        unset($orders_stats_temp[1]);
-        $orders_stats_temp = array_values($orders_stats_temp);
-        unset($orders_stats_temp[0]);
-        
-       
-        
-        return ($orders_stats_temp);
-        exit;
-    }
+//    public function graph_order_temp() {
+//
+//        $date = new Carbon\Carbon;
+//        $date_search = $date->subDays(6);
+//        $orders_stats_all;
+//
+//        $orders_stats = Order::where('order_status', '=', 'completed')
+//                ->where('updated_at', '>', $date_search)
+//                ->orderBy('updated_at')
+//                ->get();
+//
+//
+//        $list_with_ids = [];
+//        $list_with_date_and_ids = [];
+//        foreach ($orders_stats as $orders_stat) {
+//            $list_with_ids[] = $orders_stat->id;
+//            $list_with_date_and_ids[$orders_stat->id] = date_format(date_create($orders_stat->updated_at), "Y-m-d");
+//        }
+//
+////        $product_list = \App\AllOrderProducts::with('order_product_details')
+////                        ->whereIn('order_id', $list_with_ids)
+////                        ->where('order_type', 'order')->get(); 
+//
+//        set_time_limit(0);
+//        $product_list = AllOrderProducts::with('order_product_details')
+//                ->whereIn('order_id', $list_with_ids)
+//                ->where('order_type', 'delivery_order')
+//                ->get();
+//
+//
+//        echo "<pre>";
+//        print_r($product_list);
+//        echo "</pre>";
+//        exit;
+//
+//        $i = 1;
+//        $list[$i]['pipe'] = 0;
+//        $list[$i]['structure'] = 0;
+//        $list[$i]['day'] = "";
+//        $list = [];
+//
+//        foreach ($product_list as $order_product) {
+//            $list[$i]['day'] = $list_with_date_and_ids[$order_product->order_id];
+//            if (isset($order_product['order_product_details']['product_category']->product_type_id)) {
+//                if ($order_product['order_product_details']['product_category']->product_type_id == 1) {
+//                    if ($order_product['unit_id'] == 1)
+//                        $list[$i]['pipe'] = $order_product['quantity'];
+//                    elseif (($order_product['unit_id'] == 2) || ($order_product['unit_id'] == 3)) {
+//                        $list[$i]['pipe'] = $this->checkpending_quantity($order_product['unit_id'], $order_product['product_category_id'], $order_product['quantity']);
+//                    }
+//                    $list[$i]['structure'] = 0;
+//                } else {
+//                    $list[$i]['pipe'] = 0;
+//                    if ($order_product['unit_id'] == 1)
+//                        $list[$i]['structure'] = $order_product['quantity'];
+//                    elseif (($order_product['unit_id'] == 2) || ($order_product['unit_id'] == 3)) {
+//                        $list[$i]['structure'] = $this->checkpending_quantity($order_product['unit_id'], $order_product['product_category_id'], $order_product['quantity']);
+//                    }
+//                }
+//            }
+//            $i++;
+//        }
+//
+//        $date_search = [];
+//        for ($i = 7; $i >= 1; $i--) {
+//            $date_search[] = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+//        }
+//
+//        $j = 1;
+//        $orders_stats_temp[$j]['pipe'] = 0;
+//        $orders_stats_temp[$j]['structure'] = 0;
+//        $orders_stats_temp[$j]['day'] = "";
+//        $orders_stats_temp[0]['day'] = "";
+//        foreach ($list as $k => $subArray) {
+//            $pipe = 0;
+//            $structure = 0;
+//            if ($orders_stats_temp[$j - 1]['day'] <> $subArray['day']) {
+//                $orders_stats_temp[$j]['day'] = $subArray['day'];
+//                foreach ($date_search as $key => $temp) {
+//                    if ($temp == $subArray['day']) {
+//                        unset($date_search[$key]);
+//                    }
+//                }
+//                foreach ($list as $k1 => $subArray_1) {
+//                    if ($subArray['day'] == $subArray_1['day']) {
+//                        $pipe += $subArray_1['pipe'];
+//                        $structure += $subArray_1['structure'];
+//                    }
+//                }
+//                $orders_stats_temp[$j]['pipe'] = round($pipe / 1000, 2);
+//                $orders_stats_temp[$j]['structure'] = round($structure / 1000, 2);
+//                $j++;
+//            }
+//        }
+//
+//        if (count($date_search)) {
+//            $k = count($orders_stats_temp) + 1;
+//            foreach ($date_search as $key => $temp) {
+//                $orders_stats_temp[$k]['day'] = $temp;
+//                $orders_stats_temp[$k]['pipe'] = 0;
+//                $orders_stats_temp[$k]['structure'] = 0;
+//                $k++;
+//            }
+//        }
+//
+//        unset($orders_stats_temp[1]);
+//        $orders_stats_temp = array_values($orders_stats_temp);
+//        unset($orders_stats_temp[0]);
+//
+//
+//
+//        return ($orders_stats_temp);
+//        exit;
+//    }
 
 }
