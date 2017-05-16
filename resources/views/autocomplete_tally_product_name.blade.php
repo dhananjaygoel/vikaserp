@@ -1009,15 +1009,15 @@
                     ->orderBy('tally_name', 'ASC')
                     ->lists('tally_name');  // You need to return array values.
     }) !!}
-          /*  {!! FormAutocomplete::selector('#existing_supplier_name')->source(function(){
+          {{--  {!! FormAutocomplete::selector('#existing_supplier_name')->source(function(){
     return \App\Customer::where('customer_status', '=', 'permanent')
                     ->orderBy('tally_name', 'ASC')
                     ->lists('tally_name');  // You need to return array values.
-    }) !!}*/
+    }) !!} --}}
 //  --------------------------------------Enter product name-------------------------------------------------------------             
-            /*    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+            {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/
+    }) !!} --}}
                 fac();
 //  --------------------------------------Dynamic delivery order product name---------------------------------------------           
             $("#add_product_row_delivery_order").on("click", function () {
@@ -1107,9 +1107,9 @@
             $("#add_product_table_delivery_order").children("tbody").append(html);
             $('#add_product_name_'+current_row_count).focus();            
 //  --------------------------------------Enter product name---------------------------------------------              
-                /*{!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+               {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/
+    }) !!} --}}
 
     fac();
     });
@@ -1215,9 +1215,9 @@
             '</tr>';
             $("#add_product_table_purchase").children("tbody").append(purchase_html);
 //  --------------------------------------Enter product name---------------------------------------------      
-        /*{!! FormAutocomplete::selector('.each_product_detail')->source(function(){
-	                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-	    }) !!}*/
+        {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                    return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
+    }) !!} --}}
             fac();
     });
 //  --------------------------------------Dynamic add product delivery challan name---------------------------------------------     
@@ -1281,9 +1281,9 @@
             '</tr>';
             $("#add_product_table_delivery_challan").children("tbody").append(html);
 //  --------------------------------------Enter product name---------------------------------------------              
-                /*{!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/ fac();
+    }) !!} --}} fac();
     });
                 
             $("#add_purchase_advise_product_row").on("click", function() {
@@ -1382,9 +1382,9 @@
             $('#add_product_name_'+current_row_count).focus();
             $("#add_product_table_purchase").children("tbody").append(purchase_html);
 //  --------------------------------------Enter product name---------------------------------------------              
-                /*{!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+                {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/ fac();
+    }) !!} --}} fac();
     });
     
     
@@ -1451,9 +1451,9 @@
             $('#add_product_name_'+current_row_count).focus();
             $('#product_all_'+current_row_count).focus();           
            
-       /* {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+       {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/ fac();
+    }) !!} --}} fac();
     });
 
             $("#add_editadvice_product_row").on("click", function() {
@@ -1504,9 +1504,9 @@
             '</td>' +
             '</tr>';
             $("#add_product_table_purchase").children("tbody").append(html);
-        /*{!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+        {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/ fac();
+    }) !!} --}} fac();
     });
     });
     
@@ -1610,9 +1610,9 @@
             $('#quantity_' + row_id).focus();
             $("#add_product_table_purchase").children("tbody").append(purchase_html);
 //  --------------------------------------Enter product name---------------------------------------------              
-               /* {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
+               {{--    {!! FormAutocomplete::selector('.each_product_detail')->source(function(){
                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
-    }) !!}*/
+    }) !!} --}} fac();
     });
     
     function fac(){
