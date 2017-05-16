@@ -41,6 +41,7 @@ return array(
     'AlterInquiryProductsTable02' => $baseDir . '/database/migrations/2016_09_09_072016_alter_inquiry_products_table_02.php',
     'AlterInventory02Index' => $baseDir . '/database/migrations/2017_03_28_090642_alter_inventory_02_index.php',
     'AlterLabours01' => $baseDir . '/database/migrations/2017_04_18_054412_alter_labours_01.php',
+    'AlterLoadedBies01' => $baseDir . '/database/migrations/2017_05_16_112353_alter_loaded_bies_01.php',
     'AlterOrderTable01' => $baseDir . '/database/migrations/2016_07_28_092217_alter_order_table_01.php',
     'AlterOrders02Index' => $baseDir . '/database/migrations/2017_03_28_083003_alter_orders_02_index.php',
     'AlterOrders03' => $baseDir . '/database/migrations/2017_04_05_123522_alter_orders_03.php',
