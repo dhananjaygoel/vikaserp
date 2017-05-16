@@ -3301,9 +3301,9 @@ class HomeController extends Controller {
         if (isset($collections)) {
             foreach ($collections as $key => $value) {
                 if ($value->collection_server_id > 0) {
-                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->where('id','<>',$value->collection_server_id)->first();                    
                     if (isset($collection_check->id)) {
-                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                        $collection_response[$value->local_collection_id] = 0;
                     } else {
                         $collection = User::find($value->collection_server_id);
                         if ($value->updated_at >= $collection->updated_at) {
@@ -3339,7 +3339,7 @@ class HomeController extends Controller {
 
                     $collection_check = User::where('mobile_number', '=', $value->mobile_number)->first();
                     if (isset($collection_check->id)) {
-                        $collection_response[$value->local_collection_id] = $collection_check->id;
+                        $collection_response[$value->local_collection_id] = 0;
                     } else {
                         $Users_data = new User();
                         $Users_data->role_id = 6;
