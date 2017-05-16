@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Response;
+use Config;
 
 class LoadByController extends Controller {
 
