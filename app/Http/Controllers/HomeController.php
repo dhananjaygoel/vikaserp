@@ -1861,11 +1861,11 @@ class HomeController extends Controller {
 
             if (isset($orders[0]->sms_role) && $orders[0]->sms_role == '1') {
                 $message_body_cust_first = "Your order has been created as following";
-                $message_body_cust_last = "meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $message_body_cust_last = "material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has logged an order for";
             } elseif (isset($orders[0]->sms_role) && $orders[0]->sms_role == '2') {
                 $message_body_cust_first = "Your order has been edited for following";
-                $message_body_cust_last = "meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $message_body_cust_last = "material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has edited an order for";
             } elseif (isset($orders[0]->sms_role) && $orders[0]->sms_role == '3') {
                 $message_body_cust_first = "Admin has approved your order for following items";
@@ -5050,7 +5050,7 @@ class HomeController extends Controller {
 //                        }
 //
 //
-//                        $str .= " meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+//                        $str .= " material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
 //
 //                        if (App::environment('development')) {
 //                            $phone_number = \Config::get('smsdata.send_sms_to');
@@ -5138,7 +5138,7 @@ class HomeController extends Controller {
 //                            return json_encode($result);
 //                        }
 //                    }
-//                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+//                    $str .= " material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
 //                    if (App::environment('development')) {
 //                        $phone_number = \Config::get('smsdata.send_sms_to');
 //                    } else {
@@ -5217,7 +5217,7 @@ class HomeController extends Controller {
 //                            return json_encode($result);
 //                        }
 //                    }
-//                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+//                    $str .= " material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
 //                    if (App::environment('development')) {
 //                        $phone_number = \Config::get('smsdata.send_sms_to');
 //                    } else {
@@ -5296,7 +5296,7 @@ class HomeController extends Controller {
 //                            return json_encode($result);
 //                        }
 //                    }
-//                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+//                    $str .= " material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
 //                    if (App::environment('development')) {
 //                        $phone_number = \Config::get('smsdata.send_sms_to');
 //                    } else {
@@ -5426,7 +5426,7 @@ class HomeController extends Controller {
 //                if (count($customer) > 0) {
 //                    $total_quantity = '';
 //                    $total_actual_quantity = '';
-//                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
+//                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
 //                    foreach ($deliverychallanproducts as $product_data) {
 //                        $product = ProductSubCategory::find($product_data->product_category_id);
 //
@@ -5573,7 +5573,7 @@ class HomeController extends Controller {
                 $customer = Customer::with('manager')->find($customer_id);
                 if (count($customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour meterial has been desp as follows ";
+                    $str = "Dear '" . $customer->owner_name . "'\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
                     foreach ($purchasechallanproducts as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
 
@@ -5658,7 +5658,7 @@ class HomeController extends Controller {
                         }
                     }
 
-                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                    $str .= " material will be dispatched by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -5716,7 +5716,7 @@ class HomeController extends Controller {
                             return json_encode($result);
                         }
                     }
-                    $str .= " meterial will be desp by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                    $str .= " material will be dispatched by " . date("jS F, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
