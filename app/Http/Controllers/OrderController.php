@@ -1274,8 +1274,8 @@ class OrderController extends Controller {
 //                        'vat_percentage' => ($product_data['vat_percentage'] != ''&& isset($product_data['vat_percentage'])) ? $product_data['vat_percentage'] : 0,
                         'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'remarks' => $product_data['remark'],
-                        'created_at' => $created_at,
                         'parent' =>'',
+                        'created_at' => $created_at,                        
                         'updated_at' => $updated_at
                     ];
 //                    AllOrderProducts::create($order_products);
