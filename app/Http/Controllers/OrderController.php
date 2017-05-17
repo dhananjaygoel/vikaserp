@@ -1232,12 +1232,16 @@ class OrderController extends Controller {
             }
             $delivery_order->save();
             $delivery_order_id = $delivery_order->id;
+            $created_at = $delivery_order->created_at;
+            $updated_at = $delivery_order->updated_at;
             $total_qty = 0;
             $present_shipping = 0;
-            $order_products = array();
+//            $order_products = array();
+            $order_products= [];
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "" && $product_data['order'] != '') {
-                    $order_products = [
+//                    $order_products = [
+                    $order_products[] = [
                         'order_id' => $delivery_order_id,
                         'order_type' => 'delivery_order',
                         'from' => $id,
@@ -1248,16 +1252,20 @@ class OrderController extends Controller {
                         'price' => $product_data['price'],
                         'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'remarks' => $product_data['remark'],
-                        'parent' => $product_data['order']
+                        'parent' => $product_data['order'],
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at
                     ];
                     $total_qty = $total_qty + $product_data['quantity'];
                     $present_shipping = $present_shipping + $product_data['present_shipping'];
-                    AllOrderProducts::create($order_products);
+//                    AllOrderProducts::create($order_products);
                 }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
-                    $order_products = [
+//                    $order_products = [
+                    $order_products[] = [
                         'order_id' => $delivery_order_id,
                         'order_type' => 'delivery_order',
+                        'from' => '',
                         'product_category_id' => $product_data['product_category_id'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
@@ -1265,11 +1273,16 @@ class OrderController extends Controller {
                         'price' => $product_data['price'],
 //                        'vat_percentage' => ($product_data['vat_percentage'] != ''&& isset($product_data['vat_percentage'])) ? $product_data['vat_percentage'] : 0,
                         'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
-                        'remarks' => $product_data['remark']
+                        'remarks' => $product_data['remark'],
+                        'created_at' => $created_at,
+                        'parent' =>'',
+                        'updated_at' => $updated_at
                     ];
-                    AllOrderProducts::create($order_products);
+//                    AllOrderProducts::create($order_products);
                 }
             }
+            AllOrderProducts::insert($order_products);
+            
             //If pending quantity is Zero complete the order
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
