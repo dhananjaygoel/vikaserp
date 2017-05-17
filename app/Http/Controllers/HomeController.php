@@ -3293,7 +3293,7 @@ class HomeController extends Controller {
             $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('role_id', '6')->with('locations.location_data')->get();
             $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
         } else {
-            $collection_added_server = User::with('locations.location_data')->get();
+            $collection_added_server = User::with('locations.location_data')->where('role_id','6')->get();
             $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
         }
 
@@ -3333,7 +3333,7 @@ class HomeController extends Controller {
                             }
                         }
 
-                        $collection_response[$value->local_collection_id] = User::find($value->collection_server_id);
+                        $collection_response[$value->local_collection_id] = User::with('locations.location_data')->find($value->collection_server_id);
                     }
                 } else {
 
