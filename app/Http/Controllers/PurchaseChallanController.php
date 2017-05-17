@@ -274,6 +274,9 @@ class PurchaseChallanController extends Controller {
         $add_challan->save();
 
         $challan_id = DB::getPdo()->lastInsertId();
+        $created_at = $add_challan->created_at;
+        $updated_at = $add_challan->updated_at;
+        
         $challan = PurchaseChallan::find($challan_id);
         PurchaseAdvise::where('id', '=', $request->input('purchase_advice_id'))->update(array(
             'advice_status' => 'delivered'
@@ -289,11 +292,13 @@ class PurchaseChallanController extends Controller {
             ]);
         }
         $input_data = Input::all();
-        $order_products = array();
+//        $order_products = array();
+        $order_products =[];
 
         foreach ($input_data['product'] as $product_data) {
             if (isset($product_data['id']) && $product_data['id'] != "") {
-                $order_products = [
+//                $order_products = [
+                $order_products[] = [
                     'purchase_order_id' => $challan_id,
                     'order_type' => 'purchase_challan',
                     'product_category_id' => $product_data['product_category_id'],
@@ -302,22 +307,28 @@ class PurchaseChallanController extends Controller {
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
                     'parent' => $product_data['id'],
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
                 ];
-                $add_order_products = PurchaseProducts::create($order_products);
+//                $add_order_products = PurchaseProducts::create($order_products);
             } else {
-                $order_products = [
+//                $order_products = [
+                $order_products[] = [
                     'purchase_order_id' => $challan_id,
                     'order_type' => 'purchase_challan',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['unit_id'],
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
-                    'price' => $product_data['price']
+                    'price' => $product_data['price'],
+                    'parent' => '',
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
                 ];
-                $add_order_products = PurchaseProducts::create($order_products);
+//                $add_order_products = PurchaseProducts::create($order_products);
             }
         }
-        
+         $add_order_products = PurchaseProducts::insert($order_products);
         
                 $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($challan_id);
 
