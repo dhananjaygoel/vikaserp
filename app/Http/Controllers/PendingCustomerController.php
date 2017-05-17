@@ -210,6 +210,8 @@ class PendingCustomerController extends Controller {
         $customer->customer_status = 'permanent';
         if ($customer->save()) {
             //set price difference of the category
+            $user_obj = new WelcomeController();
+            $user_obj->copy_customers();
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
                 foreach ($product_category_id as $key => $value) {
