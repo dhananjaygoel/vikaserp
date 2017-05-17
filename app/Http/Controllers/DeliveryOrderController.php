@@ -846,13 +846,6 @@ class DeliveryOrderController extends Controller {
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
         }
 
-
-
-        echo "<pre>";
-        print_r(DB::getQueryLog());
-        echo "</pre>";
-        exit;
-        exit;
         DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
