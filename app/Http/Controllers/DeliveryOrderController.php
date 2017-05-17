@@ -622,28 +622,52 @@ class DeliveryOrderController extends Controller {
         }
         $delivery_challan->save();
         $delivery_challan_id = $delivery_challan->id;
+        $created_at = $delivery_challan->created_at;
+        $updated_at = $delivery_challan->updated_at;
         if (isset($input_data['loaded_by'])) {
             $loaders = $input_data['loaded_by'];
+//            foreach ($loaders as $loader) {
+//                $loaderObj = new DeliveryChallanLoadedBy();
+//                $loaderObj->delivery_challan_id = $delivery_challan_id;
+//                $loaderObj->loaded_by_id = $loader;
+//                $loaderObj->save();
+//            }
+            $loaders_info = [];
             foreach ($loaders as $loader) {
-                $loaderObj = new DeliveryChallanLoadedBy();
-                $loaderObj->delivery_challan_id = $delivery_challan_id;
-                $loaderObj->loaded_by_id = $loader;
-                $loaderObj->save();
+                $loaders_info[] = [
+                    'delivery_challan_id' => $delivery_challan_id,
+                    'loaded_by_id' => $loader,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at, 
+                ]; 
             }
+            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
         }
         if (isset($input_data['labour'])) {
             $labours = $input_data['labour'];
+//            foreach ($labours as $labour) {
+//                $labourObj = new App\DeliveryChallanLabours();
+//                $labourObj->delivery_challan_id = $delivery_challan_id;
+//                $labourObj->labours_id = $labour;
+//                $labourObj->save();
+//            }
+            $labours_info = [];
             foreach ($labours as $labour) {
-                $labourObj = new App\DeliveryChallanLabours();
-                $labourObj->delivery_challan_id = $delivery_challan_id;
-                $labourObj->labours_id = $labour;
-                $labourObj->save();
+                $labours_info[] = [
+                    'delivery_challan_id' => $delivery_challan_id,
+                    'labours_id' => $labour,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at, 
+                ]; 
             }
+             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
-        $order_products = array();
+        $order_products = [];
+//        $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "" && $product_data['order'] != "") {
-                $order_products = [
+//                $order_products = [
+                $order_products[] = [
                     'order_id' => $delivery_challan_id,
                     'order_type' => 'delivery_challan',
                     'product_category_id' => $product_data['id'],
@@ -656,10 +680,13 @@ class DeliveryOrderController extends Controller {
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'from' => $input_data['order_id'],
                     'parent' => $product_data['order'],
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
                 ];
-                $add_order_products = AllOrderProducts::create($order_products);
+//                $add_order_products = AllOrderProducts::create($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == "") {
-                $order_products = [
+//                $order_products = [
+                $order_products[] = [
                     'order_id' => $delivery_challan_id,
                     'order_type' => 'delivery_challan',
                     'product_category_id' => $product_data['id'],
@@ -670,11 +697,15 @@ class DeliveryOrderController extends Controller {
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
-                    'from' => ''
+                    'from' => '',
+                    'parent' => '',
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
                 ];
-                $add_order_products = AllOrderProducts::create($order_products);
+//                $add_order_products = AllOrderProducts::create($order_products);
             }
         }
+        $add_order_products = AllOrderProducts::insert($order_products);
         return $delivery_challan_id;
     }
 
@@ -800,25 +831,6 @@ class DeliveryOrderController extends Controller {
             $vat_input_data['round_off'] = number_format((float) ($ratio_with_vat * $input_data['round_off']) / 100, 2, '.', '');
             $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');
             $vat_input_data['grand_total'] = number_format((float) ($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $vat_input_data['round_off']), 2, '.', '');
-//            echo "<pre>";
-//            print_r($total_vat_price );
-//            echo "<br>";
-//            print_r($vat_on_price_count );
-//            echo "<br>";
-//            print_r( $vat_share_overhead );
-//            echo "<br>";
-//            print_r( $vat_on_overhead_count);
-//            echo "<br>";
-//            print_r($vat_input_data['round_off']);
-//            echo "<br>";
-//            print_r($ratio_with_vat);
-//            echo "<br>";
-//            print_r($vat_input_data['grand_total']);
-//            echo "</pre>";
-//            
-//            
-//            exit;
-
 
             $without_vat_input_data['product'] = $without_vat_product;
             $without_vat_input_data['total_actual_quantity'] = $total_actual_quantity_without_vat;
@@ -834,6 +846,13 @@ class DeliveryOrderController extends Controller {
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
         }
 
+
+
+        echo "<pre>";
+        print_r(DB::getQueryLog());
+        echo "</pre>";
+        exit;
+        exit;
         DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
