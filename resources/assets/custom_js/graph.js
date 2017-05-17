@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    $("#inquiry").removeClass('loading_graph');
+    $("#inquiry").addClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
         type: 'get', url: baseurl + '/graph-inquiry',
@@ -20,7 +20,7 @@ $(document).ready(function () {
                     {day: data[4]['day'], pipe: data[4]['pipe'], structure: data[4]['structure']},
                     {day: data[5]['day'], pipe: data[5]['pipe'], structure: data[5]['structure']},
                     {day: data[6]['day'], pipe: data[6]['pipe'], structure: data[6]['structure']},
-//                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
+                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
                 ],
                 // The name of the data record attribute that contains x-values.
                 xkey: 'day',
@@ -66,8 +66,8 @@ $(document).ready(function () {
                     {day: data[4]['day'], pipe: data[4]['pipe'], structure: data[4]['structure']},
                     {day: data[5]['day'], pipe: data[5]['pipe'], structure: data[5]['structure']},
                     {day: data[6]['day'], pipe: data[6]['pipe'], structure: data[6]['structure']},
-//                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
-
+                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']},
+                   
                 ],
                 // The name of the data record attribute that contains x-values.
                 xkey: 'day',
@@ -95,7 +95,7 @@ $(document).ready(function () {
 
     
     var baseurl = $('#baseurl').attr('name');
-    $("#deliverychallan").removeClass('loading_graph');
+    $("#deliverychallan").addClass('loading_graph');
     $.ajax({
         type: 'get', url: baseurl + '/graph-delivery-challan',
 //        data: $('#save_all_price').serialize(),
@@ -114,7 +114,7 @@ $(document).ready(function () {
                     {day: data[4]['day'], pipe: data[4]['pipe'], structure: data[4]['structure']},
                     {day: data[5]['day'], pipe: data[5]['pipe'], structure: data[5]['structure']},
                     {day: data[6]['day'], pipe: data[6]['pipe'], structure: data[6]['structure']},
-//                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
+                    {day: data[7]['day'], pipe: data[7]['pipe'], structure: data[7]['structure']}
 
                 ],
                 // The name of the data record attribute that contains x-values.

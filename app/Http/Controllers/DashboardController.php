@@ -231,7 +231,7 @@ class DashboardController extends Controller {
         /* To get Inquiry stats for graph */
 
 
-        for ($i = 1; $i <= 6; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             $inquiries_stats_all[$i]['pipe'] = 0;
             $inquiries_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
@@ -271,15 +271,15 @@ class DashboardController extends Controller {
     public function graph_order() {
 
         /* To get Order stats for graph */
-        for ($i = 1; $i <= 6; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             $orders_stats_all[$i]['pipe'] = 0;
             $orders_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $orders_stats_all[$i]['day'] = $date_search;
-            $orders_stats = Order::with('all_order_products')                    
-                    ->where('order_status', '=', 'completed')
-                    ->where('updated_at', 'like', $date_search . '%')
-                    ->get();
+                $orders_stats = Order::with('all_order_products')
+                        ->where('order_status', '=', 'completed')
+                        ->where('updated_at', 'like', $date_search . '%')
+                        ->get();
             if (count($orders_stats) > 0) {
                 foreach ($orders_stats as $order) {
                     foreach ($order['all_order_products'] as $order_products) {
@@ -289,8 +289,7 @@ class DashboardController extends Controller {
                                     $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
                                 } elseif (($order_products['unit_id'] == 2)) {
                                     $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] * $order_products['order_product_details']['weight']);
-                                } 
-                                elseif (($order_products['unit_id'] == 3)) {
+                                } elseif (($order_products['unit_id'] == 3)) {
                                     $standard_length = $order_products['order_product_details']['standard_length'];
                                     if ($order_products['order_product_details']['standard_length'] == 0) {
                                         $standard_length = 1;
@@ -302,8 +301,7 @@ class DashboardController extends Controller {
                             } else {
                                 if ($order_products['unit_id'] == 1) {
                                     $orders_stats_all[$i]['structure'] += $order_products['quantity'];
-                                } 
-                                elseif (($order_products['unit_id'] == 2)) {
+                                } elseif (($order_products['unit_id'] == 2)) {
                                     $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] * $order_products['order_product_details']['weight']);
                                 } elseif (($order_products['unit_id'] == 3)) {
                                     $standard_length = $order_products['order_product_details']['standard_length'];
@@ -333,7 +331,7 @@ class DashboardController extends Controller {
         /* To get Delivery Challan stats for graph */
 
 
-        for ($i = 1; $i <= 6; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             $delivery_challan_stats_all[$i]['pipe'] = 0;
             $delivery_challan_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
