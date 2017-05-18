@@ -1124,6 +1124,8 @@ class WelcomeController extends Controller {
         DB::table('collection_user_location')->truncate();
         DB::table('territories')->truncate();
         DB::table('territory_locations')->truncate();
+        DB::table('receipts')->truncate();
+        DB::table('customer_receipts')->truncate();
 //        DB::table('users')->where('role_id','6')->delete();
         $this->reset_stock();
         echo 'truncate all data';
