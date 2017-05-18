@@ -79,12 +79,8 @@ class InquiryController extends Controller {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
                     ->where('email', '=', Auth::user()->email)
-                    ->first();
-            
-            echo "<pre>";
-            print_r($cust->toArray());
-            echo "</pre>";
-            exit;
+                    ->first();         
+           
 
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
