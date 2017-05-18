@@ -3052,13 +3052,13 @@ class HomeController extends Controller {
 
         if (Input::has('receipt_sync_date') && Input::get('receipt_sync_date') != '') {
             $last_sync_date = Input::get('receipt_sync_date');
-            $receipt_server = Receipt::where('created_at', '>', $last_sync_date)->get();
+            $receipt_server = Receipt::with('customer_receipts')->where('created_at', '>', $last_sync_date)->get();
             $receipt_response['receipt_server_added'] = ($receipt_server && count($receipt_server) > 0) ? $receipt_server : array();
 
-            $labour_updated_server = Labour::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
-            $receipt_response['receipt_server_updated'] = ($labour_updated_server && count($labour_updated_server) > 0) ? $labour_updated_server : array();
+            $receipt_updated_server = Receipt::with('customer_receipts')->where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $receipt_response['receipt_server_updated'] = ($receipt_updated_server && count($receipt_updated_server) > 0) ? $receipt_updated_server : array();
         } else {
-            $receipt_server = Receipt::orderBy('id', 'desc')->get();
+            $receipt_server = Receipt::with('customer_receipts')->orderBy('id', 'desc')->get();
             $receipt_response['receipt_server_added'] = ($receipt_server && count($receipt_server) > 0) ? $receipt_server : array();
         }
 
