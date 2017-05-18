@@ -79,8 +79,25 @@ class InquiryController extends Controller {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
                     ->where('email', '=', Auth::user()->email)
-                    ->first();         
-           
+                    ->first();
+
+            if (count($cust) <= 0) {
+                $cust = Customer::where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+            }
+
+            if (count($cust) <= 0) {
+                echo "<pre>";
+                print_r(Auth::user()->first_name);
+                echo "<br>";
+                print_r(Auth::user()->email);
+                echo "<br>";
+                print_r(Auth::user()->mobile_number);
+                echo "</pre>";
+                exit;
+            }
+
 
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
@@ -179,7 +196,7 @@ class InquiryController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
                 $customers = new Customer();
-                $customers_info = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'],$input_data['add_inquiry_location']);
+                $customers_info = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_inquiry_location']);
                 $customer_id = $customers_info->id;
             } else {
                 $error_msg = $validator->messages();
@@ -386,10 +403,10 @@ class InquiryController extends Controller {
             $flash_message = "Message sent successfully";
             return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
         }
-        
-         $is_approval = $request->input();
-        
-        
+
+        $is_approval = $request->input();
+
+
 //        $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer')->first();
         return View::make('inquiry_details', array('inquiry' => $inquiry, 'delivery_location' => $delivery_location, 'message' => $flash_message, 'is_approval' => $is_approval));
 //        return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
@@ -399,7 +416,7 @@ class InquiryController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id, InquiryRequest $request) {
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -425,9 +442,9 @@ class InquiryController extends Controller {
         }
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
-        
+
         $is_approval = $request->input();
-        
+
         return view('edit_inquiry', compact('inquiry', 'delivery_location', 'units', 'is_approval'));
     }
 
@@ -619,8 +636,7 @@ class InquiryController extends Controller {
                     }
                 }
             }
-        }
-        else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+        } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -724,7 +740,7 @@ class InquiryController extends Controller {
                     }
                 }
             }
-      
+
             InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
             Inquiry::find(Input::get('inquiry_id'))->delete();
             return redirect('inquiry')->with('flash_success_message', 'Inquiry deleted successfully.');
@@ -921,8 +937,8 @@ class InquiryController extends Controller {
 //        echo json_encode(array('data_array' => $data_array));
 //    }
 
-    
-     public function fetch_products() {
+
+    public function fetch_products() {
         $term = Input::get();
         $term = Input::get('term');
         $customer_id = Input::get('customer_id');
@@ -1003,11 +1019,11 @@ class InquiryController extends Controller {
             if ($level == 2) {
                 $products = \App\ProductSubCategory::with('product_category')
                         ->where('product_category_id', '=', $id)
-                        ->orderBy('size','asc')
+                        ->orderBy('size', 'asc')
                         ->groupBy('size')
                         ->selectRaw('size, group_concat(id) ids')
                         ->get();
-                $type_id = 1;                 
+                $type_id = 1;
 
                 if (isset($products[0]['product_category']['product_type_id'])) {
                     $type_id = $products[0]['product_category']['product_type_id'];
@@ -1033,20 +1049,20 @@ class InquiryController extends Controller {
                 }
             }
             if ($level == 3) {
-                $ids = explode(',',$id);                
+                $ids = explode(',', $id);
                 $products = \App\ProductSubCategory::with('product_category')
                         ->whereIn('id', $ids)
                         ->get();
-                $type_id = 1;                
-                $cat_id = 1;                
-                
+                $type_id = 1;
+                $cat_id = 1;
+
                 if (isset($products[0]['product_category_id'])) {
-                    $type_id = $products[0]['product_category_id'];                   
+                    $type_id = $products[0]['product_category_id'];
                 }
                 if (isset($products[0]['product_category']->product_type_id)) {
-                    $cat_id = $products[0]['product_category']->product_type_id;                  
+                    $cat_id = $products[0]['product_category']->product_type_id;
                 }
-               
+
                 if (count($products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
@@ -1055,10 +1071,10 @@ class InquiryController extends Controller {
                         'product_price' => ''
                     ];
                     foreach ($products as $product) {
-                        
-                        $mixed =  $product['thickness']." * " .$product['weight'];
-                        if($cat_id == 2)
-                            $mixed =  $product['weight'];
+
+                        $mixed = $product['thickness'] . " * " . $product['weight'];
+                        if ($cat_id == 2)
+                            $mixed = $product['weight'];
                         $data_array[] = [
                             'value' => $mixed,
                             'id' => $product['id'],
@@ -1090,8 +1106,8 @@ class InquiryController extends Controller {
         }
 
         echo json_encode(array('data_array' => $data_array));
-    }     
-    
+    }
+
     /*
      * calculate the product price
      */
