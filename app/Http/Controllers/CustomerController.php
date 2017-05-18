@@ -999,19 +999,16 @@ class CustomerController extends Controller {
                 $customers->whereHas('delivery_challan', function ($query) {
                     $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
-                                   
-//               dd($customers->toSql());  
-//                dd($customers->get());
             }
         }
         $customers=$customers->paginate(20)->setPath('due-payment');        
-        $city = City::all();
+       
         if(isset($user_territory_arr)){
             $territories = Territory::whereIn('id',$user_territory_arr)->orderBy('created_at', 'DESC')->get();
         }else{
             $territories = Territory::orderBy('created_at', 'DESC')->get();
         }        
-        return View('customer_list')->with('customers',$customers)->with('city',$city)
+        return View('customer_list')->with('customers',$customers)
                                     ->with('delivery_location',$delivery_location)
                                     ->with('territories',$territories);
     }
