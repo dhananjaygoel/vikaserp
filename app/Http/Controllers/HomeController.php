@@ -3446,6 +3446,7 @@ class HomeController extends Controller {
         $labour_date = Labour::select('updated_at')->orderby('updated_at', 'DESC')->first();
 
         $loadedby_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        $receipt_date = Receipt::select('updated_at')->orderby('updated_at', 'DESC')->first();
 
         $sync = [];
         $syncdata = ( json_decode(Input::get('sync_info'), true) );
@@ -3506,6 +3507,9 @@ class HomeController extends Controller {
                 ];
             if ($synckey == 'inventory' && !empty($inventory_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inventory_date->updated_at->toDateTimeString()];
+            
+             if ($synckey == 'receipt' && !empty($receipt_date))
+                $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $receipt_date->updated_at->toDateTimeString()];
         }
 
         return json_encode($sync);
