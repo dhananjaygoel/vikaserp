@@ -940,7 +940,7 @@ class WelcomeController extends Controller {
             });
         })->export('xls');
     }
-    
+
     public function excel_export_territory() {
 
         $allterritory = \App\Territory::orderBy('created_at', 'DESC')->get();
@@ -950,7 +950,7 @@ class WelcomeController extends Controller {
             });
         })->export('xls');
     }
-    
+
     public function excel_export_loaded_by() {
 
         $all_loaded_bies = LoadedBy::orderBy('created_at', 'DESC')->get();
@@ -1117,9 +1117,32 @@ class WelcomeController extends Controller {
         DB::table('purchase_order_canceled')->truncate();
         DB::table('purchase_advice')->truncate();
         DB::table('purchase_challan')->truncate();
+        DB::table('labours')->truncate();
         DB::table('delivery_challan_labours')->truncate();
+        DB::table('loaded_bies')->truncate();
         DB::table('delivery_challan_loaded_bies')->truncate();
+        DB::table('collection_user_location')->truncate();
+        DB::table('territories')->truncate();
+        DB::table('territory_locations')->truncate();
+//        DB::table('users')->where('role_id','6')->delete();
+        $this->reset_stock();
         echo 'truncate all data';
+    }
+
+    public function reset_stock() {
+        $affected = DB::table('inventory')
+                ->update(array(
+                    'virtual_qty' => 0,
+                    'minimal' => 0,
+                    'opening_qty' => 0,
+                    'sales_challan_qty' => 0,
+                    'purchase_challan_qty' => 0,
+                    'physical_closing_qty' => 0,
+                    'pending_sales_order_qty' => 0,
+                    'pending_delivery_order_qty' => 0,
+                    'pending_purchase_order_qty' => 0,
+                    'pending_purchase_advise_qty' => 0,                    
+                    ));
     }
 
     /*
@@ -1184,7 +1207,7 @@ class WelcomeController extends Controller {
 
         exit(0);
     }
-    
+
     public function database_backup_hvikas() {
 
         $db_username = "vikaserp_hvuser";
