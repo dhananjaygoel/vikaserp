@@ -5976,7 +5976,7 @@ class HomeController extends Controller {
 
 
 
-        foreach ($delivery_order_data as $delivery_order_info) {
+foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
             $loaders = array();
@@ -5984,18 +5984,15 @@ class HomeController extends Controller {
 
             if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
-                    $deliver_sum = 0;
-                    $money = 0;
+                    $deliver_sum = 0.00;
+                    $money = 0.00;
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
-
-
-                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
-                            $dashboard = new DashboardController();
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
                             if ($delivery_order_productinfo->unit_id == 1)
                                 $deliver_sum += $delivery_order_productinfo->quantity;
                             elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                         }
                     }
 
@@ -6007,7 +6004,7 @@ class HomeController extends Controller {
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
                     $loader_arr['tonnage'] = $all_tonnage;
-                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
                 }
             }
             $loaders_data[$var] = $loader_arr;
@@ -6029,7 +6026,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):'0'),
+                            'tonnage' => round($data['tonnage'], 2),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
