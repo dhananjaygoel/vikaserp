@@ -3069,7 +3069,7 @@ class HomeController extends Controller {
                     foreach ($receipt_customer as $key => $user) {
                         if ($value->id == $user->local_receipt_id) {
                             $customerReceiptObj = new Customer_receipts();
-                            $customerReceiptObj->customer_id = $user->server_cutomer_id;
+                            $customerReceiptObj->customer_id = $user->server_customer_id;
                             $customerReceiptObj->settled_amount = $user->settled_amount;
                             $customerReceiptObj->debited_to = $user->debited_to;
                             $customerReceiptObj->receipt_id = $receiptObj->id;
@@ -3093,7 +3093,7 @@ class HomeController extends Controller {
                 foreach ($receipt_customer as $key => $user) {
                     if ($value->id == $user->local_receipt_id) {
                         $customerReceiptObj = new Customer_receipts();
-                        $customerReceiptObj->customer_id = $user->server_cutomer_id;
+                        $customerReceiptObj->customer_id = $user->server_customer_id;
                         $customerReceiptObj->settled_amount = $user->settled_amount;
                         $customerReceiptObj->debited_to = $user->debited_to;
                         $customerReceiptObj->receipt_id = $receiptObj->id;
@@ -6665,9 +6665,9 @@ class HomeController extends Controller {
     public function appduepaymentshow_admin() {
 
         $duepayment_response = [];
-        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
-                        ->whereHas('delivery_challan', function ($query) {
-                            $query->where('challan_status', '=', 'completed');
+         $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->orderBy('created_at', 'desc')
+                                    ->whereHas('delivery_challan', function ($query) {
+                                    $query->where('challan_status','=', 'completed');
                         })->get();
 
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
