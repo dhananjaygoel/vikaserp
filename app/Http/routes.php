@@ -66,6 +66,7 @@ Route::get('appallpurchase_challan', 'HomeController@appallpurchase_challan');
 Route::get('appallpending_purchase_advice', 'HomeController@appallpending_purchase_advice');
 Route::get('appallpurchase_order_daybook', 'HomeController@appallpurchase_order_daybook');
 Route::get('appinventory', 'HomeController@appinventory');
+
 Route::get('app_export_inventory', 'InventoryController@export_inventory');
 Route::get('app_export_salesdaybook', 'SalesDaybookController@export_sales_daybook');
 Route::get('app_export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
@@ -73,6 +74,8 @@ Route::get('app_export_inventory_report', 'InventoryController@exportinventoryRe
 Route::get('app_export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
 Route::get('app_export_collection_users_list', 'HomeController@export_collection_users');
 Route::get('app_export_territory', 'WelcomeController@excel_export_territory');
+Route::get('app_export_labours', 'WelcomeController@excel_export_labours');
+Route::get('app_export_loaded_by', 'WelcomeController@excel_export_loaded_by');
 
 Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
