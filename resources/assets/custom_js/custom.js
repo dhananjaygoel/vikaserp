@@ -2375,13 +2375,13 @@ function isNumber(evt, element) {
     return true;
 }
 
-function test() {
-//    var abc = $(e).val();
-//    $(e).val(function(i, abc) {
-//        return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
-//    });
-    return isNumber(event, this);
-}
+//function test() {
+////    var abc = $(e).val();
+////    $(e).val(function(i, abc) {
+////        return abc.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
+////    });
+//    return isNumber(event, this);
+//}
 
 function isNumberFormat(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;

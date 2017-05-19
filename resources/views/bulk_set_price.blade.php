@@ -89,12 +89,12 @@
                                             ?>
                                             <td>
                                                 <input type='tel' id="valueSconto_{{$key}}" name="set_diff[{{$key}}][pipe]"
-                                                       maxlength="6" onkeypress="return test();"
+                                                       maxlength="6" onkeypress="return numbersOnly(this, event, true, false);"
                                                        value="{{isset($pipe_diff)?$pipe_diff:''}}" style="width: 40px;">
                                             </td>
                                             <td>
                                                 <input type='tel' id="valuestructure_{{$key}}" name="set_diff[{{$key}}][structure]"
-                                                       maxlength="6" onkeypress="return test();"
+                                                       maxlength="6" onkeypress="return numbersOnly(this, event, true, false);"
                                                        value="{{isset($structure_diff)?$structure_diff:''}}" style="width: 40px;">
                                             </td>
                                             <td>
