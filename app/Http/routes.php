@@ -71,7 +71,7 @@ Route::get('app_export_salesdaybook', 'SalesDaybookController@export_sales_daybo
 Route::get('app_export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
 Route::get('app_export_inventory_report', 'InventoryController@exportinventoryReport');
 Route::get('app_export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
-Route::get('app_export_collection_users_list', 'CollectionUserController@export_collection_users');
+Route::get('app_export_collection_users_list', 'HomeController@export_collection_users');
 
 Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
