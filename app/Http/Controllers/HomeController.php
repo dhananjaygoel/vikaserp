@@ -3074,7 +3074,7 @@ class HomeController extends Controller {
                             $customerReceiptObj->settled_amount = $user->settled_amount;
                             $customerReceiptObj->debited_to = $user->debited_to;
                             $customerReceiptObj->receipt_id = $receiptObj->id;
-                            $customerReceiptObj->debited_by_type = $user->debited_by_type;
+                            $customerReceiptObj->debited_by_type = $user->debited_to_type;
                             $customerReceiptObj->save();
                         }
                     }
@@ -3098,7 +3098,7 @@ class HomeController extends Controller {
                         $customerReceiptObj->settled_amount = $user->settled_amount;
                         $customerReceiptObj->debited_to = $user->debited_to;
                         $customerReceiptObj->receipt_id = $receiptObj->id;
-                        $customerReceiptObj->debited_by_type = $user->debited_by_type;
+                        $customerReceiptObj->debited_by_type = $user->debited_to_type;
                         $customerReceiptObj->save();
                     }
                 }
