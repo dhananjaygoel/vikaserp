@@ -3111,7 +3111,8 @@ class HomeController extends Controller {
         }
 
         if (Input::has('receipt_sync_date') && Input::get('receipt_sync_date') != '' && Input::get('receipt_sync_date') != NULL) {
-            $receipt_response['receipt_server_deleted'] = array();
+//            $receipt_response['receipt_server_deleted'] = array();
+            $receipt_response['receipt_server_non_deleted'] = Receipt::select('id')->get();
         }
         $receipt_date = Receipt::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($receipt_date))
@@ -3259,10 +3260,12 @@ class HomeController extends Controller {
                 foreach ($territories as $key => $value) {
                     if ($value->teritory_server_id > 0) {
                         $territory = Territory::find($value->teritory_server_id);
+                        if(count($territory) > 0)
                         $territory->delete();
                         $territory_loc = TerritoryLocation::where('teritory_id', '=', $value->teritory_server_id)->get();
                         foreach ($territory_loc as $loc) {
                             $territory_old = TerritoryLocation::find($loc->id);
+                            if(count($territory_old) > 0)
                             $territory_old->delete();
                         }
                     }
