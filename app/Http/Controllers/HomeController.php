@@ -2943,7 +2943,7 @@ class HomeController extends Controller {
         if (Input::has('loadedby')) {
             $loadedby = (json_decode($data['loadedby']));
         }
-        
+
         if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '') {
             $last_sync_date = Input::get('loadedby_sync_date');
             $labour_server = LoadedBy::where('created_at', '>', $last_sync_date)->get();
@@ -2993,12 +2993,12 @@ class HomeController extends Controller {
                     $labour_id = $labour->id;
                     $labour->save();
                     $loadedby_response[$value->server_id] = LoadedBy::find($labour->id);
-                }                
+                }
             }
         }
 
         if (Input::has('loadedby_sync_date') && Input::get('loadedby_sync_date') != '' && Input::get('loadedby_sync_date') != NULL) {
-            $loadedby_response['labour_deleted'] = LoadedBy::withTrashed()->where('deleted_at', '>=', Input::get('loadedby_sync_date'))->select('id')->get();           
+            $loadedby_response['labour_deleted'] = LoadedBy::withTrashed()->where('deleted_at', '>=', Input::get('loadedby_sync_date'))->select('id')->get();
 //            $loadedby_response['labour_deleted'] = array();
         }
         $labour_date = LoadedBy::select('updated_at')->orderby('updated_at', 'DESC')->first();
@@ -3294,7 +3294,7 @@ class HomeController extends Controller {
             $inquiry_updated_server = User::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('role_id', '6')->with('locations.location_data')->get();
             $collection_response['collection_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
         } else {
-            $collection_added_server = User::with('locations.location_data')->where('role_id','6')->get();
+            $collection_added_server = User::with('locations.location_data')->where('role_id', '6')->get();
             $collection_response['collection_server_added'] = ($collection_added_server && count($collection_added_server) > 0) ? $collection_added_server : array();
         }
 
@@ -3302,7 +3302,7 @@ class HomeController extends Controller {
         if (isset($collections)) {
             foreach ($collections as $key => $value) {
                 if ($value->collection_server_id > 0) {
-                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->where('id','<>',$value->collection_server_id)->first();                    
+                    $collection_check = User::where('mobile_number', '=', $value->mobile_number)->where('id', '<>', $value->collection_server_id)->first();
                     if (isset($collection_check->id)) {
                         $collection_response[$value->local_collection_id] = 0;
                     } else {
@@ -3508,8 +3508,8 @@ class HomeController extends Controller {
                 ];
             if ($synckey == 'inventory' && !empty($inventory_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $inventory_date->updated_at->toDateTimeString()];
-            
-             if ($synckey == 'receipt' && !empty($receipt_date))
+
+            if ($synckey == 'receipt' && !empty($receipt_date))
                 $sync[$synckey] = ['app_updated_date' => $syncvalue, 'server_updated_date' => $receipt_date->updated_at->toDateTimeString()];
         }
 
@@ -5976,7 +5976,7 @@ class HomeController extends Controller {
 
 
 
-foreach ($delivery_order_data as $delivery_order_info) {
+        foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
             $loaders = array();
@@ -6132,15 +6132,13 @@ foreach ($delivery_order_data as $delivery_order_info) {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
-                        foreach ($info->delivery_order->delivery_product as $delivery_order_productinfo) {
-                            $dashboard = new DashboardController();
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
                             if ($delivery_order_productinfo->unit_id == 1)
                                 $deliver_sum += $delivery_order_productinfo->quantity;
                             elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $deliver_sum += $dashboard->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                         }
                     }
-                    array_push($arr, $deliver_sum);
                     array_push($loader_array, $loaders);
                     $all_kg = $deliver_sum / count($loaders);
                     $all_tonnage = $all_kg / 1000;
@@ -6151,8 +6149,7 @@ foreach ($delivery_order_data as $delivery_order_info) {
                     $loader_arr['loaders'] = $loaders;
                 }
             }
-            $loaders_data[$var] = $loader_arr;
-            $var++;
+            $loaders_data[$var++] = $loader_arr;
         }
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
@@ -6663,9 +6660,9 @@ foreach ($delivery_order_data as $delivery_order_info) {
     public function appduepaymentshow_admin() {
 
         $duepayment_response = [];
-         $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->orderBy('created_at', 'desc')
-                                    ->whereHas('delivery_challan', function ($query) {
-                                    $query->where('challan_status','=', 'completed');
+        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->orderBy('created_at', 'desc')
+                        ->whereHas('delivery_challan', function ($query) {
+                            $query->where('challan_status', '=', 'completed');
                         })->get();
 
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -6788,13 +6785,11 @@ foreach ($delivery_order_data as $delivery_order_info) {
             return json_encode(array('result' => false, 'message' => 'Some error occured. Please try again'));
         }
     }
-    
-    
-    
-     public function export_collection_users() {
+
+    public function export_collection_users() {
         $search_field = Input::get('search');
         $location_id = Input::get('location');
-        $territory_id = Input::get('territory');    
+        $territory_id = Input::get('territory');
         $loc_arr = [];
         $territory_arr = [];
         $collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
@@ -6812,17 +6807,16 @@ foreach ($delivery_order_data as $delivery_order_info) {
             });
         }
         if (isset($territory_id) && !empty($territory_id)) {
-            $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
-            foreach ($territory_locations as $loc){
-                if(!in_array($loc->teritory_id, $loc_arr)){
-                   array_push($territory_arr, $loc->teritory_id);
+            $territory_locations = TerritoryLocation::where('teritory_id', '=', $territory_id)->get();
+            foreach ($territory_locations as $loc) {
+                if (!in_array($loc->teritory_id, $loc_arr)) {
+                    array_push($territory_arr, $loc->teritory_id);
                 }
                 array_push($loc_arr, $loc->location_id);
             }
             $collection_users->whereHas('locations', function($query) use ($territory_arr) {
-                $query->whereIn('teritory_id',$territory_arr);
+                $query->whereIn('teritory_id', $territory_arr);
             });
-            
         }
         $collection_users = $collection_users->where('role_id', '=', 6)->orderBy('created_at', 'DESC')->get();
 
@@ -6834,9 +6828,5 @@ foreach ($delivery_order_data as $delivery_order_info) {
             });
         })->export('xls');
     }
-    
-    
-    
-    
 
 }
