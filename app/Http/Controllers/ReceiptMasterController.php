@@ -404,7 +404,9 @@ class ReceiptMasterController extends Controller {
                             $customerReceiptObj->save();
                         }
                     }
-                    if ($customerReceiptObj) {
+                    if ($customerReceiptObj) {                       
+                        $receiptObj->updated_at = $customerReceiptObj->updated_at;
+                        $receiptObj->save();
                         Session::set('succcess_flag', true);
 //                        Session::set('succcess_flag', true);
                         return Response::json(['success' => true, 'receipt' => true]);
