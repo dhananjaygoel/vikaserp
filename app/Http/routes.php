@@ -93,12 +93,7 @@ Route::get('app_customer_inquiry/{id}', 'HomeController@customerInquiry');
 Route::get('app_customer_orders/{id}', 'HomeController@customerOrders');
 Route::get('appprintdeliveryorder', 'HomeController@appprintdeliveryorder');
 Route::get('appprintdeliverychallan', 'HomeController@appprintdeliverychallan');
-Route::get('get_inventory_report', 'InventoryController@getInventoryReport');
-Route::get('print_account_customers', 'CustomerController@print_account_customers');
-Route::get('get_inventory_price_list', 'InventoryController@getInventoryPriceList');
-Route::get('set_inventory_price', 'InventoryController@setInventoryPrice');
-Route::post('export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
-Route::post('export_inventory_report', 'InventoryController@exportinventoryReport');
+
 //app sms
 Route::post('test_sms', 'HomeController@test_sms');
 Route::post('appsyncinquiry_sms', 'HomeController@appsyncinquiry_sms');
@@ -124,7 +119,6 @@ Route::get('appssyncgraph_delivery_challan', 'HomeController@appssyncgraph_deliv
 
 
 //app aproval process - inquiry
-
 //performance module- labours
 Route::get('appalllabours', 'HomeController@appalllabours');
 Route::post('appaddlabour', 'HomeController@appaddlabour');
@@ -149,7 +143,7 @@ Route::post('appsynccollection', 'HomeController@appsynccollection');
 
 
 /*
-API due payment
+  API due payment
  *  */
 Route::get('appduepaymentshow_admin', 'HomeController@appduepaymentshow_admin');
 Route::post('appchangeunsettledamount_admin', 'HomeController@appchangeunsettledamount_admin');
@@ -337,7 +331,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
     Route::get('print_customers_details', 'CustomerController@print_customer_details');
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
-   
+
 //    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
@@ -368,6 +362,13 @@ Route::group(['middleware' => ['auth']], function() {
     /* Account */
     Route::resource('account', 'CollectionUserController');
     Route::post('account/export_collection_user', 'CollectionUserController@export_collection_users');
+    
+    Route::get('get_inventory_report', 'InventoryController@getInventoryReport');
+    Route::get('print_account_customers', 'CustomerController@print_account_customers');
+    Route::get('get_inventory_price_list', 'InventoryController@getInventoryPriceList');
+    Route::get('set_inventory_price', 'InventoryController@setInventoryPrice');
+    Route::post('export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
+    Route::post('export_inventory_report', 'InventoryController@exportinventoryReport');
 
     /* Helpful routes for developers */
     Route::get('delete_reports', 'WelcomeController@delete_reports');
