@@ -190,5 +190,5 @@
         </div>
     </div>
 </div>
-@include('autocomplete_tally_product_name')
+{{-- @include('autocomplete_tally_product_name') --}}
 @endsection

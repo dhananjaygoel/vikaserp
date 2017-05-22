@@ -234,9 +234,9 @@
             <div id="page-wrapper" class="container dashboard-nav nav-small">
 
                 <div class="row">
-                    @include('layouts.sidebar-left')
+                    @include('layouts.sidebar-left')                    
                     <div id="content-wrapper">
-                        @yield('content')
+                        @yield('content')                       
                         @include('layouts.footer')
                     </div>
                 </div>
@@ -253,8 +253,9 @@
 <script src="js/pace.min.js"></script>-->
         <!-- global scripts -->
         {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery.js') !!}
-        {!! HTML::script('/resources/assets/js/bootstrap.js') !!}
+        {!! HTML::script('/resources/assets/js/jquery.js') !!}   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        {!! HTML::script('/resources/assets/js/bootstrap.js') !!}  
         {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
         {!! HTML::script('/resources/assets/js/demo.js') !!}
         <!-- this page specific scripts -->
@@ -285,7 +286,7 @@
         {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
 
-
+ 
 
 
 
@@ -327,10 +328,28 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
 
         <script src="{{url()."/resources/assets/custom_js/laravel.js?".time()}}"></script> 
-
+        
+        
+        <?php if (Route::getCurrentRoute()->getPath() == "inquiry/create" || 
+                Route::getCurrentRoute()->getPath() == "inquiry/{inquiry}/edit" || 
+                Route::getCurrentRoute()->getPath() == "orders/create"  || 
+                Route::getCurrentRoute()->getPath() == "place_order/{id}"  || 
+                Route::getCurrentRoute()->getPath() == "orders/{orders}/edit" ||
+                Route::getCurrentRoute()->getPath() == "create_delivery_order/{id}" ||
+                Route::getCurrentRoute()->getPath() == "delivery_order/{delivery_order}/edit" ||
+                Route::getCurrentRoute()->getPath() == "delivery_challan/{delivery_challan}/edit" ||
+                Route::getCurrentRoute()->getPath() == "purchase_orders/create" ||
+                Route::getCurrentRoute()->getPath() == "create_purchase_advice/{create_purchase_advice}" ||
+                Route::getCurrentRoute()->getPath() == "purchaseorder_advise/{purchaseorder_advise}/edit" ||
+                Route::getCurrentRoute()->getPath() == "purchase_orders/{purchase_orders}/edit" 
+                 ) { ?>
+           @include('autocomplete_tally_product_name')
+           <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js?".time()}}"></script>
+        <?php } ?>
+        
         <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
                     <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
-
+         
         <script>
 
             $(function ($) {
@@ -548,7 +567,7 @@
             });
         </script>
 
-
+        
         <input type="hidden" id="site_url" value="{{url()}}"
     </body>
 </html>

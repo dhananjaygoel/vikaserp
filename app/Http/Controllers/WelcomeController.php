@@ -1130,6 +1130,13 @@ class WelcomeController extends Controller {
         $this->reset_stock();
         echo 'truncate all data';
     }
+    
+    public function delete_reports_receipt() {
+        
+        DB::table('receipts')->truncate();
+        DB::table('customer_receipts')->truncate();
+        echo 'truncate all receipt data';
+    }
 
     public function reset_stock() {
         $affected = DB::table('inventory')
