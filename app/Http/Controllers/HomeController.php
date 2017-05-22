@@ -3066,8 +3066,10 @@ class HomeController extends Controller {
         foreach ($receipt as $key => $value) {
             if ($value->server_id == 0) {
                 $receiptObj = new Receipt();
+                $receiptObj->created_at =  $value->created_at;
+                $receiptObj->updated_at =  $value->updated_at;
                 if ($receiptObj->save()) {
-                    foreach ($receipt_customer as $key => $user) {
+                    foreach ($receipt_customer as $key1 => $user) {
                         if ($value->id == $user->local_receipt_id) {
                             $customerReceiptObj = new Customer_receipts();
                             $customerReceiptObj->customer_id = $user->server_customer_id;
@@ -3079,7 +3081,7 @@ class HomeController extends Controller {
                         }
                     }
                 }
-
+                $receiptObj->save();
                 $receipt_id = $receiptObj->id;
                 $receipt_response[$value->id] = $receipt_id;
             } else {
