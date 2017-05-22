@@ -225,7 +225,7 @@ class PurchaseOrderController extends Controller {
             }
         
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
+                ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit','purchase_product_has_from')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
         
@@ -937,13 +937,15 @@ class PurchaseOrderController extends Controller {
     function quantity_calculation($purchase_orders) {
 
     foreach ($purchase_orders as $key => $order) {
+        
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
-            $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-
+            //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
+            $purchase_order_advise_products = $order['purchase_product_has_from'];
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    $product_size = ProductSubCategory::find($poapv->product_category_id);
+                    $product_size = $poapv['product_sub_category'];
+                    //$product_size = ProductSubCategory::find($poapv->product_category_id);
                     if ($poapv->unit_id == 1) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
                     }
@@ -958,7 +960,8 @@ class PurchaseOrderController extends Controller {
 
             if (count($order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
-                    $product_size = ProductSubCategory::find($popv->product_category_id);
+                    $product_size = $popv['product_sub_category'];
+                    //$product_size = ProductSubCategory::find($popv->product_category_id);
                     if ($popv->unit_id == 1) {
                         $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                     }

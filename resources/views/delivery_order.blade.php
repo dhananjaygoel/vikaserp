@@ -163,8 +163,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($delivery->delivery_location_id > 0)
-                                            {{$delivery->location->area_name}}
+                                            @if(count($delivery['location']))
+                                            {{$delivery['location']['area_name']}}
                                             @else
                                             {{$delivery->other_location}}
                                             @endif

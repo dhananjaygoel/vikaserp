@@ -171,17 +171,17 @@ class OrderController extends Controller {
         }
         if (Input::has('flag') && Input::get('flag') == 'true') {
             if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','delivery_orders')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);// included `delivery_orders`
             }
             if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20);
+                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','delivery_orders')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         } else {
             if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby')->orderBy('updated_at', 'desc')->paginate(20);
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby','delivery_orders')->orderBy('updated_at', 'desc')->paginate(20);// included `delivery_orders`
             }
             if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled')->orderBy('created_at', 'desc')->paginate(20);
+                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','delivery_orders')->orderBy('created_at', 'desc')->paginate(20);// included `delivery_orders`
             }
         }
         $users = User::all();
@@ -191,11 +191,9 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
         }
-
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
         $product_size = ProductSubCategory::all();
-
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
 //        $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location', 'createdby')
@@ -1099,14 +1097,25 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             return redirect('orders')->with('error', 'You do not have permission.');
         }
+        /* old */
+        //$order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
+        /* old */
 
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
+        /* new */
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->with('all_order_products.sum_quntity')->find($id);
+        /* new */
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
-        foreach ($order['all_order_products'] as $key => $value) {
-            $delivery_order_products = AllOrderProducts::where('parent', '=', $value->id)->get();
-            $total_delivery_order_product_quantity = $delivery_order_products->sum('quantity');
+        foreach ($order['all_order_products'] as $key => $value) {            
+            //old
+            //$delivery_order_products = AllOrderProducts::where('parent', '=', $value->id)->get();
+            //$total_delivery_order_product_quantity = $delivery_order_products->sum('quantity');
+            //old
+            
+            // new
+            $total_delivery_order_product_quantity = $value['sum_quntity']->sum('quantity');
+            // new
             $order['all_order_products'][$key]['pending_quantity'] = ($value->quantity - $total_delivery_order_product_quantity);
         }
         $units = Units::all();
@@ -1310,15 +1319,31 @@ class OrderController extends Controller {
         foreach ($allorders as $key => $order) {
             $order_quantity = 0;
             $delivery_order_quantity = 0;
-            $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
-            if (!empty($delievry_order_details)) {
-                $delivery_order_products = AllOrderProducts::where('from', '=', $delievry_order_details->order_id)->where('order_type', '=', 'delivery_order')->get();
-            } else {
-                $delivery_order_products = NULL;
+
+            /* new */
+            $delivery_order_products = NULL;
+            if(isset($order['delivery_orders']) && count($order['delivery_orders'])){
+                $delivery_order_products = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->where('order_type', '=', 'delivery_order')->get();
             }
+            /* new */
+            /* old */
+            // $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
+            // if (!empty($delievry_order_details)) {
+            //     $delivery_order_products = AllOrderProducts::where('from', '=', $delievry_order_details->order_id)->where('order_type', '=', 'delivery_order')->get();
+            // } else {
+            //     $delivery_order_products = NULL;
+            // }
+            /* old */
+
             if (count($delivery_order_products) > 0) {
                 foreach ($delivery_order_products as $dopk => $dopv) {
-                    $product_size = ProductSubCategory::find($dopv->product_category_id);
+                    //new 
+                    $product_size = $dopv['product_sub_category'];
+                    //new
+                    /* old */
+                    //$product_size = ProductSubCategory::find($dopv->product_category_id);
+
+                    /* old */
 //                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
 
                     if ($dopv->unit_id == 1) {
@@ -1332,9 +1357,19 @@ class OrderController extends Controller {
             }
             if (count($order['all_order_products']) > 0) {
                 foreach ($order['all_order_products'] as $opk => $opv) {
+                    /* new */
+                    if(isset($opv['product_sub_category'])){
+                        $product_size = $opv['product_sub_category'];
+                    }else{
+                        $product_size = ProductSubCategory::find($opv->product_category_id);
+//                    $order_quantity = $order_quantity + $opv->quantity;
+                    }
+                    /* new */
+                    /* old */
                     $product_size = ProductSubCategory::find($opv->product_category_id);
 //                    $order_quantity = $order_quantity + $opv->quantity;
 
+                    /* old */
                     if ($opv->unit_id == 1) {
                         $order_quantity = $order_quantity + $opv->quantity;
                     } elseif ($opv->unit_id == 2) {

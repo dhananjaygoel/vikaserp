@@ -29,7 +29,7 @@ class Order extends Model {
     }
 
     public function all_order_products() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'order')->where('product_category_id', '>', '0');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->with('product_sub_category')->where('order_type', '=', 'order')->where('product_category_id', '>', '0');
     }
     
     public function createdby() {
@@ -60,5 +60,10 @@ class Order extends Model {
         $this->flaged = ($order_details->flaged == true) ? false : true;
         $this->save();
     }
+    /* new */
+    public function delivery_orders() {
+        return $this->hasMany('App\DeliveryOrder', 'order_id', 'id');
+    }    
+    /* new */
 
 }

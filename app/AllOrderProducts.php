@@ -28,6 +28,9 @@ class AllOrderProducts extends Model {
     public function order_product_details() {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->with('product_category');
     }
+    public function sum_quntity() {
+        return $this->hasMany('App\AllOrderProducts', 'parent', 'id');
+    }    
     
 //    public function order_product_details_pipe() {
 //        return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->whereHas('product_category', function($q)
