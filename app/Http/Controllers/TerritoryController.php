@@ -131,6 +131,7 @@ class TerritoryController extends Controller {
         $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
         foreach ($territory_loc as $loc) {
             $territory_old = TerritoryLocation::find($loc->id);
+            if(count($territory_old) > 0)
             $territory_old->delete();
         }
 
@@ -156,6 +157,7 @@ class TerritoryController extends Controller {
     public function destroy($id, Request $request) {
         if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
             $territory = Territory::find($id);
+            if(count($territory) > 0)
             $territory->delete();
             return redirect('territory')->with('flash_success_message', 'Territory successfully deleted.');
         } else {
