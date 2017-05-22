@@ -344,6 +344,7 @@
                 Route::getCurrentRoute()->getPath() == "purchase_orders/{purchase_orders}/edit" 
                  ) { ?>
            @include('autocomplete_tally_product_name')
+           <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js?".time()}}"></script>
         <?php } ?>
         
         <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
