@@ -91,6 +91,7 @@ class PurchaseAdviseController extends Controller {
                     
             
         $purchase_advise = $q->orderBy('created_at', 'desc')->paginate(20);
+
         $pending_orders = $this->checkpending_quantity($purchase_advise);
         $purchase_advise->setPath('purchaseorder_advise');
 
@@ -794,7 +795,8 @@ class PurchaseAdviseController extends Controller {
                 if (count($del_order['purchase_products']) > 0) {
 
                     foreach ($del_order['purchase_products'] as $popk => $popv) {
-                        $product_size = ProductSubCategory::find($popv->product_category_id);
+                        $product_size = $popv['product_sub_category'];
+                        //$product_size = ProductSubCategory::find($popv->product_category_id);
                         if ($popv->unit_id == 1) {
                             $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                         }

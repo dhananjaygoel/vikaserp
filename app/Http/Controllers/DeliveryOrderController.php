@@ -103,7 +103,8 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer')->paginate(20);
+        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer','location')->paginate(20);
+       
         $delivery_data = $this->checkpending_quantity($delivery_data);
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
@@ -1015,9 +1016,10 @@ class DeliveryOrderController extends Controller {
                 $pending_order = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
-
                         if (isset($popv)) {
-                            $product_size = ProductSubCategory::find($popv->product_category_id);
+                            $product_size = $popv['product_sub_category'];
+                            //$product_size = ProductSubCategory::find($popv->product_category_id);
+
                             if ($popv->unit_id == 1) {
                                 $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
