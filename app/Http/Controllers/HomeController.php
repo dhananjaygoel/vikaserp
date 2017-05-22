@@ -3085,7 +3085,6 @@ class HomeController extends Controller {
                 $receipt_id = $receiptObj->id;
                 $receipt_response[$value->id] = $receipt_id;
             } else {
-
                 $receiptObj = Receipt::with('customer_receipts')->find($value->server_id);
                 if (isset($receiptObj->customer_receipts)) {
                     foreach ($receiptObj->customer_receipts as $customers) {
@@ -3104,7 +3103,6 @@ class HomeController extends Controller {
                         $customerReceiptObj->save();
                     }
                 }
-
                 $receipt_id = $receiptObj->id;
                 $delivery_order_products = array();
                 $receiptObj->save();
@@ -6832,6 +6830,40 @@ class HomeController extends Controller {
                 $sheet->loadView('excelView.collection_user.export_collection_user', array('users' => $collection_users));
             });
         })->export('xls');
+    }
+    
+    
+     function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
+
+        $kg_qty = 0;
+        $product_info = ProductSubCategory::find($product_category_id);
+        if ($unit_id == 1) {
+            if (isset($product_info->quantity)) {
+                $kg_qty = $product_info->quantity;
+            } else {
+                $kg_qty = 0;
+            }
+        } elseif ($unit_id == 2) {
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+            } else {
+                $weight = 0;
+            }
+            $kg_qty = $kg_qty + ($product_qty * $weight);
+        } elseif ($unit_id == 3) {
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+            } else {
+                $weight = 1;
+            }
+            if (isset($product_info->standard_length)) {
+                $std_length = $product_info->standard_length;
+            } else {
+                $std_length = 0;
+            }
+            $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
+        }
+        return $kg_qty;
     }
 
 }
