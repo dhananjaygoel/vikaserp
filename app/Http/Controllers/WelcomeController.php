@@ -1131,7 +1131,7 @@ class WelcomeController extends Controller {
         echo 'truncate all data';
     }
     
-    public function delete_reports_recepit() {
+    public function delete_reports_receipt() {
         
         DB::table('receipts')->truncate();
         DB::table('customer_receipts')->truncate();

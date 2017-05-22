@@ -376,7 +376,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     /* Helpful routes for developers */
     Route::get('delete_reports', 'WelcomeController@delete_reports');
-    Route::get('delete_reports_recepit', 'WelcomeController@delete_reports_recepit');
+    Route::get('delete_reports_receipt', 'WelcomeController@delete_reports_receipt');
     Route::get('removedata/{tablename}', 'WelcomeController@removedata');
     Route::get('emptydata/{tablename}', 'WelcomeController@emptydata');
     Route::get('showdata/{tablename}', 'WelcomeController@showdata');
