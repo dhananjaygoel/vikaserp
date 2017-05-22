@@ -1,5 +1,5 @@
 <!-- form-autocomplete maintained by sukohi -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
 <script>
      var qtyPieces = '<option value = "1">1</option>'+
 '<option value = "2">2</option>'+
@@ -1924,7 +1924,6 @@ function getProductDetails() {
                             cache: true,
                             success: function (data) { 
                                 var obj = jQuery.parseJSON(data);
-                                console.log(obj.data_array[0]);
                                 $("#add_product_id_"+id).val(obj.data_array[0].id);
                                 $("#product_all_"+id).val(term);
                                 $("#product_price_"+id).val(obj.data_array[0].product_price);
