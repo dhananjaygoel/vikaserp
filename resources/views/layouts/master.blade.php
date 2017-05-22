@@ -231,7 +231,6 @@
         <div id="theme-wrapper">
             <span id="baseurl" style="display: none;">{{url()}}</span>
             @include('layouts.header')
-            {{Route::getCurrentRoute()->getPath()}}
             <div id="page-wrapper" class="container dashboard-nav nav-small">
 
                 <div class="row">
