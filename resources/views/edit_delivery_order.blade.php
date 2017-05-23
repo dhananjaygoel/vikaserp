@@ -473,7 +473,7 @@
                         </div>
                         <div class="clearfix"></div>
                         
-                            <!--
+                            <!-- {{--
                             <div class="form-group">
                                 <div class="radio">
                                     <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
@@ -482,8 +482,8 @@
                                     <label for="optionsRadios6">Plus VAT</label>
                                 </div>
                             </div>
-                            -->
-                            <!--                        <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
+                          --}}  --> 
+                            <!--  {{--                      <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
                                                         <div class="form-group">
                                                             <table id="table-example" class="table ">
                                                                 <tbody>
@@ -494,7 +494,7 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                    </div>-->
+                                                    </div> --}} -->
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="inquiry_remark">Remark</label>
