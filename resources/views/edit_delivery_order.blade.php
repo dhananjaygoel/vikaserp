@@ -212,7 +212,7 @@
                                                             </td>
                                                             <td class="col-md-2">
                                                                 <!--                                                            form for save product value-->
-                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{$session_data['product'][$i]['vat_percentage']}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
                                                                 <!--
                                                                     <div class="form-group col-md-6 difference_form">
                                                                     <input class="btn btn-primary" type="button" class="form-control" value="save" >
