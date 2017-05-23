@@ -69,7 +69,7 @@ Route::get('appinventory', 'HomeController@appinventory');
 
 Route::get('app_export_inventory', 'InventoryController@export_inventory');
 Route::get('app_export_salesdaybook', 'WelcomeController@export_sales_daybook');
-Route::get('app_export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
+Route::get('app_export_purchasedaybook', 'WelcomeController@expert_purchase_daybook');
 Route::get('app_export_inventory_report', 'InventoryController@exportinventoryReport');
 Route::get('app_export_inventory_price_list', 'InventoryController@exportinventoryPriceList');
 Route::get('app_export_collection_users_list', 'HomeController@export_collection_users');
