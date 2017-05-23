@@ -276,10 +276,10 @@ class DashboardController extends Controller {
             $orders_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $orders_stats_all[$i]['day'] = $date_search;
-                $orders_stats = Order::with('all_order_products')
-                        ->where('order_status', '=', 'completed')
-                        ->where('updated_at', 'like', $date_search . '%')
-                        ->get();
+            $orders_stats = Order::with('all_order_products')
+                    ->where('order_status', '=', 'completed')
+                    ->where('updated_at', 'like', $date_search . '%')
+                    ->get();
             if (count($orders_stats) > 0) {
                 foreach ($orders_stats as $order) {
                     foreach ($order['all_order_products'] as $order_products) {
@@ -346,15 +346,35 @@ class DashboardController extends Controller {
 
                     if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
                         if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
-                            if ($delivery_challan_products['unit_id'] == 1)
+                            if ($delivery_challan_products['unit_id'] == 1) {
                                 $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
-                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
-                                $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
-                        }else {
-                            if ($delivery_challan_products['unit_id'] == 1)
+                            } elseif (($delivery_challan_products['unit_id'] == 2)) {
+                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
+                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
+                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
+                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
+                                    $standard_length = 1;
+                                }
+                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
+                            }
+//                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+//                                $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+                        } else {
+                            if ($delivery_challan_products['unit_id'] == 1){
                                 $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
-                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
-                                $delivery_challan_stats_all[$i]['structure'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+                            }elseif (($delivery_challan_products['unit_id'] == 2)) {
+                                
+                                
+                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
+                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
+                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
+                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
+                                    $standard_length = 1;
+                                }
+                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
+                            }
+//                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+//                                $delivery_challan_stats_all[$i]['structure'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
                         }
                     }
                 }
@@ -363,8 +383,6 @@ class DashboardController extends Controller {
             $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
             $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
         }
-
-
         return ($delivery_challan_stats_all);
     }
 
@@ -482,5 +500,4 @@ class DashboardController extends Controller {
 //        return ($orders_stats_temp);
 //        exit;
 //    }
-
 }

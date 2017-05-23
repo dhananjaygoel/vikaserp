@@ -212,7 +212,7 @@
                                                             </td>
                                                             <td class="col-md-2">
                                                                 <!--                                                            form for save product value-->
-                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{$session_data['product'][$i]['vat_percentage']}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
                                                                 <!--
                                                                     <div class="form-group col-md-6 difference_form">
                                                                     <input class="btn btn-primary" type="button" class="form-control" value="save" >
@@ -288,7 +288,7 @@
                                                             <td class="col-md-2">
                                                                 <div class="form-group col-md-6">
                                                                     <!--                                                            form for save product value-->
-                                                                    <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{$session_data['product'][$i]['vat_percentage']}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
+                                                                    <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
                                                                 </div>
                                                                 <div class="form-group col-md-6 difference_form">
                                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
@@ -457,7 +457,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst" style="font-weight: 500;">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return onlyPercentage(event);" type="text" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return onlyPercentage(event);" type="text" onblur="grand_total_delivery_order({{isset($key)?(($key!='')?$key:1):''}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -473,7 +473,7 @@
                         </div>
                         <div class="clearfix"></div>
                         
-                            <!--
+                            <!-- {{--
                             <div class="form-group">
                                 <div class="radio">
                                     <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
@@ -482,8 +482,8 @@
                                     <label for="optionsRadios6">Plus VAT</label>
                                 </div>
                             </div>
-                            -->
-                            <!--                        <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
+                          --}}  --> 
+                            <!--  {{--                      <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
                                                         <div class="form-group">
                                                             <table id="table-example" class="table ">
                                                                 <tbody>
@@ -494,7 +494,7 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                    </div>-->
+                                                    </div> --}} -->
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="inquiry_remark">Remark</label>
