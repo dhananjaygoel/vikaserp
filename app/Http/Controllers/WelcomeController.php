@@ -1241,7 +1241,8 @@ class WelcomeController extends Controller {
         $db_password = "CFpNH.#JblZe";
         $database = "vikasags_vikasdb";
         $filename = "backup-test" . date("d-m-Y") . ".sql.gz";
-        $mime = "application/x-gzip";
+        $mime = "application/octet-stream";
+//        $mime = "application/x-gzip";
 
         header("Content-Type: " . $mime);
         header('Content-Disposition: attachment; filename="' . $filename . '"');
