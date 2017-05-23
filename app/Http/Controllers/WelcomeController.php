@@ -27,6 +27,7 @@ use Auth;
 use Carbon\Carbon;
 use SmsBump;
 use App\LoadedBy;
+use App\DeliveryChallan;
 
 class WelcomeController extends Controller {
     /*
@@ -1130,9 +1131,9 @@ class WelcomeController extends Controller {
         $this->reset_stock();
         echo 'truncate all data';
     }
-    
+
     public function delete_reports_receipt() {
-        
+
         DB::table('receipts')->truncate();
         DB::table('customer_receipts')->truncate();
         echo 'truncate all receipt data';
@@ -1141,17 +1142,17 @@ class WelcomeController extends Controller {
     public function reset_stock() {
         $affected = DB::table('inventory')
                 ->update(array(
-                    'virtual_qty' => 0,
-                    'minimal' => 0,
-                    'opening_qty' => 0,
-                    'sales_challan_qty' => 0,
-                    'purchase_challan_qty' => 0,
-                    'physical_closing_qty' => 0,
-                    'pending_sales_order_qty' => 0,
-                    'pending_delivery_order_qty' => 0,
-                    'pending_purchase_order_qty' => 0,
-                    'pending_purchase_advise_qty' => 0,                    
-                    ));
+            'virtual_qty' => 0,
+            'minimal' => 0,
+            'opening_qty' => 0,
+            'sales_challan_qty' => 0,
+            'purchase_challan_qty' => 0,
+            'physical_closing_qty' => 0,
+            'pending_sales_order_qty' => 0,
+            'pending_delivery_order_qty' => 0,
+            'pending_purchase_order_qty' => 0,
+            'pending_purchase_advise_qty' => 0,
+        ));
     }
 
     /*
@@ -1345,6 +1346,43 @@ class WelcomeController extends Controller {
         print_r($ipaddress);
         echo "</pre>";
         exit;
+    }
+
+    public function export_sales_daybook() {
+//        ini_set('allow_url_fopen',1);
+        set_time_limit(0);
+        $data = Input::all();
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+            } else {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                        ->where('updated_at', '>=', $date1)
+                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+            }
+        } else {
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                    ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
+                    ->orderBy('updated_at', 'desc')
+//                    ->Paginate(200);   
+                    ->take(200)
+                    ->get();
+        }
+        Excel::create('Sales Daybook', function($excel) use($allorders) {
+            $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
+                $sheet->loadView('excelView.sales', array('allorders' => $allorders));
+            });
+        })->export('xls');
+        exit();
     }
 
 }
