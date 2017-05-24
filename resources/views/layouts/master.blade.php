@@ -75,6 +75,12 @@
             change_quantity2 = function () {};
             fetch_average_quantity = function () {};
             calutate_pending_order = function () {};
+            delete_delivery_order = function () {};
+            product_autocomplete_purchase = function () {};
+            delete_purchase_order = function () {};
+            print_purchase_challan = function () {};
+            print_challan = function () {};
+           
         </script>
         <script>
             var _rollbarConfig = {
