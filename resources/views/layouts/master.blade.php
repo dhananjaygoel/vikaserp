@@ -72,6 +72,9 @@
             numbersOnly = function () {};
             clear_actual_qty = function () {};
             setQty = function () {};
+            change_quantity2 = function () {};
+            fetch_average_quantity = function () {};
+            calutate_pending_order = function () {};
         </script>
         <script>
             var _rollbarConfig = {
