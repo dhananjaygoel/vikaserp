@@ -1019,7 +1019,8 @@ class CustomerController extends Controller {
         $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id); 
         $credit_period=$customer->credit_period;        
         $settle_filter = Input::get('settle_filter');        
-        $delivery_challans = DeliveryChallan::where('customer_id','=',$id)                                              
+        $delivery_challans = DeliveryChallan::where('customer_id','=',$id) 
+                ->where('challan_status','completed')
                                              ->whereRaw('grand_price!=settle_amount');                            
         if (isset($settle_filter) && $settle_filter!='' && $settle_filter=='Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)

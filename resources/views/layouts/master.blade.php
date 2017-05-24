@@ -66,6 +66,22 @@
                 height: 35px;
             }
         </style>
+         <!--define method before load page--> 
+        <script>
+            product_autocomplete = function () {};
+            numbersOnly = function () {};
+            clear_actual_qty = function () {};
+            setQty = function () {};
+            change_quantity2 = function () {};
+            fetch_average_quantity = function () {};
+            calutate_pending_order = function () {};
+            delete_delivery_order = function () {};
+            product_autocomplete_purchase = function () {};
+            delete_purchase_order = function () {};
+            print_purchase_challan = function () {};
+            print_challan = function () {};
+           
+        </script>
         <script>
             var _rollbarConfig = {
                 accessToken: "e9b8125f7584473784540f13c939e75e",
@@ -286,7 +302,7 @@
         {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
 
- 
+
 
 
 
@@ -312,13 +328,13 @@
 
         <!-- Custom Script Support -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> 
-        
+
         <script src="{{url()."/resources/assets/custom_js/custom_script.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom_script_js.js?".time()}}"></script>
         <script src="{{url()."/resources/assets/custom_js/custom.js?".time()}}"></script>
         <?php if (Route::getCurrentRoute()->getPath() == "dashboard") { ?>
             <script src="{{url()."/resources/assets/custom_js/graph.js?".time()}}"></script>
-        <?php } ?>
+<?php } ?>
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
@@ -329,11 +345,12 @@
 
         <script src="{{url()."/resources/assets/custom_js/laravel.js?".time()}}"></script> 
         <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
-        
-        <?php if (Route::getCurrentRoute()->getPath() == "inquiry/create" || 
-                Route::getCurrentRoute()->getPath() == "inquiry/{inquiry}/edit" || 
-                Route::getCurrentRoute()->getPath() == "orders/create"  || 
-                Route::getCurrentRoute()->getPath() == "place_order/{id}"  || 
+
+        <?php
+        if (Route::getCurrentRoute()->getPath() == "inquiry/create" ||
+                Route::getCurrentRoute()->getPath() == "inquiry/{inquiry}/edit" ||
+                Route::getCurrentRoute()->getPath() == "orders/create" ||
+                Route::getCurrentRoute()->getPath() == "place_order/{id}" ||
                 Route::getCurrentRoute()->getPath() == "orders/{orders}/edit" ||
                 Route::getCurrentRoute()->getPath() == "create_delivery_order/{id}" ||
                 Route::getCurrentRoute()->getPath() == "delivery_order/{delivery_order}/edit" ||
@@ -341,15 +358,16 @@
                 Route::getCurrentRoute()->getPath() == "purchase_orders/create" ||
                 Route::getCurrentRoute()->getPath() == "create_purchase_advice/{create_purchase_advice}" ||
                 Route::getCurrentRoute()->getPath() == "purchaseorder_advise/{purchaseorder_advise}/edit" ||
-                Route::getCurrentRoute()->getPath() == "purchase_orders/{purchase_orders}/edit" 
-                 ) { ?>
-           @include('autocomplete_tally_product_name')
-           <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js?".time()}}"></script>
-        <?php } ?>
-        
+                Route::getCurrentRoute()->getPath() == "purchase_orders/{purchase_orders}/edit"
+        ) {
+            ?>
+            @include('autocomplete_tally_product_name')
+            <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js?".time()}}"></script>
+<?php } ?>
+
         <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
                     <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
-         
+
         <script>
 
             $(function ($) {
@@ -567,7 +585,7 @@
             });
         </script>
 
-        
+
         <input type="hidden" id="site_url" value="{{url()}}"
     </body>
 </html>
