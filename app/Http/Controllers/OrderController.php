@@ -1362,11 +1362,10 @@ class OrderController extends Controller {
                         $product_size = $opv['product_sub_category'];
                     }else{
                         $product_size = ProductSubCategory::find($opv->product_category_id);
-//                    $order_quantity = $order_quantity + $opv->quantity;
                     }
                     /* new */
                     /* old */
-                    $product_size = ProductSubCategory::find($opv->product_category_id);
+                    //$product_size = ProductSubCategory::find($opv->product_category_id);
 //                    $order_quantity = $order_quantity + $opv->quantity;
 
                     /* old */
