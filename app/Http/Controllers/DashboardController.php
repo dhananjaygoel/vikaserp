@@ -62,7 +62,6 @@ class DashboardController extends Controller {
         $orders = Order::where('order_status', 'pending')->with('all_order_products')->get();
         $order_pending_sum = 0;
 
-
 //        $pending_order = Order::where('order_status', 'pending')->count();
 
         foreach ($orders as $order) {
@@ -71,7 +70,10 @@ class DashboardController extends Controller {
                     if ($all_order_products->unit_id == 1)
                         $order_pending_sum += $all_order_products->quantity;
                     elseif (($all_order_products->unit_id == 2) || ($all_order_products->unit_id == 3))
-                        $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
+                        
+                        // $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
+                    
+                        $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity,$all_order_products->product_sub_category);
                 }
             }
         }
@@ -85,11 +87,13 @@ class DashboardController extends Controller {
         foreach ($inquiries as $inquiry) {
             foreach ($inquiry->inquiry_products as $all_inquiry_products) {
                 if ($inquiry->inquiry_status == 'pending') {
-
                     if ($all_inquiry_products->unit_id == 1)
                         $inquiry_pending_sum += $all_inquiry_products->quantity;
                     elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))
-                        $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity);
+
+                        // $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity);
+
+                        $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity,$all_inquiry_products->product_sub_category);
                 }
             }
         }
@@ -116,7 +120,10 @@ class DashboardController extends Controller {
                     if ($delivery_order_productinfo->unit_id == 1)
                         $deliver_pending_sum += $delivery_order_productinfo->quantity;
                     elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                        $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+
+                        // $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+
+                        $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
                 }
             }
 //            foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
@@ -177,10 +184,16 @@ class DashboardController extends Controller {
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
 
-    function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
+    function checkpending_quantity($unit_id, $product_category_id, $product_qty,$prod_info=false) {
 
         $kg_qty = 0;
-        $product_info = ProductSubCategory::find($product_category_id);
+        if($prod_info && count($prod_info))
+        {
+            $product_info = $prod_info;
+        }else{
+           $product_info = ProductSubCategory::find($product_category_id);
+        }
+
         if ($unit_id == 1) {
             if (isset($product_info->quantity)) {
                 $kg_qty = $product_info->quantity;

@@ -106,9 +106,9 @@ class DeliveryOrderController extends Controller {
         $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer','location')->paginate(20);
        
         $delivery_data = $this->checkpending_quantity($delivery_data);
-        $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
-        return view('delivery_order', compact('delivery_data', 'delivery_locations', 'search_dates'));
+        return view('delivery_order', compact('delivery_data','search_dates'));
     }
 
     /**
