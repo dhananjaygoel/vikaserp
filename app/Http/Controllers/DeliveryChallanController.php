@@ -1018,7 +1018,7 @@ class DeliveryChallanController extends Controller {
         } elseif ($data['delivery_order_status'] == 'completed') {
             $delivery_order_status = 'completed';
             $excel_sheet_name = 'Completed';
-            $excel_name = 'DeliveryOrder-Completed-' . date('dmyhis');
+            $excel_name = 'DeliveryChallan-Completed-' . date('dmyhis');
         }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
