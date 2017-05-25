@@ -1016,7 +1016,12 @@ class CustomerController extends Controller {
     public function get_customer_details($id) {
         $date_filter = Input::get('date_filter');        
         $customer = '';
-        $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id); 
+        $customer = Customer::with(['delivery_challan'=> function ($query) {
+                    $query->where('delivery_challan.challan_status','completed');
+                }])
+                ->with('customer_receipt')
+                ->find($id);  
+                
         $credit_period=$customer->credit_period;        
         $settle_filter = Input::get('settle_filter');        
         $delivery_challans = DeliveryChallan::where('customer_id','=',$id) 
@@ -1024,10 +1029,12 @@ class CustomerController extends Controller {
                                              ->whereRaw('grand_price!=settle_amount');                            
         if (isset($settle_filter) && $settle_filter!='' && $settle_filter=='Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
+                    ->where('challan_status','completed')
                                 ->whereRaw('grand_price=settle_amount');                             
         }
         if (isset($settle_filter) && $settle_filter== 'Unsettled') {
             $delivery_challans = DeliveryChallan::where('customer_id','=',$id)
+                    ->where('challan_status','completed')
                                               ->whereRaw('grand_price != settle_amount');
         }        
         
@@ -1045,6 +1052,7 @@ class CustomerController extends Controller {
                 $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= CURDATE()");
         }
         $delivery_challans=$delivery_challans->get();
+//        dd(DB::getQueryLog());
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         return View('customer_details_view')->with('customer',$customer)                                            
                                             ->with('delivery_challans',$delivery_challans)
