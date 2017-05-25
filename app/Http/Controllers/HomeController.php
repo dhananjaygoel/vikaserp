@@ -3066,8 +3066,8 @@ class HomeController extends Controller {
         foreach ($receipt as $key => $value) {
             if ($value->server_id == 0) {
                 $receiptObj = new Receipt();
-                $receiptObj->created_at =  $value->created_at;
-                $receiptObj->updated_at =  $value->updated_at;
+                $receiptObj->created_at = $value->created_at;
+                $receiptObj->updated_at = $value->updated_at;
                 if ($receiptObj->save()) {
                     foreach ($receipt_customer as $key1 => $user) {
                         if ($value->id == $user->local_receipt_id) {
@@ -3260,13 +3260,13 @@ class HomeController extends Controller {
                 foreach ($territories as $key => $value) {
                     if ($value->teritory_server_id > 0) {
                         $territory = Territory::find($value->teritory_server_id);
-                        if(count($territory) > 0)
-                        $territory->delete();
+                        if (count($territory) > 0)
+                            $territory->delete();
                         $territory_loc = TerritoryLocation::where('teritory_id', '=', $value->teritory_server_id)->get();
                         foreach ($territory_loc as $loc) {
                             $territory_old = TerritoryLocation::find($loc->id);
-                            if(count($territory_old) > 0)
-                            $territory_old->delete();
+                            if (count($territory_old) > 0)
+                                $territory_old->delete();
                         }
                     }
                 }
@@ -6663,10 +6663,18 @@ class HomeController extends Controller {
     public function appduepaymentshow_admin() {
 
         $duepayment_response = [];
-        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->orderBy('created_at', 'desc')
-                        ->whereHas('delivery_challan', function ($query) {
-                            $query->where('challan_status', '=', 'completed');
-                        })->get();
+//        $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->orderBy('created_at', 'desc')
+//                        ->whereHas('delivery_challan', function ($query) {
+//                            $query->where('challan_status', '=', 'completed');
+//                        })->get();
+        $customers = Customer::with(['delivery_challan' => function ($query) {
+                        $query->where('delivery_challan.challan_status', 'completed');
+                    }])
+                ->with('customer_receipt')
+                ->with('collection_user_location.collection_user')
+                ->with('delivery_location')
+                ->orderBy('created_at', 'desc')
+                ->get();
 
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
 
@@ -6831,9 +6839,8 @@ class HomeController extends Controller {
             });
         })->export('xls');
     }
-    
-    
-     function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
+
+    function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
 
         $kg_qty = 0;
         $product_info = ProductSubCategory::find($product_category_id);
