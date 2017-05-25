@@ -31,5 +31,8 @@ class InquiryProducts extends Model {
     public function inquiry_product_details() {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->with('product_category');
     }
+    public function product_sub_category() {
+        return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id');
+    }
 
 }

@@ -449,6 +449,7 @@ class BulkDeleteController extends Controller {
                 $purchase_orders = PurchaseOrder::with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit')
                                 ->where('created_at', '<=', $newdate)->where('order_status', '=', 'completed')
                                 ->orderBy('created_at', 'desc')->Paginate(50);
+
                 $result_temp = $this->quantity_calculation($purchase_orders);
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
@@ -777,7 +778,12 @@ class BulkDeleteController extends Controller {
                 $delivery_order_present_shipping = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
-                        $product_size = ProductSubCategory::find($popv->product_category_id);
+                        if(isset($popv['product_sub_category']) && count($popv['product_sub_category'])){
+                            $product_size = $popv['product_sub_category'];
+                        }else{
+                            $product_size = ProductSubCategory::find($popv->product_category_id);
+                        }                        
+                        
                         if ($popv->unit_id == 1) {
                             $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                             $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
@@ -785,8 +791,10 @@ class BulkDeleteController extends Controller {
                             $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
                         } elseif ($popv->unit_id == 3) {
-                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+                            if($product_size->standard_length){
+                                $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+                            }
                         }
                     }
                 }
@@ -802,28 +810,40 @@ class BulkDeleteController extends Controller {
         foreach ($purchase_orders as $key => $order) {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
-            $purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
+            $purchase_order_advise_products = PurchaseProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    $product_size = ProductSubCategory::find($poapv->product_category_id);
+                    if(isset($poapv['product_sub_category']) && count($poapv['product_sub_category'])){
+                        $product_size = $poapv['product_sub_category'];
+                    }else{
+                        $product_size = ProductSubCategory::find($poapv->product_category_id);
+                    }                    
                     if ($poapv->unit_id == 1) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
                     } elseif ($poapv->unit_id == 2) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
                     } elseif ($poapv->unit_id == 3) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                        if($product_size->standard_length){
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
                     }
                 }
             }
             if (count($order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
-                    $product_size = ProductSubCategory::find($popv->product_category_id);
+                    if(isset($popv['product_sub_category']) && count($popv['product_sub_category'])){
+                        $product_size = $popv['product_sub_category'];
+                    }else{    
+                        $product_size = ProductSubCategory::find($popv->product_category_id);
+                    }                    
                     if ($popv->unit_id == 1) {
                         $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                     } elseif ($popv->unit_id == 2) {
                         $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
                     } elseif ($popv->unit_id == 3) {
-                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        if($product_size->standard_length){
+                            $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        }
                     }
                 }
             }

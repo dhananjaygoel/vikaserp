@@ -473,7 +473,7 @@ class OrderController extends Controller {
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if (($product_data['name'] != "") && ($product_data['id'] != "") && ($product_data['id'] > 0)) {
-                $order_products = [
+                $tmp = [
                     'order_id' => $order_id,
                     'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
@@ -481,10 +481,14 @@ class OrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
-                    'remarks' => $product_data['remark']
+                    'remarks' => $product_data['remark'],
+                    'created_at' => date('Y-m-d H:i:s')
                 ];
-                AllOrderProducts::create($order_products);
+                array_push($order_products,$tmp);
             }
+        }
+        if(count($order_products)){
+            AllOrderProducts::insert($order_products);
         }
 
         /*
@@ -1102,7 +1106,7 @@ class OrderController extends Controller {
         /* old */
 
         /* new */
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->with('all_order_products.sum_quntity')->find($id);
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details','all_order_products.sum_quntity','customer')->find($id);
         /* new */
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
