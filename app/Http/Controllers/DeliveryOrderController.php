@@ -1082,7 +1082,8 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                             } elseif ($popv->unit_id == 3) {
-
+                                if($product_size->standard_length == 0)
+                                    $product_size->standard_length=1;
                                 $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
 

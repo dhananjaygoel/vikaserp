@@ -1355,7 +1355,11 @@ class OrderController extends Controller {
                     } elseif ($dopv->unit_id == 2) {
                         $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
                     } elseif ($dopv->unit_id == 3) {
+                           if($product_size->standard_length){
                         $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                           }else{
+                            $order_quantity = $order_quantity + ($opv->quantity  * $product_size->weight);
+                        }
                     }
                 }
             }
@@ -1378,7 +1382,11 @@ class OrderController extends Controller {
                     } elseif ($opv->unit_id == 2) {
                         $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                     } elseif ($opv->unit_id == 3) {
-                        $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        if($product_size->standard_length){
+                            $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        }else{
+                            $order_quantity = $order_quantity + ($opv->quantity  * $product_size->weight);
+                        }
                     }
                 }
             }

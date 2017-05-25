@@ -1247,9 +1247,8 @@ class WelcomeController extends Controller {
 
         header("Content-Type: " . $mime);
         header('Content-Disposition: attachment; filename="' . $filename . '"');
-
-        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";
-
+        
+        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";        
         passthru($cmd);
 
         exit(0);
