@@ -903,7 +903,6 @@ class CustomerController extends Controller {
                     ->with('customer_receipt')
                     ->with('collection_user_location.collection_user')
                     ->with('delivery_location')
-                    ->with('collection_user_location')
                     ->orderBy('created_at', 'desc');
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             if (isset($search) && !empty($search)) {
@@ -959,10 +958,12 @@ class CustomerController extends Controller {
                 }
             }
 
-            $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
-                            ->whereHas('delivery_challan', function ($query) {
-                                $query->where('challan_status', '=', 'completed');
-                            })->whereIn('delivery_location_id', $user_loc_arr);
+            $customers = Customer::with(['delivery_challan' => function ($query) {
+                            $query->where('delivery_challan.challan_status', 'completed');
+                        }])
+                    ->with('customer_receipt')
+                    ->orderBy('created_at', 'desc')
+                    ->whereIn('delivery_location_id', $user_loc_arr);
 
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')
                             ->whereIn('id', $user_loc_arr)->get();
@@ -1069,10 +1070,18 @@ class CustomerController extends Controller {
         $location_id = Input::get('location_filter');
         $date_filter = Input::get('date_filter');
         if (Auth::user()->role_id == 0) {
-            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
-                    ->whereHas('delivery_challan', function ($query) {
-                $query->where('challan_status', '=', 'completed');
-            });
+            $customers = Customer::with(['delivery_challan' => function ($query) {
+                            $query->where('delivery_challan.challan_status', 'completed');
+                        }])
+                    ->with('customer_receipt')
+                    ->with('collection_user_location.collection_user')
+                    ->with('delivery_location')
+                    ->with('collection_user_location')
+                    ->orderBy('created_at', 'desc');
+//            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
+//                    ->whereHas('delivery_challan', function ($query) {
+//                $query->where('challan_status', '=', 'completed');
+//            });
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             if (isset($search) && !empty($search)) {
                 $term = '%' . $search . '%';
@@ -1127,10 +1136,16 @@ class CustomerController extends Controller {
                 }
             }
 
-            $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
-                            ->whereHas('delivery_challan', function ($query) {
-                                $query->where('challan_status', '=', 'completed');
-                            })->whereIn('delivery_location_id', $user_loc_arr);
+            $customers = Customer::with(['delivery_challan' => function ($query) {
+                            $query->where('delivery_challan.challan_status', 'completed');
+                        }])
+                    ->with('customer_receipt')
+                    ->orderBy('created_at', 'desc')
+                    ->whereIn('delivery_location_id', $user_loc_arr);
+//            $customers = Customer::with('delivery_challan')->with('customer_receipt')->orderBy('created_at', 'desc')
+//                            ->whereHas('delivery_challan', function ($query) {
+//                                $query->where('challan_status', '=', 'completed');
+//                            })->whereIn('delivery_location_id', $user_loc_arr);
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             if (isset($search) && !empty($search)) {
                 $term = '%' . $search . '%';
@@ -1183,18 +1198,24 @@ class CustomerController extends Controller {
     public function print_customer_details(DropboxStorageRepository $connection) {
         $customer = '';
         $id = Input::get('customer_id');
-        $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id);
+        $customer = Customer::with(['delivery_challan' => function ($query) {
+                        $query->where('delivery_challan.challan_status', 'completed');
+                    }])->with('customer_receipt')->find($id);
+//        $customer = Customer::with('delivery_challan')->with('customer_receipt')->find($id);
         $credit_period = $customer->credit_period;
         $settle_filter = Input::get('settle_filter');
         $date_filter = Input::get('date_filter');
         $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
+                ->where('challan_status', 'completed')
                 ->whereRaw('grand_price!=settle_amount');
         if (isset($settle_filter) && $settle_filter != '' && $settle_filter == 'Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
+                    ->where('challan_status', 'completed')
                     ->whereRaw('grand_price=settle_amount');
         }
         if (isset($settle_filter) && $settle_filter == 'Unsettled') {
             $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
+                    ->where('challan_status', 'completed')
                     ->whereRaw('grand_price != settle_amount');
         }
 
