@@ -798,9 +798,14 @@ class PurchaseOrderController extends Controller {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
            }     
         
-        $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products')->find($order_id);
+        $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products','purchase_products.purchase_product_advise')->find($order_id);
+
         foreach ($purchase_orders['purchase_products'] as $key => $value) {
-            $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();
+            if(isset($value['purchase_product_advise']) && count($value['purchase_product_advise'])){
+                $purchase_advise_products = $value['purchase_product_advise'];
+            }else{
+                $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();    
+            }
             $total_advise_product_quantity = $purchase_advise_products->sum('quantity');
             $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);
         }

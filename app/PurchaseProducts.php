@@ -36,4 +36,8 @@ class PurchaseProducts extends Model {
         return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->with('product_category');
     }
 
+    public function purchase_product_advise() {
+        return $this->hasMany('App\PurchaseProducts', 'parent', 'id');
+    }
+
 }
