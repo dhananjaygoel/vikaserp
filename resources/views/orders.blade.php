@@ -480,7 +480,7 @@
 
                                     <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
                                         <td>{{isset($k)?$k++:''}}</td>                                    
-                                        <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : (isset($order["customer"]->owner_name) && $order["customer"]->owner_name != "")?$order["customer"]->owner_name:''}}</td>
+                                        <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : "Anonymous User"}} </td>
                                         @if(count($pending_orders) > 0)
                                         @foreach($pending_orders as $porder)
                                         @if($porder['id'] == $order->id)
