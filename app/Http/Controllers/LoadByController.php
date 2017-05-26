@@ -199,9 +199,7 @@ class LoadByController extends Controller {
                 if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
                 }
-                $delivery_order_data = DeliveryChallan::
-                        has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
@@ -209,17 +207,13 @@ class LoadByController extends Controller {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
-                $delivery_order_data = DeliveryChallan::
-                        has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+                $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
 //                        ->where('created_at', '>', "$date")
 //                        ->where('created_at', '<', "$enddate")
                         ->get();
             }
         } else {
-            $delivery_order_data = DeliveryChallan::
-                    has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                    ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
 //            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
 //                    ->where('created_at', '>', "$date")
                     ->get();
