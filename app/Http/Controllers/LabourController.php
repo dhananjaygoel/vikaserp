@@ -60,11 +60,11 @@ class LabourController extends Controller {
             $term = '%' . Input::get('search') . '%';
 
             $labours = Labour::orderBy('first_name', 'asc')
-            ->where(function($query) use ($term) {
+                    ->where(function($query) use ($term) {
                         $query->where('first_name', 'like', $term)
-                    ->orWhere('last_name', 'like', $term)
-                    ->orWhere('phone_number', 'like', $term);
-                    })                    
+                        ->orWhere('last_name', 'like', $term)
+                        ->orWhere('phone_number', 'like', $term);
+                    })
                     ->paginate(20);
         } else {
             $labours = Labour::orderBy('updated_at', 'desc')->paginate(20);
@@ -282,7 +282,9 @@ class LabourController extends Controller {
                 if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
                 }
-                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_challan_products')
+                $delivery_order_data = DeliveryChallan::
+                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
+                        ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
@@ -292,13 +294,17 @@ class LabourController extends Controller {
                 $enddate = date("Y-m-t", strtotime($month));
                 $realenddate = date('Y-m-d', time());
 
-                $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_challan_products')
+                $delivery_order_data = DeliveryChallan::
+                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
+                        ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
                         ->get();
             }
         } else {
             $enddate = date("Y-m-d");
 //            $delivery_order_data = DeliveryChallan::with('challan_labours','delivery_challan_products')
-            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_challan_products')
+            $delivery_order_data = DeliveryChallan::
+                    has('challan_labours.dc_delivery_challan.delivery_challan_products')
+                    ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
 //            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                     ->get();
         }
@@ -316,7 +322,7 @@ class LabourController extends Controller {
                             if ($delivery_order_productinfo->unit_id == 1)
                                 $deliver_sum += $delivery_order_productinfo->quantity;
                             elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
                         }
                     }
 
@@ -383,10 +389,16 @@ class LabourController extends Controller {
         }
     }
 
-    function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
+    
+    function checkpending_quantity($unit_id, $product_category_id, $product_qty, $prod_info = false) {
 
         $kg_qty = 0;
-        $product_info = ProductSubCategory::find($product_category_id);
+        if ($prod_info && count($prod_info)) {
+            $product_info = $prod_info;
+        } else {
+            $product_info = ProductSubCategory::find($product_category_id);
+        }
+
         if ($unit_id == 1) {
             if (isset($product_info->quantity)) {
                 $kg_qty = $product_info->quantity;
@@ -413,8 +425,6 @@ class LabourController extends Controller {
             }
             $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
         }
-
-
         return $kg_qty;
     }
 
