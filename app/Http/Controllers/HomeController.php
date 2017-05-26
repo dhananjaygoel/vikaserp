@@ -1674,7 +1674,6 @@ class HomeController extends Controller {
                                             ->where('last_name', '=', $labour_list->last_name)->first();
                             if (!isset($labour_check->id)) {
                                 $labour = new Labour();
-
                                 $labour->first_name = $labour_list->first_name;
                                 $labour->last_name = $labour_list->last_name;
                                 $labour->password = Hash::make($labour_list->password);
@@ -1698,10 +1697,7 @@ class HomeController extends Controller {
                     }
                 }
             }
-
-             $delivery_challan_response["labour_server_added"]=$labour_array;
-
-
+            $delivery_challan_response["labour_server_added"]=$labour_array;
 
             /* add loadedby if new dc created */
             if ($value->server_id == 0) {
@@ -6193,7 +6189,9 @@ class HomeController extends Controller {
         $labours = Labour::all();
 
         $loader_arr = array();
-        $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+        $delivery_order_data = DeliveryChallan::                
+                has('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+                ->with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                 ->where('created_at', '>', "$date")
                 ->get();
 
@@ -6344,7 +6342,9 @@ class HomeController extends Controller {
         $enddate = date("Y-m-d");
         $date = date('Y-03-01', time());
 
-        $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+        $delivery_order_data = DeliveryChallan::                
+                has('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                ->with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>', "$date")->get();
 
         foreach ($delivery_order_data as $delivery_order_info) {
