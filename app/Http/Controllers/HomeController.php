@@ -1438,6 +1438,138 @@ class HomeController extends Controller {
         return;
     }
 
+//    /**
+//     * App sync delievry challan
+//     */
+//    public function appSyncDeliveryChallan() {
+//
+//        $data = Input::all();
+//        $delivery_challan_response = [];
+//        $customer_list = [];
+//        if (Input::has('delivery_challan')) {
+//            $delivery_challans = (json_decode($data['delivery_challan']));
+//            foreach ($delivery_challans as $delivery_challan) {
+//                if (isset($delivery_challan->send_sms) && $delivery_challan->send_sms == 'true') {
+//                    $this->deliverychallan_sms();
+//                }
+//            }
+//        }
+//        if (Input::has('customer')) {
+//            $customers = (json_decode($data['customer']));
+//        }
+//        if (Input::has('delivery_challan_product')) {
+//            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
+//        }
+//        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
+//            $last_sync_date = Input::get('delivery_challan_sync_date');
+//            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products')->get();
+//            $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
+//
+//            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products')->get();
+//            $delivery_challan_response['delivery_challan_server_updated'] = ($delivery_challan_updated_server && count($delivery_challan_updated_server) > 0) ? $delivery_challan_updated_server : array();
+//
+//            /* Send Updated customers */
+//            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+//            $delivery_challan_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+//            /* Send New customers */
+//            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+//            $delivery_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+//        } else {
+//            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products')->get();
+//            $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
+//        }
+//
+//        foreach ($delivery_challans as $key => $value) {
+//            if ($value->server_id == 0)
+//                $delivery_challan = new DeliveryChallan();
+//            else
+//                $delivery_challan = DeliveryChallan::find($value->server_id);
+//
+//            if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+//                $add_customers = new Customer();
+//                $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
+//                $customer_list[$value->id] = $add_customers->id;
+//            }
+//            if ($value->server_order_id == 0) {
+//                $delivery_challan->order_id = 0;
+//            } else {
+//                $delivery_challan->order_id = $value->server_order_id;
+//            }
+//            if ($value->server_del_order_id == 0) {
+//                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array('order_status' => $value->order_status));
+//                $delivery_challan->delivery_order_id = 0;
+//            } else {
+//                $delivery_challan->delivery_order_id = $value->server_del_order_id;
+//            }
+//            $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
+//            $delivery_challan->created_by = 1;
+//            if (isset($value->bill_number)) {
+//                $delivery_challan->bill_number = $value->bill_number;
+//            }
+//            $delivery_challan->discount = ($value->discount != '') ? $value->discount : '';
+//            $delivery_challan->freight = ($value->freight != '') ? $value->freight : '';
+//            $delivery_challan->loading_charge = ($value->loading_charge != '') ? $value->loading_charge : '';
+//            $delivery_challan->round_off = ($value->round_off != '') ? $value->round_off : '';
+//            $delivery_challan->loaded_by = ($value->loaded_by != '') ? $value->loaded_by : '';
+//            $delivery_challan->labours = ($value->labours != '') ? $value->labours : '';
+////            if (isset($value->vat_percentage) && $value->vat_percentage > 0) {
+////                $delivery_challan->vat_percentage = $value->vat_percentage;
+////            }
+//            $delivery_challan->grand_price = $value->grand_price;
+//            $delivery_challan->remarks = $value->remarks;
+//            $delivery_challan->challan_status = ($value->server_id > 0) ? $value->challan_status : "Pending";
+//            $delivery_challan->save();
+//            $delivery_challan_id = $delivery_challan->id;
+//            $delivery_challan_products = array();
+//            if ($value->server_id > 0)
+//                AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
+//
+//            foreach ($deliverychallanproducts as $product_data) {
+//                if ($product_data->delivery_challan_id == $value->id) {
+//                    $delivery_challan_products = [
+//                        'app_product_id' => $product_data->id,
+//                        'order_id' => $delivery_challan_id,
+//                        'order_type' => 'delivery_challan',
+//                        'product_category_id' => $product_data->product_category_id,
+//                        'unit_id' => $product_data->unit_id,
+//                        'quantity' => $product_data->quantity,
+//                        'price' => $product_data->actual_price,
+//                        'remarks' => '',
+//                        'present_shipping' => $product_data->present_shipping,
+//                        'actual_pieces' => $product_data->actual_pieces,
+//                        'actual_quantity' => $product_data->actual_quantity,
+//                        'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+//                        'from' => 0, //Will need to check with app data
+//                        'parent' => 0, //Will need to check with app data
+//                    ];
+//                    AllOrderProducts::create($delivery_challan_products);
+//                }
+//            }
+//            if ($value->server_id > 0) {
+//                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $value->server_id)->where('order_type', '=', 'delivery_challan')->first();
+//                $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
+//                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
+//                $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
+//            } else {
+//                $delivery_challan_response[$value->id] = $delivery_challan_id;
+//            }
+//            $delivery_challan->save();
+//        }
+//        if (count($customer_list) > 0) {
+//            $delivery_challan_response['customer_new'] = $customer_list;
+//        }
+//        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '' && Input::get('delivery_challan_sync_date') != NULL) {
+//            $delivery_challan_response['delivery_challan_deleted'] = DeliveryChallan::withTrashed()->where('deleted_at', '>=', Input::get('delivery_challan_sync_date'))->select('id')->get();
+//        }
+//        $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        if (!empty($delivery_challan_date))
+//            $delivery_challan_response['latest_date'] = $delivery_challan_date->updated_at->toDateTimeString();
+//        else
+//            $delivery_challan_response['latest_date'] = "";
+//
+//        return json_encode($delivery_challan_response);
+//    }
+
     /**
      * App sync delievry challan
      */
@@ -1457,15 +1589,24 @@ class HomeController extends Controller {
         if (Input::has('customer')) {
             $customers = (json_decode($data['customer']));
         }
+        if (Input::has('delivery_challan_labour')) {
+            $deliverychallanlabour = (json_decode($data['delivery_challan_labour']));
+        }
+
+        if (Input::has('delivery_challan_loadedby')) {
+            $deliverychallanloadedby = (json_decode($data['delivery_challan_loadedby']));
+        }
+
         if (Input::has('delivery_challan_product')) {
             $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
         }
+
         if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
             $last_sync_date = Input::get('delivery_challan_sync_date');
-            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products')->get();
+            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
 
-            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products')->get();
+            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->get();
             $delivery_challan_response['delivery_challan_server_updated'] = ($delivery_challan_updated_server && count($delivery_challan_updated_server) > 0) ? $delivery_challan_updated_server : array();
 
             /* Send Updated customers */
@@ -1475,7 +1616,7 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $delivery_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products')->get();
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
         }
 
@@ -1520,6 +1661,85 @@ class HomeController extends Controller {
             $delivery_challan->challan_status = ($value->server_id > 0) ? $value->challan_status : "Pending";
             $delivery_challan->save();
             $delivery_challan_id = $delivery_challan->id;
+
+
+            /* add labours if new dc created */
+            if ($value->server_id == 0) {
+                $labour_array=[];
+                foreach ($deliverychallanlabour as $key_labour => $labour_list) {
+                    if ($value->id == $labour_list->local_dc_id) {
+                        /* if labour created offline */
+                        if ($labour_list->server_labour_id == 0) {
+                            $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
+                                            ->where('last_name', '=', $labour_list->last_name)->first();
+                            if (!isset($labour_check->id)) {
+                                $labour = new Labour();
+
+                                $labour->first_name = $labour_list->first_name;
+                                $labour->last_name = $labour_list->last_name;
+                                $labour->password = Hash::make($labour_list->password);
+                                $labour->phone_number = $labour_list->phone_number;
+                                $labour->save();
+                                $labour_id = $labour->id;
+                            } else {
+                                $labour_id = $labour_check->id;
+                            }
+                            
+                            $labour_array[] =  [$labour_list->local_labour_id => $labour_id];
+                        } else {
+                            $labour_id = $labour_list->server_labour_id;
+                        }
+
+                        $dc_labour = new App\DeliveryChallanLabours();
+                        $dc_labour->delivery_challan_id = $delivery_challan_id;
+                        $dc_labour->labours_id = $labour_id;
+                        $dc_labour->save();
+                        
+                    }
+                }
+            }
+
+             $delivery_challan_response["labour_server_added"]=$labour_array;
+
+
+
+            /* add loadedby if new dc created */
+            if ($value->server_id == 0) {
+                $loadedby_array=[];
+                foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
+                    if ($value->id == $loadedby_list->local_dc_id) {
+                        /* if labour created offline */
+                        if ($loadedby_list->server_loadedby_id == 0) {
+                            $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
+                                            ->where('last_name', '=', $loadedby_list->last_name)->first();
+                            if (!isset($loadedby_check->id)) {
+                                $loadedby = new LoadedBy();
+
+                                $loadedby->first_name = $loadedby_list->first_name;
+                                $loadedby->last_name = $loadedby_list->last_name;
+                                $loadedby->password = Hash::make($loadedby_list->password);
+                                $loadedby->phone_number = $loadedby_list->phone_number;
+                                $loadedby->save();
+                                $loadedby_id = $loadedby->id;
+                            } else {
+                                $loadedby_id = $loadedby_check->id;
+                            }
+                            
+                            
+                            $loadedby_array[] =  [$loadedby_list->local_loadedby_id => $loadedby_id];
+                        } else {
+                            $loadedby_id = $loadedby_list->server_loadedby_id;
+                        }
+
+                        $dc_labour = new App\DeliveryChallanLoadedBy();
+                        $dc_labour->delivery_challan_id = $delivery_challan_id;
+                        $dc_labour->loaded_by_id = $loadedby_id;
+                        $dc_labour->save();
+                    }
+                }
+            }
+            $delivery_challan_response["loadedby_server_added"]=$loadedby_array;
+
             $delivery_challan_products = array();
             if ($value->server_id > 0)
                 AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
