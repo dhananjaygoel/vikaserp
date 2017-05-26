@@ -359,33 +359,35 @@ class DashboardController extends Controller {
 
                     if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
                         if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
-                            if ($delivery_challan_products['unit_id'] == 1) {
-                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
-                            } elseif (($delivery_challan_products['unit_id'] == 2)) {
-                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
-                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
-                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
-                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
-                                    $standard_length = 1;
-                                }
-                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
-                            }
+                            $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['actual_quantity'];
+//                            if ($delivery_challan_products['unit_id'] == 1) {
+//                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
+//                            } elseif (($delivery_challan_products['unit_id'] == 2)) {
+//                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
+//                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
+//                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
+//                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
+//                                    $standard_length = 1;
+//                                }
+//                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
+//                            }
 //                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
 //                                $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
                         } else {
-                            if ($delivery_challan_products['unit_id'] == 1){
-                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
-                            }elseif (($delivery_challan_products['unit_id'] == 2)) {
-                                
-                                
-                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
-                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
-                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
-                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
-                                    $standard_length = 1;
-                                }
-                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
-                            }
+                            $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['actual_quantity'];
+//                            if ($delivery_challan_products['unit_id'] == 1){
+//                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
+//                            }elseif (($delivery_challan_products['unit_id'] == 2)) {
+//                                
+//                                
+//                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
+//                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
+//                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
+//                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
+//                                    $standard_length = 1;
+//                                }
+//                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
+//                            }
 //                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
 //                                $delivery_challan_stats_all[$i]['structure'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
                         }
