@@ -324,16 +324,16 @@
         {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
 
         <!-- Sortable Script Support -->
-        <script src="{{url()."/resources/assets/custom_js/my_script.js?".time()}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/my_script.js"}}"></script>
 
         <!-- Custom Script Support -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> 
 
-        <script src="{{url()."/resources/assets/custom_js/custom_script.js?".time()}}"></script>
-        <script src="{{url()."/resources/assets/custom_js/custom_script_js.js?".time()}}"></script>
-        <script src="{{url()."/resources/assets/custom_js/custom.js?".time()}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/custom_script.js"}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/custom_script_js.js"}}"></script>
+        <script src="{{url()."/resources/assets/custom_js/custom.js"}}"></script>
         <?php if (Route::getCurrentRoute()->getPath() == "dashboard") { ?>
-            <script src="{{url()."/resources/assets/custom_js/graph.js?".time()}}"></script>
+            <script src="{{url()."/resources/assets/custom_js/graph.js"}}"></script>
 <?php } ?>
 
 
@@ -343,7 +343,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
 
-        <script src="{{url()."/resources/assets/custom_js/laravel.js?".time()}}"></script> 
+        <script src="{{url()."/resources/assets/custom_js/laravel.js"}}"></script> 
         <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
 
         <?php
@@ -362,7 +362,7 @@
         ) {
             ?>
             @include('autocomplete_tally_product_name')
-            <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js?".time()}}"></script>
+            <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js"}}"></script>
 <?php } ?>
 
         <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
