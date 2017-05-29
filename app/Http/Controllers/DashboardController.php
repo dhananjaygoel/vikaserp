@@ -401,6 +401,74 @@ class DashboardController extends Controller {
         return ($delivery_challan_stats_all);
     }
 
+    
+//     public function graph_delivery_challan() {
+//
+//        /* To get Delivery Challan stats for graph */
+//
+//
+//        for ($i = 1; $i <= 7; $i++) {
+//            $delivery_challan_stats_all[$i]['pipe'] = 0;
+//            $delivery_challan_stats_all[$i]['structure'] = 0;
+//            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+//            $delivery_challan_stats_all[$i]['day'] = $date_search;
+//            $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
+//                    ->where('challan_status', '=', 'completed')
+//                    ->where('updated_at', 'like', $date_search . '%')
+//                    ->get();
+//
+//            foreach ($delivery_challan_stats as $delivery_challan) {
+//                foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
+//
+//                    if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
+//                        if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
+//                           
+//                            if ($delivery_challan_products['unit_id'] == 1) {
+//                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
+//                            } elseif (($delivery_challan_products['unit_id'] == 2)) {
+//                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
+//                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
+//                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
+//                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
+//                                    $standard_length = 1;
+//                                }
+//                                $delivery_challan_stats_all[$i]['pipe'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
+//                            }
+////                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+////                                $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+//                        } else {
+//                           
+//                            if ($delivery_challan_products['unit_id'] == 1){
+//                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
+//                            }elseif (($delivery_challan_products['unit_id'] == 2)) {
+//                                
+//                                
+//                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
+//                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
+//                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
+//                                if ($delivery_challan_products['order_product_details']['standard_length'] == 0) {
+//                                    $standard_length = 1;
+//                                }
+//                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] / $standard_length * $delivery_challan_products['order_product_details']['weight']);
+//                            }
+////                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+////                                $delivery_challan_stats_all[$i]['structure'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
+//            $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
+//        }
+//        return ($delivery_challan_stats_all);
+//    }
+//
+//    
+    
+    
+    
+    
 //    public function graph_order_temp() {
 //
 //        $date = new Carbon\Carbon;
