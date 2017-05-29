@@ -344,6 +344,8 @@ class DeliveryChallanController extends Controller {
         if (count($allorders) > 0) {
             foreach ($allorders as $key => $order) {
                 $order_quantity = 0;
+                $order_quantity_do = 0;
+                $order_quantity_o = 0;
                 $order_quantity_pending = 0;
                 $product_for_order_do_pending = 0;
                 $previous_dc_quantity = 0;
