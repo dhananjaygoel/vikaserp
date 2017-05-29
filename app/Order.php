@@ -31,6 +31,10 @@ class Order extends Model {
     public function all_order_products() {
         return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->with('product_sub_category')->where('order_type', '=', 'order')->where('product_category_id', '>', '0');
     }
+    //all_order_products_without_product_subcategory => aopwpsc
+    public function aopwpsc() {
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'order')->where('product_category_id', '>', '0');
+    }
     
     public function createdby() {
         return $this->hasOne('App\User', 'id', 'created_by');
