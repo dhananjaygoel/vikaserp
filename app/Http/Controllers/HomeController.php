@@ -1676,7 +1676,7 @@ class HomeController extends Controller {
                                 $labour = new Labour();
                                 $labour->first_name = $labour_list->first_name;
                                 $labour->last_name = $labour_list->last_name;
-                                $labour->password = Hash::make($labour_list->password);
+//                                $labour->password = Hash::make($labour_list->password);
                                 $labour->phone_number = $labour_list->phone_number;
                                 $labour->save();
                                 $labour_id = $labour->id;
