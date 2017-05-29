@@ -184,8 +184,9 @@
                                         <tbody>
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
-                                                <td><span>Quantity</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
+                                                <td><span>Quantity</span></td>
+                                                
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
                                                 <td class="inquiry_vat_chkbox"><span>Vat</span></td>
                                                 <td><span>Remark</span></td>
