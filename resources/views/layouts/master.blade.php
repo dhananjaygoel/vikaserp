@@ -81,6 +81,7 @@
             print_purchase_challan = function () {};
             print_purchase_advice = function () {};
             print_challan = function () {};
+            unitType = function () {};
            
         </script>
         <script>
