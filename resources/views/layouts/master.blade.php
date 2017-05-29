@@ -79,6 +79,7 @@
             product_autocomplete_purchase = function () {};
             delete_purchase_order = function () {};
             print_purchase_challan = function () {};
+            print_purchase_advice = function () {};
             print_challan = function () {};
            
         </script>
