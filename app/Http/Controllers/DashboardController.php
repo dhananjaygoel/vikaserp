@@ -348,7 +348,7 @@ class DashboardController extends Controller {
         $date_search = $date->subDays(7);
         $orders_stats_all;
 
-        $orders_stats = Order::where('order_status', '=', 'completed')
+        $orders_stats = Order::with('aopwpsc','aopwpsc.order_product_details.product_category')->where('order_status', '=', 'completed')
                 ->where('updated_at', '>', $date_search)
                 ->orderBy('updated_at')
                 ->get();
@@ -362,7 +362,7 @@ class DashboardController extends Controller {
             if (count($orders_stats) > 0) {
                 foreach ($orders_stats as $order) {
                     if (date('Y-m-d', strtotime($order->updated_at)) == $date_search) {
-                        foreach ($order['all_order_products'] as $order_products) {
+                        foreach ($order['aopwpsc'] as $order_products) {
 
                             if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
                                 if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
@@ -416,7 +416,7 @@ class DashboardController extends Controller {
         $date = new Carbon\Carbon;
         $date_search = $date->subDays(7);
         $orders_stats_all;
-        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
+        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products','delivery_challan_products.order_product_details.product_category')
                 ->where('challan_status', '=', 'completed')
                 ->where('updated_at', '>', $date_search)
                 ->get();
