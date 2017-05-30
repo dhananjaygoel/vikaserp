@@ -265,7 +265,7 @@ class LoadByController extends Controller {
                                     'delivery_id' => $data['delivery_id'],
                                     'loader_id' => $value,
                                     'date' => $data['delivery_date'],
-                                    'tonnage' => round($data['tonnage'], 2)
+                                    'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):0)
                                 ];
                             }
                         }
