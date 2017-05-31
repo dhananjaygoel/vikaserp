@@ -232,11 +232,12 @@ class LoadByController extends Controller {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
-                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {                                
-                                if ($delivery_order_productinfo->unit_id == 1)
-                                    $deliver_sum += $delivery_order_productinfo->quantity;
-                                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-                                    $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {                       
+                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
+//                                if ($delivery_order_productinfo->unit_id == 1)
+//                                    $deliver_sum += $delivery_order_productinfo->quantity;
+//                                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+//                                    $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                         }
                     }
                     array_push($loader_array, $loaders);
