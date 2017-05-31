@@ -1377,6 +1377,16 @@ class InquiryController extends Controller {
             }
         }
 
+//        $calc = new WelcomeController();
+//        $calc->setInventoryValues($order_id,"order","no");
+
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $order_id)->where('order_type', 'order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
+
         /*
          * send mail
          */

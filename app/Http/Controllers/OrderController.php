@@ -48,7 +48,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index() {
-     
+
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -67,24 +67,7 @@ class OrderController extends Controller {
         }
         $q = Order::query();
         if (Auth::user()->role_id == 5) {
-
-//                if (isset($data['order_filter']) && $data['order_filter'] != '') {
-//                    if($data['order_filter'] != 'Completed')
-//                    {
-//                       $dc = DeliveryChallan::with('delivery_challan_products')->where('customer_id','=',$cust->id)->where('challan_status','=','completed')->get();
-//                        
-//                       foreach ($dc as $delivery_challan)
-//                       {
-//                           echo "<pre>";
-//                           print_r($delivery_challan->order_id);
-//                           echo "</pre>";
-//                       }
-//                       
-//                       
-//                        
-//                    }
-////                    $q->where('order_status', '=', $data['order_filter']);
-//                }
+            
         } else {
             if (isset($data['order_filter']) && $data['order_filter'] != '') {
                 if ($data['order_filter'] == 'approval') {
@@ -106,7 +89,7 @@ class OrderController extends Controller {
                 } else {
                     $q->where('order_status', '=', $data['order_status']);
                 }
-            }else {
+            } else {
                 $q->where('order_status', '=', 'pending')
                         ->where('is_approved', '=', 'yes');
             }
@@ -171,17 +154,17 @@ class OrderController extends Controller {
         }
         if (Input::has('flag') && Input::get('flag') == 'true') {
             if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','delivery_orders')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20);// included `delivery_orders`
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
             }
             if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','delivery_orders')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
+                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         } else {
             if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby','delivery_orders')->orderBy('updated_at', 'desc')->paginate(20);// included `delivery_orders`
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby', 'delivery_orders')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
             }
             if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled','delivery_orders')->orderBy('created_at', 'desc')->paginate(20);// included `delivery_orders`
+                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         }
         $users = User::all();
@@ -208,8 +191,8 @@ class OrderController extends Controller {
 //            $allorders = $non_approved_orders;
 //        }
         $all_territories = Territory::get();
-       
-      
+
+
         if (Input::has('export_data')) {
             $data = Input::all();
             $is_approved = 'yes';
@@ -241,7 +224,7 @@ class OrderController extends Controller {
             })->export('xls');
         }
 
-      
+
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
 
@@ -485,12 +468,22 @@ class OrderController extends Controller {
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ];
-                array_push($order_products,$tmp);
+                array_push($order_products, $tmp);
             }
         }
-        if(count($order_products)){
+        if (count($order_products)) {
             AllOrderProducts::insert($order_products);
         }
+
+        /* inventory code */
+//        $calc = new WelcomeController();
+//        $calc->setInventoryValues($order_id, "order", "no");
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $order_id)->where('order_type', 'order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
           | ---------------------------------------------
@@ -746,6 +739,15 @@ class OrderController extends Controller {
         }
 
         $order->save();
+        /* inventory code */
+//        $calc = new WelcomeController();
+//        $calc->setInventoryValues($id, "order", "no");
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
          * ------------------- --------------
@@ -980,8 +982,22 @@ class OrderController extends Controller {
                         }
                     }
                 }
+
+                /* inventory code */
+//                $calc = new WelcomeController();
+//                $calc->setInventoryValues($id, "order", "yes");
+                $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'order')->get();
+                foreach ($product_categories as $product_categoriy) {
+                    $product_category_ids[] = $product_categoriy->product_category_id;
+                }
+                /* */
+
                 AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
                 Order::find($id)->delete();
+                /* inventory code */
+                $calc = new InventoryController();
+                $calc->inventoryCalc($product_category_ids);
+                /**/
                 Session::put('order-sort-type', $order_sort_type);
                 if (Input::has('way') && Input::get('way') == 'reject') {
 
@@ -1012,6 +1028,17 @@ class OrderController extends Controller {
         $order_id = $input['order_id'];
         $reason_type = $input['reason_type'];
         $reason = $input['reason'];
+
+        /* inventory code */
+//        $calc = new WelcomeController();
+//        $calc->setInventoryValues($order_id, "order", "yes");
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $order_id)->where('order_type', 'order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
+
         $order = Order::with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->find($order_id);
 
         /*
@@ -1107,17 +1134,16 @@ class OrderController extends Controller {
         /* old */
 
         /* new */
-        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details','all_order_products.sum_quntity','customer')->find($id);
+        $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'all_order_products.sum_quntity', 'customer')->find($id);
         /* new */
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
-        foreach ($order['all_order_products'] as $key => $value) {            
+        foreach ($order['all_order_products'] as $key => $value) {
             //old
             //$delivery_order_products = AllOrderProducts::where('parent', '=', $value->id)->get();
             //$total_delivery_order_product_quantity = $delivery_order_products->sum('quantity');
             //old
-            
             // new
             $total_delivery_order_product_quantity = $value['sum_quntity']->sum('quantity');
             // new
@@ -1251,7 +1277,7 @@ class OrderController extends Controller {
             $total_qty = 0;
             $present_shipping = 0;
 //            $order_products = array();
-            $order_products= [];
+            $order_products = [];
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "" && $product_data['order'] != '') {
 //                    $order_products = [
@@ -1288,19 +1314,29 @@ class OrderController extends Controller {
 //                        'vat_percentage' => ($product_data['vat_percentage'] != ''&& isset($product_data['vat_percentage'])) ? $product_data['vat_percentage'] : 0,
                         'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'remarks' => $product_data['remark'],
-                        'parent' =>'',
-                        'created_at' => $created_at,                        
+                        'parent' => '',
+                        'created_at' => $created_at,
                         'updated_at' => $updated_at
                     ];
 //                    AllOrderProducts::create($order_products);
                 }
             }
             AllOrderProducts::insert($order_products);
-            
+
             //If pending quantity is Zero complete the order
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
             }
+
+            /* inventory code */
+            $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $delivery_order_id)->where('order_type', 'delivery_order')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+
+
             return redirect('orders')->with('flash_message', 'One order converted to Delivery order.');
         } else {
             $error_msg = $validator->messages();
@@ -1327,7 +1363,7 @@ class OrderController extends Controller {
 
             /* new */
             $delivery_order_products = NULL;
-            if(isset($order['delivery_orders']) && count($order['delivery_orders'])){
+            if (isset($order['delivery_orders']) && count($order['delivery_orders'])) {
                 $delivery_order_products = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->where('order_type', '=', 'delivery_order')->get();
             }
             /* new */
@@ -1356,10 +1392,10 @@ class OrderController extends Controller {
                     } elseif ($dopv->unit_id == 2) {
                         $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
                     } elseif ($dopv->unit_id == 3) {
-                           if($product_size->standard_length){
-                        $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
-                           }else{
-                            $order_quantity = $order_quantity + ($opv->quantity  * $product_size->weight);
+                        if ($product_size->standard_length) {
+                            $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                        } else {
+                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                         }
                     }
                 }
@@ -1367,9 +1403,9 @@ class OrderController extends Controller {
             if (count($order['all_order_products']) > 0) {
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     /* new */
-                    if(isset($opv['product_sub_category'])){
+                    if (isset($opv['product_sub_category'])) {
                         $product_size = $opv['product_sub_category'];
-                    }else{
+                    } else {
                         $product_size = ProductSubCategory::find($opv->product_category_id);
                     }
                     /* new */
@@ -1383,10 +1419,10 @@ class OrderController extends Controller {
                     } elseif ($opv->unit_id == 2) {
                         $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                     } elseif ($opv->unit_id == 3) {
-                        if($product_size->standard_length){
+                        if ($product_size->standard_length) {
                             $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
-                        }else{
-                            $order_quantity = $order_quantity + ($opv->quantity  * $product_size->weight);
+                        } else {
+                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                         }
                     }
                 }

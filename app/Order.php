@@ -36,6 +36,15 @@ class Order extends Model {
         return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->where('order_type', '=', 'order')->where('product_category_id', '>', '0');
     }
     
+     /* new */
+    public function delivery_orders() {
+        return $this->hasMany('App\DeliveryOrder', 'order_id', 'id');
+    }    
+    /* new */
+    public function delivery_orders_all_products() {
+        return $this->hasMany('App\DeliveryOrder', 'order_id', 'id')->with('delivery_product');
+    } 
+    
     public function createdby() {
         return $this->hasOne('App\User', 'id', 'created_by');
     }
@@ -64,10 +73,5 @@ class Order extends Model {
         $this->flaged = ($order_details->flaged == true) ? false : true;
         $this->save();
     }
-    /* new */
-    public function delivery_orders() {
-        return $this->hasMany('App\DeliveryOrder', 'order_id', 'id');
-    }    
-    /* new */
-
+   
 }

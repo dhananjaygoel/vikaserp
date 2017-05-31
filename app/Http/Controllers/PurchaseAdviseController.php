@@ -27,7 +27,6 @@ use App\PurchaseOrder;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-
 class PurchaseAdviseController extends Controller {
 
     public function __construct() {
@@ -44,10 +43,10 @@ class PurchaseAdviseController extends Controller {
      * Display a listing of the Purchase Advices.
      */
     public function index() {
-         $data = Input::all();
-              
+        $data = Input::all();
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
@@ -69,43 +68,38 @@ class PurchaseAdviseController extends Controller {
         } else {
             $q->where('advice_status', '=', 'in_process');
         }
-        
- 
-         $search_dates = [];
-         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $q->where('updated_at', 'like', $date1 . '%');
-                } else {
-                    $q->where('updated_at', '>=', $date1);
-                    $q->where('updated_at', '<=', $date2.' 23:59:59');
-                }
-                $search_dates = [
-                    'export_from_date' => $data["export_from_date"],
-                    'export_to_date' => $data["export_to_date"]
-                ];
-                
-                
+
+
+        $search_dates = [];
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $q->where('updated_at', 'like', $date1 . '%');
+            } else {
+                $q->where('updated_at', '>=', $date1);
+                $q->where('updated_at', '<=', $date2 . ' 23:59:59');
             }
-                    
-            
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
+        }
+
+
         $purchase_advise = $q->orderBy('created_at', 'desc')->paginate(20);
 
         $pending_orders = $this->checkpending_quantity($purchase_advise);
         $purchase_advise->setPath('purchaseorder_advise');
 
-        return View::make('purchase_advise', array('purchase_advise' => $purchase_advise, 'pending_orders' => $pending_orders,'search_dates'=>$search_dates));
+        return View::make('purchase_advise', array('purchase_advise' => $purchase_advise, 'pending_orders' => $pending_orders, 'search_dates' => $search_dates));
     }
 
-    
-     
-    
-        /* Function used to export order details in excel */
+    /* Function used to export order details in excel */
 
     public function exportPurchaseAdviseBasedOnStatus() {
         $data = Input::all();
-        set_time_limit(0);       
+        set_time_limit(0);
         if ($data['purchaseaAdviseFilter'] == 'Inprocess') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'in_process';
@@ -122,15 +116,14 @@ class PurchaseAdviseController extends Controller {
             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Purchase-Advise-Cancelled-' . date('dmyhis');
         }
-        
-        
-        
+
+
+
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if(Auth::user()->role_id <> 5)
-            {
-                              
+            if (Auth::user()->role_id <> 5) {
+
                 if ($date1 == $date2) {
                     $order_objects = PurchaseAdvise::where('advice_status', $order_status)
                             ->where('updated_at', 'like', $date1 . '%')
@@ -140,61 +133,57 @@ class PurchaseAdviseController extends Controller {
                 } else {
                     $order_objects = PurchaseAdvise::where('advice_status', $order_status)
                             ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2.' 23:59:59')
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            if(Auth::user()->role_id == 5)
-            {
-                $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
-                    ->first();  
-                
+            if (Auth::user()->role_id == 5) {
+                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                        ->where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+
                 if ($date1 == $date2) {
                     $order_objects = PurchaseAdvise::where('updated_at', 'like', $date1 . '%')
-                            -> where('customer_id','=',$cust->id)
+                            ->where('customer_id', '=', $cust->id)
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 } else {
                     $order_objects = PurchaseAdvise::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2.' 23:59:59')
-                            ->where('customer_id','=',$cust->id)
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                            ->where('customer_id', '=', $cust->id)
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            
-            
         } else {
-            
-            if(Auth::user()->role_id <> 5)
-            {
-        
+
+            if (Auth::user()->role_id <> 5) {
+
                 $order_objects = PurchaseAdvise::where('advice_status', $order_status)
-                    ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+                        ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             }
-           
-            if(Auth::user()->role_id == 5){
-               $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
-                    ->first();  
-                     
-                
-               $order_objects = PurchaseAdvise::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
-                    -> where('customer_id','=',$cust->id)   
-                    ->orderBy('created_at', 'desc')
-                    ->get(); 
-               
-               $excel_sheet_name = 'Purchase-Order';
-               $excel_name = 'Purchase-Order-' . date('dmyhis');
+
+            if (Auth::user()->role_id == 5) {
+                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                        ->where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+
+
+                $order_objects = PurchaseAdvise::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
+                        ->where('customer_id', '=', $cust->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+                $excel_sheet_name = 'Purchase-Order';
+                $excel_name = 'Purchase-Order-' . date('dmyhis');
             }
         }
 
@@ -204,11 +193,11 @@ class PurchaseAdviseController extends Controller {
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
-            
 
-            
-            
-            
+
+
+
+
             Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers, $excel_sheet_name) {
                 $excel->sheet('Purchase-Order-' . $excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
                     $sheet->loadView('excelView.purchase_advise', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
@@ -216,18 +205,16 @@ class PurchaseAdviseController extends Controller {
             })->export('xls');
         }
     }
-    
-    
-    
+
     /**
      * Show the form for creating a new resource.
      */
     public function create() {
-        
-        if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           } 
-        
+
+        if (Auth::user()->role_id == 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
         $customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
@@ -343,7 +330,7 @@ class PurchaseAdviseController extends Controller {
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                     'present_shipping' => $product_data['quantity'],
-                    'from' => isset($product_data['purchase'])?$product_data['purchase']:''
+                    'from' => isset($product_data['purchase']) ? $product_data['purchase'] : ''
                 ];
                 PurchaseProducts::create($purchase_advise_products);
             }
@@ -354,11 +341,11 @@ class PurchaseAdviseController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show($id ="") {
-        if (Auth::user()->role_id == 5 | $id =="" ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           } 
-        
+    public function show($id = "") {
+        if (Auth::user()->role_id == 5 | $id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
@@ -370,11 +357,11 @@ class PurchaseAdviseController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
-        
-         if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           } 
-        
+
+        if (Auth::user()->role_id == 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
@@ -452,71 +439,78 @@ class PurchaseAdviseController extends Controller {
         $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $id)->first();
         $purchase_advise->updated_at = $purchase_advice_prod->updated_at;
         $purchase_advise->save();
-        
-        
-        
-                /*
+
+        /* inventory code */
+        $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
+
+        /*
          * ------------------- ------------------------
          * SEND SMS TO Customer FOR edit PURCHASE ADVISE
          * --------------------------------------------
          */
-        
+
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $input_data = $purchase_advise['purchase_products'];
-        
-      
-            $customer_id = $purchase_advise->supplier_id;
-            $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
-                foreach ($input_data as $product_data) {
-                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-//                    $phone_number = $customer->phone_number1;
-                    $phone_number = $customer->mobile_number;
-                }
 
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-             if (count($customer['manager']) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has logged Purchase Advise for " . $customer->owner_name . " \n";
-                foreach ($input_data as $product_data) {
-                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-//                    $phone_number = $customer->phone_number1;
-                    $phone_number = $customer['manager']->mobile_number;
-                }
 
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
+        $customer_id = $purchase_advise->supplier_id;
+        $customer = Customer::with('manager')->find($customer_id);
+        if (count($customer) > 0) {
+            $total_quantity = '';
+            $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
+            foreach ($input_data as $product_data) {
+                $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                $total_quantity = $total_quantity + $product_data->quantity;
             }
-     
-        
+            $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+            if (App::environment('development')) {
+                $phone_number = Config::get('smsdata.send_sms_to');
+            } else {
+//                    $phone_number = $customer->phone_number1;
+                $phone_number = $customer->mobile_number;
+            }
+
+            $msg = urlencode($str);
+            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+            if (SEND_SMS === true) {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            }
+        }
+        if (count($customer['manager']) > 0) {
+            $total_quantity = '';
+            $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged Purchase Advise for " . $customer->owner_name . " \n";
+            foreach ($input_data as $product_data) {
+                $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                $total_quantity = $total_quantity + $product_data->quantity;
+            }
+            $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
+            if (App::environment('development')) {
+                $phone_number = Config::get('smsdata.send_sms_to');
+            } else {
+//                    $phone_number = $customer->phone_number1;
+                $phone_number = $customer['manager']->mobile_number;
+            }
+
+            $msg = urlencode($str);
+            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+            if (SEND_SMS === true) {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_scraped_page = curl_exec($ch);
+                curl_close($ch);
+            }
+        }
+
+
         return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
     }
 
@@ -537,9 +531,19 @@ class PurchaseAdviseController extends Controller {
         }
         $current_user = User::find(Auth::id());
         if (Hash::check($password, $current_user->password)) {
+            /* inventory code */
+            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
             PurchaseAdvise::find($id)->delete();
             PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_advice')->delete();
             Session::put('order-sort-type', $order_sort_type);
+
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
@@ -570,9 +574,9 @@ class PurchaseAdviseController extends Controller {
             Session::put('forms_purchase_advise', $forms_array);
         }
         $validator = Validator::make($input_data, PurchaseAdvise::$store_purchase_validation);
-        
-       
-        
+
+
+
         if ($validator->passes()) {
             $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
@@ -665,6 +669,16 @@ class PurchaseAdviseController extends Controller {
                     'order_status' => 'completed'
                 ));
             }
+
+            /* inventory code */
+            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $purchase_advice_id)->where('order_type', 'purchase_advice')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');
         } else {
             $error_msg = $validator->messages();
@@ -680,8 +694,8 @@ class PurchaseAdviseController extends Controller {
     public function pending_purchase_advice() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $filteron = "";
         $filterby = "";
         $filteron = Input::get('filteron');
@@ -698,10 +712,10 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function purchaseorder_advise_challan($id) {
-        
-        if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           } 
+
+        if (Auth::user()->role_id == 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
         if (count($purchase_advise) < 1) {
@@ -754,19 +768,19 @@ class PurchaseAdviseController extends Controller {
                     curl_close($ch);
                 }
             }
-            
+
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has created Purchase Advise for " . $customer->owner_name . " \n";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
-        }
+                }
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-        
+
                     $phone_number = $customer['manager']->mobile_number;
                 }
 
@@ -780,6 +794,16 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
+        
+          /* inventory code */
+            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+        
         return view('print_purchase_advise', compact('purchase_advise'));
     }
 

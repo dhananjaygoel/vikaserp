@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 
-
 class PurchaseChallanController extends Controller {
 
     public function __construct() {
@@ -43,39 +42,37 @@ class PurchaseChallanController extends Controller {
     public function index() {
 
         $data = Input::all();
-        
-         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-        
+
         if (isset($data['order_filter']) && $data['order_filter'] != '') {
-            
-            if($data['order_filter'] =="Inprocess" | $data['order_filter'] =="pending")
-                $status ='pending';
-            if($data['order_filter'] =="completed" | $data['order_filter'] =="Delivered")
-                $status ='completed';
-            
-            
-           $q = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
-                            ->where('order_status', $status );
-            
-            
-              $search_dates = [];
-         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+
+            if ($data['order_filter'] == "Inprocess" | $data['order_filter'] == "pending")
+                $status = 'pending';
+            if ($data['order_filter'] == "completed" | $data['order_filter'] == "Delivered")
+                $status = 'completed';
+
+
+            $q = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
+                    ->where('order_status', $status);
+
+
+            $search_dates = [];
+            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
                 $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
                 if ($date1 == $date2) {
                     $q->where('updated_at', 'like', $date1 . '%');
                 } else {
                     $q->where('updated_at', '>=', $date1);
-                    $q->where('updated_at', '<=', $date2.' 23:59:59');
+                    $q->where('updated_at', '<=', $date2 . ' 23:59:59');
                 }
                 $search_dates = [
                     'export_from_date' => $data["export_from_date"],
                     'export_to_date' => $data["export_to_date"]
                 ];
-                
-                
             }
 //             
 //            print_r($status."--".$date1."--".$date2);
@@ -84,28 +81,23 @@ class PurchaseChallanController extends Controller {
 //            print_r($q->toSql());
 //            echo "</pre>";
 //            exit; 
-            
-          $purchase_challan = $q->orderBy('created_at', 'desc')->paginate(20);  
-            
+
+            $purchase_challan = $q->orderBy('created_at', 'desc')->paginate(20);
         } else {
             $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'all_purchase_products.purchase_product_details')
                             ->where('order_status', 'pending')->orderBy('created_at', 'desc')->Paginate(20);
-        } 
-        
+        }
+
         $purchase_challan->setPath('purchase_challan');
         return view('purchase_challan', compact('purchase_challan'));
     }
 
-    
-    
-    
-    
-          /* Function used to export order details in excel */
+    /* Function used to export order details in excel */
 
     public function exportPurchaseChallanBasedOnStatus() {
         $data = Input::all();
-        
-               
+
+
         if ($data['order_filter'] == 'Inprocess' | $data['order_filter'] == 'pending') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $order_status = 'pending';
@@ -122,14 +114,13 @@ class PurchaseChallanController extends Controller {
             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Purchase-Challan-Cancelled-' . date('dmyhis');
         }
-       
-        
+
+
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if(Auth::user()->role_id <> 5)
-            {
-                              
+            if (Auth::user()->role_id <> 5) {
+
                 if ($date1 == $date2) {
                     $order_objects = PurchaseChallan::where('order_status', $order_status)
                             ->where('updated_at', 'like', $date1 . '%')
@@ -139,63 +130,57 @@ class PurchaseChallanController extends Controller {
                 } else {
                     $order_objects = PurchaseChallan::where('order_status', $order_status)
                             ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2.' 23:59:59')
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
                             ->with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            if(Auth::user()->role_id == 5)
-            {
-                $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
-                    ->first();  
-                
+            if (Auth::user()->role_id == 5) {
+                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                        ->where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+
                 if ($date1 == $date2) {
                     $order_objects = PurchaseChallan::where('updated_at', 'like', $date1 . '%')
-                            -> where('customer_id','=',$cust->id)
+                            ->where('customer_id', '=', $cust->id)
                             ->with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 } else {
                     $order_objects = PurchaseChallan::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 .' 23:59:59')
-                            ->where('customer_id','=',$cust->id)
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                            ->where('customer_id', '=', $cust->id)
                             ->with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            
-            
         } else {
-            
-            if(Auth::user()->role_id <> 5)
-            {
-        
+
+            if (Auth::user()->role_id <> 5) {
+
                 $order_objects = PurchaseChallan::where('order_status', $order_status)
-                    ->with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-                
-                 
+                        ->with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             }
-           
-            if(Auth::user()->role_id == 5){
-               $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
-                    ->first();  
-                     
-                
-               $order_objects = PurchaseChallan::with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
-                    -> where('customer_id','=',$cust->id)   
-                    ->orderBy('created_at', 'desc')
-                    ->get(); 
-               
-               $excel_sheet_name = 'Purchase-Order';
-               $excel_name = 'Purchase-Order-' . date('dmyhis');
+
+            if (Auth::user()->role_id == 5) {
+                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                        ->where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+
+
+                $order_objects = PurchaseChallan::with('all_purchase_products.unit', 'all_purchase_products.purchase_product_details', 'supplier')
+                        ->where('customer_id', '=', $cust->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+                $excel_sheet_name = 'Purchase-Order';
+                $excel_name = 'Purchase-Order-' . date('dmyhis');
             }
         }
 
@@ -204,18 +189,18 @@ class PurchaseChallanController extends Controller {
 //        echo "</pre>";
 //        exit;
 //       
-        
+
         if (count($order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
         } else {
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
-            
 
-           
-            
-            
+
+
+
+
             Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers, $excel_sheet_name) {
                 $excel->sheet('Purchase-Order-' . $excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
                     $sheet->loadView('excelView.purchase_challan', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
@@ -223,11 +208,7 @@ class PurchaseChallanController extends Controller {
             })->export('xls');
         }
     }
-    
-    
-    
-    
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -276,7 +257,7 @@ class PurchaseChallanController extends Controller {
         $challan_id = DB::getPdo()->lastInsertId();
         $created_at = $add_challan->created_at;
         $updated_at = $add_challan->updated_at;
-        
+
         $challan = PurchaseChallan::find($challan_id);
         PurchaseAdvise::where('id', '=', $request->input('purchase_advice_id'))->update(array(
             'advice_status' => 'delivered'
@@ -293,7 +274,7 @@ class PurchaseChallanController extends Controller {
         }
         $input_data = Input::all();
 //        $order_products = array();
-        $order_products =[];
+        $order_products = [];
 
         foreach ($input_data['product'] as $product_data) {
             if (isset($product_data['id']) && $product_data['id'] != "") {
@@ -328,9 +309,20 @@ class PurchaseChallanController extends Controller {
 //                $add_order_products = PurchaseProducts::create($order_products);
             }
         }
-         $add_order_products = PurchaseProducts::insert($order_products);
-        
-                $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($challan_id);
+        $add_order_products = PurchaseProducts::insert($order_products);
+
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($challan_id);
+
+
+
+        /* inventory code */
+        $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $challan_id)->where('order_type', 'purchase_challan')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
          * ------------------- -----------------------
@@ -365,7 +357,7 @@ class PurchaseChallanController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-                    $phone_number = $customer->phone_number1;                   
+                    $phone_number = $customer->phone_number1;
                 }
 
                 $msg = urlencode($str);
@@ -377,10 +369,10 @@ class PurchaseChallanController extends Controller {
                     curl_close($ch);
                 }
             }
-            
+
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has edited material for".$customer->owner_name." as follows ";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited material for" . $customer->owner_name . " as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -414,27 +406,24 @@ class PurchaseChallanController extends Controller {
                     curl_close($ch);
                 }
             }
-            
-            
-            
         }
-        
-        
-        
-        
-        
+
+
+
+
+
         return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id="") {
-        
-        if (Auth::user()->role_id == 5 | $id=="") {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }           
-        
+    public function show($id = "") {
+
+        if (Auth::user()->role_id == 5 | $id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->find($id);
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
@@ -515,8 +504,18 @@ class PurchaseChallanController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {
+
+            /* inventory code */
+            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_challan')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
             PurchaseChallan::find($id)->delete();
             PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_challan')->delete();
+
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
@@ -528,12 +527,20 @@ class PurchaseChallanController extends Controller {
         $current_date = date("m/d");
         $date_letter = 'PC/' . $current_date . "/" . $id;
         PurchaseChallan::where('id', $id)
-                ->where('order_status','<>','Completed')
+                ->where('order_status', '<>', 'Completed')
                 ->update(array(
-            'serial_number' => $date_letter,
-            'order_status' => "Completed"
+                    'serial_number' => $date_letter,
+                    'order_status' => "Completed"
         ));
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
+
+        /* inventory code */
+        $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_challan')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
          * ------------------- -----------------------
@@ -581,10 +588,10 @@ class PurchaseChallanController extends Controller {
                     curl_close($ch);
                 }
             }
-            
+
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name." has dispatched for ".$customer->owner_name." as follows ";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has dispatched for " . $customer->owner_name . " as follows ";
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
@@ -618,11 +625,9 @@ class PurchaseChallanController extends Controller {
                     curl_close($ch);
                 }
             }
-            
-            
         }
-        
-        
+
+
         return view('print_purchase_challan', compact('purchase_challan'));
     }
 

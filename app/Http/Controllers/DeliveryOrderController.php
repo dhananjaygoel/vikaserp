@@ -103,12 +103,12 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer','location')->paginate(20);
-       
+        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
+
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
-        return view('delivery_order', compact('delivery_data','search_dates'));
+        return view('delivery_order', compact('delivery_data', 'search_dates'));
     }
 
     /**
@@ -406,6 +406,13 @@ class DeliveryOrderController extends Controller {
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
         $delivery_order->save();
 
+        /* inventory code */
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
           |------------------- -----------------------
@@ -504,8 +511,17 @@ class DeliveryOrderController extends Controller {
 //        $password = $formFields['password'];
 //        $order_sort_type = $formFields['order_sort_type'];
         if (Hash::check($password, Auth::user()->password)) {
+            /* inventory code */
+            $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
             DeliveryOrder::find($id)->delete();
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_order')->delete();
+
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
 //            Session::put('order-sort-type', $order_sort_type);
 //            return array('message' => 'success');
             return Redirect::to('delivery_order')->with('success', 'Record deleted successfully.');
@@ -639,8 +655,8 @@ class DeliveryOrderController extends Controller {
                     'delivery_challan_id' => $delivery_challan_id,
                     'loaded_by_id' => $loader,
                     'created_at' => $created_at,
-                    'updated_at' => $updated_at, 
-                ]; 
+                    'updated_at' => $updated_at,
+                ];
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
         }
@@ -658,10 +674,10 @@ class DeliveryOrderController extends Controller {
                     'delivery_challan_id' => $delivery_challan_id,
                     'labours_id' => $labour,
                     'created_at' => $created_at,
-                    'updated_at' => $updated_at, 
-                ]; 
+                    'updated_at' => $updated_at,
+                ];
             }
-             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
         $order_products = [];
 //        $order_products = array();
@@ -846,6 +862,14 @@ class DeliveryOrderController extends Controller {
             $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
         }
+        
+        /* inventory code */
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
@@ -888,10 +912,14 @@ class DeliveryOrderController extends Controller {
             'delivery_locations' => $delivery_locations,
             'customers' => $customers
         ]);
-        Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-        $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
-        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+
+        /* inventory code */
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
           |------------------- -----------------------
@@ -949,6 +977,12 @@ class DeliveryOrderController extends Controller {
                 }
             }
         }
+
+        Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
+        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+//        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
@@ -1082,8 +1116,8 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                             } elseif ($popv->unit_id == 3) {
-                                if($product_size->standard_length == 0)
-                                    $product_size->standard_length=1;
+                                if ($product_size->standard_length == 0)
+                                    $product_size->standard_length = 1;
                                 $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
 

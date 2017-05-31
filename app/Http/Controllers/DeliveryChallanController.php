@@ -366,7 +366,7 @@ class DeliveryChallanController extends Controller {
                 if (($order_quantity == $order_quantity_do) && ($order_quantity_do == $order_quantity_o)) {
                     $allorders[$key]['total_quantity_pending'] = 0;
                 } else {
-                    
+
                     $allorders[$key]['total_quantity_pending'] = $order_quantity - $order_quantity_do;
 
 //                    $product_for_order = $order['order_products'];
@@ -555,6 +555,14 @@ class DeliveryChallanController extends Controller {
             $delivery_challan->save();
 
 
+            /* inventory code */
+            $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+
 
             /*
               | ------------------- -----------------------
@@ -650,8 +658,18 @@ class DeliveryChallanController extends Controller {
             return Redirect::to('delivery_challan')->with('error', 'Please enter your password');
         }
         if (Hash::check($password, Auth::user()->password)) {
+            /* inventory code */
+            $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             DeliveryChallan::find($id)->delete();
+            
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+            
             Session::put('order-sort-type', $order_sort_type);
             return array('message' => 'success');
         } else {
@@ -792,7 +810,14 @@ class DeliveryChallanController extends Controller {
             $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         }
 
-
+        /* inventory code */
+            $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }           
+            
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
 
         /*
           | ------------------- -----------------------

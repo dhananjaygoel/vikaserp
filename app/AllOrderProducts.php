@@ -30,7 +30,12 @@ class AllOrderProducts extends Model {
     }
     public function sum_quntity() {
         return $this->hasMany('App\AllOrderProducts', 'parent', 'id');
-    }    
+    }  
+    
+     
+    public function inventory() {
+        return $this->hasOne('App\Inventory', 'product_sub_category_id', 'product_category_id');
+    } 
     
 //    public function order_product_details_pipe() {
 //        return $this->hasOne('App\ProductSubCategory', 'id', 'product_category_id')->whereHas('product_category', function($q)

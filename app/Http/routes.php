@@ -233,6 +233,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('graph-order', 'DashboardController@graph_order');
 //    Route::get('graph-order', 'DashboardController@graph_order_temp');
     Route::get('graph-delivery-challan', 'DashboardController@graph_delivery_challan');
+    Route::get('update-opening-stock', 'InventoryController@updateOpeningStock');
     Route::resource('unit', 'UnitController');
     Route::resource('states', 'StatesController');
     Route::resource('city', 'CityController');

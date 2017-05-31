@@ -39,9 +39,7 @@ class PurchaseOrderController extends Controller {
         $this->middleware('validIP');
     }
 
-    
-    
-        /* Function used to export order details in excel */
+    /* Function used to export order details in excel */
 
     public function exportPurchaseOrderBasedOnStatus() {
         $data = Input::all();
@@ -61,12 +59,11 @@ class PurchaseOrderController extends Controller {
             $excel_sheet_name = 'Cancelled';
             $excel_name = 'Purchase-Order-Cancelled-' . date('dmyhis');
         }
-        
+
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if(Auth::user()->role_id <> 5)
-            {
+            if (Auth::user()->role_id <> 5) {
                 if ($date1 == $date2) {
                     $order_objects = PurchaseOrder::where('order_status', $order_status)
                             ->where('updated_at', 'like', $date1 . '%')
@@ -76,77 +73,73 @@ class PurchaseOrderController extends Controller {
                 } else {
                     $order_objects = PurchaseOrder::where('order_status', $order_status)
                             ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2.' 23:59:59')
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            if(Auth::user()->role_id == 5)
-            {
-                $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
-                    ->first();  
-                
+            if (Auth::user()->role_id == 5) {
+                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                        ->where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+
                 if ($date1 == $date2) {
                     $order_objects = PurchaseOrder::where('updated_at', 'like', $date1 . '%')
-                            -> where('customer_id','=',$cust->id)
+                            ->where('customer_id', '=', $cust->id)
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 } else {
                     $order_objects = PurchaseOrder::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2.' 23:59:59')
-                            ->where('customer_id','=',$cust->id)
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                            ->where('customer_id', '=', $cust->id)
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 }
             }
-            
-            
         } else {
-            
-            if(Auth::user()->role_id <> 5)
-            {
-        
+
+            if (Auth::user()->role_id <> 5) {
+
                 $order_objects = PurchaseOrder::where('order_status', $order_status)
-                    ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+                        ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             }
-           
-            if(Auth::user()->role_id == 5){
-               $cust = Customer::where('owner_name','=', Auth::user()->first_name)
-                    -> where('phone_number1','=', Auth::user()->mobile_number) 
-                    -> where('email','=', Auth::user()->email)
-                    ->first();  
-                     
-                
-               $order_objects = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                    -> where('customer_id','=',$cust->id)   
-                    ->orderBy('created_at', 'desc')
-                    ->get(); 
-               
-               $excel_sheet_name = 'Purchase-Order';
-               $excel_name = 'Purchase-Order-' . date('dmyhis');
+
+            if (Auth::user()->role_id == 5) {
+                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+                        ->where('phone_number1', '=', Auth::user()->mobile_number)
+                        ->where('email', '=', Auth::user()->email)
+                        ->first();
+
+
+                $order_objects = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+                        ->where('customer_id', '=', $cust->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+                $excel_sheet_name = 'Purchase-Order';
+                $excel_name = 'Purchase-Order-' . date('dmyhis');
             }
         }
-        
+
         if (count($order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
         } else {
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
-            
+
 //            echo "<pre>";
 //            print_r($order_objects[0]['purchase_products'][0]->toArray());
 //            echo "</pre>";
 //            exit;
 //            
-            
+
             Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers, $excel_sheet_name) {
                 $excel->sheet('Purchase-Order-' . $excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
                     $sheet->loadView('excelView.purchase_order', array('order_objects' => $order_objects, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
@@ -154,13 +147,13 @@ class PurchaseOrderController extends Controller {
             })->export('xls');
         }
     }
-    
+
     /*
      * Show purchase order list
      */
 
     public function index() {
-        
+
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -174,16 +167,16 @@ class PurchaseOrderController extends Controller {
         } elseif ((isset($data['order_for_filter'])) && $data['order_for_filter'] == 'direct') {
             $q->where('order_for', '!=', 0)->get();
         }
-       
-               
-       
-            if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
-                $q = $q->where('order_status', '=', $data['order_filter'])
-                        ->where('is_view_all', '=', 0);
-            } else {
-                $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
-            }
-        
+
+
+
+        if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
+            $q = $q->where('order_status', '=', $data['order_filter'])
+                    ->where('is_view_all', '=', 0);
+        } else {
+            $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
+        }
+
 //        $session_sort_type_order = Session::get('order-sort-type');
 //        $qstring_sort_type_order = $data['order_filter'];
         $session_sort_type_order = Session::get('purchase-order-sort-type');
@@ -203,50 +196,46 @@ class PurchaseOrderController extends Controller {
                 $q = $q->where('order_status', '=', $data['order_status']);
             }
         }
-        
+
 //        echo "<pre>";
 //        print_r($data['order_status']);
 //        echo "</pre>";
 //        exit;
-        
-          if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $q->where('updated_at', 'like', $date1 . '%');
-                } else {
-                    $q->where('updated_at', '>=', $date1);
-                    $q->where('updated_at', '<=', $date2.' 23:59:59');
-                }
-                $search_dates = [
-                    'export_from_date' => $data["export_from_date"],
-                    'export_to_date' => $data["export_to_date"]
-                ];
+
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $q->where('updated_at', 'like', $date1 . '%');
+            } else {
+                $q->where('updated_at', '>=', $date1);
+                $q->where('updated_at', '<=', $date2 . ' 23:59:59');
             }
-        
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
+        }
+
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit','purchase_product_has_from')
+                ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'purchase_product_has_from')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
-        
-        
-        
+
+
+
 //        exit;
-        
+
         foreach ($purchase_orders as $key => $purchase_order) {
-            
-            if($purchase_order->pending_quantity == 0 && $purchase_order->order_status == 'pending'){
-               
-                
-               $po=  PurchaseOrder::where('id',$purchase_order->id)->update(['order_status' => 'completed']);
-              
-            
-                
+
+            if ($purchase_order->pending_quantity == 0 && $purchase_order->order_status == 'pending') {
+
+
+                $po = PurchaseOrder::where('id', $purchase_order->id)->update(['order_status' => 'completed']);
             }
-          
         }
-        
-       
+
+
 
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
@@ -297,7 +286,7 @@ class PurchaseOrderController extends Controller {
             Session::forget('product');
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
-        }       
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -398,10 +387,10 @@ class PurchaseOrderController extends Controller {
                     curl_close($ch);
                 }
             }
-            
-            if (count($customer['manager']) > 0) {              
+
+            if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name."  has logged purchase order for " . $customer->owner_name . " \n";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has logged purchase order for " . $customer->owner_name . " \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
@@ -413,7 +402,7 @@ class PurchaseOrderController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-                     $phone_number = $customer['manager']->mobile_number;
+                    $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -425,8 +414,8 @@ class PurchaseOrderController extends Controller {
                 }
             }
         }
-        
-               
+
+
         $add_purchase_order = PurchaseOrder::create($add_purchase_order_array);
         $purchase_order_id = DB::getPdo()->lastInsertId();
         if (isset($input_data['other_location_name']) && ($input_data['other_location_name'] != "")) {
@@ -456,6 +445,16 @@ class PurchaseOrderController extends Controller {
                 PurchaseProducts::create($purchase_order_products);
             }
         }
+
+
+        /* inventory code */
+        $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $purchase_order_id)->where('order_type', 'purchase_order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
           | ------------------------------------------------------
@@ -666,10 +665,10 @@ class PurchaseOrderController extends Controller {
                     curl_close($ch);
                 }
             }
-            
+
             if (count($customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n".Auth::user()->first_name."  has edited a purchase order for " . $customer->owner_name . " \n";
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has edited a purchase order for " . $customer->owner_name . " \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
@@ -681,7 +680,7 @@ class PurchaseOrderController extends Controller {
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-                   $phone_number = $customer['manager']->mobile_number;
+                    $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -693,8 +692,8 @@ class PurchaseOrderController extends Controller {
                 }
             }
         }
-        
-        
+
+
         $update_purchase_order = $purchase_order->update($add_purchase_order_array);
         if (isset($input_data['purchase_order_location']) && ($input_data['purchase_order_location'] == -1)) {
 
@@ -728,6 +727,17 @@ class PurchaseOrderController extends Controller {
         $purchase_order_prod = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $id)->first();
         $purchase_order->updated_at = $purchase_order_prod->updated_at;
         $purchase_order->save();
+
+        /* inventory code */
+        $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_order')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
+
+
         /*
           | ------------------------------------------------------
           | SEND EMAIL TO SUPPLIER ON UPDATE OF NEW PURCHASE ORDER
@@ -783,28 +793,39 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {
+            /* inventory code */
+            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_order')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+
+            
             PurchaseOrder::find($id)->delete();
             PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_order')->delete();
             Session::put('order-sort-type', $order_sort_type);
+            
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+            
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
         }
     }
 
-    public function create_purchase_advice($order_id="") {
+    public function create_purchase_advice($order_id = "") {
 
-        if (Auth::user()->role_id == 5 | $order_id=="") {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }     
-        
-        $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products','purchase_products.purchase_product_advise')->find($order_id);
+        if (Auth::user()->role_id == 5 | $order_id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
+        $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products', 'purchase_products.purchase_product_advise')->find($order_id);
 
         foreach ($purchase_orders['purchase_products'] as $key => $value) {
-            if(isset($value['purchase_product_advise']) && count($value['purchase_product_advise'])){
+            if (isset($value['purchase_product_advise']) && count($value['purchase_product_advise'])) {
                 $purchase_advise_products = $value['purchase_product_advise'];
-            }else{
-                $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();    
+            } else {
+                $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();
             }
             $total_advise_product_quantity = $purchase_advise_products->sum('quantity');
             $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);
@@ -941,8 +962,8 @@ class PurchaseOrderController extends Controller {
 
     function quantity_calculation($purchase_orders) {
 
-    foreach ($purchase_orders as $key => $order) {
-        
+        foreach ($purchase_orders as $key => $order) {
+
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
