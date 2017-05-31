@@ -1033,12 +1033,14 @@ class CustomerController extends Controller {
         if (isset($settle_filter) && $settle_filter != '' && $settle_filter == 'Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
                     ->where('challan_status', 'completed')
-                    ->whereRaw('grand_price=settle_amount');
+//                    ->whereRaw('grand_price=settle_amount');
+                    ->whereRaw('CAST(grand_price AS DECIMAL(10,2)) = CAST(settle_amount AS DECIMAL(10,2))');
         }
         if (isset($settle_filter) && $settle_filter == 'Unsettled') {
             $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
                     ->where('challan_status', 'completed')
-                    ->whereRaw('grand_price != settle_amount');
+//                    ->whereRaw('grand_price != settle_amount');
+                    ->whereRaw('CAST(grand_price AS DECIMAL(10,2)) != CAST(settle_amount AS DECIMAL(10,2))');
         }
 
         if (isset($date_filter) && !empty($date_filter)) {
