@@ -676,8 +676,10 @@ class PurchaseAdviseController extends Controller {
                 $product_category_ids[] = $product_categoriy->product_category_id;
             }
 
-            $calc = new InventoryController();
-            $calc->inventoryCalc($product_category_ids);
+            if (!empty($product_category_ids)) {
+                $calc = new InventoryController();
+                $calc->inventoryCalc($product_category_ids);
+            }
 
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');
         } else {
@@ -794,16 +796,16 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
-        
-          /* inventory code */
-            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
-            foreach ($product_categories as $product_categoriy) {
-                $product_category_ids[] = $product_categoriy->product_category_id;
-            }
 
-            $calc = new InventoryController();
-            $calc->inventoryCalc($product_category_ids);
-        
+        /* inventory code */
+        $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
+
         return view('print_purchase_advise', compact('purchase_advise'));
     }
 
