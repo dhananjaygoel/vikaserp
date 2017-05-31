@@ -862,7 +862,7 @@ class DeliveryOrderController extends Controller {
             $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
         }
-        
+        DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
         /* inventory code */
         $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
         foreach ($product_categories as $product_categoriy) {
@@ -871,7 +871,7 @@ class DeliveryOrderController extends Controller {
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
 
-        DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
+        
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
 
