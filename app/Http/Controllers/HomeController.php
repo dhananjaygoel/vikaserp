@@ -39,6 +39,7 @@ use App\Receipt;
 use App\Customer_receipts;
 use App\Debited_to;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon;
 
 class HomeController extends Controller {
     /*
@@ -6009,34 +6010,103 @@ class HomeController extends Controller {
         return json_encode($inquiries_stats_all);
     }
 
+//    public function appssyncgraph_order() {
+//        $dashboard = new DashboardController();
+//        for ($i = 1; $i <= 7; $i++) {
+//            $orders_stats_all[$i]['pipe'] = 0;
+//            $orders_stats_all[$i]['structure'] = 0;
+//            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+//            $orders_stats_all[$i]['day'] = $date_search;
+//            $orders_stats = Order::with('all_order_products.order_product_details')
+//                    ->where('order_status', '=', 'completed')
+//                    ->where('updated_at', 'like', $date_search . '%')
+//                    ->get();
+//
+//            foreach ($orders_stats as $order) {
+//
+//                foreach ($order['all_order_products'] as $order_products) {
+//
+//
+//                    if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
+//                        if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
+//                            if ($order_products['unit_id'] == 1)
+//                                $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
+//                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+//                                $orders_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+//                        }else {
+//                            if ($order_products['unit_id'] == 1)
+//                                $orders_stats_all[$i]['structure'] += $order_products['quantity'];
+//                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+//                                $orders_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            $orders_stats_all[$i]['pipe'] = round($orders_stats_all[$i]['pipe'] / 1000, 2);
+//            $orders_stats_all[$i]['structure'] = round($orders_stats_all[$i]['structure'] / 1000, 2);
+//        }
+//
+//        foreach ($orders_stats_all as $key => $part) {
+//            $sort[$key] = strtotime($part['day']);
+//        }
+//        array_multisort($sort, SORT_ASC, $orders_stats_all);
+//        return ($orders_stats_all);
+//    }
+    
+    
     public function appssyncgraph_order() {
-        $dashboard = new DashboardController();
+        $date = new Carbon\Carbon;
+        $date_search = $date->subDays(7);
+        $orders_stats_all;
+
+        $orders_stats = Order::with('aopwpsc','aopwpsc.order_product_details.product_category')->where('order_status', '=', 'completed')
+                ->where('updated_at', '>', $date_search)
+                ->orderBy('updated_at')
+                ->get();
+
         for ($i = 1; $i <= 7; $i++) {
             $orders_stats_all[$i]['pipe'] = 0;
             $orders_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $orders_stats_all[$i]['day'] = $date_search;
-            $orders_stats = Order::with('all_order_products.order_product_details')
-                    ->where('order_status', '=', 'completed')
-                    ->where('updated_at', 'like', $date_search . '%')
-                    ->get();
 
-            foreach ($orders_stats as $order) {
+            if (count($orders_stats) > 0) {
+                foreach ($orders_stats as $order) {
+                    if (date('Y-m-d', strtotime($order->updated_at)) == $date_search) {
+                        foreach ($order['aopwpsc'] as $order_products) {
 
-                foreach ($order['all_order_products'] as $order_products) {
-
-
-                    if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
-                        if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
-                            if ($order_products['unit_id'] == 1)
-                                $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
-                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
-                                $orders_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
-                        }else {
-                            if ($order_products['unit_id'] == 1)
-                                $orders_stats_all[$i]['structure'] += $order_products['quantity'];
-                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
-                                $orders_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                            if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
+                                if ($order_products['order_product_details']['product_category']['product_type_id'] == 1) {
+                                    if ($order_products['unit_id'] == 1) {
+                                        $orders_stats_all[$i]['pipe'] += $order_products['quantity'];
+                                    } elseif (($order_products['unit_id'] == 2)) {
+                                        $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] * $order_products['order_product_details']['weight']);
+                                    } elseif (($order_products['unit_id'] == 3)) {
+                                        $standard_length = $order_products['order_product_details']['standard_length'];
+                                        if ($order_products['order_product_details']['standard_length'] == 0) {
+                                            $standard_length = 1;
+                                        }
+                                        $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] / $standard_length * $order_products['order_product_details']['weight']);
+                                    }
+//                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+//                                $orders_stats_all[$i]['pipe'] += $this->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                                } else {
+                                    if ($order_products['unit_id'] == 1) {
+                                        $orders_stats_all[$i]['structure'] += $order_products['quantity'];
+                                    } elseif (($order_products['unit_id'] == 2)) {
+                                        $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] * $order_products['order_product_details']['weight']);
+                                    } elseif (($order_products['unit_id'] == 3)) {
+                                        $standard_length = $order_products['order_product_details']['standard_length'];
+                                        if ($order_products['order_product_details']['standard_length'] == 0) {
+                                            $standard_length = 1;
+                                        }
+                                        $orders_stats_all[$i]['pipe'] += ($order_products['quantity'] / $standard_length * $order_products['order_product_details']['weight']);
+                                    }
+//                            elseif (($order_products['unit_id'] == 2) || ($order_products['unit_id'] == 3))
+//                                $orders_stats_all[$i]['structure'] += $this->checkpending_quantity($order_products['unit_id'], $order_products['product_category_id'], $order_products['quantity']);
+                                }
+                            }
                         }
                     }
                 }
@@ -6053,35 +6123,81 @@ class HomeController extends Controller {
         return ($orders_stats_all);
     }
 
+
     /* To get Delivery Challan stats for graph */
 
-    public function appssyncgraph_delivery_challan() {
-        $dashboard = new DashboardController();
+//    public function appssyncgraph_delivery_challan() {
+//        $dashboard = new DashboardController();
+//
+//        for ($i = 1; $i <= 7; $i++) {
+//            $delivery_challan_stats_all[$i]['pipe'] = 0;
+//            $delivery_challan_stats_all[$i]['structure'] = 0;
+//            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
+//            $delivery_challan_stats_all[$i]['day'] = $date_search;
+//            $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
+//                    ->where('challan_status', '=', 'completed')
+//                    ->where('updated_at', 'like', $date_search . '%')
+//                    ->get();
+//
+//            foreach ($delivery_challan_stats as $delivery_challan) {
+//                foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
+//
+//                    if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
+//                        if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
+//                            if ($delivery_challan_products['unit_id'] == 1)
+//                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
+//                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+//                                $delivery_challan_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+//                        }else {
+//                            if ($delivery_challan_products['unit_id'] == 1)
+//                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
+//                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
+//                                $delivery_challan_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
+//            $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
+//        }
+//        foreach ($delivery_challan_stats_all as $key => $part) {
+//            $sort[$key] = strtotime($part['day']);
+//        }
+//        array_multisort($sort, SORT_ASC, $delivery_challan_stats_all);
+//
+//        return ($delivery_challan_stats_all);
+//    }
+
+    
+     public function appssyncgraph_delivery_challan() {
+        $date = new Carbon\Carbon;
+        $date_search = $date->subDays(7);
+        $orders_stats_all;
+        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products','delivery_challan_products.order_product_details.product_category')
+                ->where('challan_status', '=', 'completed')
+                ->where('updated_at', '>', $date_search)
+                ->get();
 
         for ($i = 1; $i <= 7; $i++) {
             $delivery_challan_stats_all[$i]['pipe'] = 0;
             $delivery_challan_stats_all[$i]['structure'] = 0;
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $delivery_challan_stats_all[$i]['day'] = $date_search;
-            $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
-                    ->where('challan_status', '=', 'completed')
-                    ->where('updated_at', 'like', $date_search . '%')
-                    ->get();
+
 
             foreach ($delivery_challan_stats as $delivery_challan) {
-                foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
+                if (date('Y-m-d', strtotime($delivery_challan->updated_at)) == $date_search) {
+                    foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
 
-                    if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
-                        if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
-                            if ($delivery_challan_products['unit_id'] == 1)
-                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
-                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
-                                $delivery_challan_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
-                        }else {
-                            if ($delivery_challan_products['unit_id'] == 1)
-                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
-                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
-                                $delivery_challan_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
+                        if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
+                            if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
+                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['actual_quantity'];
+
+                            } else {
+                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['actual_quantity'];
+//                           
+                            }
                         }
                     }
                 }
@@ -6098,6 +6214,8 @@ class HomeController extends Controller {
         return ($delivery_challan_stats_all);
     }
 
+    
+    
     /**
      * App get all labours
      */
