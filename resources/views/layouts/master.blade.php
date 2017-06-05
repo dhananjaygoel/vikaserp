@@ -82,7 +82,7 @@
             print_purchase_advice = function () {};
             print_challan = function () {};
             unitType = function () {};
-           
+            var gdpData ;
         </script>
         <script>
             var _rollbarConfig = {
