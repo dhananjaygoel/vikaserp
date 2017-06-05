@@ -7,6 +7,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
 use Config;
+use Illuminate\Session\TokenMismatchException;
 
 //use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -33,7 +34,7 @@ class Handler extends ExceptionHandler {
         //return parent::report($e);
         define('SEND_LOG', Config::get('rollbar.send'));
         if (SEND_LOG === true) {
-        $config = array(
+            $config = array(
                 'access_token' => Config::get('rollbar.access_token'),
                 'environment' => 'production'
             );
@@ -55,6 +56,12 @@ class Handler extends ExceptionHandler {
         if ($this->isHttpException($e)) {
             return $this->renderHttpException($e);
         } else {
+            
+            /*newcode*/
+            if ($e instanceof TokenMismatchException) {
+                return redirect($request->fullUrl())->with('csrf_error', "Opps! Seems you couldn't submit form for a longtime. Please try again");
+            }
+            /*end*/
             return parent::render($request, $e);
         }
     }

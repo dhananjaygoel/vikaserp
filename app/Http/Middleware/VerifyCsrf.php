@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+use Illuminate\Session\TokenMismatchException;
 
 class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken {
 
@@ -110,7 +111,8 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
             return $this->addCookieToResponse($request, $next($request));
         }
 
-        throw new \TokenMismatchException;
+//        throw new \TokenMismatchException;
+        throw new TokenMismatchException;
     }
 
     /**
