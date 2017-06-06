@@ -174,7 +174,7 @@
                                         <td>{{(isset($purchase_order['customer']->owner_name)? $purchase_order['customer']->owner_name :'N/A')}}</td>
                                         <td>{{$purchase_order['customer']->phone_number1}}</td>
                                         <td>{{isset($purchase_order['delivery_location'])?$purchase_order['delivery_location']['area_name']: $purchase_order->other_location}}</td>
-                                        <td>{{$purchase_order['user']->first_name}}</td>
+                                        <td>{{isset($purchase_order['user']->first_name)?$purchase_order['user']->first_name:'N/A'}}</td>
                                         <td>
                                             {{round($purchase_order->total_quantity, 2)}}
                                         </td>

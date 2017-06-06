@@ -151,8 +151,8 @@
                                                 </td>
                                                 <td>{{ $daybook->vehicle_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
-                                                <td>{{ $daybook['orderedby']->first_name }} </td>
-                                                <td>{{ $daybook->unloaded_by }} </td>
+                                                <td>{{ (isset($daybook['orderedby']->first_name)?$daybook['orderedby']->first_name:'') }} </td>
+                                                <td>{{ (isset($daybook->unloaded_by)?$daybook->unloaded_by:'') }} </td>
                                                 <td>{{ $daybook->labours }}</td>
                                                 <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
                                                 <td>{{ $daybook->grand_total}}</td>
