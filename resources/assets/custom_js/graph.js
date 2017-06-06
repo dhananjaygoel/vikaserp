@@ -87,7 +87,7 @@ $(document).ready(function () {
             });
             $(".dashboard-nav").addClass('nav-small');
         }, error: function (xhr, textStatus, errorThrown) {
-            console.log(xhr + " " + textStatus);
+//            console.log(xhr + " " + textStatus);
         }
     });
 
@@ -146,7 +146,7 @@ $(document).ready(function () {
     $.ajax({
         type: 'get', url: baseurl + '/update-opening-stock',
         success: function (data) {         
-            console.log(data);
+           
         }
     });
     
