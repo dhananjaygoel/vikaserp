@@ -289,13 +289,14 @@
 <script src="js/scripts.js"></script>
 <script src="js/pace.min.js"></script>-->
         <!-- global scripts -->
-        {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
+        
         {!! HTML::script('/resources/assets/js/jquery.js') !!}   
         {!! HTML::script('/resources/assets/js/jquery.min.js') !!}   
 
         {!! HTML::script('/resources/assets/js/bootstrap.js') !!}  
         {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
         {!! HTML::script('/resources/assets/js/demo.js') !!}
+        {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
         <!-- this page specific scripts -->
 
         <!-- Bootbox Js -->
