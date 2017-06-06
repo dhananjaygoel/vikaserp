@@ -11,7 +11,8 @@
 
         <!-- bootstrap -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+       
+        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">-->
 
         <!-- RTL support - for demo only -->
@@ -38,7 +39,10 @@
         {!! HTML::style('/resources/assets/css/libs/datepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">                   
+        {!! HTML::style('/resources/assets/css/libs/select2.min.css') !!}
+       
+        
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
         {!! HTML::style('/resources/assets/css/custom_style/custom_styles.css') !!}
         {!! HTML::style('/resources/assets/css/custom_style/custom_media_query.css') !!}
 
@@ -66,23 +70,37 @@
                 height: 35px;
             }
         </style>
-         <!--define method before load page--> 
+        <!--define method before load page--> 
         <script>
-            product_autocomplete = function () {};
-            numbersOnly = function () {};
-            clear_actual_qty = function () {};
-            setQty = function () {};
-            change_quantity2 = function () {};
-            fetch_average_quantity = function () {};
-            calutate_pending_order = function () {};
-            delete_delivery_order = function () {};
-            product_autocomplete_purchase = function () {};
-            delete_purchase_order = function () {};
-            print_purchase_challan = function () {};
-            print_purchase_advice = function () {};
-            print_challan = function () {};
-            unitType = function () {};
-            var gdpData ;
+            product_autocomplete = function () {
+            };
+            numbersOnly = function () {
+            };
+            clear_actual_qty = function () {
+            };
+            setQty = function () {
+            };
+            change_quantity2 = function () {
+            };
+            fetch_average_quantity = function () {
+            };
+            calutate_pending_order = function () {
+            };
+            delete_delivery_order = function () {
+            };
+            product_autocomplete_purchase = function () {
+            };
+            delete_purchase_order = function () {
+            };
+            print_purchase_challan = function () {
+            };
+            print_purchase_advice = function () {
+            };
+            print_challan = function () {
+            };
+            unitType = function () {
+            };
+            var gdpData;
         </script>
         <script>
             var _rollbarConfig = {
@@ -272,7 +290,8 @@
         <!-- global scripts -->
         {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.js') !!}   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        {!! HTML::script('/resources/assets/js/jquery.min.js') !!}   
+
         {!! HTML::script('/resources/assets/js/bootstrap.js') !!}  
         {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
         {!! HTML::script('/resources/assets/js/demo.js') !!}
@@ -303,47 +322,34 @@
         {!! HTML::script('/resources/assets/js/flot/jquery.flot.time.min.js') !!}
         {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
-
-
-
-
-
         <!--{!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}-->
-
-
-
         {!! HTML::script('/resources/assets/js/moment.min.js') !!}
         {!! HTML::script('/resources/assets/js/daterangepicker.js') !!}
 
         <!-- theme scripts -->
         {!! HTML::script('/resources/assets/js/scripts.js') !!}
-        <!--        {!! HTML::script('/resources/assets/js/pace.min.js') !!}-->
-        <!-- this page specific inline scripts -->
-
-        <!-- RTL support - for demo only -->
-        <!--{!!  HTML::script('/resources/assets/js/demo-rtl.js') !!}-->
+       
         <!-- Confirm Exit JS -->
         {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
 
         <!-- Sortable Script Support -->
-        <script src="{{url()."/resources/assets/custom_js/my_script.js"}}"></script>
+        {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}
 
         <!-- Custom Script Support -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> 
+        {!! HTML::script('/resources/assets/js/select2.v.4.0.3.min.js') !!}
+        
+        {!! HTML::script('/resources/assets/custom_js/custom_script.js') !!}
+        {!! HTML::script('/resources/assets/custom_js/custom_script_js.js') !!}
+        {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
 
-        <script src="{{url()."/resources/assets/custom_js/custom_script.js"}}"></script>
-        <script src="{{url()."/resources/assets/custom_js/custom_script_js.js"}}"></script>
-        <script src="{{url()."/resources/assets/custom_js/custom.js"}}"></script>
         <?php if (Route::getCurrentRoute()->getPath() == "dashboard") { ?>
             <script src="{{url()."/resources/assets/custom_js/graph.js"}}"></script>
-<?php } ?>
+        <?php } ?>
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>-->
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+        {!! HTML::script('/resources/assets/js/jquery.validate.min.js') !!}       
+       {!! HTML::script('/resources/assets/js/bootstrap-multiselect.min.js') !!}
+        
 
         <script src="{{url()."/resources/assets/custom_js/laravel.js"}}"></script> 
         <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
@@ -365,7 +371,7 @@
             ?>
             @include('autocomplete_tally_product_name')
             <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js"}}"></script>
-<?php } ?>
+        <?php } ?>
 
         <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
                     <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
