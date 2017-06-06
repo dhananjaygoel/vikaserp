@@ -32,7 +32,7 @@ class InventoryController extends Controller {
      */
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        $this->middleware('validIP', ['except' => ['exportInventoryReport','exportinventoryPriceList','export_inventory','app_export_inventory_report']]);
+        
     }
 
     public function fetchInventoryProductName() {
