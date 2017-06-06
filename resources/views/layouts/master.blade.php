@@ -124,7 +124,8 @@
             }([function (r, e, o) {
                     "use strict";
                     var n = o(1).Rollbar, t = o(2);
-                    _rollbarConfig.rollbarJsUrl = _rollbarConfig.rollbarJsUrl || "https://cdnjs.cloudflare.com/ajax/libs/rollbar.js/1.9.4/rollbar.min.js";
+                    _rollbarConfig.rollbarJsUrl = _rollbarConfig.rollbarJsUrl || "{{url().'/resources/assets/js/rollbar.min.js'}}";
+//                    _rollbarConfig.rollbarJsUrl = _rollbarConfig.rollbarJsUrl || "https://cdnjs.cloudflare.com/ajax/libs/rollbar.js/1.9.4/rollbar.min.js";
                     var a = n.init(window, _rollbarConfig), i = t(a, _rollbarConfig);
                     a.loadFull(window, document, !_rollbarConfig.async, _rollbarConfig, i)
                 }, function (r, e) {
