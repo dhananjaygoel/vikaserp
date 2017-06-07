@@ -29,6 +29,7 @@ Route::post('appsyncreceipt', 'HomeController@appsyncreceipt');
 Route::get('appsyncreceiptcustomerlist', 'HomeController@appsyncreceiptcustomerlist');
 Route::post('appsyncreceiptdelete', 'HomeController@appsyncreceiptdelete');
 Route::post('appsyncorder', 'HomeController@appSyncOrder');
+Route::post('appsyncorderpagination', 'HomeController@appSyncOrderPagination');
 Route::post('appsyncorder_customer', 'HomeController@appSyncOrder_customer');
 Route::post('appsyncdeliveryorder', 'HomeController@appSyncDeliveryOrder');
 Route::post('appsyncdeliverychallan', 'HomeController@appSyncDeliveryChallan');

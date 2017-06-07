@@ -40,6 +40,8 @@ use App\Customer_receipts;
 use App\Debited_to;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder;
 
 class HomeController extends Controller {
     /*
@@ -1666,7 +1668,7 @@ class HomeController extends Controller {
 
             /* add labours if new dc created */
             if ($value->server_id == 0) {
-                $labour_array=[];
+                $labour_array = [];
                 foreach ($deliverychallanlabour as $key_labour => $labour_list) {
                     if ($value->id == $labour_list->local_dc_id) {
                         /* if labour created offline */
@@ -1684,8 +1686,8 @@ class HomeController extends Controller {
                             } else {
                                 $labour_id = $labour_check->id;
                             }
-                            
-                            $labour_array[] =  [$labour_list->local_labour_id => $labour_id];
+
+                            $labour_array[] = [$labour_list->local_labour_id => $labour_id];
                         } else {
                             $labour_id = $labour_list->server_labour_id;
                         }
@@ -1694,15 +1696,14 @@ class HomeController extends Controller {
                         $dc_labour->delivery_challan_id = $delivery_challan_id;
                         $dc_labour->labours_id = $labour_id;
                         $dc_labour->save();
-                        
                     }
                 }
             }
-            $delivery_challan_response["labour_server_added"]=$labour_array;
+            $delivery_challan_response["labour_server_added"] = $labour_array;
 
             /* add loadedby if new dc created */
             if ($value->server_id == 0) {
-                $loadedby_array=[];
+                $loadedby_array = [];
                 foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
                     if ($value->id == $loadedby_list->local_dc_id) {
                         /* if labour created offline */
@@ -1721,9 +1722,9 @@ class HomeController extends Controller {
                             } else {
                                 $loadedby_id = $loadedby_check->id;
                             }
-                            
-                            
-                            $loadedby_array[] =  [$loadedby_list->local_loadedby_id => $loadedby_id];
+
+
+                            $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
                         } else {
                             $loadedby_id = $loadedby_list->server_loadedby_id;
                         }
@@ -1735,7 +1736,7 @@ class HomeController extends Controller {
                     }
                 }
             }
-            $delivery_challan_response["loadedby_server_added"]=$loadedby_array;
+            $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
 
             $delivery_challan_products = array();
             if ($value->server_id > 0)
@@ -2206,7 +2207,9 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $order_added_server = Order::with('all_order_products')->get();
+//            $order_added_server = Order::with('all_order_products')->get();
+            $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
+                            ->limit('1000')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
         }
 
@@ -2342,6 +2345,49 @@ class HomeController extends Controller {
             $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
         else
             $order_response['latest_date'] = "";
+
+        return json_encode($order_response);
+    }
+
+    /*
+      App Sync order for admin for pagination
+
+     */
+
+    public function appSyncOrderPagination() {
+        $data = Input::all();
+        $order_response = [];
+        $skip = 1000;
+        $limit = 100;
+        if (Input::has('last_id')) {
+            $last_id = (json_decode($data['last_id']));
+        }
+
+        if (Input::has('record_count_per_page')) {
+            $limit = (json_decode($data['record_count_per_page']));
+        }
+
+        if (Input::has('page_number')) {
+            $page = (json_decode($data['page_number']));
+            if ($page > 2)
+                $skip = ($page - 1) * $limit;
+        }
+        $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
+                        ->limit('100')->get();
+
+        if (count($order_added_server)) {
+            foreach ($order_added_server as $key => $order) {
+                if ($order->id == $last_id)
+                    $skip = $key;
+            }
+            $skip +=1;
+        }
+        $order_added_server = Order::with('all_order_products')
+                ->orderBy('id', 'ASEC')
+                ->skip($skip)
+                ->limit($limit)
+                ->get();
+        $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
         return json_encode($order_response);
     }
@@ -6053,14 +6099,14 @@ class HomeController extends Controller {
 //        array_multisort($sort, SORT_ASC, $orders_stats_all);
 //        return ($orders_stats_all);
 //    }
-    
-    
+
+
     public function appssyncgraph_order() {
         $date = new Carbon\Carbon;
         $date_search = $date->subDays(7);
         $orders_stats_all;
 
-        $orders_stats = Order::with('aopwpsc','aopwpsc.order_product_details.product_category')->where('order_status', '=', 'completed')
+        $orders_stats = Order::with('aopwpsc', 'aopwpsc.order_product_details.product_category')->where('order_status', '=', 'completed')
                 ->where('updated_at', '>', $date_search)
                 ->orderBy('updated_at')
                 ->get();
@@ -6123,58 +6169,13 @@ class HomeController extends Controller {
         return ($orders_stats_all);
     }
 
-
     /* To get Delivery Challan stats for graph */
 
-//    public function appssyncgraph_delivery_challan() {
-//        $dashboard = new DashboardController();
-//
-//        for ($i = 1; $i <= 7; $i++) {
-//            $delivery_challan_stats_all[$i]['pipe'] = 0;
-//            $delivery_challan_stats_all[$i]['structure'] = 0;
-//            $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
-//            $delivery_challan_stats_all[$i]['day'] = $date_search;
-//            $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products')
-//                    ->where('challan_status', '=', 'completed')
-//                    ->where('updated_at', 'like', $date_search . '%')
-//                    ->get();
-//
-//            foreach ($delivery_challan_stats as $delivery_challan) {
-//                foreach ($delivery_challan['delivery_challan_products'] as $delivery_challan_products) {
-//
-//                    if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
-//                        if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
-//                            if ($delivery_challan_products['unit_id'] == 1)
-//                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
-//                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
-//                                $delivery_challan_stats_all[$i]['pipe'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
-//                        }else {
-//                            if ($delivery_challan_products['unit_id'] == 1)
-//                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
-//                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
-//                                $delivery_challan_stats_all[$i]['structure'] += $dashboard->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            $delivery_challan_stats_all[$i]['pipe'] = round($delivery_challan_stats_all[$i]['pipe'] / 1000, 2);
-//            $delivery_challan_stats_all[$i]['structure'] = round($delivery_challan_stats_all[$i]['structure'] / 1000, 2);
-//        }
-//        foreach ($delivery_challan_stats_all as $key => $part) {
-//            $sort[$key] = strtotime($part['day']);
-//        }
-//        array_multisort($sort, SORT_ASC, $delivery_challan_stats_all);
-//
-//        return ($delivery_challan_stats_all);
-//    }
-
-    
-     public function appssyncgraph_delivery_challan() {
+    public function appssyncgraph_delivery_challan() {
         $date = new Carbon\Carbon;
         $date_search = $date->subDays(7);
         $orders_stats_all;
-        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products','delivery_challan_products.order_product_details.product_category')
+        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products', 'delivery_challan_products.order_product_details.product_category')
                 ->where('challan_status', '=', 'completed')
                 ->where('updated_at', '>', $date_search)
                 ->get();
@@ -6193,7 +6194,6 @@ class HomeController extends Controller {
                         if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
                             if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
                                 $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['actual_quantity'];
-
                             } else {
                                 $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['actual_quantity'];
 //                           
@@ -6214,8 +6214,6 @@ class HomeController extends Controller {
         return ($delivery_challan_stats_all);
     }
 
-    
-    
     /**
      * App get all labours
      */
@@ -6307,7 +6305,7 @@ class HomeController extends Controller {
         $labours = Labour::all();
 
         $loader_arr = array();
-        $delivery_order_data = DeliveryChallan::                
+        $delivery_order_data = DeliveryChallan::
                 has('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                 ->with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                 ->where('created_at', '>', "$date")
@@ -6328,7 +6326,7 @@ class HomeController extends Controller {
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
                         foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-                             $deliver_sum += $delivery_order_productinfo->actual_quantity;
+                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
 //                            if ($delivery_order_productinfo->unit_id == 1)
 //                                $deliver_sum += $delivery_order_productinfo->quantity;
 //                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
@@ -6366,7 +6364,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):0),
+                            'tonnage' => (isset($data['tonnage']) ? round($data['tonnage'], 2) : 0),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
@@ -6461,9 +6459,9 @@ class HomeController extends Controller {
         $enddate = date("Y-m-d");
         $date = date('Y-03-01', time());
 
-        $delivery_order_data = DeliveryChallan::                
-                has('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
-                ->with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+        $delivery_order_data = DeliveryChallan::
+                        has('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
+                        ->with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
                         ->where('created_at', '>', "$date")->get();
 
         foreach ($delivery_order_data as $delivery_order_info) {
@@ -6475,7 +6473,7 @@ class HomeController extends Controller {
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
                         foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-                             $deliver_sum += $delivery_order_productinfo->actual_quantity;
+                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
 //                            if ($delivery_order_productinfo->unit_id == 1)
 //                                $deliver_sum += $delivery_order_productinfo->quantity;
 //                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
@@ -6506,7 +6504,7 @@ class HomeController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'loader_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):0)
+                            'tonnage' => (isset($data['tonnage']) ? round($data['tonnage'], 2) : 0)
                         ];
                     }
                 }

@@ -35,6 +35,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'verify_otp',
         'app_updatecustomer',
         'appsyncorder',
+        'appsyncorderpagination',
         'appsyncorder_customer',
         'appsyncdeliveryorder',
         'appsyncdeliverychallan',
