@@ -973,6 +973,18 @@ $('.delete_inquiry_form_submit').click(function () {
 
 
 });
+
+
+
+function delete_sub_product_row(id) {
+     $("#delete_sub_row").attr('action', baseurl + '/product_sub_category/' + id + '-delete');
+    $('#product_sub_id').val(id);
+    $('#product_sub_id').focus();
+}
+
+
+
+
 /*
  * Delete Order Form set orderId to order_id
  * @param {type} order_id

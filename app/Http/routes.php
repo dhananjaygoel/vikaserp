@@ -265,6 +265,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('update_price', 'ProductController@update_price');
     Route::post('update_all_price', 'ProductController@update_all_price');
 
+    Route::post('product_sub_category/{id}-delete', 'ProductsubController@destroy');
     Route::resource('product_sub_category', 'ProductsubController');
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::get('get_product_type', 'ProductsubController@get_product_type');

@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </form>
-                             <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
+                            <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
                                 <div class="col-md-12 pull-right">
                                     @if( Auth::user()->role_id == 0 )
                                     <div class="col-md-3 form-group pull-right">
@@ -54,15 +54,15 @@
                                     @endif
                                     <div class="form-group col-md-3  pull-right">
                                         <input value="{{Input::get('product_size')}}" id="product_size"  name="product_size" type="hidden">
-                                       
+
                                     </div>
                                     <div class="form-group  col-md-2  pull-right">
-                                       <input value="{{Input::get('product_filter')}}" name="product_filter" type="hidden" >
+                                        <input value="{{Input::get('product_filter')}}" name="product_filter" type="hidden" >
                                     </div>
                                     <div class="form-group col-md-2 pull-right">
-                                        
+
                                         <input value="{{Input::get('search_text')}}" name="search_text" type="hidden" >
-                                     
+
                                     </div>
                                 </div>
                             </form>
@@ -149,7 +149,7 @@
                                                 ?>
                                                 @if($sign == '-')
                                                 {{ $produ_sub['product_category']->price - substr($produ_sub->difference,1) }}
-                                                <?php $prod_diff = $produ_sub['product_category']->price - substr($produ_sub->difference,1); ?>
+                                                <?php $prod_diff = $produ_sub['product_category']->price - substr($produ_sub->difference, 1); ?>
                                                 @else
                                                 {{ $produ_sub['product_category']->price + $produ_sub->difference }}
                                                 <?php $prod_diff = $produ_sub['product_category']->price + $produ_sub->difference; ?>
@@ -159,11 +159,11 @@
                                                 @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
                                                     <div class="form-group col-md-6">
-                                                        <input type="tel" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}" onkeypress=" return numbersOnly(this,event,true,true);">
+                                                        <input type="tel" class="form-control" required="" name="difference_{{$i}}" value="{{ $produ_sub->difference}}" onkeypress=" return numbersOnly(this, event, true, true);">
                                                         <input type="hidden" class="form-control" name="id_{{$i}}" value="{{ $produ_sub->id}}">
                                                         <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
-                                                        
-                                                        <?php $price_diff = $produ_sub->difference ;?>
+
+                                                        <?php $price_diff = $produ_sub->difference; ?>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
                                                         <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_difference(this);" >
@@ -171,7 +171,7 @@
                                                 </div>
                                                 @else
                                                 <div class="form-group col-md-6">{{ $produ_sub->difference }} </div>
-                                                 <?php $price_diff = $produ_sub->difference;?>
+                                                <?php $price_diff = $produ_sub->difference; ?>
                                                 @endif
                                             </td>
                                             <td>
@@ -185,7 +185,8 @@
                                                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                     </span>
                                                 </a>
-                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$produ_sub->id}}">
+                                                <!--                                                <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModal{{$produ_sub->id}}">-->
+                                                <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#myModal" onclick="delete_sub_product_row({{$produ_sub->id}})">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -196,47 +197,57 @@
                                         </tr>
                                         <?php $i++; ?>
                                         @endif
-                                    <div class="modal fade" id="myModal{{$produ_sub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel"></h4>
-                                                </div>
-                                                {!! Form::open(array('route' => array('product_sub_category.destroy', $produ_sub->id), 'method' => 'delete')) !!}
-                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <div class="modal-body">
-                                                    <div class="delete">
-                                                        <?php
-                                                        $us = Auth::user();
-                                                        $us['mobile_number']
-                                                        ?>
-                                                        <div><b>Mobile:</b>
-                                                            {{$us['mobile_number']}}
-                                                            <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
-                                                            <input type="hidden" name="user_id" value="<?php echo $produ_sub->id; ?>"/>
-                                                        </div>
-                                                        <div class="pwd">
-                                                            <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" id="model_pass<?php echo $produ_sub->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
-                                                        </div>
-                                                        <div class="clearfix"></div>
-                                                        <div class="delp">Are you sure you want to <b>delete </b>?</div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                    <button type="submit" class="btn btn-default">Yes</button>
-                                                </div>
-                                                {!! Form::close() !!}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
+
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 <button name="submit" class="btn btn-primary" data-pageid="{{(Input::get('page')!= '')?Input::get('page') : 1 }}" id="save_all_size_btn" type="button">Save All Sizes</button>
                             </form>
+
+                            <!--                                    <div class="modal fade" id="myModal{{$produ_sub->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            <h4 class="modal-title" id="myModalLabel"></h4>
+                                        </div>
+                                        <!--                                                {!! Form::open(array('route' => array('product_sub_category.destroy', $produ_sub->id), 'method' => 'delete')) !!}-->
+
+                                        <form method="post"  id="delete_sub_row">
+                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                            <input class="form-control" name="product_sub_id" id="product_sub_id" type="hidden"/>
+                                            <div class="modal-body">
+                                                <div class="delete">
+                                                    <?php
+                                                    $us = Auth::user();
+                                                    $us['mobile_number']
+                                                    ?>
+                                                    <div><b>Mobile:</b>
+                                                        {{$us['mobile_number']}}
+                                                        <input type="hidden" name="mobile" value="{{$us['mobile_number']}}"/>
+                                                        <input type="hidden" name="user_id" value="<?php echo $produ_sub->id; ?>"/>
+                                                    </div>
+                                                    <div class="pwd">
+                                                        <div class="pwdl"><b>Password:</b></div>
+                                                        <div class="pwdr"><input class="form-control" id="model_pass<?php echo $produ_sub->id; ?>" name="model_pass" placeholder="" required="required" type="password"></div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="delp">Are you sure you want to <b>delete </b>?</div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-default">Yes</button>
+                                            </div>
+                                            {!! Form::close() !!}
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
                                     @if(sizeof($_GET) < 2)

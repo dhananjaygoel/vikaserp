@@ -20,6 +20,13 @@ use Hash;
 use App;
 use Config;
 use Redirect;
+use App\Inquiry;
+use App\Order;
+use App\DeliveryOrder;
+use App\DeliveryChallan;
+use App\PurchaseOrder;
+use App\PurchaseAdvise;
+use App\PurchaseChallan;
 
 class PendingCustomerController extends Controller {
     /*
@@ -131,12 +138,133 @@ class PendingCustomerController extends Controller {
 
         if (Hash::check($password, $current_user->password)) {
             $customer = Customer::find($id);
+            $customer_exist = array();
+            $customer_exist['customer_inquiry'] = "";
+            $customer_exist['customer_order'] = "";
+            $customer_exist['customer_delivery_order'] = "";
+            $customer_exist['customer_delivery_challan'] = "";
+            $customer_exist['customer_purchase_order'] = "";
+            $customer_exist['customer_purchase_advice'] = "";
+            $customer_exist['customer_purchase_challan'] = "";
+
+            $customer_inquiry = Inquiry::where('customer_id', $customer->id)->get();
+            $customer_order = Order::where('customer_id', $customer->id)->get();
+            $customer_delivery_order = DeliveryOrder::where('customer_id', $customer->id)->get();
+            $customer_delivery_challan = DeliveryChallan::where('customer_id', $customer->id)->get();
+            $customer_purchase_order = PurchaseOrder::where('supplier_id', $customer->id)->get();
+            $customer_purchase_advice = PurchaseAdvise::where('supplier_id', $customer->id)->get();
+            $customer_purchase_challan = PurchaseChallan::where('supplier_id', $customer->id)->get();
+
+            $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
+            $cust_flag = "";
+
+            if (isset($customer_inquiry) && (count($customer_inquiry) > 0)) {
+                $customer_exist['customer_inquiry'] = 1;
+                $cust_msg .= "Inquiry";
+                $cust_flag = 1;
+            }
+
+            if (isset($customer_order) && (count($customer_order) > 0)) {
+                $customer_exist['customer_order'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Order";
+                } else {
+                    $cust_msg .= "Order";
+                }
+                $cust_flag = 1;
+            }
+
+            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0)) {
+                $customer_exist['customer_delivery_order'] = 1;
+
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Delievry Order";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Delievry Order";
+                } else {
+                    $cust_msg .= "Delievry Order";
+                }
+                $cust_flag = 1;
+            }
+
+            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0)) {
+                $customer_exist['customer_delivery_challan'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Delievry Challan";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Delievry Challan";
+                } elseif ($customer_exist['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Delievry Challan";
+                } else {
+                    $cust_msg .= "Delievry Challan";
+                }
+                $cust_flag = 1;
+            }
+
+            if (isset($customer_purchase_order) && (count($customer_purchase_order) > 0)) {
+                $customer_exist['customer_purchase_order'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } elseif (['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } elseif ($customer_exist['customer_delivery_challan'] == 1) {
+                    $cust_msg .= ", Purchase Order";
+                } else {
+                    $cust_msg .= "Purchase Order";
+                }
+                $cust_flag = 1;
+            }
+
+            if (isset($customer_purchase_advice) && (count($customer_purchase_advice) > 0)) {
+                $customer_exist['customer_purchase_advice'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_delivery_challan'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } elseif ($customer_exist['customer_purchase_order'] == 1) {
+                    $cust_msg .= ", Purchase Advice";
+                } else {
+                    $cust_msg .= "Purchase Advice";
+                }
+                $cust_flag = 1;
+            }
+
+            if (isset($customer_purchase_challan) && (count($customer_purchase_challan) > 0)) {
+                $customer_exist['customer_purchase_challan'] = 1;
+                if ($customer_exist['customer_inquiry'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_order'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_delivery_order'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_delivery_challan'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_purchase_order'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } elseif ($customer_exist['customer_purchase_advice'] == 1) {
+                    $cust_msg .= ", Purchase Challan";
+                } else {
+                    $cust_msg .= "Purchase Challan";
+                }
+                $cust_flag = 1;
+            }
+
+            if ($cust_flag == 1) {
+                return Redirect::to('pending_customers')->with('error', $cust_msg);
+            } else {
             $customer->delete();
-             $user = User::where('email', '=',$customer->email )
+            $user = User::where('email', '=',$customer->email )
                    ->where('first_name', '=',$customer->owner_name)
                    ->where('mobile_number', '=',$customer->phone_number1)                 
                    ->delete(); 
             return Redirect::to('pending_customers')->with('success', 'Pending customer Successfully deleted');
+            }
         } else {
             return Redirect::to('pending_customers')->with('error', 'Invalid password');
         }

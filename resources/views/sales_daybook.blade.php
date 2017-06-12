@@ -126,7 +126,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($challan["customer"]->tally_name != "")
+                                                @if(isset($challan["customer"]->tally_name) && $challan["customer"]->tally_name != "")
                                                 {{$challan["customer"]->tally_name}}
                                                 @else
                                                 @if(isset($challan["customer"]->owner_name))
