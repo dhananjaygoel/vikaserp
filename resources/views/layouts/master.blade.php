@@ -13,7 +13,7 @@
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
        
         {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">-->
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">--> 
 
         <!-- RTL support - for demo only -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
@@ -291,8 +291,7 @@
         <!-- global scripts -->
         {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.js') !!}   
-        {!! HTML::script('/resources/assets/js/jquery.min.js') !!}   
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         {!! HTML::script('/resources/assets/js/bootstrap.js') !!}  
         {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
         {!! HTML::script('/resources/assets/js/demo.js') !!}
