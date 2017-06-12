@@ -580,7 +580,9 @@ class DeliveryOrderController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
-        if (count($delivery_data) < 1) {
+        
+        
+        if (count($delivery_data) < 1 | empty($delivery_data['customer'])) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
         $units = Units::all();

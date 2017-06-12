@@ -45,7 +45,7 @@
                         {!!Form::open(array('data-button'=>'btn_delorderto_delchallan','method'=>'POST','url'=>url('create_delivery_challan/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
-                        <input type="hidden" id="customer_id" name="customer_id" value="{{$delivery_data['customer']->id}}">
+                        <input type="hidden" id="customer_id" name="customer_id" value="{{isset($delivery_data['customer']->id)?$delivery_data['customer']->id:''}}">
                         <div class="form-group">
                             <span>Serial Number: </span>{{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
                         </div>
@@ -53,12 +53,12 @@
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
                         <div class="form-group">
                             <td><span>Party:</span>
-                                @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
+                                @if(isset($delivery_data['customer']->owner_name) && $delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                                 {{ $delivery_data['customer']->owner_name}}-{{$delivery_data['customer']->tally_name}}
                                 @else
-                                {{ $delivery_data['customer']->owner_name}}
+                                {{ isset($delivery_data['customer']->owner_name)?$delivery_data['customer']->owner_name:''}}
                                 @endif
-                                <input type="hidden" name="existing_customer_id" value="{{$delivery_data['customer']->id}}" id="existing_customer_id">
+                                <input type="hidden" name="existing_customer_id" value="{{isset($delivery_data['customer']->id)?$delivery_data['customer']->id:''}}" id="existing_customer_id">
                             </td>
                             <input type="hidden" name="location_difference" value="{{$delivery_data->location_difference}}" id="location_difference">
                         </div>
