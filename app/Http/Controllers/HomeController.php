@@ -2209,7 +2209,7 @@ class HomeController extends Controller {
         } else {
 //            $order_added_server = Order::with('all_order_products')->get();
             $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
-                            ->limit('1000')->get();
+                            ->limit('10')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
         }
 
