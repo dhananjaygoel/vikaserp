@@ -12,7 +12,8 @@
         <!-- bootstrap -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
        
-        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<!--        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}-->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">--> 
 
         <!-- RTL support - for demo only -->
