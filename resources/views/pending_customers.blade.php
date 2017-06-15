@@ -94,15 +94,15 @@
                                                     <h4 class="modal-title" id="myModalLabel"></h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div class="delete">
-                                                        <div><b>UserID:</b> {{$c->username}}</div>
+                                                    <div class="delete"> 
+                                                        <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
                                                             <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" type="text"></div>
 
                                                         </div>
                                                         <div class="clearfix"></div>
-                                                        <div class="delp">Are you sure you want to <b>cancel</b> this limit?</div>
+                                                        <div class="delp">Are you sure you want to <b>delete</b> this customer?</div>
                                                     </div>
                                                 </div>            
                                                 <div class="modal-footer">
