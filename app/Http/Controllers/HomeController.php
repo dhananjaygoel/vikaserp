@@ -2353,44 +2353,76 @@ class HomeController extends Controller {
       App Sync order for admin for pagination
 
      */
-
-    public function appSyncOrderPagination() {
+    
+     public function appSyncOrderPagination() {
         $data = Input::all();
         $order_response = [];
         $skip = 1000;
-        $limit = 100;
+        $limit = 1000;
         if (Input::has('last_id')) {
             $last_id = (json_decode($data['last_id']));
+            
         }
-
+        
         if (Input::has('record_count_per_page')) {
             $limit = (json_decode($data['record_count_per_page']));
         }
-
+        
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-            if ($page > 2)
+            if ($page >= 2)
                 $skip = ($page - 1) * $limit;
         }
-        $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
-                        ->limit('100')->get();
 
-        if (count($order_added_server)) {
-            foreach ($order_added_server as $key => $order) {
-                if ($order->id == $last_id)
-                    $skip = $key;
-            }
-            $skip +=1;
-        }
-        $order_added_server = Order::with('all_order_products')
+      
+       $order_added_server = Order::with('all_order_products')
                 ->orderBy('id', 'ASEC')
                 ->skip($skip)
-                ->limit($limit)
+                ->limit($limit)               
                 ->get();
+       
         $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
         return json_encode($order_response);
     }
+
+//    public function appSyncOrderPagination() {
+//        $data = Input::all();
+//        $order_response = [];
+//        $skip = 1000;
+//        $limit = 100;
+//        if (Input::has('last_id')) {
+//            $last_id = (json_decode($data['last_id']));
+//        }
+//
+//        if (Input::has('record_count_per_page')) {
+//            $limit = (json_decode($data['record_count_per_page']));
+//        }
+//
+//        if (Input::has('page_number')) {
+//            $page = (json_decode($data['page_number']));
+//            if ($page > 2)
+//                $skip = ($page - 1) * $limit;
+//        }
+//        $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
+//                        ->limit('100')->get();
+//
+//        if (count($order_added_server)) {
+//            foreach ($order_added_server as $key => $order) {
+//                if ($order->id == $last_id)
+//                    $skip = $key;
+//            }
+//            $skip +=1;
+//        }
+//        $order_added_server = Order::with('all_order_products')
+//                ->orderBy('id', 'ASEC')
+//                ->skip($skip)
+//                ->limit($limit)
+//                ->get();
+//        $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
+//
+//        return json_encode($order_response);
+//    }
 
     /**
      * App sync order for customer app
