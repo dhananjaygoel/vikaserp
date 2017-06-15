@@ -2207,9 +2207,11 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-//            $order_added_server = Order::with('all_order_products')->get();
-            $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
-                            ->limit('1000')->get();
+            $order_added_server = Order::with('all_order_products')
+                    ->where('order_status','pending')
+                    ->get();
+//            $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
+//                            ->limit('1000')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
         }
 
