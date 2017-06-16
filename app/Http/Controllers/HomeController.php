@@ -1913,7 +1913,10 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $delivery_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $delivery_order_server = DeliveryOrder::with('delivery_product')->get();
+//            $delivery_order_server = DeliveryOrder::with('delivery_product')->get();
+            $delivery_order_server = DeliveryOrder::with('delivery_product')
+                    ->where('order_status', 'pending')
+                    ->get();
             $delivery_order_response['delivery_order_server_added'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : array();
         }
         foreach ($delivery_orders as $key => $value) {
@@ -2061,6 +2064,50 @@ class HomeController extends Controller {
 
         return json_encode($delivery_order_response);
     }
+    
+    
+    /* 
+        API DO PAgination: to get all completed DOs
+     * $delivery_order_response['delivery_order_server_added']
+     *      */
+    public function appSyncDeliveryOrderPagination() {
+        $data = Input::all();
+        $order_response = [];
+        $skip = 1000;
+        $limit = 1000;
+        $last_id = 0;
+        if (Input::has('last_id')) {
+            $last_id = (json_decode($data['last_id']));
+        }
+
+        if (Input::has('record_count_per_page')) {
+            $limit = (json_decode($data['record_count_per_page']));
+        }
+
+        if (Input::has('page_number')) {
+            $page = (json_decode($data['page_number']));
+            if ($page >= 2)
+                $skip = ($page - 1) * $limit;
+        }
+
+
+        $delivery_order_response = DeliveryOrder::with('delivery_product')
+                ->orderBy('id', 'DESC')
+                ->where('id', '>', $last_id)
+                ->where('order_status', '<>', 'pending')
+                ->skip($skip)
+                ->limit($limit)
+                ->get();
+
+        $order_response['delivery_order_server_added'] = ($delivery_order_response && count($delivery_order_response) > 0) ? $delivery_order_response : array();
+
+        return json_encode($order_response);
+    }
+
+    
+    
+    
+    
 
     /**
      * API SMS Order 
