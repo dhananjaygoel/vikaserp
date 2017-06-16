@@ -2379,6 +2379,7 @@ class HomeController extends Controller {
       
        $order_added_server = Order::with('all_order_products')
                 ->orderBy('id', 'ASEC')
+               ->where('order_status','<>','pending')
                 ->skip($skip)
                 ->limit($limit)               
                 ->get();
