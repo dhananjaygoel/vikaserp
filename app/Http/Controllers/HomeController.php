@@ -2208,7 +2208,7 @@ class HomeController extends Controller {
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
             $order_added_server = Order::with('all_order_products')
-                    ->where('order_status','pending')
+                    ->where('order_status', 'pending')
                     ->get();
 //            $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
 //                            ->limit('1000')->get();
@@ -2355,35 +2355,35 @@ class HomeController extends Controller {
       App Sync order for admin for pagination
 
      */
-    
-     public function appSyncOrderPagination() {
+
+    public function appSyncOrderPagination() {
         $data = Input::all();
         $order_response = [];
         $skip = 1000;
         $limit = 1000;
         if (Input::has('last_id')) {
             $last_id = (json_decode($data['last_id']));
-            
         }
-        
+
         if (Input::has('record_count_per_page')) {
             $limit = (json_decode($data['record_count_per_page']));
         }
-        
+
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
             if ($page >= 2)
                 $skip = ($page - 1) * $limit;
         }
 
-      
-       $order_added_server = Order::with('all_order_products')
-                ->orderBy('id', 'ASEC')
-               ->where('order_status','<>','pending')
+
+        $order_added_server = Order::with('all_order_products')
+                ->orderBy('id', 'DESC')
+                ->where('id', '>', $last_id)
+                ->where('order_status', '<>', 'pending')
                 ->skip($skip)
-                ->limit($limit)               
+                ->limit($limit)
                 ->get();
-       
+
         $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
         return json_encode($order_response);
