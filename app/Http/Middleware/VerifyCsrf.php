@@ -42,6 +42,7 @@ class VerifyCsrf extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken 
         'appsyncdeliveryorderpagination',
         'appsyncdeliverychallan',
         'appsyncpurchaseorder',
+        'appsyncpurchaseorderpagination',
         'appsyncpurchaseadvise',
         'appsyncpurchasechallan',
         'appupdateuser',

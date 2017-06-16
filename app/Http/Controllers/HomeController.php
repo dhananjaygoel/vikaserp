@@ -1276,8 +1276,10 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-
-            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
+//            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
+            $purchase_order_server = PurchaseOrder::with('purchase_products')
+                    ->where('order_status', 'pending')
+                    ->get();
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
         }
         foreach ($purchaseorders as $key => $value) {
@@ -1353,6 +1355,48 @@ class HomeController extends Controller {
 
         return json_encode($purchase_order_response);
     }
+    
+    
+    /*
+     *  API PO Sync Pagination: to get all completed PO
+     *
+     */
+    
+     public function appSyncPurchaseOrderPagination() {
+        $data = Input::all();
+        $order_response = [];
+        $skip = 1000;
+        $limit = 1000;
+        $last_id = 0;
+        if (Input::has('last_id')) {
+            $last_id = (json_decode($data['last_id']));
+        }
+
+        if (Input::has('record_count_per_page')) {
+            $limit = (json_decode($data['record_count_per_page']));
+        }
+
+        if (Input::has('page_number')) {
+            $page = (json_decode($data['page_number']));
+           
+                $skip = ($page - 1) * $limit;
+        }
+
+
+        $purchase_order_server = PurchaseOrder::with('purchase_products')
+                ->orderBy('id', 'DESC')
+                ->where('id', '>', $last_id)
+                ->where('order_status', '<>', 'pending')
+                ->skip($skip)
+                ->limit($limit)
+                ->get();        
+
+        $order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
+
+        return json_encode($order_response);
+    }
+
+  
 
     /**
      * API SMS delievry order
@@ -2086,7 +2130,7 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-            if ($page >= 2)
+            
                 $skip = ($page - 1) * $limit;
         }
 
@@ -2419,7 +2463,7 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-            if ($page >= 2)
+           
                 $skip = ($page - 1) * $limit;
         }
 
@@ -3014,7 +3058,7 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-            if ($page >= 2)
+           
                 $skip = ($page - 1) * $limit;
         }
 
