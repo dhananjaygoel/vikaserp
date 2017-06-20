@@ -2504,15 +2504,25 @@ class HomeController extends Controller {
                 $skip = ($page - 1) * $limit;
         }
 
-
-        $order_added_server = Order::with('all_order_products')
+        
+        if($last_id == 0){
+             $order_added_server = Order::with('all_order_products')
+                ->orderBy('id', 'DESC')                
+                ->where('order_status', '<>', 'pending')
+                ->skip($skip)
+                ->limit($limit)
+                ->get();
+            
+        }else{
+             $order_added_server = Order::with('all_order_products')
                 ->orderBy('id', 'DESC')
                 ->where('id', '<', $last_id)
                 ->where('order_status', '<>', 'pending')
                 ->skip($skip)
                 ->limit($limit)
-                ->get();
-
+                ->get();            
+        }
+        
         $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
         return json_encode($order_response);
