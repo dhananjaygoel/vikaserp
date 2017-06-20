@@ -2518,11 +2518,11 @@ class HomeController extends Controller {
                 ->orderBy('id', 'DESC')
                 ->where('id', '<', $last_id)
                 ->where('order_status', '<>', 'pending')
-                ->skip($skip)
+//                ->skip($skip)
                 ->limit($limit)
                 ->get();            
         }
-        
+//        dd(DB::getQueryLog());
         $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
         return json_encode($order_response);
