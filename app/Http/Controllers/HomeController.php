@@ -1143,9 +1143,8 @@ class HomeController extends Controller {
 
         return json_encode($purchase_advice_response);
     }
-    
-    
-     public function appSyncPurchaseAdvisePagination() {
+
+    public function appSyncPurchaseAdvisePagination() {
         $data = Input::all();
         $order_response = [];
         $skip = 1000;
@@ -1160,24 +1159,34 @@ class HomeController extends Controller {
         }
 
         if (Input::has('page_number')) {
-            $page = (json_decode($data['page_number']));            
-                $skip = ($page - 1) * $limit;
+            $page = (json_decode($data['page_number']));
+            $skip = ($page - 1) * $limit;
         }
 
-
-        $purchase_advice_server = PurchaseAdvise::with('purchase_products')
+        if ($last_id == 0) {
+            $purchase_advice_server = PurchaseAdvise::with('purchase_products')
                 ->orderBy('id', 'DESC')
-                ->where('id', '>', $last_id)
+//                ->where('id', '<', $last_id)
                 ->where('advice_status', '<>', 'pending')
                 ->skip($skip)
                 ->limit($limit)
                 ->get();
+        } else {
+            $purchase_advice_server = PurchaseAdvise::with('purchase_products')
+                ->orderBy('id', 'DESC')
+                ->where('id', '<', $last_id)
+                ->where('advice_status', '<>', 'pending')
+//                ->skip($skip)
+                ->limit($limit)
+                ->get();
+        }
+        
 
         $order_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
         return json_encode($order_response);
     }
-    
+
     /**
      * API SMS Purchase Order
      */
@@ -1392,14 +1401,13 @@ class HomeController extends Controller {
 
         return json_encode($purchase_order_response);
     }
-    
-    
+
     /*
      *  API PO Sync Pagination: to get all completed PO
      *
      */
-    
-     public function appSyncPurchaseOrderPagination() {
+
+    public function appSyncPurchaseOrderPagination() {
         $data = Input::all();
         $order_response = [];
         $skip = 1000;
@@ -1415,25 +1423,33 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-           
-                $skip = ($page - 1) * $limit;
+
+            $skip = ($page - 1) * $limit;
         }
 
-
-        $purchase_order_server = PurchaseOrder::with('purchase_products')
+        if ($last_id == 0) {
+            $purchase_order_server = PurchaseOrder::with('purchase_products')
                 ->orderBy('id', 'DESC')
-                ->where('id', '>', $last_id)
+//                ->where('id', '<', $last_id)
                 ->where('order_status', '<>', 'pending')
                 ->skip($skip)
                 ->limit($limit)
-                ->get();        
+                ->get();
+        } else {
+            $purchase_order_server = PurchaseOrder::with('purchase_products')
+                ->orderBy('id', 'DESC')
+                ->where('id', '<', $last_id)
+                ->where('order_status', '<>', 'pending')
+//                ->skip($skip)
+                ->limit($limit)
+                ->get();
+        }
+        
 
         $order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
         return json_encode($order_response);
     }
-
-  
 
     /**
      * API SMS delievry order
@@ -2145,12 +2161,12 @@ class HomeController extends Controller {
 
         return json_encode($delivery_order_response);
     }
-    
-    
-    /* 
-        API DO PAgination: to get all completed DOs
+
+    /*
+      API DO PAgination: to get all completed DOs
      * $delivery_order_response['delivery_order_server_added']
      *      */
+
     public function appSyncDeliveryOrderPagination() {
         $data = Input::all();
         $order_response = [];
@@ -2167,28 +2183,33 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-            
-                $skip = ($page - 1) * $limit;
+
+            $skip = ($page - 1) * $limit;
         }
 
+        if ($last_id == 0) {
+            $delivery_order_response = DeliveryOrder::with('delivery_product')
+                    ->orderBy('id', 'DESC')
+//                ->where('id', '>', $last_id)
+                    ->where('order_status', '<>', 'pending')
+                    ->skip($skip)
+                    ->limit($limit)
+                    ->get();
+        } else {
+            $delivery_order_response = DeliveryOrder::with('delivery_product')
+                    ->orderBy('id', 'DESC')
+                    ->where('id', '<', $last_id)
+                    ->where('order_status', '<>', 'pending')
+//                ->skip($skip)
+                    ->limit($limit)
+                    ->get();
+        }
 
-        $delivery_order_response = DeliveryOrder::with('delivery_product')
-                ->orderBy('id', 'DESC')
-                ->where('id', '>', $last_id)
-                ->where('order_status', '<>', 'pending')
-                ->skip($skip)
-                ->limit($limit)
-                ->get();
 
         $order_response['delivery_order_server_added'] = ($delivery_order_response && count($delivery_order_response) > 0) ? $delivery_order_response : array();
 
         return json_encode($order_response);
     }
-
-    
-    
-    
-    
 
     /**
      * API SMS Order 
@@ -2500,29 +2521,28 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-           
-                $skip = ($page - 1) * $limit;
+
+            $skip = ($page - 1) * $limit;
         }
 
-        
-        if($last_id == 0){
-             $order_added_server = Order::with('all_order_products')
-                ->orderBy('id', 'DESC')                
-                ->where('order_status', '<>', 'pending')
-                ->skip($skip)
-                ->limit($limit)
-                ->get();
-            
-        }else{
-             $order_added_server = Order::with('all_order_products')
-                ->orderBy('id', 'DESC')
-                ->where('id', '<', $last_id)
-                ->where('order_status', '<>', 'pending')
+
+        if ($last_id == 0) {
+            $order_added_server = Order::with('all_order_products')
+                    ->orderBy('id', 'DESC')
+//                    ->where('id', '<', $last_id)
+                    ->where('order_status', '<>', 'pending')
+                    ->skip($skip)
+                    ->limit($limit)
+                    ->get();
+        } else {
+            $order_added_server = Order::with('all_order_products')
+                    ->orderBy('id', 'DESC')
+                    ->where('id', '<', $last_id)
+                    ->where('order_status', '<>', 'pending')
 //                ->skip($skip)
-                ->limit($limit)
-                ->get();            
+                    ->limit($limit)
+                    ->get();
         }
-//        dd(DB::getQueryLog());
         $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
         return json_encode($order_response);
@@ -3083,12 +3103,12 @@ class HomeController extends Controller {
 
 //        }
     }
-    
+
     /*
-    Inquiry pagination: To Get all Completed Inquiries.
-    
+      Inquiry pagination: To Get all Completed Inquiries.
+
      *      */
-    
+
     public function appsyncinquirypagination() {
         $data = Input::all();
         $order_response = [];
@@ -3105,28 +3125,32 @@ class HomeController extends Controller {
 
         if (Input::has('page_number')) {
             $page = (json_decode($data['page_number']));
-           
-                $skip = ($page - 1) * $limit;
+
+            $skip = ($page - 1) * $limit;
         }
 
-
-        $inquiry_response = Inquiry::with('inquiry_products')
+        if ($last_id == 0) {
+             $inquiry_response = Inquiry::with('inquiry_products')
                 ->orderBy('id', 'DESC')
-                ->where('id', '>', $last_id)
+//                ->where('id', '<', $last_id)
                 ->where('inquiry_status', '<>', 'pending')
                 ->skip($skip)
                 ->limit($limit)
                 ->get();
+        } else {
+             $inquiry_response = Inquiry::with('inquiry_products')
+                ->orderBy('id', 'DESC')
+                ->where('id', '<', $last_id)
+                ->where('inquiry_status', '<>', 'pending')
+//                ->skip($skip)
+                ->limit($limit)
+                ->get();
+        }        
 
         $order_response['inquiry_server_added'] = ($inquiry_response && count($inquiry_response) > 0) ? $inquiry_response : array();
 
         return json_encode($order_response);
     }
-    
-    
-    
-    
-    
 
     /**
      * customer App sync inquiries
