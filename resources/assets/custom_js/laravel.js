@@ -54,6 +54,11 @@
                         if ($.trim(password) != '') {
                             form = laravel.createForm(link, password);
                             form.submit();
+                        }else{
+                            if (password == '') {
+                                form = laravel.createForm(link, password);
+                                form.submit();
+                            }
                         }
                     })
             return false;

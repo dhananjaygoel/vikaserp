@@ -242,11 +242,11 @@ class CollectionUserController extends Controller {
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::to('orders')->with('wrong', 'You do not have permission.');
         }
         $password = Input::get('password');
         if ($password == '') {
-            return back()->with('flash_message', 'Please enter your password');
+            return back()->with('wrong', 'Please enter your password');
         }
 
         $current_user = User::find(Auth::id());
@@ -257,7 +257,7 @@ class CollectionUserController extends Controller {
             }
             return redirect('account')->with('flash_message', 'Record deleted successfully.');
         } else {
-            return back()->with('flash_message', 'Invalid password');
+            return back()->with('wrong', 'Invalid password');
         }
     }
 
