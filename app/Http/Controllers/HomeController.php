@@ -929,6 +929,52 @@ class HomeController extends Controller {
 
         return json_encode($purchase_challan_response);
     }
+    
+    
+    
+     public function appSyncPurchaseChallanPagination() {
+        $data = Input::all();
+        $order_response = [];
+        $skip = 1000;
+        $limit = 1000;
+        $last_id = 0;
+        if (Input::has('last_id')) {
+            $last_id = (json_decode($data['last_id']));
+        }
+
+        if (Input::has('record_count_per_page')) {
+            $limit = (json_decode($data['record_count_per_page']));
+        }
+
+        if (Input::has('page_number')) {
+            $page = (json_decode($data['page_number']));
+            $skip = ($page - 1) * $limit;
+        }
+
+        if ($last_id == 0) {
+            $purchase_challan_server = PurchaseChallan::with('all_purchase_products')
+                ->orderBy('id', 'DESC')
+//                ->where('id', '<', $last_id)
+                ->where('order_status', '<>', 'pending')
+                ->skip($skip)
+                ->limit($limit)
+                ->get();
+        } else {
+            $purchase_challan_server = PurchaseChallan::with('all_purchase_products')
+                ->orderBy('id', 'DESC')
+                ->where('id', '<', $last_id)
+                ->where('order_status', '<>', 'pending')
+//                ->skip($skip)
+                ->limit($limit)
+                ->get();
+        }
+        
+
+        $order_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
+
+        return json_encode($order_response);
+    }
+
 
     /**
      * API SMS Purchase Advise
@@ -1906,7 +1952,7 @@ class HomeController extends Controller {
         }
 
         if ($last_id == 0) {
-            $delivery_order_response = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')
+            $delivery_challan_response = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')
                     ->orderBy('id', 'DESC')
 //                ->where('id', '<', $last_id)
                     ->where('challan_status', '<>', 'pending')
@@ -1914,7 +1960,7 @@ class HomeController extends Controller {
                     ->limit($limit)
                     ->get();
         } else {
-            $delivery_order_response = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')
+            $delivery_challan_response = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')
                     ->orderBy('id', 'DESC')
                     ->where('id', '<', $last_id)
                     ->where('challan_status', '<>', 'pending')
@@ -1924,7 +1970,7 @@ class HomeController extends Controller {
         }
 
 
-        $order_response['delivery_order_server_added'] = ($delivery_order_response && count($delivery_order_response) > 0) ? $delivery_order_response : array();
+        $order_response['delivery_challan_server_added'] = ($delivery_challan_response && count($delivery_challan_response) > 0) ? $delivery_challan_response : array();
 
         return json_encode($order_response);
     }
