@@ -2190,7 +2190,7 @@ class HomeController extends Controller {
         if ($last_id == 0) {
             $delivery_order_response = DeliveryOrder::with('delivery_product')
                     ->orderBy('id', 'DESC')
-//                ->where('id', '>', $last_id)
+//                ->where('id', '<', $last_id)
                     ->where('order_status', '<>', 'pending')
                     ->skip($skip)
                     ->limit($limit)
@@ -2343,10 +2343,10 @@ class HomeController extends Controller {
         }
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
             $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::where('created_at', '>', $last_sync_date)->with('all_order_products')->get();
+            $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('all_order_products')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
-            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
+            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('all_order_products')->get();
             $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
 
             /* Send Updated customers */
@@ -2922,10 +2922,10 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
             $last_sync_date = Input::get('inquiry_sync_date');
-            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->with('inquiry_products')->get();
+            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('inquiry_status', 'pending')->with('inquiry_products')->get();
             $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
 
-            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
+            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('inquiry_status', 'pending')->with('inquiry_products')->get();
             $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
 
             /* Send Updated customers */
