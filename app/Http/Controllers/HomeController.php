@@ -1041,10 +1041,10 @@ class HomeController extends Controller {
         }
         if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '') {
             $last_sync_date = Input::get('purchase_advice_sync_date');
-            $purchase_advice_server = PurchaseAdvise::where('created_at', '>', $last_sync_date)->with('purchase_products')->get();
+            $purchase_advice_server = PurchaseAdvise::where('created_at', '>', $last_sync_date)->where('advice_status', 'pending')->with('purchase_products')->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
-            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
+            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('advice_status', 'pending')->with('purchase_products')->get();
             $purchase_advice_response['purchase_advice_server_updated'] = ($purchase_advice_updated_server && count($purchase_advice_updated_server) > 0) ? $purchase_advice_updated_server : array();
 
             /* Send Updated customers */
@@ -1289,7 +1289,6 @@ class HomeController extends Controller {
      * App sync purchase order
      */
     public function appSyncPurchaseOrder() {
-
         $data = Input::all();
         $purchase_order_response = [];
         $customer_list = [];
@@ -1309,10 +1308,10 @@ class HomeController extends Controller {
         }
         if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '') {
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('created_at', '>', $last_sync_date)->with('purchase_products')->get();
+            $purchase_order_server = PurchaseOrder::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('purchase_products')->get();
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
-            $purchase_order_updated_server = PurchaseOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
+            $purchase_order_updated_server = PurchaseOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('purchase_products')->get();
             $purchase_order_response['purchase_order_server_updated'] = ($purchase_order_updated_server && count($purchase_order_updated_server) > 0) ? $purchase_order_updated_server : array();
 
             /* Send Updated customers */
@@ -1997,10 +1996,10 @@ class HomeController extends Controller {
 
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
             $last_sync_date = Input::get('delivery_order_sync_date');
-            $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->with('delivery_product')->get();
+            $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_server_added'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : array();
 
-            $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_product')->get();
+            $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_server_updated'] = ($delivery_order_updated_server && count($delivery_order_updated_server) > 0) ? $delivery_order_updated_server : array();
 
             /* Send Updated customers */
