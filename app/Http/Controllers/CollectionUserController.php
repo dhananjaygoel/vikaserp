@@ -187,7 +187,9 @@ class CollectionUserController extends Controller {
                 'last_name' => 'required|min:2|max:100',
                 'email' => 'required|email|unique:users,email,' . $id,
                 'mobile_number' => 'integer|digits_between:10,15|required|unique:users,mobile_number,' . $id,
-                'location' => 'required|array|min:1'
+                'location' => 'required|array|min:1',
+                'territory' => 'required'
+                
             );
             if (Input::has('password')) {
                 $input_password['password'] = Input::get('password');
