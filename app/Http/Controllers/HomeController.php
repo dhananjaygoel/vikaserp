@@ -1041,10 +1041,10 @@ class HomeController extends Controller {
         }
         if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '') {
             $last_sync_date = Input::get('purchase_advice_sync_date');
-            $purchase_advice_server = PurchaseAdvise::where('created_at', '>', $last_sync_date)->where('advice_status', 'pending')->with('purchase_products')->get();
+            $purchase_advice_server = PurchaseAdvise::where('created_at', '>', $last_sync_date)->where('advice_status', 'in_process')->with('purchase_products')->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
-            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('advice_status', 'pending')->with('purchase_products')->get();
+            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('advice_status', 'in_process')->with('purchase_products')->get();
             $purchase_advice_response['purchase_advice_server_updated'] = ($purchase_advice_updated_server && count($purchase_advice_updated_server) > 0) ? $purchase_advice_updated_server : array();
 
             /* Send Updated customers */
@@ -1056,7 +1056,7 @@ class HomeController extends Controller {
         } else {
 //            $purchase_advice_server = PurchaseAdvise::with('purchase_products')->get();
             $purchase_advice_server = PurchaseAdvise::with('purchase_products')
-                    ->where('advice_status', 'pending')
+                    ->where('advice_status', 'in_process')
                     ->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
         }
@@ -1167,7 +1167,7 @@ class HomeController extends Controller {
             $purchase_advice_server = PurchaseAdvise::with('purchase_products')
                 ->orderBy('id', 'DESC')
 //                ->where('id', '<', $last_id)
-                ->where('advice_status', '<>', 'pending')
+                ->where('advice_status', '<>', 'in_process')
                 ->skip($skip)
                 ->limit($limit)
                 ->get();
@@ -1175,7 +1175,7 @@ class HomeController extends Controller {
             $purchase_advice_server = PurchaseAdvise::with('purchase_products')
                 ->orderBy('id', 'DESC')
                 ->where('id', '<', $last_id)
-                ->where('advice_status', '<>', 'pending')
+                ->where('advice_status', '<>', 'in_process')
 //                ->skip($skip)
                 ->limit($limit)
                 ->get();
