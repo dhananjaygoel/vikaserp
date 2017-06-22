@@ -56,6 +56,18 @@
                                 <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
                                 <input id="mobile_number" class="form-control" placeholder="Mobile number " name="mobile_number" value="{{isset($loader->phone_number) ? $loader->phone_number : Input::old('mobile_number')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
                             </div>
+                            
+                            <div class="form-group ">
+                                <label for="loader_type">Type<span class="mandatory">*</span></label>
+                                <select class="form-control" name="loader_type" id="loader_type">
+                                  
+                                    <option {{isset($loader->type)?(($loader->type == 'sale') ? 'selected' : ''):((Input::old('loader_type')=='sale')?'selected':'')}} value="sale">Sale</option>
+                                    <option  {{isset($loader->type)?(($loader->type == 'purchase') ? 'selected' : ''):((Input::old('loader_type')=='purchase')?'selected':'')}} value="purchase">Purchase</option>
+                                    <!--<option value="both">Both</option>-->
+                                    
+                                </select>
+                            </div>
+                            
                             <div class="form-group">
                                 <label for="password">Password @if(isset($loader)) @else <span class="mandatory">*</span> @endif </label>
                                 <input id="password" class="form-control" placeholder=" Password" name="password" value="" type="password">

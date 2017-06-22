@@ -1,6 +1,20 @@
 @extends('layouts.master')
 @section('title','Purchase Order Advise Challan')
 @section('content')
+<style>
+    .multiselect-container.dropdown-menu {
+        max-height: 350px;
+        overflow-y: scroll;    
+    }
+    .multiselect.dropdown-toggle.btn.btn-default{
+        background: white none repeat scroll 0 0;
+        border: 1px solid gray;
+        color: #344644;
+    }
+    .caret{
+        border-top-color: #344644 !important;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <ol class="breadcrumb">
@@ -81,32 +95,32 @@
                             </td>
                             <td>
                                 <div class="form-group {{$key}}">
-                                      <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
-                                </div>
-<!--                                <div class="form-group meter_list_{{$key}}" {{($products->unit_id==3)?'':'style=display:none'}}>
-                                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">
                                     <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
-                                </div>-->
-<!--                                <div class = "form-group kg_list_{{$key}}" {{($products->unit_id==1)?'':'style=display:none'}}>
-                                    <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
-                                        <?php for ($n = 50; $n <= 15000; $n++) { ?>
-                                            <option {{($products->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
-                                            <?php
-                                            $n = $n + 49;
-                                        }
-                                        ?>
-                                    </select>
                                 </div>
-                                <div class = "form-group pieces_list_{{$key}}" {{($products->unit_id=='2')?'':'style=display:none'}}>
-                                    <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
-                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                            <option {{($products->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
-                                            <?php
+                                <!--                                <div class="form-group meter_list_{{$key}}" {{($products->unit_id==3)?'':'style=display:none'}}>
+                                                                    <input id="qty" class="form-control" placeholder="Actual Quantity" name="qty" value="{{$products->present_shipping}}" type="text">
+                                                                    <input id="actual_quantity_{{$key}}" class="form-control" placeholder="Actual Quantity" name="product[{{$key}}][quantity]" value="{{$products->present_shipping}}" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, false);">
+                                                                </div>-->
+                                <!--                                <div class = "form-group kg_list_{{$key}}" {{($products->unit_id==1)?'':'style=display:none'}}>
+                                                                    <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
+                                <?php for ($n = 50; $n <= 15000; $n++) { ?>
+                                                                                    <option {{($products->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
+                                    <?php
+                                    $n = $n + 49;
+                                }
+                                ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class = "form-group pieces_list_{{$key}}" {{($products->unit_id=='2')?'':'style=display:none'}}>
+                                                                    <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
+                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                                    <option {{($products->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                    <?php
 //                                            ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                        }
-                                        ?>                                                 
-                                    </select>
-                                </div>-->
+                                }
+                                ?>                                                 
+                                                                    </select>
+                                                                </div>-->
                             </td>
 
                             <td>
@@ -139,12 +153,12 @@
                                     <div class="add_button">
                                         <div class="form-group pull-left">
                                             <label for="addmore"></label>
-<!--                                            <a href="#" class="table-link" title="add more" id="add_more_product1" >
-                                                <span class="fa-stack more_button" >
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>-->
+                                            <!--                                            <a href="#" class="table-link" title="add more" id="add_more_product1" >
+                                                                                            <span class="fa-stack more_button" >
+                                                                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                                                                <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+                                                                                            </span>
+                                                                                        </a>-->
                                         </div>
                                     </div>
                                 </td>
@@ -182,11 +196,29 @@
 
                     <div class="form-group">
                         <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
-                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="" type="text">
+<!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
+                        <div class="form-group clearfix">
+                            <select id="loaded_by_select" name='unloaded_by[]' class="form-control" multiple="multiple">
+                                @if(isset($loaders))
+                                @foreach ($loaders as $loader)
+                                <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
-                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="text">
+<!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">-->
+                        <div class="form-group clearfix">
+                            <select id="labour_select" name="labour[]" class="form-control" multiple="multiple">
+                                @if(isset($labours))
+                                @foreach ($labours as $labour)
+                                <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
                     </div>
                     @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
                     <div class="form-group">

@@ -141,6 +141,9 @@
                                                 foreach($c['customer_receipt'] as $receipt){
                                                    $unsettled_amount=$unsettled_amount+$receipt->settled_amount;
                                                 }
+                                                foreach($c['customer_receipt_debit'] as $receipt){
+                                                $unsettled_amount=$unsettled_amount-$receipt->settled_amount;
+                                            }
                                                 $total_due_amount=$total_due_amount-$settled_challan_amount;
                                                 $unsettled_amount= $unsettled_amount-$settled_challan_amount;
                                             ?>

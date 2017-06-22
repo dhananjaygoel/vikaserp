@@ -123,6 +123,12 @@ class LabourController extends Controller {
         if (Input::has('phone_number')) {
             $labour->phone_number = trim(Input::get('phone_number'));
         }
+        
+        if (Input::has('labour_type')) {
+            $labour->type = trim(Input::get('labour_type'));
+        }else{
+            $labour->type ='sale';
+        }
 
         if ($labour->save()) {
             return redirect('performance/labours')->with('success', 'Labour Succesfully added');
@@ -192,6 +198,10 @@ class LabourController extends Controller {
         }
         if (Input::has('phone_number')) {
             $labour->phone_number = trim(Input::get('phone_number'));
+        }
+        
+        if (Input::has('labour_type')) {
+            $labour->type = trim(Input::get('labour_type'));
         }
 
         if ($labour->save()) {
@@ -307,6 +317,13 @@ class LabourController extends Controller {
                     ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
 //            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                     ->get();
+            
+            
+            $purchase_order_data = \App\PurchaseChallan::
+                    has('challan_labours.pc_delivery_challan.all_purchase_products')
+                    ->with('challan_labours.pc_delivery_challan.all_purchase_products')
+                    ->get();            
+          
         }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
@@ -341,6 +358,42 @@ class LabourController extends Controller {
             $loaders_data[$var] = $loader_arr;
             $var++;
         }
+        
+         foreach ($purchase_order_data as $delivery_order_info) {
+            $arr = array();
+            $arr_money = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+                foreach ($delivery_order_info->challan_labours as $challan_info) {
+                    $deliver_sum = 0.00;
+                    $money = 0.00;
+                    array_push($loaders, $challan_info->labours_id);
+                    foreach ($challan_info->pc_delivery_challan as $info) {
+                        foreach ($info->all_purchase_products as $delivery_order_productinfo) {
+                             $deliver_sum += $delivery_order_productinfo->quantity;
+//                            if ($delivery_order_productinfo->unit_id == 1)
+//                                $deliver_sum += $delivery_order_productinfo->quantity;
+//                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+//                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
+                        }
+                    }
+
+
+                    array_push($loader_array, $loaders);
+                    $all_kg = $deliver_sum / count($loaders);
+                    $all_tonnage = $all_kg / 1000;
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['labours'] = $loaders;
+                    $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+                }
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+        
+        
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
 

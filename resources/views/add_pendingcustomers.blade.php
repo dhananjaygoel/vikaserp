@@ -41,6 +41,18 @@
                             </div>
                             @endif
                             <div class="form-group">
+                                <div class="radio">
+                                    <input checked="" value="no" id="customer_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
+                                    <label for="customer_radio">Only Customer</label>
+                                    @endif
+                                    <input  value="yes" id="supplier_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
+                                    <label for="supplier_radio">Supplier</label>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="owner_name">Owner Name<span class="mandatory">*</span></label>
                                 <input id="owner_name" class="form-control" placeholder="Owner Name" name="owner_name" value="{{$customer->owner_name}}" type="text" maxlength="30">
                             </div>
@@ -99,7 +111,7 @@
                                 <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="6">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email<span class="mandatory">*</span></label>
+                                <label for="email">Email</label>
                                 <input id="email" class="form-control" placeholder="Email" name="email" value="{{$customer->email}}" type="email">
                             </div>
                             <div class="form-group">

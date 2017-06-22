@@ -44,6 +44,9 @@
                                     <tr>
                                         <td><span>Phone Number:</span> {{(isset($labour->phone_number))?$labour->phone_number:''}}</td>
                                     </tr>
+                                    <tr>
+                                        <td><span>Type:</span> {{(isset($labour->type))?ucwords($labour->type):'sale'}}</td>
+                                    </tr>
                                     
                                   
                                 </tbody>

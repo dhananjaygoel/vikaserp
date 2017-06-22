@@ -4,10 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Customer_receipts extends Model {
+class CustomerReceiptsDebitedTo extends Model {
 
-    //
-    protected $table = 'customer_receipts';
+    protected $table = 'customer_receipts_debited_tos';
 
     public function receipts() {
         return $this->hasMany('App\Receipt', 'id', 'receipt_id');
@@ -15,10 +14,6 @@ class Customer_receipts extends Model {
     }
 
     public function customers() {
-        return $this->hasMany('App\Customer', 'id', 'customer_id');
-    }
-
-    public function debited_to() {
         return $this->hasMany('App\Customer', 'id', 'customer_id');
     }
 

@@ -26,6 +26,8 @@ use App\ProductSubCategory;
 use App\PurchaseOrder;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Labour;
+use App\LoadedBy;
 
 class PurchaseAdviseController extends Controller {
 
@@ -725,7 +727,9 @@ class PurchaseAdviseController extends Controller {
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
-        return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units'));
+        $labours = Labour::where('type','<>','sale')->get();
+        $loaders = LoadedBy::where('type','<>','sale')->get();
+        return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units', 'labours', 'loaders'));
     }
 
     public function print_purchase_advise($id) {

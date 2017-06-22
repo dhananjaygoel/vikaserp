@@ -36,6 +36,8 @@ use Illuminate\Support\Facades\DB;
 use App\Customer_receipts;
 use App\Receipt;
 use Response;
+use App\CustomerReceiptsDebitedTo;
+use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller {
 
@@ -133,6 +135,9 @@ class CustomerController extends Controller {
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
 
+        if (Input::has('status')) {
+            $customer->is_supplier = Input::get('status');
+        }
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
         }
@@ -339,6 +344,9 @@ class CustomerController extends Controller {
         }
 
         $customer->owner_name = Input::get('owner_name');
+        if (Input::has('status')) {
+            $customer->is_supplier = Input::get('status');
+        }
 
         if (Input::has('owner_name')) {
             $users->first_name = Input::get('owner_name');
@@ -897,10 +905,12 @@ class CustomerController extends Controller {
 //                                    });
 
             /* new code */
-            $customers = Customer::with(['delivery_challan' => function ($query) {
-                            $query->where('delivery_challan.challan_status', 'completed');
-                        }])
+
+            $customers = Customer::whereHas('delivery_challan', function ($query) {
+                        $query->where('delivery_challan.challan_status', 'completed');
+                    })
                     ->with('customer_receipt')
+                    ->with('customer_receipt_debit')
                     ->with('collection_user_location.collection_user')
                     ->with('delivery_location')
                     ->orderBy('created_at', 'desc');
@@ -961,7 +971,7 @@ class CustomerController extends Controller {
             $customers = Customer::with(['delivery_challan' => function ($query) {
                             $query->where('delivery_challan.challan_status', 'completed');
                         }])
-                    ->with('customer_receipt')
+                    ->with('customer_receipt', 'customer_receipt_debit')
                     ->orderBy('created_at', 'desc')
                     ->whereIn('delivery_location_id', $user_loc_arr);
 
@@ -1022,14 +1032,15 @@ class CustomerController extends Controller {
         $customer = Customer::with(['delivery_challan' => function ($query) {
                         $query->where('delivery_challan.challan_status', 'completed');
                     }])
-                ->with('customer_receipt')
+                ->with('customer_receipt', 'customer_receipt_debit')
                 ->find($id);
 
         $credit_period = $customer->credit_period;
         $settle_filter = Input::get('settle_filter');
         $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
                 ->where('challan_status', 'completed')
-                ->whereRaw('grand_price!=settle_amount');
+//                ->whereRaw('grand_price!=settle_amount');
+                 ->whereRaw('CAST(grand_price AS DECIMAL(10,2)) != CAST(settle_amount AS DECIMAL(10,2))');
         if (isset($settle_filter) && $settle_filter != '' && $settle_filter == 'Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
                     ->where('challan_status', 'completed')
@@ -1271,6 +1282,52 @@ class CustomerController extends Controller {
         }
 
         return Response::json(['success' => true]);
+    }
+
+    public function pass_journal_entry() {
+        $customer_id = Input::get('customer_id');
+        $old_amount = Input::get('old_amount');
+        $new_amount = Input::get('new_amount');
+        $due_amount = Input::get('due_amount');
+
+        if ($old_amount <> '0' && $due_amount == '0') {
+
+
+            $cust_id = Customer::where('owner_name', 'like', '%Discount User%')
+                            ->orWhere('tally_name', 'like', '%Discount User%')
+                            ->select('id')->first();
+
+            if ($old_amount > 0) {
+                $customer_dt_id = $customer_id;
+                $customer_cr_id = $cust_id->id;
+            } else if ($old_amount < 0) {
+                $customer_dt_id = $cust_id->id;
+                $customer_cr_id = $customer_id;
+            }
+
+            $receiptObj = new Receipt();
+            if ($receiptObj->save()) {
+                $customerReceiptObj = new Customer_receipts();
+                $customerReceiptObj->customer_id = $customer_cr_id;
+                $customerReceiptObj->settled_amount = $old_amount;
+                $customerReceiptObj->debited_by_type = 1;
+                $customerReceiptObj->receipt_id = $receiptObj->id;
+                $customerReceiptObj->save();
+
+                $customerReceiptObj_debit = new CustomerReceiptsDebitedTo();
+                $customerReceiptObj_debit->customer_id = $customer_dt_id;
+                $customerReceiptObj_debit->settled_amount = $old_amount;
+                $customerReceiptObj_debit->debited_by_type = 1;
+                $customerReceiptObj_debit->receipt_id = $receiptObj->id;
+                $customerReceiptObj_debit->save();
+            }
+            
+             Session::flash('success','Journal have been created');
+            return Response::json(['success' => true]);
+        }
+        
+        Session::flash('error','Something went wrong.');
+        return Response::json(['success' => false]);
     }
 
 }

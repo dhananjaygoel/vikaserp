@@ -61,6 +61,16 @@
                                 <label for="phone_number1">Phone number<span class="mandatory">*</span></label>
                                 <input id="phone_number" class="form-control" placeholder="Phone number " name="phone_number" value="{{$labour->phone_number}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10" >
                             </div>
+                            <div class="form-group">
+                                <label for="phone_number1">Phone number<span class="mandatory">*</span></label>
+                                <select class="form-control" name="labour_type" id="labour_type">
+                                  
+                                    <option {{($labour->type=='sale'?'selected':'')}} value="sale">Sale</option>
+                                    <option {{($labour->type=='purchase'?'selected':'')}} value="purchase">Purchase</option>
+                                    <!--<option value="both">Both</option>-->
+                                    
+                                </select>
+                            </div>
                              <hr>
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>

@@ -17,6 +17,12 @@ class DeliveryChallanLabours extends Model {
     public function dc_delivery_challan() {
         return $this->hasMany('App\DeliveryChallan', 'id', 'delivery_challan_id');
 //        return $this->belongsTo('App\DeliveryChallan', 'id', 'delivery_challan_id');
+    }   
+
+    
+    public function pc_delivery_challan() {
+        return $this->hasMany('App\PurchaseChallan', 'id', 'delivery_challan_id');
+//        return $this->belongsTo('App\DeliveryChallan', 'id', 'delivery_challan_id');
     }
 
 }

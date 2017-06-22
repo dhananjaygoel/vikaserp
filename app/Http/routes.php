@@ -344,6 +344,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
     Route::get('print_customers_details', 'CustomerController@print_customer_details');
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
+    Route::get('pass_journal_entry', 'CustomerController@pass_journal_entry');
 
 //    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');

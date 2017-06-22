@@ -42,6 +42,19 @@
                             </div>
                             @endif
                             <div class="form-group">
+                                <div class="radio">
+                                    <input {{($customer->is_supplier == 'no')?'checked':''}}  value="no" id="customer_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
+                                    <label for="customer_radio">Only Customer</label>
+                                    @endif
+                                    <input {{($customer->is_supplier <> 'no')?'checked':''}} value="yes" id="supplier_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
+                                    <label for="supplier_radio">Supplier</label>
+                                    @endif
+                                </div>
+
+                            </div>
+                            <div class="form-group">
                                 <label for="owner_name">Owner Name<span class="mandatory">*</span></label>
                                 <input id="owner_name" class="form-control" placeholder="Owner Name" name="owner_name" value="{{$customer->owner_name}}" type="text" maxlength="30">
                             </div>
@@ -89,10 +102,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="zip">Zip</label>
-                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="6">
+                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="6">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email<span class="mandatory">*</span></label>
+                                <label for="email">Email</label>
                                 <input id="email" class="form-control" placeholder="Email" name="email" value="{{$customer->email}}" type="email">
                             </div>
                             <div class="form-group">
@@ -102,11 +115,11 @@
 
                             <div class="form-group">
                                 <label for="phone_number1">Phone number 1<span class="mandatory">*</span></label>
-                                <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{$customer->phone_number1}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
+                                <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{$customer->phone_number1}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10">
                             </div>
                             <div class="form-group">
                                 <label for="phone_number2">Phone Number 2</label>
-                                <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{$customer->phone_number2}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
+                                <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{$customer->phone_number2}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10">
                             </div>
 
                             <div class="form-group col-md-4 del_loc ">
@@ -137,7 +150,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="credit_period">Credit Period(Days)</label>
-                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$customer->credit_period}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);">
+                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{$customer->credit_period}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);">
                             </div>
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>

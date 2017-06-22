@@ -23,6 +23,7 @@ use App\PurchaseAdvise;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
+use App\DeliveryChallanLoadedBy;
 
 class PurchaseChallanController extends Controller {
 
@@ -245,9 +246,9 @@ class PurchaseChallanController extends Controller {
         $add_challan->created_by = $request->input('created_by');
         $add_challan->vehicle_number = $request->input('vehicle_number');
         $add_challan->discount = $request->input('discount');
-        $add_challan->unloaded_by = $request->input('unloaded_by');
+//        $add_challan->unloaded_by = $request->input('unloaded_by');
         $add_challan->round_off = $request->input('round_off');
-        $add_challan->labours = $request->input('labour');
+//        $add_challan->labours = $request->input('labour');
         $add_challan->remarks = $request->input('remark');
         $add_challan->grand_total = $request->input('grand_total');
         $add_challan->order_status = 'pending';
@@ -272,6 +273,37 @@ class PurchaseChallanController extends Controller {
                 'vat_percentage' => $request->input('vat_percentage')
             ]);
         }
+
+        if (isset($input_data['unloaded_by'])) {
+            $loaders = $input_data['unloaded_by'];
+            $loaders_info = [];
+            foreach ($loaders as $loader) {
+                $loaders_info[] = [
+                    'delivery_challan_id' => $challan_id,
+                    'loaded_by_id' => $loader,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'purchase',
+                ];
+            }
+            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+        }
+
+        if (isset($input_data['labour'])) {
+            $labours = $input_data['labour'];
+            $labours_info = [];
+            foreach ($labours as $labour) {
+                $labours_info[] = [
+                    'delivery_challan_id' => $challan_id,
+                    'labours_id' => $labour,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'purchase',
+                ];
+            }
+            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+        }
+
         $input_data = Input::all();
 //        $order_products = array();
         $order_products = [];
@@ -424,10 +456,11 @@ class PurchaseChallanController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit')->find($id);
+        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
-        }
+        }       
+       
         return view('view_purchase_challan', compact('purchase_challan'));
     }
 

@@ -39,6 +39,10 @@ class Customer extends Model {
         return $this->hasMany('App\Customer_receipts', 'customer_id', 'id');
     }
     
+    public function customer_receipt_debit() {
+        return $this->hasMany('App\CustomerReceiptsDebitedTo', 'customer_id', 'id');
+    }
+    
     public function delivery_challan() {
         return $this->hasMany('App\DeliveryChallan', 'customer_id', 'id');
     }

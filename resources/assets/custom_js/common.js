@@ -27,13 +27,13 @@ $('#performance-months').datepicker({
 
 $(document).ready(function () {
 
-    $('#loaded_by_select,#multi-territory-location ,#labour_select').multiselect({
+    $('#loaded_by_select,#multi-territory-location ,#labour_select,#unloaded_by_select').multiselect({
         nonSelectedText: 'Please Select',
         includeSelectAllOption: true,
         enableFiltering: true,
         buttonWidth: '400px'
     });
-
+    
     $(document).on('click', '.delete-loader', function () {
         var baseurl = $('#baseurl').attr('name');
         $('#delete_loaded_by_form').attr('action', baseurl + '/performance/loaded-by/' + $(this).data('id'));
@@ -103,7 +103,7 @@ $(document).ready(function () {
         }
 
     });
-    $(document).on('click', '#edit_receipt_btn', function (event) {
+    $(document).on('click', '#edit_receipt_btn', function (event) {        
         event.preventDefault();
         var receipt_id = $('#edit_receipt').find('#receipt_id').val();
         var token = $('#confirm_customer_receipt_form').find('#token').val();
@@ -113,6 +113,13 @@ $(document).ready(function () {
             $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0, temp).remove();
         } else {
             $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
+        }
+        var temp = $('#st-settle-container_d').find('.temp_tally_user_d').length;
+        if (temp == 0) {
+            temp -= 1;
+            $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(0, temp).remove();
+        } else {
+            $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').remove();
         }
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval < 1) {
@@ -189,6 +196,27 @@ $(document).ready(function () {
 //                $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').slice(0,cnt).remove();
             } else {
                 $('#st-settle-container').find('.st-settle-block').not('.temp_tally_user').remove();
+            }
+        }
+        var tval = $('#st-settle-container_d').find('.st-settle-block_d').length;
+        if (tval > 1) {
+            var cnt = $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').length;
+//            cnt = cnt-1;
+            if (cnt > 1) {
+//                console.log(cnt);
+                var temp = $('#st-settle-container_d').find('.temp_tally_user_d').length;
+//                console.log("temp sds"+temp);
+                if (temp == 0) {
+                    console.log($('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(1, cnt).remove().length);
+                    $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(1, cnt).remove();
+                } else {
+                    console.log($('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(0, cnt).remove());
+                    $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(0, cnt).remove()
+                }
+//                console.log($('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(0,cnt).remove().length);
+//                $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').slice(0,cnt).remove();
+            } else {
+                $('#st-settle-container_d').find('.st-settle-block_d').not('.temp_tally_user_d').remove();
             }
         }
         $.ajax({
@@ -347,7 +375,7 @@ $(document).ready(function () {
         $('#price_list_modal').modal('show');
     });
 
-    $(document).on('click', '.save-unsettled-amount', function () {
+    $(document).on('click', '.save-unsettled-amount', function () {        
         var customer_id = $(this).data('id');
         var new_amount = $(this).closest('td').find('.input-unsettled').val();
         var old_amount = $(this).closest('td').find('.input-unsettled').data('price');
@@ -360,6 +388,30 @@ $(document).ready(function () {
                 customer_id: customer_id, new_amount: new_amount, old_amount: old_amount
             },
             success: function (data) {
+
+            },
+            complete: function () {
+            }
+        })
+    });
+    
+    
+     $(document).on('click', '.pass-journal-entry', function () {        
+        var customer_id = $(this).data('id');
+        var new_amount = $(this).closest('td').find('.input-unsettled').val();
+        var old_amount = $(this).closest('td').find('.input-unsettled').data('price');
+        var due_amount = $(this).closest('td').find('.input-unsettled').data('due');        
+        
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/pass_journal_entry';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                customer_id: customer_id, new_amount: new_amount, old_amount: old_amount, due_amount: due_amount
+            },
+            success: function (data) {
+                location.reload();
 
             },
             complete: function () {

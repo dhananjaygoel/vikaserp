@@ -591,8 +591,8 @@ class DeliveryOrderController extends Controller {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        $labours = Labour::all();
-        $loaders = LoadedBy::all();
+        $labours = Labour::where('type','<>','purchase')->get();
+        $loaders = LoadedBy::where('type','<>','purchase')->get();
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders'));
     }
 
@@ -661,6 +661,7 @@ class DeliveryOrderController extends Controller {
                     'loaded_by_id' => $loader,
                     'created_at' => $created_at,
                     'updated_at' => $updated_at,
+                    'type' => 'sale',
                 ];
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
@@ -680,6 +681,7 @@ class DeliveryOrderController extends Controller {
                     'labours_id' => $labour,
                     'created_at' => $created_at,
                     'updated_at' => $updated_at,
+                    'type' => 'sale',
                 ];
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);

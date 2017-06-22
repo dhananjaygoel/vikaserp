@@ -106,7 +106,7 @@
         event.preventDefault();
         var search_text = $('#st_collection_user_form').find('input[name="search"]').val();
         var location = $('#st_collection_user_form').find('select[name="location"]').val();
-        var territory = $('#st_collection_user_form').find('select[name="territory_filter"]').val();        
+        var territory = $('#st_collection_user_form').find('select[name="territory_filter"]').val();
         var form =
                 $('<form>', {
                     'method': 'POST',
@@ -136,8 +136,8 @@
                     'name': 'territory',
                     'type': 'hidden',
                     'value': territory
-                });        
-        form.append(token, locationInput, searchInput,territoryInput).appendTo('body');
+                });
+        form.append(token, locationInput, searchInput, territoryInput).appendTo('body');
         form.submit();
     });
     $(document).on('change', '.st_select_tally_user', function (event) {
@@ -150,15 +150,18 @@
             if (!$(this).find('.st_select_tally_user').is($(elem)) && ($(this).find('.st_select_tally_user').val() != '' && $(elem).val() != '') && $(this).find('.st_select_tally_user').val() == $(elem).val()) {
                 flag = false;
             }
-            
+
         });
         var block = $(this).closest('.st-settle-block').find('.settle-input-elem');
+        var block_narration = $(this).closest('.st-settle-block').find('.narration-input-elem');
         if (flag) {
-            if ($(this).val() != '') {                
+            if ($(this).val() != '') {
                 $(this).attr('data-lastsel', $(this).val());
                 $(block).html('<input class="form-control" placeholder="Amount" name="settle_amount[' + $(this).val() + ']" value="" onkeypress=" return numbersOnly(this,event,false,false);" type="text">');
+                $(block_narration).html('<input class="form-control" placeholder="Narration" name="narration[' + $(this).val() + ']" value="" type="text">');
             } else {
                 $(block).html('<input class="form-control" placeholder="Amount" name="settle_amount" onkeypress=" return numbersOnly(this,event,false,false);" value="" type="text">');
+                $(block_narration).html('<input class="form-control" placeholder="Narration" name="narration" value="" type="text">');
             }
         } else {
             alert('Already Selected');
@@ -172,12 +175,12 @@
             $(block).find('.st_select_tally_user').select2();
         }
         var element = $('#st-settle-container').find('.st-settle-block').last();
-        if(val>0){
+        if (val > 0) {
             $(elem).closest('.st-settle-block').addClass("temp_tally_user");
-        }else{
+        } else {
             $(elem).closest('.st-settle-block').removeClass("temp_tally_user");
         }
-        $(element).find(".add-tally_u" ).trigger( "click" );
+        $(element).find(".add-tally_u").trigger("click");
     });
     $(document).on('click', '.add-tally_u', function (event) {
         event.preventDefault();
@@ -187,8 +190,11 @@
                 '<select data-lastsel="" class="st_select_tally_user form-control" name="tally_users[]">' + options +
                 '</select>' +
                 '</div>' +
-                '<div class="col-md-4 settle-input-elem">' +
+                '<div class="col-md-3 settle-input-elem">' +
                 '<input class="form-control" placeholder="Amount" name="settle_amount[]" value="" onkeypress=" return numbersOnly(this,event,false,false);" type="text">' +
+                '</div>' +
+                '<div class="col-md-4 narration-input-elem">' +
+                '<input class="form-control" placeholder="Narration" name="narration[]" value=""  type="text">' +
                 '</div>' +
                 '<div class="col-md-1 action_btn">' +
                 '<a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_u st-border-bottom-none"><i class="fa fa-plus"></i></a>' +
@@ -209,18 +215,18 @@
         $(element).find('.del-tally_u').remove();
         $(element).find('.action_btn').append('<a href="javascript:void(0)" style="border-bottom:none" class="btn del-tally_u st-border-bottom-none"><i class="fa fa-trash-o"></i></a>');
         $(element).find('.st_select_tally_user').select2();
-    });        
+    });
     $(document).on('click', '#edit_receipt .del-tally_u', function (event) {
         event.preventDefault();
-        $('#edit_receipt').find('#flash_message_div').css('display','none');
-        var tval = $('#st-settle-container').find('.st-settle-block').length;        
+        $('#edit_receipt').find('#flash_message_div').css('display', 'none');
+        var tval = $('#st-settle-container').find('.st-settle-block').length;
         var last = $('#edit_receipt').find('#user_type').val();
-        if(last=="admin"){
+        if (last == "admin") {
             $(this).closest('.st-settle-block').remove();
-        }else if(last=="account"){
+        } else if (last == "account") {
             if (tval > 1) {
                 $(this).closest('.st-settle-block').remove();
-            }else{
+            } else {
                 var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
                         '<p>Receipt could not delete.</p>' +
@@ -231,13 +237,13 @@
     });
     $(document).on('click', '#edit_receipt .delete_customer_receipts', function (event) {
         event.preventDefault();
-        $('#edit_receipt').find('#flash_message_div').css('display','none');
+        $('#edit_receipt').find('#flash_message_div').css('display', 'none');
         var tval = $('#st-settle-container').find('.st-settle-block').length;
         if (tval > 1) {
             $(this).closest('.st-settle-block').remove();
-        }else{
-        var last = $('#edit_receipt').find('#user_type').val();
-            if(last=="account"){
+        } else {
+            var last = $('#edit_receipt').find('#user_type').val();
+            if (last == "account") {
                 var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
                         '<p>Receipt could not delete.</p>' +
@@ -253,4 +259,123 @@
             $(this).closest('.st-settle-block').remove();
         }
     });
+
+
+    $(".st_select_tally_user_d").select2();
+    $(document).on('change', '.st_select_tally_user_d', function (event) {
+        var val = $(this).val();
+        var elem = $(this);
+        var flag = true;
+        var lastselelem = $(elem).clone(true);
+        var lastsel = $(lastselelem).attr('data-lastsel');
+        $('#st-settle-container .st-settle-block').each(function () {
+            if (!$(this).find('.st_select_tally_user_d').is($(elem)) && ($(this).find('.st_select_tally_user_d').val() != '' && $(elem).val() != '') && $(this).find('.st_select_tally_user_d').val() == $(elem).val()) {
+                flag = false;
+            }
+
+        });
+        var block = $(this).closest('.st-settle-block_d').find('.settle-input-elem');
+        var block_narration_d = $(this).closest('.st-settle-block_d').find('.narration-input-elem');
+        if (flag) {
+            if ($(this).val() != '') {
+                $(this).attr('data-lastsel', $(this).val());
+                $(block).html('<input class="form-control" placeholder="Amount" name="settle_amount_d[' + $(this).val() + ']" value="" onkeypress=" return numbersOnly(this,event,false,false);" type="text">');
+                $(block_narration_d).html('<input class="form-control" placeholder="Narration" name="narration_d[' + $(this).val() + ']" value="" type="text">');
+            } else {
+                $(block).html('<input class="form-control" placeholder="Amount" name="settle_amount_d" onkeypress=" return numbersOnly(this,event,false,false);" value="" type="text">');
+                $(block_narration_d).html('<input class="form-control" placeholder="Narration" name="narration_d" value="" type="text">');
+            }
+        } else {
+            alert('Already Selected');
+            var block = $(elem).closest('.st-settle-block_d');
+            var options = $('#st_select_tally_user_master').html();
+            var e = '<select data-lastsel="' + lastsel + '" class="st_select_tally_user_d form-control" name="tally_users_d[]">' + options +
+                    '</select>';
+            $(block).find('.col-md-3').first().html(e);
+            $(block).find('.st_select_tally_user_d').val(lastsel);
+            $(block).find('.st_select_tally_user_d').find('select option[value="' + lastsel + '"]').attr("selected", true);
+            $(block).find('.st_select_tally_user_d').select2();
+        }
+        var element = $('#st-settle-container_d').find('.st-settle-block_d').last();
+        if (val > 0) {
+            $(elem).closest('.st-settle-block_d').addClass("temp_tally_user_d");
+        } else {
+            $(elem).closest('.st-settle-block_d').removeClass("temp_tally_user_d");
+        }
+        $(element).find(".add-tally_d").trigger("click");
+    });
+
+    $(document).on('click', '.add-tally_d', function (event) {
+        event.preventDefault();
+
+        var options = $('#st_select_tally_user_master_d').html();
+        var element = '<div class="st-settle-block_d"><div class="col-md-12" style="margin:10px 0;padding:0">' +
+                '<div class="col-md-3">' +
+                '<select data-lastsel="" class="st_select_tally_user_d form-control" name="tally_users_d[]">' + options +
+                '</select>' +
+                '</div>' +
+                '<div class="col-md-3 settle-input-elem">' +
+                '<input class="form-control" placeholder="Amount" name="settle_amount_d[]" value="" onkeypress=" return numbersOnly(this,event,false,false);" type="text">' +
+                '</div>' +
+                '<div class="col-md-4 narration-input-elem">' +
+                '<input class="form-control" placeholder="Narration" name="narration_d[]" value=""  type="text">' +
+                '</div>' +
+                '<div class="col-md-1 action_btn">' +
+                '<a href="javascript:void(0)" style="border-bottom:none" class="btn add-tally_d st-border-bottom-none"><i class="fa fa-plus"></i></a>' +
+                '</div>' +
+                '</div></div>';
+        $('#st-settle-container_d').append(element);
+        var element = $('#st-settle-container_d').find('.st-settle-block_d').last();
+        $('#st-settle-container_d .st-settle-block_d').each(function () {
+            var tval = $(this).find('.st_select_tally_user_d').val();
+//            console.log(tval);
+            if (tval != '') {
+                if ($(element).find('.st_select_tally_user_d').find('option[value=' + tval + ']').length > 0)
+                {
+                    $(element).find('.st_select_tally_user_d').find('option[value=' + tval + ']').remove();
+                }
+            }
+        });
+        $(element).find('.del-tally_d').remove();
+        $(element).find('.action_btn').append('<a href="javascript:void(0)" style="border-bottom:none" class="btn del-tally_d st-border-bottom-none"><i class="fa fa-trash-o"></i></a>');
+        $(element).find('.st_select_tally_user_d').select2();
+    });
+
+    $(document).on('click', '#edit_receipt .del-tally_d', function (event) {
+
+        event.preventDefault();
+        $('#edit_receipt').find('#flash_message_div').css('display', 'none');
+        var tval = $('#st-settle-container_d').find('.st-settle-block_d').length;
+        var last = $('#edit_receipt').find('#user_type').val();
+        console.log(tval);
+        if (last == "admin") {
+            if (tval > 1) {
+                $(this).closest('.st-settle-block_d').remove();
+            }
+        } else if (last == "account") {
+            if (tval > 1) {
+                $(this).closest('.st-settle-block_d').remove();
+            } else {
+                var error_msg = '<div class="alert alert-warning" id="flash_message_div">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">x</span></button>' +
+                        '<p>Receipt could not delete.</p>' +
+                        '</div>';
+                $('#edit_receipt').prepend(error_msg);
+            }
+        }
+    });
+
+
+    $(document).on('click', '#add_receipt .del-tally_d', function (event) {
+        event.preventDefault();
+        var tval = $('#st-settle-container_d').find('.st-settle-block_d').length;
+        if (tval > 1) {
+            $(this).closest('.st-settle-block_d').remove();
+        }
+    });
+
+
+
 })();
+
+

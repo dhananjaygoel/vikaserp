@@ -118,6 +118,11 @@ class InventoryController extends Controller {
                 ->orderBy('product_sub_category.alias_name', 'ASC')
                 ->paginate(50);
         $inventory_newlist->setPath('inventory');
+//        foreach ($inventory_newlist as $product_categoriy) {
+//            $product_category_ids[] = $product_categoriy->product_category_id;
+//        }        
+//        $this->inventoryCalc($product_category_ids);
+        
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
     }
 

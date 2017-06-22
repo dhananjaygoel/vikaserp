@@ -42,6 +42,18 @@
                             </div>
                             @endif
                             <div class="form-group">
+                                <div class="radio">
+                                    <input checked="" value="no" id="customer_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
+                                    <label for="customer_radio">Only Customer</label>
+                                    @endif
+                                    <input  value="yes" id="supplier_radio" name="status" type="radio">
+                                    @if(Auth::user()->role_id <> 5)
+                                    <label for="supplier_radio">Supplier</label>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="owner_name">Owner Name<span class="mandatory">*</span></label>
                                 <input id="owner_name" class="form-control" placeholder="Owner Name" name="owner_name" value="{{ Input::old('owner_name')}}" type="text" maxlength="30">
                             </div>
@@ -70,7 +82,7 @@
                                                             <input id="state" class="form-control" placeholder="State" name="state" value="{{ Input::old('state')}}" type="text">
                                                         </div>-->
                             <div class="form-group">
-                                
+
                                 <label for="state">State<span class="mandatory">*</span></label>
                                 <select class="form-control" id="state" name="state" onchange="state_option()" >
                                     <option value="" >Select State</option>
@@ -98,10 +110,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="zip">Zip</label>
-                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{ Input::old('zip')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="6">
+                                <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{ Input::old('zip')}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="6">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email<span class="mandatory">*</span></label>
+                                <label for="email">Email</label>
                                 <input id="email" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email')}}" type="email">
                             </div>
                             <div class="form-group">
@@ -118,11 +130,11 @@
                                                         </div> -->
                             <div class="form-group">
                                 <label for="phone_number1">Phone number 1<span class="mandatory">*</span></label>
-                                <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{ Input::old('phone_number1')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
+                                <input id="phone_number1" class="form-control" placeholder="Phone number " name="phone_number1" value="{{ Input::old('phone_number1')}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10">
                             </div>
                             <div class="form-group">
                                 <label for="phone_number2">Phone Number 2</label>
-                                <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{ Input::old('phone_number2')}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="10">
+                                <input id="phone_number2" class="form-control" placeholder="Phone Number 2" name="phone_number2" value="{{ Input::old('phone_number2')}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10">
                             </div>
                             <!--                            <div class="form-group">
                                                             <label for="vat_tin_number">VAT-TIN Number</label>
@@ -160,7 +172,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="credit_period">Credit Period(Days)</label>
-                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period')}}" type="tel"  onkeypress=" return numbersOnly(this,event,false,false);" >
+                                <input id="credit_period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{ Input::old('credit_period')}}" type="tel"  onkeypress=" return numbersOnly(this, event, false, false);" >
                             </div>
                             <div class="form-group col-md-4 del_loc ">
                                 <label for="relationship_manager">Relationship Manager:</label>
@@ -176,41 +188,41 @@
                                 </select>
                             </div>
                             <div class="clearfix"></div>
-<!--                            <div class="form-group">
-                                <label>Set Prices</label>
-                                <br>
-                                <div class="checkbox-nice">
-                                    <input id="checkbox-inl-1" type="checkbox">
-                                    <label for="checkbox-inl-1"> </label>
-                                </div>
-                                <br>
-                                @if(count($product_category) > 0)
-                                <div class="category_div col-md-12">
-                                    <div class="table-responsive">
-                                        <table id="table-example" class="table table-hover  ">
-                                            <thead>
-                                                <tr>
-                                                    <th>Category</th>
-                                                    <th>Difference</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>     
-                                                @foreach($product_category as $pc)
-                                                <tr>
-                                                    <td>{{$pc->product_category_name}}</td>
-                                                    <td><input class="setprice" type="text" name="product_differrence[]"></td>
-                                            <input type="hidden" name="product_category_id[]" value="{{$pc->id}}">
-                                            </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                               @else
-                                <p class="text-info">No product category found</p>
-                                @endif
-                            </div>-->
+                            <!--                            <div class="form-group">
+                                                            <label>Set Prices</label>
+                                                            <br>
+                                                            <div class="checkbox-nice">
+                                                                <input id="checkbox-inl-1" type="checkbox">
+                                                                <label for="checkbox-inl-1"> </label>
+                                                            </div>
+                                                            <br>
+                                                            @if(count($product_category) > 0)
+                                                            <div class="category_div col-md-12">
+                                                                <div class="table-responsive">
+                                                                    <table id="table-example" class="table table-hover  ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Category</th>
+                                                                                <th>Difference</th>
+                            
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>     
+                                                                            @foreach($product_category as $pc)
+                                                                            <tr>
+                                                                                <td>{{$pc->product_category_name}}</td>
+                                                                                <td><input class="setprice" type="text" name="product_differrence[]"></td>
+                                                                        <input type="hidden" name="product_category_id[]" value="{{$pc->id}}">
+                                                                        </tr>
+                                                                        @endforeach
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                           @else
+                                                            <p class="text-info">No product category found</p>
+                                                            @endif
+                                                        </div>-->
                             <div class="clearfix"></div>
                             <hr>
                             <div>

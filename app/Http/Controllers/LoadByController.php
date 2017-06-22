@@ -29,7 +29,6 @@ class LoadByController extends Controller {
      *
      * @return Response
      */
-    
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
@@ -39,10 +38,10 @@ class LoadByController extends Controller {
         define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
-    
+
     public function index() {
         $loader = '';
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         if (Input::get('search') != '') {
@@ -62,7 +61,7 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function create() {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         return view('addedit_loaded_by')->with('performance_index', true);
@@ -83,6 +82,12 @@ class LoadByController extends Controller {
         $loader->last_name = Input::get('last_name');
         $loader->phone_number = Input::get('mobile_number');
         $loader->password = Hash::make(Input::get('password'));
+        if (Input::has('loader_type')) {
+            $loader->type = trim(Input::get('loader_type'));
+        } else {
+            $loader->type = 'sale';
+        }
+
         if ($loader->save()) {
             return redirect('performance/loaded-by')->with('success', 'Loader Succesfully added');
         } else {
@@ -97,7 +102,7 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function show($id) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         if (isset($id) && !empty($id)) {
@@ -113,7 +118,7 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         if (isset($id) && !empty($id)) {
@@ -147,6 +152,10 @@ class LoadByController extends Controller {
                 $loader->first_name = Input::get('first_name');
                 $loader->last_name = Input::get('last_name');
                 $loader->phone_number = Input::get('mobile_number');
+                if (Input::has('loader_type')) {
+                    $loader->type = trim(Input::get('loader_type'));
+                }
+
                 if ($loader->save()) {
                     return redirect('performance/loaded-by')->with('success', 'Loader succesfully updated.');
                 } else {
@@ -163,7 +172,7 @@ class LoadByController extends Controller {
      * @return Response
      */
     public function destroy($id, Request $request) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         if (isset($id) && !empty($id)) {
@@ -181,7 +190,7 @@ class LoadByController extends Controller {
     }
 
     public function performance(Request $request) {
-        if(Auth::user()->role_id != 0){
+        if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
         $var = 0;
@@ -205,6 +214,12 @@ class LoadByController extends Controller {
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
+                $purchase_order_data = \App\PurchaseChallan::
+                        has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                        ->with('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                        ->where('created_at', '>=', "$date")
+                        ->where('created_at', '<=', "$enddate")
+                        ->get();
             } else if ($val == "Day") {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
@@ -212,8 +227,11 @@ class LoadByController extends Controller {
                 $delivery_order_data = DeliveryChallan::
                         has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
                         ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-//                        ->where('created_at', '>', "$date")
-//                        ->where('created_at', '<', "$enddate")
+                        ->get();
+
+                $purchase_order_data = \App\PurchaseChallan::
+                        has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                        ->with('challan_loaded_by.pc_delivery_challan.all_purchase_products')
                         ->get();
             }
         } else {
@@ -223,8 +241,13 @@ class LoadByController extends Controller {
 //            $delivery_order_data = DeliveryChallan::with('challan_loaded_by.dc_delivery_challan.delivery_order.delivery_product')
 //                    ->where('created_at', '>', "$date")
                     ->get();
+
+            $purchase_order_data = \App\PurchaseChallan::
+                    has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                    ->with('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                    ->get();
         }
-        foreach ($delivery_order_data as $delivery_order_info) {           
+        foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
             if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
@@ -232,7 +255,7 @@ class LoadByController extends Controller {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
-                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {                       
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
                             $deliver_sum += $delivery_order_productinfo->actual_quantity;
 //                                if ($delivery_order_productinfo->unit_id == 1)
 //                                    $deliver_sum += $delivery_order_productinfo->quantity;
@@ -252,6 +275,33 @@ class LoadByController extends Controller {
             }
             $loaders_data[$var++] = $loader_arr;
         }
+
+        foreach ($purchase_order_data as $delivery_order_info) {
+            $arr = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+                foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
+                    $deliver_sum = 0;
+                    array_push($loaders, $challan_info->loaded_by_id);
+                    foreach ($challan_info->pc_delivery_challan as $info) {
+                        foreach ($info->all_purchase_products as $delivery_order_productinfo) {
+                            $deliver_sum += $delivery_order_productinfo->quantity;
+//                                
+                        }
+                    }
+                    array_push($loader_array, $loaders);
+                    $all_kg = $deliver_sum / count($loaders);
+                    $all_tonnage = $all_kg / 1000;
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+                    $loader_arr['loaders'] = $loaders;
+                }
+            }
+            $loaders_data[$var++] = $loader_arr;
+        }
+
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
         $final_array = array();
@@ -266,7 +316,7 @@ class LoadByController extends Controller {
                                     'delivery_id' => $data['delivery_id'],
                                     'loader_id' => $value,
                                     'date' => $data['delivery_date'],
-                                    'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):0)
+                                    'tonnage' => (isset($data['tonnage']) ? round($data['tonnage'], 2) : 0)
                                 ];
                             }
                         }
@@ -301,8 +351,7 @@ class LoadByController extends Controller {
                             ->with('performance_index', true);
         }
     }
-    
-    
+
     function checkpending_quantity($unit_id, $product_category_id, $product_qty) {
 
         $kg_qty = 0;

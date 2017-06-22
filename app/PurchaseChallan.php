@@ -27,6 +27,17 @@ class PurchaseChallan extends Model {
         return $this->hasOne('App\Customer', 'id', 'supplier_id');
     }
 
+    public function challan_loaded_by() {
+        return $this->hasMany('App\DeliveryChallanLoadedBy', 'delivery_challan_id', 'id');
+//        return $this->belongsTo('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
+//        return $this->hasMany('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
+    }
+
+    public function challan_labours() {
+        return $this->hasMany('App\DeliveryChallanLabours', 'delivery_challan_id', 'id');
+//      
+    }
+
     public function purchase_advice() {
         return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id')->withTrashed();
         /* Commented by Amit on 22-09-1015 To avoid error for previously deleted purchase advice
