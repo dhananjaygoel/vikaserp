@@ -103,6 +103,8 @@
             };
             error_check = function () {
             };
+            purchase_challan_calculation = function () {
+            };
             var gdpData;
         </script>
         <script>
