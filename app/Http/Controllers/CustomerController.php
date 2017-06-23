@@ -910,8 +910,6 @@ class CustomerController extends Controller {
 //                                $query->where('challan_status', '=', 'completed');
 //                            });
 
-
-
             $customers = Customer::has('customer_receipt')
                     ->orHas('customer_receipt_debit')
                     ->orHas('delivery_challan')
@@ -922,9 +920,6 @@ class CustomerController extends Controller {
                     ->with('delivery_location')
                     ->with('collection_user_location')
                     ->orderBy('created_at', 'desc');
-
-
-
 
             /* new code */
 
@@ -1510,7 +1505,7 @@ class CustomerController extends Controller {
                 $customerReceiptObj_debit->save();
             }
 
-            Session::flash('success', 'Journal have been created');
+            Session::flash('success', 'Journal entry has been created');
             return Response::json(['success' => true]);
         }
 
