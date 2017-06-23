@@ -20,9 +20,9 @@
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Customers</span></li>
                 </ol>
-   
+
                 <div class="filter-block">
-                   <form action="{{url('due-payment')}}" method="GET" id="due-payment-form">
+                    <form action="{{url('due-payment')}}" method="GET" id="due-payment-form">
                         <h1 class="pull-left">Customers</h1> 
                         <a href="" id="print-account-customers" data-toggle="modal" data-target="#print_acount_customers" class="btn btn-primary pull-right" style=" margin-right: 8px !important;">
                             Print
@@ -54,9 +54,9 @@
                         <div class="col-md-2 pull-right">  
                             @if(Auth::user()->role_id ==6 ||Auth::user()->role_id ==0)
                             <select class="form-control" id="date_filter" name="date_filter" onchange="this.form.submit();">
-                                <option value="1" <?php if(Input::get('date_filter')==1) echo "selected=''"; ?>>As of Today</option>
-                                <option value="3" <?php if(Input::get('date_filter')==3) echo "selected=''"; ?>>3 days</option>
-                                <option value="7" <?php if(Input::get('date_filter')==7) echo "selected=''"; ?>>A Week</option>
+                                <option value="1" <?php if (Input::get('date_filter') == 1) echo "selected=''"; ?>>As of Today</option>
+                                <option value="3" <?php if (Input::get('date_filter') == 3) echo "selected=''"; ?>>3 days</option>
+                                <option value="7" <?php if (Input::get('date_filter') == 7) echo "selected=''"; ?>>A Week</option>
                             </select>
                             @endif
                         </div>
@@ -104,7 +104,7 @@
                                         <th>Unsettled Amount</th>
                                         <th>Location</th>
                                         @if(Auth::user()->role_id ==0)
-                                            <th>Collection User</th>
+                                        <th>Collection User</th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -113,15 +113,15 @@
                                     $i = ($customers->currentPage() - 1) * $customers->perPage() + 1;
                                     ?>
                                     @foreach($customers as $c)
-                                    <?php                                        
-                                        $total_due_amount=0;
-                                        $credit_period = $c->credit_period;
-                                        foreach($c['delivery_challan'] as $challan){
-                                            $challan_date = $challan->created_at;
-                                            $due_date = date('Y-m-d', strtotime($challan_date. " + ".$credit_period." days"));
-                                        }
-                                        $current_date = date('Y-m-d'); 
-                                        $limit_date = date('Y-m-d');
+                                    <?php
+                                    $total_due_amount = 0;
+                                    $credit_period = $c->credit_period;
+                                    foreach ($c['delivery_challan'] as $challan) {
+                                        $challan_date = $challan->created_at;
+                                        $due_date = date('Y-m-d', strtotime($challan_date . " + " . $credit_period . " days"));
+                                    }
+                                    $current_date = date('Y-m-d');
+                                    $limit_date = date('Y-m-d');
 //                                        if(Input::get('date_filter')!=""){
 //                                            $days = Input::get('date_filter');
 //                                            $limit_date = date('Y-m-d', strtotime($current_date. " + ".$days." days"));
@@ -130,57 +130,59 @@
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td><a href="{{url('customer_details/'.$c->id)}}">@if(isset($c->tally_name) && !empty($c->tally_name)){{$c->tally_name}}@else Test User @endif</a></td>
-                                           <?php
-                                                $total_due_amount=0;
-                                                $unsettled_amount=0;
-                                                $settled_challan_amount=0;
-                                                foreach($c['delivery_challan'] as $challan){
-                                                    $total_due_amount=$total_due_amount+$challan->grand_price;
-                                                    $settled_challan_amount= $settled_challan_amount+$challan->settle_amount;
-                                                }
-                                                foreach($c['customer_receipt'] as $receipt){
-                                                   $unsettled_amount=$unsettled_amount+$receipt->settled_amount;
-                                                }
-                                                foreach($c['customer_receipt_debit'] as $receipt){
-                                                $unsettled_amount=$unsettled_amount-$receipt->settled_amount;
+                                        <?php
+                                        $total_due_amount = 0;
+                                        $unsettled_amount = 0;
+                                        $settled_challan_amount = 0;
+                                        foreach ($c['delivery_challan'] as $challan) {
+                                            if ($challan->challan_status == "completed") {
+                                                $total_due_amount = $total_due_amount + $challan->grand_price;
+                                                $settled_challan_amount = $settled_challan_amount + $challan->settle_amount;
                                             }
-                                                $total_due_amount=$total_due_amount-$settled_challan_amount;
-                                                $unsettled_amount= $unsettled_amount-$settled_challan_amount;
-                                            ?>
+                                        }
+                                        foreach ($c['customer_receipt'] as $receipt) {
+                                            $unsettled_amount = $unsettled_amount + $receipt->settled_amount;
+                                        }
+                                        foreach ($c['customer_receipt_debit'] as $receipt) {
+                                            $unsettled_amount = $unsettled_amount - $receipt->settled_amount;
+                                        }
+                                        $total_due_amount = $total_due_amount - $settled_challan_amount;
+                                        $unsettled_amount = $unsettled_amount - $settled_challan_amount;
+                                        ?>
                                         <td>{{$total_due_amount}}</td>
                                         <td>
                                             @if(Auth::user()->role_id ==0)
-                                                <input type="text" class="form-control input-unsettled" value="{{$unsettled_amount}}" data-price="{{$unsettled_amount}}"> <i class="fa fa-save save-unsettled-amount" data-id="{{$c->id}}" data-amount="{{$c->id}}"></i>
+                                            <input type="text" class="form-control input-unsettled" value="{{$unsettled_amount}}" data-price="{{$unsettled_amount}}"> <i class="fa fa-save save-unsettled-amount" data-id="{{$c->id}}" data-amount="{{$c->id}}"></i>
                                             @endif
                                             @if(Auth::user()->role_id ==6)
-                                                {{$unsettled_amount}}
+                                            {{$unsettled_amount}}
                                             @endif
                                         </td>
                                         <td>                                            
                                             @foreach($delivery_location as $location)
-                                                @if($c->delivery_location_id==$location->id)
-                                                        {{$location->area_name}}                                                         
-                                                @endif
+                                            @if($c->delivery_location_id==$location->id)
+                                            {{$location->area_name}}                                                         
+                                            @endif
                                             @endforeach
                                         </td>
                                         @if(Auth::user()->role_id ==0)
                                         <td>
-                                            <?php 
-                                                if(isset($c['collection_user_location'])){
-                                                    $del_locations = $c['collection_user_location'];
-                                                    foreach($del_locations as $del_loc){
-                                                        if(isset($del_loc['collection_user'][0])){
-                                                            echo $del_loc['collection_user'][0]->first_name;
-                                                            echo " ";
-                                                            echo $del_loc['collection_user'][0]->last_name;
-                                                        }
+                                            <?php
+                                            if (isset($c['collection_user_location'])) {
+                                                $del_locations = $c['collection_user_location'];
+                                                foreach ($del_locations as $del_loc) {
+                                                    if (isset($del_loc['collection_user'][0])) {
+                                                        echo $del_loc['collection_user'][0]->first_name;
+                                                        echo " ";
+                                                        echo $del_loc['collection_user'][0]->last_name;
                                                     }
                                                 }
+                                            }
                                             ?>
                                         </td>
                                         @endif
                                     </tr>
-                                @endforeach
+                                    @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">

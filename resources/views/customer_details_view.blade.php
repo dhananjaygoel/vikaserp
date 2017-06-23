@@ -113,8 +113,10 @@
                                         $total_due_amount = 0;
                                         $settled_challan_amount = 0;
                                         foreach ($customer['delivery_challan'] as $challan) {
-                                            $total_due_amount = $total_due_amount + $challan->grand_price;
-                                            $settled_challan_amount = $settled_challan_amount + $challan->settle_amount;
+                                            if ($challan->challan_status == "completed") {
+                                                $total_due_amount = $total_due_amount + $challan->grand_price;
+                                                $settled_challan_amount = $settled_challan_amount + $challan->settle_amount;
+                                            }
                                         }
                                         $total_due_amount = $total_due_amount - $settled_challan_amount;
                                         $unsettled_amount = $unsettled_amount - $settled_challan_amount;
@@ -168,7 +170,7 @@
                                         <th>Action</th>                                        
                                     </tr>
                                 </thead>
-                                <?php //dd($delivery_challans); ?>
+                                <?php //dd($delivery_challans);  ?>
                                 <tbody>                                        
                                     @if(isset($delivery_challans) && count($delivery_challans)>0 && $delivery_challans!="")
                                     <?php $i = 1; ?>
@@ -187,9 +189,9 @@
                                         <td>{{$i++}}</td>
                                         <td>{{$challan->serial_number}}</td>
                                         <td><?php
-                                            $challan_date = $challan->created_at;
-                                            $due_date = date('Y-m-d', strtotime($challan_date . " + " . $credit_period . " days"));
-                                            ?>
+                                    $challan_date = $challan->created_at;
+                                    $due_date = date('Y-m-d', strtotime($challan_date . " + " . $credit_period . " days"));
+                                    ?>
                                             {{$due_date}}
                                         </td>                                            
                                         <td>
@@ -343,17 +345,16 @@ $data_temp = $data;
 
 foreach ($data as $key => $value) {
     foreach ($data_temp as $key_temp => $value_temp) {
-        if(($value['receipt_id'] == $value_temp['receipt_id']) && ($key <> $key_temp) ){
-            if($value_temp['settled_amount_cr'] > 0){
+        if (($value['receipt_id'] == $value_temp['receipt_id']) && ($key <> $key_temp)) {
+            if ($value_temp['settled_amount_cr'] > 0) {
                 $data[$key] = $value_temp;
                 $data[$key]['settled_amount_dr'] = $value['settled_amount_dr'];
             }
             unset($data[$key_temp]);
-            
         }
     }
 }
-$data =  array_values($data);
+$data = array_values($data);
 ?>
 
 <div class="modal fade" id="show_all_logs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
