@@ -109,7 +109,7 @@
                                         foreach ($customer['customer_receipt_debit'] as $receipt) {
                                             $unsettled_amount = $unsettled_amount - $receipt->settled_amount;
                                         }
-                                        
+
                                         $total_due_amount = 0;
                                         $settled_challan_amount = 0;
                                         foreach ($customer['delivery_challan'] as $challan) {
@@ -129,8 +129,8 @@
                                             {{$unsettled_amount}}
                                             @endif                                                
                                             @endif
-                                                                                       
-                                            <a href="javascript:void(0)" class="btn btn-primary pull-right pass-journal-entry" data-price="{{$unsettled_amount}}" style=" margin-right: 8px !important;" data-id="{{$customer->id}}">
+
+                                            <a href="javascript:void(0)" class="btn btn-primary pull-right pass-journal-entry {{($is_discount_user=='true' | $total_due_amount <> 0 | $unsettled_amount ==0)?'disabled':''}}" data-price="{{$unsettled_amount}}" style=" margin-right: 8px !important;" data-id="{{$customer->id}}"  title="Pass Journal Entry">
                                                 Pass Journal Entry
                                             </a> 
                                         </td>
@@ -302,6 +302,60 @@
     </div>
 </div>
 
+<?php
+$data = array();
+$final = array();
+$data_temp = array();
+$i = 0;
+foreach ($customer['customer_receipt'] as $key => $value) {
+    $data[$i++] = [
+        'id' => $value['id'],
+        'customer_id' => $value['customer_id'],
+        'settled_amount_cr' => $value['settled_amount'],
+        'settled_amount_dr' => 0,
+        'debited_by_type' => $value['debited_by_type'],
+        'receipt_id' => $value['receipt_id'],
+        'narration' => $value['narration'],
+        'created_at' => $value['created_at'],
+        'updated_at' => $value['updated_at'],
+        'deleted_at' => $value['deleted_at'],
+    ];
+}
+
+foreach ($customer['customer_receipt_debit'] as $key => $value) {
+    $data[$i++] = [
+        'id' => $value['id'],
+        'customer_id' => $value['customer_id'],
+        'settled_amount_cr' => 0,
+        'settled_amount_dr' => $value['settled_amount'],
+        'debited_by_type' => $value['debited_by_type'],
+        'receipt_id' => $value['receipt_id'],
+        'narration' => $value['narration'],
+        'created_at' => $value['created_at'],
+        'updated_at' => $value['updated_at'],
+        'deleted_at' => $value['deleted_at'],
+    ];
+}
+
+
+
+$data_temp = $data;
+
+foreach ($data as $key => $value) {
+    foreach ($data_temp as $key_temp => $value_temp) {
+        if(($value['receipt_id'] == $value_temp['receipt_id']) && ($key <> $key_temp) ){
+            if($value_temp['settled_amount_cr'] > 0){
+                $data[$key] = $value_temp;
+                $data[$key]['settled_amount_dr'] = $value['settled_amount_dr'];
+            }
+            unset($data[$key_temp]);
+            
+        }
+    }
+}
+$data =  array_values($data);
+?>
+
 <div class="modal fade" id="show_all_logs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -328,35 +382,24 @@
                             $k = 1;
                             ?>
 
-                            @foreach($customer['customer_receipt'] as $key => $customer_receipt)
+                            @foreach($data as $key => $customer_receipt)                           
                             <tr>
 
                                 <td>{{$k++}}</td>
-                                <td>{{$customer_receipt->created_at}}</td>
+                                <td>{{$customer_receipt['created_at']}}</td>
                                 <td>
                                     <?php
-                                    if ($customer_receipt->debited_by_type == 2)
+                                    if ($customer_receipt['debited_by_type'] == 2)
                                         $receiptType = "Bank";
-                                    else if ($customer_receipt->debited_by_type == 3)
+                                    else if ($customer_receipt['debited_by_type'] == 3)
                                         $receiptType = "Cash";
                                     else
                                         $receiptType = "Journal"
                                         ?>  
                                     {{$receiptType}}
                                 </td>
-                                <td>{{$customer_receipt->settled_amount}}</td>
-                                <td>
-                                    <?php
-                                    $debited_to = 0;
-                                    foreach ($customer['customer_receipt_debit'] as $customer_receipt_debit) {
-                                        if ($customer_receipt->customer_id == $customer_receipt_debit->customer_id && $customer_receipt->debited_by_type == $customer_receipt_debit->debited_by_type && $customer_receipt->receipt_id == $customer_receipt_debit->receipt_id) {
-                                            $debited_to = $customer_receipt_debit->settled_amount;
-                                        }
-                                    }
-                                    ?>
-
-                                    {{$debited_to}}
-                                </td>
+                                <td>{{$customer_receipt['settled_amount_cr']}}</td>
+                                <td>{{$customer_receipt['settled_amount_dr']}}</td>
 
                             </tr>
                             @endforeach                            

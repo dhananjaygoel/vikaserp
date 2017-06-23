@@ -373,8 +373,8 @@ class CustomerController extends Controller {
             $customer->zip = Input::get('zip');
         }
 //        if (Input::has('email')) {
-            $customer->email = Input::get('email');
-            $users->email = Input::get('email');
+        $customer->email = Input::get('email');
+        $users->email = Input::get('email');
 //        }
 
         $customer->tally_name = Input::get('tally_name');
@@ -899,21 +899,43 @@ class CustomerController extends Controller {
         $date_filter = Input::get('date_filter');
         if (Auth::user()->role_id == 0) {
             /* old code */
-//            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
-//                                    ->whereHas('delivery_challan', function ($query) {
-//                                    $query->where('challan_status','=', 'completed');                                            
-//                                    });
+//            $customers = Customer::with('delivery_challan')
+//                            ->with('customer_receipt')
+//                            ->with('customer_receipt_debit')
+//                            ->with('collection_user_location.collection_user')
+//                            ->with('delivery_location')
+//                            ->with('collection_user_location')
+//                            ->orderBy('created_at', 'desc')
+//                            ->whereHas('delivery_challan', function ($query) {
+//                                $query->where('challan_status', '=', 'completed');
+//                            });
+
+
+
+            $customers = Customer::has('customer_receipt')
+                    ->orHas('customer_receipt_debit')
+                    ->orHas('delivery_challan')
+                    ->with('customer_receipt')
+                    ->with('customer_receipt_debit')
+                    ->with('delivery_challan')
+                    ->with('collection_user_location.collection_user')
+                    ->with('delivery_location')
+                    ->with('collection_user_location')
+                    ->orderBy('created_at', 'desc');
+
+
+
 
             /* new code */
 
-            $customers = Customer::whereHas('delivery_challan', function ($query) {
-                        $query->where('delivery_challan.challan_status', 'completed');
-                    })
-                    ->with('customer_receipt')
-                    ->with('customer_receipt_debit')
-                    ->with('collection_user_location.collection_user')
-                    ->with('delivery_location')
-                    ->orderBy('created_at', 'desc');
+//            $customers = Customer::whereHas('delivery_challan', function ($query) {
+//                        $query->where('delivery_challan.challan_status', 'completed');
+//                    })
+//                    ->with('customer_receipt')
+//                    ->with('customer_receipt_debit')
+//                    ->with('collection_user_location.collection_user')
+//                    ->with('delivery_location')
+//                    ->orderBy('created_at', 'desc');
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             if (isset($search) && !empty($search)) {
                 $term = '%' . $search . '%';
@@ -934,21 +956,25 @@ class CustomerController extends Controller {
                 if ($date_filter == 1) {
                     $customers->whereHas('delivery_challan', function ($query) {
                         $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
+                        $query->where('challan_status', '=', 'completed');
                     });
                 } else
                 if ($date_filter == 3) {
                     $customers->whereHas('delivery_challan', function ($query) {
                         $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+                        $query->where('challan_status', '=', 'completed');
                     });
                 } else
                 if ($date_filter == 7) {
                     $customers->whereHas('delivery_challan', function ($query) {
                         $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 7 DAY)");
+                        $query->where('challan_status', '=', 'completed');
                     });
                 }
             } else {
                 $customers->whereHas('delivery_challan', function ($query) {
                     $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
+                    $query->where('challan_status', '=', 'completed');
                 });
 
 //               dd($customers->toSql());  
@@ -1014,6 +1040,10 @@ class CustomerController extends Controller {
                 });
             }
         }
+
+
+
+
         $customers = $customers->paginate(20)->setPath('due-payment');
 
         if (isset($user_territory_arr)) {
@@ -1025,6 +1055,150 @@ class CustomerController extends Controller {
                         ->with('delivery_location', $delivery_location)
                         ->with('territories', $territories);
     }
+
+//    
+//    public function get_customers_list() {
+//        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 6) {
+//            return redirect()->back();
+//        }
+//        $customers = '';
+//        $loc_arr = [];
+//        $search = Input::get('search');
+//        $territory_id = Input::get('territory_filter');
+//        $location_id = Input::get('location_filter');
+//        $date_filter = Input::get('date_filter');
+//        if (Auth::user()->role_id == 0) {
+//            /* old code */
+////            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
+////                                    ->whereHas('delivery_challan', function ($query) {
+////                                    $query->where('challan_status','=', 'completed');                                            
+////                                    });
+//
+//            /* new code */
+//
+//            $customers = Customer::whereHas('delivery_challan', function ($query) {
+//                        $query->where('delivery_challan.challan_status', 'completed');
+//                    })
+//                    ->with('customer_receipt')
+//                    ->with('customer_receipt_debit')
+//                    ->with('collection_user_location.collection_user')
+//                    ->with('delivery_location')
+//                    ->orderBy('created_at', 'desc');
+//            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+//            if (isset($search) && !empty($search)) {
+//                $term = '%' . $search . '%';
+//                $customers->Where('tally_name', 'like', $term);
+//            }
+//            if (isset($territory_id) && !empty($territory_id)) {
+//                $territory_locations = TerritoryLocation::where('teritory_id', '=', $territory_id)->get();
+//                foreach ($territory_locations as $loc) {
+//                    array_push($loc_arr, $loc->location_id);
+//                }
+//                $customers->whereIn('delivery_location_id', $loc_arr);
+//                $delivery_location = DeliveryLocation::whereIn('id', $loc_arr)->orderBy('area_name', 'ASC')->get();
+//            }
+//            if (isset($location_id) && !empty($location_id)) {
+//                $customers->where('delivery_location_id', '=', $location_id);
+//            }
+//            if (isset($date_filter) && !empty($date_filter)) {
+//                if ($date_filter == 1) {
+//                    $customers->whereHas('delivery_challan', function ($query) {
+//                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
+//                    });
+//                } else
+//                if ($date_filter == 3) {
+//                    $customers->whereHas('delivery_challan', function ($query) {
+//                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+//                    });
+//                } else
+//                if ($date_filter == 7) {
+//                    $customers->whereHas('delivery_challan', function ($query) {
+//                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 7 DAY)");
+//                    });
+//                }
+//            } else {
+//                $customers->whereHas('delivery_challan', function ($query) {
+//                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
+//                });
+//
+////               dd($customers->toSql());  
+////                dd($customers->get());
+//            }
+//        }
+//        if (Auth::user()->role_id == 6) {
+//            $territory_id = Input::get('territory_filter');
+//            $user_id = Auth::user()->id;
+//            $user_loc_arr = [];
+//            $user_territory_arr = [];
+//            $collection_user_locations = CollectionUser::where('user_id', '=', $user_id)->get();
+//            foreach ($collection_user_locations as $loc) {
+//                array_push($user_loc_arr, $loc->location_id);
+//                if (!in_array($loc->teritory_id, $user_territory_arr)) {
+//                    array_push($user_territory_arr, $loc->teritory_id);
+//                }
+//            }
+//
+//            $customers = Customer::with(['delivery_challan' => function ($query) {
+//                            $query->where('delivery_challan.challan_status', 'completed');
+//                        }])
+//                    ->with('customer_receipt', 'customer_receipt_debit')
+//                    ->orderBy('created_at', 'desc')
+//                    ->whereIn('delivery_location_id', $user_loc_arr);
+//
+//            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')
+//                            ->whereIn('id', $user_loc_arr)->get();
+//            if (isset($search) && !empty($search)) {
+//                $term = '%' . $search . '%';
+//                $customers->Where('tally_name', 'like', $term);
+//            }
+//            if (isset($territory_id) && !empty($territory_id)) {
+//                $territory_locations = TerritoryLocation::where('teritory_id', '=', $territory_id)->get();
+//                foreach ($territory_locations as $loc) {
+//                    array_push($loc_arr, $loc->location_id);
+//                }
+//                $customers->whereIn('delivery_location_id', $loc_arr);
+//                $delivery_location = DeliveryLocation::whereIn('id', $loc_arr)->orderBy('area_name', 'ASC')->get();
+//            }
+//            if (isset($location_id) && !empty($location_id)) {
+//                $customers->where('delivery_location_id', '=', $location_id);
+//            }
+//            if (isset($date_filter) && !empty($date_filter)) {
+//                if ($date_filter == 1) {
+//                    $customers->whereHas('delivery_challan', function ($query) {
+//                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
+//                    });
+//                } else
+//                if ($date_filter == 3) {
+//                    $customers->whereHas('delivery_challan', function ($query) {
+//                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 3 DAY)");
+//                    });
+//                } else
+//                if ($date_filter == 7) {
+//                    $customers->whereHas('delivery_challan', function ($query) {
+//                        $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= DATE_ADD(CURDATE(),INTERVAL 7 DAY)");
+//                    });
+//                }
+//            } else {
+//                $customers->whereHas('delivery_challan', function ($query) {
+//                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
+//                });
+//            }
+//        }
+//        $customers = $customers->paginate(20)->setPath('due-payment');
+//
+//        if (isset($user_territory_arr)) {
+//            $territories = Territory::whereIn('id', $user_territory_arr)->orderBy('created_at', 'DESC')->get();
+//        } else {
+//            $territories = Territory::orderBy('created_at', 'DESC')->get();
+//        }
+//        return View('customer_list')->with('customers', $customers)
+//                        ->with('delivery_location', $delivery_location)
+//                        ->with('territories', $territories);
+//    }
+
+
+
+
 
     public function get_customer_details($id) {
         $date_filter = Input::get('date_filter');
@@ -1040,7 +1214,7 @@ class CustomerController extends Controller {
         $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
                 ->where('challan_status', 'completed')
 //                ->whereRaw('grand_price!=settle_amount');
-                 ->whereRaw('CAST(grand_price AS DECIMAL(10,2)) != CAST(settle_amount AS DECIMAL(10,2))');
+                ->whereRaw('CAST(grand_price AS DECIMAL(10,2)) != CAST(settle_amount AS DECIMAL(10,2))');
         if (isset($settle_filter) && $settle_filter != '' && $settle_filter == 'Settled') {
             $delivery_challans = DeliveryChallan::where('customer_id', '=', $id)
                     ->where('challan_status', 'completed')
@@ -1068,11 +1242,24 @@ class CustomerController extends Controller {
             $delivery_challans->whereRaw("Date(DATE_ADD(created_at,INTERVAL $credit_period DAY)) <= CURDATE()");
         }
         $delivery_challans = $delivery_challans->get();
+
+        $discount_user = Customer::where('owner_name', 'like', '%Discount User%')
+                        ->orWhere('tally_name', 'like', '%Discount User%')
+                        ->select('id')->first();
+
+               
+        if (count($discount_user) && $discount_user->id == $id) {
+            $is_discount_user = 'true';
+        } else {
+            $is_discount_user = 'false';
+        }
+
 //        dd(DB::getQueryLog());
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         return View('customer_details_view')->with('customer', $customer)
                         ->with('delivery_challans', $delivery_challans)
-                        ->with('delivery_location', $delivery_location);
+                        ->with('delivery_location', $delivery_location)
+                        ->with('is_discount_user', $is_discount_user);
     }
 
     public function print_account_customers(DropboxStorageRepository $connection) {
@@ -1303,6 +1490,7 @@ class CustomerController extends Controller {
             } else if ($old_amount < 0) {
                 $customer_dt_id = $cust_id->id;
                 $customer_cr_id = $customer_id;
+                $old_amount = abs($old_amount);
             }
 
             $receiptObj = new Receipt();
@@ -1321,12 +1509,12 @@ class CustomerController extends Controller {
                 $customerReceiptObj_debit->receipt_id = $receiptObj->id;
                 $customerReceiptObj_debit->save();
             }
-            
-             Session::flash('success','Journal have been created');
+
+            Session::flash('success', 'Journal have been created');
             return Response::json(['success' => true]);
         }
-        
-        Session::flash('error','Something went wrong.');
+
+        Session::flash('error', 'Something went wrong.');
         return Response::json(['success' => false]);
     }
 
