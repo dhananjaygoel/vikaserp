@@ -101,6 +101,8 @@
             };
             unitType = function () {
             };
+            error_check = function () {
+            };
             var gdpData;
         </script>
         <script>
