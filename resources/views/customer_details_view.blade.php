@@ -109,8 +109,7 @@
                                         foreach ($customer['customer_receipt_debit'] as $receipt) {
                                             $unsettled_amount = $unsettled_amount - $receipt->settled_amount;
                                         }
-                                        ?>
-                                        <?php
+                                        
                                         $total_due_amount = 0;
                                         $settled_challan_amount = 0;
                                         foreach ($customer['delivery_challan'] as $challan) {
