@@ -372,10 +372,10 @@ class CustomerController extends Controller {
         if (Input::has('zip')) {
             $customer->zip = Input::get('zip');
         }
-        if (Input::has('email')) {
+//        if (Input::has('email')) {
             $customer->email = Input::get('email');
             $users->email = Input::get('email');
-        }
+//        }
 
         $customer->tally_name = Input::get('tally_name');
         $customer->tally_category = Input::get('tally_category');

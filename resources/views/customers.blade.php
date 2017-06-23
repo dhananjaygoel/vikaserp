@@ -80,7 +80,7 @@
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$c->tally_name}}</td>
-                                        <td>{{$c->email}}</td>
+                                        <td>{{isset($c->email)?(!empty($c->email)?$c->email:'NA'):'NA'}}</td>
                                         <td>{{$c->phone_number1}}</td>
                                         <td>
                                             @foreach($city as $town)
