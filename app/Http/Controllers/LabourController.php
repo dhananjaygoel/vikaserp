@@ -32,6 +32,7 @@ use App\Labour;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\ProductSubCategory;
+use Illuminate\Support\Facades\DB;
 
 class LabourController extends Controller {
 
@@ -123,11 +124,11 @@ class LabourController extends Controller {
         if (Input::has('phone_number')) {
             $labour->phone_number = trim(Input::get('phone_number'));
         }
-        
+
         if (Input::has('labour_type')) {
             $labour->type = trim(Input::get('labour_type'));
-        }else{
-            $labour->type ='sale';
+        } else {
+            $labour->type = 'sale';
         }
 
         if ($labour->save()) {
@@ -199,7 +200,7 @@ class LabourController extends Controller {
         if (Input::has('phone_number')) {
             $labour->phone_number = trim(Input::get('phone_number'));
         }
-        
+
         if (Input::has('labour_type')) {
             $labour->type = trim(Input::get('labour_type'));
         }
@@ -294,7 +295,14 @@ class LabourController extends Controller {
                 }
                 $delivery_order_data = DeliveryChallan::
                         has('challan_labours.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
+                        ->with('challan_labours')
+                        ->where('created_at', '>=', "$date")
+                        ->where('created_at', '<=', "$enddate")
+                        ->get();
+
+                $purchase_order_data = \App\PurchaseChallan::
+                        has('challan_labours.pc_delivery_challan.all_purchase_products')
+                        ->with('challan_labours')
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
@@ -306,7 +314,12 @@ class LabourController extends Controller {
 
                 $delivery_order_data = DeliveryChallan::
                         has('challan_labours.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
+                        ->with('challan_labours')
+                        ->get();
+
+                $purchase_order_data = \App\PurchaseChallan::
+                        has('challan_labours.pc_delivery_challan.all_purchase_products')
+                        ->with('challan_labours')
                         ->get();
             }
         } else {
@@ -314,16 +327,15 @@ class LabourController extends Controller {
 //            $delivery_order_data = DeliveryChallan::with('challan_labours','delivery_challan_products')
             $delivery_order_data = DeliveryChallan::
                     has('challan_labours.dc_delivery_challan.delivery_challan_products')
-                    ->with('challan_labours.dc_delivery_challan.delivery_challan_products')
+                    ->with('challan_labours')
 //            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                     ->get();
-            
-            
+
+
             $purchase_order_data = \App\PurchaseChallan::
                     has('challan_labours.pc_delivery_challan.all_purchase_products')
-                    ->with('challan_labours.pc_delivery_challan.all_purchase_products')
-                    ->get();            
-          
+                    ->with('challan_labours')
+                    ->get();
         }
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
@@ -336,7 +348,7 @@ class LabourController extends Controller {
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->dc_delivery_challan as $info) {
                         foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-                             $deliver_sum += $delivery_order_productinfo->actual_quantity;
+                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
 //                            if ($delivery_order_productinfo->unit_id == 1)
 //                                $deliver_sum += $delivery_order_productinfo->quantity;
 //                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
@@ -358,8 +370,8 @@ class LabourController extends Controller {
             $loaders_data[$var] = $loader_arr;
             $var++;
         }
-        
-         foreach ($purchase_order_data as $delivery_order_info) {
+
+        foreach ($purchase_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();
             $loaders = array();
@@ -370,7 +382,7 @@ class LabourController extends Controller {
                     array_push($loaders, $challan_info->labours_id);
                     foreach ($challan_info->pc_delivery_challan as $info) {
                         foreach ($info->all_purchase_products as $delivery_order_productinfo) {
-                             $deliver_sum += $delivery_order_productinfo->quantity;
+                            $deliver_sum += $delivery_order_productinfo->quantity;
 //                            if ($delivery_order_productinfo->unit_id == 1)
 //                                $deliver_sum += $delivery_order_productinfo->quantity;
 //                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
@@ -392,8 +404,8 @@ class LabourController extends Controller {
             $loaders_data[$var] = $loader_arr;
             $var++;
         }
-        
-        
+
+
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
 
@@ -408,7 +420,7 @@ class LabourController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => (isset($data['tonnage'])?round($data['tonnage'], 2):'0'),
+                            'tonnage' => (isset($data['tonnage']) ? round($data['tonnage'], 2) : '0'),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }
@@ -443,7 +455,6 @@ class LabourController extends Controller {
         }
     }
 
-    
     function checkpending_quantity($unit_id, $product_category_id, $product_qty, $prod_info = false) {
 
         $kg_qty = 0;
