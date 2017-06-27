@@ -666,10 +666,10 @@ class DeliveryChallanController extends Controller {
 
             AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             DeliveryChallan::find($id)->delete();
-            
+
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
-            
+
             Session::put('order-sort-type', $order_sort_type);
             return array('message' => 'success');
         } else {
@@ -684,10 +684,11 @@ class DeliveryChallanController extends Controller {
     public function print_delivery_challan($id, DropboxStorageRepository $connection) {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
-        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products')->find($id);
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
-            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
-                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+            $allorder = $update_delivery_challan;
+//            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
+//                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
 
             $total_vat_amount = 0;
 
@@ -712,7 +713,7 @@ class DeliveryChallanController extends Controller {
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
             $total_vat_amount = 0;
@@ -779,9 +780,16 @@ class DeliveryChallanController extends Controller {
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
-//            $this->checkpending_quantity(); 
-            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
-                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+
+                        
+            
+// //            $this->checkpending_quantity(); 
+//            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
+////                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
+//                            ->with('delivery_challan_products.order_product_details', 'customer','delivery_order.location')->first();
+            
+            $allorder = $update_delivery_challan;
+            
             $number = $allorder->grand_price;
             $exploded_value = explode(".", $number);
 
@@ -793,12 +801,12 @@ class DeliveryChallanController extends Controller {
             }
 
             $result_paisa = $exploded_value[1] % 10;
-            if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
-                $convert_value = $this->convert_number_to_words($allorder->grand_price);
-            } else {
-                $convert_value = $this->convert_number($allorder->grand_price);
-            }
-            $allorder['convert_value'] = $convert_value;
+//            if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
+//                $convert_value = $this->convert_number_to_words($allorder->grand_price);
+//            } else {
+//                $convert_value = $this->convert_number($allorder->grand_price);
+//            }
+//            $allorder['convert_value'] = $convert_value;
             $pdf = app('dompdf.wrapper');
             $pdf->loadView('delivery_challan_pdf', [
                 'allorder' => $allorder,
@@ -811,13 +819,13 @@ class DeliveryChallanController extends Controller {
         }
 
         /* inventory code */
-            $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
-            foreach ($product_categories as $product_categoriy) {
-                $product_category_ids[] = $product_categoriy->product_category_id;
-            }           
-            
-            $calc = new InventoryController();
-            $calc->inventoryCalc($product_category_ids);
+        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
+        foreach ($product_categories as $product_categoriy) {
+            $product_category_ids[] = $product_categoriy->product_category_id;
+        }
+
+        $calc = new InventoryController();
+        $calc->inventoryCalc($product_category_ids);
 
         /*
           | ------------------- -----------------------
