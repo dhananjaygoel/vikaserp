@@ -69,7 +69,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        Inquiry::find($delete_module)->delete();
+//                        Inquiry::find($delete_module)->delete();
+                        $delete = Inquiry::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
@@ -119,7 +123,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        Inquiry::find($delete_module)->delete();
+//                        Inquiry::find($delete_module)->delete();
+                        $delete = Inquiry::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
@@ -172,7 +180,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        Order::find($delete_module)->delete();
+//                        Order::find($delete_module)->delete();
+                        $delete = Order::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -218,7 +230,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        Order::find($delete_module)->delete();
+//                        Order::find($delete_module)->delete();
+                        $delete = Order::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -271,7 +287,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        DeliveryOrder::find($delete_module)->delete();
+//                        DeliveryOrder::find($delete_module)->delete();
+                        $delete = DeliveryOrder::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -315,7 +335,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        DeliveryOrder::find($delete_module)->delete();
+//                        DeliveryOrder::find($delete_module)->delete();
+                        $delete = DeliveryOrder::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -357,7 +381,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        DeliveryChallan::find($delete_module)->delete();
+//                        DeliveryChallan::find($delete_module)->delete();
+                        $delete = DeliveryChallan::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -374,10 +402,10 @@ class BulkDeleteController extends Controller {
                         if ($temp['customer']->tally_name != '')
                             $result_data[$key][0] = $temp['customer']->tally_name;
                         else
-                            $result_data[$key][0] = $temp['customer']->owner_name;                       
+                            $result_data[$key][0] = $temp['customer']->owner_name;
                     }
-                    else{
-                       $result_data[$key][0]="Anonymous User"; 
+                    else {
+                        $result_data[$key][0] = "Anonymous User";
                     }
                     $result_data[$key][1] = $temp->serial_number;
                     foreach ($temp['delivery_challan_products'] as $delivery_challan_products) {
@@ -400,7 +428,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        DeliveryChallan::find($delete_module)->delete();
+//                        DeliveryChallan::find($delete_module)->delete();
+                        $delete = DeliveryChallan::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -439,7 +471,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        PurchaseOrder::find($delete_module)->delete();
+//                        PurchaseOrder::find($delete_module)->delete();
+                        $delete = PurchaseOrder::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -486,7 +522,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        PurchaseOrder::find($delete_module)->delete();
+//                        PurchaseOrder::find($delete_module)->delete();
+                        $delete = PurchaseOrder::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -531,7 +571,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        PurchaseAdvise::find($delete_module)->delete();
+//                        PurchaseAdvise::find($delete_module)->delete();
+                        $delete = PurchaseAdvise::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -568,7 +612,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        PurchaseAdvise::find($delete_module)->delete();
+//                        PurchaseAdvise::find($delete_module)->delete();
+                        $delete = PurchaseAdvise::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -605,7 +653,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        PurchaseChallan::find($delete_module)->delete();
+//                        PurchaseChallan::find($delete_module)->delete();
+                        $delete = PurchaseChallan::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -653,7 +705,11 @@ class BulkDeleteController extends Controller {
                  */
                 if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
-                        PurchaseChallan::find($delete_module)->delete();
+//                        PurchaseChallan::find($delete_module)->delete();
+                        $delete = PurchaseChallan::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
                     }
                 }
                 /*
@@ -778,12 +834,12 @@ class BulkDeleteController extends Controller {
                 $delivery_order_present_shipping = 0;
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
-                        if(isset($popv['product_sub_category']) && count($popv['product_sub_category'])){
+                        if (isset($popv['product_sub_category']) && count($popv['product_sub_category'])) {
                             $product_size = $popv['product_sub_category'];
-                        }else{
+                        } else {
                             $product_size = ProductSubCategory::find($popv->product_category_id);
-                        }                        
-                        
+                        }
+
                         if ($popv->unit_id == 1) {
                             $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
                             $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
@@ -791,7 +847,7 @@ class BulkDeleteController extends Controller {
                             $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                             $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
                         } elseif ($popv->unit_id == 3) {
-                            if($product_size->standard_length){
+                            if ($product_size->standard_length) {
                                 $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
                             }
@@ -813,17 +869,17 @@ class BulkDeleteController extends Controller {
             $purchase_order_advise_products = PurchaseProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    if(isset($poapv['product_sub_category']) && count($poapv['product_sub_category'])){
+                    if (isset($poapv['product_sub_category']) && count($poapv['product_sub_category'])) {
                         $product_size = $poapv['product_sub_category'];
-                    }else{
+                    } else {
                         $product_size = ProductSubCategory::find($poapv->product_category_id);
-                    }                    
+                    }
                     if ($poapv->unit_id == 1) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
                     } elseif ($poapv->unit_id == 2) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
                     } elseif ($poapv->unit_id == 3) {
-                        if($product_size->standard_length){
+                        if ($product_size->standard_length) {
                             $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                         }
                     }
@@ -831,17 +887,17 @@ class BulkDeleteController extends Controller {
             }
             if (count($order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
-                    if(isset($popv['product_sub_category']) && count($popv['product_sub_category'])){
+                    if (isset($popv['product_sub_category']) && count($popv['product_sub_category'])) {
                         $product_size = $popv['product_sub_category'];
-                    }else{    
+                    } else {
                         $product_size = ProductSubCategory::find($popv->product_category_id);
-                    }                    
+                    }
                     if ($popv->unit_id == 1) {
                         $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                     } elseif ($popv->unit_id == 2) {
                         $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
                     } elseif ($popv->unit_id == 3) {
-                        if($product_size->standard_length){
+                        if ($product_size->standard_length) {
                             $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                         }
                     }
