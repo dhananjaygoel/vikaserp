@@ -97,7 +97,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3 settle-input-elem">
-                                            <input class="form-control" placeholder="Amount" name="settle_amount[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text">
+                                            <input class="form-control" placeholder="Amount" name="settle_amount[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text" onkeypress=" return numbersOnly(this, event, false, false);">
                                         </div>
                                         <div class="col-md-4 narration-input-elem">
                                             <input class="form-control" placeholder="Narration" name="narration[{{$key}}]" value="{!! isset($old_narration)?(isset($old_narration[$key])? $old_narration[$key] : $customer_arr_narration[$key] ): $customer_arr_narration[$key] !!}" type="text">
@@ -132,7 +132,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3 settle-input-elem">
-                                            <input class="form-control" placeholder="Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text">
+                                            <input class="form-control" placeholder="Amount" name="settle_amount[{{$otu}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$otu])? $old_settle_amount[$otu] : '' ): '' !!}" type="text" onkeypress=" return numbersOnly(this, event, false, false);">
                                         </div>
                                         <div class="col-md-4 narration-input-elem">
                                             <input class="form-control" placeholder="Narration" name="narration[{{$otu}}]" value="{!! isset($old_narration)?(isset($old_narration[$otu])? $old_narration[$otu] : '' ): '' !!}" type="text">
@@ -217,7 +217,7 @@
                                         </div> 
                                         <div class="col-md-3 settle-input-elem">
 
-                                            <input class="form-control" placeholder="Amount" name="settle_amount_d[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text">
+                                            <input class="form-control" placeholder="Amount" name="settle_amount_d[{{$key}}]" value="{!! isset($old_settle_amount)?(isset($old_settle_amount[$key])? $old_settle_amount[$key] : $customer ): $customer !!}" type="text" onkeypress=" return numbersOnly(this, event, false, false);">
                                         </div>
                                         <div class="col-md-4 narration-input-elem">
 
