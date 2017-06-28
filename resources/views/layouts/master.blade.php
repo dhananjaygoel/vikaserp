@@ -11,9 +11,9 @@
 
         <!-- bootstrap -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
-       
+
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<!--        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}-->
+        <!--        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}-->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">--> 
 
         <!-- RTL support - for demo only -->
@@ -41,9 +41,9 @@
         {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
         {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
         {!! HTML::style('/resources/assets/css/libs/select2.min.css') !!}
-       
-        
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
         {!! HTML::style('/resources/assets/css/custom_style/custom_styles.css') !!}
         {!! HTML::style('/resources/assets/css/custom_style/custom_media_query.css') !!}
 
@@ -333,7 +333,7 @@
 
         <!-- theme scripts -->
         {!! HTML::script('/resources/assets/js/scripts.js') !!}
-       
+
         <!-- Confirm Exit JS -->
         {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
 
@@ -342,41 +342,55 @@
 
         <!-- Custom Script Support -->
         {!! HTML::script('/resources/assets/js/select2.v.4.0.3.min.js') !!}
-        
+
         {!! HTML::script('/resources/assets/custom_js/custom_script.js') !!}
         {!! HTML::script('/resources/assets/custom_js/custom_script_js.js') !!}
         {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
 
-        <?php if (Route::getCurrentRoute()->getPath() == "dashboard") { ?>
-            <script src="{{url()."/resources/assets/custom_js/graph.js"}}"></script>
-        <?php } ?>
+        <?php
+        $currentRoute = Route::getCurrentRoute();
+        if ($currentRoute) {
+            $path = $currentRoute->getPath();
+            if ($path == "dashboard") {
+                ?>
+                <script src="{{url()."/resources/assets/custom_js/graph.js"}}"></script>
+                <?php
+            }
+        }
+        ?>
 
 
         {!! HTML::script('/resources/assets/js/jquery.validate.min.js') !!}       
-       {!! HTML::script('/resources/assets/js/bootstrap-multiselect.min.js') !!}
-        
+        {!! HTML::script('/resources/assets/js/bootstrap-multiselect.min.js') !!}
+
 
         <script src="{{url()."/resources/assets/custom_js/laravel.js"}}"></script> 
         <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
 
         <?php
-        if (Route::getCurrentRoute()->getPath() == "inquiry/create" ||
-                Route::getCurrentRoute()->getPath() == "inquiry/{inquiry}/edit" ||
-                Route::getCurrentRoute()->getPath() == "orders/create" ||
-                Route::getCurrentRoute()->getPath() == "place_order/{id}" ||
-                Route::getCurrentRoute()->getPath() == "orders/{orders}/edit" ||
-                Route::getCurrentRoute()->getPath() == "create_delivery_order/{id}" ||
-                Route::getCurrentRoute()->getPath() == "delivery_order/{delivery_order}/edit" ||
-                Route::getCurrentRoute()->getPath() == "delivery_challan/{delivery_challan}/edit" ||
-                Route::getCurrentRoute()->getPath() == "purchase_orders/create" ||
-                Route::getCurrentRoute()->getPath() == "create_purchase_advice/{create_purchase_advice}" ||
-                Route::getCurrentRoute()->getPath() == "purchaseorder_advise/{purchaseorder_advise}/edit" ||
-                Route::getCurrentRoute()->getPath() == "purchase_orders/{purchase_orders}/edit"
-        ) {
-            ?>
-            @include('autocomplete_tally_product_name')
-            <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js"}}"></script>
-        <?php } ?>
+        $currentRoute = Route::getCurrentRoute();
+        if ($currentRoute) {
+            $path = $currentRoute->getPath();
+            if ($path == "inquiry/create" ||
+                    $path == "inquiry/{inquiry}/edit" ||
+                    $path == "orders/create" ||
+                    $path == "place_order/{id}" ||
+                    $path == "orders/{orders}/edit" ||
+                    $path == "create_delivery_order/{id}" ||
+                    $path == "delivery_order/{delivery_order}/edit" ||
+                    $path == "delivery_challan/{delivery_challan}/edit" ||
+                    $path == "purchase_orders/create" ||
+                    $path == "create_purchase_advice/{create_purchase_advice}" ||
+                    $path == "purchaseorder_advise/{purchaseorder_advise}/edit" ||
+                    $path == "purchase_orders/{purchase_orders}/edit"
+            ) {
+                ?>
+                @include('autocomplete_tally_product_name')
+                <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js"}}"></script>
+            <?php
+            }
+        }
+        ?>
 
         <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
                     <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
