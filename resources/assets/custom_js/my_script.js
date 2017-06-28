@@ -709,16 +709,17 @@ $('.print_delivery_order').click(function () {
 //            var printWindow = window.open('about:blank');
             var printWindow = window.open('', '');
 //            printWindow.document.open();
-            console.log(document);
-            printWindow.document.write(data);
-            printWindow.print();
-            printWindow.close();
-            printWindow.onunload = function () {
+            if (printWindow) {
+                printWindow.document.write(data);
+                printWindow.print();
+                printWindow.close();
+                printWindow.onunload = function () {
 //                location.reload();
 
-            };
-            $('.print_delivery_order').html('Generate DO').prop("disabled", false);
-            location.reload();
+                };
+                $('.print_delivery_order').html('Generate DO').prop("disabled", false);
+                location.reload();
+            }
         }
     });
 });
