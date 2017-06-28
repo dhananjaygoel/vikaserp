@@ -221,7 +221,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
                 scrollTop: $('.breadcrumb').offset().top
             }, 1000);
             return false;
-        } else {            
+        } else {
             var curid = $(this).attr("id");
             if (curid == "sendSMSEditPurchaseOrder") {
                 var action = $(this).parents('form').attr('action');
@@ -289,7 +289,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
                 scrollTop: $('.breadcrumb').offset().top
             }, 1000);
             return false;
-        } else {            
+        } else {
             var curid = $(this).attr("id");
             if (curid == "sendSMSEditPurchaseOrder") {
                 var action = $(this).parents('form').attr('action');
@@ -464,7 +464,7 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             }, 1000);
             return false;
         } else {
-            var curid = $(this).attr("id");           
+            var curid = $(this).attr("id");
             if (curid == "sendSMSPurchaseOrder") {
                 var action = $(this).parents('form').attr('action');
                 $(this).parents('form').attr('action', action + '?sendsms=true');
@@ -707,11 +707,12 @@ $('.print_delivery_order').click(function () {
         success: function (data) {
             $('#print_challan').modal('hide');
 //            var printWindow = window.open('about:blank');
-            var printWindow = window.open('','');
+            var printWindow = window.open('', '');
 //            printWindow.document.open();
+            console.log(document);
             printWindow.document.write(data);
             printWindow.print();
-            printWindow.close();            
+            printWindow.close();
             printWindow.onunload = function () {
 //                location.reload();
 
@@ -853,13 +854,15 @@ $('.print_sales_order_daybook').click(function () {
         url: base_url + '/print_sales_order_daybook',
         success: function (data) {
             var printWindow = window.open('', '');
-            printWindow.document.write(data);
-            printWindow.print();
-            printWindow.close();
-            printWindow.onunload = function () {
+            if (printWindow) {
+                printWindow.document.write(data);
+                printWindow.print();
+                printWindow.close();
+                printWindow.onunload = function () {
+                    location.reload();
+                };
                 location.reload();
-            };
-            location.reload();
+            }
         }
     });
 });
