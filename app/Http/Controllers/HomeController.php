@@ -2619,7 +2619,7 @@ class HomeController extends Controller {
 
         if ($last_id == 0) {
             $order_added_server = Order::with('all_order_products')
-                    ->orderBy('id', 'DESC')
+                    ->orderBy('updated_at', 'DESC')
 //                    ->where('id', '<', $last_id)
                     ->where('order_status', '<>', 'pending')
                     ->skip($skip)
@@ -2627,7 +2627,7 @@ class HomeController extends Controller {
                     ->get();
         } else {
             $order_added_server = Order::with('all_order_products')
-                    ->orderBy('id', 'DESC')
+                    ->orderBy('updated_at', 'DESC')
                     ->where('id', '<', $last_id)
                     ->where('order_status', '<>', 'pending')
 //                ->skip($skip)
