@@ -919,7 +919,8 @@ class OrderController extends Controller {
         if ($userinfo->role_id != 0 && $userinfo->role_id != 1) {
             return redirect('orders')->with('error', 'You do not have permission.');
         } elseif ($password == '') {
-            return redirect('orders')->with('error', 'Please enter your password');
+//            return redirect('orders')->with('error', 'Please enter your password');
+            return Redirect::back()->with('error', 'Please enter your password');
         }
         if (Hash::check($password, $userinfo->password)) {
 
