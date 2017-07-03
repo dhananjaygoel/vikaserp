@@ -368,7 +368,7 @@ class DeliveryOrderController extends Controller {
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
-            'remarks' => $input_data['order_remark'],
+            'remarks' => isset($input_data['order_remark'])?$input_data['order_remark']:'',
             'vehicle_number' => $input_data['vehicle_number'],
             'driver_contact_no' => $input_data['driver_contact']
         ));
