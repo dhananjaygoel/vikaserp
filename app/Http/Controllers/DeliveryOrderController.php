@@ -890,6 +890,7 @@ class DeliveryOrderController extends Controller {
 
     public function print_delivery_order($id, DropboxStorageRepository $connection) {
         $current_date = date("m/d/");
+        set_time_limit(0);
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
 
