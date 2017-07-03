@@ -993,8 +993,23 @@ class OrderController extends Controller {
                 }
                 /* */
 
-                AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
-                Order::find($id)->delete();
+//                AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
+                
+
+                $delete_records = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->get();               
+                
+                if ($delete_records != null) {
+                    foreach($delete_records as $elm){
+                       $elm->delete(); 
+                    }
+                }
+                
+                $delete_record = Order::find($id);
+                if ($delete_record != null) {
+                    $delete_record->delete();
+                }
+
+                
                 /* inventory code */
                 $calc = new InventoryController();
                 $calc->inventoryCalc($product_category_ids);
