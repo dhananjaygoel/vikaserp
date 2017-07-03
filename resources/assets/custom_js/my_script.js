@@ -906,24 +906,29 @@ function print_purchase_advice(purchase_advice_id) {
 $('.print_purchase_advise').click(function () {
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
+    var id = 0;
+    id = $('#pa_id').val();
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
-    $.ajax({
-        type: "GET",
-        url: base_url + '/print_purchase_advise/' + $('#pa_id').val() + '?send_sms=' + send_sms,
-        success: function (data) {
-            var printWindow = window.open('', '');
-            printWindow.document.write(data);
-            printWindow.print();
-            printWindow.close();
-            printWindow.onunload = function () {
+    if (id != 0) {
+
+        $.ajax({
+            type: "GET",
+            url: base_url + '/print_purchase_advise/' + id + '?send_sms=' + send_sms,
+            success: function (data) {
+                var printWindow = window.open('', '');
+                printWindow.document.write(data);
+                printWindow.print();
+                printWindow.close();
+                printWindow.onunload = function () {
+                    location.reload();
+                };
                 location.reload();
-            };
-            location.reload();
-        }
-    });
+            }
+        });
+    }
 });
 
 $('.print_purchase_daybook').click(function () {
