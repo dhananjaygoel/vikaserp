@@ -1468,15 +1468,15 @@ class WelcomeController extends Controller {
                 ->where('created_at', '<', '2017-06-15 00:00:00')
                 ->forceDelete();
 
-        print_r($count ." records permanently deleted");
+        print_r($count . " records permanently deleted");
 
         $count = \App\Inquiry::where('inquiry_status', 'completed')
                 ->where('created_at', '<', '2017-06-30 00:00:00')
                 ->delete();
 
         echo "<br>";
-        print_r($count ." records deleted");
-        
+        print_r($count . " records deleted");
+
         exit;
     }
 
@@ -1484,75 +1484,72 @@ class WelcomeController extends Controller {
 
         $count = \App\Order::withTrashed()
                 ->where('order_status', 'completed')
-                ->where('created_at', '<', '2017-06-15 00:00:00')                
+                ->where('created_at', '<', '2017-06-15 00:00:00')
                 ->forceDelete();
-        print_r($count ." records permanently deleted");
+        print_r($count . " records permanently deleted");
 
         $count = \App\Order::
-                where('order_status', 'completed')                
+                where('order_status', 'completed')
                 ->where('created_at', '<', '2017-06-30 00:00:00')
                 ->delete();
-        
+
         echo "<br>";
-        print_r($count ." records deleted");        
+        print_r($count . " records deleted");
         exit;
     }
-    
+
     public function delete_delivery_orders() {
 
         $count = \App\DeliveryOrder::withTrashed()
                 ->where('order_status', 'completed')
-                ->where('created_at', '<', '2017-06-15 00:00:00')                
+                ->where('created_at', '<', '2017-06-15 00:00:00')
                 ->forceDelete();
-        print_r($count ." records permanently deleted");
+        print_r($count . " records permanently deleted");
 
         $count = \App\DeliveryOrder::
                 where('order_status', 'completed')
                 ->where('created_at', '<', '2017-06-30 00:00:00')
                 ->delete();
-        
+
         echo "<br>";
-        print_r($count ." records deleted");        
+        print_r($count . " records deleted");
         exit;
     }
-    
-    
+
     public function delete_purchase_order() {
 
         $count = \App\PurchaseOrder::withTrashed()
                 ->where('order_status', 'completed')
-                ->where('created_at', '<', '2017-06-15 00:00:00')               
+                ->where('created_at', '<', '2017-06-15 00:00:00')
                 ->forceDelete();
-        print_r($count ." records permanently deleted");
+        print_r($count . " records permanently deleted");
 
         $count = \App\PurchaseOrder::
                 where('order_status', 'completed')
                 ->where('created_at', '<', '2017-06-30 00:00:00')
                 ->delete();
-        
+
         echo "<br>";
-        print_r($count ." records deleted");        
+        print_r($count . " records deleted");
         exit;
     }
-    
-    
-    
+
     public function delete_purchase_advise() {
 
         $count = \App\PurchaseAdvise::withTrashed()
                 ->where('advice_status', 'delivered')
                 ->where('created_at', '<', '2017-06-15 00:00:00')
                 ->forceDelete();
-        
-        print_r($count ." records permanently deleted");
+
+        print_r($count . " records permanently deleted");
 
         $count = \App\PurchaseAdvise::
                 where('advice_status', 'delivered')
                 ->where('created_at', '<', '2017-06-30 00:00:00')
                 ->delete();
-        
+
         echo "<br>";
-        print_r($count ." records deleted");        
+        print_r($count . " records deleted");
         exit;
     }
 
