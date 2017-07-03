@@ -212,7 +212,7 @@ class DashboardController extends Controller {
             if (isset($product_info->standard_length)) {
                 $std_length = $product_info->standard_length;
             } else {
-                $std_length = 0;
+                $std_length = 1;
             }
             $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
         }
