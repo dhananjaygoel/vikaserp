@@ -1247,8 +1247,8 @@ class WelcomeController extends Controller {
 
         header("Content-Type: " . $mime);
         header('Content-Disposition: attachment; filename="' . $filename . '"');
-        
-        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";        
+
+        $cmd = "mysqldump -u $db_username --password=$db_password $database | gzip --best";
         passthru($cmd);
 
         exit(0);
@@ -1384,12 +1384,11 @@ class WelcomeController extends Controller {
         })->export('xls');
         exit();
     }
-    
-    
+
     public function expert_purchase_daybook() {
         set_time_limit(0);
         $data = Input::all();
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"]) ) {
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
@@ -1402,7 +1401,7 @@ class WelcomeController extends Controller {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
                         ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2.' 23:59:59')
+                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
                         ->orderBy('updated_at', 'desc')
                         ->get();
             }
@@ -1461,8 +1460,100 @@ class WelcomeController extends Controller {
         })->export('xls');
     }
 
+    public function delete_inquiry() {
+
+        $count = \App\Inquiry::
+                withTrashed()
+                ->where('inquiry_status', 'completed')
+                ->where('created_at', '<', '2017-06-15 00:00:00')
+                ->forceDelete();
+
+        print_r($count ." records permanently deleted");
+
+        $count = \App\Inquiry::where('inquiry_status', 'completed')
+                ->where('created_at', '<', '2017-06-30 00:00:00')
+                ->delete();
+
+        echo "<br>";
+        print_r($count ." records deleted");
+        
+        exit;
+    }
+
+    public function delete_orders() {
+
+        $count = \App\Order::withTrashed()
+                ->where('order_status', 'completed')
+                ->where('created_at', '<', '2017-06-15 00:00:00')                
+                ->forceDelete();
+        print_r($count ." records permanently deleted");
+
+        $count = \App\Order::
+                where('order_status', 'completed')                
+                ->where('created_at', '<', '2017-06-30 00:00:00')
+                ->delete();
+        
+        echo "<br>";
+        print_r($count ." records deleted");        
+        exit;
+    }
+    
+    public function delete_delivery_orders() {
+
+        $count = \App\DeliveryOrder::withTrashed()
+                ->where('order_status', 'completed')
+                ->where('created_at', '<', '2017-06-15 00:00:00')                
+                ->forceDelete();
+        print_r($count ." records permanently deleted");
+
+        $count = \App\DeliveryOrder::
+                where('order_status', 'completed')
+                ->where('created_at', '<', '2017-06-30 00:00:00')
+                ->delete();
+        
+        echo "<br>";
+        print_r($count ." records deleted");        
+        exit;
+    }
+    
+    
+    public function delete_purchase_order() {
+
+        $count = \App\PurchaseOrder::withTrashed()
+                ->where('order_status', 'completed')
+                ->where('created_at', '<', '2017-06-15 00:00:00')               
+                ->forceDelete();
+        print_r($count ." records permanently deleted");
+
+        $count = \App\PurchaseOrder::
+                where('order_status', 'completed')
+                ->where('created_at', '<', '2017-06-30 00:00:00')
+                ->delete();
+        
+        echo "<br>";
+        print_r($count ." records deleted");        
+        exit;
+    }
     
     
     
+    public function delete_purchase_advise() {
+
+        $count = \App\PurchaseAdvise::withTrashed()
+                ->where('advice_status', 'delivered')
+                ->where('created_at', '<', '2017-06-15 00:00:00')
+                ->forceDelete();
+        
+        print_r($count ." records permanently deleted");
+
+        $count = \App\PurchaseAdvise::
+                where('advice_status', 'delivered')
+                ->where('created_at', '<', '2017-06-30 00:00:00')
+                ->delete();
+        
+        echo "<br>";
+        print_r($count ." records deleted");        
+        exit;
+    }
 
 }

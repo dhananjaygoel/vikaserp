@@ -467,5 +467,10 @@ Route::resource('receipt-master', 'ReceiptMasterController');
 
 Route::post('graph_order_temp', 'DashboardController@graph_order_temp');
 
+Route::get('delete_inquiry', 'WelcomeController@delete_inquiry');
+Route::get('delete_orders', 'WelcomeController@delete_orders');
+Route::get('delete_delivery_orders', 'WelcomeController@delete_delivery_orders');
+Route::get('delete_purchase_order', 'WelcomeController@delete_purchase_order');
+Route::get('delete_purchase_advise', 'WelcomeController@delete_purchase_advise');
 
 
