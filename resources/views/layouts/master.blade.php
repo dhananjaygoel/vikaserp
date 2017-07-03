@@ -313,6 +313,7 @@
 
         {!! HTML::script('/resources/assets/js/jquery-ui.custom.min.js') !!}
         <!--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+        {!! HTML::script('/resources/assets/js/moment.min.js') !!}
         {!! HTML::script('/resources/assets/js/fullcalendar.min.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.slimscroll.min.js') !!}
         {!! HTML::script('/resources/assets/js/raphael-min.js') !!}
@@ -330,7 +331,7 @@
         {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
         <!--{!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}-->
-        {!! HTML::script('/resources/assets/js/moment.min.js') !!}
+        
         {!! HTML::script('/resources/assets/js/daterangepicker.js') !!}
 
         <!-- theme scripts -->
