@@ -105,6 +105,8 @@
             };
             purchase_challan_calculation = function () {
             };
+            print_delivery_challan = function () {
+            };
             var gdpData;
         </script>
         <script>
