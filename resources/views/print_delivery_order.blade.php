@@ -145,7 +145,7 @@
         <div class="invoice">
             <div class="title">Delivery Order</div>
             <div class="delivery-details">
-                <div class="do-no">DO Number: {{ $delivery_data->serial_no }}</div>
+                <div class="do-no">DO Number: {{isset($delivery_data->serial_no)?$delivery_data->serial_no:'' }}</div>
                 <div class="date">Date: {{ date('F d, Y')}}</div>
                 <div class="time">
                     <!--Time: {{ date("h:i:sa") }}-->
@@ -159,14 +159,14 @@
                 </div>
             </div>
             <div class="name">
-                Name: {{($delivery_data['customer']->tally_name != "") ? $delivery_data['customer']->tally_name : $delivery_data['customer']->owner_name }}
+                Name: {{(isset($delivery_data['customer']->tally_name) && $delivery_data['customer']->tally_name != "") ? $delivery_data['customer']->tally_name : '' }}
             </div>
             <div class="trk-mobile">
-                <div class="trk-no">Vehicle No: {{ $delivery_data->vehicle_number }}</div>
-                <div class="mob-no">Driver Mob: {{ $delivery_data->driver_contact_no }}</div>
+                <div class="trk-no">Vehicle No: {{ isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number :''}}</div>
+                <div class="mob-no">Driver Mob: {{ isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'' }}</div>
             </div>
             <div class="del">
-                Delivery @: {{($delivery_data->delivery_location_id!=0) ? $delivery_data['location']->area_name : $delivery_data->other_location }}
+                Delivery @: {{(isset($delivery_data->delivery_location_id) && $delivery_data->delivery_location_id!=0) ? $delivery_data['location']->area_name : (isset($delivery_data->other_location)?$delivery_data->other_location:'') }}
             </div>
             <div class="divTable">
                 <div class="headRow">
@@ -179,8 +179,9 @@
                     <div class="divCell">VAT</div>
                 </div>
                 <?php $i = 1; ?>
+                @if($delivery_data['delivery_product'])
                 @foreach($delivery_data['delivery_product'] as $product)
-                @if($product['order_type'] == 'delivery_order')
+                @if(isset($product['order_type']) && $product['order_type'] == 'delivery_order')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
                     <div class="divCell">{{ $product['order_product_details']->alias_name }}</div>
@@ -198,10 +199,11 @@
                 </div>
                 @endif
                 @endforeach
+                @endif
             </div>
             <div class="footer">
                 <div class="remark">Remark:</div>
-                <div class="content">{{ $delivery_data->remarks }}</div>
+                <div class="content">{{ isset($delivery_data->remarks)?$delivery_data->remarks :''}}</div>
             </div>
         </div>
     </body>
