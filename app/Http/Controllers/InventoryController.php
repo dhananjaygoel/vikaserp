@@ -120,10 +120,10 @@ class InventoryController extends Controller {
         $inventory_newlist->setPath('inventory');
         foreach ($inventory_newlist as $product_categoriy) {
             $product_category_ids[] = $product_categoriy->product_sub_category_id;
-        } 
-        
+        }
+
         $this->inventoryCalc($product_category_ids);
-        
+
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
     }
 
@@ -156,15 +156,15 @@ class InventoryController extends Controller {
                             }])->get();
 
 
-        $order_delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
-                        ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_category_ids) {
-                                $q->whereIn('product_category_id',  $product_category_ids);
-                            }])->get();
-
-        $delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
+        $delivery_orders = $order_delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
                         ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
+
+//        $delivery_orders = DeliveryOrder::where('order_status', '=', 'pending')
+//                        ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_category_ids) {
+//                                $q->whereIn('product_category_id', $product_category_ids);
+//                            }])->get();
 
         $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')
                         ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
@@ -183,7 +183,7 @@ class InventoryController extends Controller {
                             }])->get();
 
 
-        $purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
+        $purchase_orders_purchase_advice = $purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
                         ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
@@ -198,7 +198,7 @@ class InventoryController extends Controller {
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
-
+        $update_inventory_data = [];
         foreach ($inventory_list as $inventory) {
             $order_qty = 0;
             $sales_challan_qty = 0;
@@ -250,19 +250,19 @@ class InventoryController extends Controller {
                                 if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
                                     foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
                                         if ($delivery_orders_product_details['product_category_id'] == $product_sub_id && $delivery_orders_details['order_id'] == $orders_details->id) {
-                                        if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
+                                            if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
 //                                        $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + $delivery_orders_product_details->quantity;
-                                            if ($delivery_orders_product_details->unit_id == 1) {
-                                                $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + $delivery_orders_product_details->quantity;
-                                            }
-                                            if ($delivery_orders_product_details->unit_id == 2) {
-                                                $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight);
-                                            }
-                                            if ($delivery_orders_product_details->unit_id == 3) {
-                                                $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
+                                                if ($delivery_orders_product_details->unit_id == 1) {
+                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + $delivery_orders_product_details->quantity;
+                                                }
+                                                if ($delivery_orders_product_details->unit_id == 2) {
+                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight);
+                                                }
+                                                if ($delivery_orders_product_details->unit_id == 3) {
+                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
+                                                }
                                             }
                                         }
-                                    }
                                     }
                                 }
                             }
@@ -420,25 +420,27 @@ class InventoryController extends Controller {
                             }
                         }
 
-                        $purchase_orders_purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
-                                        ->where('purchase_order_id', '=', $purchase_orders_details->id)
-                                        ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
-                                                $q->where('product_category_id', '=', $product_sub_id);
-                                            }])->get();
+//                        $purchase_orders_purchase_advice = PurchaseAdvise::where('advice_status', '=', 'in_process')
+//                                        ->where('purchase_order_id', '=', $purchase_orders_details->id)
+//                                        ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
+//                                                $q->where('product_category_id', '=', $product_sub_id);
+//                                            }])->get();
                         if (isset($purchase_orders_purchase_advice) && count($purchase_orders_purchase_advice) > 0) {
                             foreach ($purchase_orders_purchase_advice as $purchase_advice_details) {
                                 if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
                                     foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
-                                        if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
+                                        if ($purchase_advice_product_details['product_category_id'] == $product_sub_id && $purchase_advice_product_details['order_id'] == $orders_details->id) {
+                                            if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
 //                                        $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
-                                            if ($purchase_advice_product_details->unit_id == 1) {
-                                                $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
-                                            }
-                                            if ($purchase_advice_product_details->unit_id == 2) {
-                                                $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight);
-                                            }
-                                            if ($purchase_advice_product_details->unit_id == 3) {
-                                                $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
+                                                if ($purchase_advice_product_details->unit_id == 1) {
+                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
+                                                }
+                                                if ($purchase_advice_product_details->unit_id == 2) {
+                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight);
+                                                }
+                                                if ($purchase_advice_product_details->unit_id == 3) {
+                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
+                                                }
                                             }
                                         }
                                     }
@@ -586,7 +588,7 @@ class InventoryController extends Controller {
             $virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
             $inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
-         
+            
         }
     }
 
