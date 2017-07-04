@@ -1554,35 +1554,35 @@ class WelcomeController extends Controller {
         exit;
     }
 
-    public function inventoryupdate() {
-
-        $prod_sub_cat = ProductSubCategory::orderBy('id')->get();
-        $inventory = [];
-        foreach ($prod_sub_cat as $elm) {
-            $inventory[] = [
-                'product_sub_category_id' => $elm->id,
-                'minimal' => '0.00',
-                'opening_qty' => '0.00',
-                'sales_challan_qty' => '0.00',
-                'purchase_challan_qty' => '0.00',
-                'physical_closing_qty' => '0.00',
-                'pending_sales_order_qty' => '0.00',
-                'pending_delivery_order_qty' => '0.00',
-                'pending_purchase_advise_qty' => '0.00',
-                'virtual_qty' => '0.00',
-                'opening_qty_date' => date('Y-m-d H:i:s'),
-            ];
-        }
-        DB::table('inventory')->truncate();
-
-        $add_loaders_info = \App\Inventory::insert($inventory);
-        
-        if(count($add_loaders_info)){
-            echo "<pre>";
-            print_r("Inventory updated successfully");
-            echo "</pre>";
-            
-        }
-    }
+//    public function inventoryupdate() {
+//
+//        $prod_sub_cat = ProductSubCategory::orderBy('id')->get();
+//        $inventory = [];
+//        foreach ($prod_sub_cat as $elm) {
+//            $inventory[] = [
+//                'product_sub_category_id' => $elm->id,
+//                'minimal' => '0.00',
+//                'opening_qty' => '0.00',
+//                'sales_challan_qty' => '0.00',
+//                'purchase_challan_qty' => '0.00',
+//                'physical_closing_qty' => '0.00',
+//                'pending_sales_order_qty' => '0.00',
+//                'pending_delivery_order_qty' => '0.00',
+//                'pending_purchase_advise_qty' => '0.00',
+//                'virtual_qty' => '0.00',
+//                'opening_qty_date' => date('Y-m-d H:i:s'),
+//            ];
+//        }
+//        DB::table('inventory')->truncate();
+//
+//        $add_loaders_info = \App\Inventory::insert($inventory);
+//        
+//        if(count($add_loaders_info)){
+//            echo "<pre>";
+//            print_r("Inventory updated successfully");
+//            echo "</pre>";
+//            
+//        }
+//    }
 
 }
