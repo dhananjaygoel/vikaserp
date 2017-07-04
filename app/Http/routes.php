@@ -472,5 +472,6 @@ Route::get('delete_orders', 'WelcomeController@delete_orders');
 Route::get('delete_delivery_orders', 'WelcomeController@delete_delivery_orders');
 Route::get('delete_purchase_order', 'WelcomeController@delete_purchase_order');
 Route::get('delete_purchase_advise', 'WelcomeController@delete_purchase_advise');
+Route::get('inventoryupdate', 'WelcomeController@inventoryupdate');
 
 
