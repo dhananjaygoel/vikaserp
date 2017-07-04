@@ -52,18 +52,16 @@ class Handler extends ExceptionHandler {
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e) {
-
+        /* newcode */
+        if ($e instanceof TokenMismatchException) {
+            return redirect($request->fullUrl())->with('csrf_error', "Opps! Seems you couldn't submit form for a longtime. Please try again");
+        }
+        /* end */
         if ($this->isHttpException($e)) {
             return $this->renderHttpException($e);
-        } else {
-            
-            /*newcode*/
-            if ($e instanceof TokenMismatchException) {
-                return redirect($request->fullUrl())->with('csrf_error', "Opps! Seems you couldn't submit form for a longtime. Please try again");
-            }
-            /*end*/
-            return parent::render($request, $e);
         }
+
+        return parent::render($request, $e);
     }
 
 }
