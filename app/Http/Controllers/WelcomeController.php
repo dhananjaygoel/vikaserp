@@ -1106,33 +1106,33 @@ class WelcomeController extends Controller {
         exit();
     }
 
-//    public function delete_reports() {
-//        DB::table('inquiry')->truncate();
-//        DB::table('inquiry_products')->truncate();
-//        DB::table('orders')->truncate();
-//        DB::table('all_order_products')->truncate();
-//        DB::table('order_cancelled')->truncate();
-//        DB::table('delivery_order')->truncate();
-//        DB::table('delivery_challan')->truncate();
-//        DB::table('purchase_order')->truncate();
-//        DB::table('all_purchase_products')->truncate();
-//        DB::table('purchase_order_canceled')->truncate();
-//        DB::table('purchase_advice')->truncate();
-//        DB::table('purchase_challan')->truncate();
-//        DB::table('labours')->truncate();
-//        DB::table('delivery_challan_labours')->truncate();
-//        DB::table('loaded_bies')->truncate();
-//        DB::table('delivery_challan_loaded_bies')->truncate();
-//        DB::table('collection_user_location')->truncate();
-//        DB::table('territories')->truncate();
-//        DB::table('territory_locations')->truncate();
-//        DB::table('receipts')->truncate();
-//        DB::table('customer_receipts')->truncate();
-//        DB::table('users')->where('role_id','6')->delete();
-//        DB::table('customer_receipts_debited_tos')->delete();
-//        $this->reset_stock();
-//        echo 'truncate all data';
-//    }
+    public function delete_reports() {
+        DB::table('inquiry')->truncate();
+        DB::table('inquiry_products')->truncate();
+        DB::table('orders')->truncate();
+        DB::table('all_order_products')->truncate();
+        DB::table('order_cancelled')->truncate();
+        DB::table('delivery_order')->truncate();
+        DB::table('delivery_challan')->truncate();
+        DB::table('purchase_order')->truncate();
+        DB::table('all_purchase_products')->truncate();
+        DB::table('purchase_order_canceled')->truncate();
+        DB::table('purchase_advice')->truncate();
+        DB::table('purchase_challan')->truncate();
+        DB::table('labours')->truncate();
+        DB::table('delivery_challan_labours')->truncate();
+        DB::table('loaded_bies')->truncate();
+        DB::table('delivery_challan_loaded_bies')->truncate();
+        DB::table('collection_user_location')->truncate();
+        DB::table('territories')->truncate();
+        DB::table('territory_locations')->truncate();
+        DB::table('receipts')->truncate();
+        DB::table('customer_receipts')->truncate();
+        DB::table('users')->where('role_id','6')->delete();
+        DB::table('customer_receipts_debited_tos')->delete();
+        $this->reset_stock();
+        echo 'truncate all data';
+    }
 
     public function delete_reports_receipt() {
 
