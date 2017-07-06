@@ -118,11 +118,13 @@ class InventoryController extends Controller {
                 ->orderBy('product_sub_category.alias_name', 'ASC')
                 ->paginate(50);
         $inventory_newlist->setPath('inventory');
-        foreach ($inventory_newlist as $product_categoriy) {
-            $product_category_ids[] = $product_categoriy->product_sub_category_id;
-        }
+        if (count($inventory_newlist)) {
+            foreach ($inventory_newlist as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_sub_category_id;
+            }
 
-        $this->inventoryCalc($product_category_ids);
+            $this->inventoryCalc($product_category_ids);
+        }
 
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
     }
@@ -588,7 +590,6 @@ class InventoryController extends Controller {
             $virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
             $inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
-            
         }
     }
 
