@@ -174,9 +174,9 @@ class PurchaseOrderController extends Controller {
             $q = $q->where('order_status', '=', 'pending');
         }
 
-//        if (Auth::user()->role_id > 1) {
-//            $q->where('is_view_all', '=', 1);
-//        }
+        if (Auth::user()->role_id > 1) {
+            $q->where('is_view_all', '=', 1);
+        }
 
 
 //        if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
