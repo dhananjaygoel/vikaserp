@@ -2437,7 +2437,8 @@ class HomeController extends Controller {
             $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('all_order_products')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
-            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('all_order_products')->get();
+            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
+//            $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('all_order_products')->get();
             $order_response['order_server_updated'] = ($order_updated_server && count($order_updated_server) > 0) ? $order_updated_server : '';
 
             /* Send Updated customers */
