@@ -3645,7 +3645,7 @@ class HomeController extends Controller {
             $receipt = (json_decode($data['receipt']));
         }
 
-        if (Input::has('receipt_customer')) {
+            if (Input::has('receipt_customer')) {
             $receipt_customer = (json_decode($data['receipt_customer']));
         }
 
@@ -3834,7 +3834,7 @@ class HomeController extends Controller {
         $territory_date = Territory::withTrashed()->select('updated_at')->orderby('updated_at', 'DESC')->first();
         $territory_date_tl = TerritoryLocation::select('updated_at')->
                         orderby('updated_at', 'DESC')->first();
-        if ($territory_date_tl->updated_at > $territory_date->updated_at) {
+        if (isset($territory_date_tl->updated_at) && $territory_date_tl->updated_at > $territory_date->updated_at) {
             $territory_date = $territory_date_tl;
         }
 

@@ -168,15 +168,23 @@ class PurchaseOrderController extends Controller {
             $q->where('order_for', '!=', 0)->get();
         }
 
-
-
         if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
-            $q = $q->where('order_status', '=', $data['order_filter'])
-                    ->where('is_view_all', '=', 0);
+            $q = $q->where('order_status', '=', $data['order_filter']);
         } else {
-            $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
+            $q = $q->where('order_status', '=', 'pending');
         }
 
+//        if (Auth::user()->role_id > 1) {
+//            $q->where('is_view_all', '=', 1);
+//        }
+
+
+//        if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
+//            $q = $q->where('order_status', '=', $data['order_filter'])
+//                    ->where('is_view_all', '=', 0);
+//        } else {
+//            $q = $q->where('order_status', '=', 'pending')->where('is_view_all', '=', 0);
+//        }
 //        $session_sort_type_order = Session::get('order-sort-type');
 //        $qstring_sort_type_order = $data['order_filter'];
         $session_sort_type_order = Session::get('purchase-order-sort-type');
@@ -197,10 +205,6 @@ class PurchaseOrderController extends Controller {
             }
         }
 
-//        echo "<pre>";
-//        print_r($data['order_status']);
-//        echo "</pre>";
-//        exit;
 
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -224,8 +228,6 @@ class PurchaseOrderController extends Controller {
 
 
 
-//        exit;
-
         foreach ($purchase_orders as $key => $purchase_order) {
 
             if ($purchase_order->pending_quantity == 0 && $purchase_order->order_status == 'pending') {
@@ -234,8 +236,6 @@ class PurchaseOrderController extends Controller {
                 $po = PurchaseOrder::where('id', $purchase_order->id)->update(['order_status' => 'completed']);
             }
         }
-
-
 
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
@@ -799,14 +799,14 @@ class PurchaseOrderController extends Controller {
                 $product_category_ids[] = $product_categoriy->product_category_id;
             }
 
-            
+
             PurchaseOrder::find($id)->delete();
             PurchaseProducts::where('purchase_order_id', '=', $id)->where('order_type', '=', 'purchase_order')->delete();
             Session::put('order-sort-type', $order_sort_type);
-            
+
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
-            
+
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
