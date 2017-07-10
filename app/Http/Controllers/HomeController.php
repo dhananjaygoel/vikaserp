@@ -833,7 +833,8 @@ class HomeController extends Controller {
             $purchase_challan_server = PurchaseChallan::where('created_at', '>', $last_sync_date)->where('order_status','pending')->with('all_purchase_products')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
 
-            $purchase_challan_updated_server = PurchaseChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status','pending')->with('all_purchase_products')->get();
+//            $purchase_challan_updated_server = PurchaseChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status','pending')->with('all_purchase_products')->get();
+            $purchase_challan_updated_server = PurchaseChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_purchase_products')->get();
             $purchase_challan_response['purchase_challan_server_updated'] = ($purchase_challan_updated_server && count($purchase_challan_updated_server) > 0) ? $purchase_challan_updated_server : array();
 
             /* Send Updated customers */
@@ -1090,7 +1091,8 @@ class HomeController extends Controller {
             $purchase_advice_server = PurchaseAdvise::where('created_at', '>', $last_sync_date)->where('advice_status', 'in_process')->with('purchase_products')->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
-            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('advice_status', 'in_process')->with('purchase_products')->get();
+            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
+//            $purchase_advice_updated_server = PurchaseAdvise::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('advice_status', 'in_process')->with('purchase_products')->get();
             $purchase_advice_response['purchase_advice_server_updated'] = ($purchase_advice_updated_server && count($purchase_advice_updated_server) > 0) ? $purchase_advice_updated_server : array();
 
             /* Send Updated customers */
@@ -1357,7 +1359,8 @@ class HomeController extends Controller {
             $purchase_order_server = PurchaseOrder::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('purchase_products')->get();
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
-            $purchase_order_updated_server = PurchaseOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('purchase_products')->get();
+//            $purchase_order_updated_server = PurchaseOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('purchase_products')->get();
+            $purchase_order_updated_server = PurchaseOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('purchase_products')->get();
             $purchase_order_response['purchase_order_server_updated'] = ($purchase_order_updated_server && count($purchase_order_updated_server) > 0) ? $purchase_order_updated_server : array();
 
             /* Send Updated customers */
@@ -1751,7 +1754,8 @@ class HomeController extends Controller {
             $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->where('challan_status','pending')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
 
-            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('challan_status','challan_status')->with('delivery_challan_products', 'challan_loaded_by', 'pending')->get();
+//            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('challan_status','pending')->with('delivery_challan_products', 'challan_loaded_by')->get();
+            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products', 'challan_loaded_by')->get();
             $delivery_challan_response['delivery_challan_server_updated'] = ($delivery_challan_updated_server && count($delivery_challan_updated_server) > 0) ? $delivery_challan_updated_server : array();
 
             /* Send Updated customers */
@@ -2091,7 +2095,9 @@ class HomeController extends Controller {
             $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_server_added'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : array();
 
-            $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('delivery_product')->get();
+            $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_product')->get();
+            
+//            $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('order_status', 'pending')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_server_updated'] = ($delivery_order_updated_server && count($delivery_order_updated_server) > 0) ? $delivery_order_updated_server : array();
 
             /* Send Updated customers */
