@@ -1782,6 +1782,26 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
             }
         }
     }
+    
+    for (i = 1; i <= tot_products; i++) {
+        var actual_qty = parseInt($("#actual_quantity_" + i).val());        
+        var actual_pieces = parseInt($("#actual_pieces_" + i).val()); 
+        var price = parseInt($("#product_price_" + i).val()); 
+        if ($("#actual_quantity_" + i).val() == "" || actual_qty=="0") {
+             $('#actual_quantity_' + i).addClass('error_validation');
+                status_form = 1;
+        }
+        if ($("#actual_pieces_" + i).val() == "" || actual_pieces=="0") {
+             $('#actual_pieces_' + i).addClass('error_validation');
+                status_form = 1;
+        }
+        if ($("#product_price_" + i).val() == "" || price=="0") {
+             $('#product_price_' + i).addClass('error_validation');
+                status_form = 1;
+        }
+    }
+    
+    
     if (j == tot_products) {
         if ($("#add_product_id_1").val() == "") {
             $('#add_product_name_1').addClass('error_validation');
