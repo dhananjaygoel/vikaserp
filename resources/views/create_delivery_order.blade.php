@@ -251,7 +251,7 @@
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Contact:</td>
-                                    <td><input  class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{old('driver_contact')}}" type="tel"></td>
+                                    <td><input  class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{old('driver_contact')}}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="tel"></td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Remark:</td>

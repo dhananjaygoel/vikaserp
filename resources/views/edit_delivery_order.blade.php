@@ -469,7 +469,7 @@
                         </div>
                         <div class="form-group">
                             <label for="driver_contact">Driver Contact</label>
-                            <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" type="tel">
+                            <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="tel">
                         </div>
                         <div class="clearfix"></div>
                         

@@ -361,7 +361,7 @@
                             
                             <div class="form-group" >
                                 <label for="challan_driver_contact"><b class="challan">Driver Contact :</b></label>
-                                <input id="challan_driver_contact" class="form-control" placeholder="challan_driver_contact" name="challan_driver_contact"  value="{{$allorder->delivery_order->driver_contact_no}}" type="text">
+                                <input id="challan_driver_contact" class="form-control" placeholder="Driver Contact" name="challan_driver_contact"  value="{{$allorder->delivery_order->driver_contact_no}}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="challan_remark"><b class="challan">Remark</b></label>

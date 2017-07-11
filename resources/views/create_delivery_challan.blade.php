@@ -348,7 +348,7 @@
                         </div>
                         <div class="form-group">
                             <label for="challan_driver_contact"><b class="challan">Driver Contact</b></label>
-                            <input id="challan_driver_contact" class="form-control" name="challan_driver_contact"  value="{{isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:''}}" type="text">
+                            <input id="challan_driver_contact" class="form-control" name="challan_driver_contact"  value="{{isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:''}}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="text">
                         </div>
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark</b></label>
