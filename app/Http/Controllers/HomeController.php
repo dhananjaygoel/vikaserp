@@ -4405,7 +4405,7 @@ class HomeController extends Controller {
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
 
                 if ($real_sync_date->sync_date <= Input::get('product_subcategory_sync_date')) {
-                    $product_subcategory['all']="";
+                    $product_subcategory['all']=[];
                     $product_subcategory['latest_date'] = $real_sync_date->sync_date;
                     return json_encode($product_subcategory);
                 }
