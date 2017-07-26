@@ -2585,12 +2585,9 @@ class HomeController extends Controller {
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
             $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
         }
-//        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
-        $order_date = SyncTableInfo::select('sync_date')->where('table_name', 'orders');
-
+        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($order_date))
-//            $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
-            $order_response['latest_date'] = $order_date->sync_date->toDateTimeString();
+            $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
         else
             $order_response['latest_date'] = "";
 
