@@ -475,3 +475,5 @@ Route::get('delete_purchase_advise', 'WelcomeController@delete_purchase_advise')
 Route::get('inventoryupdate', 'WelcomeController@inventoryupdate');
 
 
+Route::get('save_table_sncy_date','WelcomeController@save_table_sncy_date');
+
