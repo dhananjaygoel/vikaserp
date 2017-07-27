@@ -4354,6 +4354,17 @@ class HomeController extends Controller {
      * App get all customers
      */
     public function appallcustomers() {
+         /* new code return if web sync date is less than or equal to app sync date*/
+        $real_sync_date = SyncTableInfo::where('table_name', 'customers')->select('sync_date')->first();
+        if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+
+            if ($real_sync_date->sync_date <= Input::get('customer_sync_date')) {
+                $product_subcategory['all'] = [];
+                $product_subcategory['latest_date'] = $real_sync_date->sync_date;
+                return json_encode($product_subcategory);
+            }
+        }
+        /* end of new code */
 
         if (Input::has('customer_sync_date') && Input::get('customer_sync_date') != '') {
             $customers['all'] = Customer::where('updated_at', '>', Input::get('customer_sync_date'))->orderBy('tally_name', 'asc')->get();
@@ -4376,6 +4387,18 @@ class HomeController extends Controller {
      */
     public function appallproduct_category() {
 
+        /* new code return if web sync date is less than or equal to app sync date*/
+        $real_sync_date = SyncTableInfo::where('table_name', 'product_category')->select('sync_date')->first();
+        if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+
+            if ($real_sync_date->sync_date <= Input::get('product_category_sync_date')) {
+                $product_subcategory['all'] = [];
+                $product_subcategory['latest_date'] = $real_sync_date->sync_date;
+                return json_encode($product_subcategory);
+            }
+        }
+        /* end of new code */
+
         if (Input::has('product_category_sync_date') && Input::get('product_category_sync_date') != '') {
             $product_category['all'] = ProductCategory:: where('updated_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
@@ -4396,22 +4419,22 @@ class HomeController extends Controller {
     public function appallproduct_sub_category() {
 
         if (Input::has('product_subcategory_sync_date') && Input::get('product_subcategory_sync_date') != '') {
-            
-            /*new code*/
+
+            /* new code */
             $real_sync_date = SyncTableInfo::where('table_name', 'product_sub_category')->select('sync_date')->first();
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
 
                 if ($real_sync_date->sync_date <= Input::get('product_subcategory_sync_date')) {
-                    $product_subcategory['all']=[];
+                    $product_subcategory['all'] = [];
                     $product_subcategory['latest_date'] = $real_sync_date->sync_date;
                     return json_encode($product_subcategory);
                 }
             }
-            /*end of new code*/
+            /* end of new code */
             $product_subcategory['all'] = ProductSubCategory::with('product_category')->where('updated_at', '>', Input::get('product_subcategory_sync_date'))->orderBy('created_at', 'desc')->get();
         } else {
             $product_subcategory['all'] = ProductSubCategory::with('product_category')->orderBy('created_at', 'desc')->get();
-        } 
+        }
         $product_subcategory_date = ProductSubCategory::select('updated_at')->orderby('updated_at', 'DESC')->first();
         if (!empty($product_subcategory_date)) {
             $product_subcategory['latest_date'] = $product_subcategory_date->updated_at->toDateTimeString();
