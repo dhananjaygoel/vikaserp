@@ -1585,7 +1585,7 @@ class WelcomeController extends Controller {
 //        }
 //    }
 
-    function save_table_sncy_date() {      
+    function save_table_sycn_date() {      
         $tables = DB::select('SHOW TABLES');
         $db_name = "Tables_in_" . DB::getDatabaseName();
         $table_name = [];

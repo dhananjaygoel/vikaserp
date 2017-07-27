@@ -639,6 +639,11 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
+        //         update sync table         
+        $tables = ['delivery_challan', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
 
@@ -671,6 +676,11 @@ class DeliveryChallanController extends Controller {
             $calc->inventoryCalc($product_category_ids);
 
             Session::put('order-sort-type', $order_sort_type);
+            //         update sync table         
+            $tables = ['delivery_challan', 'all_order_products'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
@@ -781,15 +791,15 @@ class DeliveryChallanController extends Controller {
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
 
-                        
-            
+
+
 // //            $this->checkpending_quantity(); 
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 ////                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 //                            ->with('delivery_challan_products.order_product_details', 'customer','delivery_order.location')->first();
-            
+
             $allorder = $update_delivery_challan;
-            
+
             $number = $allorder->grand_price;
             $exploded_value = explode(".", $number);
 
@@ -886,7 +896,11 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-
+        //         update sync table         
+        $tables = ['delivery_challan', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
 
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
     }
