@@ -1585,34 +1585,15 @@ class WelcomeController extends Controller {
 //        }
 //    }
 
-    function save_table_sncy_date() {
-        if (Input::has('table_name') && Input::get('table_name') <> "") {
-            if (Input::has('sync_date') && Input::get('sync_date') <> "0000-00-00 00:00:00") {
-                $sync_date = Input::get('sync_date');
-            } else {
-                $users = DB::table(Input::get('table_name'))
-                        ->select('updated_at')
-                        ->orderBy('updated_at', 'DESC')
-                        ->first();
-                $sync_date = $users->updated_at;
-            }
-
-            $count1 = DB::table('sync_table_infos')
-                    ->where('table_name', Input::get('table_name'))
-                    ->update(['sync_date' => $sync_date])
-            ;
-            if ($count1 > 0) {
-                return "Table 'sync_table_infos' have been updated for " . Input::get('table_name');
-            } else {
-                return "Error while updateing data Table 'sync_table_infos'";
-            }
-        }
+    function save_table_sncy_date() {      
         $tables = DB::select('SHOW TABLES');
         $db_name = "Tables_in_" . DB::getDatabaseName();
         $table_name = [];
         $id = 1;
+        $unused_table_name = array("migrations", "password_resets", "collection_user_location", "customer_managers", "customer_product_difference", "customer_receipts", "customer_receipts_debited_tos", "debited_tos", "delivery_challan_labours", "delivery_challan_loaded_bies", "order_cancelled", "product_category_old", "product_sub_category_old", "product_type", "purchase_order_canceled", "security", "supplier", "sync_table_infos", "territory_locations", "unit", "user_roles");
         foreach ($tables as $key => $table) {
-            if ($table->$db_name <> 'migrations' && $table->$db_name <> 'password_resets') {
+            if (!in_array($table->$db_name, $unused_table_name)) {
+//            if ($table->$db_name <> 'migrations' && $table->$db_name <> 'password_resets') {
                 $users = DB::table($table->$db_name)
                         ->select('updated_at')
                         ->orderBy('updated_at', 'DESC')
@@ -1632,6 +1613,23 @@ class WelcomeController extends Controller {
             echo "Table 'sync_table_infos' have been updated.";
         } else {
             echo "Error while updateing data Table 'sync_table_infos'";
+        }
+    }
+
+    function set_updated_date_to_sync_table($tables = []) {
+//        $tables = ["inquiry"];
+
+        foreach ($tables as $key => $table) {
+
+            $users = DB::table($table)
+                    ->select('updated_at')
+                    ->orderBy('updated_at', 'DESC')
+                    ->first();
+            $sync_date = $users->updated_at;
+           
+            DB::table('sync_table_infos')
+                    ->where('table_name', $table)
+                    ->update(['sync_date' => $sync_date]);
         }
     }
 

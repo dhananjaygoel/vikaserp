@@ -87,18 +87,6 @@ class InquiryController extends Controller {
                         ->first();
             }
 
-            if (count($cust) <= 0) {
-                echo "<pre>";
-                print_r(Auth::user()->first_name);
-                echo "<br>";
-                print_r(Auth::user()->email);
-                echo "<br>";
-                print_r(Auth::user()->mobile_number);
-                echo "</pre>";
-                exit;
-            }
-
-
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
                                 ->where('customer_id', '=', $cust->id)
@@ -313,7 +301,11 @@ class InquiryController extends Controller {
             }
         }
 
-
+        //         update sync table         
+        $tables = ['inquiry','customers','inquiry_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code*/
 
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
@@ -680,6 +672,12 @@ class InquiryController extends Controller {
                 }
             }
         }
+//         update sync table         
+        $tables = ['inquiry','customers','inquiry_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code*/
+        
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully modified.');
     }
 
@@ -1419,6 +1417,11 @@ class InquiryController extends Controller {
             }
         }
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
+        //         update sync table         
+        $tables = ['inquiry','customers','inquiry_products','orders','all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code*/
         return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
 

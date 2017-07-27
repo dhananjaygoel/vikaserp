@@ -231,6 +231,11 @@ class DeliveryOrderController extends Controller {
                 AllOrderProducts::create($order_products);
             }
         }
+        //         update sync table         
+        $tables = ['delivery_order', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return redirect('delivery_order')->with('success', 'Delivery order details successfully added.');
     }
 
@@ -368,7 +373,7 @@ class DeliveryOrderController extends Controller {
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
-            'remarks' => isset($input_data['order_remark'])?$input_data['order_remark']:'',
+            'remarks' => isset($input_data['order_remark']) ? $input_data['order_remark'] : '',
             'vehicle_number' => $input_data['vehicle_number'],
             'driver_contact_no' => $input_data['driver_contact']
         ));
@@ -484,8 +489,11 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-
-
+        //         update sync table         
+        $tables = ['delivery_order', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
 
 
         return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
@@ -525,6 +533,11 @@ class DeliveryOrderController extends Controller {
             $calc->inventoryCalc($product_category_ids);
 //            Session::put('order-sort-type', $order_sort_type);
 //            return array('message' => 'success');
+            //         update sync table         
+            $tables = ['delivery_order', 'all_order_products'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
             return Redirect::to('delivery_order')->with('success', 'Record deleted successfully.');
         } else {
 //            return array('message' => 'failed');
@@ -581,19 +594,19 @@ class DeliveryOrderController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
-        
-        
-        if (count($delivery_data) < 1 ) {
+
+
+        if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
-        if ( empty($delivery_data['customer'])) {
+        if (empty($delivery_data['customer'])) {
             return redirect('delivery_order')->with('error', 'Inavalid delivery order- User not present.');
         }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        $labours = Labour::where('type','<>','purchase')->get();
-        $loaders = LoadedBy::where('type','<>','purchase')->get();
+        $labours = Labour::where('type', '<>', 'purchase')->get();
+        $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders'));
     }
 
@@ -878,7 +891,13 @@ class DeliveryOrderController extends Controller {
         }
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
-
+        
+             
+         //         update sync table         
+        $tables = ['delivery_order','all_order_products','delivery_challan'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code*/
         
         return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
     }
@@ -991,7 +1010,13 @@ class DeliveryOrderController extends Controller {
         $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
         chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
         $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-
+        
+             
+         //         update sync table         
+        $tables = ['delivery_order','all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code*/
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 

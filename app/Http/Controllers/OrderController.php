@@ -522,6 +522,12 @@ class OrderController extends Controller {
             }
 //            }
         }
+
+        //         update sync table         
+        $tables = ['customers', 'orders', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return redirect('orders')->with('flash_message', 'Order details successfully added.');
     }
 
@@ -896,6 +902,11 @@ class OrderController extends Controller {
             }
 //            }
         }
+        //         update sync table         
+        $tables = ['customers', 'orders', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return redirect('orders')->with('flash_message', 'Order details successfully modified.');
     }
 
@@ -994,22 +1005,22 @@ class OrderController extends Controller {
                 /* */
 
 //                AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->delete();
-                
 
-                $delete_records = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->get();               
-                
+
+                $delete_records = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'order')->get();
+
                 if ($delete_records != null) {
-                    foreach($delete_records as $elm){
-                       $elm->delete(); 
+                    foreach ($delete_records as $elm) {
+                        $elm->delete();
                     }
                 }
-                
+
                 $delete_record = Order::find($id);
                 if ($delete_record != null) {
                     $delete_record->delete();
                 }
 
-                
+
                 /* inventory code */
                 $calc = new InventoryController();
                 $calc->inventoryCalc($product_category_ids);
@@ -1134,6 +1145,12 @@ class OrderController extends Controller {
                     'reason' => $reason,
                     'cancelled_by' => Auth::id()
         ]);
+
+        //         update sync table         
+        $tables = ['orders', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return array('message' => 'success');
     }
 
@@ -1352,7 +1369,11 @@ class OrderController extends Controller {
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
 
-
+            //         update sync table         
+            $tables = ['customers', 'orders', 'all_order_products','delivery_order'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
             return redirect('orders')->with('flash_message', 'One order converted to Delivery order.');
         } else {
             $error_msg = $validator->messages();
