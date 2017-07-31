@@ -86,6 +86,7 @@ Route::get('app_export_loaded_by', 'WelcomeController@excel_export_loaded_by');
 
 Route::get('appall_relationship_manager', 'HomeController@appAllRelationshipManager');
 Route::get('applocation', 'HomeController@applocation');
+Route::post('appallcommon','HomeController@appallcommon');
 /* All customer app routes */
 Route::post('app_customer_login', 'HomeController@appCustomerLogin');
 Route::post('app_contactus', 'HomeController@appContactUs');
@@ -475,6 +476,6 @@ Route::get('delete_purchase_advise', 'WelcomeController@delete_purchase_advise')
 Route::get('inventoryupdate', 'WelcomeController@inventoryupdate');
 
 
-Route::get('save_table_sycn_date','WelcomeController@save_table_sycn_date');
+Route::get('save_table_sync_date','WelcomeController@save_table_sync_date');
 Route::get('set_updated_date_to_sync_table','WelcomeController@set_updated_date_to_sync_table');
 

@@ -4354,7 +4354,7 @@ class HomeController extends Controller {
      * App get all customers
      */
     public function appallcustomers() {
-         /* new code return if web sync date is less than or equal to app sync date*/
+        /* new code return if web sync date is less than or equal to app sync date */
         $real_sync_date = SyncTableInfo::where('table_name', 'customers')->select('sync_date')->first();
         if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
 
@@ -4387,7 +4387,7 @@ class HomeController extends Controller {
      */
     public function appallproduct_category() {
 
-        /* new code return if web sync date is less than or equal to app sync date*/
+        /* new code return if web sync date is less than or equal to app sync date */
         $real_sync_date = SyncTableInfo::where('table_name', 'product_category')->select('sync_date')->first();
         if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
 
@@ -4444,6 +4444,89 @@ class HomeController extends Controller {
         return
 
                 json_encode($product_subcategory);
+    }
+
+    /**
+     * App get all location
+     */
+    public function applocation() {
+
+        if (Input::has('delivery_location_sync_date') && Input::get('delivery_location_sync_date') != '') {
+            $delivery_location['all'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->where('created_at', '>', Input::get('delivery_location_sync_date'))->orderBy('created_at', 'desc')->get();
+        } else {
+            $delivery_location['all'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
+        } $delivery_location_date = DeliveryLocation::select('updated_at')->orderby('updated_at', 'DESC')->first();
+        if (!empty($delivery_location_date)) {
+            $delivery_location['latest_date'] = $delivery_location_date->updated_at->toDateTimeString();
+        } else {
+            $delivery_location['latest_date'] = "";
+        }
+        return
+
+                json_encode($delivery_location);
+    }
+
+    /**
+     * App get all common results
+     */
+    public function appallcommon() {       
+        /* new code return if web sync date is less than or equal to app sync date */
+        $real_sync_date = SyncTableInfo::get();
+        $used_table_name = array("customers", "product_category", "product_sub_category", "delivery_locations");
+       
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($used_table_name);
+        
+        $common_sync_date = [];
+        foreach ($real_sync_date as $sync_date) {
+            if (in_array($sync_date->table_name, $used_table_name)) {
+                $common_sync_date[$sync_date->table_name] = $sync_date->sync_date;
+            }
+        }
+
+        $all['customers'] = [];
+        $all['customers']['latest_date'] = $common_sync_date['customers'];
+        $all['product_category'] = [];
+        $all['product_category']['latest_date'] = $common_sync_date['product_category'];
+        $all['product_sub_category'] = [];
+        $all['product_sub_category']['latest_date'] = $common_sync_date['product_sub_category'];
+        $all['delivery_locations'] = [];
+        $all['delivery_locations']['latest_date'] = $common_sync_date['delivery_locations'];
+
+        if (Input::has('customer_sync_date') && Input::has('product_category_sync_date') && Input::has('product_subcategory_sync_date') && Input::has('delivery_location_sync_date') ) {
+
+            if ($common_sync_date['customers'] <= Input::get('customer_sync_date') && $common_sync_date['product_category'] <= Input::get('product_category_sync_date') && $common_sync_date['product_sub_category'] <= Input::get('product_subcategory_sync_date') && $common_sync_date['delivery_locations'] <= Input::get('delivery_location_sync_date')) {
+                return json_encode($all);
+            } else {
+
+                if ($common_sync_date['customers'] > Input::get('customer_sync_date')) {
+                    $all['customers'] = Customer::where('updated_at', '>', Input::get('customer_sync_date'))->orderBy('tally_name', 'asc')->get();
+                    $all['customers']['latest_date'] = $common_sync_date['customers'];
+                }
+                if ($common_sync_date['product_category'] > Input::get('product_category_sync_date')) {
+                    $all['product_category'] = $product_category['all'] = ProductCategory:: where('updated_at', '>', Input::get('product_category_sync_date'))->orderBy('created_at', 'desc')->get();
+                    $all['product_category']['latest_date'] = $common_sync_date['product_category'];
+                }
+                if ($common_sync_date['product_sub_category'] > Input::get('product_subcategory_sync_date')) {
+                    $all['product_sub_category'] = ProductSubCategory::with('product_category')->where('updated_at', '>', Input::get('product_subcategory_sync_date'))->orderBy('created_at', 'desc')->get();
+                    $all['product_sub_category']['latest_date'] = $common_sync_date['product_sub_category'];
+                }
+                if ($common_sync_date['delivery_locations'] > Input::get('delivery_location_sync_date')) {
+                    $all['delivery_locations'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->where('created_at', '>', Input::get('delivery_location_sync_date'))->orderBy('created_at', 'desc')->get();
+                    $all['delivery_locations']['latest_date'] = $common_sync_date['delivery_locations'];
+                }
+            }
+        } else {          
+            $all['customers'] = Customer::orderBy('tally_name', 'asc')->get();
+            $all['customers']['latest_date'] = $common_sync_date['customers'];
+            $all['product_category'] = ProductCategory::orderBy('created_at', 'desc')->get();
+            $all['product_category']['latest_date'] = $common_sync_date['product_category'];
+            $all['product_sub_category'] = ProductSubCategory::with('product_category')->orderBy('created_at', 'desc')->get();
+            $all['product_sub_category']['latest_date'] = $common_sync_date['product_sub_category'];
+            $all['delivery_locations'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
+            $all['delivery_locations']['latest_date'] = $common_sync_date['delivery_locations'];
+        }
+        return json_encode($all);       
     }
 
     /**
@@ -4604,26 +4687,6 @@ class HomeController extends Controller {
         return
 
                 json_encode($purchase_daybook);
-    }
-
-    /**
-     * App get all location
-     */
-    public function applocation() {
-
-        if (Input::has('delivery_location_sync_date') && Input::get('delivery_location_sync_date') != '') {
-            $delivery_location['all'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->where('created_at', '>', Input::get('delivery_location_sync_date'))->orderBy('created_at', 'desc')->get();
-        } else {
-            $delivery_location['all'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
-        } $delivery_location_date = DeliveryLocation::select('updated_at')->orderby('updated_at', 'DESC')->first();
-        if (!empty($delivery_location_date)) {
-            $delivery_location['latest_date'] = $delivery_location_date->updated_at->toDateTimeString();
-        } else {
-            $delivery_location['latest_date'] = "";
-        }
-        return
-
-                json_encode($delivery_location);
     }
 
     /*
