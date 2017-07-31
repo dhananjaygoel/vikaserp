@@ -64,6 +64,7 @@ return array(
     'AlterPurchaseChallan02' => $baseDir . '/database/migrations/2017_01_04_121820_alter_purchase_challan_02.php',
     'AlterPurchaseChallan02Index' => $baseDir . '/database/migrations/2017_03_28_091019_alter_purchase_challan_02_index.php',
     'AlterReceiptTable' => $baseDir . '/database/migrations/2017_04_24_062159_alter_receipt_table.php',
+    'AlterUsers01' => $baseDir . '/database/migrations/2017_07_31_102652_alter_users_01.php',
     'Attribute_Translator' => $vendorDir . '/dompdf/dompdf/include/attribute_translator.cls.php',
     'Block_Frame_Decorator' => $vendorDir . '/dompdf/dompdf/include/block_frame_decorator.cls.php',
     'Block_Frame_Reflower' => $vendorDir . '/dompdf/dompdf/include/block_frame_reflower.cls.php',
