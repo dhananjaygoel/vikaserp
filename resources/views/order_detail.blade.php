@@ -144,10 +144,10 @@
                                 <?php 
                                         if(isset($is_approval['way']) && $is_approval['way'] == 'approval'){ ?>
                                
-                                <a href="{{url('orders?order_filter=approval')}}" class="btn btn-default form_button_footer">Back</a>      
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>      
                                  <?php }else{  ?> 
                                
-                                    <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>                           
+                                    <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>                           
                                         <?php } ?>  
                                 @endif
                                 @if( Auth::user()->role_id  == 5)

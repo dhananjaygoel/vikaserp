@@ -47,8 +47,7 @@ class OrderController extends Controller {
     /**
      * Functioanlity: Display order details
      */
-    public function index() {
-
+    public function index(PlaceOrderRequest $request) {
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -223,7 +222,9 @@ class OrderController extends Controller {
                 });
             })->export('xls');
         }
-
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
 
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
@@ -906,8 +907,10 @@ class OrderController extends Controller {
         $tables = ['customers', 'orders', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
         /* end code */
-        return redirect('orders')->with('flash_message', 'Order details successfully modified.');
+        return redirect('orders' . $parameters)->with('flash_message', 'Order details successfully modified.');
     }
 
     /**
@@ -1024,13 +1027,17 @@ class OrderController extends Controller {
                 /* inventory code */
                 $calc = new InventoryController();
                 $calc->inventoryCalc($product_category_ids);
+                $message = "Record deleted successfully.";
                 /**/
-                Session::put('order-sort-type', $order_sort_type);
+//                Session::put('order-sort-type', $order_sort_type);
                 if (Input::has('way') && Input::get('way') == 'reject') {
-
-                    return Redirect::to('orders?order_filter=approval')->with('success', 'Record deleted successfully.');
+                    $message = "Order rejected successfully.";
+//                    return Redirect::to('orders?order_filter=approval')->with('success', 'Record deleted successfully.');
                 }
-                return Redirect::to('orders')->with('success', 'Record deleted successfully.');
+
+                $parameter = Session::get('parameters');
+                $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
+                return Redirect::to('orders' . $parameters)->with('success', $message);
             }
             return array('message' => 'success');
         } else {
@@ -1370,7 +1377,7 @@ class OrderController extends Controller {
             $calc->inventoryCalc($product_category_ids);
 
             //         update sync table         
-            $tables = ['customers', 'orders', 'all_order_products','delivery_order'];
+            $tables = ['customers', 'orders', 'all_order_products', 'delivery_order'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
             /* end code */
