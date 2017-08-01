@@ -49,7 +49,7 @@ class InquiryController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index(InquiryRequest $request) {
 
         $data = Input::all();
 
@@ -106,6 +106,10 @@ class InquiryController extends Controller {
 //                ->where('inquiry_status', '=', 'pending')
 //                ->orderBy('created_at', 'desc')
 //                ->paginate(15);
+                
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
 
         $inquiries->setPath('inquiry');
         return view('inquiry', compact('inquiries'));
@@ -302,10 +306,10 @@ class InquiryController extends Controller {
         }
 
         //         update sync table         
-        $tables = ['inquiry','customers','inquiry_products'];
+        $tables = ['inquiry', 'customers', 'inquiry_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
-        /* end code*/
+        /* end code */
 
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
     }
@@ -673,12 +677,15 @@ class InquiryController extends Controller {
             }
         }
 //         update sync table         
-        $tables = ['inquiry','customers','inquiry_products'];
+        $tables = ['inquiry', 'customers', 'inquiry_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
-        /* end code*/
-        
-        return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully modified.');
+        /* end code */
+
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+
+        return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry details successfully modified.');
     }
 
     /**
@@ -741,7 +748,10 @@ class InquiryController extends Controller {
 
             InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
             Inquiry::find(Input::get('inquiry_id'))->delete();
-            return redirect('inquiry')->with('flash_success_message', 'Inquiry deleted successfully.');
+
+            $parameter = Session::get('parameters');
+            $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+            return redirect('inquiry'.$parameters)->with('flash_success_message', 'Inquiry deleted successfully.');
         } else {
             return redirect('inquiry')->with('flash_message', 'Please enter valid password.');
         }
@@ -1418,11 +1428,15 @@ class InquiryController extends Controller {
         }
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
         //         update sync table         
-        $tables = ['inquiry','customers','inquiry_products','orders','all_order_products'];
+        $tables = ['inquiry', 'customers', 'inquiry_products', 'orders', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
-        /* end code*/
-        return redirect('inquiry')->with('flash_success_message', 'One Order successfully generated for Inquiry.');
+        /* end code */
+        
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+        
+        return redirect('inquiry'.$parameters)->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
 
     /* Function used to export inquiry records */
