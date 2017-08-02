@@ -1483,6 +1483,9 @@ class InventoryController extends Controller {
                     $is_update = $inventory->update_opening_stock();
                 } else if ($last_updated_date == $current_date) {
 //                    if ($current_hour >= 1 && $last_updated_time[0] < 1) {
+                    echo "$current_hour";
+                    echo "<br>";
+                    echo "$last_updated_time[0]";
                     if ($current_hour >= 0 && $last_updated_time[0] < 24) {
                         $is_update = $inventory->update_opening_stock();
                     }
@@ -1494,7 +1497,7 @@ class InventoryController extends Controller {
 
         $phone_number = '8983370270';
         if ($is_update > 0)
-            $str = $is_update ."records has been updated at " . $current_date . " " . $current->toTimeString();
+            $str = $is_update ." records has been updated at " . $current_date . " " . $current->toTimeString();
         else {
             $str = "No records has been updated. " . $current_date . " " . $current->toTimeString();
         }
