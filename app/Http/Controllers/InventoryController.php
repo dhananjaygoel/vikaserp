@@ -24,6 +24,7 @@ use Response;
 use App\Repositories\DropboxStorageRepository;
 use Auth;
 use DB;
+use Illuminate\Support\Facades\Mail;
 
 class InventoryController extends Controller {
 
@@ -1474,8 +1475,8 @@ class InventoryController extends Controller {
                 $current_hour = $current->hour;
                 if ($last_updated_date < $current_date) {
                     $inventory->update_opening_stock();
-                } else if ($last_updated_date == $current_date) {
-                    if ($current_hour > 1 && $last_updated_time[0] < 1) {
+                } else if ($last_updated_date == $current_date) {                    
+                    if ($current_hour > 1 && $last_updated_time[0] < 21) {
                         $inventory->update_opening_stock();
                     }
                 }
@@ -1483,6 +1484,14 @@ class InventoryController extends Controller {
                 $inventory->update_opening_stock();
             }
         }
+
+        $dynamictext['name'] = "atul";
+        $dynamictext['email'] = "atula@agstech.co.in";
+        $dynamictext['number'] = "9898989890";
+        $dynamictext['message'] = "test message";
+        Mail::send('emails.contact_mail_admin', ['dynamictext' => $dynamictext], function($message) {
+            $message->to("ksujeet@agstechnologies.com", "Test User")->cc("atula@agstech.co.in", "Test User")->subject('Cron Status');
+        });
     }
 
     /*
