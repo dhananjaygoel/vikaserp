@@ -101,7 +101,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                         </div>
                         <div class="clearfix"></div>

@@ -152,7 +152,7 @@ class PurchaseOrderController extends Controller {
      * Show purchase order list
      */
 
-    public function index() {
+    public function index(PurchaseOrderRequest $request) {
 
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
@@ -239,6 +239,11 @@ class PurchaseOrderController extends Controller {
 
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
+        
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
+        
         return view('purchase_order', compact('purchase_orders', 'all_customers'));
     }
 
@@ -499,6 +504,11 @@ class PurchaseOrderController extends Controller {
 //                }
             }
         }
+        //         update sync table         
+        $tables = ['customers', 'all_purchase_products', 'purchase_order'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully added.');
     }
 
@@ -777,7 +787,17 @@ class PurchaseOrderController extends Controller {
             }
 //            }
         }
-        return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully updated.');
+
+        //         update sync table         
+        $tables = ['customers', 'all_purchase_products', 'purchase_order'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
+        
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+
+        return redirect('purchase_orders'.$parameters)->with('flash_message', 'Purchase order details successfully updated.');
     }
 
     /**
@@ -806,6 +826,12 @@ class PurchaseOrderController extends Controller {
 
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
+
+            //         update sync table         
+            $tables = ['customers', 'all_purchase_products', 'purchase_order'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
 
             return array('message' => 'success');
         } else {
@@ -925,6 +951,12 @@ class PurchaseOrderController extends Controller {
                 ->update(array(
             'order_status' => 'canceled'
         ));
+
+        //         update sync table         
+        $tables = ['customers', 'all_purchase_products', 'purchase_order'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
 
         return array('message' => 'success');
     }
