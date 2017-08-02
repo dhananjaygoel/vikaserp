@@ -51,7 +51,7 @@ class DeliveryOrderController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index(Request $request) {
         $data = Input::all();
         gc_disable();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
@@ -104,11 +104,16 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
+        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(2);
 
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
+
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
+
         return view('delivery_order', compact('delivery_data', 'search_dates'));
     }
 
@@ -495,8 +500,10 @@ class DeliveryOrderController extends Controller {
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
 
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
-        return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
+        return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
     }
 
     /**
@@ -538,7 +545,10 @@ class DeliveryOrderController extends Controller {
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
             /* end code */
-            return Redirect::to('delivery_order')->with('success', 'Record deleted successfully.');
+            $parameter = Session::get('parameters');
+            $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+
+            return Redirect::to('delivery_order'.$parameters)->with('success', 'Record deleted successfully.');
         } else {
 //            return array('message' => 'failed');
             return Redirect::to('delivery_order')->with('error', 'Please enter correct password.');
@@ -891,15 +901,18 @@ class DeliveryOrderController extends Controller {
         }
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
-        
-             
-         //         update sync table         
-        $tables = ['delivery_order','all_order_products','delivery_challan'];
+
+
+        //         update sync table         
+        $tables = ['delivery_order', 'all_order_products', 'delivery_challan'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
-        /* end code*/
+        /* end code */
         
-        return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+        
+        return redirect('delivery_order'.$parameters)->with('success', 'One Delivery Challan is successfully created.');
     }
 
     /*
@@ -1010,9 +1023,9 @@ class DeliveryOrderController extends Controller {
         $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
         chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
         $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-        
-             
-         //         update sync table         
+
+
+        //         update sync table         
         $tables = ['delivery_order','all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
