@@ -36,6 +36,7 @@ class Inventory extends Model {
             'physical_closing_qty' => 0,
             'opening_qty_date' => date('Y-m-d H:i:s'),
             ]);
+        return $inventory_list;
     }
 
 }
