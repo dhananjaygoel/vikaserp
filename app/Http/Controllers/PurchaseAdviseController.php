@@ -44,7 +44,7 @@ class PurchaseAdviseController extends Controller {
     /**
      * Display a listing of the Purchase Advices.
      */
-    public function index() {
+    public function index(StorePurchaseAdvise $request) {
         $data = Input::all();
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
@@ -93,6 +93,10 @@ class PurchaseAdviseController extends Controller {
 
         $pending_orders = $this->checkpending_quantity($purchase_advise);
         $purchase_advise->setPath('purchaseorder_advise');
+        
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
 
         return View::make('purchase_advise', array('purchase_advise' => $purchase_advise, 'pending_orders' => $pending_orders, 'search_dates' => $search_dates));
     }
@@ -337,6 +341,11 @@ class PurchaseAdviseController extends Controller {
                 PurchaseProducts::create($purchase_advise_products);
             }
         }
+        //         update sync table         
+        $tables = ['customers', 'purchase_order', 'all_purchase_products', 'purchase_advice'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
         return redirect('purchaseorder_advise')->with('success', 'Purchase advise added successfully');
     }
 
@@ -511,9 +520,16 @@ class PurchaseAdviseController extends Controller {
                 curl_close($ch);
             }
         }
+        //         update sync table         
+        $tables = ['customers', 'all_purchase_products', 'purchase_advice'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
+        
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
-
-        return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
+        return redirect('purchaseorder_advise'.$parameters)->with('success', 'Purchase advise updated successfully');
     }
 
     /**
@@ -545,6 +561,11 @@ class PurchaseAdviseController extends Controller {
 
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
+            //         update sync table         
+            $tables = ['customers','all_purchase_products', 'purchase_advice'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
 
             return array('message' => 'success');
         } else {
@@ -683,6 +704,12 @@ class PurchaseAdviseController extends Controller {
                 $calc->inventoryCalc($product_category_ids);
             }
 
+            //         update sync table         
+            $tables = ['customers', 'purchase_order', 'all_purchase_products', 'purchase_advice'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
+
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advice details successfully added.');
         } else {
             $error_msg = $validator->messages();
@@ -727,8 +754,8 @@ class PurchaseAdviseController extends Controller {
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
-        $labours = Labour::where('type','<>','sale')->get();
-        $loaders = LoadedBy::where('type','<>','sale')->get();
+        $labours = Labour::where('type', '<>', 'sale')->get();
+        $loaders = LoadedBy::where('type', '<>', 'sale')->get();
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units', 'labours', 'loaders'));
     }
 
@@ -809,6 +836,12 @@ class PurchaseAdviseController extends Controller {
 
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
+
+        //         update sync table         
+        $tables = ['customers', 'all_purchase_products', 'purchase_advice'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+        /* end code */
 
         return view('print_purchase_advise', compact('purchase_advise'));
     }

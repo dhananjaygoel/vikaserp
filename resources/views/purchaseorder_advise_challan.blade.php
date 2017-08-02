@@ -266,7 +266,7 @@
                     <hr>
                     <div>
                         <button type="submit" class="btn btn-primary btn_puradvice_to_purchallan" >Submit</button>
-                        <a href="{{url('purchase_challan')}}" class="btn btn-default">Back</a>
+                        <a href="{{URL::previous()}}" class="btn btn-default">Back</a>
                     </div>
                     <div class="clearfix"></div>
                 </form>

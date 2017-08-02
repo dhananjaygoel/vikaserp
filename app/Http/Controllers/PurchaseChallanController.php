@@ -441,7 +441,11 @@ class PurchaseChallanController extends Controller {
         }
 
 
-
+        //         update sync table         
+            $tables = ['customers', 'purchase_challan', 'all_purchase_products', 'purchase_advice'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
 
 
         return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
@@ -549,6 +553,11 @@ class PurchaseChallanController extends Controller {
 
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
+            //         update sync table         
+            $tables = ['customers', 'purchase_challan', 'all_purchase_products'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
             return array('message' => 'success');
         } else {
             return array('message' => 'failed');
@@ -659,7 +668,11 @@ class PurchaseChallanController extends Controller {
                 }
             }
         }
-
+        //         update sync table         
+            $tables = ['customers', 'purchase_challan', 'all_purchase_products'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
 
         return view('print_purchase_challan', compact('purchase_challan'));
     }

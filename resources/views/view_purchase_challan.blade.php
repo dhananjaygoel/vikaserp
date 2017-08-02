@@ -182,7 +182,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <a href="{{url('purchase_challan')}}" class="btn btn-default">Back</a>
+                            <a href="{{URL::previous()}}" class="btn btn-default">Back</a>
                         </div>
                     </div>
                 </div>
