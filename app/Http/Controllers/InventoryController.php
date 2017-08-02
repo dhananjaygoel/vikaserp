@@ -25,6 +25,7 @@ use App\Repositories\DropboxStorageRepository;
 use Auth;
 use DB;
 use Illuminate\Support\Facades\Mail;
+use Config;
 
 class InventoryController extends Controller {
 
@@ -33,6 +34,11 @@ class InventoryController extends Controller {
      */
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
     }
 
     public function fetchInventoryProductName() {
@@ -1462,7 +1468,7 @@ class InventoryController extends Controller {
      */
 
     public function updateOpeningStock() {
-
+        $is_update = 0;
         $inventory_list = Inventory::first();
         $current = \Carbon\Carbon::now();
         if ($current->hour > 1) {
@@ -1474,24 +1480,33 @@ class InventoryController extends Controller {
                 $current_date = $current->toDateString();
                 $current_hour = $current->hour;
                 if ($last_updated_date < $current_date) {
-                    $inventory->update_opening_stock();
-                } else if ($last_updated_date == $current_date) {                    
-                    if ($current_hour > 1 && $last_updated_time[0] < 21) {
-                        $inventory->update_opening_stock();
+                    $is_update = $inventory->update_opening_stock();
+                } else if ($last_updated_date == $current_date) {
+//                    if ($current_hour >= 1 && $last_updated_time[0] < 1) {
+                    if ($current_hour >= 0 && $last_updated_time[0] < 24) {
+                        $is_update = $inventory->update_opening_stock();
                     }
                 }
             } else {
-                $inventory->update_opening_stock();
+                $is_update = $inventory->update_opening_stock();
             }
         }
 
-        $dynamictext['name'] = "atul";
-        $dynamictext['email'] = "atula@agstech.co.in";
-        $dynamictext['number'] = "9898989890";
-        $dynamictext['message'] = "test message";
-        Mail::send('emails.contact_mail_admin', ['dynamictext' => $dynamictext], function($message) {
-            $message->to("ksujeet@agstechnologies.com", "Test User")->cc("atula@agstech.co.in", "Test User")->subject('Cron Status');
-        });
+        $phone_number = '8983370270';
+        if ($is_update > 0)
+            $str = $is_update ."records has been updated at " . $current_date . " " . $current->toTimeString();
+        else {
+            $str = "No records has been updated. " . $current_date . " " . $current->toTimeString();
+        }
+        $msg = urlencode($str);
+        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+        if (SEND_SMS === true) {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $curl_scraped_page = curl_exec($ch);
+            curl_close($ch);
+        }
+        echo $str;
     }
 
     /*
