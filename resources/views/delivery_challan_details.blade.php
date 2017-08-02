@@ -230,7 +230,7 @@
                         <!--                        <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>-->
 
                         @if( Auth::user()->role_id  <> 5)
-                        <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>
+                        <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                         @endif
                         @if( Auth::user()->role_id  == 5)
                         <a href="{{url('order/'.$allorder->order_id.'-track')}}" class="btn btn-default form_button_footer">Back</a>

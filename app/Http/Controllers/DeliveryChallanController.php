@@ -264,7 +264,7 @@ class DeliveryChallanController extends Controller {
 //    }
 
 
-    public function index() {
+    public function index(Request $request) {
 
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
@@ -374,7 +374,11 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-
+        
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
+        
         $allorders->setPath('delivery_challan');
         return view('delivery_challan', compact('allorders', 'search_dates'));
     }
@@ -644,7 +648,10 @@ class DeliveryChallanController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
+        $parameter = Session::get('parameters');
+        $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+        
+        return redirect('delivery_challan'.$parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
 
     /**
@@ -723,7 +730,7 @@ class DeliveryChallanController extends Controller {
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
             $total_vat_amount = 0;
