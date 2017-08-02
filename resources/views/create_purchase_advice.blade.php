@@ -205,7 +205,7 @@
                             <div>
                                 <button  type="button" class="btn btn-primary btn_purorder_to_puradvice" id="sendSMSEditPurchaseOrder" >Submit</button>
                                 <!--<input type="submit" class="btn btn-primary btn_purorder_to_puradvice" value="Submit">-->
-                                <a href="{{url('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                         </form>
                         <div class="clearfix"></div>

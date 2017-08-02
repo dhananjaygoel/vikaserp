@@ -396,7 +396,7 @@
                         <hr>
                         <div>
                             <input type="submit" class="btn btn-primary form_button_footer btn_inquiry_to_order" value="Submit">
-                            <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
                         </form>

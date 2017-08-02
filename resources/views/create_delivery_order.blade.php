@@ -279,7 +279,7 @@
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder">Submit</button>
-                            <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
                         </form>

@@ -507,7 +507,7 @@
                             <div>
                                 <!--<input type="hidden" name="row_count" value="{{sizeof($delivery_data['delivery_product'])}}">-->
                                 <button type="submit" class="btn btn-primary form_button_footer btn_edit_delivery_order">Submit</button>
-                                <a href="{{url('delivery_order')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                             </form>

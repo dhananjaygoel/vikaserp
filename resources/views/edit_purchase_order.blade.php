@@ -407,7 +407,7 @@
                     <div>
                         <button type="submit" class="btn btn-primary form_button_footer btn_edit_purchase_order">Submit</button>
 
-                             <a href="{{URL::to('purchase_orders')}}" class="btn btn-default form_button_footer">Back</a>
+                             <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
 
                     </div>
                     
