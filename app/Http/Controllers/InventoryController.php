@@ -1468,7 +1468,7 @@ class InventoryController extends Controller {
      */
 
     public function updateOpeningStock() {
-        $is_update = 0;
+
         $inventory_list = Inventory::first();
         $current = \Carbon\Carbon::now();
         if ($current->hour > 1) {
@@ -1480,21 +1480,43 @@ class InventoryController extends Controller {
                 $current_date = $current->toDateString();
                 $current_hour = $current->hour;
                 if ($last_updated_date < $current_date) {
-                    $is_update = $inventory->update_opening_stock();
+                    $inventory->update_opening_stock();
                 } else if ($last_updated_date == $current_date) {
-//                    if ($current_hour >= 1 && $last_updated_time[0] < 1) {
-                    if ($current_hour >= 0 && $last_updated_time[0] < 24) {
-                        $is_update = $inventory->update_opening_stock();
+                    if ($current_hour > 1 && $last_updated_time[0] < 1) {
+                        $inventory->update_opening_stock();
                     }
                 }
             } else {
-                $is_update = $inventory->update_opening_stock();
+                $inventory->update_opening_stock();
             }
         }
+    }
 
-        $phone_number = '8983370270';
+    /*
+     * Cron for updating physical stock to opening stock(Cron will run at 7 pm everyday)
+     */
+
+    public function updateOpeningStockCron() {
+        $is_update = 0;
+        $inventory_list = Inventory::first();
+        $current = \Carbon\Carbon::now();
+        $inventory = new Inventory();
+        if (isset($inventory_list->opening_qty_date) && $inventory_list->opening_qty_date != NULL) {
+            $last_updated = explode(' ', $inventory_list->opening_qty_date);
+            $last_updated_date = $last_updated[0];
+            $last_updated_time = explode(':', $last_updated[1]);
+            $current_date = $current->toDateString();
+            $current_hour = $current->hour;
+            if ($last_updated_date < $current_date) {
+                $is_update = $inventory->update_opening_stock();
+            }
+        } else {
+            $is_update = $inventory->update_opening_stock();
+        }
+        /* send a sms about status*/
+        $phone_number = '9429786848';
         if ($is_update > 0)
-            $str = $is_update ." records has been updated at " . $current_date . " " . $current->toTimeString();
+            $str = $is_update . " records has been updated at " . $current_date . " " . $current->toTimeString();
         else {
             $str = "No records has been updated. " . $current_date . " " . $current->toTimeString();
         }

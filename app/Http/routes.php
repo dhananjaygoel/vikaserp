@@ -219,7 +219,8 @@ Route::controllers([
 ]);
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::get('logout', 'Auth\AuthController@getLogout');
-Route::get('update_opening_stock', 'InventoryController@updateOpeningStock');
+/*cron for update stock value*/
+Route::get('update_opening_stock', 'InventoryController@updateOpeningStockCron');
 Route::get('flag_order', 'OrderController@flagOrder');
 Route::get('dropboxfile', 'WelcomeController@dropboxfile');
 Route::group(['middleware' => ['auth']], function() {
