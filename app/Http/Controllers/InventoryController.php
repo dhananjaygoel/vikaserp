@@ -33,12 +33,7 @@ class InventoryController extends Controller {
      * Product search in inventory module
      */
     public function __construct() {
-        date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
+        date_default_timezone_set("Asia/Calcutta");        
     }
 
     public function fetchInventoryProductName() {
@@ -1513,8 +1508,13 @@ class InventoryController extends Controller {
         } else {
             $is_update = $inventory->update_opening_stock();
         }
-        /* send a sms about status*/
+        /* send a sms about status for test purpose */
         $phone_number = '9429786848';
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         if ($is_update > 0)
             $str = $is_update . " records has been updated at " . $current_date . " " . $current->toTimeString();
         else {
