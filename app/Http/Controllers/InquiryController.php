@@ -106,7 +106,7 @@ class InquiryController extends Controller {
 //                ->where('inquiry_status', '=', 'pending')
 //                ->orderBy('created_at', 'desc')
 //                ->paginate(15);
-                
+
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
@@ -147,6 +147,7 @@ class InquiryController extends Controller {
     public function store(InquiryRequest $request) {
 
         $input_data = Input::all();
+        $sms_flag = 0;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
             if (count($session_array) > 0) {
@@ -239,6 +240,10 @@ class InquiryController extends Controller {
                     'remarks' => $product_data['remark']
                 ];
                 InquiryProducts::create($inquiry_products);
+
+                if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
+                    $sms_flag = 1;
+                }
             }
         }
 
@@ -248,7 +253,8 @@ class InquiryController extends Controller {
           |--------------------------------------------------
          */
         $input = Input::all();
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+        if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -450,6 +456,7 @@ class InquiryController extends Controller {
     public function update($id, InquiryRequest $request) {
 
         $input_data = Input::all();
+        $sms_flag = 0;
         if (Session::has('forms_edit_inquiry')) {
             $session_array = Session::get('forms_edit_inquiry');
             if (count($session_array) > 0) {
@@ -572,6 +579,10 @@ class InquiryController extends Controller {
                     'remarks' => $product_data['remark'],
                 ];
                 InquiryProducts::create($inquiry_products);
+
+                if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
+                    $sms_flag = 1;
+                }
             }
         }
         $inquiry_products = InquiryProducts::where('inquiry_id', '=', $id)->first();
@@ -589,38 +600,23 @@ class InquiryController extends Controller {
           |------------------------------------------------
          */
         $input = Input::all();
-        if (isset($input['way']) && $input['way'] == "approval") {
-            $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items.";
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+        if ($sms_flag == 1) {
+            if (isset($input['way']) && $input['way'] == "approval") {
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items.";
+                    foreach ($input_data['product'] as $product_data) {
+                        if ($product_data['name'] != "") {
+                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                            $total_quantity = $total_quantity + $product_data['quantity'];
+                        }
                     }
-                }
-                $str .= "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-
-                if (count($customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                    $str .= "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
-                        $phone_number = $customer['manager']->mobile_number;
+                        $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -630,40 +626,41 @@ class InquiryController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
-                }
-            }
-        } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for foll.";
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+
+                    if (count($customer['manager']) > 0) {
+                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                        if (App::environment('development')) {
+                            $phone_number = Config::get('smsdata.send_sms_to');
+                        } else {
+                            $phone_number = $customer['manager']->mobile_number;
+                        }
+                        $msg = urlencode($str);
+                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                        if (SEND_SMS === true) {
+                            $ch = curl_init($url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_scraped_page = curl_exec($ch);
+                            curl_close($ch);
+                        }
                     }
                 }
-                $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-
-                if (count($customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+//            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+            } else {
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for foll.";
+                    foreach ($input_data['product'] as $product_data) {
+                        if ($product_data['name'] != "") {
+                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                            $total_quantity = $total_quantity + $product_data['quantity'];
+                        }
+                    }
+                    $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
-                        $phone_number = $customer['manager']->mobile_number;
+                        $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -672,6 +669,23 @@ class InquiryController extends Controller {
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
+                    }
+
+                    if (count($customer['manager']) > 0) {
+                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                        if (App::environment('development')) {
+                            $phone_number = Config::get('smsdata.send_sms_to');
+                        } else {
+                            $phone_number = $customer['manager']->mobile_number;
+                        }
+                        $msg = urlencode($str);
+                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                        if (SEND_SMS === true) {
+                            $ch = curl_init($url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_scraped_page = curl_exec($ch);
+                            curl_close($ch);
+                        }
                     }
                 }
             }
@@ -697,12 +711,21 @@ class InquiryController extends Controller {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
         if (Input::has('inquiry_id') && Input::has('password') && (Hash::check(Input::get('password'), Auth::user()->password))) {
+            $sms_flag = 0;
+
             if (Input::has('way') && Input::get('way') == 'reject') {
                 $inq = Inquiry::find(Input::get('inquiry_id'));
                 $customer = Customer::with('manager')->find($inq->customer_id);
                 $input_data = InquiryProducts::with('inquiry_product_details')->where('inquiry_id', '=', Input::get('inquiry_id'))->get();
 
-                if (count($customer) > 0) {
+                /* check for vat/gst items */
+                foreach ($input_data as $product_data) {
+                    if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] != '0.00') {
+                        $sms_flag = 1;
+                    }
+                }
+                /**/
+                if (count($customer) > 0 && $sms_flag == 1) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items.\n";
                     foreach ($input_data as $product_data) {
@@ -751,7 +774,7 @@ class InquiryController extends Controller {
 
             $parameter = Session::get('parameters');
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-            return redirect('inquiry'.$parameters)->with('flash_success_message', 'Inquiry deleted successfully.');
+            return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry deleted successfully.');
         } else {
             return redirect('inquiry')->with('flash_message', 'Please enter valid password.');
         }
@@ -1195,6 +1218,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
+        $sms_flag = 1;
         $inquiry = Inquiry::find($id);
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
@@ -1221,6 +1245,12 @@ class InquiryController extends Controller {
             if ($product_data['name'] == "") {
                 $i++;
             }
+
+            /* check for vat/gst items */
+            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
+                $sms_flag = 1;
+            }
+            /**/
         }
         if ($i == $j) {
             return Redirect::back()->with('flash_message', 'Please insert product details');
@@ -1309,7 +1339,8 @@ class InquiryController extends Controller {
          * ----------------------------------
          */
         $input = Input::all();
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+        if ( $sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -1432,11 +1463,11 @@ class InquiryController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        
+
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-        
-        return redirect('inquiry'.$parameters)->with('flash_success_message', 'One Order successfully generated for Inquiry.');
+
+        return redirect('inquiry' . $parameters)->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
 
     /* Function used to export inquiry records */

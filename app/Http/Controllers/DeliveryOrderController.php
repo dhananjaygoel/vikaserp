@@ -288,6 +288,7 @@ class DeliveryOrderController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
+        $sms_flag = 0;
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
             if (count($session_array) > 0) {
@@ -411,6 +412,11 @@ class DeliveryOrderController extends Controller {
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
             }
+            /* check for vat/gst items */
+            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
+                $sms_flag = 1;
+            }
+            /**/
         }
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
@@ -437,60 +443,62 @@ class DeliveryOrderController extends Controller {
         $total_quantity = 0;
         $customer_id = $delivery_order->customer_id;
         $customer = Customer::with('manager')->find($customer_id);
-        if (count($customer) > 0) {
-            $total_quantity = '';
-            $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
-            foreach ($delivery_order['delivery_product'] as $product_data) {
-                $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
+        if ($sms_flag == 1) {
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
+                foreach ($delivery_order['delivery_product'] as $product_data) {
+                    $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
 
 
-                $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
-                $total_quantity = $total_quantity + $product_data->quantity;
+                    $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+
+                $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
+
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
             }
-
-            $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
-
-
-            if (App::environment('development')) {
-                $phone_number = Config::get('smsdata.send_sms_to');
-            } else {
-                $phone_number = $customer->phone_number1;
-            }
-            $msg = urlencode($str);
-            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-            if (SEND_SMS === true) {
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $curl_scraped_page = curl_exec($ch);
-                curl_close($ch);
-            }
-        }
-        if (count($customer['manager']) > 0) {
-            $total_quantity = '';
-            $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited DO for " . $customer->owner_name . " as follows\n";
-            foreach ($delivery_order['delivery_product'] as $product_data) {
-                $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
+            if (count($customer['manager']) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited DO for " . $customer->owner_name . " as follows\n";
+                foreach ($delivery_order['delivery_product'] as $product_data) {
+                    $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
 
 
-                $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
-                $total_quantity = $total_quantity + $product_data->quantity;
-            }
+                    $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
 
-            $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
+                $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
 
 
-            if (App::environment('development')) {
-                $phone_number = Config::get('smsdata.send_sms_to');
-            } else {
-                $phone_number = $customer['manager']->mobile_number;
-            }
-            $msg = urlencode($str);
-            $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-            if (SEND_SMS === true) {
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $curl_scraped_page = curl_exec($ch);
-                curl_close($ch);
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
             }
         }
 
@@ -548,7 +556,7 @@ class DeliveryOrderController extends Controller {
             $parameter = Session::get('parameters');
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
-            return Redirect::to('delivery_order'.$parameters)->with('success', 'Record deleted successfully.');
+            return Redirect::to('delivery_order' . $parameters)->with('success', 'Record deleted successfully.');
         } else {
 //            return array('message' => 'failed');
             return Redirect::to('delivery_order')->with('error', 'Please enter correct password.');
@@ -908,11 +916,11 @@ class DeliveryOrderController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        
+
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-        
-        return redirect('delivery_order'.$parameters)->with('success', 'One Delivery Challan is successfully created.');
+
+        return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
     }
 
     /*
@@ -922,6 +930,7 @@ class DeliveryOrderController extends Controller {
 
     public function print_delivery_order($id, DropboxStorageRepository $connection) {
         $current_date = date("m/d/");
+        $sms_flag = 0;
         set_time_limit(0);
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
@@ -968,53 +977,63 @@ class DeliveryOrderController extends Controller {
           | -------------------------------------------
          */
         $input_data = $delivery_data['delivery_product'];
-        $send_sms = Input::get('send_sms');
-        if ($send_sms == 'true') {
-            $customer_id = $delivery_data->customer_id;
-            $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been created as follows\n";
-                foreach ($input_data as $product_data) {
-                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-            if (count($customer['manager']) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created DO for " . $customer->owner_name . " as follows\n";
-                foreach ($input_data as $product_data) {
-                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
-                }
-                $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer['manager']->mobile_number;
-                }
+        /* check for vat/gst items */
+        foreach ($input_data as $product_data) {           
+            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] != '0.00') {
+                $sms_flag = 1;
+            }            
+        }
+        /**/
 
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+        $send_sms = Input::get('send_sms');
+        if ($sms_flag == 1) {
+            if ($send_sms == 'true') {
+                $customer_id = $delivery_data->customer_id;
+                $customer = Customer::with('manager')->find($customer_id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been created as follows\n";
+                    foreach ($input_data as $product_data) {
+                        $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+                if (count($customer['manager']) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created DO for " . $customer->owner_name . " as follows\n";
+                    foreach ($input_data as $product_data) {
+                        $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
                 }
             }
         }
@@ -1026,10 +1045,10 @@ class DeliveryOrderController extends Controller {
 
 
         //         update sync table         
-        $tables = ['delivery_order','all_order_products'];
+        $tables = ['delivery_order', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
-        /* end code*/
+        /* end code */
         return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
     }
 
