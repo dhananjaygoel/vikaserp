@@ -301,8 +301,8 @@
                                 <label for="inquiry_remark">Remark</label>
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
-                            <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>
-                            <hr>
+<!--                            <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>
+                            <hr>-->
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_inquiry">Submit</button>
                                 <!--<input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">-->

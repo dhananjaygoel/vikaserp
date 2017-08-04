@@ -239,11 +239,11 @@ class PurchaseOrderController extends Controller {
 
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
-        
+
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
-        
+
         return view('purchase_order', compact('purchase_orders', 'all_customers'));
     }
 
@@ -267,6 +267,7 @@ class PurchaseOrderController extends Controller {
     public function store(PurchaseOrderRequest $request) {
 
         $input_data = Input::all();
+        $sms_flag = 0;
         if (Session::has('forms_purchase_order')) {
             $session_array = Session::get('forms_purchase_order');
             if (count($session_array) > 0) {
@@ -364,8 +365,16 @@ class PurchaseOrderController extends Controller {
          * -------------------------------------------
          */
 
+        /* check for vat/gst items */
+        if (isset($input_data['vat_percentage']) && !empty($input_data['vat_percentage'])) {
+            $sms_flag = 1;
+        }
+        /**/
+
+
         $input = Input::all();
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+        if ($sms_flag == 1) {
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -383,6 +392,7 @@ class PurchaseOrderController extends Controller {
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
+
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
@@ -555,6 +565,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
+        $sms_flag = 0;
         if (Session::has('forms_edit_purchase_order')) {
             $session_array = Session::get('forms_edit_purchase_order');
             if (count($session_array) > 0) {
@@ -647,8 +658,14 @@ class PurchaseOrderController extends Controller {
          * SEND SMS TO CUSTOMER FOR update ORDER
          * ----------------------------------
          */
+        /* check for vat/gst items */
+        if (isset($input_data['vat_percentage']) && !empty($input_data['vat_percentage']) && $vat_percentage != "") {
+            $sms_flag = 1;
+        }
+        /**/
         $input = Input::all();
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+        if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -793,11 +810,11 @@ class PurchaseOrderController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        
+
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
-        return redirect('purchase_orders'.$parameters)->with('flash_message', 'Purchase order details successfully updated.');
+        return redirect('purchase_orders' . $parameters)->with('flash_message', 'Purchase order details successfully updated.');
     }
 
     /**
@@ -869,6 +886,7 @@ class PurchaseOrderController extends Controller {
     public function manual_complete() {
 
         $inputData = Input::get('formData');
+        $sms_flag = 0;
         parse_str($inputData, $input_data);
         $purchase_order_id = $input_data['purchase_order_id'];
         $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->find($purchase_order_id);
@@ -880,27 +898,34 @@ class PurchaseOrderController extends Controller {
          */
         $inputData = Input::get('formData');
         parse_str($inputData, $input);
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $customer = Customer::with('manager')->find($purchase_order['customer']->id);
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\n Your purchase order has been completed for following \n";
-                foreach ($purchase_order['purchase_products'] as $product_data) {
-                    $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
-                }
-                $str .= ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+        /* check for vat/gst items */
+        if (isset($purchase_order['vat_percentage']) && !empty($purchase_order['vat_percentage']) && $purchase_order['vat_percentage'] != "") {
+            $sms_flag = 1;
+        }
+        /**/
+        if ($sms_flag == 1) {
+            if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+                $customer = Customer::with('manager')->find($purchase_order['customer']->id);
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\n Your purchase order has been completed for following \n";
+                    foreach ($purchase_order['purchase_products'] as $product_data) {
+                        $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
+                    }
+                    $str .= ".\nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
                 }
             }
         }

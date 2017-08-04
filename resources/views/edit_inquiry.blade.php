@@ -433,10 +433,10 @@
                             <label for="inquiry_remark">Remark</label>
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
-                        <?php if(!isset($is_approval['way'])){ ?>
-                        <button type="button" class="btn btn-primary btn_edit_inquiry_sms" id="edit_inquiry_sendSMS" >Save and Send SMS</button>
+                        <?php // if(!isset($is_approval['way'])){ ?>
+<!--                        <button type="button" class="btn btn-primary btn_edit_inquiry_sms" id="edit_inquiry_sendSMS" >Save and Send SMS</button>-->
                         <hr>
-                        <?php } ?>
+                        <?php // } ?>
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer btn_edit_inquiry">Submit</button>
                             <!--<input type="submit" class="btn btn-primary form_button_footer btn_edit_inquiry" value="Submit">-->

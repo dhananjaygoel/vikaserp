@@ -365,11 +365,11 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </div>
                             <hr>
-                            <div>
-                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSPurchaseOrder" >Save and Send SMS</button>
+                            <!--<div>-->
+                                <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSPurchaseOrder" >Save and Send SMS</button>-->
                                 
-                            </div>
-                            <hr>
+                            <!--</div>-->
+                            <!--<hr>-->
                             <div>
                                 <input type="hidden" name="total_products" id="total_products" value="{{isset($existig_product)?$existig_product:10}}">
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_purchase_order">Submit</button>

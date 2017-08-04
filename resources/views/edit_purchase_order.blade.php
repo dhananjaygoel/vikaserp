@@ -399,7 +399,7 @@
                     </div>
                     
                     <div>
-                        <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" >Save and Send SMS</button>
+                        <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" >Save and Send SMS</button>-->
                         <!--<input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" value="Save and Send SMS">-->
                        
                     </div>
