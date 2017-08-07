@@ -1782,26 +1782,26 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
             }
         }
     }
-    
+
     for (i = 1; i <= tot_products; i++) {
-        var actual_qty = parseInt($("#actual_quantity_" + i).val());        
-        var actual_pieces = parseInt($("#actual_pieces_" + i).val()); 
-        var price = parseInt($("#product_price_" + i).val()); 
-        if ($("#actual_quantity_" + i).val() == "" || actual_qty=="0") {
-             $('#actual_quantity_' + i).addClass('error_validation');
-                status_form = 1;
+        var actual_qty = parseInt($("#actual_quantity_" + i).val());
+        var actual_pieces = parseInt($("#actual_pieces_" + i).val());
+        var price = parseInt($("#product_price_" + i).val());
+        if ($("#actual_quantity_" + i).val() == "" || actual_qty == "0") {
+            $('#actual_quantity_' + i).addClass('error_validation');
+            status_form = 1;
         }
-        if ($("#actual_pieces_" + i).val() == "" || actual_pieces=="0") {
-             $('#actual_pieces_' + i).addClass('error_validation');
-                status_form = 1;
+        if ($("#actual_pieces_" + i).val() == "" || actual_pieces == "0") {
+            $('#actual_pieces_' + i).addClass('error_validation');
+            status_form = 1;
         }
-        if ($("#product_price_" + i).val() == "" || price=="0") {
-             $('#product_price_' + i).addClass('error_validation');
-                status_form = 1;
+        if ($("#product_price_" + i).val() == "" || price == "0") {
+            $('#product_price_' + i).addClass('error_validation');
+            status_form = 1;
         }
     }
-    
-    
+
+
     if (j == tot_products) {
         if ($("#add_product_id_1").val() == "") {
             $('#add_product_name_1').addClass('error_validation');
@@ -2063,6 +2063,20 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
         }
         status_form = 1;
     }
+
+    CheckBoxArray = [];
+    $("input:checkbox[class='vat_chkbox']:checked").each(function () {
+        CheckBoxArray.push($(this).val());       
+        if ($('#vat_percentage').val() == "" | $('#vat_percentage').val() == "0") {
+            $('#vat_percentage').addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#vat_percentage').removeClass('error_validation');
+            if (status_form != 1)
+                status_form = 0;
+        }
+    });
+
 //    if (j == tot_products) {
 //        for (i = 0; i <= tot_products+1; i++) {
 //            $('#add_product_name_' + i).addClass('error_validation');

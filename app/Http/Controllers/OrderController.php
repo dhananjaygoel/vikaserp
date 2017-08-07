@@ -1302,7 +1302,7 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
-
+        
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
@@ -1334,7 +1334,8 @@ class OrderController extends Controller {
             $delivery_order->order_source = $order->order_source;
             $delivery_order->supplier_id = $order->supplier_id;
             $delivery_order->created_by = $user->id;
-            $delivery_order->vat_percentage = $order->vat_percentage;
+//            $delivery_order->vat_percentage = $order->vat_percentage;
+            $delivery_order->vat_percentage = $input_data['vat_percentage'];
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
