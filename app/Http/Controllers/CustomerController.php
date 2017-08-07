@@ -270,6 +270,13 @@ class CustomerController extends Controller {
                     curl_close($ch);
                 }
             }
+
+            //         update sync table         
+            $tables = ['customers', 'users'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
+
             return redirect('customers')->with('success', 'Customer Succesfully added');
         } else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
@@ -481,7 +488,11 @@ class CustomerController extends Controller {
             }
 
 
-
+            //         update sync table         
+            $tables = ['customers', 'users'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
 
 
             return redirect('customers')->with('success', 'Customer details updated successfully');
@@ -634,6 +645,13 @@ class CustomerController extends Controller {
                         ->where('mobile_number', '=', $customer->phone_number1)
                         ->where('created_at', '=', $customer->created_at)
                         ->delete();
+
+                //         update sync table         
+                $tables = ['customers', 'users'];
+                $ec = new WelcomeController();
+                $ec->set_updated_date_to_sync_table($tables);
+                /* end code */
+
                 return Redirect::to('customers')->with('success', 'Customer deleted successfully.');
             }
         } else {
@@ -1242,7 +1260,7 @@ class CustomerController extends Controller {
                         ->orWhere('tally_name', 'like', '%Discount User%')
                         ->select('id')->first();
 
-               
+
         if (count($discount_user) && $discount_user->id == $id) {
             $is_discount_user = 'true';
         } else {

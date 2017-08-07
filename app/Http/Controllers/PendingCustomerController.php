@@ -116,6 +116,13 @@ class PendingCustomerController extends Controller {
         }
         $customer->customer_status = 'pending';
         if ($customer->save()) {
+
+            //         update sync table         
+            $tables = ['customers'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
+
             return redirect('pending_customers')->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
@@ -258,12 +265,12 @@ class PendingCustomerController extends Controller {
             if ($cust_flag == 1) {
                 return Redirect::to('pending_customers')->with('error', $cust_msg);
             } else {
-            $customer->delete();
-            $user = User::where('email', '=',$customer->email )
-                   ->where('first_name', '=',$customer->owner_name)
-                   ->where('mobile_number', '=',$customer->phone_number1)                 
-                   ->delete(); 
-            return Redirect::to('pending_customers')->with('success', 'Pending customer Successfully deleted');
+                $customer->delete();
+                $user = User::where('email', '=', $customer->email)
+                        ->where('first_name', '=', $customer->owner_name)
+                        ->where('mobile_number', '=', $customer->phone_number1)
+                        ->delete();
+                return Redirect::to('pending_customers')->with('success', 'Pending customer Successfully deleted');
             }
         } else {
             return Redirect::to('pending_customers')->with('error', 'Invalid password');
@@ -283,7 +290,7 @@ class PendingCustomerController extends Controller {
         if (count($customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
-        
+
         if (Input::has('status')) {
             $customer->is_supplier = Input::get('status');
         }
@@ -380,6 +387,13 @@ class PendingCustomerController extends Controller {
                     }
                 }
             }
+            
+            //         update sync table         
+            $tables = ['customers','users'];
+            $ec = new WelcomeController();
+            $ec->set_updated_date_to_sync_table($tables);
+            /* end code */
+            
             return redirect('customers')->with('success', 'Customer successfully upgraded as permanent customer');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
