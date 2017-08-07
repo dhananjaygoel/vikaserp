@@ -2067,7 +2067,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     CheckBoxArray = [];
     $("input:checkbox[class='vat_chkbox']:checked").each(function () {
         CheckBoxArray.push($(this).val());       
-        if ($('#vat_percentage').val() == "" | $('#vat_percentage').val() == "0") {
+        if ($.trim($('#vat_percentage').val()) == "" | $('#vat_percentage').val() == "0") {
             $('#vat_percentage').addClass('error_validation');
             status_form = 1;
         } else {

@@ -224,7 +224,7 @@
                                     <td class="cdfirst">VAT Percentage:</td>
                                     <td>
                                         {{-- $order->vat_percentage --}}
-                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text" onblur="grand_total_delivery_order();">
+                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text" onblur="grand_total_delivery_order();" onkeypress=" return onlyPercentage(event);">
                                     </td>
                                 </tr>
                                 @if($order->vat_percentage == 0)
