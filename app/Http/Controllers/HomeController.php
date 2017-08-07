@@ -1749,7 +1749,7 @@ class HomeController extends Controller {
 
         if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
             $last_sync_date = Input::get('delivery_challan_sync_date');
-            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->where('challan_status', 'pending')->get();
+            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->where('challan_status', 'pending')->whereRaw('created_at = updated_at')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
 
 //            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('challan_status','pending')->with('delivery_challan_products', 'challan_loaded_by')->get();
@@ -2088,7 +2088,7 @@ class HomeController extends Controller {
 
         if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '') {
             $last_sync_date = Input::get('delivery_order_sync_date');
-            $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('delivery_product')->get();
+            $delivery_order_server = DeliveryOrder::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->whereRaw('created_at = updated_at')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_server_added'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : array();
 
             $delivery_order_updated_server = DeliveryOrder::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_product')->get();
@@ -2436,7 +2436,7 @@ class HomeController extends Controller {
         }
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
             $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->with('all_order_products')->get();
+            $order_added_server = Order::where('created_at', '>', $last_sync_date)->where('order_status', 'pending')->whereRaw('created_at = updated_at')->with('all_order_products')->get();
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
             $order_updated_server = Order::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('all_order_products')->get();
