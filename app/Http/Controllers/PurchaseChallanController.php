@@ -671,10 +671,10 @@ class PurchaseChallanController extends Controller {
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
-                        $phone_number = $customer->phone_number1;
-//                    $phone_number = $customer['manager']->mobile_number;
+//                        $phone_number = $customer->phone_number1;
+                    $phone_number = (isset($customer['manager']->mobile_number) && !empty($customer['manager']->mobile_number))?$customer['manager']->mobile_number:'';
                     }
-
+                    
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
