@@ -3016,7 +3016,7 @@ class HomeController extends Controller {
         $customer_list = [];
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
             $last_sync_date = Input::get('inquiry_sync_date');
-            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('inquiry_status', 'pending')->with('inquiry_products')->get();
+            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('inquiry_status', 'pending')->where('created_at', 'updated_at')->with('inquiry_products')->get();
             $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
 
             $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
