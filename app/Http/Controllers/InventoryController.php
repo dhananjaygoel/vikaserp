@@ -33,7 +33,7 @@ class InventoryController extends Controller {
      * Product search in inventory module
      */
     public function __construct() {
-        date_default_timezone_set("Asia/Calcutta");        
+        date_default_timezone_set("Asia/Calcutta");
     }
 
     public function fetchInventoryProductName() {
@@ -1496,38 +1496,25 @@ class InventoryController extends Controller {
         $inventory_list = Inventory::first();
         $current = \Carbon\Carbon::now();
         $inventory = new Inventory();
+        $last_updated;
         if (isset($inventory_list->opening_qty_date) && $inventory_list->opening_qty_date != NULL) {
             $last_updated = explode(' ', $inventory_list->opening_qty_date);
             $last_updated_date = $last_updated[0];
             $last_updated_time = explode(':', $last_updated[1]);
             $current_date = $current->toDateString();
-            $current_hour = $current->hour;
             if ($last_updated_date < $current_date) {
                 $is_update = $inventory->update_opening_stock();
             }
         } else {
             $is_update = $inventory->update_opening_stock();
         }
-        /* send a sms about status for test purpose */
-        $phone_number = '9429786848';
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
+       
         if ($is_update > 0)
             $str = $is_update . " records has been updated at " . $current_date . " " . $current->toTimeString();
         else {
-            $str = "No records has been updated. " . $current_date . " " . $current->toTimeString();
+            $str = "No records has been updated. " . $last_updated[0] . " " . $last_updated[1];
         }
-        $msg = urlencode($str);
-        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-        if (SEND_SMS === true) {
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $curl_scraped_page = curl_exec($ch);
-            curl_close($ch);
-        }
+
         echo $str;
     }
 
@@ -1671,6 +1658,7 @@ class InventoryController extends Controller {
                 foreach ($thickness_array as $thickness) {
                     if (isset($report_arr[$size][$thickness])) {
                         $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+//                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
                     } else {
                         $final_arr[$size][$thickness] = "-";
                     }
@@ -1758,6 +1746,7 @@ class InventoryController extends Controller {
             foreach ($thickness_array as $thickness) {
                 if (isset($report_arr[$size][$thickness])) {
                     $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+//                    $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
                 } else {
                     $final_arr[$size][$thickness] = "-";
                 }
