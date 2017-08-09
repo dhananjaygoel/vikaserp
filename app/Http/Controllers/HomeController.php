@@ -1843,7 +1843,7 @@ class HomeController extends Controller {
                     }
                 }
             }
-            $delivery_challan_response["labour_server_added"] = $labour_array;
+            $delivery_challan_response["labour_server_added"] = isset($labour_array)?$labour_array:"";
 
             /* add loadedby if new dc created */
             if ($value->server_id == 0) {
