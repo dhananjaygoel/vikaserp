@@ -222,21 +222,19 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'delivery_location', 'user', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'purchase_product_has_from')
+                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
 
-
-        foreach ($purchase_orders as $key => $purchase_order) {
-
-            if ($purchase_order->pending_quantity == 0 && $purchase_order->order_status == 'pending') {
-
-
-                $po = PurchaseOrder::where('id', $purchase_order->id)->update(['order_status' => 'completed']);
-            }
-        }
-
+//        foreach ($purchase_orders as $key => $purchase_order) {
+//
+//            if ($purchase_order->pending_quantity == 0 && $purchase_order->order_status == 'pending') {
+//                $po = PurchaseOrder::where('id', $purchase_order->id)->update(['order_status' => 'completed']);
+//            }
+//        }
+     
+       
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
 
@@ -1061,6 +1059,11 @@ class PurchaseOrderController extends Controller {
                 $purchase_orders[$key]['pending_quantity'] = 0;
             } else {
                 $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            }
+            
+            if( $purchase_orders[$key]['pending_quantity'] == 0){                
+               $purchase_orders[$key]['order_status'] = 'completed';   
+               PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
             }
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }

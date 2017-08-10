@@ -467,12 +467,12 @@ class PurchaseAdviseController extends Controller {
          * --------------------------------------------
          */
 
- /* check for vat/gst items */       
-            if (isset($purchase_advise['vat_percentage']) && !empty($purchase_advise['vat_percentage']) && $purchase_advise['vat_percentage'] != "" && $purchase_advise['vat_percentage'] != '0') {
-                $sms_flag = 1;
-            }      
-        /**/ 
-       
+        /* check for vat/gst items */
+        if (isset($purchase_advise['vat_percentage']) && !empty($purchase_advise['vat_percentage']) && $purchase_advise['vat_percentage'] != "" && $purchase_advise['vat_percentage'] != '0') {
+            $sms_flag = 1;
+        }
+        /**/
+
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $input_data = $purchase_advise['purchase_products'];
@@ -697,11 +697,15 @@ class PurchaseAdviseController extends Controller {
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
             }
-            if ($total_present_shipping == $total_quantity || $total_present_shipping > $total_quantity) {
-                PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
-                    'order_status' => 'completed'
-                ));
-            }
+
+//            if ($total_present_shipping == $total_quantity || $total_present_shipping > $total_quantity) {
+//                PurchaseOrder::where('id', '=', $input_data['id'])->update(array(
+//                    'order_status' => 'completed'
+//                ));
+//            }
+
+            $PO = PurchaseOrder::where('id', $input_data['id'])->get();           
+            $this->quantity_calculation_po($PO);
 
             /* inventory code */
             $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $purchase_advice_id)->where('order_type', 'purchase_advice')->get();
@@ -785,14 +789,14 @@ class PurchaseAdviseController extends Controller {
          * --------------------------------------------
          */
         $input_data = $purchase_advise['purchase_products'];
-        
-       
-        /* check for vat/gst items */       
-            if (isset($purchase_advise['vat_percentage']) && !empty($purchase_advise['vat_percentage']) && $purchase_advise['vat_percentage'] != "" && $purchase_advise['vat_percentage'] != '0') {
-                $sms_flag = 1;
-            }      
-        /**/  
-        
+
+
+        /* check for vat/gst items */
+        if (isset($purchase_advise['vat_percentage']) && !empty($purchase_advise['vat_percentage']) && $purchase_advise['vat_percentage'] != "" && $purchase_advise['vat_percentage'] != '0') {
+            $sms_flag = 1;
+        }
+        /**/
+
         $send_sms = Input::get('send_sms');
         if ($send_sms == 'true' && $sms_flag == 1) {
             $customer_id = $purchase_advise->supplier_id;
@@ -894,6 +898,70 @@ class PurchaseAdviseController extends Controller {
             }
         }
         return $pending_orders;
+    }
+
+    /*
+     * First get all orders
+     * 1 if delevery order is generated from order then only calculate
+     * pending order from delivery order
+     * else take order details in pending order
+     * 2 if delivery order is generated then take those products only
+     * which has there in order rest skip
+     */
+
+    function quantity_calculation_po($purchase_orders) {
+
+        foreach ($purchase_orders as $key => $order) {
+
+            $purchase_order_quantity = 0;
+            $purchase_order_advise_quantity = 0;
+            //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
+            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            if (count($purchase_order_advise_products) > 0) {
+                foreach ($purchase_order_advise_products as $poapk => $poapv) {
+                    $product_size = $poapv['product_sub_category'];
+                    //$product_size = ProductSubCategory::find($poapv->product_category_id);
+                    if ($poapv->unit_id == 1) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
+                    }
+                    if ($poapv->unit_id == 2) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
+                    }
+                    if ($poapv->unit_id == 3) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                    }
+                }
+            }
+
+            if (count($order['purchase_products']) > 0) {
+                foreach ($order['purchase_products'] as $popk => $popv) {
+                    $product_size = $popv['product_sub_category'];
+                    //$product_size = ProductSubCategory::find($popv->product_category_id);
+                    if ($popv->unit_id == 1) {
+                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                    }
+                    if ($popv->unit_id == 2) {
+                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                    }
+                    if ($popv->unit_id == 3) {
+                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                    }
+                }
+            }
+
+            if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
+                $purchase_orders[$key]['pending_quantity'] = 0;
+            } else {
+                $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            }
+
+            if ($purchase_orders[$key]['pending_quantity'] == 0) {
+                $purchase_orders[$key]['order_status'] = 'completed';
+                PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
+            }
+            $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
+        }
+        return $purchase_orders;
     }
 
 }
