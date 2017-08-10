@@ -1846,8 +1846,8 @@ class HomeController extends Controller {
             $delivery_challan_response["labour_server_added"] = isset($labour_array)?$labour_array:"";
 
             /* add loadedby if new dc created */
-            if ($value->server_id == 0) {
-                $loadedby_array = [];
+            $loadedby_array = [];
+            if ($value->server_id == 0) {                
                 foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
                     if ($value->id == $loadedby_list->local_dc_id) {
                         /* if labour created offline */
