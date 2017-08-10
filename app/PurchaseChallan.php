@@ -37,6 +37,17 @@ class PurchaseChallan extends Model {
         return $this->hasMany('App\DeliveryChallanLabours', 'delivery_challan_id', 'id');
 //      
     }
+    
+     public function purchase_challan_loaded_by() {
+        return $this->hasMany('App\DeliveryChallanLoadedBy', 'delivery_challan_id', 'id')->where('type','purchase');
+//        return $this->belongsTo('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
+//        return $this->hasMany('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
+    }
+
+    public function purchase_challan_labours() {
+        return $this->hasMany('App\DeliveryChallanLabours', 'delivery_challan_id', 'id')->where('type','purchase');
+//      
+    }
 
     public function purchase_advice() {
         return $this->hasOne('App\PurchaseAdvise', 'id', 'purchase_advice_id')->withTrashed();

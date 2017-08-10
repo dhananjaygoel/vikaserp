@@ -124,8 +124,8 @@
                                     <tr>
                                         <td><span>Unloaded By: </span>
                                             <?php
-                                            if (isset($purchase_challan['challan_loaded_by'])) {
-                                                foreach ($purchase_challan['challan_loaded_by'] as $challan_loaded_by) {
+                                            if (isset($purchase_challan['purchase_challan_loaded_by'])) {
+                                                foreach ($purchase_challan['purchase_challan_loaded_by'] as $challan_loaded_by) {
                                                     foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
                                                         echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
                                                     }
@@ -137,8 +137,8 @@
                                     <tr>
                                         <td><span>Labour: </span>
                                             <?php
-                                            if (isset($purchase_challan['challan_labours']) && !empty($purchase_challan['challan_labours'])) {
-                                                foreach ($purchase_challan['challan_labours'] as $challan_labour) {
+                                            if (isset($purchase_challan['purchase_challan_labours']) && !empty($purchase_challan['purchase_challan_labours'])) {
+                                                foreach ($purchase_challan['purchase_challan_labours'] as $challan_labour) {
                                                     foreach ($challan_labour['dc_labour'] as $labour) {
                                                         echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
                                                     }
