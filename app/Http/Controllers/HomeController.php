@@ -1843,11 +1843,11 @@ class HomeController extends Controller {
                     }
                 }
             }
-            $delivery_challan_response["labour_server_added"] = isset($labour_array)?$labour_array:"";
+            $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
 
             /* add loadedby if new dc created */
             $loadedby_array = [];
-            if ($value->server_id == 0) {                
+            if ($value->server_id == 0) {
                 foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
                     if ($value->id == $loadedby_list->local_dc_id) {
                         /* if labour created offline */
@@ -2313,6 +2313,7 @@ class HomeController extends Controller {
         if (Input::has('order') && Input::has('customer') && Input::has('order_product')) {
             $orders = (json_decode($input['order']));
             $customers = (json_decode($input['customer']));
+            $orderproduct ="";
             $orderproduct = (json_decode($input['order_product']));
             if (count($customers) > 0) {
                 $customer = $customers;
@@ -4355,7 +4356,7 @@ class HomeController extends Controller {
      */
     public function appallcustomers() {
         /* new code return if web sync date is less than or equal to app sync date */
-        $real_sync_date = SyncTableInfo::where('table_name', 'customers')->select('sync_date')->first();       
+        $real_sync_date = SyncTableInfo::where('table_name', 'customers')->select('sync_date')->first();
         if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
 
             if ($real_sync_date->sync_date <= Input::get('customer_sync_date')) {
@@ -4469,14 +4470,14 @@ class HomeController extends Controller {
     /**
      * App get all common results
      */
-    public function appallcommon() {       
+    public function appallcommon() {
         /* new code return if web sync date is less than or equal to app sync date */
         $real_sync_date = SyncTableInfo::get();
         $used_table_name = array("customers", "product_category", "product_sub_category", "delivery_locations");
-       
+
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($used_table_name);
-        
+
         $common_sync_date = [];
         foreach ($real_sync_date as $sync_date) {
             if (in_array($sync_date->table_name, $used_table_name)) {
@@ -4493,7 +4494,7 @@ class HomeController extends Controller {
         $all['delivery_locations'] = [];
         $all['delivery_locations']['latest_date'] = $common_sync_date['delivery_locations'];
 
-        if (Input::has('customer_sync_date') && Input::has('product_category_sync_date') && Input::has('product_subcategory_sync_date') && Input::has('delivery_location_sync_date') ) {
+        if (Input::has('customer_sync_date') && Input::has('product_category_sync_date') && Input::has('product_subcategory_sync_date') && Input::has('delivery_location_sync_date')) {
 
             if ($common_sync_date['customers'] <= Input::get('customer_sync_date') && $common_sync_date['product_category'] <= Input::get('product_category_sync_date') && $common_sync_date['product_sub_category'] <= Input::get('product_subcategory_sync_date') && $common_sync_date['delivery_locations'] <= Input::get('delivery_location_sync_date')) {
                 return json_encode($all);
@@ -4516,7 +4517,7 @@ class HomeController extends Controller {
                     $all['delivery_locations']['latest_date'] = $common_sync_date['delivery_locations'];
                 }
             }
-        } else {          
+        } else {
             $all['customers'] = Customer::orderBy('tally_name', 'asc')->get();
             $all['customers']['latest_date'] = $common_sync_date['customers'];
             $all['product_category'] = ProductCategory::orderBy('created_at', 'desc')->get();
@@ -4526,7 +4527,7 @@ class HomeController extends Controller {
             $all['delivery_locations'] = DeliveryLocation::with('city', 'states')->where('status', '=', 'permanent')->orderBy('created_at', 'desc')->get();
             $all['delivery_locations']['latest_date'] = $common_sync_date['delivery_locations'];
         }
-        return json_encode($all);       
+        return json_encode($all);
     }
 
     /**
