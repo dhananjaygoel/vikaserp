@@ -142,14 +142,14 @@ $(document).ready(function () {
     
     
    
-    var baseurl = $('#baseurl').attr('name');
-    $.ajax({
-        type: 'get', url: baseurl + '/update-opening-stock',
-        success: function (data) {         
-           
-        }
-    });
-    
+//    var baseurl = $('#baseurl').attr('name');
+//    $.ajax({
+//        type: 'get', url: baseurl + '/update-opening-stock',
+//        success: function (data) {         
+//           
+//        }
+//    });
+//    
     
     
 
