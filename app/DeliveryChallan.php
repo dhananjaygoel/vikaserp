@@ -25,13 +25,13 @@ class DeliveryChallan extends Model {
     protected $dates = ['deleted_at'];
 
     public function challan_loaded_by() {
-        return $this->hasMany('App\DeliveryChallanLoadedBy','delivery_challan_id', 'id');
+        return $this->hasMany('App\DeliveryChallanLoadedBy','delivery_challan_id', 'id')->where('type','sale');
 //        return $this->belongsTo('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
 //        return $this->hasMany('App\DeliveryChallanLoadedBy', 'id', 'delivery_challan_id');
     }
     
     public function challan_labours() {
-        return $this->hasMany('App\DeliveryChallanLabours','delivery_challan_id', 'id');
+        return $this->hasMany('App\DeliveryChallanLabours','delivery_challan_id', 'id')->where('type','sale');
 //      
     }
     
