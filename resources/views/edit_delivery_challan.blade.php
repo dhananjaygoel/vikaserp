@@ -236,7 +236,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="loading"><b class="challan">Loading</b></label>
-                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
+                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();" >
                                 </div>
                                 
 <!--                                <div class="col-md-4">
@@ -259,7 +259,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Discount"><b class="challan">Discount</b></label>
-                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this,event,true,true);" onkeypress=" return numbersOnly(this,event,true,true);" readonly="readonly">
+                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this,event,true,true);" onkeypress=" return numbersOnly(this,event,true,true);" >
                                 </div>
 <!--                                <div class="col-md-4">
                                     <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
@@ -289,7 +289,7 @@
                                     <input id="freight_total_charge" readonly="" class="form-control" value="">
                                 </div>-->
                             </div>
-                            <div class="form-group" style="display: none">
+                            <div class="form-group" >
                                 <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
