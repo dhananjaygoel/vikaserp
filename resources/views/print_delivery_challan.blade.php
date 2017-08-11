@@ -296,7 +296,7 @@
                         </tr>
                         <tr class="secondrow">
                             <td>Pipe</td>
-                            <td> {{-- round($allorder->pipe_qty, 2) --}}  </td>
+                            <td> {{ round($allorder->pipe_qty, 2) }}  </td>
                             <td> {{ round($allorder->pipe_amount, 2) }}</td>
                             <td> {{ round($allorder->pipe_vat, 2) }} </td>
                             <td> {{ round($allorder->pipe_vat_amount, 2) }}</td> 
