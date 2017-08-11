@@ -714,10 +714,10 @@ class DeliveryChallanController extends Controller {
         $sms_flag = 0;
 //        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details', 'customer', 'delivery_order.location')->find($id);
-
-        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+       
 
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
+             $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 //                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
@@ -812,6 +812,7 @@ class DeliveryChallanController extends Controller {
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
+            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 
 
 
