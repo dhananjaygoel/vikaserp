@@ -209,11 +209,11 @@ class DashboardController extends Controller {
             } else {
                 $weight = 1;
             }
-            if (isset($product_info->standard_length)) {
+            $std_length = 1;
+            if (isset($product_info->standard_length) && $product_info->standard_length <> 0) {
                 $std_length = $product_info->standard_length;
-            } else {
-                $std_length = 1;
             }
+
             $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
         }
         return $kg_qty;
@@ -348,7 +348,7 @@ class DashboardController extends Controller {
         $date_search = $date->subDays(7);
         $orders_stats_all;
 
-        $orders_stats = Order::with('aopwpsc','aopwpsc.order_product_details.product_category')->where('order_status', '=', 'completed')
+        $orders_stats = Order::with('aopwpsc', 'aopwpsc.order_product_details.product_category')->where('order_status', '=', 'completed')
                 ->where('updated_at', '>', $date_search)
                 ->orderBy('updated_at')
                 ->get();
@@ -416,7 +416,7 @@ class DashboardController extends Controller {
         $date = new Carbon\Carbon;
         $date_search = $date->subDays(7);
         $orders_stats_all;
-        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products','delivery_challan_products.order_product_details.product_category')
+        $delivery_challan_stats = DeliveryChallan::with('delivery_challan_products', 'delivery_challan_products.order_product_details.product_category')
                 ->where('challan_status', '=', 'completed')
                 ->where('updated_at', '>', $date_search)
                 ->get();

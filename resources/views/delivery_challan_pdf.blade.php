@@ -282,7 +282,7 @@
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod->order_product_details->alias_name }}</div>
+                    <div class="divCell">{{ $prod->order_product_all_details->alias_name }}</div>
                     <div class="divCell">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
                     <div class="divCell">{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</div>
@@ -298,19 +298,7 @@
                 $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
 
 
-//                if ($prod->unit_id == 1) {
-//                    $total_qty += $prod->actual_quantity;
-//                }
-//
-//                if ($prod->unit_id == 2) {
-//                    echo $prod['order_product_details']['product_category']->weight;
-//                    $total_qty += $prod->actual_quantity * $prod['order_product_details']->weight;
-//                }
-//
-//                if ($prod->unit_id == 3) {
-//                    echo $prod['order_product_details']['product_category']->standard_length;
-//                    $total_qty += ($prod->actual_quantity / $prod['order_product_details']->standard_length) * $prod['order_product_details']->weight;
-//                }
+//              
                 ?>
                 @endif
                 @endforeach

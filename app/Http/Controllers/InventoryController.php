@@ -136,16 +136,22 @@ class InventoryController extends Controller {
     public function inventoryCalc($product_category_ids = []) {
 
         if (empty($product_category_ids)) {
-            $dc_list = AllOrderProducts::orderBy('updated_at', 'DESC')->withTrashed()->take(50)->get();
-            foreach ($dc_list as $dc) {
-                $product_category_ids[] = $dc->product_category_id;
-            }
-
-
-            $dc_list = \App\PurchaseProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->take(50)->get();
-            foreach ($dc_list as $dc) {
-                $product_category_ids[] = $dc->product_category_id;
-            }
+//            $dc_list = AllOrderProducts::orderBy('updated_at', 'DESC')->withTrashed()->take(50)->get();
+//            foreach ($dc_list as $dc) {
+//                $product_category_ids[] = $dc->product_category_id;
+//            }
+//
+//
+//            $dc_list = \App\PurchaseProducts::select('product_category_id')->orderBy('updated_at', 'DESC')->take(50)->get();
+//            foreach ($dc_list as $dc) {
+//                $product_category_ids[] = $dc->product_category_id;
+//            }
+            
+            echo "<pre>";
+            print_r("hi");
+            echo "</pre>";
+            exit;
+            
             $product_category_ids = array_unique($product_category_ids);
         }
         $q = Inventory::query();
@@ -1657,8 +1663,8 @@ class InventoryController extends Controller {
             foreach ($size_array as $size) {
                 foreach ($thickness_array as $thickness) {
                     if (isset($report_arr[$size][$thickness])) {
-                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-//                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
+//                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
                     } else {
                         $final_arr[$size][$thickness] = "-";
                     }
@@ -1745,8 +1751,8 @@ class InventoryController extends Controller {
         foreach ($size_array as $size) {
             foreach ($thickness_array as $thickness) {
                 if (isset($report_arr[$size][$thickness])) {
-                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-//                    $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
+//                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                    $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
                 } else {
                     $final_arr[$size][$thickness] = "-";
                 }

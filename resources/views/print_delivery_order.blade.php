@@ -29,7 +29,7 @@
             .divCell{
                 float:left;
                 display:table-column;
-                width:14%;
+                width:10%;
                 padding: 5px;
                 border-right: 1px solid #ccc;
             }
@@ -200,6 +200,10 @@
                 @endif
                 @endforeach
                 @endif
+            </div>
+            <div class="footer">
+                <div class="remark">Total Quantity:</div>               
+                <div class="content">{{ isset($delivery_data->total_quantity)?$delivery_data->total_quantity :''}} (Ton)</div>
             </div>
             <div class="footer">
                 <div class="remark">Remark:</div>

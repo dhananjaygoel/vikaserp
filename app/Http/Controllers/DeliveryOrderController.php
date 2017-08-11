@@ -950,17 +950,32 @@ class DeliveryOrderController extends Controller {
         $date_letter = 'DO/' . $current_date . "" . $number;
         DeliveryOrder:: where('id', $id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
 //        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
-        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'unit', 'location')->find($id);
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
+        $order_qty = 0;
+        foreach ($delivery_data['delivery_product'] as $key => $do_product_details) {
+            if ($do_product_details->unit_id == 1) {
+                $order_qty = $order_qty + $do_product_details->quantity;
+            }
+            if ($do_product_details->unit_id == 2) {
+                $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight);
+            }
+            if ($do_product_details->unit_id == 3) {
+                $order_qty = $order_qty + (($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * $do_product_details->product_sub_category->weight);
+            }
+        }
+
+        $delivery_data->total_quantity = round($order_qty/1000,2);    
+
         $units = Units::all();
-        $delivery_locations = DeliveryLocation::all();
-        $customers = Customer::all();
+//        $delivery_locations = DeliveryLocation::all();
+//        $customers = Customer::all();
 
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
-            'delivery_locations' => $delivery_locations,
-            'customers' => $customers
+//            'delivery_locations' => $delivery_locations,
+//            'customers' => $customers
         ]);
 
         /* inventory code */
@@ -978,10 +993,10 @@ class DeliveryOrderController extends Controller {
          */
         $input_data = $delivery_data['delivery_product'];
         /* check for vat/gst items */
-        foreach ($input_data as $product_data) {           
+        foreach ($input_data as $product_data) {
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] != '0.00') {
                 $sms_flag = 1;
-            }            
+            }
         }
         /**/
 
@@ -1049,7 +1064,7 @@ class DeliveryOrderController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        return view('print_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers'));
+        return view('print_delivery_order', compact('delivery_data', 'units'));
     }
 
     /*

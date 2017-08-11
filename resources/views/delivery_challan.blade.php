@@ -106,11 +106,13 @@
                                         <th class="text-center">#</th>
                                         <th class="text-center">Tally Name</th>
                                         <?php if ($qstring_sort_type_order == 'completed') { ?>
-                                        <th class="text-center">Serial Number</th>
+                                            <th class="text-center">Serial Number</th>
                                         <?php } ?>
-                                        <th class="text-center">Present Shipping</th>
-                                        <th class="text-center">Pending Order</th>
-                                        <th class="text-center">VAT PERCENTAGE</th>
+                                        <th class="text-center">Actual Quantity</th>
+                                        <!--<th class="text-center">Present Shipping</th>-->
+                                        <!--<th class="text-center">Pending Order</th>-->
+                                        <!--<th class="text-center">VAT PERCENTAGE</th>-->
+                                        <th class="text-center">Truck Number</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -126,9 +128,11 @@
 <!--                                        <td class="text-center">
                                             {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
                                         </td>-->
-                                        <td class="text-center">{{ round($challan->total_quantity, 2) }}</td>
-                                        <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                        <td class="text-center">{{ (round($challan->vat_percentage, 2)<>"")? round($challan->vat_percentage, 2):0}}</td>
+                                        <!--<td class="text-center">{{ round($challan->total_quantity, 2) }}</td>-->
+                                        <td class="text-center">{{ (round($challan->actual_quantity, 2)>0)? round($challan->actual_quantity, 2)  :0 }}</td>
+                                        <!--<td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>-->
+                                        <!--<td class="text-center">{{ (round($challan->vat_percentage, 2)<>"")? round($challan->vat_percentage, 2):0}}</td>-->
+                                        <td class="text-center">{{ ($challan['delivery_order']->vehicle_number)}}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -144,14 +148,14 @@
                                                 </span>
                                             </a>
                                             @endif
-                                           
+
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                          
+
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
                                                 <span class="fa-stack">
@@ -174,11 +178,13 @@
                                             {{$challan->serial_number}}
                                             @endif
                                         </td>
-                                        <td class="text-center">{{round($challan->total_quantity, 2)}}</td>
-                                         <td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>
-                                         <td class="text-center">{{ (round($challan->vat_percentage, 2)<>'')? round($challan->vat_percentage, 2):0}}</td>
-                                         
-                                         <td class="text-center">
+                                        <!--<td class="text-center">{{round($challan->total_quantity, 2)}}</td>-->
+                                        <td class="text-center">{{ (round($challan->actual_quantity, 2)>0)? round($challan->actual_quantity, 2)  :0 }}</td>
+                                        <!--<td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>-->
+                                        <!--<td class="text-center">{{ (round($challan->vat_percentage, 2)<>'')? round($challan->vat_percentage, 2):0}}</td>-->
+                                        <td class="text-center">{{ ($challan['delivery_order']->vehicle_number)}}</td>
+
+                                        <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

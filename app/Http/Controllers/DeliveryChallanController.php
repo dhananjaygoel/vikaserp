@@ -355,6 +355,9 @@ class DeliveryChallanController extends Controller {
                 if (count($order['delivery_challan_products']) > 0) {
                     $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
                 }
+                if (count($order['delivery_challan_products']) > 0) {
+                    $actual_quantity = $order['delivery_challan_products']->sum('actual_quantity');
+                }
                 if (count($order['delivery_order_products']) > 0) {
                     $order_quantity_do = $order['delivery_order_products']->sum('quantity');
                 }
@@ -362,6 +365,7 @@ class DeliveryChallanController extends Controller {
                     $order_quantity_o = $order['order_products']->sum('quantity');
                 }
                 $allorders[$key]['total_quantity'] = $order_quantity;
+                $allorders[$key]['actual_quantity'] = $actual_quantity;
 
                 if (($order_quantity == $order_quantity_do) && ($order_quantity_do == $order_quantity_o)) {
                     $allorders[$key]['total_quantity_pending'] = 0;
@@ -586,10 +590,10 @@ class DeliveryChallanController extends Controller {
             $send_sms = Input::get('send_sms');
 
             $customer_id = $allorder->customer_id;
-            $customer = Customer::with('manager')->find($customer_id);        
+            $customer = Customer::with('manager')->find($customer_id);
             if ($sms_flag == 1) {
                 if (count($customer) > 0) {
-                      
+
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been edited as follows ";
                     foreach ($input_data as $product_data) {
@@ -647,7 +651,7 @@ class DeliveryChallanController extends Controller {
                         curl_close($ch);
                     }
                 }
-            }           
+            }
         }
         //         update sync table         
         $tables = ['delivery_challan', 'all_order_products'];
@@ -708,7 +712,11 @@ class DeliveryChallanController extends Controller {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $sms_flag = 0;
-        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
+//        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details', 'customer', 'delivery_order.location')->find($id);
+
+        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
@@ -927,6 +935,48 @@ class DeliveryChallanController extends Controller {
         /* end code */
 
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
+    }
+
+    function calc_qty_product_type_wise($update_delivery_challan) {
+        $pipe_amount = 0;
+        $structure_amount = 0;
+        $pipe_qty = 0;
+        $structure_qty = 0;
+        $pipe_vat = 0;
+        $structure_vat = 0;
+        $pipe_vat_amount = 0;
+        $structure_vat_amount = 0;
+
+        foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
+            if (isset($delivery_challan_products['order_product_all_details']['product_category']['product_type']->id)) {
+                $amont = $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
+                if ($delivery_challan_products['order_product_all_details']['product_category']['product_type']->id == 1) {
+                    $pipe_vat = $update_delivery_challan->vat_percentage;
+                    $pipe_qty += $delivery_challan_products->actual_quantity;
+                    $pipe_amount += $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
+                   $pipe_vat_amount += $amont*$pipe_vat/100;
+                    
+                    
+                } else if ($delivery_challan_products['order_product_all_details']['product_category']['product_type']->id == 2) {
+                    $structure_vat = $update_delivery_challan->vat_percentage;
+                    $structure_qty += $delivery_challan_products->actual_quantity;
+                    $structure_amount += $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
+                    $structure_vat_amount += $amont*$structure_vat/100;
+                }
+            }
+        }
+        
+        $update_delivery_challan['pipe_qty'] = $pipe_qty;
+        $update_delivery_challan['pipe_amount'] = $pipe_amount;
+        $update_delivery_challan['pipe_vat'] = $pipe_vat;
+        $update_delivery_challan['pipe_vat_amount'] = $pipe_amount + $pipe_vat_amount;
+        
+        $update_delivery_challan['structure_qty'] = $structure_qty;
+        $update_delivery_challan['structure_amount'] = $structure_amount;
+        $update_delivery_challan['structure_vat'] = $structure_vat;
+        $update_delivery_challan['structure_vat_amount'] = $structure_amount + $structure_vat_amount;
+
+        return $update_delivery_challan;
     }
 
     /*
