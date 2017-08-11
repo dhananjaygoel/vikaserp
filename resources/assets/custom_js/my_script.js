@@ -304,11 +304,21 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
 
 $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", function () {
     var status_form = 0;
+    console.log($('input[name=vat_status]:checked').val());
 
     if ($('#datepickerDate').val() == "") {
         $('#datepickerDate').addClass('error_validation');
         status_form = 1;
     }
+    if ($('input[name=vat_status]:checked').val() == "exclude_vat") {
+        if ($('#price').val() == "" | $('#price').val() == "0" | $('#price').val() == 0 ) {
+            $('#price').addClass('error_validation');
+            status_form = 1;
+        }
+    }else{
+         $('#price').removeClass('error_validation');
+    }
+
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
         if ($('#name').val() == "") {
             $('#name').addClass('error_validation');
