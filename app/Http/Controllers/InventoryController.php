@@ -1548,7 +1548,11 @@ class InventoryController extends Controller {
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
             $alias_name = '%' . trim(Input::get('search_inventory')) . '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
-            $query->where('product_sub_category_id', '=', $product_sub_id->id);
+            if (count($product_sub_id)) {
+                $query->where('product_sub_category_id', '=', $product_sub_id->id);
+            }else{
+                return;
+            }
         }
 
 
