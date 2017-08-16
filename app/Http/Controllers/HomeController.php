@@ -1749,11 +1749,11 @@ class HomeController extends Controller {
 
         if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
             $last_sync_date = Input::get('delivery_challan_sync_date');
-            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->where('challan_status', 'pending')->whereRaw('created_at = updated_at')->get();
+            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours','delivery_order')->where('challan_status', 'pending')->whereRaw('created_at = updated_at')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
 
 //            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('challan_status','pending')->with('delivery_challan_products', 'challan_loaded_by')->get();
-            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products', 'challan_loaded_by')->get();
+            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products', 'challan_loaded_by','delivery_order')->get();
             $delivery_challan_response['delivery_challan_server_updated'] = ($delivery_challan_updated_server && count($delivery_challan_updated_server) > 0) ? $delivery_challan_updated_server : array();
 
             /* Send Updated customers */
@@ -1763,7 +1763,7 @@ class HomeController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $delivery_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours')->where('challan_status', 'pending')->get();
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->where('challan_status', 'pending')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
         }
 
