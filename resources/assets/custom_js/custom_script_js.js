@@ -471,6 +471,31 @@ $("body").delegate(".error_check", "keyup", function (event) {
 
 });
 
+function truck_weight(ev){
+    var empty_truck_weight= parseInt($('#empty_truck_weight').val());
+    var final_truck_weight = parseInt(ev.value);
+    if(empty_truck_weight >= final_truck_weight){
+        $('#'+ev.id).focus();
+        $('#'+ev.id).addClass('error_validation');
+    }else{
+        $('#'+ev.id).removeClass('error_validation');
+        var actual_qty =final_truck_weight - empty_truck_weight;
+        $('#total_actual_qty_truck').val(actual_qty);
+    }
+  
+}
+
+
+$("body").delegate(".empty_truck_weight", "keyup", function (event) {
+    truck_weight(event);
+
+});
+$("body").delegate(".final_truck_weight", "keyup", function (event) {
+    truck_weight(event);
+
+});
+
+
 /**
  * Grand total for creating independent delivery order
  */
@@ -518,7 +543,7 @@ function clear_actual_qty() {
  * 
  */
 
-function fetch_average_quantity() {
+function fetch_average_quantity_temp() {
 
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
@@ -556,6 +581,45 @@ function fetch_average_quantity() {
     }
 }
 
+function fetch_average_quantity() {
+
+    var total_avg_qty = 0;
+    var current_row_count = $(".add_product_row").length;
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseFloat($('#product_price_' + i).val())) {
+            var quantity = $("#actual_quantity_readonly_" + i).val();
+            if (quantity > 0) {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                    rate = parseFloat($("#average_weight_" + i).val());
+                }
+            } else {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() == 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() == 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                    rate = parseFloat($("#average_weight_" + i).val());
+                }
+            }            
+            // var rate = $("#product_price_" + i).val();
+
+            var amount = parseFloat(rate.toFixed(2)) * parseInt(quantity.toFixed(2));
+
+            total_avg_qty = total_avg_qty + amount;
+//            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
+
+            if (amount > 0) {
+                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+//                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
+                $('#total_avg_qty').val(total_avg_qty.toFixed(2));
+            }
+        }
+    }
+    fetch_actual_quantity();
+}
+
 
 /*
  * 
@@ -568,7 +632,7 @@ function fetch_actual_quantity() {
     var current_row_count = $(".add_product_row").length;
 
     Total_Avg_qty = parseFloat($("#total_avg_qty").val());
-    Total_Actual_qty = parseFloat($("#total_actual_qty").val());
+    Total_Actual_qty = parseFloat($("#total_actual_qty_truck").val());
     Total_Actual_qty_calc = 0;
     Total_Amount = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
@@ -606,14 +670,14 @@ function fetch_actual_quantity() {
     /*to check is actual qty and total avg qty have diffence less than 5%*/
 
     var aq = $('#total_actual_quantity_calc').val();
-    var taq = $('#total_actual_qty').val();
+    var taq = $('#total_actual_qty_truck').val();
     var tavgq = $('#total_avg_qty').val();
 
     var diff = Math.abs(parseFloat(taq) - parseFloat(tavgq));
     var percentage_diff = parseFloat(tavgq) * 0.05;
 
-    if (percentage_diff >= diff) {
-        $('#total_actual_qty').removeClass('error_validation');
+//    if (percentage_diff >= diff) {
+        $('#total_actual_qty_truck').removeClass('error_validation');
 
         if (parseFloat(taq) != parseFloat(aq))
         {
@@ -637,20 +701,20 @@ function fetch_actual_quantity() {
 
         }
 
-    }
-    else {
-        $('#total_actual_qty').addClass('error_validation');
-        $('#total_actual_qty').focus();
-
-        $('#total_price').val('0.00');
-        $('#total_actual_quantity_calc').val(0);
-        var current_row_count = $(".add_product_row").length;
-
-        for (var j = 0; j <= current_row_count + 1; j++) {
-//                     console.log(current_row_count);
-            $("#amount_" + j).html('<span class="text-center">' + 0 + '</span>');
-        }
-    }
+//    }
+//    else {
+//        $('#total_actual_qty_truck').addClass('error_validation');
+//        $('#total_actual_qty_truck').focus();
+//
+//        $('#total_price').val('0.00');
+//        $('#total_actual_quantity_calc').val(0);
+//        var current_row_count = $(".add_product_row").length;
+//
+//        for (var j = 0; j <= current_row_count + 1; j++) {
+////                     console.log(current_row_count);
+//            $("#amount_" + j).html('<span class="text-center">' + 0 + '</span>');
+//        }
+//    }
 }
 
 /*

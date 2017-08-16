@@ -1940,6 +1940,17 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var status_form = 0;
     var tot_products = $(".add_product_row").length;
     var j = 0;
+    var empty_truck_weight = parseInt($('#empty_truck_weight').val());
+    var final_truck_weight = parseInt($('#final_truck_weight').val());
+    if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
+        status_form = 1;
+        $('#empty_truck_weight').addClass('error_validation');
+    }
+    if (final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) {
+        status_form = 1;
+        $('#final_truck_weight').addClass('error_validation');
+    }
+
     for (i = 1; i <= tot_products; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#actual_quantity_" + i).val() == "")) {
             j++;
@@ -2066,7 +2077,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
 
     CheckBoxArray = [];
     $("input:checkbox[class='vat_chkbox']:checked").each(function () {
-        CheckBoxArray.push($(this).val());       
+        CheckBoxArray.push($(this).val());
         if ($.trim($('#vat_percentage').val()) == "" | $('#vat_percentage').val() == "0") {
             $('#vat_percentage').addClass('error_validation');
             status_form = 1;

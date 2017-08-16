@@ -699,10 +699,22 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function () {
 function print_challan(delivery_order_id) {
     $('#print_delivery_order').val(delivery_order_id);
 }
+
+function print_challan_do(el) {
+    $('#print_delivery_order').val(el.id);
+    var empty_truck_weight = $(el).data('bind');
+    $('#empty_truck_weight').val(empty_truck_weight);   
+}
 /*
  * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function () {
+    var empty_truck_weight = $('#empty_truck_weight').val();
+    if(empty_truck_weight == "0" | empty_truck_weight ==""){
+        $('#empty_truck_weight').addClass('error_validation');
+        return false;
+    }   
+    
     $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
@@ -713,6 +725,7 @@ $('.print_delivery_order').click(function () {
 
     $.ajax({
         type: "GET",
+        data: {empty_truck_weight:empty_truck_weight},
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');

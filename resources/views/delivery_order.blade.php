@@ -16,51 +16,51 @@
                                             <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
                                         </a>-->
                     <!--<div class="form-group pull-right">-->
-                       
-                            <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
-                                 <div class=" pull-right col-md-3">
-                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                <?php
-                                $session_sort_type_order = Session::get('order-sort-type');
-                                if ((Input::get('order_status') != "") || (Input::get('delivery_order_status') != "")) {
-                                    if (Input::get('order_status') != "") {
-                                        $qstring_sort_type_order = Input::get('order_status');
-                                    } elseif (Input::get('delivery_order_status') != "") {
-                                        $qstring_sort_type_order = Input::get('delivery_order_status');
-                                    }
-                                }
-                                if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
-                                    $qstring_sort_type_order = $qstring_sort_type_order;
-                                } else {
-                                    $qstring_sort_type_order = $session_sort_type_order;
-                                }
-                                ?>
-                                <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
-                                    <option <?php if ($qstring_sort_type_order == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
-                                    <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
 
-                                </select>
-                                <?php
-                                if (isset($session_sort_type_order)) {
-                                    Session::put('order-sort-type', "");
+                    <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
+                        <div class=" pull-right col-md-3">
+                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                            <?php
+                            $session_sort_type_order = Session::get('order-sort-type');
+                            if ((Input::get('order_status') != "") || (Input::get('delivery_order_status') != "")) {
+                                if (Input::get('order_status') != "") {
+                                    $qstring_sort_type_order = Input::get('order_status');
+                                } elseif (Input::get('delivery_order_status') != "") {
+                                    $qstring_sort_type_order = Input::get('delivery_order_status');
                                 }
-                                ?>
-                                 </div>
-                            </form>
-                       
+                            }
+                            if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
+                                $qstring_sort_type_order = $qstring_sort_type_order;
+                            } else {
+                                $qstring_sort_type_order = $session_sort_type_order;
+                            }
+                            ?>
+                            <select class="form-control" id="order_status" name="order_status" onchange="this.form.submit()">
+                                <option <?php if ($qstring_sort_type_order == 'Inprocess') echo 'selected=""'; ?> value="Inprocess">Inprocess</option>
+                                <option <?php if ($qstring_sort_type_order == 'Delivered') echo 'selected=""'; ?> value="Delivered">Delivered</option>
+
+                            </select>
+                            <?php
+                            if (isset($session_sort_type_order)) {
+                                Session::put('order-sort-type', "");
+                            }
+                            ?>
+                        </div>
+                    </form>
+
                     <!--</div>-->
-                     <div class="search_form_wrapper delivery_challan_search_form_wrapper">
+                    <div class="search_form_wrapper delivery_challan_search_form_wrapper">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryOrderController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
-                                if (Input::get('export_from_date') != "") {
-                                    echo "value='" . Input::get('export_from_date') . "'";
-                                }
-                                ?>>
+                            if (Input::get('export_from_date') != "") {
+                                echo "value='" . Input::get('export_from_date') . "'";
+                            }
+                            ?>>
                             <input type="text" placeholder="To" name="export_to_date" class="form-control export_to_date" id="export_to_date" <?php
                             if (Input::get('export_to_date') != "") {
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
-                                ?>>
+                            ?>>
                             @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                             <input type="hidden" name="delivery_order_status" value="Delivered">
                             @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
@@ -76,12 +76,12 @@
                             if (Input::get('export_to_date') != "") {
                                 echo "value='" . Input::get('export_from_date') . "'";
                             }
-                                ?>>
+                            ?>>
                             <input type="hidden" name="export_to_date" id="export_to_date" <?php
                             if (Input::get('export_to_date') != "") {
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
-                                ?>>
+                            ?>>
                             @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                             <input type="hidden" name="delivery_order_status" value="Delivered">
                             @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
@@ -159,7 +159,7 @@
                                             {{$delivery['customer']->tally_name}}
                                             @else
                                             {{isset($delivery['customer']->owner_name)?$delivery['customer']->owner_name:'N/A'}}
-                                           
+
                                             @endif
                                         </td>
                                         <td>
@@ -228,7 +228,7 @@
 
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_challan({{$delivery->id}})">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -286,6 +286,12 @@
                                     </div>
                                 </div>
                                 <div class="modal fade" id="print_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                     <?php
+//                                                                                echo "<pre>";
+//                                                                                print_r($delivery_data->toArray());
+//                                                                                echo "</pre>";
+                                                                                
+                                                    ?>
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -298,7 +304,14 @@
                                                         <span class="current_time"></span>
                                                     </div>
                                                 </div>
-                                                <div class="checkbox">
+                                                <hr>
+                                                <div class="col-md-3">
+                                                    <label><span title="Empty Truck Weight" class="smstooltip">Empty Truck Weight (Kg)</span></label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="empty_truck_weight" value="" class="form-control empty_truck_weight" name="empty_truck_weight" maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);" >
+                                                </div>
+                                                <div class="checkbox col-md-12">
                                                     <label><input type="checkbox" id="checksms" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
