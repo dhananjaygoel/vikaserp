@@ -106,7 +106,9 @@ class InventoryController extends Controller {
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
             $alias_name = '%' . Input::get('search_inventory') . '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
-            $query->where('product_sub_category_id', '=', $product_sub_id->id);
+            if (count($product_sub_id)) {
+                $query->where('product_sub_category_id', '=', $product_sub_id->id);
+            }
         }
 
         $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
@@ -146,12 +148,12 @@ class InventoryController extends Controller {
 //            foreach ($dc_list as $dc) {
 //                $product_category_ids[] = $dc->product_category_id;
 //            }
-            
+
             echo "<pre>";
             print_r("hi");
             echo "</pre>";
             exit;
-            
+
             $product_category_ids = array_unique($product_category_ids);
         }
         $q = Inventory::query();
@@ -1514,7 +1516,7 @@ class InventoryController extends Controller {
         } else {
             $is_update = $inventory->update_opening_stock();
         }
-       
+
         if ($is_update > 0)
             $str = $is_update . " records has been updated at " . $current_date . " " . $current->toTimeString();
         else {
@@ -1544,7 +1546,7 @@ class InventoryController extends Controller {
         }
 
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
-            $alias_name = '%' . Input::get('search_inventory') . '%';
+            $alias_name = '%' . trim(Input::get('search_inventory')) . '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
             $query->where('product_sub_category_id', '=', $product_sub_id->id);
         }
