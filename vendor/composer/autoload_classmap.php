@@ -41,6 +41,7 @@ return array(
     'AlterDeliveryChallanLoadedBies01' => $baseDir . '/database/migrations/2017_06_15_110420_alter_delivery_challan_loaded_bies_01.php',
     'AlterDeliveryLocations01' => $baseDir . '/database/migrations/2017_07_26_124941_alter_delivery_locations_01.php',
     'AlterDeliveryOrder02Index' => $baseDir . '/database/migrations/2017_03_28_082754_alter_delivery_order_02_index.php',
+    'AlterDeliveryOrder03' => $baseDir . '/database/migrations/2017_08_16_131913_alter_delivery_order_03.php',
     'AlterDeliveryOrderTable01' => $baseDir . '/database/migrations/2016_08_24_095334_alter_delivery_order_table_01.php',
     'AlterInquiry02Index' => $baseDir . '/database/migrations/2017_03_28_082824_alter_inquiry_02_index.php',
     'AlterInquiry03' => $baseDir . '/database/migrations/2017_04_05_123621_alter_inquiry_03.php',
