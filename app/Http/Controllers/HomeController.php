@@ -7648,5 +7648,11 @@ class HomeController extends Controller {
         }
         return $kg_qty;
     }
+    
+    
+    public function current_time(){
+        $date = date('m/d/Y h:i:s a', time());
+        echo $date;
+    }
 
 }
