@@ -772,12 +772,20 @@ class DeliveryOrderController extends Controller {
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
+        $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::has('empty_truck_weight') : '0';
+        $final_truck_weight = (Input::has('final_truck_weight')) ? Input::has('final_truck_weight') : '0';
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
             if ($delivery_order_details->order_status == 'completed') {
                 return Redirect::back()->with('validation_message', 'This delivry order is already converted to delivry challan. Please refresh the page');
             }
         }
+
+        if ($empty_truck_weight == '0' | $final_truck_weight == '0') {
+            return Redirect::back()->with('validation_message', 'Please Add Truck Weight');
+        }
+
+
         if (Session::has('forms_delivery_challan')) {
             $session_array = Session::get('forms_delivery_challan');
             if (count($session_array) > 0) {
@@ -901,7 +909,10 @@ class DeliveryOrderController extends Controller {
             $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
             $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
         }
-        DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed'));
+        DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed',
+            'empty_truck_weight' => $empty_truck_weight,
+            'final_truck_weight' => $final_truck_weight,
+        ));
         /* inventory code */
         $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
         foreach ($product_categories as $product_categoriy) {
@@ -929,6 +940,14 @@ class DeliveryOrderController extends Controller {
      */
 
     public function print_delivery_order($id, DropboxStorageRepository $connection) {
+
+        if (Input::has('empty_truck_weight')) {
+            $empty_truck_weight = Input::get('empty_truck_weight');
+            if ($empty_truck_weight != "0" | $empty_truck_weight != "") {
+                DeliveryOrder::where('id', $id)->update(['empty_truck_weight' => $empty_truck_weight]);
+            }
+        }
+
         $current_date = date("m/d/");
         $sms_flag = 0;
         set_time_limit(0);
@@ -964,7 +983,7 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-        $delivery_data->total_quantity = round($order_qty/1000,2);    
+        $delivery_data->total_quantity = round($order_qty / 1000, 2);
 
         $units = Units::all();
 //        $delivery_locations = DeliveryLocation::all();

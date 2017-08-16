@@ -32,7 +32,7 @@ Route::post('appsyncreceiptdelete', 'HomeController@appsyncreceiptdelete');
 Route::post('appsyncorder', 'HomeController@appSyncOrder');
 Route::post('appsyncorderpagination', 'HomeController@appSyncOrderPagination');
 Route::post('appsyncorder_customer', 'HomeController@appSyncOrder_customer');
-Route::post('appsyncdeliveryorder', 'HomeController@appSyncDeliveryOrder');
+Route::post('appsyncdeliveryorder', 'APIsController@appSyncDeliveryOrder');
 Route::post('appsyncdeliveryorderpagination', 'HomeController@appSyncDeliveryOrderPagination');
 Route::post('appsyncdeliverychallan', 'HomeController@appSyncDeliveryChallan');
 Route::post('appsyncdeliverychallanpagination', 'HomeController@appSyncDeliveryChallanPagination');
