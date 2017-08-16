@@ -129,6 +129,321 @@ class APIsController extends Controller {
     /**
      * API SMS delievry order
      */
+    function deliverychallan_sms() {
+        $data = Input::all();
+        if (Input::has('delivery_challan') && Input::has('customer') && Input::has('delivery_challan_product')) {
+            $delivery_challans = (json_decode($data['delivery_challan']));
+            $customers = (json_decode($data['customer']));
+            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
+
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $delivery_challans;
+            }
+
+            if (isset($delivery_challans[0]->sms_role) && $delivery_challans[0]->sms_role == '1') {
+                $message_body_cust_first = "Your material has been dispatched as follows1\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has dispatched material for";
+            } elseif (isset($delivery_challans[0]->sms_role) && $delivery_challans[0]->sms_role == '2') {
+                $message_body_cust_first = "Your material has been edited as follows\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has edited material for";
+            } else {
+                return;
+            }
+
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($deliverychallanproducts as $product_data) {
+
+                    $str .= $s = $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $do = DeliveryOrder::find($delivery_challans[0]->server_del_order_id);
+
+                $str .= $s .= "\nVehicle No. " . (!empty($do->vehicle_number) ? $do->vehicle_number : 'N/A') .
+                        ", Drv No. " . (!empty($do->driver_contact_no) ? $do->driver_contact_no : 'N/A') .
+                        ", Quantity " . (isset($delivery_challans[0]->total_quantity) ? $delivery_challans[0]->total_quantity : $total_quantity) .
+                        ", Amount " . (isset($delivery_challans[0]->grand_price) ? $delivery_challans[0]->grand_price : 'N/A') .
+                        ", Due by: " . date("j F, Y", strtotime($do->expected_delivery_date)) .
+                        "\nVIKAS ASSOCIATES";
+
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->customer_mobile;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($delivery_challans[0]->customer_server_id > 0) {
+                $customer = Customer::with('manager')->find($delivery_challans[0]->customer_server_id);
+                if (!empty($customer->manager)) {
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n" . $s;
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }
+        return;
+    }
+
+    /**
+     * App sync delievry challan
+     */
+    public function appSyncDeliveryChallan() {
+
+        $data = Input::all();
+        $delivery_challan_response = [];
+        $customer_list = [];
+        if (Input::has('delivery_challan')) {
+            $delivery_challans = (json_decode($data['delivery_challan']));
+            foreach ($delivery_challans as $delivery_challan) {
+                if (isset($delivery_challan->send_sms) && $delivery_challan->send_sms == 'true') {
+                    $this->deliverychallan_sms();
+                }
+            }
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('delivery_challan_labour')) {
+            $deliverychallanlabour = (json_decode($data['delivery_challan_labour']));
+        }
+
+        if (Input::has('delivery_challan_loadedby')) {
+            $deliverychallanloadedby = (json_decode($data['delivery_challan_loadedby']));
+        }
+
+        if (Input::has('delivery_challan_product')) {
+            $deliverychallanproducts = (json_decode($data['delivery_challan_product']));
+        }
+
+        foreach ($delivery_challans as $key => $value) {
+            if ($value->server_id == 0)
+                $delivery_challan = new DeliveryChallan();
+            else
+                $delivery_challan = DeliveryChallan::find($value->server_id);
+
+            if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
+                $add_customers = new Customer();
+                $add_customers->addNewCustomer($value->customer_name, $value->customer_contact_person, $value->customer_mobile, $value->customer_credit_period);
+                $customer_list[$value->id] = $add_customers->id;
+            }
+            if ($value->server_order_id == 0) {
+                $delivery_challan->order_id = 0;
+            } else {
+                $delivery_challan->order_id = $value->server_order_id;
+            }
+            if ($value->server_del_order_id == 0) {
+                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array('order_status' => $value->order_status));
+                $delivery_challan->delivery_order_id = 0;
+            } else {
+                $delivery_challan->delivery_order_id = $value->server_del_order_id;
+            }
+            $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
+            $delivery_challan->created_by = 1;
+            if (isset($value->bill_number)) {
+                $delivery_challan->bill_number = $value->bill_number;
+            }
+            $delivery_challan->discount = ($value->discount != '') ? $value->discount : '';
+            $delivery_challan->freight = ($value->freight != '') ? $value->freight : '';
+            $delivery_challan->loading_charge = ($value->loading_charge != '') ? $value->loading_charge : '';
+            $delivery_challan->round_off = ($value->round_off != '') ? $value->round_off : '';
+            $delivery_challan->loaded_by = ($value->loaded_by != '') ? $value->loaded_by : '';
+            $delivery_challan->labours = ($value->labours != '') ? $value->labours : '';
+//            if (isset($value->vat_percentage) && $value->vat_percentage > 0) {
+//                $delivery_challan->vat_percentage = $value->vat_percentage;
+//            }
+            $delivery_challan->grand_price = $value->grand_price;
+            $delivery_challan->remarks = $value->remarks;
+            $delivery_challan->challan_status = ($value->server_id > 0) ? $value->challan_status : "Pending";
+            $delivery_challan->save();
+            $delivery_challan_id = $delivery_challan->id;
+
+
+            /* add labours if new dc created */
+            if ($value->server_id == 0) {
+                $labour_array = [];
+                foreach ($deliverychallanlabour as $key_labour => $labour_list) {
+                    if ($value->id == $labour_list->local_dc_id) {
+                        /* if labour created offline */
+                        if ($labour_list->server_labour_id == 0) {
+                            $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
+                                            ->where('last_name', '=', $labour_list->last_name)->first();
+                            if (!isset($labour_check->id)) {
+                                $labour = new Labour();
+                                $labour->first_name = $labour_list->first_name;
+                                $labour->last_name = $labour_list->last_name;
+//                                $labour->password = Hash::make($labour_list->password);
+                                $labour->phone_number = $labour_list->phone_number;
+                                $labour->save();
+                                $labour_id = $labour->id;
+                            } else {
+                                $labour_id = $labour_check->id;
+                            }
+
+                            $labour_array[] = [$labour_list->local_labour_id => $labour_id];
+                        } else {
+                            $labour_id = $labour_list->server_labour_id;
+                        }
+
+                        $dc_labour = new App\DeliveryChallanLabours();
+                        $dc_labour->delivery_challan_id = $delivery_challan_id;
+                        $dc_labour->labours_id = $labour_id;
+                        $dc_labour->save();
+                    }
+                }
+            }
+            $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
+
+            /* add loadedby if new dc created */
+            $loadedby_array = [];
+            if ($value->server_id == 0) {
+                foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
+                    if ($value->id == $loadedby_list->local_dc_id) {
+                        /* if labour created offline */
+                        if ($loadedby_list->server_loadedby_id == 0) {
+                            $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
+                                            ->where('last_name', '=', $loadedby_list->last_name)->first();
+                            if (!isset($loadedby_check->id)) {
+                                $loadedby = new LoadedBy();
+
+                                $loadedby->first_name = $loadedby_list->first_name;
+                                $loadedby->last_name = $loadedby_list->last_name;
+                                $loadedby->password = Hash::make($loadedby_list->password);
+                                $loadedby->phone_number = $loadedby_list->phone_number;
+                                $loadedby->save();
+                                $loadedby_id = $loadedby->id;
+                            } else {
+                                $loadedby_id = $loadedby_check->id;
+                            }
+
+
+                            $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
+                        } else {
+                            $loadedby_id = $loadedby_list->server_loadedby_id;
+                        }
+
+                        $dc_labour = new App\DeliveryChallanLoadedBy();
+                        $dc_labour->delivery_challan_id = $delivery_challan_id;
+                        $dc_labour->loaded_by_id = $loadedby_id;
+                        $dc_labour->save();
+                    }
+                }
+            }
+            $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
+
+            $delivery_challan_products = array();
+            if ($value->server_id > 0)
+                AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
+
+            foreach ($deliverychallanproducts as $product_data) {
+                if ($product_data->delivery_challan_id == $value->id) {
+                    $delivery_challan_products = [
+                        'app_product_id' => $product_data->id,
+                        'order_id' => $delivery_challan_id,
+                        'order_type' => 'delivery_challan',
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->quantity,
+                        'price' => $product_data->actual_price,
+                        'remarks' => '',
+                        'present_shipping' => $product_data->present_shipping,
+                        'actual_pieces' => $product_data->actual_pieces,
+                        'actual_quantity' => $product_data->actual_quantity,
+                        'vat_percentage' => ($product_data->vat_percentage != '') ? $product_data->vat_percentage : 0,
+                        'from' => 0, //Will need to check with app data
+                        'parent' => 0, //Will need to check with app data
+                    ];
+                    AllOrderProducts::create($delivery_challan_products);
+                }
+            }
+            if ($value->server_id > 0) {
+                $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $value->server_id)->where('order_type', '=', 'delivery_challan')->first();
+                $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
+                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
+                $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
+            } else {
+                $delivery_challan_response[$value->id] = $delivery_challan_id;
+            }
+            $delivery_challan->save();
+        }
+        if (count($customer_list) > 0) {
+            $delivery_challan_response['customer_new'] = $customer_list;
+        }
+//        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '' && Input::get('delivery_challan_sync_date') != NULL) {
+//            $delivery_challan_response['delivery_challan_deleted'] = DeliveryChallan::withTrashed()->where('deleted_at', '>=', Input::get('delivery_challan_sync_date'))->select('id')->get();
+//        }
+//        $delivery_challan_date = DeliveryChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        if (!empty($delivery_challan_date))
+//            $delivery_challan_response['latest_date'] = $delivery_challan_date->updated_at->toDateTimeString();
+//        else
+//            $delivery_challan_response['latest_date'] = "";
+
+        $tables = ['delivery_challan', 'all_order_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+
+        $real_sync_date = SyncTableInfo::where('table_name', 'delivery_challan')->select('sync_date')->first();
+
+
+        if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
+            //         update sync table
+            if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+                if ($real_sync_date->sync_date <= Input::get('delivery_challan_sync_date')) {
+                    $delivery_challan_response['delivery_challan_server_added'] = [];
+                    $delivery_challan_response['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($delivery_challan_response);
+                }
+            }
+            /* end of new code */
+            $last_sync_date = Input::get('delivery_challan_sync_date');
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->get();
+            $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $delivery_challan_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $delivery_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->where('challan_status', 'pending')->get();
+            $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
+        }
+        $delivery_challan_response['latest_date'] = $real_sync_date->sync_date;
+        return json_encode($delivery_challan_response);
+    }
+
+    /**
+     * API SMS delievry order
+     */
     function deliveryorder_sms() {
 
         $data = Input::all();
