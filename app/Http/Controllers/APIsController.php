@@ -999,16 +999,7 @@ class APIsController extends Controller {
         if (count($customer_list) > 0) {
             $inquiry_response['customer_new'] = $customer_list;
         }
-//        if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
-//            $inquiry_response['inquiry_deleted'] = Inquiry::withTrashed()->where('deleted_at', '>=', Input::get('inquiry_sync_date'))->select('id')->get();
-//        }
-//        $inquiry_date = Inquiry::select('updated_at')->
-//                        orderby('updated_at', 'DESC')->first();
-//        if (!empty($inquiry_date))
-//            $inquiry_response[
-//                    'latest_date'] = $inquiry_date->updated_at->toDateTimeString();
-//        else
-//            $inquiry_response['latest_date'] = "";
+
 
         $tables = ['inquiry', 'inquiry_products'];
         $ec = new WelcomeController();
@@ -1018,12 +1009,22 @@ class APIsController extends Controller {
 
 
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
-            $last_sync_date = Input::get('inquiry_sync_date');
-            $inquiry_added_server = Inquiry::where('created_at', '>', $last_sync_date)->where('inquiry_status', 'pending')->whereRaw('created_at = updated_at')->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
+            //         update sync table         
 
-            $inquiry_updated_server = Inquiry::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('inquiry_products')->get();
-            $inquiry_response['inquiry_server_updated'] = ($inquiry_updated_server && count($inquiry_updated_server) > 0) ? $inquiry_updated_server : array();
+            if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+                if ($real_sync_date->sync_date <= Input::get('inquiry_sync_date')) {
+                    $delivery_order_response['delivery_order_server_added'] = [];
+                    $delivery_order_response['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($delivery_order_response);
+                }
+            }
+            /* end of new code */
+
+
+
+            $last_sync_date = Input::get('inquiry_sync_date');
+            $inquiry_added_server = Inquiry::where('inquiry_status', 'pending')->with('inquiry_products')->get();
+            $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
 
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
@@ -1039,15 +1040,7 @@ class APIsController extends Controller {
             $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
         }
 
-
-
-
-//        if ($inquiryies != NULL || $inquiryiesproduct != NULL) {
-//            return $inquiry_response;
-//        } else {
         return json_encode($inquiry_response);
-
-//        }
     }
 
 }
