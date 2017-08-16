@@ -1013,9 +1013,9 @@ class APIsController extends Controller {
 
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
                 if ($real_sync_date->sync_date <= Input::get('inquiry_sync_date')) {
-                    $delivery_order_response['delivery_order_server_added'] = [];
-                    $delivery_order_response['latest_date'] = $real_sync_date->sync_date;
-                    return json_encode($delivery_order_response);
+                    $inquiry_response['inquiry_server_added'] = [];
+                    $inquiry_response['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($inquiry_response);
                 }
             }
             /* end of new code */
@@ -1039,6 +1039,7 @@ class APIsController extends Controller {
                     ->get();
             $inquiry_response['inquiry_server_added'] = ($inquiry_added_server && count($inquiry_added_server) > 0) ? $inquiry_added_server : array();
         }
+        $inquiry_response['latest_date'] = $real_sync_date->sync_date;
 
         return json_encode($inquiry_response);
     }
