@@ -366,9 +366,9 @@ class APIsController extends Controller {
         if (count($customer_list) > 0) {
             $delivery_order_response['customer_new'] = $customer_list;
         }
-        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '' && Input::get('delivery_order_sync_date') != NULL) {
-            $delivery_order_response['delivery_order_deleted'] = DeliveryOrder::withTrashed()->where('deleted_at', '>=', Input::get('delivery_order_sync_date'))->select('id')->get();
-        }
+//        if (Input::has('delivery_order_sync_date') && Input::get('delivery_order_sync_date') != '' && Input::get('delivery_order_sync_date') != NULL) {
+//            $delivery_order_response['delivery_order_deleted'] = DeliveryOrder::withTrashed()->where('deleted_at', '>=', Input::get('delivery_order_sync_date'))->select('id')->get();
+//        }
 //        $delivery_order_date = DeliveryOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
 //        if (!empty($delivery_order_date))
 //            $delivery_order_response['latest_date'] = $delivery_order_date->updated_at->toDateTimeString();
@@ -393,8 +393,6 @@ class APIsController extends Controller {
                 }
             }
             /* end of new code */
-
-
             $last_sync_date = Input::get('delivery_order_sync_date');
             $delivery_order_server = DeliveryOrder::where('order_status', 'pending')->with('delivery_product')->get();
             $delivery_order_response['delivery_order_server_added'] = ($delivery_order_server && count($delivery_order_server) > 0) ? $delivery_order_server : array();
@@ -552,8 +550,6 @@ class APIsController extends Controller {
         if (Input::has('order_product')) {
             $orderproduct = (json_decode($data['order_product']));
         }
-
-
         foreach ($orders as $key => $value) {
             if ($value->server_id == 0) {
                 if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
@@ -678,9 +674,9 @@ class APIsController extends Controller {
         if (count($customer_list) > 0) {
             $order_response['customer_new'] = $customer_list;
         }
-        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
-            $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
-        }
+//        if (Input::has('order_sync_date') && Input::get('order_sync_date') != '' && Input::get('order_sync_date') != NULL) {
+//            $order_response['order_deleted'] = Order::withTrashed()->where('deleted_at', '>=', Input::get('order_sync_date'))->select('id')->get();
+//        }
 //        $order_date = Order::select('updated_at')->orderby('updated_at', 'DESC')->first();
 //        if (!empty($order_date))
 //            $order_response['latest_date'] = $order_date->updated_at->toDateTimeString();
@@ -692,8 +688,7 @@ class APIsController extends Controller {
         $ec->set_updated_date_to_sync_table($tables);
 
         $real_sync_date = SyncTableInfo::where('table_name', 'orders')->select('sync_date')->first();
-
-
+        
         if (Input::has('order_sync_date') && Input::get('order_sync_date') != '') {
             //update sync table 
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
