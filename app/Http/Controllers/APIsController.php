@@ -1359,4 +1359,465 @@ class APIsController extends Controller {
         return json_encode($inquiry_response);
     }
 
+    /**
+     * API SMS Purchase Order
+     */
+    function purchaseorder_sms() {
+        $input = Input::all();
+
+        if (Input::has('purchase_order') && Input::has('customer') && Input::has('purchase_order_product')) {
+            $purchaseorders = (json_decode($input['purchase_order']));
+            $customers = (json_decode($input['customer']));
+            $purchaseorderproducts = (json_decode($input['purchase_order_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $purchaseorders;
+            }
+
+
+            if (isset($purchaseorders[0]->sms_role) && $purchaseorders[0]->sms_role == '1') {
+
+                $message_body_cust_first = "Your purchase order has been logged for following \n";
+                $message_body_cust_last = "material will be dispatched by " . date("j M, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has logged purchase order for";
+            } elseif (isset($purchaseorders[0]->sms_role) && $purchaseorders[0]->sms_role == '2') {
+                $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
+                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has edited Purchase Advise for";
+            } else {
+                return;
+            }
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear '" . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "'\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($purchaseorderproducts as $product_data) {
+                    if (isset($product_data->product_name) && $product_data->product_name != "") {
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    } else {
+                        $result['send_message'] = "Error";
+                        $result['reasons'] = "Purchase Order not found.";
+                        return;
+                    }
+                }
+                $str .= $message_body_cust_last;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $phone_number = $customer[0]->supplier_mobile;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($purchaseorders[0]->server_supplier_id > 0) {
+                $customer = Customer::with('manager')->find($purchaseorders[0]->server_supplier_id);
+                if (!empty($customer->manager)) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
+                    foreach ($purchaseorderproducts as $product_data) {
+                        if (isset($product_data->product_name) && $product_data->product_name != "") {
+                            $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                            $total_quantity = $total_quantity + $product_data->quantity;
+                        } else {
+                            $result['send_message'] = "Error";
+                            $result['reasons'] = "Purchase Order not found.";
+                            return;
+                        }
+                    }
+
+                    $str .= $message_body_cust_last;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }
+
+        return;
+    }
+
+    /**
+     * App sync purchase order
+     */
+    public function appSyncPurchaseOrder() {
+        $data = Input::all();
+        $purchase_order_response = [];
+        $customer_list = [];
+        if (Input::has('purchase_order')) {
+            $purchaseorders = (json_decode($data['purchase_order']));
+            foreach ($purchaseorders as $purchaseorder) {
+                if (isset($purchaseorder->send_sms) && $purchaseorder->send_sms == 'true') {
+                    $this->purchaseorder_sms();
+                }
+            }
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($data['customer']));
+        }
+        if (Input::has('purchase_order_product')) {
+            $purchaseorderproducts = (json_decode($data['purchase_order_product']));
+        }
+
+        foreach ($purchaseorders as $key => $value) {
+
+            if ($value->server_id > 0)
+                $purchase_order = PurchaseOrder::find($value->server_id);
+            else
+                $purchase_order = new PurchaseOrder();
+
+            if ($value->server_supplier_id == 0) {
+                $add_supplier = new Customer();
+                $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
+                $customer_list[$value->id] = $add_supplier->id;
+            }
+//            $expected_delivery_date = explode('-', $value->expected_delivery_date);
+//            $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
+//            $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
+            $purchase_order->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
+            $purchase_order->created_by = 1;
+            $purchase_order->order_for = ($value->customer_server_id > 0) ? $value->customer_server_id : 0;
+            $purchase_order->vat_percentage = ($value->vat_percentage > 0) ? $value->vat_percentage : 0;
+            $purchase_order->expected_delivery_date = $value->expected_delivery_date;
+            $purchase_order->remarks = $value->remarks;
+            $purchase_order->order_status = $value->order_status;
+            $purchase_order->is_view_all = $value->is_view_all;
+            if ($value->delivery_location_id > 0) {
+                $purchase_order->delivery_location_id = $value->delivery_location_id;
+            } else {
+                $purchase_order->other_location = $value->other_location;
+                $purchase_order->other_location_difference = $value->other_location_difference;
+            }
+            $purchase_order->save();
+            $purchase_order_id = $purchase_order->id;
+            $purchase_order_products = array();
+            if ($value->server_id) {
+                PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $value->server_id)->delete();
+            }
+            foreach ($purchaseorderproducts as $product_data) {
+                if ($value->id == $product_data->purchase_order_id) {
+                    $purchase_order_products = [
+                        'app_product_id' => $product_data->id,
+                        'purchase_order_id' => $purchase_order_id,
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->actual_pieces,
+                        'price' => $product_data->price,
+                        'remarks' => '',
+                    ];
+                    PurchaseProducts::create($purchase_order_products);
+                }
+            }
+            if ($value->server_id > 0) {
+                $purchase_order_prod = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $value->server_id)->first();
+                $purchase_order->updated_at = $purchase_order_prod->updated_at;
+//                $purchase_order_response[$value->id] = PurchaseOrder::find($value->server_id);
+//                $purchase_order_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_order')->where('purchase_order_id', '=', $value->server_id)->get();
+            } else {
+//                $purchase_order_response[$value->id] = $purchase_order_id;
+            }
+            $purchase_order->save();
+        }
+        if (count($customer_list) > 0) {
+            $purchase_order_response['customer_new'] = $customer_list;
+        }
+//        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '' && Input::get('purchase_order_sync_date') != NULL) {
+//            $purchase_order_response['purchase_order_deleted'] = PurchaseOrder::withTrashed()->where('deleted_at', '>=', Input::get('purchase_order_sync_date'))->select('id')->get();
+//        }
+//        $purchase_order_date = PurchaseOrder::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        if (!empty($purchase_order_date))
+//            $purchase_order_response['latest_date'] = $purchase_order_date->updated_at->toDateTimeString();
+//        else
+//            $purchase_order_response['latest_date'] = "";
+
+        $tables = ['purchase_order', 'all_purchase_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+
+        $real_sync_date = SyncTableInfo::where('table_name', 'purchase_order')->select('sync_date')->first();
+
+
+        if (Input::has('purchase_order_sync_date') && Input::get('purchase_order_sync_date') != '') {
+
+//         update sync table 
+            if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+                if ($real_sync_date->sync_date <= Input::get('purchase_order_sync_date')) {
+                    $purchase_order_response['purchase_order_server_added'] = [];
+                    $purchase_order_response['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($purchase_order_response);
+                }
+            }
+            /* end of new code */
+
+            $last_sync_date = Input::get('purchase_order_sync_date');
+            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products')->get();
+            $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
+
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $purchase_order_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+//            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
+            $purchase_order_server = PurchaseOrder::with('purchase_products')
+                    ->where('order_status', 'pending')
+                    ->get();
+            $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
+        }
+        $purchase_order_response['latest_date'] = $real_sync_date->sync_date;
+        return json_encode($purchase_order_response);
+    }
+
+    /**
+     * API SMS Purchase Advise
+     */
+    function purchaseadvise_sms() {
+        $input_data = Input::all();
+
+        if (Input::has('purchase_advice') && Input::has('customer') && Input::has('purchase_advice_product')) {
+            $purchaseadvices = (json_decode($input_data['purchase_advice']));
+            $customers = (json_decode($input_data['customer']));
+            $purchaseadviceproducts = (json_decode($input_data['purchase_advice_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $purchaseadvices;
+            }
+
+            if (isset($purchaseadvices[0]->sms_role) && $purchaseadvices[0]->sms_role == '1') {
+
+                $message_body_cust_first = "Your purchase Advise has been created as follows\n";
+                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has created Purchase Advise for";
+            } elseif (isset($purchaseadvices[0]->sms_role) && $purchaseadvices[0]->sms_role == '2') {
+                $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
+                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has edited Purchase Advise for";
+            } else {
+                return;
+            }
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($purchaseadviceproducts as $product_data) {
+                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= $message_body_cust_last;
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->supplier_mobile;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+
+            if ($purchaseadvices[0]->server_supplier_id > 0) {
+                $customer = Customer::with('manager')->find($purchaseadvices[0]->server_supplier_id);
+                if (!empty($customer->manager)) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
+                    foreach ($purchaseadviceproducts as $product_data) {
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= $message_body_cust_last;
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }
+
+        return;
+    }
+
+    /**
+     * App sync purchase advise
+     */
+    public function appSyncPurchaseAdvise() {
+
+        $input_data = Input::all();
+        $purchase_advice_response = [];
+        $customer_list = [];
+        if (Input::has('purchase_advice')) {
+            $purchaseadvices = (json_decode($input_data['purchase_advice']));
+            foreach ($purchaseadvices as $purchaseadvice) {
+                if (isset($purchaseadvice->send_sms) && $purchaseadvice->send_sms == 'true') {
+                    $this->purchaseadvise_sms();
+                }
+            }
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($input_data['customer']));
+        }
+        if (Input::has('purchase_advice_product')) {
+            $purchaseadviceproducts = (json_decode($input_data['purchase_advice_product']));
+        }
+
+        foreach ($purchaseadvices as $key => $value) {
+            if ($value->server_id > 0)
+                $purchase_advice = PurchaseAdvise::find($value->server_id);
+            else
+                $purchase_advice = new PurchaseAdvise();
+
+            if ($value->server_supplier_id == 0) {
+                $add_supplier = new Customer();
+                $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
+                $customer_list[$value->id] = $add_supplier->id;
+            }
+            $date_string = preg_replace('~\x{00a0}~u', ' ', $value->bill_date);
+            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+            $datetime = new DateTime($date);
+            $date_string2 = preg_replace('~\x{00a0}~u', ' ', $value->expected_delivery_date);
+            $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
+            $datetime2 = new DateTime($date2);
+            $purchase_advice->purchase_order_id = ($value->server_purchase_order_id > 0) ? $value->server_purchase_order_id : 0;
+            $purchase_advice->purchase_advice_date = $datetime->format('Y-m-d');
+            $purchase_advice->supplier_id = ($value->server_supplier_id > 0) ? $value->server_supplier_id : $customer_list[$value->id];
+            $purchase_advice->created_by = 1;
+            $purchase_advice->expected_delivery_date = $datetime2->format('Y-m-d');
+            $purchase_advice->total_price = $value->total_price;
+            $purchase_advice->remarks = $value->remarks;
+            $purchase_advice->vehicle_number = $value->vehicle_number;
+            $purchase_advice->order_for = $value->order_for;
+            $purchase_advice->advice_status = ($value->advice_status != '') ? $value->advice_status : 'in_process';
+            if ($value->vat_percentage > 0) {
+                $purchase_advice->vat_percentage = $value->vat_percentage;
+            }
+            if ($value->delivery_location_id > 0) {
+                $purchase_advice->delivery_location_id = $value->delivery_location_id;
+            } else {
+                $purchase_advice->other_location = $value->other_location_name;
+                $purchase_advice->other_location_difference = $value->other_location_difference;
+            }
+            $purchase_advice->save();
+            $purchase_advise_id = $purchase_advice->id;
+            if ($value->server_id > 0) {
+                PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->delete();
+            }
+            foreach ($purchaseadviceproducts as $product_data) {
+                if ($product_data->purchase_order_id == $value->id) {
+                    $purchase_advise_products = [
+                        'app_product_id' => $product_data->id,
+                        'purchase_order_id' => $purchase_advise_id,
+                        'order_type' => 'purchase_advice',
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->present_shipping,
+                        'present_shipping' => $product_data->present_shipping,
+                        'price' => $product_data->price,
+                        'actual_pieces' => $product_data->actual_pieces,
+                        'remarks' => "",
+                        'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
+                    ];
+                    PurchaseProducts::create($purchase_advise_products);
+                }
+            }
+            if ($value->server_id > 0) {
+                $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->first();
+                $purchase_advice->updated_at = $purchase_advice_prod->updated_at;
+//                $purchase_advice_response[$value->id] = PurchaseAdvise::find($value->server_id);
+//                $purchase_advice_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $value->server_id)->get();
+            } else {
+//                $purchase_advice_response[$value->id] = $purchase_advise_id;
+            }
+            $purchase_advice->save();
+        }
+        if (count($customer_list) > 0) {
+            $purchase_advice_response['customer_new'] = $customer_list;
+        }
+//        if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '' && Input::get('purchase_advice_sync_date') != NULL) {
+//            $purchase_advice_response['purchase_advise_deleted'] = PurchaseAdvise::withTrashed()->where('deleted_at', '>=', Input::get('purchase_advice_sync_date'))->select('id')->get();
+//        }
+//        $purchase_advice_date = PurchaseAdvise::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        if (!empty($purchase_advice_date))
+//            $purchase_advice_response['latest_date'] = $purchase_advice_date->updated_at->toDateTimeString();
+//        else
+//            $purchase_advice_response['latest_date'] = "";
+
+        $tables = ['purchase_advice', 'all_purchase_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+
+        $real_sync_date = SyncTableInfo::where('table_name', 'purchase_advice')->select('purchase_advice_sync_date')->first();
+
+        if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '') {
+
+            //         update sync table  
+            if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+                if ($real_sync_date->sync_date <= Input::get('delivery_order_sync_date')) {
+                    $purchase_advice_server['purchase_advice_server_added'] = [];
+                    $purchase_advice_server['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($purchase_advice_server);
+                }
+            }
+            /* end of new code */
+            $last_sync_date = Input::get('purchase_advice_sync_date');
+            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products')->get();
+            $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
+
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $purchase_advice_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $purchase_advice_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+//            $purchase_advice_server = PurchaseAdvise::with('purchase_products')->get();
+            $purchase_advice_server = PurchaseAdvise::with('purchase_products')
+                    ->where('advice_status', 'in_process')
+                    ->get();
+            $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
+        }
+
+        return json_encode($purchase_advice_response);
+    }
+
 }
