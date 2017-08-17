@@ -393,10 +393,7 @@ class DeliveryChallanController extends Controller {
     public function show($id) {
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
-
-
-
-
+        
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
@@ -405,8 +402,26 @@ class DeliveryChallanController extends Controller {
         if (count($order_product) < 1) {
             $order_product = 0;
         }
+        $product_type = $this->check_product_type($allorder);
+        
+        
+        return view('delivery_challan_details', compact('allorder', 'order_product','product_type'));
+    }
 
-        return view('delivery_challan_details', compact('allorder', 'order_product'));
+    public function check_product_type($delivery_data) {
+        $produc_type['pipe'] = "0";
+        $produc_type['structure'] = "0";
+        foreach ($delivery_data['all_order_products'] as $key => $value) {
+            if (isset($value['order_type']) && $value['order_type'] == "delivery_challan") {
+                if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
+                    $produc_type['pipe'] = "1";
+                }
+                if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 2) {
+                    $produc_type['structure'] = "1";
+                }
+            }
+        }
+        return $produc_type;
     }
 
     /**
@@ -426,9 +441,10 @@ class DeliveryChallanController extends Controller {
             return redirect('delivery_challan')->with('validation_message', 'Inavalid delivery challan.');
         }
 
+        $product_type = $this->check_product_type($allorder);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations'));
+        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'units', 'delivery_locations', 'product_type'));
     }
 
     /**
@@ -714,10 +730,10 @@ class DeliveryChallanController extends Controller {
         $sms_flag = 0;
 //        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details', 'customer', 'delivery_order.location')->find($id);
-       
+
 
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
-             $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 //                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
@@ -955,23 +971,21 @@ class DeliveryChallanController extends Controller {
                     $pipe_vat = $update_delivery_challan->vat_percentage;
                     $pipe_qty += $delivery_challan_products->actual_quantity;
                     $pipe_amount += $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
-                   $pipe_vat_amount += $amont*$pipe_vat/100;
-                    
-                    
+                    $pipe_vat_amount += $amont * $pipe_vat / 100;
                 } else if ($delivery_challan_products['order_product_all_details']['product_category']['product_type']->id == 2) {
                     $structure_vat = $update_delivery_challan->vat_percentage;
                     $structure_qty += $delivery_challan_products->actual_quantity;
                     $structure_amount += $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
-                    $structure_vat_amount += $amont*$structure_vat/100;
+                    $structure_vat_amount += $amont * $structure_vat / 100;
                 }
             }
         }
-        
+
         $update_delivery_challan['pipe_qty'] = $pipe_qty;
         $update_delivery_challan['pipe_amount'] = $pipe_amount;
         $update_delivery_challan['pipe_vat'] = $pipe_vat;
         $update_delivery_challan['pipe_vat_amount'] = $pipe_amount + $pipe_vat_amount;
-        
+
         $update_delivery_challan['structure_qty'] = $structure_qty;
         $update_delivery_challan['structure_amount'] = $structure_amount;
         $update_delivery_challan['structure_vat'] = $structure_vat;

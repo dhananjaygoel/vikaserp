@@ -46,11 +46,11 @@
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            
+
                                             <td><span>Select Product</span></td>
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Actual Quantity</span></td>
-                                            
+
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td class="inquiry_vat_chkbox"><span>Vat</span></td>
@@ -69,22 +69,22 @@
                                                     <!--<i class="fa fa-search search-icon"></i>-->
                                                 </div>
                                             </td>
-                                             <td class="col-md-1">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
+                                                    <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price();">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
                                                     @if($product->present_shipping >=0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price();">
                                                     @elseif($product->present_shipping <0)
-                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price();">
+                                                    <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price();">
                                                     @endif
                                                 </div>
                                             </td>
-                                           
+
                                             <td class="col-md-2">
                                                 <div class="form-group">{{ $product->present_shipping}}
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
@@ -92,14 +92,14 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onkeypress=" return numbersOnly(this,event,true,true);" onblur="fetch_price({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">-->
                                                     <input class="vat_chkbox" disabled="" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
-                                                    
+
                                                     <input class="vat_chkbox" type="hidden" value="{{($product->vat_percentage>0)?'1':'0'}}" name="product[{{$key}}][vat_percentage_value]" value="yes" id = "product_vat_percentage_value_{{$key}}">
                                                 </div>
                                             </td>
@@ -118,14 +118,14 @@
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
                                             <td class="col-md-1">
-<!--                                                <button id="delete_{{$key}}" type="button" onclick="clear_data(this); fetch_price();" style="background-color: transparent; border: 1px" >  </button>-->
+                                                <!--                                                <button id="delete_{{$key}}" type="button" onclick="clear_data(this); fetch_price();" style="background-color: transparent; border: 1px" >  </button>-->
                                                 <a href="javascript:void(0)" class="table-link danger" id="delete_{{$key}}"  title="delete" onclick="clear_data(this); fetch_price();">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                              
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+
                                             </td>
                                         </tr>
                                         <?php $key++ ?>
@@ -236,17 +236,17 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="loading"><b class="challan">Loading</b></label>
-                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();" >
+                                    <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this, event, true, true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();" >
                                 </div>
-                                
-<!--                                <div class="col-md-4">
-                                    <label for="driver_contact"><b class="challan">Loading Vat Percentage</b></label>
-                                    <input id="loading_vat_percentage" class="form-control" placeholder="Loading Vat Percentage" name="loading_vat_percentage" value="{{$allorder->loading_vat_percentage}}" type="tel" onblur="grand_total_challan();">
-                                </div>
-                                <div class="col-md-4 no_right_margin">
-                                    <label for="driver_contact"><b class="challan">Total Loading Vat Charges</b></label>
-                                    <input id="loading_total_charge" readonly="" class="form-control" value="">
-                                </div>-->
+
+                                <!--                                <div class="col-md-4">
+                                                                    <label for="driver_contact"><b class="challan">Loading Vat Percentage</b></label>
+                                                                    <input id="loading_vat_percentage" class="form-control" placeholder="Loading Vat Percentage" name="loading_vat_percentage" value="{{$allorder->loading_vat_percentage}}" type="tel" onblur="grand_total_challan();">
+                                                                </div>
+                                                                <div class="col-md-4 no_right_margin">
+                                                                    <label for="driver_contact"><b class="challan">Total Loading Vat Charges</b></label>
+                                                                    <input id="loading_total_charge" readonly="" class="form-control" value="">
+                                                                </div>-->
                             </div>
                             <!--
                             <div class="form-group">
@@ -259,16 +259,16 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Discount"><b class="challan">Discount</b></label>
-                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this,event,true,true);" onkeypress=" return numbersOnly(this,event,true,true);" >
+                                    <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this, event, true, true);" onkeypress=" return numbersOnly(this, event, true, true);" >
                                 </div>
-<!--                                <div class="col-md-4">
-                                    <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
-                                    <input id="discount_vat_percentage" class="form-control" placeholder="Discount Vat Percentage" name="discount_vat_percentage" value="{{$allorder->discount_vat_percentage}}" type="tel" onblur="grand_total_challan();">
-                                </div>
-                                <div class="col-md-4 no_right_margin">
-                                    <label for="Total_frieght_charges"><b class="challan">Total Discount Charges</b></label>
-                                    <input id="discount_total_charge" readonly="" class="form-control" value="">
-                                </div>-->
+                                <!--                                <div class="col-md-4">
+                                                                    <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
+                                                                    <input id="discount_vat_percentage" class="form-control" placeholder="Discount Vat Percentage" name="discount_vat_percentage" value="{{$allorder->discount_vat_percentage}}" type="tel" onblur="grand_total_challan();">
+                                                                </div>
+                                                                <div class="col-md-4 no_right_margin">
+                                                                    <label for="Total_frieght_charges"><b class="challan">Total Discount Charges</b></label>
+                                                                    <input id="discount_total_charge" readonly="" class="form-control" value="">
+                                                                </div>-->
                             </div>
 
 
@@ -278,56 +278,96 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Freight"><b class="challan">Freight</b></label>
-                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this,event,true,true);" onblur="grand_total_challan();" readonly="readonly">
+                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();" readonly="readonly">
                                 </div>
-<!--                                <div class="col-md-4">
-                                    <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
-                                    <input id="freight_vat_percentage" class="form-control" placeholder="Freight Vat Percentage" name="freight_vat_percentage" value="{{($allorder->freight_vat_percentage != '')?$allorder->freight_vat_percentage:0}}" type="text" onblur="grand_total_challan();">
-                                </div>
-                                <div class="col-md-4 no_right_margin">
-                                    <label for="Total_frieght_charges"><b class="challan">Total Freight Charges</b></label>
-                                    <input id="freight_total_charge" readonly="" class="form-control" value="">
-                                </div>-->
+                                <!--                                <div class="col-md-4">
+                                                                    <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
+                                                                    <input id="freight_vat_percentage" class="form-control" placeholder="Freight Vat Percentage" name="freight_vat_percentage" value="{{($allorder->freight_vat_percentage != '')?$allorder->freight_vat_percentage:0}}" type="text" onblur="grand_total_challan();">
+                                                                </div>
+                                                                <div class="col-md-4 no_right_margin">
+                                                                    <label for="Total_frieght_charges"><b class="challan">Total Freight Charges</b></label>
+                                                                    <input id="freight_total_charge" readonly="" class="form-control" value="">
+                                                                </div>-->
                             </div>
                             <div class="form-group" >
                                 <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
-                            
+                            @if($product_type['pipe'] == 1)
                             <div class="form-group">
-                                <label for="loadedby"><b class="challan">Loaded By:</b></label>
-                                
-                                    <?php
-                            if (isset($allorder['challan_loaded_by'])) {
-                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
-                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                        echo ucfirst($loadedby->first_name) ." ". ucfirst($loadedby->last_name) .", ";
+                                <label for="loadedby"><b class="challan">Loaded By (Pipe):</b></label>                                
+                                <?php
+                                if (isset($allorder['challan_loaded_by'])) {
+                                    foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                        foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                            if (isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 1) {
+                                                echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                            ?>
+                                ?>
                                 <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">-->
                             </div>
-
+                            @endif
+                            @if($product_type['structure'] == 1)
                             <div class="form-group">
-                                <label for="labours"><b class="challan">Labours:</b></label>
-                                
-                                    <?php
-                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
-                                foreach ($allorder['challan_labours'] as $challan_labour) {
-                                    foreach ($challan_labour['dc_labour'] as $labour) {
-                                        echo ucfirst($labour->first_name) ." ". ucfirst($labour->last_name) .", ";
+                                <label for="loadedby"><b class="challan">Loaded By (Structure):</b></label>
+
+                                <?php
+                                if (isset($allorder['challan_loaded_by'])) {
+                                    foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                        foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                            if (isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 2) {
+                                                echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                            }
+                                        }
                                     }
                                 }
-                            }else{
-                             echo "N/A";
-                            }
-                            ?>
-                               
+                                ?>                              
                             </div>
+                            @endif
+                            @if($product_type['pipe'] == 1)
+                            <div class="form-group">
+                                <label for="labours"><b class="challan">Labours (Pipe):</b></label>
+                                <?php
+                                if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                    foreach ($allorder['challan_labours'] as $challan_labour) {
+                                        foreach ($challan_labour['dc_labour'] as $labour) {
+                                            if (isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 1) {
+                                                echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    echo "N/A";
+                                }
+                                ?>
+
+                            </div>
+                            @endif
+                            @if($product_type['structure'] == 1)
+                            <div class="form-group">
+                                <label for="labours"><b class="challan">Labours (Structure):</b></label>                               
+                                <?php
+                                if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                    foreach ($allorder['challan_labours'] as $challan_labour) {
+                                        foreach ($challan_labour['dc_labour'] as $labour) {
+                                            if (isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 2) {
+                                                echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    echo "N/A";
+                                }
+                                ?>
+
+                            </div>
+                            @endif
                             <div class="form-group">
                                 <label for="roundoff"><b class="challan">Round Off</b></label>
-                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this,event,true,true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
+                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
                             </div>
                             @if($allorder->vat_percentage==0 || $allorder->vat_percentage=='')
                             <!--                            <div class="form-group">
@@ -354,11 +394,11 @@
                                     </span>
                                 </label>
                             </div>
-                             <div class="form-group" >
+                            <div class="form-group" >
                                 <label for="challan_vehicle_number"><b class="challan">Vehicle Number :</b></label>
                                 <input id="challan_vehicle_number" class="form-control" placeholder="Vehicle Number" name="challan_vehicle_number"  value="{{$allorder->delivery_order->vehicle_number}}" type="text">
                             </div>
-                            
+
                             <div class="form-group" >
                                 <label for="challan_driver_contact"><b class="challan">Driver Contact :</b></label>
                                 <input id="challan_driver_contact" class="form-control" placeholder="Driver Contact" name="challan_driver_contact"  value="{{$allorder->delivery_order->driver_contact_no}}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="text">
