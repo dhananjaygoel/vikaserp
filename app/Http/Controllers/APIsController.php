@@ -1793,9 +1793,9 @@ class APIsController extends Controller {
             //         update sync table  
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
                 if ($real_sync_date->sync_date <= Input::get('purchase_advice_sync_date')) {
-                    $purchase_advice_server['purchase_advice_server_added'] = [];
-                    $purchase_advice_server['latest_date'] = $real_sync_date->sync_date;
-                    return json_encode($purchase_advice_server);
+                    $purchase_advice_response['purchase_advice_server_added'] = [];
+                    $purchase_advice_response['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($purchase_advice_response);
                 }
             }
             /* end of new code */
@@ -1816,7 +1816,7 @@ class APIsController extends Controller {
                     ->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
         }
-        $purchase_advice_server['latest_date'] = $real_sync_date->sync_date;
+        $purchase_advice_response['latest_date'] = $real_sync_date->sync_date;
         return json_encode($purchase_advice_response);
     }
 
