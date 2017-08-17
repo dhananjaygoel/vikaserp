@@ -266,8 +266,8 @@ class APIsController extends Controller {
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
-                    'empty_truck_weight' => $value->empty_truck_weight,
-                    'final_truck_weight' => $value->final_truck_weight,
+                    'empty_truck_weight' => isset($value->empty_truck_weight)?$value->empty_truck_weight:'0',
+                    'final_truck_weight' => isset($value->final_truck_weight)?$value->final_truck_weight:'0',
                 ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;

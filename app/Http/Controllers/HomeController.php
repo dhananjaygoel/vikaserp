@@ -1749,11 +1749,11 @@ class HomeController extends Controller {
 
         if (Input::has('delivery_challan_sync_date') && Input::get('delivery_challan_sync_date') != '') {
             $last_sync_date = Input::get('delivery_challan_sync_date');
-            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours','delivery_order')->where('challan_status', 'pending')->whereRaw('created_at = updated_at')->get();
+            $delivery_challan_server = DeliveryChallan::where('created_at', '>', $last_sync_date)->with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->where('challan_status', 'pending')->whereRaw('created_at = updated_at')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
 
 //            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->where('challan_status','pending')->with('delivery_challan_products', 'challan_loaded_by')->get();
-            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products', 'challan_loaded_by','delivery_order')->get();
+            $delivery_challan_updated_server = DeliveryChallan::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->with('delivery_challan_products', 'challan_loaded_by', 'delivery_order')->get();
             $delivery_challan_response['delivery_challan_server_updated'] = ($delivery_challan_updated_server && count($delivery_challan_updated_server) > 0) ? $delivery_challan_updated_server : array();
 
             /* Send Updated customers */
@@ -1789,8 +1789,8 @@ class HomeController extends Controller {
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
-                    'empty_truck_weight' => $value->empty_truck_weight,
-                    'final_truck_weight' => $value->final_truck_weight,
+                    'empty_truck_weight' => isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0',
+                    'final_truck_weight' => isset($value->final_truck_weight) ? $value->final_truck_weight : '0',
                 ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
@@ -1843,6 +1843,8 @@ class HomeController extends Controller {
                         $dc_labour = new App\DeliveryChallanLabours();
                         $dc_labour->delivery_challan_id = $delivery_challan_id;
                         $dc_labour->labours_id = $labour_id;
+                        $dc_labour->type = "sale";
+                        $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
                         $dc_labour->save();
                     }
                 }
@@ -1880,6 +1882,8 @@ class HomeController extends Controller {
                         $dc_labour = new App\DeliveryChallanLoadedBy();
                         $dc_labour->delivery_challan_id = $delivery_challan_id;
                         $dc_labour->loaded_by_id = $loadedby_id;
+                        $dc_labour->type = "sale";
+                        $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
                         $dc_labour->save();
                     }
                 }
@@ -2317,7 +2321,7 @@ class HomeController extends Controller {
         if (Input::has('order') && Input::has('customer') && Input::has('order_product')) {
             $orders = (json_decode($input['order']));
             $customers = (json_decode($input['customer']));
-            $orderproduct ="";
+            $orderproduct = "";
             $orderproduct = (json_decode($input['order_product']));
             if (count($customers) > 0) {
                 $customer = $customers;
@@ -7652,9 +7656,8 @@ class HomeController extends Controller {
         }
         return $kg_qty;
     }
-    
-    
-    public function current_time(){
+
+    public function current_time() {
         $date = date('m/d/Y h:i:s a', time());
         echo $date;
     }
