@@ -709,7 +709,7 @@ function print_challan_do(el) {
  * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function () {
-    var empty_truck_weight = $('#empty_truck_weight').val();
+    var empty_truck_weight = parseInt($('#empty_truck_weight').val());    
     if(empty_truck_weight == "0" | empty_truck_weight ==""){
         $('#empty_truck_weight').addClass('error_validation');
         return false;
