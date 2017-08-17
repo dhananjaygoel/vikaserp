@@ -1022,9 +1022,10 @@ class APIsController extends Controller {
 
 
             $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::with('all_order_products')
+            $order_added_server = Order::with('all_order_products','delivery_orders')
                     ->where('order_status', 'pending')
                     ->get();
+            $order_added_server = $this->checkpending_quantity($order_added_server);
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
 
             /* Send Updated customers */
@@ -1034,11 +1035,12 @@ class APIsController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $order_added_server = Order::with('all_order_products')
+            $order_added_server = Order::with('all_order_products','delivery_orders')
                     ->where('order_status', 'pending')
                     ->get();
-//            $order_added_server = Order::with('all_order_products')->orderBy('id', 'ASEC')
-//                            ->limit('1000')->get();
+            
+            $order_added_server = $this->checkpending_quantity($order_added_server);
+
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
         }
         $order_response['latest_date'] = $real_sync_date->sync_date;
@@ -2055,5 +2057,94 @@ class APIsController extends Controller {
         $purchase_challan_response['latest_date'] = $real_sync_date->sync_date;
         return json_encode($purchase_challan_response);
     }
+    
+    
+    
+    
+    
+    
+    /*
+     * To calculate pending qty for order 
+     * 
+     */
+    
+    function checkpending_quantity($allorders) {
+
+        foreach ($allorders as $key => $order) {
+            $order_quantity = 0;
+            $delivery_order_quantity = 0;
+
+            /* new */
+            $delivery_order_products = NULL;
+            if (isset($order['delivery_orders']) && count($order['delivery_orders'])) {
+                $delivery_order_products = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->where('order_type', '=', 'delivery_order')->get();
+            }
+            /* new */
+            /* old */
+            // $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
+            // if (!empty($delievry_order_details)) {
+            //     $delivery_order_products = AllOrderProducts::where('from', '=', $delievry_order_details->order_id)->where('order_type', '=', 'delivery_order')->get();
+            // } else {
+            //     $delivery_order_products = NULL;
+            // }
+            /* old */
+
+            if (count($delivery_order_products) > 0) {
+                foreach ($delivery_order_products as $dopk => $dopv) {
+                    //new 
+                    $product_size = $dopv['product_sub_category'];
+                    //new
+                    /* old */
+                    //$product_size = ProductSubCategory::find($dopv->product_category_id);
+
+                    /* old */
+//                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+
+                    if ($dopv->unit_id == 1) {
+                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+                    } elseif ($dopv->unit_id == 2) {
+                        $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                    } elseif ($dopv->unit_id == 3) {
+                        if ($product_size->standard_length) {
+                            $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                        } else {
+                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                        }
+                    }
+                }
+            }
+            if (count($order['all_order_products']) > 0) {
+                foreach ($order['all_order_products'] as $opk => $opv) {
+                    /* new */
+                    if (isset($opv['product_sub_category'])) {
+                        $product_size = $opv['product_sub_category'];
+                    } else {
+                        $product_size = ProductSubCategory::find($opv->product_category_id);
+                    }
+                    /* new */
+                    /* old */
+                    //$product_size = ProductSubCategory::find($opv->product_category_id);
+//                    $order_quantity = $order_quantity + $opv->quantity;
+
+                    /* old */
+                    if ($opv->unit_id == 1) {
+                        $order_quantity = $order_quantity + $opv->quantity;
+                    } elseif ($opv->unit_id == 2) {
+                        $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                    } elseif ($opv->unit_id == 3) {
+                        if ($product_size->standard_length) {
+                            $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        } else {
+                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                        }
+                    }
+                }
+            }
+            $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
+            $allorders[$key]['total_quantity'] = $order_quantity;
+        }
+        return $allorders;
+    }
+
 
 }
