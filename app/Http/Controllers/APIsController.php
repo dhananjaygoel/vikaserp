@@ -265,10 +265,10 @@ class APIsController extends Controller {
                 $delivery_challan->delivery_order_id = 0;
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
-                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
-                     'empty_truck_weight' => $value->empty_truck_weight,
-                     'final_truck_weight' => $value->final_truck_weight,
-                     ));
+                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
+                    'empty_truck_weight' => $value->empty_truck_weight,
+                    'final_truck_weight' => $value->final_truck_weight,
+                ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
             $delivery_challan->created_by = 1;
@@ -320,6 +320,8 @@ class APIsController extends Controller {
                         $dc_labour = new App\DeliveryChallanLabours();
                         $dc_labour->delivery_challan_id = $delivery_challan_id;
                         $dc_labour->labours_id = $labour_id;
+                        $dc_labour->type = "sale";
+                        $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
                         $dc_labour->save();
                     }
                 }
@@ -357,6 +359,8 @@ class APIsController extends Controller {
                         $dc_labour = new App\DeliveryChallanLoadedBy();
                         $dc_labour->delivery_challan_id = $delivery_challan_id;
                         $dc_labour->loaded_by_id = $loadedby_id;
+                        $dc_labour->type = "sale";
+                        $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
                         $dc_labour->save();
                     }
                 }
@@ -391,10 +395,10 @@ class APIsController extends Controller {
             if ($value->server_id > 0) {
                 $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $value->server_id)->where('order_type', '=', 'delivery_challan')->first();
                 $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
-                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
-                $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
+//                $delivery_challan_response[$value->id] = DeliveryChallan::find($value->server_id);
+//                $delivery_challan_response[$value->id]['delivery_challan_products'] = AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->get();
             } else {
-                $delivery_challan_response[$value->id] = $delivery_challan_id;
+//                $delivery_challan_response[$value->id] = $delivery_challan_id;
             }
             $delivery_challan->save();
         }
