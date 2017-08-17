@@ -265,6 +265,10 @@ class APIsController extends Controller {
                 $delivery_challan->delivery_order_id = 0;
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
+                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
+                     'empty_truck_weight' => $value->empty_truck_weight,
+                     'final_truck_weight' => $value->final_truck_weight,
+                     ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
             $delivery_challan->created_by = 1;
@@ -424,7 +428,7 @@ class APIsController extends Controller {
             }
             /* end of new code */
             $last_sync_date = Input::get('delivery_challan_sync_date');
-            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->get();
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->where('challan_status', 'pending')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
 
             /* Send Updated customers */

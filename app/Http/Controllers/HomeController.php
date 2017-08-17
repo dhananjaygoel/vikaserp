@@ -1788,6 +1788,10 @@ class HomeController extends Controller {
                 $delivery_challan->delivery_order_id = 0;
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
+                DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
+                    'empty_truck_weight' => $value->empty_truck_weight,
+                    'final_truck_weight' => $value->final_truck_weight,
+                ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
             $delivery_challan->created_by = 1;
