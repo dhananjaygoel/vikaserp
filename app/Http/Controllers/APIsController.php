@@ -1786,13 +1786,13 @@ class APIsController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
 
-        $real_sync_date = SyncTableInfo::where('table_name', 'purchase_advice')->select('purchase_advice_sync_date')->first();
+        $real_sync_date = SyncTableInfo::where('table_name', 'purchase_advice')->select('sync_date')->first();
 
         if (Input::has('purchase_advice_sync_date') && Input::get('purchase_advice_sync_date') != '') {
 
             //         update sync table  
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
-                if ($real_sync_date->sync_date <= Input::get('delivery_order_sync_date')) {
+                if ($real_sync_date->sync_date <= Input::get('purchase_advice_sync_date')) {
                     $purchase_advice_server['purchase_advice_server_added'] = [];
                     $purchase_advice_server['latest_date'] = $real_sync_date->sync_date;
                     return json_encode($purchase_advice_server);
