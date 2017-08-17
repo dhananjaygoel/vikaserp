@@ -1320,7 +1320,7 @@ class APIsController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
 
-        $real_sync_date = SyncTableInfo::where('table_name', 'orders')->select('sync_date')->first();
+        $real_sync_date = SyncTableInfo::where('table_name', 'inquiry')->select('sync_date')->first();
 
 
         if (Input::has('inquiry_sync_date') && Input::get('inquiry_sync_date') != '' && Input::get('inquiry_sync_date') != NULL) {
