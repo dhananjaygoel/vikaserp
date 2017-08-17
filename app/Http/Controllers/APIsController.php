@@ -1580,7 +1580,8 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products')->get();
+            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products','purchase_product_has_from')->get();
+            $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
 
@@ -1592,9 +1593,10 @@ class APIsController extends Controller {
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
-            $purchase_order_server = PurchaseOrder::with('purchase_products')
+            $purchase_order_server = PurchaseOrder::with('purchase_products','purchase_product_has_from')
                     ->where('order_status', 'pending')
                     ->get();
+            $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
         }
         $purchase_order_response['latest_date'] = $real_sync_date->sync_date;
@@ -2144,6 +2146,72 @@ class APIsController extends Controller {
             $allorders[$key]['total_quantity'] = $order_quantity;
         }
         return $allorders;
+    }
+    
+    
+    
+     /*
+     * First get all orders
+     * 1 if delevery order is generated from order then only calculate
+     * pending order from delivery order
+     * else take order details in pending order
+     * 2 if delivery order is generated then take those products only
+     * which has there in order rest skip
+     */
+
+    function quantity_calculation($purchase_orders) {
+
+        foreach ($purchase_orders as $key => $order) {
+
+            $purchase_order_quantity = 0;
+            $purchase_order_advise_quantity = 0;
+            //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
+            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            if (count($purchase_order_advise_products) > 0) {
+                foreach ($purchase_order_advise_products as $poapk => $poapv) {
+                    $product_size = $poapv['product_sub_category'];
+                    //$product_size = ProductSubCategory::find($poapv->product_category_id);
+                    if ($poapv->unit_id == 1) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
+                    }
+                    if ($poapv->unit_id == 2) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
+                    }
+                    if ($poapv->unit_id == 3) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                    }
+                }
+            }
+
+            if (count($order['purchase_products']) > 0) {
+                foreach ($order['purchase_products'] as $popk => $popv) {
+                    $product_size = $popv['product_sub_category'];
+                    //$product_size = ProductSubCategory::find($popv->product_category_id);
+                    if ($popv->unit_id == 1) {
+                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                    }
+                    if ($popv->unit_id == 2) {
+                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                    }
+                    if ($popv->unit_id == 3) {
+                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                    }
+                }
+            }
+
+            if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
+                $purchase_orders[$key]['pending_quantity'] = 0;
+            } else {
+                $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            }
+            
+            if( $purchase_orders[$key]['pending_quantity'] == 0){                
+               $purchase_orders[$key]['order_status'] = 'completed';   
+               PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
+            }
+            $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
+        }
+        return $purchase_orders;
     }
 
 
