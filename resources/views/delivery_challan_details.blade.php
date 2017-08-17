@@ -139,7 +139,7 @@
                             if (isset($allorder['challan_loaded_by'])) {
                                 foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
                                     foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                        if (isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 1) {
+                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 1 | $challan_loaded_by->product_type_id == 0)) {
                                             echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
                                         }
                                     }
@@ -155,7 +155,7 @@
                             if (isset($allorder['challan_loaded_by'])) {
                                 foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
                                     foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                        if (isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 2) {
+                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 2 | $challan_loaded_by->product_type_id == 0)) {
                                         echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
                                         }
                                     }
@@ -173,7 +173,7 @@
                             if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
                                 foreach ($allorder['challan_labours'] as $challan_labour) {
                                     foreach ($challan_labour['dc_labour'] as $labour) {
-                                        if (isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 1) {
+                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 1 | $challan_labour->product_type_id == 0)) {
                                             echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
                                         }
                                     }
@@ -194,7 +194,7 @@
                             if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
                                 foreach ($allorder['challan_labours'] as $challan_labour) {
                                     foreach ($challan_labour['dc_labour'] as $labour) {
-                                        if (isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 2) {
+                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 2 | $challan_labour->product_type_id == 0)) {
                                             echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
                                         }
                                     }
