@@ -2024,9 +2024,9 @@ class APIsController extends Controller {
             //         update sync table 
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
                 if ($real_sync_date->sync_date <= Input::get('purchase_challan_sync_date')) {
-                    $purchase_challan_server['purchase_challan_server_added'] = [];
-                    $purchase_challan_server['latest_date'] = $real_sync_date->sync_date;
-                    return json_encode($purchase_challan_server);
+                    $purchase_challan_response['purchase_challan_server_added'] = [];
+                    $purchase_challan_response['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($purchase_challan_response);
                 }
             }
             /* end of new code */
@@ -2044,7 +2044,7 @@ class APIsController extends Controller {
             $purchase_challan_server = PurchaseChallan::with('all_purchase_products')->where('order_status', 'pending')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
         }
-        $purchase_challan_server['latest_date'] = $real_sync_date->sync_date;
+        $purchase_challan_response['latest_date'] = $real_sync_date->sync_date;
         return json_encode($purchase_challan_response);
     }
 
