@@ -198,7 +198,7 @@
                         <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
 <!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
                         <div class="form-group clearfix">
-                            <select id="loaded_by_select" name='unloaded_by[]' class="form-control" multiple="multiple">
+                            <select id="loaded_by_select_pipe" name='unloaded_by[]' class="form-control" multiple="multiple">
                                 @if(isset($loaders))
                                 @foreach ($loaders as $loader)
                                 <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
@@ -211,7 +211,7 @@
                         <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
 <!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">-->
                         <div class="form-group clearfix">
-                            <select id="labour_select" name="labour[]" class="form-control" multiple="multiple">
+                            <select id="labour_select_pipe" name="labour[]" class="form-control" multiple="multiple">
                                 @if(isset($labours))
                                 @foreach ($labours as $labour)
                                 <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
