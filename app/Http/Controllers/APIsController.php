@@ -1820,4 +1820,232 @@ class APIsController extends Controller {
         return json_encode($purchase_advice_response);
     }
 
+    function purchasechallan_sms() {
+        $input_data = Input::all();
+
+        if (Input::has('purchase_challan') && Input::has('customer') && Input::has('purchase_challan_product')) {
+            $purchasechallans = (json_decode($input_data['purchase_challan']));
+            $customers = (json_decode($input_data['customer']));
+            $purchasechallanproducts = (json_decode($input_data['purchase_challan_product']));
+            if (count($customers) > 0) {
+                $customer = $customers;
+            } else {
+                $customer = $purchasechallans;
+            }
+
+            if (isset($purchasechallans[0]->sms_role) && $purchasechallans[0]->sms_role == '1') {
+
+                $message_body_cust_first = "Your material has been dispatched as follows\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has dispatched for";
+            } elseif (isset($purchasechallans[0]->sms_role) && $purchasechallans[0]->sms_role == '2') {
+                $message_body_cust_first = "Your material has been edited as follows\n";
+                $message_body_cust_last = "";
+                $message_body_manager_first = "Admin has edited material for";
+            }
+
+            if (count($customer) > 0) {
+                $total_quantity = '';
+                $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
+                foreach ($purchasechallanproducts as $product_data) {
+                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $total_quantity = $total_quantity + $product_data->quantity;
+                }
+                $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number) ? $purchasechallans[0]->vehicle_number : 'N/A')
+                        . ", Quantity. " . (isset($purchasechallans[0]->total_quantity) ? round($purchasechallans[0]->total_quantity, 2) : '')
+                        . ", Amount " . (isset($purchasechallans[0]->grand_total) ? $purchasechallans[0]->grand_total : '0')
+                        . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
+                        . ".\nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer[0]->supplier_mobile;
+                }
+
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            if ($purchasechallans[0]->server_supplier_id > 0) {
+                $customer = Customer::with('manager')->find($purchasechallans[0]->server_supplier_id);
+                if (!empty($customer->manager)) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " \n";
+                    foreach ($purchasechallanproducts as $product_data) {
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $total_quantity = $total_quantity + $product_data->quantity;
+                    }
+                    $str .= "Vehicle No. " . (isset($purchasechallans[0]->vehicle_number) ? $purchasechallans[0]->vehicle_number : 'N/A')
+                            . ", Quantity. " . (isset($purchasechallans[0]->total_quantity) ? round($purchasechallans[0]->total_quantity, 2) : '')
+                            . ", Amount " . (isset($purchasechallans[0]->grand_total) ? $purchasechallans[0]->grand_total : '0')
+                            . ", Due by " . date("j M, Y", strtotime($purchasechallans[0]->expected_delivery_date))
+                            . ".\nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+        } else {
+            
+        }
+        return;
+    }
+
+    /**
+     * App sync purchase challan
+     */
+    public function appSyncPurchaseChallan() {
+
+        $input_data = Input::all();
+        $purchase_challan_response = [];
+        $customer_list = [];
+        if (Input::has('purchase_challan')) {
+            $purchasechallan = (json_decode($input_data['purchase_challan']));
+            foreach ($purchasechallan as $pc) {
+                if (isset($pc->send_sms) && $pc->send_sms == 'true') {
+                    $this->purchasechallan_sms();
+                }
+            }
+        }
+        if (Input::has('customer')) {
+            $customers = (json_decode($input_data['customer']));
+        }
+        if (Input::has('purchase_challan_product')) {
+            $purchasechallanproducts = (json_decode($input_data['purchase_challan_product']));
+        }
+
+        foreach ($purchasechallan as $key => $value) {
+            if ($value->server_id > 0)
+                $purchase_challan = PurchaseChallan::find($value->server_id);
+            else
+                $purchase_challan = new PurchaseChallan();
+
+            if ($value->server_supplier_id == 0) {
+                $add_supplier = new Customer();
+                $add_supplier->addNewCustomer($value->supplier_name, "", $value->supplier_mobile, $value->credit_period);
+                $customer_list[$value->id] = $add_supplier->id;
+            }
+            $purchase_challan->expected_delivery_date = $value->expected_delivery_date;
+            $purchase_challan->purchase_advice_id = ($value->server_purchase_advice_id > 0) ? $value->server_purchase_advice_id : 0;
+            $purchase_challan->purchase_order_id = ($value->server_purchase_order_id > 0) ? $value->server_purchase_order_id : 0;
+            $purchase_challan->delivery_location_id = $value->delivery_location_id;
+            $purchase_challan->serial_number = ($value->serial_number != '') ? $value->serial_number : "";
+            $purchase_challan->supplier_id = $value->server_supplier_id;
+            $purchase_challan->created_by = 1;
+            $purchase_challan->vehicle_number = $value->vehicle_number;
+            $purchase_challan->discount = $value->discount;
+            $purchase_challan->unloaded_by = $value->unloaded_by;
+            $purchase_challan->round_off = $value->round_off;
+            $purchase_challan->labours = $value->labours;
+            $purchase_challan->remarks = $value->remarks;
+            $purchase_challan->grand_total = $value->grand_total;
+            $purchase_challan->order_status = $value->order_status;
+            $purchase_challan->freight = $value->freight;
+
+            if ($value->vat_percentage > 0) {
+                $purchase_challan->vat_percentage = $value->vat_percentage;
+            }
+            if ($value->delivery_location_id > 0) {
+                $purchase_challan->delivery_location_id = $value->delivery_location_id;
+            } else {
+                $purchase_challan->other_location = $value->other_location_name;
+                $purchase_challan->other_location_difference = $value->other_location_difference;
+            }
+            $purchase_challan->save();
+            $purchase_challan_id = $purchase_challan->id;
+            if ($value->server_id > 0) {
+                PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->delete();
+            }
+            foreach ($purchasechallanproducts as $product_data) {
+                if ($product_data->purchase_order_id == $value->id) {
+                    $purchase_challan_products = [
+                        'app_product_id' => $product_data->id,
+                        'purchase_order_id' => $purchase_challan_id,
+                        'order_type' => 'purchase_challan',
+                        'product_category_id' => $product_data->product_category_id,
+                        'unit_id' => $product_data->unit_id,
+                        'quantity' => $product_data->quantity,
+                        'price' => $product_data->price,
+                        'remarks' => "",
+                        'present_shipping' => $product_data->present_shipping,
+                        'from' => ($product_data->server_pur_order_id > 0) ? $product_data->server_pur_order_id : ''
+                    ];
+                    PurchaseProducts::create($purchase_challan_products);
+                }
+            }
+            if ($value->server_id > 0) {
+                $purchase_challan_prod = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->first();
+                $purchase_challan->updated_at = $purchase_challan_prod->updated_at;
+                $purchase_challan_response[$value->id] = PurchaseChallan::find($value->server_id);
+                $purchase_challan_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->get();
+            } else {
+                $purchase_challan_response[$value->id] = $purchase_challan_id;
+            }
+            $purchase_challan->save();
+        }
+        if (count($customer_list) > 0) {
+            $purchase_challan_response['customer_new'] = $customer_list;
+        }
+//        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '' && Input::get('purchase_challan_sync_date') != NULL) {
+//            $purchase_challan_response['purchase_challan_deleted'] = PurchaseChallan::withTrashed()->where('deleted_at', '>=', Input::get('purchase_challan_sync_date'))->select('id')->get();
+//        }
+//        $purchase_challan_date = PurchaseChallan::select('updated_at')->orderby('updated_at', 'DESC')->first();
+//        if (!empty($purchase_challan_date))
+//            $purchase_challan_response['latest_date'] = $purchase_challan_date->updated_at->toDateTimeString();
+//        else
+//            $purchase_challan_response['latest_date'] = "";
+
+        $tables = ['purchase_challan', 'all_purchase_products'];
+        $ec = new WelcomeController();
+        $ec->set_updated_date_to_sync_table($tables);
+
+        $real_sync_date = SyncTableInfo::where('table_name', 'purchase_challan')->select('sync_date')->first();
+
+
+        if (Input::has('purchase_challan_sync_date') && Input::get('purchase_challan_sync_date') != '') {
+
+            //         update sync table 
+            if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
+                if ($real_sync_date->sync_date <= Input::get('purchase_challan_sync_date')) {
+                    $purchase_challan_server['purchase_challan_server_added'] = [];
+                    $purchase_challan_server['latest_date'] = $real_sync_date->sync_date;
+                    return json_encode($purchase_challan_server);
+                }
+            }
+            /* end of new code */
+
+            $last_sync_date = Input::get('purchase_challan_sync_date');
+            $purchase_challan_server = PurchaseChallan::where('order_status', 'pending')->with('all_purchase_products')->get();
+            $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
+            /* Send Updated customers */
+            $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
+            $purchase_challan_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
+            /* Send New customers */
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
+            $purchase_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+        } else {
+            $purchase_challan_server = PurchaseChallan::with('all_purchase_products')->where('order_status', 'pending')->get();
+            $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
+        }
+        $purchase_challan_server['latest_date'] = $real_sync_date->sync_date;
+        return json_encode($purchase_challan_response);
+    }
+
 }
