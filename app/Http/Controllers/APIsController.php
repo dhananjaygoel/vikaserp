@@ -2001,10 +2001,10 @@ class APIsController extends Controller {
             if ($value->server_id > 0) {
                 $purchase_challan_prod = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->first();
                 $purchase_challan->updated_at = $purchase_challan_prod->updated_at;
-                $purchase_challan_response[$value->id] = PurchaseChallan::find($value->server_id);
-                $purchase_challan_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->get();
+//                $purchase_challan_response[$value->id] = PurchaseChallan::find($value->server_id);
+//                $purchase_challan_response[$value->id]['purchase_products'] = PurchaseProducts::where('order_type', '=', 'purchase_challan')->where('purchase_order_id', '=', $value->server_id)->get();
             } else {
-                $purchase_challan_response[$value->id] = $purchase_challan_id;
+//                $purchase_challan_response[$value->id] = $purchase_challan_id;
             }
             $purchase_challan->save();
         }
