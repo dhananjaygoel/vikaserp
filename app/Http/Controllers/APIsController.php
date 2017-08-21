@@ -585,6 +585,8 @@ class APIsController extends Controller {
                     $delivery_order->other_location = $value->other_location;
                     $delivery_order->location_difference = $value->other_location_difference;
                 }
+                $delivery_order->empty_truck_weight = isset($value->empty_truck_weight)?$value->empty_truck_weight:'0';
+                $delivery_order->final_truck_weight = isset($value->final_truck_weight)?$value->final_truck_weight:'0';
                 $delivery_order->save();
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
@@ -681,6 +683,8 @@ class APIsController extends Controller {
                 }
                 $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order_id)->first();
                 $delivery_order->updated_at = $delivery_order_prod->updated_at;
+                 $delivery_order->empty_truck_weight = isset($value->empty_truck_weight)?$value->empty_truck_weight:'0';
+                $delivery_order->final_truck_weight = isset($value->final_truck_weight)?$value->final_truck_weight:'0';
                 $delivery_order->save();
 //                $delivery_order_response[$value->server_id] = DeliveryOrder::find($delivery_order->id);
 //                $delivery_order_response[$value->server_id]['delivery_product'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
