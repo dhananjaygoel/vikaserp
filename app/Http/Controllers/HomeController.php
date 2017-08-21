@@ -4470,9 +4470,7 @@ class HomeController extends Controller {
         } else {
             $delivery_location['latest_date'] = "";
         }
-        return
-
-                json_encode($delivery_location);
+        return json_encode($delivery_location);
     }
 
     /**

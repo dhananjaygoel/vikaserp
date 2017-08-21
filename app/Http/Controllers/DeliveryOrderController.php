@@ -692,6 +692,52 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->ref_delivery_challan_id = $refid;
         }
         $delivery_challan->save();
+        
+        $order_products = [];
+//        $order_products = array();
+        foreach ($input_data['product'] as $product_data) {
+            if ($product_data['name'] != "" && $product_data['order'] != "") {
+//                $order_products = [
+                $order_products[] = [
+                    'order_id' => $delivery_challan_id,
+                    'order_type' => 'delivery_challan',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'actual_pieces' => $product_data['actual_pieces'],
+                    'actual_quantity' => $product_data['actual_quantity'],
+                    'quantity' => $product_data['actual_quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    'from' => $input_data['order_id'],
+                    'parent' => $product_data['order'],
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                ];
+//                $add_order_products = AllOrderProducts::create($order_products);
+            } else if ($product_data['name'] != "" && $product_data['order'] == "") {
+//                $order_products = [
+                $order_products[] = [
+                    'order_id' => $delivery_challan_id,
+                    'order_type' => 'delivery_challan',
+                    'product_category_id' => $product_data['id'],
+                    'unit_id' => $product_data['units'],
+                    'actual_pieces' => $product_data['actual_pieces'],
+                    'actual_quantity' => $product_data['quantity'],
+                    'quantity' => $product_data['quantity'],
+                    'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    'from' => '',
+                    'parent' => '',
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                ];
+//                $add_order_products = AllOrderProducts::create($order_products);
+            }
+        }
+        $add_order_products = AllOrderProducts::insert($order_products);
+        
         $delivery_challan_id = $delivery_challan->id;
         $created_at = $delivery_challan->created_at;
         $updated_at = $delivery_challan->updated_at;
@@ -755,50 +801,8 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
-        $order_products = [];
-//        $order_products = array();
-        foreach ($input_data['product'] as $product_data) {
-            if ($product_data['name'] != "" && $product_data['order'] != "") {
-//                $order_products = [
-                $order_products[] = [
-                    'order_id' => $delivery_challan_id,
-                    'order_type' => 'delivery_challan',
-                    'product_category_id' => $product_data['id'],
-                    'unit_id' => $product_data['units'],
-                    'actual_pieces' => $product_data['actual_pieces'],
-                    'actual_quantity' => $product_data['actual_quantity'],
-                    'quantity' => $product_data['actual_quantity'],
-                    'present_shipping' => $product_data['present_shipping'],
-                    'price' => $product_data['price'],
-                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
-                    'from' => $input_data['order_id'],
-                    'parent' => $product_data['order'],
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
-                ];
-//                $add_order_products = AllOrderProducts::create($order_products);
-            } else if ($product_data['name'] != "" && $product_data['order'] == "") {
-//                $order_products = [
-                $order_products[] = [
-                    'order_id' => $delivery_challan_id,
-                    'order_type' => 'delivery_challan',
-                    'product_category_id' => $product_data['id'],
-                    'unit_id' => $product_data['units'],
-                    'actual_pieces' => $product_data['actual_pieces'],
-                    'actual_quantity' => $product_data['quantity'],
-                    'quantity' => $product_data['quantity'],
-                    'present_shipping' => $product_data['present_shipping'],
-                    'price' => $product_data['price'],
-                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
-                    'from' => '',
-                    'parent' => '',
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
-                ];
-//                $add_order_products = AllOrderProducts::create($order_products);
-            }
-        }
-        $add_order_products = AllOrderProducts::insert($order_products);
+        
+        
         return $delivery_challan_id;
     }
 
