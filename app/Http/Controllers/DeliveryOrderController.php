@@ -602,22 +602,21 @@ class DeliveryOrderController extends Controller {
         return view('pending_delivery_order', compact('delivery_data'));
     }
 
-    
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
-        $produc_type['structure'] = "0" ;
-        
-        foreach ($delivery_data['delivery_product'] as $key => $value) {           
-            if(isset($value['order_product_details']['product_category']->product_type_id)&& $value['order_product_details']['product_category']->product_type_id == 1){
+        $produc_type['structure'] = "0";
+
+        foreach ($delivery_data['delivery_product'] as $key => $value) {
+            if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
                 $produc_type['pipe'] = "1";
             }
-            if(isset($value['order_product_details']['product_category']->product_type_id)&& $value['order_product_details']['product_category']->product_type_id == 2){
-                 $produc_type['structure'] = "1" ;
+            if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 2) {
+                $produc_type['structure'] = "1";
             }
-            
-        }        
+        }
         return $produc_type;
     }
+
     /*
      * displey the create delivery challan form
      */
@@ -628,21 +627,21 @@ class DeliveryOrderController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
-        
+
 
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
         if (empty($delivery_data['customer'])) {
             return redirect('delivery_order')->with('error', 'Inavalid delivery order- User not present.');
-        }        
+        }
         $produc_type = $this->check_product_type($delivery_data);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
         $labours = Labour::where('type', '<>', 'purchase')->get();
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
-        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders','produc_type'));
+        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type'));
     }
 
     /*
@@ -693,6 +692,10 @@ class DeliveryOrderController extends Controller {
         }
         $delivery_challan->save();
         
+        $delivery_challan_id = $delivery_challan->id;
+        $created_at = $delivery_challan->created_at;
+        $updated_at = $delivery_challan->updated_at;
+
         $order_products = [];
 //        $order_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -738,9 +741,6 @@ class DeliveryOrderController extends Controller {
         }
         $add_order_products = AllOrderProducts::insert($order_products);
         
-        $delivery_challan_id = $delivery_challan->id;
-        $created_at = $delivery_challan->created_at;
-        $updated_at = $delivery_challan->updated_at;
         if (isset($input_data['loaded_by_pipe'])) {
             $loaders = $input_data['loaded_by_pipe'];
             $loaders_info = [];
@@ -801,9 +801,19 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
-        
-        
+
+
         return $delivery_challan_id;
+    }
+
+    public function calc_actual_qty($dc_id) {
+        
+        $allorder = DeliveryChallan::with('delivery_challan_products', 'all_order_products.order_product_details', 'delivery_order', 'order_details')->find($dc_id);
+
+        echo "<pre>";
+        print_r($allorder->toArray());
+        echo "</pre>";
+        exit;
     }
 
     /*
