@@ -1765,8 +1765,24 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
         $('#challan_vehicle_number').removeClass('error_validation');
         status_form = 0;
     }
-    var tot_products = $(".add_product_row").length;
+    var tot_products = $(".add_product_row:visible").length;
     var j = 0;
+    var empty_truck_weight = parseInt($('#empty_truck_weight').val());
+    var final_truck_weight = parseInt(final_truck_weight - empty_truck_weight);
+    var total_actual_qty_truck = parseInt($('#total_actual_qty_truck').val());
+    var total_actual_quantity = parseInt($('#total_actual_quantity').val());
+    if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
+        status_form = 1;
+        $('#empty_truck_weight').addClass('error_validation');
+    }
+    if (final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) {
+        status_form = 1;
+        $('#final_truck_weight').addClass('error_validation');
+    }
+    if (total_actual_qty_truck != total_actual_quantity) {
+        status_form = 1;
+        $('#final_truck_weight').addClass('error_validation');
+    }    
 
     for (i = 1; i <= tot_products - 1; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {

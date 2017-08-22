@@ -42,6 +42,22 @@
                                 <label><b>Serial Number:</b> {{$allorder->delivery_order->serial_no}}</label>
                             </div>
                             <hr>
+                            <div class="form-group row">
+                                <label class="col-md-2"><b>Empty Truck Weight(Kg):</b></label> 
+                                
+                                 <input type="text" name="empty_truck_weight" value="{{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);">
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-md-2"><b>Final Truck Weight(Kg):</b></label>                                 
+                                <input type="text" name="final_truck_weight" value="{{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-md-2"><b>Total Actual Quantity:</b></label>                                 
+                                <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" style="width: 10.33%;" value="{{(isset($allorder->delivery_order->final_truck_weight)&&isset($allorder->delivery_order->empty_truck_weight))?($allorder->delivery_order->final_truck_weight - $allorder->delivery_order->empty_truck_weight):'0'}}"> 
+                            </div>
+                            <hr>
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
                                     <tbody>

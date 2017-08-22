@@ -494,6 +494,12 @@ class DeliveryChallanController extends Controller {
             if (isset($input_data['challan_vehicle_number'])) {
                 $delivery_order->vehicle_number = $input_data['challan_vehicle_number'];
             }
+            if (isset($input_data['empty_truck_weight'])) {
+                $delivery_order->empty_truck_weight = $input_data['empty_truck_weight'];
+            }
+            if (isset($input_data['final_truck_weight'])) {
+                $delivery_order->final_truck_weight = $input_data['final_truck_weight'];
+            }
             $delivery_order->save();
         }
 

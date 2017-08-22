@@ -691,7 +691,7 @@ class DeliveryOrderController extends Controller {
             $delivery_challan->ref_delivery_challan_id = $refid;
         }
         $delivery_challan->save();
-        
+
         $delivery_challan_id = $delivery_challan->id;
         $created_at = $delivery_challan->created_at;
         $updated_at = $delivery_challan->updated_at;
@@ -740,7 +740,9 @@ class DeliveryOrderController extends Controller {
             }
         }
         $add_order_products = AllOrderProducts::insert($order_products);
-        
+
+        $actual_qty = $this->calc_actual_qty($delivery_challan_id, $input_data);
+
         if (isset($input_data['loaded_by_pipe'])) {
             $loaders = $input_data['loaded_by_pipe'];
             $loaders_info = [];
@@ -752,6 +754,7 @@ class DeliveryOrderController extends Controller {
                     'updated_at' => $updated_at,
                     'type' => 'sale',
                     'product_type_id' => '1',
+                    'total_qty' => $actual_qty['loaded_by_pipe'],
                 ];
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
@@ -767,6 +770,7 @@ class DeliveryOrderController extends Controller {
                     'updated_at' => $updated_at,
                     'type' => 'sale',
                     'product_type_id' => '2',
+                    'total_qty' => $actual_qty['loaded_by_structure'],
                 ];
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
@@ -782,6 +786,7 @@ class DeliveryOrderController extends Controller {
                     'updated_at' => $updated_at,
                     'type' => 'sale',
                     'product_type_id' => '1',
+                    'total_qty' => $actual_qty['labour_pipe'],
                 ];
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
@@ -797,6 +802,7 @@ class DeliveryOrderController extends Controller {
                     'updated_at' => $updated_at,
                     'type' => 'sale',
                     'product_type_id' => '2',
+                    'total_qty' => $actual_qty['labour_structure'],
                 ];
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
@@ -806,14 +812,40 @@ class DeliveryOrderController extends Controller {
         return $delivery_challan_id;
     }
 
-    public function calc_actual_qty($dc_id) {
-        
-        $allorder = DeliveryChallan::with('delivery_challan_products', 'all_order_products.order_product_details', 'delivery_order', 'order_details')->find($dc_id);
+    public function calc_actual_qty($dc_id = 0, $input_data = []) {
+        $actual_qty['pipe'] = "0";
+        $actual_qty['structure'] = "0";
+        $actual_qty['loaded_by_pipe'] = "0";
+        $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['labour_pipe'] = "0";
+        $actual_qty['labour_structure'] = "0";
 
-        echo "<pre>";
-        print_r($allorder->toArray());
-        echo "</pre>";
-        exit;
+        if ($dc_id != 0 && $input_data != []) {
+            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
+
+            foreach ($allorder['delivery_challan_products'] as $key => $value) {
+                if ($value['order_product_details']['product_category']->product_type_id == 1) {
+                    $actual_qty['pipe'] += $value->actual_quantity;
+                } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
+                    $actual_qty['structure'] += $value->actual_quantity;
+                }
+            }
+
+            if (isset($input_data['loaded_by_pipe'])) {
+                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count($input_data['loaded_by_pipe']);
+            }
+            if (isset($input_data['loaded_by_structure'])) {
+                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
+            }
+            if (isset($input_data['labour_pipe'])) {
+                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
+            }
+            if (isset($input_data['labour_structure'])) {
+                $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+        }
+        
+        return $actual_qty;
     }
 
     /*
@@ -823,8 +855,8 @@ class DeliveryOrderController extends Controller {
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
-        $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::has('empty_truck_weight') : '0';
-        $final_truck_weight = (Input::has('final_truck_weight')) ? Input::has('final_truck_weight') : '0';
+        $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
+        $final_truck_weight = (Input::has('final_truck_weight')) ? Input::get('final_truck_weight') : '0';
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
             if ($delivery_order_details->order_status == 'completed') {

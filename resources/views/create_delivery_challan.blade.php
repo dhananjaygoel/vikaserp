@@ -209,7 +209,7 @@
                                                             <input type="text" class="form-control error_check" id="total_actual_qty" name="total_actual_qty" placeholder="Enter Actual Quantity" onblur="fetch_actual_quantity();" onfocus="error_check(this)" onkeypress=" return numbersOnly(this, event, false, false);"> 
                                                         </label>-->
                             <label for="total_actual_qty_truck">
-                                <b class="challan">Actual New Quantity*</b> 
+                                <b class="challan">Actual Quantity*</b> 
                                 <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" >  
                             </label>
                             &nbsp;&nbsp;
