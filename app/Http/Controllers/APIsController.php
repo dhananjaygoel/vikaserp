@@ -442,7 +442,7 @@ class APIsController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $delivery_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')->where('challan_status', 'pending')->get();
+            $delivery_challan_server = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour', 'delivery_order')->where('challan_status', 'pending')->get();
             $delivery_challan_response['delivery_challan_server_added'] = ($delivery_challan_server && count($delivery_challan_server) > 0) ? $delivery_challan_server : array();
         }
         $delivery_challan_response['latest_date'] = $real_sync_date->sync_date;
