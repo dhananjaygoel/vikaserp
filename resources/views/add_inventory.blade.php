@@ -17,9 +17,9 @@
                                 <div class="col-md-12">
                                     <div class="form-group col-md-2">
                                         <input class="form-control" placeholder="Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
-<!--                                        <a onclick="this.form.submit();" style="cursor: pointer;">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </a>-->
+                                        <!--                                        <a onclick="this.form.submit();" style="cursor: pointer;">
+                                                                                    <i class="fa fa-search search-icon"></i>
+                                                                                </a>-->
                                     </div>
                                     <div class="form-group col-md-2">
                                         <select class="form-control" name="inventory_filter" onchange="this.form.submit();">
@@ -40,8 +40,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
-<!--                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>-->
- <input type="submit"  name="export_data" value="Export Inventory List" class="btn btn-primary form_button_footer">
+                                        <!--                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>-->
+                                        <input type="submit"  name="export_data" value="Export Inventory List" class="btn btn-primary form_button_footer">
                                         @if(auth()->user()->role_id == 0)
                                         <a class="btn btn-primary save_all_inventory">Save all</a>
                                         @endif
@@ -198,7 +198,10 @@
                             </table>
                         </div>
                         <ul class="pagination pull-right">
-                            {!! $inventory_list->render() !!}
+                            <?php
+                            echo $inventory_list->appends(Input::except('page'))->render();
+                            ?>
+
                         </ul>
                     </div>
                 </div>
