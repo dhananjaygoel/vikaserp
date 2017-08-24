@@ -325,6 +325,247 @@ class LabourController extends Controller {
         } else {
             $enddate = date("Y-m-d");
 //            $delivery_order_data = DeliveryChallan::with('challan_labours','delivery_challan_products')
+//            $delivery_order_data = DeliveryChallan::
+//                    has('challan_labours.dc_delivery_challan.delivery_challan_products')
+//                    ->with('challan_labours')
+////            $delivery_order_data = DeliveryChallan::with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
+//                    ->get();
+
+
+            $purchase_order_data = \App\PurchaseChallan::
+                    has('challan_labours.pc_delivery_challan.all_purchase_products')
+                    ->with('challan_labours')
+                    ->get();
+
+            $labour_all = \App\DeliveryChallanLabours::get();
+        }
+//        foreach ($delivery_order_data as $delivery_order_info) {
+//            $arr = array();
+//            $arr_money = array();
+//            $loaders = array();
+//            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+//                foreach ($delivery_order_info->challan_labours as $challan_info) {
+//                    $deliver_sum = 0.00;
+//                    $money = 0.00;
+//                    array_push($loaders, $challan_info->labours_id);
+//                    foreach ($challan_info->dc_delivery_challan as $info) {
+//                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+//                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
+////                            if ($delivery_order_productinfo->unit_id == 1)
+////                                $deliver_sum += $delivery_order_productinfo->quantity;
+////                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+////                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
+//                        }
+//                    }
+//
+//
+//                    array_push($loader_array, $loaders);
+//                    $all_kg = $deliver_sum / count($loaders);
+//                    $all_tonnage = $all_kg / 1000;
+//                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+//                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+//                    $loader_arr['labours'] = $loaders;
+//                    $loader_arr['tonnage'] = $all_tonnage;
+////                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                }
+//            }
+//            $loaders_data[$var] = $loader_arr;
+//            $var++;
+//        }
+        
+        $temp1 = [];
+        $pipe = [];
+        $loader_arr = [];
+        $summedArray = [];
+
+       
+        foreach ($labour_all as $loaded_by_key => $labour_value) {            
+            if ($labour_value['total_qty'] != 0) {                
+                $total_qty_temp = 0;
+                $id = $labour_value['delivery_challan_id'];
+                if (isset($summedArray[$id])) {
+                    $total_qty_temp = $summedArray[$id];
+                }
+                if (!isset($loader_arr[$id]['pipe_labour'])) {
+                    $temp_pipe = array();
+                }
+                if (!isset($loader_arr[$id]['structure_labour'])) {
+                    $temp = array();
+                }
+                $summedArray[$id] = $total_qty_temp + $labour_value['total_qty'];
+                $loader_arr[$id]['delivery_id'] = $id;
+                $loader_arr[$id]['delivery_date'] = date('Y-m-d', strtotime($labour_value['created_at']));
+                
+                $loader_arr[$id]['tonnage'] = $total_qty_temp + $labour_value['total_qty'];
+                array_push($temp_pipe, $labour_value['labours_id']);
+                array_push($temp, $labour_value['labours_id']);
+                $loader_arr[$id]['labours'] = $temp_pipe;
+                if ($labour_value['product_type_id'] == 1) {
+                    $loader_arr[$id]['pipe_labour'] = $temp_pipe;
+                    $loader_arr[$id]['pipe_tonnage'] = $labour_value['total_qty'];
+                } else if($labour_value['product_type_id'] == 2) {
+                    $loader_arr[$id]['structure_labour'] = $temp;
+                    $loader_arr[$id]['structure_tonnage'] = $labour_value['total_qty'];
+                }
+               
+            }
+            
+        }
+        
+        
+        foreach ($loader_arr as $key => $value_temp) {
+            if(isset($value_temp['pipe_labour'])){
+               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+               $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage']/ 1000;
+               $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
+            }
+            if(isset($value_temp['structure_labour'])){
+               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+               $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage']/ 1000;
+               $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
+            }
+        }
+        
+        
+        foreach ($purchase_order_data as $delivery_order_info) {
+            $arr = array();
+            $arr_money = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+                foreach ($delivery_order_info->challan_labours as $challan_info) {
+                    $deliver_sum = 0.00;
+                    $money = 0.00;
+                    array_push($loaders, $challan_info->labours_id);
+                    foreach ($challan_info->pc_delivery_challan as $info) {
+                        foreach ($info->all_purchase_products as $delivery_order_productinfo) {
+                            $deliver_sum += $delivery_order_productinfo->quantity;
+//                            if ($delivery_order_productinfo->unit_id == 1)
+//                                $deliver_sum += $delivery_order_productinfo->quantity;
+//                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+//                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
+                        }
+                    }
+
+
+                    array_push($loader_array, $loaders);
+                    $all_kg = $deliver_sum / count($loaders);
+                    $all_tonnage = $all_kg / 1000;
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['labours'] = $loaders;
+                    $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+                }
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+
+
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+
+
+        $final_array = array();
+        $k = 0;
+        foreach ($labours as $key => $labour) {
+            foreach ($loaders_data as $key_data => $data) {
+                foreach ($data['labours'] as $key_value => $value) {
+                    if ($value == $labour['id']) {
+                        $final_array[$k++] = [
+                            'delivery_id' => $data['delivery_id'],
+                            'labour_id' => $value,
+                            'date' => $data['delivery_date'],
+                            'tonnage' => (isset($data['tonnage']) ? round($data['tonnage'], 2) : '0'),
+                            'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
+                        ];
+                    }
+                }
+            }
+        }
+        if ($request->ajax()) {
+            if ($val == "Month") {
+                $html = view('_labours_performance')
+                        ->with('labours', $labours)
+                        ->with('data', $final_array)
+                        ->with('enddate', $enddate)
+                        ->with('filter', 'Months')
+                        ->with('performance_index', true)
+                        ->render();
+            } else {
+                $html = view('_labours_performance')
+                        ->with('labours', $labours)
+                        ->with('data', $final_array)
+                        ->with('enddate', $enddate)
+                        ->with('filter', 'Days')
+                        ->with('performance_index', true)
+                        ->render();
+            }
+            return Response::json(['success' => true, 'date' => $enddate, 'final_array' => $final_array, 'labours' => $labours, 'performance_index', true, 'html' => $html]);
+        } else {
+            return view('labour_performance')
+                            ->with('labours', $labours)
+                            ->with('data', $final_array)
+                            ->with('enddate', $enddate)
+                            ->with('performance_index', true);
+        }
+    }
+
+    public function labourPerformance_temp(Request $request) {
+        if (Auth::user()->role_id != 0) {
+            return redirect()->back();
+        }
+        $var = 0;
+        $loader_arr = array();
+        $loader_array = array();
+        $loaders_data = array();
+        $labours = Labour::all();
+        $date = date('Y-m-01', time());
+
+
+        if (Input::has('val')) {
+            $val = Input::get('val');
+            if ($val == "Month") {
+                $year = trim(Input::get('month'));
+                $date = date("$year-01-01");
+                $enddate = date("$year-12-31", strtotime($year));
+                if ($year == date('Y')) {
+                    $enddate = date("$year-m-t");
+                }
+                $delivery_order_data = DeliveryChallan::
+                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
+                        ->with('challan_labours')
+                        ->where('created_at', '>=', "$date")
+                        ->where('created_at', '<=', "$enddate")
+                        ->get();
+
+                $purchase_order_data = \App\PurchaseChallan::
+                        has('challan_labours.pc_delivery_challan.all_purchase_products')
+                        ->with('challan_labours')
+                        ->where('created_at', '>=', "$date")
+                        ->where('created_at', '<=', "$enddate")
+                        ->get();
+            } else if ($val == "Day") {
+                $month = Input::get('month');
+                $date = date("Y-m-01", strtotime($month));
+                $enddate = date("Y-m-t", strtotime($month));
+                $realenddate = date('Y-m-d', time());
+
+                $delivery_order_data = DeliveryChallan::
+                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
+                        ->with('challan_labours')
+                        ->get();
+
+                $purchase_order_data = \App\PurchaseChallan::
+                        has('challan_labours.pc_delivery_challan.all_purchase_products')
+                        ->with('challan_labours')
+                        ->get();
+            }
+        } else {
+            $enddate = date("Y-m-d");
+//            $delivery_order_data = DeliveryChallan::with('challan_labours','delivery_challan_products')
             $delivery_order_data = DeliveryChallan::
                     has('challan_labours.dc_delivery_challan.delivery_challan_products')
                     ->with('challan_labours')
