@@ -27,13 +27,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $fillable = ['name', 'email', 'password'];
 
+//    protected $dates = ['created_at', 'updated_at', 'password_updated_at'];
+
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = ['remember_token'];
-    
     public static $newuser_rules = array(
         'first_name' => 'required|min:2|max:100',
         'last_name' => 'required|min:2|max:100',
@@ -44,24 +45,36 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'mobile_number' => 'integer|digits_between:10,15|required|unique:users',
         'user_type' => 'required'
     );
-    
     public static $updateuser_rules = array(
         'first_name' => 'required|min:2|max:100',
         'last_name' => 'required|min:2|max:100',
         'telephone_number' => 'integer|digits_between:8,15',
         'user_type' => 'required'
     );
-    
-      public static $update_password = array(
+    public static $update_password = array(
         'password' => 'required|min:8|max:20|confirmed ',
         'password_confirmation' => 'required'
     );
-      
+
     public function user_role() {
         return $this->hasOne('App\UserRoles', 'role_id', 'role_id');
     }
+
     public function locations() {
         return $this->hasMany('App\CollectionUser', 'user_id', 'id');
+    }
+
+    public function hasOldPassword() {
+        date_default_timezone_set("Asia/Calcutta");
+        $pri_date = \Carbon\Carbon::now()->subDays(1)->toDateTimeString();
+        
+        
+        if($this->password_updated_at < $pri_date){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
 }
