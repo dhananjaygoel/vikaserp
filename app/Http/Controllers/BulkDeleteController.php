@@ -444,10 +444,11 @@ class BulkDeleteController extends Controller {
                 $present_shipping = 0;
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
-                    if ($temp['customer']->tally_name != '')
+                         
+                    if (isset($temp['customer']->tally_name)&&$temp['customer']->tally_name != '')
                         $result_data[$key][0] = $temp['customer']->tally_name;
                     else
-                        $result_data[$key][0] = $temp['customer']->owner_name;
+                        $result_data[$key][0] = isset($temp['customer']->owner_name)?$temp['customer']->owner_name:'';
                     $result_data[$key][1] = $temp->serial_number;
 
                     foreach ($temp['delivery_challan_products'] as $delivery_challan_products) {

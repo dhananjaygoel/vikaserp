@@ -233,9 +233,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('bulk-delete', 'BulkDeleteController');
     Route::get('bulk-delete', 'BulkDeleteController@show_result');
 //    Route::post('bulk-delete', 'BulkDeleteController@show_result');
-
+    Route::get('old-password-reset', 'APIsController@getOldPasswordReset');
     Route::resource('security', 'SecurityController');
-    Route::get('dashboard', 'DashboardController@index');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
     Route::get('graph-inquiry', 'DashboardController@graph_inquiry');

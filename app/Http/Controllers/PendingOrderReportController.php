@@ -34,6 +34,9 @@ class PendingOrderReportController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         $data = Input::all();
         if ((isset($data['party_filter'])) && $data['party_filter'] != '') {
             $allorders = Order::where('customer_id', '=', $data['party_filter'])->where('order_status', '=', 'pending')

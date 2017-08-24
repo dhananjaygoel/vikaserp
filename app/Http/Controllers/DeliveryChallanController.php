@@ -265,6 +265,10 @@ class DeliveryChallanController extends Controller {
 
 
     public function index(Request $request) {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
@@ -391,6 +395,9 @@ class DeliveryChallanController extends Controller {
      * Display the specified Delivery Challan Details.
      */
     public function show($id) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
         
@@ -428,6 +435,9 @@ class DeliveryChallanController extends Controller {
      * Show Edit Delivery Challan Details
      */
     public function edit($id = "") {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');

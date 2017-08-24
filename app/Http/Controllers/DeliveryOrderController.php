@@ -53,6 +53,9 @@ class DeliveryOrderController extends Controller {
      */
     public function index(Request $request) {
         $data = Input::all();
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         gc_disable();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -132,6 +135,9 @@ class DeliveryOrderController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         $input_data = Input::all();
         if (Session::has('forms_delivery_order')) {
@@ -248,6 +254,10 @@ class DeliveryOrderController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->find($id);
         if (count($delivery_data) < 1) {

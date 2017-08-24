@@ -35,6 +35,9 @@ class CollectionUserController extends Controller {
      * @return Response
      */
     public function index() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return Redirect::to('/')->with('error', 'You do not have permission.');
         }
@@ -54,28 +57,28 @@ class CollectionUserController extends Controller {
             });
         }
         if (isset($territory_id) && !empty($territory_id)) {
-            $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
-            foreach ($territory_locations as $loc){
-                if(!in_array($loc->teritory_id, $loc_arr)){
-                   array_push($territory_arr, $loc->teritory_id);
+            $territory_locations = TerritoryLocation::where('teritory_id', '=', $territory_id)->get();
+            foreach ($territory_locations as $loc) {
+                if (!in_array($loc->teritory_id, $loc_arr)) {
+                    array_push($territory_arr, $loc->teritory_id);
                 }
                 array_push($loc_arr, $loc->location_id);
             }
             $collection_users->whereHas('locations', function($query) use ($territory_arr) {
-                $query->whereIn('teritory_id',$territory_arr);
+                $query->whereIn('teritory_id', $territory_arr);
             });
-            $locations = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
+            $locations = DeliveryLocation::whereIn('id', $loc_arr)->orderBy('area_name', 'ASC')->get();
 //            $delivery_location = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
         }
         if (isset($location_id) && !empty($location_id)) {
             $collection_users->whereHas('locations', function($query) use ($location_id) {
                 $query->where('location_id', $location_id);
             });
-        }        
+        }
         $collection_users = $collection_users->where('role_id', '=', 6)->orderBy('created_at', 'DESC')->paginate(20);
         $collection_users->setPath('account');
-        $territories = Territory::orderBy('created_at', 'DESC')->get();        
-        return View::make('collection_user.index', array('users' => $collection_users, 'locations' => $locations,'territories'=> $territories));
+        $territories = Territory::orderBy('created_at', 'DESC')->get();
+        return View::make('collection_user.index', array('users' => $collection_users, 'locations' => $locations, 'territories' => $territories));
     }
 
     /**
@@ -84,9 +87,12 @@ class CollectionUserController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $territories = Territory::orderBy('created_at', 'DESC')->get();
-        return View::make('collection_user.create', array('locations' => $delivery_locations,'territories' => $territories));
+        return View::make('collection_user.create', array('locations' => $delivery_locations, 'territories' => $territories));
     }
 
     /**
@@ -95,6 +101,9 @@ class CollectionUserController extends Controller {
      * @return Response
      */
     public function store() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return Redirect::to('/')->with('error', 'You do not have permission.');
         }
@@ -116,8 +125,8 @@ class CollectionUserController extends Controller {
             $Users_data->first_name = Input::get('first_name');
             $Users_data->last_name = Input::get('last_name');
             $Users_data->mobile_number = Input::get('mobile_number');
-            $Users_data->email = Input::get('email');            
-            $Users_data->password = Hash::make(Input::get('password'));            
+            $Users_data->email = Input::get('email');
+            $Users_data->password = Hash::make(Input::get('password'));
             if ($Users_data->save()) {
                 $locations = Input::get('location');
                 $territory_id = Input::get('territory');
@@ -129,7 +138,7 @@ class CollectionUserController extends Controller {
                         $CLocation->teritory_id = $territory_id;
                         $CLocation->save();
                     }
-                }                
+                }
                 return redirect('account')->with('flash_message', 'User details successfully added.');
             } else {
                 return redirect('account')->with('wrong', 'Unable to store user at this moment');
@@ -148,13 +157,16 @@ class CollectionUserController extends Controller {
      * @return Response
      */
     public function show($id) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return Redirect::to('/')->with('error', 'You do not have permission.');
         }
         $user = User::with('locations')->find($id);
         $territories = Territory::orderBy('created_at', 'DESC')->get();
         if ($user) {
-            return View::make('collection_user.show', array('user' => $user,'territories'=>$territories));
+            return View::make('collection_user.show', array('user' => $user, 'territories' => $territories));
         } else {
             
         }
@@ -170,7 +182,7 @@ class CollectionUserController extends Controller {
         $data = User::where("id", $id)->where('role_id', 6)->with('locations')->get();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $territories = Territory::orderBy('created_at', 'DESC')->get();
-        return View::make('collection_user.create', array('locations' => $delivery_locations,'territories'=>$territories,'data' => $data));
+        return View::make('collection_user.create', array('locations' => $delivery_locations, 'territories' => $territories, 'data' => $data));
     }
 
     /**
@@ -189,7 +201,6 @@ class CollectionUserController extends Controller {
                 'mobile_number' => 'integer|digits_between:10,15|required|unique:users,mobile_number,' . $id,
                 'location' => 'required|array|min:1',
                 'territory' => 'required'
-                
             );
             if (Input::has('password')) {
                 $input_password['password'] = Input::get('password');
@@ -207,12 +218,12 @@ class CollectionUserController extends Controller {
             if ($v->fails()) {
                 return back()->withErrors($v)->withInput();
             } else {
-                if(Input::has('password') && Input::get('password')!=""){                    
+                if (Input::has('password') && Input::get('password') != "") {
                     $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email'), 'password' => $user_data['password']]);
-                }else{
+                } else {
                     $user_res = User::where('id', $id)->update(['first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'mobile_number' => Input::get('mobile_number'), 'email' => Input::get('email')]);
                 }
-                
+
                 if ($user_res) {
                     $locations = Input::get('location');
                     $territory_id = Input::get('territory');
@@ -225,7 +236,7 @@ class CollectionUserController extends Controller {
                             $collectionuser->teritory_id = $territory_id;
                             $collectionuser->save();
                         }
-                    }                    
+                    }
                 }
                 return redirect('account')->with('flash_message', 'User details successfully updated.');
             }
@@ -264,7 +275,7 @@ class CollectionUserController extends Controller {
     public function export_collection_users() {
         $search_field = Input::get('search');
         $location_id = Input::get('location');
-        $territory_id = Input::get('territory');    
+        $territory_id = Input::get('territory');
         $loc_arr = [];
         $territory_arr = [];
         $collection_users = User::with('locations.location_data')->where('role_id', '=', 6);
@@ -282,17 +293,16 @@ class CollectionUserController extends Controller {
             });
         }
         if (isset($territory_id) && !empty($territory_id)) {
-            $territory_locations = TerritoryLocation::where('teritory_id','=',$territory_id)->get();
-            foreach ($territory_locations as $loc){
-                if(!in_array($loc->teritory_id, $loc_arr)){
-                   array_push($territory_arr, $loc->teritory_id);
+            $territory_locations = TerritoryLocation::where('teritory_id', '=', $territory_id)->get();
+            foreach ($territory_locations as $loc) {
+                if (!in_array($loc->teritory_id, $loc_arr)) {
+                    array_push($territory_arr, $loc->teritory_id);
                 }
                 array_push($loc_arr, $loc->location_id);
             }
             $collection_users->whereHas('locations', function($query) use ($territory_arr) {
-                $query->whereIn('teritory_id',$territory_arr);
+                $query->whereIn('teritory_id', $territory_arr);
             });
-            
         }
         $collection_users = $collection_users->where('role_id', '=', 6)->orderBy('created_at', 'DESC')->get();
 
@@ -304,28 +314,27 @@ class CollectionUserController extends Controller {
             });
         })->export('xls');
     }
-    
-    
+
     public function get_territory_locations(Request $request) {
         $teritory_id = $request->input('teritory_id');
-        $loc_arr =[];
-        $territory_arr =[];
-        $territory_locations = TerritoryLocation::where('teritory_id','=',$teritory_id)->get();
-            foreach ($territory_locations as $loc){
-                if(!in_array($loc->teritory_id, $loc_arr)){
-                   array_push($territory_arr, $loc->teritory_id);
-                }
-                array_push($loc_arr, $loc->location_id);
+        $loc_arr = [];
+        $territory_arr = [];
+        $territory_locations = TerritoryLocation::where('teritory_id', '=', $teritory_id)->get();
+        foreach ($territory_locations as $loc) {
+            if (!in_array($loc->teritory_id, $loc_arr)) {
+                array_push($territory_arr, $loc->teritory_id);
             }
-        if($teritory_id!=0){    
-            $locations = DeliveryLocation::whereIn('id',$loc_arr)->orderBy('area_name', 'ASC')->get();
-        }else{
+            array_push($loc_arr, $loc->location_id);
+        }
+        if ($teritory_id != 0) {
+            $locations = DeliveryLocation::whereIn('id', $loc_arr)->orderBy('area_name', 'ASC')->get();
+        } else {
             $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         }
-        $html = view('collection_user._territory_location')->with('locations',$locations)                                       
-                                       ->render();
-        
-        return Response::json(['success' => true,'html' => $html]);
+        $html = view('collection_user._territory_location')->with('locations', $locations)
+                ->render();
+
+        return Response::json(['success' => true, 'html' => $html]);
     }
-     
+
 }

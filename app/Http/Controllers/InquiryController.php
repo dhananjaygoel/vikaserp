@@ -50,6 +50,9 @@ class InquiryController extends Controller {
      * Display a listing of the resource.
      */
     public function index(InquiryRequest $request) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         $data = Input::all();
 

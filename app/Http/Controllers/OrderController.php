@@ -48,6 +48,10 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index(PlaceOrderRequest $request) {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
@@ -233,7 +237,9 @@ class OrderController extends Controller {
      * Functioanlity: Add new order page display
      */
     public function create() {
-
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -545,7 +551,9 @@ class OrderController extends Controller {
      */
     public function show($id, PlaceOrderRequest $request) {
 
-
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5) {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
@@ -575,7 +583,9 @@ class OrderController extends Controller {
      * Functioanlity: Show edit order details page
      */
     public function edit($id, PlaceOrderRequest $request) {
-
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }

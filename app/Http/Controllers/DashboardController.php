@@ -43,6 +43,10 @@ class DashboardController extends Controller {
      */
 
     public function index() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry');
@@ -231,7 +235,10 @@ class DashboardController extends Controller {
       | So this method will redirect it to the dashboard.
      */
 
-    public function homeredirect() {
+    public function homeredirect(Request $request) {
+        if ($request->user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         return redirect('dashboard');
     }
 

@@ -55,6 +55,10 @@ class CustomerController extends Controller {
      * Display a listing of the customer.
      */
     public function index() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders');
@@ -100,6 +104,10 @@ class CustomerController extends Controller {
      * Show the form for creating a new customer.
      */
     public function create() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
 //            return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -287,6 +295,10 @@ class CustomerController extends Controller {
      * Display the specific customer.
      */
     public function show($id) {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');

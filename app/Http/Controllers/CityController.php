@@ -27,6 +27,10 @@ class CityController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id == 5 ) {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
            }     
@@ -40,6 +44,10 @@ class CityController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }
@@ -66,6 +74,9 @@ class CityController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }

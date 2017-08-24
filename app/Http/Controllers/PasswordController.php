@@ -48,7 +48,10 @@ class PasswordController extends Controller {
         $mobile_number = $user->mobile_number;
         if (Auth::attempt(['mobile_number' => $mobile_number, 'password' => $old_password])) {
             $new_password = Hash::make($request->input('new_password'));
-            User::where('id', $id)->update(array('password' => $new_password));
+            User::where('id', $id)->update(array(
+                'password' => $new_password,
+                'password_updated_at' => $current_time = \Carbon\Carbon::now()->toDateTimeString()
+                    ));
             return redirect('change_password')->with('message', 'Your password is successfully changed.');
         } else {
             return Redirect::back()->with('error', 'Password mis-matched. Please re-enter old password');
