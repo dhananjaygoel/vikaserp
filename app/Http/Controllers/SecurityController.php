@@ -25,6 +25,9 @@ class SecurityController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }

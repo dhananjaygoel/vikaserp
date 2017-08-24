@@ -41,6 +41,10 @@ class PurchaseChallanController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         $data = Input::all();
 
@@ -464,6 +468,10 @@ class PurchaseChallanController extends Controller {
      * Display the specified resource.
      */
     public function show($id = "") {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');

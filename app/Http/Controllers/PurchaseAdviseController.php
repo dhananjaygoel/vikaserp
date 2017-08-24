@@ -46,6 +46,9 @@ class PurchaseAdviseController extends Controller {
      */
     public function index(StorePurchaseAdvise $request) {
         $data = Input::all();
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -216,6 +219,9 @@ class PurchaseAdviseController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -353,6 +359,10 @@ class PurchaseAdviseController extends Controller {
      * Display the specified resource.
      */
     public function show($id = "") {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
@@ -368,6 +378,10 @@ class PurchaseAdviseController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');

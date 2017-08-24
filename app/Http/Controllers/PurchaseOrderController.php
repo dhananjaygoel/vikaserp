@@ -155,6 +155,9 @@ class PurchaseOrderController extends Controller {
     public function index(PurchaseOrderRequest $request) {
 
         $data = Input::all();
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }

@@ -36,6 +36,10 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function index() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 4) {
             return redirect()->back();
         }
@@ -94,6 +98,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function create_journal_receipt() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 4) {
             return redirect()->back();
         }
@@ -276,6 +283,9 @@ class ReceiptMasterController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 4) {
             return redirect()->back();
         }

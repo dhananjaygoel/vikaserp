@@ -25,6 +25,9 @@ class TerritoryController extends Controller {
     }
 
     public function index() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         $territories = '';
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
