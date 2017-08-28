@@ -1642,11 +1642,6 @@ class WelcomeController extends Controller {
         
     }
     
-    function update_user_info(){
-//      DB::table('users')->update(['mobile_number' => '9665407788'])->where('id','763');
-      DB::table('users')
-                    ->where('id','=', 763)
-                    ->update(['mobile_number' => '9665407788']);
-    }
+
 
 }

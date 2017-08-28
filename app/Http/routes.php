@@ -481,4 +481,3 @@ Route::get('set_updated_date_to_sync_table','WelcomeController@set_updated_date_
 Route::get('current_time','HomeController@current_time');
 
 Route::get('update_performance_chart','WelcomeController@update_performance_chart');
-Route::get('update_user_info','WelcomeController@update_user_info');
