@@ -1632,5 +1632,21 @@ class WelcomeController extends Controller {
                     ->update(['sync_date' => $sync_date]);
         }
     }
+    
+    
+    function update_performance_chart() {
+        echo "<pre>";
+        print_r("hi");
+        echo "</pre>";
+        exit;
+        
+    }
+    
+    function update_user_info(){
+//      DB::table('users')->update(['mobile_number' => '9665407788'])->where('id','763');
+      DB::table('users')
+                    ->where('id','=', 763)
+                    ->update(['mobile_number' => '9665407788']);
+    }
 
 }
