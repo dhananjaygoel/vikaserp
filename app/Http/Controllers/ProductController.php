@@ -40,7 +40,10 @@ class ProductController extends Controller {
      */
 
     public function index() {
-
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }

@@ -78,6 +78,10 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
@@ -1598,6 +1602,9 @@ class InventoryController extends Controller {
     }
 
     public function inventoryReport() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
 
@@ -1778,6 +1785,10 @@ class InventoryController extends Controller {
     }
 
     public function inventoryPriceList() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
 
         if (count($product_cat) > 0) {
