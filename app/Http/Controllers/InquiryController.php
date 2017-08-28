@@ -265,7 +265,7 @@ class InquiryController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                       $str1=  $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                         if ($product_data['units'] == 1) {
                             $total_quantity = $total_quantity + $product_data['quantity'];
                         }
@@ -296,7 +296,7 @@ class InquiryController extends Controller {
             }
 
             if (count($customer['manager']) > 0) {
-//                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
+                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an inquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
 //                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
