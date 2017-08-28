@@ -1221,7 +1221,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
-        $sms_flag = 1;
+        $sms_flag = 0;
         $inquiry = Inquiry::find($id);
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
@@ -1343,7 +1343,7 @@ class InquiryController extends Controller {
          */
         $input = Input::all();
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-        if ( $sms_flag == 1) {
+        if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
                 $total_quantity = '';
