@@ -480,4 +480,5 @@ Route::get('save_table_sync_date','WelcomeController@save_table_sync_date');
 Route::get('set_updated_date_to_sync_table','WelcomeController@set_updated_date_to_sync_table');
 Route::get('current_time','HomeController@current_time');
 
-Route::get('update_performance_chart','WelcomeController@update_performance_chart');
+Route::get('update_labour_performance_chart','WelcomeController@update_labour_performance_chart');
+Route::get('update_loadedby_performance_chart','WelcomeController@update_loadedby_performance_chart');
