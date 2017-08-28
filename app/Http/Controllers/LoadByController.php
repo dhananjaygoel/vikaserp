@@ -197,7 +197,7 @@ class LoadByController extends Controller {
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
-        $loaded_by = LoadedBy::all();
+        $loaded_by = LoadedBy::withTrashed()->get();
         $date = date('Y-m-01', time());
         if (Input::has('val')) {
             $val = Input::get('val');
