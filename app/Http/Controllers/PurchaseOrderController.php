@@ -225,7 +225,7 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from')
+                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from','delivery_location')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
