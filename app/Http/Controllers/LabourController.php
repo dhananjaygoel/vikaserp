@@ -280,7 +280,7 @@ class LabourController extends Controller {
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
-        $labours = Labour::all();
+        $labours = Labour::withTrashed()->get();
         $date = date('Y-m-01', time());
 
 
@@ -339,40 +339,7 @@ class LabourController extends Controller {
 
             $labour_all = \App\DeliveryChallanLabours::get();
         }
-//        foreach ($delivery_order_data as $delivery_order_info) {
-//            $arr = array();
-//            $arr_money = array();
-//            $loaders = array();
-//            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
-//                foreach ($delivery_order_info->challan_labours as $challan_info) {
-//                    $deliver_sum = 0.00;
-//                    $money = 0.00;
-//                    array_push($loaders, $challan_info->labours_id);
-//                    foreach ($challan_info->dc_delivery_challan as $info) {
-//                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-//                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
-////                            if ($delivery_order_productinfo->unit_id == 1)
-////                                $deliver_sum += $delivery_order_productinfo->quantity;
-////                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-////                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
-//                        }
-//                    }
-//
-//
-//                    array_push($loader_array, $loaders);
-//                    $all_kg = $deliver_sum / count($loaders);
-//                    $all_tonnage = $all_kg / 1000;
-//                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
-//                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
-//                    $loader_arr['labours'] = $loaders;
-//                    $loader_arr['tonnage'] = $all_tonnage;
-////                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
-//                }
-//            }
-//            $loaders_data[$var] = $loader_arr;
-//            $var++;
-//        }
-        
+
         $temp1 = [];
         $pipe = [];
         $loader_arr = [];
@@ -441,10 +408,6 @@ class LabourController extends Controller {
                     foreach ($challan_info->pc_delivery_challan as $info) {
                         foreach ($info->all_purchase_products as $delivery_order_productinfo) {
                             $deliver_sum += $delivery_order_productinfo->quantity;
-//                            if ($delivery_order_productinfo->unit_id == 1)
-//                                $deliver_sum += $delivery_order_productinfo->quantity;
-//                            elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-//                                $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity,$delivery_order_productinfo->product_sub_category);
                         }
                     }
 
@@ -456,7 +419,6 @@ class LabourController extends Controller {
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
                 }
             }
             $loaders_data[$var] = $loader_arr;
