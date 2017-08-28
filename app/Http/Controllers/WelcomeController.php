@@ -1585,7 +1585,7 @@ class WelcomeController extends Controller {
 //        }
 //    }
 
-    function save_table_sync_date() {      
+    function save_table_sync_date() {
         $tables = DB::select('SHOW TABLES');
         $db_name = "Tables_in_" . DB::getDatabaseName();
         $table_name = [];
@@ -1626,22 +1626,192 @@ class WelcomeController extends Controller {
                     ->orderBy('updated_at', 'DESC')
                     ->first();
             $sync_date = $users->updated_at;
-           
+
             DB::table('sync_table_infos')
                     ->where('table_name', $table)
                     ->update(['sync_date' => $sync_date]);
         }
     }
-    
-    
-    function update_performance_chart() {
-        echo "<pre>";
-        print_r("hi");
-        echo "</pre>";
-        exit;
-        
-    }
-    
 
+    function update_labour_performance_chart() {
+        $var = 0;
+        $loader_arr = array();
+        $loader_array = array();
+        $loaders_data = array();
+        $labours = \App\Labour::all();
+
+        $delivery_order_data = DeliveryChallan::
+//                has('challan_labours.dc_delivery_challan.delivery_challan_products')->
+                with('challan_labours')
+                ->get();
+
+
+        foreach ($delivery_order_data as $delivery_order_info) {
+            $arr = array();
+            $arr_money = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+                foreach ($delivery_order_info->challan_labours as $challan_info) {
+                    $deliver_sum = 0.00;
+                    $money = 0.00;
+                    array_push($loaders, $challan_info->labours_id);
+                    foreach ($challan_info->dc_delivery_challan as $info) {
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
+                        }
+                    }
+
+
+                    array_push($loader_array, $loaders);
+                    $all_kg = $deliver_sum / count($loaders);
+                    $all_tonnage = $all_kg;
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['labours'] = $loaders;
+                    $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+                }
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+
+        $update_count = 0;
+        for ($i = 0; $i < count($loaders_data); $i++) {
+            $data = \App\DeliveryChallanLabours::
+                    where('total_qty', 0)->
+                    where('product_type_id', 0)->
+                    where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+                    get();
+//        echo "<pre>";
+//        print_r("------------------------");
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r($data->toArray());
+//        echo "</pre>";
+////            
+//            echo "<pre>";
+//            print_r($loaders_data[$i]);
+//            echo "</pre>";
+//
+//            echo "<pre>";
+//        print_r("------------------------");
+//        echo "</pre>";
+
+            $temp = \App\DeliveryChallanLabours::
+                    where('total_qty', 0)->
+                    where('product_type_id', 0)->
+                    where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+                    update([
+                'total_qty' => $loaders_data[$i]['tonnage'],
+                'updated_at' => DB::raw("created_at"),
+            ]);
+
+            $update_count += $temp;
+
+
+//        
+//         echo "<pre>";
+//        print_r($temp);
+//        echo "</pre>";
+//        exit;
+        }
+//       
+        echo $update_count . " records updated.";
+
+        exit;
+    }
+
+    function update_loadedby_performance_chart() {
+        $var = 0;
+        $loader_arr = array();
+        $loader_array = array();
+        $loaders_data = array();
+        $labours = \App\LoadedBy::all();
+
+        $delivery_order_data = DeliveryChallan::
+                    with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+                    ->get();
+
+         foreach ($delivery_order_data as $delivery_order_info) {
+            $arr = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+                foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
+                    $deliver_sum = 0;
+                    array_push($loaders, $challan_info->loaded_by_id);
+                    foreach ($challan_info->dc_delivery_challan as $info) {
+                        foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+                            $deliver_sum += $delivery_order_productinfo->actual_quantity;
+//                                if ($delivery_order_productinfo->unit_id == 1)
+//                                    $deliver_sum += $delivery_order_productinfo->quantity;
+//                                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+//                                    $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                        }
+                    }
+                    array_push($loader_array, $loaders);
+                    $all_kg = $deliver_sum / count($loaders);
+                    $all_tonnage = $all_kg / 1000;
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+                    $loader_arr['loaders'] = $loaders;
+                }
+            }
+            $loaders_data[$var++] = $loader_arr;
+        }
+
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+
+        $update_count = 0;
+        for ($i = 0; $i < count($loaders_data); $i++) {
+            $data = \App\DeliveryChallanLoadedBy::
+                    where('total_qty', 0)->
+                    where('product_type_id', 0)->
+                    where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+                    get();
+//        echo "<pre>";
+//        print_r("------------------------");
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r($data->toArray());
+//        echo "</pre>";
+////            
+//            echo "<pre>";
+//            print_r($loaders_data[$i]);
+//            echo "</pre>";
+//
+//            echo "<pre>";
+//        print_r("------------------------");
+//        echo "</pre>";
+
+            $temp = \App\DeliveryChallanLoadedBy::
+                    where('total_qty', 0)->
+                    where('product_type_id', 0)->
+                    where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+                    update([
+                'total_qty' => $loaders_data[$i]['tonnage'],
+                'updated_at' => DB::raw("created_at"),
+            ]);
+
+            $update_count += $temp;
+
+
+//        
+//         echo "<pre>";
+//        print_r($temp);
+//        echo "</pre>";
+//        exit;
+        }
+//       
+        echo $update_count . " records updated.";
+
+        exit;
+    }
 
 }

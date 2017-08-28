@@ -345,9 +345,9 @@ class LabourController extends Controller {
         $loader_arr = [];
         $summedArray = [];
 
-       
-        foreach ($labour_all as $loaded_by_key => $labour_value) {            
-            if ($labour_value['total_qty'] != 0) {                
+
+        foreach ($labour_all as $loaded_by_key => $labour_value) {
+            if ($labour_value['total_qty'] != 0) {
                 $total_qty_temp = 0;
                 $id = $labour_value['delivery_challan_id'];
                 if (isset($summedArray[$id])) {
@@ -362,7 +362,7 @@ class LabourController extends Controller {
                 $summedArray[$id] = $total_qty_temp + $labour_value['total_qty'];
                 $loader_arr[$id]['delivery_id'] = $id;
                 $loader_arr[$id]['delivery_date'] = date('Y-m-d', strtotime($labour_value['created_at']));
-                
+
                 $loader_arr[$id]['tonnage'] = $total_qty_temp + $labour_value['total_qty'];
                 array_push($temp_pipe, $labour_value['labours_id']);
                 array_push($temp, $labour_value['labours_id']);
@@ -370,32 +370,35 @@ class LabourController extends Controller {
                 if ($labour_value['product_type_id'] == 1) {
                     $loader_arr[$id]['pipe_labour'] = $temp_pipe;
                     $loader_arr[$id]['pipe_tonnage'] = $labour_value['total_qty'];
-                } else if($labour_value['product_type_id'] == 2) {
+                } else if ($labour_value['product_type_id'] == 2) {
                     $loader_arr[$id]['structure_labour'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $labour_value['total_qty'];
                 }
-               
             }
-            
         }
-        
-        
+
+
         foreach ($loader_arr as $key => $value_temp) {
-            if(isset($value_temp['pipe_labour'])){
-               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
-               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-               $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage']/ 1000;
-               $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
-            }
-            if(isset($value_temp['structure_labour'])){
-               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
-               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-               $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage']/ 1000;
-               $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
+            if (isset($value_temp['pipe_labour'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
+                $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
+            } else if (isset($value_temp['structure_labour'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
+                $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
+            } else {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;
+                $loaders_data[$var++]['labours'] = $value_temp['labours'];
             }
         }
-        
-        
+
+       
+
         foreach ($purchase_order_data as $delivery_order_info) {
             $arr = array();
             $arr_money = array();

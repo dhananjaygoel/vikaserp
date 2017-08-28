@@ -270,8 +270,8 @@ class LoadByController extends Controller {
         $pipe = [];
         $loader_arr = [];
         $summedArray = [];
-        foreach ($loaded_by_all as $loaded_by_key => $loaded_by_value) {            
-            if ($loaded_by_value['total_qty'] != 0) {                
+        foreach ($loaded_by_all as $loaded_by_key => $loaded_by_value) {
+            if ($loaded_by_value['total_qty'] != 0) {
                 $total_qty_temp = 0;
                 $id = $loaded_by_value['delivery_challan_id'];
                 if (isset($summedArray[$id])) {
@@ -286,7 +286,7 @@ class LoadByController extends Controller {
                 $summedArray[$id] = $total_qty_temp + $loaded_by_value['total_qty'];
                 $loader_arr[$id]['delivery_id'] = $id;
                 $loader_arr[$id]['delivery_date'] = date('Y-m-d', strtotime($loaded_by_value['created_at']));
-                
+
                 $loader_arr[$id]['tonnage'] = $total_qty_temp + $loaded_by_value['total_qty'];
                 array_push($temp_pipe, $loaded_by_value['loaded_by_id']);
                 array_push($temp, $loaded_by_value['loaded_by_id']);
@@ -294,31 +294,33 @@ class LoadByController extends Controller {
                 if ($loaded_by_value['product_type_id'] == 1) {
                     $loader_arr[$id]['pipe_loaders'] = $temp_pipe;
                     $loader_arr[$id]['pipe_tonnage'] = $loaded_by_value['total_qty'];
-                } else if($loaded_by_value['product_type_id'] == 2) {
+                } else if ($loaded_by_value['product_type_id'] == 2) {
                     $loader_arr[$id]['structure_loaders'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $loaded_by_value['total_qty'];
                 }
-               
             }
-            
         }
-        
+
         foreach ($loader_arr as $key => $value_temp) {
-            if(isset($value_temp['pipe_loaders'])){
-               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
-               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-               $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage']/ 1000;
-               $loaders_data[$var++]['loaders'] = $value_temp['pipe_loaders'];
-            }
-            if(isset($value_temp['structure_loaders'])){
-               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
-               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-               $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage']/ 1000;
-               $loaders_data[$var++]['loaders'] = $value_temp['structure_loaders'];
+            if (isset($value_temp['pipe_loaders'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
+                $loaders_data[$var++]['loaders'] = $value_temp['pipe_loaders'];
+            } else if (isset($value_temp['structure_loaders'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
+                $loaders_data[$var++]['loaders'] = $value_temp['structure_loaders'];
+            } else {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;
+                $loaders_data[$var++]['loaders'] = $value_temp['loaders'];
             }
         }
-        
-        
+
+
 
 
 
