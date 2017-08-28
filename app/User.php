@@ -67,14 +67,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function hasOldPassword() {
         date_default_timezone_set("Asia/Calcutta");
         $pri_date = \Carbon\Carbon::now()->subDays(1)->toDateTimeString();
-        
-        
-        if($this->password_updated_at < $pri_date){
-            return true;
+
+        if ($this->role_id == 0) {
+            if ($this->password_updated_at < $pri_date) {
+                return true;
+            } else {
+                return false;
+            }
         }else{
             return false;
         }
-        
     }
 
 }
