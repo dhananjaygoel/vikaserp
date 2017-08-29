@@ -307,12 +307,15 @@ class LoadByController extends Controller {
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
                 $loaders_data[$var++]['loaders'] = $value_temp['pipe_loaders'];
-            } else if (isset($value_temp['structure_loaders'])) {
+            } 
+            if (isset($value_temp['structure_loaders'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
                 $loaders_data[$var++]['loaders'] = $value_temp['structure_loaders'];
-            } else {
+            } 
+            
+            if(!isset($value_temp['structure_loaders']) && !isset($value_temp['pipe_loaders'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;

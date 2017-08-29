@@ -377,19 +377,21 @@ class LabourController extends Controller {
             }
         }
 
-
+       
         foreach ($loader_arr as $key => $value_temp) {
             if (isset($value_temp['pipe_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
-            } else if (isset($value_temp['structure_labour'])) {
+            } 
+            if (isset($value_temp['structure_labour'])) { 
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
-            } else {
+            } 
+            if(!isset($value_temp['pipe_labour']) && !isset($value_temp['structure_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;
@@ -397,7 +399,6 @@ class LabourController extends Controller {
             }
         }
 
-       
 
         foreach ($purchase_order_data as $delivery_order_info) {
             $arr = array();
