@@ -212,7 +212,7 @@
             <div class="divTable">
                 <div class="headRow">
                     <div class="divCell2">Sr.</div>
-                    <div class="divCell2">Product</div>
+                    <!--<div class="divCell2">Product</div>-->
                     <div class="divCell">Size</div>
                     <div class="divCell2">Pcs</div>
                     <div class="divCell">Qty</div>
@@ -232,7 +232,7 @@
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell2">{{$prod->order_product_all_details->product_category->product_type->name}} </div>
+<!--                    <div class="divCell2">{{$prod->order_product_all_details->product_category->product_type->name}} </div>-->
                     <div class="divCell">{{ $prod->order_product_all_details->alias_name }}</div>
                     <div class="divCell2">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
