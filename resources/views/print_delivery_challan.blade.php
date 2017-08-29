@@ -430,8 +430,8 @@ if (isset($allorder->round_off) && ($allorder->round_off != "")) {
                             {{ round($roundoff,2) }}
                             &nbsp;
                         </div>
-                        <div class="label">&nbsp; GT</div>
-                        <div class="value">
+                        <div class="label" style="border-bottom: 1px solid #ccc;">&nbsp; GT</div>
+                        <div class="value" style="border-bottom: 1px solid #ccc;">
 <?php
 if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
     $grand_price = $allorder->grand_price;
