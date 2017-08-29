@@ -216,7 +216,7 @@
                     <div class="divCell">Size</div>
                     <div class="divCell2">Pcs</div>
                     <div class="divCell">Qty</div>
-                    <div class="divCell">Vat</div>
+                    <div class="divCell">GST</div>
                     <div class="divCell">Rate</div>
                     <div class="divCell">Amount</div>
                 </div>
@@ -232,7 +232,7 @@
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
                     <div class="divCell2">{{ $i++ }}</div>
-<!--                    <div class="divCell2">{{$prod->order_product_all_details->product_category->product_type->name}} </div>-->
+                    <!--                    <div class="divCell2">{{$prod->order_product_all_details->product_category->product_type->name}} </div>-->
                     <div class="divCell">{{ $prod->order_product_all_details->alias_name }}</div>
                     <div class="divCell2">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
@@ -286,7 +286,7 @@
                             <td> {{ round($allorder->grand_price, 2) }} </td>
                         </tr>
                     </table>-->
-                    <table class="table-responsive detail_table">
+<!--                    <table class="table-responsive detail_table">
                         <tr>
                             <th> Product </th>
                             <th> Qty </th>
@@ -308,13 +308,72 @@
                             <td> {{ round($allorder->structure_vat, 2) }} </td>
                             <td> {{ round($allorder->structure_vat_amount, 2) }} </td>
                         </tr>
-                    </table>
+                        <tr class="secondrow">
+                            <td>Total</td>
+                            <td> {{ round($allorder->structure_qty, 2) + round($allorder->pipe_qty, 2) }} </td>
+                            <td> {{ round($allorder->structure_amount, 2) + round($allorder->pipe_amount, 2)}} </td>
+                            <td> {{ round($allorder->structure_vat, 2) }} </td>
+                            <td> {{ round($allorder->structure_vat_amount, 2) + round($allorder->pipe_vat_amount, 2)}} </td>
+                        </tr>
+                        
+                    </table>-->
+                    <div class="divTable" style="width: 70%;margin-left: 8%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
+                        <div class="headRow">
+                            <div class="divRow">
+                                
+                                <div class="divCell"><b>Product</b></div>
+                                <div class="divCell2">Qty</div>
+                                <div class="divCell">Amount</div>
+                                <div class="divCell">GST</div>
+                                <div class="divCell">Total Inc GST</div>
+                            </div>
+                            <td>   </td>
+                            <td> </td>
+                            <td>  </td>
+                            <td> </td> 
+                            <div class="divRow">
+                                <div class="divCell">Pipe</div>
+                                <div class="divCell2">{{ round($allorder->pipe_qty, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_amount, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_vat, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_vat_amount, 2) }}
+                                </div>
+                            </div>                           
+                            <div class="divRow">
+                                <div class="divCell">Structure</div>
+                                <div class="divCell2">{{ round($allorder->structure_qty, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->structure_amount, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->structure_vat, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->structure_vat_amount, 2) }}</div>
+                            </div>
+                            <?php 
+                            
+                            if(isset($allorder->pipe_vat) && !empty($allorder->pipe_vat)){
+                                $gst_percentage = $allorder->pipe_vat;
+                            }else if(isset($allorder->structure_vat) && !empty($allorder->structure_vat)){
+                                $gst_percentage = $allorder->structure_vat;
+                            }else{
+                                $gst_percentage =0;
+                            }
+                            
+                            ?>
+                            <div class="divRow">
+                                <div class="divCell"><b>Total</b></div>
+                                <div class="divCell2">{{ round($allorder->pipe_qty, 2) + round($allorder->structure_qty, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_amount, 2) + round($allorder->structure_amount, 2) }}</div>
+                                <div class="divCell">{{ round($gst_percentage, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_vat_amount, 2) + round($allorder->structure_vat_amount, 2) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
                     <div>
                         &nbsp; Remarks : {{$allorder->remarks}}
                     </div>
                     <!--                    <div class="ruppes grand_price">
                                             &nbsp; <?php $gt = round($allorder->grand_price, 2) ?>
-                                            Rupees <?php //echo ucwords(str_replace(".", "", convert_number($allorder->grand_price)));   ?> Only.
+                                            Rupees <?php //echo ucwords(str_replace(".", "", convert_number($allorder->grand_price)));    ?> Only.
                                         </div>-->
                 </div>
                 <div class="total">
@@ -340,11 +399,11 @@
                         </div>
                         <div class="label">&nbsp; Total</div>
                         <div class="value">
-<?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
+                            <?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
-                        <div class="label">&nbsp; Vat</div>
+                        <div class="label">&nbsp; GST</div>
                         <div class="value">
                             <?php
                             $vat = $final_vat_amount;
