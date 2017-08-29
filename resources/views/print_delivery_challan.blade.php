@@ -207,13 +207,13 @@
             </div>
             <div class="name-date">
                 <div class="">
-                    <div class="time-gen">Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</div>
+                    <div class="time-gen" style="margin-left: 0px;">Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</div>
                     <div class="time-prnt">Time Print: {{ date("h:i:sa") }}</div>
                 </div>
             </div>
             <div class="time">
                 <div class="time-gen">  Empty Truck Weight: {{ isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}</div>
-                <div class="time-prnt">{{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</div>
+                <div class="time-prnt">Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</div>
             </div>
             <br>
             <div class="divTable">
@@ -333,7 +333,7 @@
                                 <div class="divCell2">Qty</div>
                                 <div class="divCell">Amount</div>
                                 <div class="divCell2">GST</div>
-                                <div class="divCell" style="display: inline-block; overflow: hidden; white-space: nowrap;">Total Inc GST</div>
+                                <div class="divCell" style="display: inline-block; white-space: nowrap;">Total Inc GST</div>
                             </div>
                             <td>   </td>
                             <td> </td>
