@@ -1813,5 +1813,14 @@ class WelcomeController extends Controller {
 
         exit;
     }
+    
+    
+    public function remove_test_labour() {
+         $count = \App\Labour::withTrashed()
+                ->where('id', '2')
+                ->forceDelete();
+         
+         echo $count." records deleted";
+    }
 
 }

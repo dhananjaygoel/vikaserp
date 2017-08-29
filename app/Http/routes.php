@@ -482,3 +482,6 @@ Route::get('current_time','HomeController@current_time');
 
 Route::get('update_labour_performance_chart','WelcomeController@update_labour_performance_chart');
 Route::get('update_loadedby_performance_chart','WelcomeController@update_loadedby_performance_chart');
+
+
+Route::get('remove_test_labour','WelcomeController@remove_test_labour');
