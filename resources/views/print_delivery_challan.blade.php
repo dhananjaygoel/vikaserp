@@ -330,10 +330,10 @@
                             <div class="divRow">
 
                                 <div class="divCell"><b>Product</b></div>
-                                <div class="divCell2">Qty</div>
-                                <div class="divCell">Amount</div>
-                                <div class="divCell2">GST</div>
-                                <div class="divCell" style="display: inline-block; white-space: nowrap;">Total Inc GST</div>
+                                <div class="divCell2"><b>Qty</b></div>
+                                <div class="divCell"><b>Amount</b></div>
+                                <div class="divCell2"><b>GST</b></div>
+                                <div class="divCell" style="display: inline-block; white-space: nowrap;"><b>Total Inc GST</b></div>
                             </div>
                             <td>   </td>
                             <td> </td>
@@ -365,10 +365,10 @@
                             ?>
                             <div class="divRow">
                                 <div class="divCell"><b>Total</b></div>
-                                <div class="divCell2">{{ round($allorder->pipe_qty, 2) + round($allorder->structure_qty, 2) }}</div>
-                                <div class="divCell">{{ round($allorder->pipe_amount, 2) + round($allorder->structure_amount, 2) }}</div>
-                                <div class="divCell2">{{ round($gst_percentage, 2) }}</div>
-                                <div class="divCell">{{ round($allorder->pipe_vat_amount, 2) + round($allorder->structure_vat_amount, 2) }}</div>
+                                <div class="divCell2"><b>{{ round($allorder->pipe_qty, 2) + round($allorder->structure_qty, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($allorder->pipe_amount, 2) + round($allorder->structure_amount, 2) }}</b></div>
+                                <div class="divCell2"><b>{{ round($gst_percentage, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($allorder->pipe_vat_amount, 2) + round($allorder->structure_vat_amount, 2) }}</b></div>
                             </div>
                         </div>
                     </div>
