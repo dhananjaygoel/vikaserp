@@ -384,9 +384,9 @@
                 </div>
                 <div class="total">
                     <div class="">
-                        <div class="label" style="width: 51%"> &nbsp; Total</div>
+                        <div class="label"> &nbsp; Total</div>
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
-                        <div class="label " style="width: 51%">&nbsp; Loading</div>
+                        <div class="label ">&nbsp; Loading</div>
                         <div class="value">
 <?php
 $loading_charge = $allorder->loading_charge;
@@ -394,22 +394,22 @@ $loading_vat = $allorder->loading_vat_percentage;
 ?>
                             {{($loading_charge != "")?round($loading_charge,2):0}} &nbsp;
                         </div>
-                        <div class="label" style="width: 51%">&nbsp; Freight</div>
+                        <div class="label">&nbsp; Freight</div>
                         <div class="value">
                             {{($allorder->freight != "")?round($allorder->freight,2):0}} &nbsp;
                         </div>
-                        <div class="label" style="width: 51%">&nbsp; Discount</div>
+                        <div class="label">&nbsp; Discount</div>
                         <div class="value">
                             {{($allorder->discount != "")?round($allorder->discount,2):0}}
                             &nbsp;
                         </div>
-                        <div class="label" style="width: 51%">&nbsp; Total</div>
+                        <div class="label">&nbsp; Total</div>
                         <div class="value">
 <?php $with_total = $total_price + $loading_charge + $allorder->freight + $allorder->discount; ?>
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
-                        <div class="label" style="width: 51%">&nbsp; GST</div>
+                        <div class="label">&nbsp; GST</div>
                         <div class="value">
 <?php
 $vat = $final_vat_amount;
@@ -418,7 +418,7 @@ $vat = $final_vat_amount;
                             {{ round($vat,2) }}
                             &nbsp;
                         </div>
-                        <div class="label" style="width: 51%">&nbsp; Round Off</div>
+                        <div class="label">&nbsp; Round Off</div>
                         <div class="value">
 <?php
 if (isset($allorder->round_off) && ($allorder->round_off != "")) {
@@ -430,7 +430,7 @@ if (isset($allorder->round_off) && ($allorder->round_off != "")) {
                             {{ round($roundoff,2) }}
                             &nbsp;
                         </div>
-                        <div class="label" style="border-bottom: 1px solid #ccc; width: 51%">&nbsp; GT</div>
+                        <div class="label" style="border-bottom: 1px solid #ccc;">&nbsp; GT</div>
                         <div class="value" style="border-bottom: 1px solid #ccc;">
 <?php
 if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
