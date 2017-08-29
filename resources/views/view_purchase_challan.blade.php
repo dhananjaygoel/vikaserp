@@ -151,11 +151,11 @@
                                     </tr>
                                     @if($purchase_challan->vat_percentage>0)
                                     <tr>
-                                        <td><span>VAT Percentage: </span>{{ $purchase_challan->vat_percentage }}</td>
+                                        <td><span>GST Percentage: </span>{{ $purchase_challan->vat_percentage }}</td>
                                     </tr>
                                     @else
                                     <tr>
-                                        <td><span>Plus VAT: </span>No</td>
+                                        <td><span>Plus GST: </span>No</td>
                                     </tr>
                                     @endif
                                     <tr>

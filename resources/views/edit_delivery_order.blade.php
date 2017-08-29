@@ -150,7 +150,7 @@
                                             
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
-                                            <td class="inquiry_vat_chkbox"><span>Vat</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>GST</span></td>
                                             <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
@@ -212,7 +212,7 @@
                                                             </td>
                                                             <td class="col-md-2">
                                                                 <!--                                                            form for save product value-->
-                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="GST Percentage">
                                                                 <!--
                                                                     <div class="form-group col-md-6 difference_form">
                                                                     <input class="btn btn-primary" type="button" class="form-control" value="save" >
@@ -288,7 +288,7 @@
                                                             <td class="col-md-2">
                                                                 <div class="form-group col-md-6">
                                                                     <!--                                                            form for save product value-->
-                                                                    <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat Percentage">
+                                                                    <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="GST Percentage">
                                                                 </div>
                                                                 <div class="form-group col-md-6 difference_form">
                                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
@@ -456,8 +456,8 @@
                                 <table id="table-example" class="table ">
                                     <tbody>
                                         <tr class="cdtable">
-                                            <td class="cdfirst" style="font-weight: 500;">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return onlyPercentage(event);" type="text" onblur="grand_total_delivery_order({{isset($key)?(($key!='')?$key:1):''}});"></td>
+                                            <td class="cdfirst" style="font-weight: 500;">GST Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return onlyPercentage(event);" type="text" onblur="grand_total_delivery_order({{isset($key)?(($key!='')?$key:1):''}});"></td>
                                         </tr>
                                     </tbody>
                                 </table>

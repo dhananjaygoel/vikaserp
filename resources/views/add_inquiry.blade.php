@@ -157,7 +157,7 @@
                                                 <td><span>Quantity</span></td>
 
                                                 <td><span>Price</span></td>
-                                                <td class="inquiry_vat_chkbox"><span>Vat</span></td>
+                                                <td class="inquiry_vat_chkbox"><span>GST</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
@@ -279,9 +279,9 @@
                                     <table id="table-example" class="table ">
                                         <tbody>
                                             <tr class="cdtable">
-                                                <td class="cdfirst">VAT Percentage:</td>
+                                                <td class="cdfirst">GST Percentage:</td>
                                                 <td>
-                                                    <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" type="text" onkeypress=" return onlyPercentage(event);">
+                                                    <input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="" type="text" onkeypress=" return onlyPercentage(event);">
 
                                                 </td>
                                             </tr>

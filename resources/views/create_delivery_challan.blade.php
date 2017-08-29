@@ -340,7 +340,7 @@
 <!--<input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">-->
                                 </div>
                                 <div class="form-group">
-                                    <label for="vatp"><b class="challan">VAT Percentage : </b>
+                                    <label for="vatp"><b class="challan">GST Percentage : </b>
                                         {{isset($delivery_data->vat_percentage)?$delivery_data->vat_percentage:0}}                                    
                                         <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{isset($delivery_data->vat_percentage)?$delivery_data->vat_percentage:0}}" readonly="readonly">
                                     </label>

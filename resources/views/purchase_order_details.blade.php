@@ -78,10 +78,10 @@
                                     <tbody>
 
                                         @if($purchase_orders['vat_percentage'] == 0)
-                                        <tr><td><span>Plus VAT: </span>No</td></tr>
+                                        <tr><td><span>Plus GST: </span>No</td></tr>
                                         @elseif($purchase_orders['vat_percentage'] != 0)
-                                        <tr><td><span>Plus VAT: </span>Yes</td></tr>
-                                        <tr><td><span>VAT Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
+                                        <tr><td><span>Plus GST: </span>Yes</td></tr>
+                                        <tr><td><span>GST Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         @endif
 
                                         <tr><td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>

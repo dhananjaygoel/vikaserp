@@ -15,7 +15,7 @@
             <td class="heading1">Quantity</td>
             <td class="heading1">Unit</td>
             <td class="heading1">Price</td>
-            <td class="heading1">Vat Percentage</td>
+            <td class="heading1">GST Percentage</td>
             <td class="heading1">Update Price</td>
 
             <td class="heading1">Remark</td>

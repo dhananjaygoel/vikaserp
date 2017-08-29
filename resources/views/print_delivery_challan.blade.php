@@ -282,8 +282,8 @@
 <!--                    <table class="table-responsive detail_table">
                         <tr>
                             <th> Total Amount </th>
-                            <th> Total Vat </th>
-                            <th> Total Inc. Vat </th>
+                            <th> Total GST </th>
+                            <th> Total Inc. GST </th>
                         </tr>
                         <tr class="secondrow">
                             <td> {{ round($total_price+$allorder->loading_charge+ $allorder->freight + $allorder->discount, 2) }}  </td>

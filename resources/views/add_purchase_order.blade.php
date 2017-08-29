@@ -332,7 +332,7 @@ use Illuminate\Support\Facades\Session;
                                     <input checked="" value="include_vat" id="inclusive_of_vat" name="vat_status" type="radio">
                                     <label for="inclusive_of_vat">All Inclusive</label>
                                     <input value="exclude_vat" id="exclusive_of_vat" name="vat_status" type="radio">
-                                    <label for="exclusive_of_vat">Plus VAT</label>
+                                    <label for="exclusive_of_vat">Plus GST</label>
                                 </div>
                             </div>
                             <div class="plusvat " style="display: none">
@@ -340,8 +340,8 @@ use Illuminate\Support\Facades\Session;
                                     <table id="table-example" class="table ">
                                         <tbody>
                                             <tr class="cdtable">
-                                                <td class="cdfirst">VAT Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{Input::old('vat_percentage')}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
+                                                <td class="cdfirst">GST Percentage:</td>
+                                                <td><input id="price" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{Input::old('vat_percentage')}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
                                             </tr>
                                         </tbody>
                                     </table>

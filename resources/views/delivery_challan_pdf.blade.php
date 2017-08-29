@@ -266,7 +266,7 @@
                     <div class="divCell">Size</div>
                     <div class="divCell">Pcs</div>
                     <div class="divCell">Qty</div>
-                    <div class="divCell">Vat</div>
+                    <div class="divCell">GST</div>
                     <div class="divCell">Rate</div>
                     <div class="divCell">Amount</div>
                 </div>
@@ -311,8 +311,8 @@
                     <table class="table-responsive details_table">
                         <tr>
                             <th> Total Amount </th>
-                            <th> Total Vat </th>
-                            <th> Total Inc. Vat </th>
+                            <th> Total GST </th>
+                            <th> Total Inc. GST </th>
                         </tr>
                         <tr class="secondrow">
                             <td> {{ round($total_price+$allorder->loading_charge+ $allorder->freight + $allorder->discount, 2) }}  </td>

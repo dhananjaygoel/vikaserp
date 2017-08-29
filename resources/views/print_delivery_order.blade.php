@@ -177,7 +177,7 @@
                     <div class="divCell">Unit</div>
                     <div class="divCell">Pcs</div>
                     <div class="divCell">Present Shipping</div>
-                    <div class="divCell">VAT</div>
+                    <div class="divCell">GST</div>
                 </div>
                 <?php $i = 1; ?>
                 @if($delivery_data['delivery_product'])

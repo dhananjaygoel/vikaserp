@@ -86,7 +86,7 @@
                                         @endif
                                         <td><span>Unit</span></td>
                                         <td><span>Price</span></td>
-                                        <td><span>Vat</span></td>
+                                        <td><span>GST</span></td>
                                         <td><span>Remark</span></td>                                    
                                     </tr>
                                     <?php $grand = 0; ?>
@@ -131,10 +131,10 @@
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
                                     @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)
-<!--                                    <tr><td><span>Plus VAT: </span> Yes</td></tr>
-                                    <tr><td><span>VAT Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>-->
+<!--                                    <tr><td><span>Plus GST: </span> Yes</td></tr>
+                                    <tr><td><span>GST Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>-->
                                     @else
-                                    <!--<tr><td><span>Plus VAT: </span> No</td></tr>-->
+                                    <!--<tr><td><span>Plus GST: </span> No</td></tr>-->
                                     @endif
                                     <tr><td><b>Vehicle Number:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>

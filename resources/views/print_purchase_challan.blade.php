@@ -308,7 +308,7 @@
                         </div>
                         <div class="label">Total</div>
                         <div class="value">{{ round($total_price + $purchase_challan->freight + $purchase_challan->discount, 2) }}</div>
-                        <div class="label">Vat</div>
+                        <div class="label">GST</div>
                         <div class="value">
                             @if($purchase_challan->vat_percentage != "")
                             {{round($purchase_challan->vat_percentage, 2)}} %

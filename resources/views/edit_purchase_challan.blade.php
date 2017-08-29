@@ -146,10 +146,10 @@
                             <input id="labour" class="form-control" placeholder="Labour" name="labour" value="{{ $purchase_challan->labours }}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="Plusvat"><b class="challan">Plus VAT</b> Yes/No</label>
+                            <label for="Plusvat"><b class="challan">Plus GST</b> Yes/No</label>
                         </div>
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">VAT Percentage</b> {{ $purchase_challan->vat_percentage }}</label>
+                            <label for="driver_contact"><b class="challan">GST Percentage</b> {{ $purchase_challan->vat_percentage }}</label>
                         </div>
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total</b> $25000</label>

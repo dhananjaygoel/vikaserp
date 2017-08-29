@@ -158,7 +158,7 @@
                                     if ($purchase_advise->vat_percentage != '') {
                                         ?>
                                         <tr class="cdtable">
-                                            <td class="cdfirst">Vat Percentage:</td>
+                                            <td class="cdfirst">GST Percentage:</td>
                                             <td>{{$purchase_advise->vat_percentage}}%</td>
                                         </tr>
                                     <?php } ?>

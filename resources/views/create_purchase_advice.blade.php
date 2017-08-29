@@ -151,11 +151,11 @@
                                     <table id="table-example" class="table table-hover customerview_table  ">
                                         <tbody>
                                             @if($purchase_orders['vat_percentage'] == 0)
-                                            <tr class="cdtable"><td class="cdfirst"><span>Plus VAT: </span>No</td><td></td></tr>
+                                            <tr class="cdtable"><td class="cdfirst"><span>Plus GST: </span>No</td><td></td></tr>
                                         <input type="hidden" name="vat_percentage" value="">
                                         @elseif($purchase_orders['vat_percentage'] != 0)
-                                        <tr class="cdtable"><td class="cdfirst"><span>Plus VAT: </span>Yes</td><td></td></tr>
-                                        <tr class="cdtable"><td class="cdfirst" colspan="5"><span>VAT Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
+                                        <tr class="cdtable"><td class="cdfirst"><span>Plus GST: </span>Yes</td><td></td></tr>
+                                        <tr class="cdtable"><td class="cdfirst" colspan="5"><span>GST Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         <input type="hidden" name="vat_percentage" value="{{$purchase_orders['vat_percentage']}}">
                                         @endif
                                         <tr class="cdtable">

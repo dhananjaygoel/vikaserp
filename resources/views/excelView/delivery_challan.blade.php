@@ -13,19 +13,19 @@
             <td class="heading1">Unit</td>
             <td class="heading1">Present Shipping</td>
             <td class="heading1">Rate</td>
-            <td class="heading1">Vat Percentage</td>
+            <td class="heading1">GST Percentage</td>
             <td class="heading1">Amount</td>
 
             <td class="heading1">Total Actual Quantity</td>
             <td class="heading1">Total Amount</td>
             <td class="heading1">Discount</td>
-            <td class="heading1">Discount Vat Percentage</td>
+            <td class="heading1">Discount GST Percentage</td>
             <td class="heading1">Total Freight Charges</td>
             <td class="heading1">Freight</td>
-            <td class="heading1">Freight Vat Percentage</td>
+            <td class="heading1">Freight GST Percentage</td>
             <td class="heading1">Total Freight Charges</td>
             <td class="heading1">Loading</td>
-            <td class="heading1">Loading Vat Percentage</td>
+            <td class="heading1">Loading GST Percentage</td>
             <td class="heading1">Total Loading Charges</td>
             <td class="heading1">Total</td>
             <td class="heading1">Loaded By</td>

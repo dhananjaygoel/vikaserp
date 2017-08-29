@@ -345,7 +345,7 @@
                             <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
                             <label for="optionsRadios3">All Inclusive</label>
                             <input value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
-                            <label for="optionsRadios4">Plus VAT</label>
+                            <label for="optionsRadios4">Plus GST</label>
                         </div>
                     </div>
                     <div class="plusvat " style="display: none">
@@ -353,8 +353,8 @@
                             <table id="table-example" class="table ">
                                 <tbody>
                                     <tr class="cdtable">
-                                        <td class="cdfirst">VAT Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="" onkeypress=" return onlyPercentage(event);" type="tel"></td>
+                                        <td class="cdfirst">GST Percentage:</td>
+                                        <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="" onkeypress=" return onlyPercentage(event);" type="tel"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -366,7 +366,7 @@
                             <input value="include_vat" id="optionsRadios3" name="vat_status" type="radio">
                             <label for="optionsRadios3">All Inclusive</label>
                             <input checked="" value="exclude_vat" id="optionsRadios4" name="vat_status" type="radio">
-                            <label for="optionsRadios4">Plus VAT</label>
+                            <label for="optionsRadios4">Plus GST</label>
                         </div>
                     </div>
                     <div class="plusvat">
@@ -374,8 +374,8 @@
                             <table id="table-example" class="table ">
                                 <tbody>
                                     <tr class="cdtable">
-                                        <td class="cdfirst">VAT Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
+                                        <td class="cdfirst">GST Percentage:</td>
+                                        <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
                                     </tr>
                                 </tbody>
                             </table>

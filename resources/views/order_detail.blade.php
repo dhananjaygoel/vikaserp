@@ -82,7 +82,7 @@
                                             <td><span>Qty</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
-                                            <td><span>Vat</span></td>
+                                            <td><span>GST</span></td>
                                             <td class="widthtable"><span>Remark</span></td>
                                         </tr>
                                         <?php $total = 0; ?>
@@ -118,14 +118,14 @@
                                     <tbody>
                                         @if($order->vat_percentage !=0)
 <!--                                        <tr>
-                                            <td><span>Plus VAT: </span>Yes</td>
+                                            <td><span>Plus GST: </span>Yes</td>
                                         </tr>
                                         <tr>
-                                            <td><span>VAT Percentage: </span>{{$order->vat_percentage}}</td>
+                                            <td><span>GST Percentage: </span>{{$order->vat_percentage}}</td>
                                         </tr>-->
                                         @elseif($order->vat_percentage ==0)
 <!--                                        <tr>
-                                            <td><span>Plus VAT: </span>No</td>
+                                            <td><span>Plus GST: </span>No</td>
                                         </tr>-->
                                         @endif
 <!--                                        <tr>

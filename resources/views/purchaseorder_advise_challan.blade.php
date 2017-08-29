@@ -222,16 +222,16 @@
                     </div>
                     @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
                     <div class="form-group">
-                        <label for="Plusvat"><b class="challan">Plus VAT</b> : No </label>
+                        <label for="Plusvat"><b class="challan">Plus GST</b> : No </label>
                     </div>
                     @else
                     <div class="form-group">
-                        <label for="driver_contact"><b class="challan">VAT Percentage</b> {{$purchase_advise->vat_percentage}}</label>
+                        <label for="driver_contact"><b class="challan">GST Percentage</b> {{$purchase_advise->vat_percentage}}</label>
                         <input id="vat_percentage" type="hidden" value="{{$purchase_advise->vat_percentage}}" name="vat_percentage"/>
 
                     </div>
                     <div class="form-group">
-                        <label for="driver_contact"><b class="challan">VAT Value :</b> <div id="vat_value"></div></label>
+                        <label for="driver_contact"><b class="challan">GST Value :</b> <div id="vat_value"></div></label>
                     </div>
                     @endif
                     <div class="form-group">

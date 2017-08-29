@@ -228,7 +228,7 @@
                                             <td><span>Quantity</span></td>
 
                                             <td><span>Price</span><span class="mandatory">*</span></td>
-                                            <td class="inquiry_vat_chkbox"><span>Vat Percentage</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>GST Percentage</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
@@ -268,7 +268,7 @@
                                                         </td>
                                                         <td class="col-md-1">
                                                             <div class="form-group inquiry_vat_chkbox">
-                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value="<?php if (isset($session_data['product'][$i]['vat_percentage'])) { ?>{{$session_data['product'][$i]['vat_percentage']}}<?php } ?>">
+                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="GST percentage" value="<?php if (isset($session_data['product'][$i]['vat_percentage'])) { ?>{{$session_data['product'][$i]['vat_percentage']}}<?php } ?>">
                                                             </div>
                                                         </td>
                                                         <td class="col-md-3">
@@ -386,8 +386,8 @@
                                 <table id="table-example" class="table ">
                                     <tbody>
                                         <tr class="cdtable">
-                                            <td class="cdfirst">VAT Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" onkeypress=" return onlyPercentage(event);" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
+                                            <td class="cdfirst">GST Percentage:</td>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" onkeypress=" return onlyPercentage(event);" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
                                         </tr>
                                     </tbody>
                                 </table>

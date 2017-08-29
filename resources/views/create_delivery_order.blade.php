@@ -116,7 +116,7 @@
                                             <td><span><b>Quantity</b></span></td>
                                             <td><span><b>Present Shipping</b></span></td>
                                             <td><span><b>Price</b></span></td>
-                                            <td class="inquiry_vat_chkbox"><span><b>Vat</b></span></td>
+                                            <td class="inquiry_vat_chkbox"><span><b>GST</b></span></td>
                                             <td><span><b>Pending Order</b></span></td>
                                             <td><span><b>Remark</b></span></td>
                                         </tr>
@@ -221,10 +221,10 @@
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
                                 <tr class="cdtable">
-                                    <td class="cdfirst">VAT Percentage:</td>
+                                    <td class="cdfirst">GST Percentage:</td>
                                     <td>
                                         {{-- $order->vat_percentage --}}
-                                        <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text" onblur="grand_total_delivery_order();" onkeypress=" return onlyPercentage(event);">
+                                        <input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text" onblur="grand_total_delivery_order();" onkeypress=" return onlyPercentage(event);">
                                     </td>
                                 </tr>
                                 @if($order->vat_percentage == 0)

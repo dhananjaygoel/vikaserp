@@ -80,7 +80,7 @@
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
                                     <tr>
-                                        <td><span>Plus VAT: </span>
+                                        <td><span>Plus GST: </span>
                                             <?php
                                             if ($purchase_advise->vat_percentage != '') {
                                                 echo 'Yes';
@@ -94,7 +94,7 @@
                                     if ($purchase_advise->vat_percentage != '') {
                                         ?>
                                         <tr>
-                                            <td><span>VAT Percentage: </span> {{$purchase_advise->vat_percentage.'%'}}</td>
+                                            <td><span>GST Percentage: </span> {{$purchase_advise->vat_percentage.'%'}}</td>
                                         </tr>
                                     <?php } ?>
                                     <tr>

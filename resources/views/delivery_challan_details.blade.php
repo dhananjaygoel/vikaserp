@@ -42,7 +42,7 @@
                                         <td class="col-md-2"><span>Total Order</span></td>
                                         @endif
                                         <td class="col-md-1"><span>Rate</span></td>
-                                        <td class="col-md-1"><span>Vat</span></td>
+                                        <td class="col-md-1"><span>GST</span></td>
                                         <td class="col-md-1"><span>Amount</span></td>
                                     </tr>
                                     <?php $total_amount = 0; ?>
@@ -210,12 +210,12 @@
                         @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
 
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">VAT Percentage: </b> {{$allorder->vat_percentage}} %</label>
+                            <label for="driver_contact"><b class="challan">GST Percentage: </b> {{$allorder->vat_percentage}} %</label>
                         </div>
                         <hr>
                         @else
                         <!--                        <div class="form-group">
-                                                    <label for="Plusvat"><b class="challan">VAT: </b> No</label>
+                                                    <label for="Plusvat"><b class="challan">GST: </b> No</label>
                                                 </div>
                                                 <hr>-->
                         @endif
