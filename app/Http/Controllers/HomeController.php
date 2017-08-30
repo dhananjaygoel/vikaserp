@@ -5053,7 +5053,7 @@ class HomeController extends Controller {
     public function appprintdeliverychallan() {
         $data = Input::all();
         $server_id = json_decode($data['delivery_challan']);
-
+        $delivery_data =[];
 
         if ($server_id[0]->server_id != "") {
             $id = $server_id[0]->server_id;
@@ -5174,7 +5174,7 @@ class HomeController extends Controller {
                                 ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
             }
         } else {
-            $delivery_data = "";
+            return '{}';
         }
 
         return json_encode($delivery_data);
