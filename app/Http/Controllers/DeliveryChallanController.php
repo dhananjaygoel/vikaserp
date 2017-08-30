@@ -605,10 +605,12 @@ class DeliveryChallanController extends Controller {
             $updated_at = $delivery_challan->updated_at;
             \App\DeliveryChallanLabours::
                     where('delivery_challan_id', $delivery_challan_id)
-                    ->forceDelete();
+//                    ->forceDelete();
+                    ->delete();
             \App\DeliveryChallanLoadedBy::
                     where('delivery_challan_id', $delivery_challan_id)
-                    ->forceDelete();
+//                    ->forceDelete();
+                    ->delete();
 
             $actual_qty = $this->calc_actual_qty($id, $input_data);
             if (isset($input_data['loaded_by_pipe'])) {
@@ -625,7 +627,7 @@ class DeliveryChallanController extends Controller {
                         'total_qty' => $actual_qty['loaded_by_pipe'],
                     ];
                 }
-                $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+                $add_loaders_info = \App\DeliveryChallanLoadedBy::insert($loaders_info);
             }
             if (isset($input_data['loaded_by_structure'])) {
                 $loaders = $input_data['loaded_by_structure'];
@@ -641,7 +643,7 @@ class DeliveryChallanController extends Controller {
                         'total_qty' => $actual_qty['loaded_by_structure'],
                     ];
                 }
-                $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+                $add_loaders_info = \App\DeliveryChallanLoadedBy::insert($loaders_info);
             }
             if (isset($input_data['labour_pipe'])) {
                 $labours = $input_data['labour_pipe'];
@@ -657,7 +659,7 @@ class DeliveryChallanController extends Controller {
                         'total_qty' => $actual_qty['labour_pipe'],
                     ];
                 }
-                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                $add_loaders_info = \App\DeliveryChallanLabours::insert($labours_info);
             }
             if (isset($input_data['labour_structure'])) {
                 $labours = $input_data['labour_structure'];
@@ -673,7 +675,7 @@ class DeliveryChallanController extends Controller {
                         'total_qty' => $actual_qty['labour_structure'],
                     ];
                 }
-                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                $add_loaders_info = \App\DeliveryChallanLabours::insert($labours_info);
             }
 
 
