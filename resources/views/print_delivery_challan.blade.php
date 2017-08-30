@@ -325,14 +325,14 @@
                         </tr>
                         
                     </table>-->
-                    <div class="divTable" style="width: 70%;margin-left: 8%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
+                    <div class="divTable" style="width: 70%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
                         <div class="headRow">
                             <div class="divRow">
 
                                 <div class="divCell"><b>Product</b></div>
-                                <div class="divCell2"><b>Qty</b></div>
+                                <div class="divCell"><b>Qty</b></div>
                                 <div class="divCell"><b>Amount</b></div>
-                                <div class="divCell2"><b>GST</b></div>
+                                <div class="divCell"><b>GST</b></div>
                                 <div class="divCell" style="display: inline-block; white-space: nowrap;"><b>Total Inc GST</b></div>
                             </div>
                             <td>   </td>
@@ -341,17 +341,17 @@
                             <td> </td> 
                             <div class="divRow">
                                 <div class="divCell">Pipe</div>
-                                <div class="divCell2">{{ round($allorder->pipe_qty, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_qty, 2) }}</div>
                                 <div class="divCell">{{ round($allorder->pipe_amount, 2) }}</div>
-                                <div class="divCell2">{{ round($allorder->pipe_vat, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->pipe_vat, 2) }}</div>
                                 <div class="divCell">{{ round($allorder->pipe_vat_amount, 2) }}
                                 </div>
                             </div>                           
                             <div class="divRow">
                                 <div class="divCell">Structure</div>
-                                <div class="divCell2">{{ round($allorder->structure_qty, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->structure_qty, 2) }}</div>
                                 <div class="divCell">{{ round($allorder->structure_amount, 2) }}</div>
-                                <div class="divCell2">{{ round($allorder->structure_vat, 2) }}</div>
+                                <div class="divCell">{{ round($allorder->structure_vat, 2) }}</div>
                                 <div class="divCell">{{ round($allorder->structure_vat_amount, 2) }}</div>
                             </div>
                             <?php
@@ -365,9 +365,9 @@
                             ?>
                             <div class="divRow">
                                 <div class="divCell"><b>Total</b></div>
-                                <div class="divCell2"><b>{{ round($allorder->pipe_qty, 2) + round($allorder->structure_qty, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($allorder->pipe_qty, 2) + round($allorder->structure_qty, 2) }}</b></div>
                                 <div class="divCell"><b>{{ round($allorder->pipe_amount, 2) + round($allorder->structure_amount, 2) }}</b></div>
-                                <div class="divCell2"><b>{{ round($gst_percentage, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($gst_percentage, 2) }}</b></div>
                                 <div class="divCell"><b>{{ round($allorder->pipe_vat_amount, 2) + round($allorder->structure_vat_amount, 2) }}</b></div>
                             </div>
                         </div>
