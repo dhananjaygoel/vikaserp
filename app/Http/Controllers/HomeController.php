@@ -6755,8 +6755,13 @@ class HomeController extends Controller {
 //                ->with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
 //                ->where('created_at', '>', "$date")
 //                ->get();
-        
+
         $labour_all = \App\DeliveryChallanLabours::get();
+
+        $purchase_order_data = \App\PurchaseChallan::
+                has('challan_labours.pc_delivery_challan.all_purchase_products')
+                ->with('challan_labours')
+                ->get();
 
         $temp1 = [];
         $pipe = [];
@@ -6764,7 +6769,8 @@ class HomeController extends Controller {
         $summedArray = [];
 
 
-        foreach ($labour_all as $loaded_by_key => $labour_value) {          
+        foreach ($labour_all as $loaded_by_key => $labour_value) {
+            if ($labour_value['total_qty'] != 0) {
                 $total_qty_temp = 0;
                 $id = $labour_value['delivery_challan_id'];
                 if (isset($summedArray[$id])) {
@@ -6791,28 +6797,61 @@ class HomeController extends Controller {
                     $loader_arr[$id]['structure_labour'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $labour_value['total_qty'];
                 }
-            
+            }
         }
-        
+
+
         foreach ($loader_arr as $key => $value_temp) {
             if (isset($value_temp['pipe_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
-            } else if (isset($value_temp['structure_labour'])) {
+            }
+            if (isset($value_temp['structure_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
-            } else {
+            }
+            if (!isset($value_temp['pipe_labour']) && !isset($value_temp['structure_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['labours'];
             }
         }
-        
+
+
+        foreach ($purchase_order_data as $delivery_order_info) {
+            $arr = array();
+            $arr_money = array();
+            $loaders = array();
+            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+                foreach ($delivery_order_info->challan_labours as $challan_info) {
+                    $deliver_sum = 0.00;
+                    $money = 0.00;
+                    array_push($loaders, $challan_info->labours_id);
+                    foreach ($challan_info->pc_delivery_challan as $info) {
+                        foreach ($info->all_purchase_products as $delivery_order_productinfo) {
+                            $deliver_sum += $delivery_order_productinfo->quantity;
+                        }
+                    }
+
+
+                    array_push($loader_array, $loaders);
+                    $all_kg = $deliver_sum / count($loaders);
+                    $all_tonnage = $all_kg / 1000;
+                    $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                    $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                    $loader_arr['labours'] = $loaders;
+                    $loader_arr['tonnage'] = $all_tonnage;
+                }
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
 
@@ -6857,7 +6896,7 @@ class HomeController extends Controller {
                 ->with('challan_labours.dc_delivery_challan.delivery_order.delivery_product')
                 ->where('created_at', '>', "$date")
                 ->get();
-        
+
         $labour_all = \App\DeliveryChallanLabours::get();
 
         $temp1 = [];
@@ -6865,9 +6904,9 @@ class HomeController extends Controller {
         $loader_arr = [];
         $summedArray = [];
 
-       
-        foreach ($labour_all as $loaded_by_key => $labour_value) {            
-            if ($labour_value['total_qty'] != 0) {                
+
+        foreach ($labour_all as $loaded_by_key => $labour_value) {
+            if ($labour_value['total_qty'] != 0) {
                 $total_qty_temp = 0;
                 $id = $labour_value['delivery_challan_id'];
                 if (isset($summedArray[$id])) {
@@ -6882,7 +6921,7 @@ class HomeController extends Controller {
                 $summedArray[$id] = $total_qty_temp + $labour_value['total_qty'];
                 $loader_arr[$id]['delivery_id'] = $id;
                 $loader_arr[$id]['delivery_date'] = date('Y-m-d', strtotime($labour_value['created_at']));
-                
+
                 $loader_arr[$id]['tonnage'] = $total_qty_temp + $labour_value['total_qty'];
                 array_push($temp_pipe, $labour_value['labours_id']);
                 array_push($temp, $labour_value['labours_id']);
@@ -6890,33 +6929,31 @@ class HomeController extends Controller {
                 if ($labour_value['product_type_id'] == 1) {
                     $loader_arr[$id]['pipe_labour'] = $temp_pipe;
                     $loader_arr[$id]['pipe_tonnage'] = $labour_value['total_qty'];
-                } else if($labour_value['product_type_id'] == 2) {
+                } else if ($labour_value['product_type_id'] == 2) {
                     $loader_arr[$id]['structure_labour'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $labour_value['total_qty'];
                 }
-               
-            }
-            
-        }
-        
-        
-        foreach ($loader_arr as $key => $value_temp) {
-            if(isset($value_temp['pipe_labour'])){
-               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
-               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-               $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage']/ 1000;
-               $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
-            }
-            if(isset($value_temp['structure_labour'])){
-               $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
-               $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-               $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage']/ 1000;
-               $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
             }
         }
-        
 
- 
+
+        foreach ($loader_arr as $key => $value_temp) {
+            if (isset($value_temp['pipe_labour'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
+                $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
+            }
+            if (isset($value_temp['structure_labour'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
+                $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
+            }
+        }
+
+
+
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
 
@@ -6941,8 +6978,8 @@ class HomeController extends Controller {
             }
         }
 
-      
-       
+
+
 
         return json_encode(array('result' => true,
             'labours' => $labours,
@@ -7035,13 +7072,13 @@ class HomeController extends Controller {
 //                        ->where('created_at', '>', "$date")->get();
 
         $purchase_order_data = \App\PurchaseChallan::
-                    has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
-                    ->with('challan_loaded_by.pc_delivery_challan.all_purchase_products')
-                    ->withTrashed()
-                    ->get();
-        
+                has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                ->with('challan_loaded_by.pc_delivery_challan.all_purchase_products')
+                ->withTrashed()
+                ->get();
+
         $loaded_by_all = \App\DeliveryChallanLoadedBy::get();
-        
+
         $temp1 = [];
         $pipe = [];
         $loader_arr = [];
@@ -7076,8 +7113,8 @@ class HomeController extends Controller {
                 }
             }
         }
-        
-       
+
+
 
         foreach ($loader_arr as $key => $value_temp) {
             if (isset($value_temp['pipe_loaders'])) {
@@ -7093,12 +7130,12 @@ class HomeController extends Controller {
             } else {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
-                $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] ;
+                $loaders_data[$var]['tonnage'] = $value_temp['tonnage'];
                 $loaders_data[$var++]['loaders'] = $value_temp['loaders'];
             }
         }
-        
-               
+
+
         foreach ($purchase_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
@@ -7123,7 +7160,7 @@ class HomeController extends Controller {
             }
             $loaders_data[$var++] = $loader_arr;
         }
-        
+
         $loaders_data = array_filter(array_map('array_filter', $loaders_data));
         $loaders_data = array_values($loaders_data);
         $final_array = array();
@@ -7149,6 +7186,7 @@ class HomeController extends Controller {
             'date' => $date,
             'enddate' => $enddate));
     }
+
     public function apploadedbyperformance_temp() {
         $var = 0;
         $loader_arr = array();
