@@ -5052,7 +5052,7 @@ class HomeController extends Controller {
 
     public function appprintdeliverychallan() {
         $data = Input::all();
-        $server_id = json_decode($data['delivery_challan']);
+        $server_id = json_decode($data['delivery_challan_id']);
         $delivery_data = [];
         
         if (Input::has('delivery_challan')) {
