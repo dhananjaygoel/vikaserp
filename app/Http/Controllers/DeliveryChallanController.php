@@ -265,7 +265,7 @@ class DeliveryChallanController extends Controller {
 
 
     public function index(Request $request) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -400,7 +400,7 @@ class DeliveryChallanController extends Controller {
         }
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
-        
+
         if (count($allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
@@ -410,9 +410,9 @@ class DeliveryChallanController extends Controller {
             $order_product = 0;
         }
         $product_type = $this->check_product_type($allorder);
-        
-        
-        return view('delivery_challan_details', compact('allorder', 'order_product','product_type'));
+
+
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type'));
     }
 
     public function check_product_type($delivery_data) {
@@ -599,6 +599,82 @@ class DeliveryChallanController extends Controller {
             $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
             $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
             $delivery_challan->save();
+            
+            $delivery_challan_id = $delivery_challan->id;
+            $created_at = $delivery_challan->created_at;
+            $updated_at = $delivery_challan->updated_at;
+            \App\DeliveryChallanLabours::
+                    where('delivery_challan_id', $delivery_challan_id)
+                    ->forceDelete();
+            \App\DeliveryChallanLoadedBy::
+                    where('delivery_challan_id', $delivery_challan_id)
+                    ->forceDelete();
+
+            $actual_qty = $this->calc_actual_qty($id, $input_data);
+            if (isset($input_data['loaded_by_pipe'])) {
+                $loaders = $input_data['loaded_by_pipe'];
+                $loaders_info = [];
+                foreach ($loaders as $loader) {
+                    $loaders_info[] = [
+                        'delivery_challan_id' => $delivery_challan_id,
+                        'loaded_by_id' => $loader,
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                        'type' => 'sale',
+                        'product_type_id' => '1',
+                        'total_qty' => $actual_qty['loaded_by_pipe'],
+                    ];
+                }
+                $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+            }
+            if (isset($input_data['loaded_by_structure'])) {
+                $loaders = $input_data['loaded_by_structure'];
+                $loaders_info = [];
+                foreach ($loaders as $loader) {
+                    $loaders_info[] = [
+                        'delivery_challan_id' => $delivery_challan_id,
+                        'loaded_by_id' => $loader,
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                        'type' => 'sale',
+                        'product_type_id' => '2',
+                        'total_qty' => $actual_qty['loaded_by_structure'],
+                    ];
+                }
+                $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+            }
+            if (isset($input_data['labour_pipe'])) {
+                $labours = $input_data['labour_pipe'];
+                $labours_info = [];
+                foreach ($labours as $labour) {
+                    $labours_info[] = [
+                        'delivery_challan_id' => $delivery_challan_id,
+                        'labours_id' => $labour,
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                        'type' => 'sale',
+                        'product_type_id' => '1',
+                        'total_qty' => $actual_qty['labour_pipe'],
+                    ];
+                }
+                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+            }
+            if (isset($input_data['labour_structure'])) {
+                $labours = $input_data['labour_structure'];
+                $labours_info = [];
+                foreach ($labours as $labour) {
+                    $labours_info[] = [
+                        'delivery_challan_id' => $delivery_challan_id,
+                        'labours_id' => $labour,
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                        'type' => 'sale',
+                        'product_type_id' => '2',
+                        'total_qty' => $actual_qty['labour_structure'],
+                    ];
+                }
+                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+            }
 
 
             /* inventory code */
@@ -694,6 +770,42 @@ class DeliveryChallanController extends Controller {
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
         return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
+    }
+
+    public function calc_actual_qty($dc_id = 0, $input_data = []) {
+        $actual_qty['pipe'] = "0";
+        $actual_qty['structure'] = "0";
+        $actual_qty['loaded_by_pipe'] = "0";
+        $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['labour_pipe'] = "0";
+        $actual_qty['labour_structure'] = "0";
+
+        if ($dc_id != 0 && $input_data != []) {
+            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
+
+            foreach ($allorder['delivery_challan_products'] as $key => $value) {
+                if ($value['order_product_details']['product_category']->product_type_id == 1) {
+                    $actual_qty['pipe'] += $value->actual_quantity;
+                } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
+                    $actual_qty['structure'] += $value->actual_quantity;
+                }
+            }
+
+            if (isset($input_data['loaded_by_pipe'])) {
+                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count($input_data['loaded_by_pipe']);
+            }
+            if (isset($input_data['loaded_by_structure'])) {
+                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
+            }
+            if (isset($input_data['labour_pipe'])) {
+                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
+            }
+            if (isset($input_data['labour_structure'])) {
+                $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+        }
+
+        return $actual_qty;
     }
 
     /**

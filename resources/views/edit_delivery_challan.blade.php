@@ -44,8 +44,8 @@
                             <hr>
                             <div class="form-group row">
                                 <label class="col-md-2"><b>Empty Truck Weight(Kg):</b></label> 
-                                
-                                 <input type="text" name="empty_truck_weight" value="{{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);">
+
+                                <input type="text" name="empty_truck_weight" value="{{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);">
                             </div>
                             <hr>
                             <div class="form-group row">
@@ -323,7 +323,22 @@
                                     }
                                 }
                                 ?>
-                                <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">-->
+
+                                <div class="form-group clearfix" style="display: none">
+                                    <select id="loaded_by_select_pipe" name='loaded_by_pipe[]' class="form-control" multiple="multiple">
+                                        @if(isset($allorder['challan_loaded_by']))
+                                        @foreach ($allorder['challan_loaded_by'] as $challan_loaded_by)
+                                        @foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby)
+                                        @if(isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 1)
+
+                                        <option value="{{$loadedby->id}}" selected="">{{$loadedby->first_name}} {{$loadedby->last_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">-->
                             </div>
                             @endif
                             @if($product_type['structure'] == 1)
@@ -340,7 +355,21 @@
                                         }
                                     }
                                 }
-                                ?>                              
+                                ?>  
+
+                                <div class="form-group clearfix" style="display: none">
+                                    <select id="loaded_by_select_structure" name='loaded_by_structure[]' class="form-control" multiple="multiple">
+                                        @if(isset($allorder['challan_loaded_by']))
+                                        @foreach ($allorder['challan_loaded_by'] as $challan_loaded_by)
+                                        @foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby)
+                                        @if(isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 2)
+                                        <option value="{{$loadedby->id}}" selected="">{{$loadedby->first_name}} {{$loadedby->last_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
                             </div>
                             @endif
                             @if($product_type['pipe'] == 1)
@@ -360,6 +389,20 @@
                                 }
                                 ?>
 
+                                <div class="form-group clearfix" style="display: none">
+                                    <select id="labour_select_pipe" name="labour_pipe[]" class="form-control" multiple="multiple">
+                                        @if(isset($allorder['challan_labours']) && !empty($allorder['challan_labours']))
+                                        @foreach ($allorder['challan_labours'] as $challan_labour)
+                                        @foreach ($challan_labour['dc_labour'] as $labour)
+                                        @if(isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 1)
+                                        <option value="{{$labour->id}}" selected="">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+
                             </div>
                             @endif
                             @if($product_type['structure'] == 1)
@@ -378,6 +421,20 @@
                                     echo "N/A";
                                 }
                                 ?>
+
+                                <div class="form-group clearfix" style="display: none">
+                                    <select id="labour_select_structure" name="labour_structure[]" class="form-control" multiple="multiple">
+                                        @if(isset($allorder['challan_labours']) && !empty($allorder['challan_labours']))
+                                        @foreach ($allorder['challan_labours'] as $challan_labour)
+                                        @foreach ($challan_labour['dc_labour'] as $labour)
+                                        @if(isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 2)
+                                        <option value="{{$labour->id}}" selected="">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
 
                             </div>
                             @endif
