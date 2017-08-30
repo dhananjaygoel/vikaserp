@@ -119,14 +119,14 @@
                                         @if($order->vat_percentage !=0)
 <!--                                        <tr>
                                             <td><span>Plus GST: </span>Yes</td>
-                                        </tr>
+                                        </tr>-->
                                         <tr>
                                             <td><span>GST Percentage: </span>{{$order->vat_percentage}}</td>
-                                        </tr>-->
+                                        </tr>
                                         @elseif($order->vat_percentage ==0)
-<!--                                        <tr>
+                                        <tr>
                                             <td><span>Plus GST: </span>No</td>
-                                        </tr>-->
+                                        </tr>
                                         @endif
 <!--                                        <tr>
                                             <td><span>Total: </span></td>

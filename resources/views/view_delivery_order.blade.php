@@ -131,10 +131,10 @@
                             <table id="table-example" class="table table-hover customerview_table  ">
                                 <tbody>
                                     @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)
-<!--                                    <tr><td><span>Plus GST: </span> Yes</td></tr>
-                                    <tr><td><span>GST Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>-->
+                                    <!--<tr><td><span>Plus GST: </span> Yes</td></tr>-->
+                                    <tr><td><span>GST Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>
                                     @else
-                                    <!--<tr><td><span>Plus GST: </span> No</td></tr>-->
+                                    <tr><td><span>Plus GST: </span> No</td></tr>
                                     @endif
                                     <tr><td><b>Vehicle Number:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>

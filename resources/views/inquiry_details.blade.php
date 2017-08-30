@@ -126,10 +126,10 @@
                                 <table id="table-example" class="table customerview_table">
                                     <tbody>
                                         @if($inquiry->vat_percentage == 0)
-                                        <!--<tr><td><span>Plus GST: </span>No</td></tr>-->
+                                        <tr><td><span>Plus GST: </span>No</td></tr>
                                         @elseif($inquiry->vat_percentage != 0)
-<!--                                        <tr><td><span>Plus GST: </span>Yes</td></tr>
-                                        <tr><td><span>GST Percentage: </span></td></tr>-->
+                                        <!--<tr><td><span>Plus GST: </span>Yes</td></tr>-->
+                                        <tr><td><span>GST Percentage: </span> {{isset($inquiry->vat_percentage)?$inquiry->vat_percentage:'0.00'}}% </td></tr>
                                         @endif
                                         <tr>
                                             <td><span>Expected Delivery Date: </span>{{date('F jS, Y',strtotime($inquiry->expected_delivery_date))}}</td>
