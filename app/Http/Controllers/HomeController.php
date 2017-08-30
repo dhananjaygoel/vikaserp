@@ -5168,7 +5168,7 @@ class HomeController extends Controller {
 //                } else {
 //                    $convert_value = $delivery_challan_obj->convert_number($allorder->grand_price);
 //                }
-                $allorder['convert_value'] = $convert_value;
+//                $allorder['convert_value'] = $convert_value;
 
                 $delivery_data = DeliveryChallan::where('id', '=', $id)
                                 ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
