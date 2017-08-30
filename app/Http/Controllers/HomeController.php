@@ -5090,19 +5090,64 @@ class HomeController extends Controller {
                         }
                     }
                 }
-                if ($update_delivery_challan->ref_delivery_challan_id == 0) {
-                    $modified_id = $id;
+//                if ($update_delivery_challan->ref_delivery_challan_id == 0) {
+//                    $modified_id = $id;
+//                } else {
+//                    $modified_id = $update_delivery_challan->ref_delivery_challan_id;
+//                }
+//                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+
+                $dc = DeliveryChallan::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
+
+                if (count($dc) <= 0) {
+                    $number = '1';
                 } else {
-                    $modified_id = $update_delivery_challan->ref_delivery_challan_id;
+                    $serial_numbers = [];
+                    foreach ($dc as $temp) {
+                        $list = explode("/", $temp->serial_number);
+                        $serial_numbers[] = chop(chop($list[count($list) - 1], "P"), "A");
+                        $pri_id = max($serial_numbers);
+                        $number = $pri_id + 1;
+                    }
                 }
+                if ($update_delivery_challan->serial_number == "") {
+                    if ($update_delivery_challan->ref_delivery_challan_id == 0) {
+                        $connected_dc = DeliveryChallan::where('ref_delivery_challan_id', '=', $id)->first();
+                        if (isset($connected_dc->serial_number)) {
+                            if ($connected_dc->serial_number == "") {
+                                $modified_id = $number;
+                            } else {
+                                $list = explode("/", $connected_dc->serial_number);
+                                $modified_id = substr($list[count($list) - 1], 0, -1);
+                            }
+                        } else {
+                            $modified_id = $number;
+                        }
+                    } else {
+
+                        $connected_dc = DeliveryChallan::where('id', '=', $update_delivery_challan->ref_delivery_challan_id)->first();
+                        if (isset($connected_dc->serial_number)) {
+                            if ($connected_dc->serial_number == "") {
+                                $modified_id = $number;
+                            } else {
+                                $list = explode("/", $connected_dc->serial_number);
+                                $modified_id = substr($list[count($list) - 1], 0, -1);
+                            }
+                        } else {
+                            $modified_id = $number;
+                        }
+                    }
+                }
+
                 $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
 
-
+                
+                if($update_delivery_challan->challan_status != 'completed')
                 $update_delivery_challan->serial_number = $date_letter;
                 $update_delivery_challan->challan_status = 'completed';
                 $update_delivery_challan->save();
-                $delivery_challan_obj = new DeliveryChallanController();
-                $delivery_challan_obj->checkpending_quantity();
+//                $delivery_challan_obj = new DeliveryChallanController();
+                $this->checkpending_quantity_dc();
                 $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
                                 ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
                 //        $calculated_vat_value = $allorder->grand_price * ($allorder->vat_percentage / 100);
@@ -5118,11 +5163,11 @@ class HomeController extends Controller {
                 }
 
                 $result_paisa = $exploded_value[1] % 10;
-                if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
-                    $convert_value = $delivery_challan_obj->convert_number_to_words($allorder->grand_price);
-                } else {
-                    $convert_value = $delivery_challan_obj->convert_number($allorder->grand_price);
-                }
+//                if (isset($exploded_value[1]) && strlen($exploded_value[1]) > 1 && $result_paisa != 0) {
+//                    $convert_value = $delivery_challan_obj->convert_number_to_words($allorder->grand_price);
+//                } else {
+//                    $convert_value = $delivery_challan_obj->convert_number($allorder->grand_price);
+//                }
                 $allorder['convert_value'] = $convert_value;
 
                 $delivery_data = DeliveryChallan::where('id', '=', $id)
@@ -5133,6 +5178,32 @@ class HomeController extends Controller {
         }
 
         return json_encode($delivery_data);
+    }
+
+    function checkpending_quantity_dc() {
+        $allorders = Order::get();
+        $allorder_new = [];
+        foreach ($allorders as $order) {
+            $delivery_orders = DeliveryOrder::where('order_id', $order->id)->get();
+            $gen_dc = 1;
+            $pending_quantity = 0;
+            foreach ($delivery_orders as $del_order) {
+                $delivery_challans = DeliveryChallan::where('delivery_order_id', $del_order->id)->get();
+                foreach ($delivery_challans as $del_challan) {
+                    $gen_dc = 0;
+                    $all_order_products = AllOrderProducts::where('order_id', $order->id)->where('order_type', 'delivery_order')->get();
+                    foreach ($all_order_products as $products) {
+                        $p_qty = $products['quantity'] - $products['present_shipping'];
+                        $pending_quantity = $pending_quantity + $p_qty;
+                    }
+                }
+            }
+            if ($gen_dc != 1 && $pending_quantity == 0 && $order->order_status != 'completed') {
+                Order::where('id', $order->id)->update(array(
+                    'order_status' => "completed"
+                ));
+            }
+        }
     }
 
 // All Functions added by user 157 for app ends here //
