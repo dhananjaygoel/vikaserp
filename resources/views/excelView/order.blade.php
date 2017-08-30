@@ -73,7 +73,7 @@
                 @endforeach
             </td>
             <td>{{$product->price}}</td>
-            <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+            <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             @endif
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
@@ -105,7 +105,7 @@
                 @endif
             </td>
             <td>{{$product->price}}</td>
-            <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+            <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             <td></td>
             <td></td>

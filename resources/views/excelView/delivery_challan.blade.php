@@ -78,7 +78,7 @@
             <td>{{isset($product->unit->unit_name) ? $product->unit->unit_name:''}}</td>
             <td>{{isset($product->present_shipping) ? $product->present_shipping:''}}</td>
             <td>{{isset($product->price) ? $product->price:''}}</td>
-            <td>{{(isset($product->vat_percentage) && $product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+            <td>{{(isset($allorder->vat_percentage) && $allorder->vat_percentage!='')?$allorder->vat_percentage:''}}</td>
             <td><?php
                 $amount = $product->actual_quantity * $product->price;
                 $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
@@ -139,7 +139,7 @@
             <td>{{isset($product->unit->unit_name) ? $product->unit->unit_name:''}}</td>
             <td>{{isset($product->present_shipping) ? $product->present_shipping:''}}</td>
             <td>{{isset($product->price) ? $product->price:''}}</td>
-            <td>{{(isset($product->vat_percentage) && $product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+            <td>{{(isset($allorder->vat_percentage) && $allorder->vat_percentage!='')?$allorder->vat_percentage:''}}</td>
             <td><?php
                 $amount = $product->actual_quantity * $product->price;
                 $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);

@@ -76,7 +76,7 @@
                 @endforeach
             </td>
             <td>{{$product->price}}</td>
-            <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+            <td>{{($delivery_data->vat_percentage!='')?$delivery_data->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             @endif
             
@@ -108,7 +108,7 @@
                 @endforeach
             </td>
             <td>{{$product->price}}</td>
-            <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
+            <td>{{($delivery_data->vat_percentage!='')?$delivery_data->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             <td></td>
             <td></td>
