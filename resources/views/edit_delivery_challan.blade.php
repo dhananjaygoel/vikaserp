@@ -69,7 +69,7 @@
 
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
-                                            <td class="inquiry_vat_chkbox"><span>Vat</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>GST</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Amount</span></td>
                                             <td><span>Remove Product</span></td>

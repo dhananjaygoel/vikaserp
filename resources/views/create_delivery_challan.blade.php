@@ -95,7 +95,7 @@
                                             <td><span>Actual Quantity</span></td>    
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
-                                            <td><span>Vat</span></td>
+                                            <td><span>GST</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
