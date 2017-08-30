@@ -21,11 +21,22 @@
                                 {{($allorder->customer->tally_name != "")? $allorder->customer->tally_name : $allorder->customer->owner_name}}
                             </label>
                         </div><hr>
-                        <div class="form-group">
+                         <div class="form-group">
                             <label><b>Serial Number:</b>
                                 {{($allorder->serial_number != '') ? $allorder->serial_number : $allorder->delivery_order->serial_no}}
                             </label>
                         </div><hr>
+                        <div class="form-group">
+                            <label><b>Empty Truck Weight:</b>                                
+                                {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}}
+                            </label>
+                        </div><hr>
+                        <div class="form-group">
+                            <label><b>Final Truck Weight:</b>
+                                {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
+                            </label>
+                        </div><hr>
+                       
                         <div class="form-group">
                             <label><b><span class="underline">Product Details</span></b></label>
                         </div>
