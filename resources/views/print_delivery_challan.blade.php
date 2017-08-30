@@ -325,7 +325,7 @@
                         </tr>
                         
                     </table>-->
-                    <div class="divTable" style="width: 70%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
+                    <div class="divTable" style="width: 85%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
                         <div class="headRow">
                             <div class="divRow">
 
