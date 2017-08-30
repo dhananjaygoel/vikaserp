@@ -5142,7 +5142,7 @@ class HomeController extends Controller {
                 $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
 
                 
-                if($update_delivery_challan->challan_status != 'completed')
+                if($update_delivery_challan->serial_number == '')
                 $update_delivery_challan->serial_number = $date_letter;
                 $update_delivery_challan->challan_status = 'completed';
                 $update_delivery_challan->save();
