@@ -770,7 +770,7 @@ class APIsController extends Controller {
                 $message_body_manager_first = "Admin has edited an order for";
             } elseif (isset($orders[0]->sms_role) && $orders[0]->sms_role == '3') {
                 $message_body_cust_first = "Admin has approved your order for following items";
-                $message_body_cust_last = "material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $message_body_cust_last = "material will be dispatched by " . date("jS F, Y", strtotime($orders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has approved an order for";
             } elseif (isset($orders[0]->sms_role) && $orders[0]->sms_role == '4') {
                 $message_body_cust_first = "Admin has rejected your order for following items.";
