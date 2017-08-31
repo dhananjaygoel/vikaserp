@@ -507,16 +507,16 @@ class InventoryController extends Controller {
                         foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
                             if ($purchase_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
-//                                $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
-                                    if ($purchase_challan_product_details->unit_id == 1) {
-                                        $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
-                                    }
-                                    if ($purchase_challan_product_details->unit_id == 2) {
-                                        $purchase_challan_qty = $purchase_challan_qty + ($purchase_challan_product_details->quantity * $purchase_challan_product_details->product_sub_category->weight);
-                                    }
-                                    if ($purchase_challan_product_details->unit_id == 3) {
-                                        $purchase_challan_qty = $purchase_challan_qty + (($purchase_challan_product_details->quantity / $purchase_challan_product_details->product_sub_category->standard_length ) * $purchase_challan_product_details->product_sub_category->weight);
-                                    }
+                                $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
+//                                    if ($purchase_challan_product_details->unit_id == 1) {
+//                                        $purchase_challan_qty = $purchase_challan_qty + $purchase_challan_product_details->quantity;
+//                                    }
+//                                    if ($purchase_challan_product_details->unit_id == 2) {
+//                                        $purchase_challan_qty = $purchase_challan_qty + ($purchase_challan_product_details->quantity * $purchase_challan_product_details->product_sub_category->weight);
+//                                    }
+//                                    if ($purchase_challan_product_details->unit_id == 3) {
+//                                        $purchase_challan_qty = $purchase_challan_qty + (($purchase_challan_product_details->quantity / $purchase_challan_product_details->product_sub_category->standard_length ) * $purchase_challan_product_details->product_sub_category->weight);
+//                                    }
                                 }
                             }
                         }
@@ -536,16 +536,16 @@ class InventoryController extends Controller {
                         foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
                             if ($purchase_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
-//                                $purchase_challan_qty_completed = $purchase_challan_qty_completed + $purchase_challan_product_details->quantity;
-                                    if ($purchase_challan_product_details->unit_id == 1) {
-                                        $purchase_challan_qty_completed = $purchase_challan_qty_completed + $purchase_challan_product_details->quantity;
-                                    }
-                                    if ($purchase_challan_product_details->unit_id == 2) {
-                                        $purchase_challan_qty_completed = $purchase_challan_qty_completed + ($purchase_challan_product_details->quantity * $purchase_challan_product_details->product_sub_category->weight);
-                                    }
-                                    if ($purchase_challan_product_details->unit_id == 3) {
-                                        $purchase_challan_qty_completed = $purchase_challan_qty_completed + (($purchase_challan_product_details->quantity / $purchase_challan_product_details->product_sub_category->standard_length ) * $purchase_challan_product_details->product_sub_category->weight);
-                                    }
+                                $purchase_challan_qty_completed = $purchase_challan_qty_completed + $purchase_challan_product_details->quantity;
+//                                    if ($purchase_challan_product_details->unit_id == 1) {
+//                                        $purchase_challan_qty_completed = $purchase_challan_qty_completed + $purchase_challan_product_details->quantity;
+//                                    }
+//                                    if ($purchase_challan_product_details->unit_id == 2) {
+//                                        $purchase_challan_qty_completed = $purchase_challan_qty_completed + ($purchase_challan_product_details->quantity * $purchase_challan_product_details->product_sub_category->weight);
+//                                    }
+//                                    if ($purchase_challan_product_details->unit_id == 3) {
+//                                        $purchase_challan_qty_completed = $purchase_challan_qty_completed + (($purchase_challan_product_details->quantity / $purchase_challan_product_details->product_sub_category->standard_length ) * $purchase_challan_product_details->product_sub_category->weight);
+//                                    }
                                 }
                             }
                         }
