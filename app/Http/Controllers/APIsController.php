@@ -484,8 +484,8 @@ class APIsController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
                 foreach ($deliveryorderproducts as $product_data) {
-                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $str .= $product_data->product_name . ' - ' . $product_data->present_shipping . ' - ' . $product_data->actualPrice . ",\n";
+                    $total_quantity = $total_quantity + $product_data->present_shipping;
                 }
                 $str .= "Vehicle No. " . (!empty($delivery_orders[0]->vehicle_number) ? $delivery_orders[0]->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_orders[0]->driver_contact_no) ? $delivery_orders[0]->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
 
@@ -509,8 +509,8 @@ class APIsController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n";
                     foreach ($deliveryorderproducts as $product_data) {
-                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->actualPrice . ",\n";
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $str .= $product_data->product_name . ' - ' . $product_data->present_shipping . ' - ' . $product_data->actualPrice . ",\n";
+                        $total_quantity = $total_quantity + $product_data->present_shipping;
                     }
                     $str .= "Vehicle No. " . (!empty($delivery_orders[0]->vehicle_number) ? $delivery_orders[0]->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_orders[0]->driver_contact_no) ? $delivery_orders[0]->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
