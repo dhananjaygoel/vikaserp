@@ -6,43 +6,43 @@
         <div class="row">
             <div class="form-group col-md-12 col-lg-12 pull-right">                
                 <!--<div class="form-group col-md-12 col-lg-12 pull-right">-->
-                    <h1 class="pull-left">Loaded by performance</h1>                    
-                    <div class="col-md-3 pull-right" id="year_div" style="display: none;">
-<!--                        <div class="form-group pull-right">
-                            <div class="col-md-10 t">-->
-                                <form class=" loaded_by_performance_search_form pull-right" id="loaded_by_performance_months_from" method="GET" action="javascript:;">
-                                    <div class="col-md-8">
-                                        <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <input type="submit" disabled="" name="search_data"  id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                                    </div>
-                                 </form>
-<!--                            </div>
-                        </div>-->
-                    </div>                    
-                    <div class="col-md-3 pull-right" id="month_div">
-<!--                        <div class="form-group pull-right">
-                            <div class="col-md-10 pull-right">-->
-                                <form class="loaded_by_performance_search_form  pull-right" method="GET" action="javascript:;">
-                                    <div class="col-md-8">
-                                        <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
-                                    </div>
-                                 </form>
-<!--                            </div>
-                        </div>-->
-                    </div>
-                    <div class="col-md-2  pull-right">
-                        <form method="GET" action="javascript:;" class=" pull-right">
-                            <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
-                                <option value="Day" selected="selected">Day wise</option>
-                                <option value="Month">Month wise</option>
-                            </select>
-                        </form>
-                    </div>
+                <h1 class="pull-left">Loaded by performance</h1>                    
+                <div class="col-md-3 pull-right" id="year_div" style="display: none;">
+                    <!--                        <div class="form-group pull-right">
+                                                <div class="col-md-10 t">-->
+                    <form class=" loaded_by_performance_search_form pull-right" id="loaded_by_performance_months_from" method="GET" action="javascript:;">
+                        <div class="col-md-8">
+                            <input name="performance" id="performance-months" class="form-control performance-month" value="{{date('Y', mktime(0, 0, 0))}}"/>
+                        </div>
+                        <div class="col-md-4 ">
+                            <input type="submit" disabled="" name="search_data"  id="search_year" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                        </div>
+                    </form>
+                    <!--                            </div>
+                                            </div>-->
+                </div>                    
+                <div class="col-md-3 pull-right" id="month_div">
+                    <!--                        <div class="form-group pull-right">
+                                                <div class="col-md-10 pull-right">-->
+                    <form class="loaded_by_performance_search_form  pull-right" method="GET" action="javascript:;">
+                        <div class="col-md-8">
+                            <input name="performance" id="performance-days" class="form-control performance-days" value="{{date('F-Y', mktime(0, 0, 0))}}"/>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="submit" disabled="" name="search_data" id="search_month" value="Search" class="search_button btn btn-primary pull-right export_btn">
+                        </div>
+                    </form>
+                    <!--                            </div>
+                                            </div>-->
+                </div>
+                <div class="col-md-2  pull-right">
+                    <form method="GET" action="javascript:;" class=" pull-right">
+                        <select class="form-control" id="loaded_by_chart_filter" name="labour_chart_filter">
+                            <option value="Day" selected="selected">Day wise</option>
+                            <option value="Month">Month wise</option>
+                        </select>
+                    </form>
+                </div>
                 <!--</div>-->                
             </div>
             <div class="row">
@@ -66,8 +66,9 @@
                             <div class="table-responsive report_table">
                                 <table id="day-wise" class="table table-bordered complex-data-table">
                                     <tbody>
-                                        
-                                        <?php  $today = date('d');
+
+                                        <?php
+                                        $today = date('d');
 //                                            $today = date("d", strtotime($date));
                                         ?>
                                         <tr>
@@ -77,52 +78,60 @@
                                         <tr class="text-bold">
                                             <td colspan="2"></td>
                                             @for($i = 1; $i<= $today ; $i++ )
-                                                <td>{{ $i }}</td>
+                                            <td>{{ $i }}</td>
                                             @endfor
                                         </tr>
                                         @if(isset($loaded_by))
-                                            <?php $date_val = substr($date, 0, 8); ?>
-                                            @foreach($loaded_by as $loader_val)
-                                            <tr>
-                                                <td rowspan="2"><b>{{$loader_val->first_name}} {{$loader_val->last_name}}</B></td>                                                
-                                                <td><b>Tonnage</b></td>    
-                                                @for($i = 1; $i<= $today ; $i++ )
-                                                <?php 
-                                                $k = 0;
-                                                $tangage = 0;
-                                                foreach ($final_array as $key => $value) {
-                                                    if($i<=9){ $i = sprintf("%02d", $i); }
-                                                    if ($value['date'] == "$date_val" . $i) {
-                                                        if ($value['loader_id'] == $loader_val->id) {
-                                                            $k++;
-                                                            $tangage +=$value['tonnage'];
-                                                        }
+                                        <?php $date_val = substr($date, 0, 8); ?>
+                                        @foreach($loaded_by as $loader_val)
+                                        <tr>
+                                            <td rowspan="2"><b>{{$loader_val->first_name}} {{$loader_val->last_name}}</B></td>                                                
+                                            <td><b>Tonnage</b></td>    
+                                            @for($i = 1; $i<= $today ; $i++ )
+                                            <?php
+                                            $k = 0;
+                                            $tangage = 0;
+                                            foreach ($final_array as $key => $value) {
+                                                if ($i <= 9) {
+                                                    $i = sprintf("%02d", $i);
+                                                }
+                                                if ($value['date'] == "$date_val" . $i) {
+                                                    if ($value['loader_id'] == $loader_val->id) {
+                                                        $k++;
+                                                        $tangage +=$value['tonnage'];
                                                     }
                                                 }
-                                                ?>
-                                                 <td>{{ $tangage }}</td>
-                                                @endfor
-                                                <tr>
-                                                    <td><b>Delivery</b></td>
-                                                    @for($i = 1; $i<= $today ; $i++ )
-                                                    <?php 
-                                                   $k=0;
-                                                   $tangage=0;
-                                                       foreach ($final_array as $key => $value) {
-                                                           if($i<=9){ $i = sprintf("%02d", $i); }
-                                                           if($value['date']=="$date_val".$i){
-                                                               if($value['loader_id'] == $loader_val->id){
-                                                                   $k++;
-                                                                   $tangage +=$value['tonnage'];
-                                                               }
-                                                           }
-                                                       }
-                                                   ?>
-                                                   <td>{{$k}}</td>
-                                                   @endfor
-                                                </tr>
-                                            </tr>
-                                            @endforeach
+                                            }
+                                            ?>
+                                            <td>{{ $tangage }}</td>
+                                            @endfor
+                                        <tr>
+                                            <td><b>Delivery</b></td>                                               
+                                            @for($i = 1; $i<= $today ; $i++ )
+                                            <?php
+                                            $dc_id_list = array();
+//                                            $k = 0;
+                                            $tangage = 0;
+                                            foreach ($final_array as $key => $value) {
+                                                if ($i <= 9) {
+                                                    $i = sprintf("%02d", $i);
+                                                }
+                                                if ($value['date'] == "$date_val" . $i) {
+                                                    if ($value['loader_id'] == $loader_val->id) {
+                                                        array_push($dc_id_list, $value['delivery_id']);
+//                                                        $k++;
+                                                        $tangage +=$value['tonnage'];
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                            <td> <?php
+                                                $dc_id_list = array_unique($dc_id_list);
+                                                ?>{{count($dc_id_list)}}</td>
+                                            @endfor
+                                        </tr>
+                                        </tr>
+                                        @endforeach
                                         @endif
                                     </tbody>
                                 </table>

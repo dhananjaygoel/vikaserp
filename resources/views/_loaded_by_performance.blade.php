@@ -28,7 +28,9 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 $k = 0;
                 $tangage = 0;
                 foreach ($final_array as $key => $value) {
-                    if($i<=9){ $i = sprintf("%02d", $i); }
+                    if ($i <= 9) {
+                        $i = sprintf("%02d", $i);
+                    }
                     if ($value['date'] == "$date_val" . $i) {
                         if ($value['loader_id'] == $loader_val->id) {
                             $k++;
@@ -43,19 +45,25 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 <td><b>Delivery</b></td>
                 @for($i = 1; $i<= $today ; $i++ )
                 <?php
-                $k = 0;
+                $dc_id_list = array();
+//                $k = 0;
                 $tangage = 0;
                 foreach ($final_array as $key => $value) {
-                    if($i<=9){ $i = sprintf("%02d", $i); }
+                    if ($i <= 9) {
+                        $i = sprintf("%02d", $i);
+                    }
                     if ($value['date'] == "$date_val" . $i) {
                         if ($value['loader_id'] == $loader_val->id) {
-                            $k++;
+                            array_push($dc_id_list, $value['delivery_id']);
+//                            $k++;
                             $tangage +=$value['tonnage'];
                         }
                     }
                 }
                 ?>
-                <td>{{$k}}</td>
+                <td><?php
+                    $dc_id_list = array_unique($dc_id_list);
+                    ?>{{count($dc_id_list)}}</td></td>
                 @endfor
             </tr>
             </tr>
@@ -68,11 +76,11 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
     <table id="month-wise" class="table table-bordered complex-data-table">
         <tbody>
             <?php
-                $month = date('m', strtotime($date));
-                $year = date('Y', strtotime($date));
-                if (date('Y') == date("Y", strtotime($date))) {
-                    $month = date('m');
-                }
+            $month = date('m', strtotime($date));
+            $year = date('Y', strtotime($date));
+            if (date('Y') == date("Y", strtotime($date))) {
+                $month = date('m');
+            }
             ?>
             <tr>
                 <td colspan="2" rowspan="1"></td>
@@ -87,18 +95,18 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
             <?php foreach ($loaded_by as $loader) { ?>
                 <tr>
                     <td rowspan="2"><b>{{$loader->first_name}} {{$loader->last_name}}</B></td>
-                    <td><b>Tonnage</b></td>
+                    <td><b>Tonnage1</b></td>
                     @for($i = 1; $i<= $month ; $i++ )
                     <?php
                     $k = 0;
                     $tangage = 0;
                     if ($i < 10) {
-                        $temp_month =  sprintf("%02d", $i);
-                    }else{
+                        $temp_month = sprintf("%02d", $i);
+                    } else {
                         $temp_month = $i;
                     }
-                    $start_limit = $year.'-' . $temp_month . '-01';
-                    $end_limit = $year.'-' . $temp_month . '-31';
+                    $start_limit = $year . '-' . $temp_month . '-01';
+                    $end_limit = $year . '-' . $temp_month . '-31';
                     foreach ($final_array as $key => $value) {
                         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                             if ($value['loader_id'] == $loader->id) {
@@ -113,32 +121,36 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     @endfor
                 </tr>
                 <tr>
-                    <td><b>Delivery</b></td>
+                    <td><b>Delivery1</b></td>
                     @for($i = 1; $i<= $month ; $i++ )
                     <?php
-                    $k = 0;
+                    $dc_id_list = array();
+//                    $k = 0;
                     $tangage = 0;
                     if ($i < 10) {
-                        $temp_month =  sprintf("%02d", $i);
-                    }else{
+                        $temp_month = sprintf("%02d", $i);
+                    } else {
                         $temp_month = $i;
                     }
-                    $start_limit = $year.'-' . $temp_month . '-01';
-                    $end_limit = $year.'-' . $temp_month . '-31';
+                    $start_limit = $year . '-' . $temp_month . '-01';
+                    $end_limit = $year . '-' . $temp_month . '-31';
 
                     foreach ($final_array as $key => $value) {
                         if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
                             if ($value['loader_id'] == $loader->id) {
-                                $k++;
+                                array_push($dc_id_list, $value['delivery_id']);
+//                                $k++;
                                 $tangage +=$value['tonnage'];
                             }
                         }
                     }
                     ?>
-                    <td>{{$k}}</td>
+                    <td><?php
+                        $dc_id_list = array_unique($dc_id_list);
+                        ?>{{count($dc_id_list)}}</td>
                     @endfor
                 </tr>
-        <?php } ?>
+            <?php } ?>
         </tbody>
     </table>
 </div>

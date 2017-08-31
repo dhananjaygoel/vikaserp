@@ -208,13 +208,13 @@ class LoadByController extends Controller {
                 if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
                 }
-                $delivery_order_data = DeliveryChallan::
-                        has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                        ->withTrashed()
-                        ->where('created_at', '>=', "$date")
-                        ->where('created_at', '<=', "$enddate")
-                        ->get();
+//                $delivery_order_data = DeliveryChallan::
+//                        has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+//                        ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+//                        ->withTrashed()
+//                        ->where('created_at', '>=', "$date")
+//                        ->where('created_at', '<=', "$enddate")
+//                        ->get();
                 $purchase_order_data = \App\PurchaseChallan::
                         has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
                         ->with('challan_loaded_by.pc_delivery_challan.all_purchase_products')
@@ -226,15 +226,16 @@ class LoadByController extends Controller {
                         where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
+                $loaded_by_all = \App\DeliveryChallanLoadedBy::get();
             } else if ($val == "Day") {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
-                $delivery_order_data = DeliveryChallan::
-                        has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
-                        ->withTrashed()
-                        ->get();
+//                $delivery_order_data = DeliveryChallan::
+//                        has('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+//                        ->with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+//                        ->withTrashed()
+//                        ->get();
 
                 $purchase_order_data = \App\PurchaseChallan::
                         has('challan_loaded_by.pc_delivery_challan.all_purchase_products')
@@ -245,6 +246,7 @@ class LoadByController extends Controller {
                         where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
+                $loaded_by_all = \App\DeliveryChallanLoadedBy::get();
             }
         } else {
 //            $delivery_order_data = DeliveryChallan::
@@ -307,15 +309,15 @@ class LoadByController extends Controller {
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
                 $loaders_data[$var++]['loaders'] = $value_temp['pipe_loaders'];
-            } 
+            }
             if (isset($value_temp['structure_loaders'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
                 $loaders_data[$var++]['loaders'] = $value_temp['structure_loaders'];
-            } 
-            
-            if(!isset($value_temp['structure_loaders']) && !isset($value_temp['pipe_loaders'])) {
+            }
+
+            if (!isset($value_temp['structure_loaders']) && !isset($value_temp['pipe_loaders'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;

@@ -293,12 +293,12 @@ class LabourController extends Controller {
                 if ($year == date('Y')) {
                     $enddate = date("$year-m-t");
                 }
-                $delivery_order_data = DeliveryChallan::
-                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_labours')
-                        ->where('created_at', '>=', "$date")
-                        ->where('created_at', '<=', "$enddate")
-                        ->get();
+//                $delivery_order_data = DeliveryChallan::
+//                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
+//                        ->with('challan_labours')
+//                        ->where('created_at', '>=', "$date")
+//                        ->where('created_at', '<=', "$enddate")
+//                        ->get();
 
                 $purchase_order_data = \App\PurchaseChallan::
                         has('challan_labours.pc_delivery_challan.all_purchase_products')
@@ -306,21 +306,25 @@ class LabourController extends Controller {
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
+                
+                $labour_all = \App\DeliveryChallanLabours::get();
             } else if ($val == "Day") {
                 $month = Input::get('month');
                 $date = date("Y-m-01", strtotime($month));
                 $enddate = date("Y-m-t", strtotime($month));
                 $realenddate = date('Y-m-d', time());
 
-                $delivery_order_data = DeliveryChallan::
-                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
-                        ->with('challan_labours')
-                        ->get();
+//                $delivery_order_data = DeliveryChallan::
+//                        has('challan_labours.dc_delivery_challan.delivery_challan_products')
+//                        ->with('challan_labours')
+//                        ->get();
 
                 $purchase_order_data = \App\PurchaseChallan::
                         has('challan_labours.pc_delivery_challan.all_purchase_products')
                         ->with('challan_labours')
                         ->get();
+                
+                $labour_all = \App\DeliveryChallanLabours::get();
             }
         } else {
             $enddate = date("Y-m-d");
