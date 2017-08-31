@@ -863,7 +863,7 @@ class DeliveryChallanController extends Controller {
 
 
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
-            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+//            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 //                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
@@ -888,10 +888,10 @@ class DeliveryChallanController extends Controller {
                 'total_vat_amount' => $total_vat_amount
             ]);
 
-            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
-            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
+//            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
             $total_vat_amount = 0;
@@ -958,7 +958,7 @@ class DeliveryChallanController extends Controller {
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
-            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+//            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 
 
 
@@ -991,10 +991,10 @@ class DeliveryChallanController extends Controller {
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
             ]);
-            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
-            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
+//            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         }
 
         /* inventory code */
@@ -1005,6 +1005,8 @@ class DeliveryChallanController extends Controller {
 
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
+        
+        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 
         /*
           | ------------------- -----------------------
