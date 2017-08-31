@@ -143,7 +143,7 @@ class APIsController extends Controller {
             }
 
             if (isset($delivery_challans[0]->sms_role) && $delivery_challans[0]->sms_role == '1') {
-                $message_body_cust_first = "Your material has been dispatched as follows1\n";
+                $message_body_cust_first = "Your material has been dispatched as follows\n";
                 $message_body_cust_last = "";
                 $message_body_manager_first = "Admin has dispatched material for";
             } elseif (isset($delivery_challans[0]->sms_role) && $delivery_challans[0]->sms_role == '2') {
@@ -160,7 +160,7 @@ class APIsController extends Controller {
                 $str = "Dear " . $customer[0]->customer_name . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
                 foreach ($deliverychallanproducts as $product_data) {
 
-                    $str .= $s = $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                    $str .= $s = $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->actual_price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $do = DeliveryOrder::find($delivery_challans[0]->server_del_order_id);
@@ -509,7 +509,7 @@ class APIsController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n";
                     foreach ($deliveryorderproducts as $product_data) {
-                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                        $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->actualPrice . ",\n";
                         $total_quantity = $total_quantity + $product_data->quantity;
                     }
                     $str .= "Vehicle No. " . (!empty($delivery_orders[0]->vehicle_number) ? $delivery_orders[0]->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_orders[0]->driver_contact_no) ? $delivery_orders[0]->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
@@ -1640,7 +1640,7 @@ class APIsController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
                 foreach ($purchaseadviceproducts as $product_data) {
-                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $str .= $product_data->product_name . ' - ' . $product_data->present_shipping . ' - ' . $product_data->price . ",\n";
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $str .= $message_body_cust_last;
