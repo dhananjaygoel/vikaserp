@@ -165,7 +165,7 @@ class APIsController extends Controller {
                 }
                 $do = DeliveryOrder::find($delivery_challans[0]->server_del_order_id);
 
-                $str .= $s .= "\nVehicle No. " . (!empty($do->vehicle_number) ? $do->vehicle_number : 'N/A') .
+                $str .= $s1 = "\nVehicle No. " . (!empty($do->vehicle_number) ? $do->vehicle_number : 'N/A') .
                         ", Drv No. " . (!empty($do->driver_contact_no) ? $do->driver_contact_no : 'N/A') .
                         ", Quantity " . (isset($delivery_challans[0]->total_quantity) ? $delivery_challans[0]->total_quantity : $total_quantity) .
                         ", Amount " . (isset($delivery_challans[0]->grand_price) ? $delivery_challans[0]->grand_price : 'N/A') .
@@ -190,7 +190,7 @@ class APIsController extends Controller {
             if ($delivery_challans[0]->customer_server_id > 0) {
                 $customer = Customer::with('manager')->find($delivery_challans[0]->customer_server_id);
                 if (!empty($customer->manager)) {
-                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n" . $s;
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n" . $s. $s1;
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
