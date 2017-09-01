@@ -5190,8 +5190,8 @@ class HomeController extends Controller {
     }
 
     public function appprintpurchasechallan() {
-        $data = Input::all();
-        $server_id = json_decode($data['purchase_challan_id']);
+        $input_data = Input::all();
+        $server_id = json_decode($input_data['purchase_challan_id']);
         $purchase_challan_data = [];
 
         if (Input::has('purchase_challan')) {
