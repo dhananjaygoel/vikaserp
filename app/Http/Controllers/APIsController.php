@@ -190,7 +190,7 @@ class APIsController extends Controller {
             if ($delivery_challans[0]->customer_server_id > 0) {
                 $customer = Customer::with('manager')->find($delivery_challans[0]->customer_server_id);
                 if (!empty($customer->manager)) {
-                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n" . $s. $s1;
+                    $str = "Dear " . $customer->manager->first_name . "\nDT " . date("j M, Y") . "\n" . $message_body_manager_first . " " . $customer->owner_name . " as follows\n" . $s . $s1;
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -225,7 +225,7 @@ class APIsController extends Controller {
             $delivery_challans = (json_decode($data['delivery_challan']));
             foreach ($delivery_challans as $delivery_challan) {
                 if (isset($delivery_challan->send_sms) && $delivery_challan->send_sms == 'true') {
-                    $this->deliverychallan_sms();
+//                    $this->deliverychallan_sms();
                 }
             }
         }
@@ -266,8 +266,8 @@ class APIsController extends Controller {
             } else {
                 $delivery_challan->delivery_order_id = $value->server_del_order_id;
                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
-                    'empty_truck_weight' => isset($value->empty_truck_weight)?$value->empty_truck_weight:'0',
-                    'final_truck_weight' => isset($value->final_truck_weight)?$value->final_truck_weight:'0',
+                    'empty_truck_weight' => isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0',
+                    'final_truck_weight' => isset($value->final_truck_weight) ? $value->final_truck_weight : '0',
                 ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
@@ -401,6 +401,100 @@ class APIsController extends Controller {
 //                $delivery_challan_response[$value->id] = $delivery_challan_id;
             }
             $delivery_challan->save();
+
+            $delivery_challan_id = $delivery_challan->id;
+            $delivery_order_data = DeliveryChallan::
+                    with('challan_loaded_by.dc_delivery_challan.delivery_challan_products')
+                    ->where('id', $delivery_challan_id)
+                    ->get();
+            $var = 0;
+            $loader_arr = array();
+            $loader_array = array();
+            $loaders_data = array();
+            foreach ($delivery_order_data as $delivery_order_info) {
+                $arr = array();
+                $loaders = array();
+                if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+                    foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
+                        $deliver_sum = 0;
+                        array_push($loaders, $challan_info->loaded_by_id);
+                        foreach ($challan_info->dc_delivery_challan as $info) {
+                            foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+                                $deliver_sum += $delivery_order_productinfo->actual_quantity;
+                            }
+                        }
+                        array_push($loader_array, $loaders);
+                        $all_kg = $deliver_sum / count($loaders);
+                        $all_tonnage = $all_kg / 1000;
+                        $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                        $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                        $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+                        $loader_arr['loaders'] = $loaders;
+                    }
+                }
+                $loaders_data[$var++] = $loader_arr;
+            }
+            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+            $loaders_data = array_values($loaders_data);
+
+            $update_count = 0;
+            for ($i = 0; $i < count($loaders_data); $i++) {
+                $temp = \App\DeliveryChallanLoadedBy::
+                        where('total_qty', 0)->
+                        where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+                        update([
+                    'total_qty' => $loaders_data[$i]['tonnage'],
+                    'updated_at' => DB::raw("created_at"),
+                ]);
+                $update_count += $temp;
+            }
+
+            foreach ($delivery_order_data as $delivery_order_info) {
+                $arr = array();
+                $arr_money = array();
+                $loaders = array();
+                if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+                    foreach ($delivery_order_info->challan_labours as $challan_info) {
+                        $deliver_sum = 0.00;
+                        $money = 0.00;
+                        array_push($loaders, $challan_info->labours_id);
+                        foreach ($challan_info->dc_delivery_challan as $info) {
+                            foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+                                $deliver_sum += $delivery_order_productinfo->actual_quantity;
+                            }
+                        }
+
+
+                        array_push($loader_array, $loaders);
+                        $all_kg = $deliver_sum / count($loaders);
+                        $all_tonnage = $all_kg;
+                        $loader_arr['delivery_id'] = $delivery_order_info['id'];
+                        $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+                        $loader_arr['labours'] = $loaders;
+                        $loader_arr['tonnage'] = $all_tonnage;
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+                    }
+                }
+                $loaders_data[$var] = $loader_arr;
+                $var++;
+            }
+
+            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+            $loaders_data = array_values($loaders_data);
+
+            $update_count = 0;
+            for ($i = 0; $i < count($loaders_data); $i++) {                
+                $temp = \App\DeliveryChallanLabours::
+                        where('total_qty', 0)->
+                        where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+                        update([
+                    'total_qty' => $loaders_data[$i]['tonnage'],
+                    'updated_at' => DB::raw("created_at"),
+                ]);
+
+                $update_count += $temp;
+            }
         }
         if (count($customer_list) > 0) {
             $delivery_challan_response['customer_new'] = $customer_list;
@@ -447,6 +541,42 @@ class APIsController extends Controller {
         }
         $delivery_challan_response['latest_date'] = $real_sync_date->sync_date;
         return json_encode($delivery_challan_response);
+    }
+
+    public function calc_actual_qty($dc_id = 0, $input_data = []) {
+        $actual_qty['pipe'] = "0";
+        $actual_qty['structure'] = "0";
+        $actual_qty['loaded_by_pipe'] = "0";
+        $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['labour_pipe'] = "0";
+        $actual_qty['labour_structure'] = "0";
+
+        if ($dc_id != 0 && $input_data != []) {
+            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
+
+            foreach ($allorder['delivery_challan_products'] as $key => $value) {
+                if ($value['order_product_details']['product_category']->product_type_id == 1) {
+                    $actual_qty['pipe'] += $value->actual_quantity;
+                } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
+                    $actual_qty['structure'] += $value->actual_quantity;
+                }
+            }
+
+            if (isset($input_data['loaded_by_pipe'])) {
+                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count($input_data['loaded_by_pipe']);
+            }
+            if (isset($input_data['loaded_by_structure'])) {
+                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
+            }
+            if (isset($input_data['labour_pipe'])) {
+                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
+            }
+            if (isset($input_data['labour_structure'])) {
+                $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+        }
+
+        return $actual_qty;
     }
 
     /**
@@ -585,8 +715,8 @@ class APIsController extends Controller {
                     $delivery_order->other_location = $value->other_location;
                     $delivery_order->location_difference = $value->other_location_difference;
                 }
-                $delivery_order->empty_truck_weight = isset($value->empty_truck_weight)?$value->empty_truck_weight:'0';
-                $delivery_order->final_truck_weight = isset($value->final_truck_weight)?$value->final_truck_weight:'0';
+                $delivery_order->empty_truck_weight = isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0';
+                $delivery_order->final_truck_weight = isset($value->final_truck_weight) ? $value->final_truck_weight : '0';
                 $delivery_order->save();
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
@@ -683,8 +813,8 @@ class APIsController extends Controller {
                 }
                 $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order_id)->first();
                 $delivery_order->updated_at = $delivery_order_prod->updated_at;
-                 $delivery_order->empty_truck_weight = isset($value->empty_truck_weight)?$value->empty_truck_weight:'0';
-                $delivery_order->final_truck_weight = isset($value->final_truck_weight)?$value->final_truck_weight:'0';
+                $delivery_order->empty_truck_weight = isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0';
+                $delivery_order->final_truck_weight = isset($value->final_truck_weight) ? $value->final_truck_weight : '0';
                 $delivery_order->save();
 //                $delivery_order_response[$value->server_id] = DeliveryOrder::find($delivery_order->id);
 //                $delivery_order_response[$value->server_id]['delivery_product'] = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $delivery_order->id)->get();
@@ -1026,7 +1156,7 @@ class APIsController extends Controller {
 
 
             $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::with('all_order_products','delivery_orders')
+            $order_added_server = Order::with('all_order_products', 'delivery_orders')
                     ->where('order_status', 'pending')
                     ->get();
             $order_added_server = $this->checkpending_quantity($order_added_server);
@@ -1039,10 +1169,10 @@ class APIsController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $order_added_server = Order::with('all_order_products','delivery_orders')
+            $order_added_server = Order::with('all_order_products', 'delivery_orders')
                     ->where('order_status', 'pending')
                     ->get();
-            
+
             $order_added_server = $this->checkpending_quantity($order_added_server);
 
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
@@ -1584,7 +1714,7 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products','purchase_product_has_from')->get();
+            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_product_has_from')->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
@@ -1597,7 +1727,7 @@ class APIsController extends Controller {
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
-            $purchase_order_server = PurchaseOrder::with('purchase_products','purchase_product_has_from')
+            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_product_has_from')
                     ->where('order_status', 'pending')
                     ->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
@@ -2063,17 +2193,12 @@ class APIsController extends Controller {
         $purchase_challan_response['latest_date'] = $real_sync_date->sync_date;
         return json_encode($purchase_challan_response);
     }
-    
-    
-    
-    
-    
-    
+
     /*
      * To calculate pending qty for order 
      * 
      */
-    
+
     function checkpending_quantity($allorders) {
 
         foreach ($allorders as $key => $order) {
@@ -2151,10 +2276,8 @@ class APIsController extends Controller {
         }
         return $allorders;
     }
-    
-    
-    
-     /*
+
+    /*
      * First get all orders
      * 1 if delevery order is generated from order then only calculate
      * pending order from delivery order
@@ -2208,15 +2331,14 @@ class APIsController extends Controller {
             } else {
                 $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
             }
-            
-            if( $purchase_orders[$key]['pending_quantity'] == 0){                
-               $purchase_orders[$key]['order_status'] = 'completed';   
-               PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
+
+            if ($purchase_orders[$key]['pending_quantity'] == 0) {
+                $purchase_orders[$key]['order_status'] = 'completed';
+                PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
             }
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }
         return $purchase_orders;
     }
-
 
 }
