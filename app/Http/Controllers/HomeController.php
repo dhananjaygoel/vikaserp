@@ -1008,7 +1008,7 @@ class HomeController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->supplier_tally_name) ? $customer[0]->supplier_tally_name : $customer[0]->supplier_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first;
                 foreach ($purchaseadviceproducts as $product_data) {
-                    $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
+                    $str .= $product_data->product_name . ' - ' . $product_data->present_shipping . ' - ' . $product_data->price . ",\n";
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
                 $str .= $message_body_cust_last;
@@ -5054,7 +5054,7 @@ class HomeController extends Controller {
         $data = Input::all();
         $server_id = json_decode($data['delivery_challan_id']);
         $delivery_data = [];
-        
+
         if (Input::has('delivery_challan')) {
             $delivery_challans = (json_decode($data['delivery_challan']));
             foreach ($delivery_challans as $delivery_challan) {
@@ -5182,12 +5182,51 @@ class HomeController extends Controller {
                 $delivery_data = DeliveryChallan::where('id', '=', $id)
                                 ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
             }
-          
         } else {
             return '{}';
         }
 
         return json_encode($delivery_data);
+    }
+
+    public function appprintpurchasechallan() {
+        $data = Input::all();
+        $server_id = json_decode($data['purchase_challan_id']);
+        $purchase_challan_data = [];
+
+        if (Input::has('purchase_challan')) {
+            $purchasechallan = (json_decode($input_data['purchase_challan']));
+            foreach ($purchasechallan as $pc) {
+                if (isset($pc->send_sms) && $pc->send_sms == 'true') {
+                    $this->purchasechallan_sms();
+                }
+            }
+        }
+
+        if (isset($server_id)) {
+            $id = $server_id[0]->server_id;
+            $current_date = date("m/d");
+            $date_letter = 'PC/' . $current_date . "/" . $id;
+            PurchaseChallan::where('id', $id)
+                    ->where('order_status', '<>', 'Completed')
+                    ->update(array(
+                        'serial_number' => $date_letter,
+                        'order_status' => "Completed"
+            ));
+            $purchase_challan_data = PurchaseChallan::with('purchase_advice', 'all_purchase_products')->find($id);
+
+            /* inventory code */
+            $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_challan')->get();
+            foreach ($product_categories as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_category_id;
+            }
+            $calc = new InventoryController();
+            $calc->inventoryCalc($product_category_ids);
+        } else {
+            return '{}';
+        }
+
+        return json_encode($purchase_challan_data);
     }
 
     function checkpending_quantity_dc() {

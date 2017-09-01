@@ -183,7 +183,6 @@ class InventoryController extends Controller {
 //                            }])->get();
 
         $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')
-                ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
@@ -207,7 +206,6 @@ class InventoryController extends Controller {
                             }])->get();
 
         $purchase_challan = PurchaseChallan::where('order_status', '=', 'pending')
-                ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
