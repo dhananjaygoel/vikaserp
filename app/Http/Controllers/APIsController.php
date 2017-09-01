@@ -1396,9 +1396,9 @@ class APIsController extends Controller {
                 $message_body_cust_last = "material will be dispatched by " . date("j M, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has logged purchase order for";
             } elseif (isset($purchaseorders[0]->sms_role) && $purchaseorders[0]->sms_role == '2') {
-                $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
-                $message_body_cust_last = "Vehicle No. " . $purchaseorders[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
-                $message_body_manager_first = "Admin has edited Purchase Advise for";
+                $message_body_cust_first = "Your purchase order has been edited as follows\n";
+                $message_body_cust_last = "material will be dispatched by " . date("j M, Y", strtotime($purchaseorders[0]->expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+                $message_body_manager_first = "Admin has edited Purchase order for";
             } else {
                 return;
             }
