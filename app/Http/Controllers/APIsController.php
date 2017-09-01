@@ -1397,7 +1397,7 @@ class APIsController extends Controller {
                 $message_body_manager_first = "Admin has logged purchase order for";
             } elseif (isset($purchaseorders[0]->sms_role) && $purchaseorders[0]->sms_role == '2') {
                 $message_body_cust_first = "Your purchase Advise has been edited as follows\n";
-                $message_body_cust_last = "Vehicle No. " . $purchaseadvices[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
+                $message_body_cust_last = "Vehicle No. " . $purchaseorders[0]->vehicle_number . ".\nVIKAS ASSOCIATES";
                 $message_body_manager_first = "Admin has edited Purchase Advise for";
             } else {
                 return;
