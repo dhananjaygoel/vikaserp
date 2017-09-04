@@ -2153,7 +2153,7 @@ class APIsController extends Controller {
 //                $purchase_challan_response[$value->id] = $purchase_challan_id;
             }
             $purchase_challan->save();
-
+            $delivery_challan_id = $purchase_challan->id;
 
             /* add labours if new dc created */
             if ($value->server_id == 0 && isset($purchasechallanlabour)) {
