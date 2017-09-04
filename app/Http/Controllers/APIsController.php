@@ -2156,9 +2156,9 @@ class APIsController extends Controller {
 
 
             /* add labours if new dc created */
-            if ($value->server_id == 0 && isset($puchasechallanlabour)) {
+            if ($value->server_id == 0 && isset($purchasechallanlabour)) {
                 $labour_array = [];
-                foreach ($puchasechallanlabour as $key_labour => $labour_list) {
+                foreach ($purchasechallanlabour as $key_labour => $labour_list) {
                     if ($value->id == $labour_list->local_dc_id) {
                         /* if labour created offline */
                         if ($labour_list->server_labour_id == 0) {
@@ -2195,8 +2195,8 @@ class APIsController extends Controller {
             
              /* add loadedby if new dc created */
             $loadedby_array = [];
-            if ($value->server_id == 0 && isset($puchasechallanlabour)) {
-                foreach ($puchasechallanlabour as $key_labour => $loadedby_list) {
+            if ($value->server_id == 0 && isset($purchasechallanloadedby)) {
+                foreach ($purchasechallanloadedby as $key_loadedby => $loadedby_list) {
                     if ($value->id == $loadedby_list->local_dc_id) {
                         /* if labour created offline */
                         if ($loadedby_list->server_loadedby_id == 0) {
