@@ -2078,11 +2078,11 @@ class APIsController extends Controller {
         }
 
         if (Input::has('purchase_challan_labour')) {
-            $purchasechallanlabour = (json_decode($data['purchase_challan_labour']));
+            $purchasechallanlabour = (json_decode($input_data['purchase_challan_labour']));
         }
 
         if (Input::has('purchase_challan_loadedby')) {
-            $purchasechallanloadedby = (json_decode($data['purchase_challan_loadedby']));
+            $purchasechallanloadedby = (json_decode($input_data['purchase_challan_loadedby']));
         }
 
         foreach ($purchasechallan as $key => $value) {
