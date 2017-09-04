@@ -425,7 +425,7 @@ class APIsController extends Controller {
                         }
                         array_push($loader_array, $loaders);
                         $all_kg = $deliver_sum / count($loaders);
-                        $all_tonnage = $all_kg / 1000;
+                        $all_tonnage = $all_kg;
                         $loader_arr['delivery_id'] = $delivery_order_info['id'];
                         $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                         $loader_arr['tonnage'] = $all_tonnage;
