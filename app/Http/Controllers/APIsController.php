@@ -484,7 +484,7 @@ class APIsController extends Controller {
             $loaders_data = array_values($loaders_data);
 
             $update_count = 0;
-            for ($i = 0; $i < count($loaders_data); $i++) {                
+            for ($i = 0; $i < count($loaders_data); $i++) {
                 $temp = \App\DeliveryChallanLabours::
                         where('total_qty', 0)->
                         where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
@@ -2077,6 +2077,14 @@ class APIsController extends Controller {
             $purchasechallanproducts = (json_decode($input_data['purchase_challan_product']));
         }
 
+        if (Input::has('purchase_challan_labour')) {
+            $purchasechallanlabour = (json_decode($data['purchase_challan_labour']));
+        }
+
+        if (Input::has('purchase_challan_loadedby')) {
+            $purchasechallanloadedby = (json_decode($data['purchase_challan_loadedby']));
+        }
+
         foreach ($purchasechallan as $key => $value) {
             if ($value->server_id > 0)
                 $purchase_challan = PurchaseChallan::find($value->server_id);
@@ -2145,6 +2153,85 @@ class APIsController extends Controller {
 //                $purchase_challan_response[$value->id] = $purchase_challan_id;
             }
             $purchase_challan->save();
+
+
+            /* add labours if new dc created */
+            if ($value->server_id == 0) {
+                $labour_array = [];
+                foreach ($puchasechallanlabour as $key_labour => $labour_list) {
+                    if ($value->id == $labour_list->local_dc_id) {
+                        /* if labour created offline */
+                        if ($labour_list->server_labour_id == 0) {
+                            $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
+                                            ->where('last_name', '=', $labour_list->last_name)->first();
+                            if (!isset($labour_check->id)) {
+                                $labour = new Labour();
+                                $labour->first_name = $labour_list->first_name;
+                                $labour->last_name = $labour_list->last_name;
+//                                $labour->password = Hash::make($labour_list->password);
+                                $labour->phone_number = $labour_list->phone_number;
+                                $labour->save();
+                                $labour_id = $labour->id;
+                            } else {
+                                $labour_id = $labour_check->id;
+                            }
+
+                            $labour_array[] = [$labour_list->local_labour_id => $labour_id];
+                        } else {
+                            $labour_id = $labour_list->server_labour_id;
+                        }
+
+                        $dc_labour = new App\DeliveryChallanLabours();
+                        $dc_labour->delivery_challan_id = $delivery_challan_id;
+                        $dc_labour->labours_id = $labour_id;
+                        $dc_labour->type = "purchase";
+                        $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
+                        $dc_labour->save();
+                    }
+                }
+            }
+            $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
+            
+            
+             /* add loadedby if new dc created */
+            $loadedby_array = [];
+            if ($value->server_id == 0) {
+                foreach ($puchasechallanlabour as $key_labour => $loadedby_list) {
+                    if ($value->id == $loadedby_list->local_dc_id) {
+                        /* if labour created offline */
+                        if ($loadedby_list->server_loadedby_id == 0) {
+                            $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
+                                            ->where('last_name', '=', $loadedby_list->last_name)->first();
+                            if (!isset($loadedby_check->id)) {
+                                $loadedby = new LoadedBy();
+
+                                $loadedby->first_name = $loadedby_list->first_name;
+                                $loadedby->last_name = $loadedby_list->last_name;
+                                $loadedby->password = Hash::make($loadedby_list->password);
+                                $loadedby->phone_number = $loadedby_list->phone_number;
+                                $loadedby->save();
+                                $loadedby_id = $loadedby->id;
+                            } else {
+                                $loadedby_id = $loadedby_check->id;
+                            }
+
+
+                            $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
+                        } else {
+                            $loadedby_id = $loadedby_list->server_loadedby_id;
+                        }
+
+                        $dc_labour = new App\DeliveryChallanLoadedBy();
+                        $dc_labour->delivery_challan_id = $delivery_challan_id;
+                        $dc_labour->loaded_by_id = $loadedby_id;
+                        $dc_labour->type = "purchase";
+                        $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
+                        $dc_labour->save();
+                    }
+                }
+            }
+            $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
+            
         }
         if (count($customer_list) > 0) {
             $purchase_challan_response['customer_new'] = $customer_list;
