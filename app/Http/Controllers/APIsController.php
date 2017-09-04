@@ -2195,7 +2195,7 @@ class APIsController extends Controller {
             
              /* add loadedby if new dc created */
             $loadedby_array = [];
-            if ($value->server_id == 0) {
+            if ($value->server_id == 0 && isset($puchasechallanlabour)) {
                 foreach ($puchasechallanlabour as $key_labour => $loadedby_list) {
                     if ($value->id == $loadedby_list->local_dc_id) {
                         /* if labour created offline */
