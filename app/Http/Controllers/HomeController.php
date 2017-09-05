@@ -3484,6 +3484,8 @@ class HomeController extends Controller {
                         $labour->password = Hash::make($value->password);
                     if (isset($value->phone_number))
                         $labour->phone_number = $value->phone_number;
+                    if (isset($value->type))
+                        $labour->type = $value->type;
                     $labour->save();
                     $labour_id = $labour->id;
                     $labour_response[$value->id] = $labour_id;
@@ -3498,6 +3500,8 @@ class HomeController extends Controller {
                     $labour->phone_number = $value->phone_number;
                 if (isset($value->password) && $value->password != "")
                     $labour->password = Hash::make($value->password);
+                if (isset($value->type) && $value->type != "")
+                    $labour->type = $value->type;
                 $labour_id = $labour->id;
                 $delivery_order_products = array();
                 $labour->save();
@@ -3583,6 +3587,8 @@ class HomeController extends Controller {
                         $labour->password = Hash::make($value->password);
                     if (isset($value->phone_number))
                         $labour->phone_number = $value->phone_number;
+                    if (isset($value->type))
+                        $labour->type = $value->type;
                     $labour->save();
                     $labour_id = $labour->id;
                 }else {
@@ -3600,6 +3606,8 @@ class HomeController extends Controller {
                         $labour->phone_number = $value->phone_number;
                     if (isset($value->password) && $value->password != "")
                         $labour->password = Hash::make($value->password);
+                    if (isset($value->type) && $value->type != "")
+                        $labour->type = $value->type;
                     $labour_id = $labour->id;
                     $labour->save();
                     $loadedby_response[$value->server_id] = LoadedBy::find($labour->id);
