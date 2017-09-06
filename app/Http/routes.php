@@ -12,7 +12,7 @@
  */
 
 
-Route::post('applogin', 'HomeController@applogin');
+Route::get('applogin', 'HomeController@applogin');
 Route::post('appuserresetpassword', 'HomeController@appUserResetPassword');
 Route::post('apporderstatus', 'HomeController@appOrderStatus');
 Route::post('appverifyuserotp', 'HomeController@appVerifyUserOtp');
