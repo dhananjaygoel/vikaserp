@@ -1066,20 +1066,21 @@ class DeliveryOrderController extends Controller {
 //        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
         $order_qty = 0;
-        foreach ($delivery_data['delivery_product'] as $key => $do_product_details) {
-            if ($do_product_details->unit_id == 1) {
-                $order_qty = $order_qty + $do_product_details->quantity;
+        if (isset($delivery_data['delivery_product'])) {
+            foreach ($delivery_data['delivery_product'] as $key => $do_product_details) {
+                if ($do_product_details->unit_id == 1) {
+                    $order_qty = $order_qty + $do_product_details->quantity;
+                }
+                if ($do_product_details->unit_id == 2) {
+                    $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight);
+                }
+                if ($do_product_details->unit_id == 3) {
+                    $order_qty = $order_qty + (($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * $do_product_details->product_sub_category->weight);
+                }
             }
-            if ($do_product_details->unit_id == 2) {
-                $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight);
-            }
-            if ($do_product_details->unit_id == 3) {
-                $order_qty = $order_qty + (($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * $do_product_details->product_sub_category->weight);
-            }
+
+            $delivery_data->total_quantity = round($order_qty / 1000, 2);
         }
-
-        $delivery_data->total_quantity = round($order_qty / 1000, 2);
-
         $units = Units::all();
 //        $delivery_locations = DeliveryLocation::all();
 //        $customers = Customer::all();
