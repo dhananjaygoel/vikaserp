@@ -254,7 +254,7 @@ class DeliveryOrderController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -854,7 +854,7 @@ class DeliveryOrderController extends Controller {
                 $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
             }
         }
-        
+
         return $actual_qty;
     }
 
@@ -923,16 +923,18 @@ class DeliveryOrderController extends Controller {
         $case = array();
 
         foreach ($input_data['product'] as $product) {
-            if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
-                $total_vat_items ++;
-                $vat_product[$counter_vat++] = $product;
-                $total_actual_quantity_vat = $total_actual_quantity_vat + $product['actual_quantity'];
-                $total_vat_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
-            } else {
-                $total_without_vat_items ++;
-                $without_vat_product[$counter_without_vat++] = $product;
-                $total_actual_quantity_without_vat = $total_actual_quantity_without_vat + $product['actual_quantity'];
-                $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
+            if (isset($product['actual_quantity']) && isset($product['price'])) {
+                if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
+                    $total_vat_items ++;
+                    $vat_product[$counter_vat++] = $product;
+                    $total_actual_quantity_vat = $total_actual_quantity_vat + $product['actual_quantity'];
+                    $total_vat_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
+                } else {
+                    $total_without_vat_items ++;
+                    $without_vat_product[$counter_without_vat++] = $product;
+                    $total_actual_quantity_without_vat = $total_actual_quantity_without_vat + $product['actual_quantity'];
+                    $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
+                }
             }
         }
 
