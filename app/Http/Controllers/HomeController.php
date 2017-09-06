@@ -1961,7 +1961,7 @@ class HomeController extends Controller {
         }
 
         if ($last_id == 0) {
-            $delivery_challan_response = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by', 'challan_labours', 'delivery_order')
+            $delivery_challan_response = DeliveryChallan::with('delivery_challan_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour', 'delivery_order')
                     ->orderBy('id', 'DESC')
 //                ->where('id', '<', $last_id)
                     ->where('challan_status', '<>', 'pending')
