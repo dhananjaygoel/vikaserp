@@ -5258,7 +5258,7 @@ class HomeController extends Controller {
             PurchaseAdvise::where('id', '=', $id)->update(array(
                 'serial_number' => $date_letter
             ));
-            $purchase_advise_data = PurchaseAdvise::with('all_purchase_products')->find($id);
+            $purchase_advise_data = PurchaseAdvise::with('purchase_products')->find($id);
 
             /* inventory code */
         $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
