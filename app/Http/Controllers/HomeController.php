@@ -5237,13 +5237,13 @@ class HomeController extends Controller {
         return json_encode($purchase_challan_data);
     }
 
-    public function appprintpurchaseadvice() {
+    public function appprintpurchaseadvise() {
         $input_data = Input::all();
-        $server_id = json_decode($input_data['purchase_advice_id']);
+        $server_id = json_decode($input_data['purchase_advise_id']);
         $purchase_challan_data = [];
 
-        if (Input::has('purchase_advice')) {
-            $purchasechallan = (json_decode($input_data['purchase_advice']));
+        if (Input::has('purchase_advise')) {
+            $purchasechallan = (json_decode($input_data['purchase_advise']));
             foreach ($purchasechallan as $pc) {
                 if (isset($pc->send_sms) && $pc->send_sms == 'true') {
                     $this->purchasechallan_sms();
@@ -5258,7 +5258,7 @@ class HomeController extends Controller {
             PurchaseAdvise::where('id', '=', $id)->update(array(
                 'serial_number' => $date_letter
             ));
-            $purchase_advice_data = PurchaseAdvise::with('all_purchase_products')->find($id);
+            $purchase_advise_data = PurchaseAdvise::with('all_purchase_products')->find($id);
 
             /* inventory code */
         $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_advice')->get();
@@ -5272,7 +5272,7 @@ class HomeController extends Controller {
             return '{}';
         }
 
-        return json_encode($purchase_advice_data);
+        return json_encode($purchase_advise_data);
     }
     
     function checkpending_quantity_dc() {
