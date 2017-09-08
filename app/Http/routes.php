@@ -109,7 +109,6 @@ Route::get('appprintpurchasechallan', 'HomeController@appprintpurchasechallan');
 Route::get('appprintpurchaseadvise', 'HomeController@appprintpurchaseadvise');
 
 //app sms
-Route::get('delete_loadedby', 'WelcomeController@delete_loadedby');
 Route::post('test_sms', 'HomeController@test_sms');
 Route::post('appsyncinquiry_sms', 'HomeController@appsyncinquiry_sms');
 Route::post('appsyncinquiryedit_sms', 'HomeController@appsyncinquiryedit_sms');

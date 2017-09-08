@@ -1823,12 +1823,6 @@ class WelcomeController extends Controller {
          
          echo $count." records deleted";
     }
-    
-    public function delete_loadedby() {
-         $count = \App\DeliveryChallanLoadedBy::where('type','=','type')
-                ->forceDelete();
-         
-         echo $count." records deleted";
-    }
+        
     
 }
