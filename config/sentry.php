@@ -6,9 +6,3 @@
  * and open the template in the editor.
  */
 
-return [
-    'access_token' => '78dc7ff331d54376812062ed00b8b555',
-    'environment' => 'production',
-    'send' => false,   
-];
-

@@ -134,6 +134,7 @@ return [
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
         'Sukohi\FormAutocomplete\FormAutocompleteServiceProvider',
+        'Sentry\SentryLaravel\SentryLaravelServiceProvider'
        
         
     ],
@@ -189,5 +190,6 @@ return [
         'PDF' => 'Barryvdh\DomPDF\Facade',
         'Whatsapi' => 'Xaamin\Whatsapi\Facades\Laravel\Whatsapi',
         'WhatsapiTool' => 'Xaamin\Whatsapi\Facades\Laravel\Registration',
+        'Sentry' => 'Sentry\SentryLaravel\SentryFacade',
     ],
 ];

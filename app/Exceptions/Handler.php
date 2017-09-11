@@ -18,9 +18,9 @@ class Handler extends ExceptionHandler {
      *
      * @var array
      */
-    protected $dontReport = [
-        'Symfony\Component\HttpKernel\Exception\HttpException'
-    ];
+//    protected $dontReport = [
+//        'Symfony\Component\HttpKernel\Exception\HttpException'
+//    ];        
 
     /**
      * Report or log an exception.
@@ -30,18 +30,12 @@ class Handler extends ExceptionHandler {
      * @param  \Exception  $e
      * @return void
      */
-    public function report(Exception $e) {
-        //return parent::report($e);
-        define('SEND_LOG', Config::get('rollbar.send'));
-        if (SEND_LOG === true) {
-            $config = array(
-                'access_token' => Config::get('rollbar.access_token'),
-                'environment' => 'production'
-            );
-            Rollbar::init($config);
+    public function report(Exception $e)
+    {
+        if ($this->shouldReport($e)) {
+            app('sentry')->captureException($e);
         }
-//        Rollbar::log(Level::error(), $e);
-        return parent::report($e);
+        parent::report($e);
     }
 
     /**
@@ -51,7 +45,7 @@ class Handler extends ExceptionHandler {
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e) {
+    public function render($request, Exception $e) {        
         /* newcode */
         if ($e instanceof TokenMismatchException) {
             return redirect($request->fullUrl())->with('csrf_error', "Opps! Seems you couldn't submit form for a longtime. Please try again");
