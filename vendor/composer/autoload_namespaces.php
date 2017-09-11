@@ -16,6 +16,8 @@ return array(
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'Sentry\\SentryLaravel\\' => array($vendorDir . '/sentry/sentry-laravel/src'),
+    'Raven_' => array($vendorDir . '/sentry/sentry/lib'),
     'Psy\\' => array($vendorDir . '/psy/psysh/src'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'PhpSpec' => array($vendorDir . '/phpspec/phpspec/src'),
