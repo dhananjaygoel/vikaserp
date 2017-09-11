@@ -42,6 +42,7 @@ class UsersController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        $this->test();
 //        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
         $users_data = User::with('user_role')->where('first_name', '!=', 'Super')
                 ->Where('role_id', '!=', '5')->Where('role_id', '!=', '6')
