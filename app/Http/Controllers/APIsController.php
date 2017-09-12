@@ -291,85 +291,12 @@ class APIsController extends Controller {
             $delivery_challan_id = $delivery_challan->id;
 
 
-            /* add labours if new dc created */
-            if ($value->server_id == 0) {
-                $labour_array = [];
-                foreach ($deliverychallanlabour as $key_labour => $labour_list) {
-                    if ($value->id == $labour_list->local_dc_id) {
-                        /* if labour created offline */
-                        if ($labour_list->server_labour_id == 0) {
-                            $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
-                                            ->where('last_name', '=', $labour_list->last_name)->first();
-                            if (!isset($labour_check->id)) {
-                                $labour = new Labour();
-                                $labour->first_name = $labour_list->first_name;
-                                $labour->last_name = $labour_list->last_name;
-//                                $labour->password = Hash::make($labour_list->password);
-                                $labour->phone_number = $labour_list->phone_number;
-                                $labour->save();
-                                $labour_id = $labour->id;
-                            } else {
-                                $labour_id = $labour_check->id;
-                            }
-
-                            $labour_array[] = [$labour_list->local_labour_id => $labour_id];
-                        } else {
-                            $labour_id = $labour_list->server_labour_id;
-                        }
-
-                        $dc_labour = new App\DeliveryChallanLabours();
-                        $dc_labour->delivery_challan_id = $delivery_challan_id;
-                        $dc_labour->labours_id = $labour_id;
-                        $dc_labour->type = "sale";
-                        $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
-                        $dc_labour->save();
-                    }
-                }
-            }
-            $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
-
-            /* add loadedby if new dc created */
-            $loadedby_array = [];
-            if ($value->server_id == 0) {
-                foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
-                    if ($value->id == $loadedby_list->local_dc_id) {
-                        /* if labour created offline */
-                        if ($loadedby_list->server_loadedby_id == 0) {
-                            $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
-                                            ->where('last_name', '=', $loadedby_list->last_name)->first();
-                            if (!isset($loadedby_check->id)) {
-                                $loadedby = new LoadedBy();
-
-                                $loadedby->first_name = $loadedby_list->first_name;
-                                $loadedby->last_name = $loadedby_list->last_name;
-                                $loadedby->password = Hash::make($loadedby_list->password);
-                                $loadedby->phone_number = $loadedby_list->phone_number;
-                                $loadedby->save();
-                                $loadedby_id = $loadedby->id;
-                            } else {
-                                $loadedby_id = $loadedby_check->id;
-                            }
-
-
-                            $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
-                        } else {
-                            $loadedby_id = $loadedby_list->server_loadedby_id;
-                        }
-
-                        $dc_labour = new App\DeliveryChallanLoadedBy();
-                        $dc_labour->delivery_challan_id = $delivery_challan_id;
-                        $dc_labour->loaded_by_id = $loadedby_id;
-                        $dc_labour->type = "sale";
-                        $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
-                        $dc_labour->save();
-                    }
-                }
-            }
-            $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
-
             $delivery_challan_products = array();
-            if ($value->server_id > 0)
+            if ($value->server_id > 0) {
                 AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
+                \App\DeliveryChallanLabours::where('delivery_challan_id', '=', $value->server_id)->delete();
+                \App\DeliveryChallanLoadedBy::where('delivery_challan_id', '=', $value->server_id)->delete();
+            }
 
             foreach ($deliverychallanproducts as $product_data) {
                 if ($product_data->delivery_challan_id == $value->id) {
@@ -392,6 +319,105 @@ class APIsController extends Controller {
                     AllOrderProducts::create($delivery_challan_products);
                 }
             }
+            $data = array();
+
+            foreach ($deliverychallanlabour as $key_labour => $labour_list) {
+                if ($labour_list->product_type_id == 1)
+                    $data['labour_pipe'][] = $labour_list;
+                else if ($labour_list->product_type_id == 2)
+                    $data['labour_structure'][] = $labour_list;
+            }
+
+            foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
+                if ($loadedby_list->product_type_id == 1)
+                    $data['loaded_by_pipe'][] = $loadedby_list;
+                else if ($loadedby_list->product_type_id == 2)
+                    $data['loaded_by_structure'][] = $loadedby_list;
+            }
+
+
+            $actual_qty = $this->calc_actual_qty($delivery_challan_id, $data);
+
+
+            /* add labours if new dc created */
+
+            $labour_array = [];
+            foreach ($deliverychallanlabour as $key_labour => $labour_list) {
+                if ($value->id == $labour_list->local_dc_id) {
+                    /* if labour created offline */
+                    if ($labour_list->server_labour_id == 0) {
+                        $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
+                                        ->where('last_name', '=', $labour_list->last_name)->first();
+                        if (!isset($labour_check->id)) {
+                            $labour = new Labour();
+                            $labour->first_name = $labour_list->first_name;
+                            $labour->last_name = $labour_list->last_name;
+//                                $labour->password = Hash::make($labour_list->password);
+                            $labour->phone_number = $labour_list->phone_number;
+                            $labour->save();
+                            $labour_id = $labour->id;
+                        } else {
+                            $labour_id = $labour_check->id;
+                        }
+
+                        $labour_array[] = [$labour_list->local_labour_id => $labour_id];
+                    } else {
+                        $labour_id = $labour_list->server_labour_id;
+                    }
+
+                    $dc_labour = new App\DeliveryChallanLabours();
+                    $dc_labour->delivery_challan_id = $delivery_challan_id;
+                    $dc_labour->labours_id = $labour_id;
+                    $dc_labour->type = "sale";
+                    $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
+                    $dc_labour->total_qty = (isset($labour_list->product_type_id) && $labour_list->product_type_id == 1) ? $actual_qty['labour_pipe'] : $actual_qty['labour_structure'];
+                    $dc_labour->save();
+                }
+            }
+
+            $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
+
+            /* add loadedby if new dc created */
+            $loadedby_array = [];
+
+            foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
+                if ($value->id == $loadedby_list->local_dc_id) {
+                    /* if labour created offline */
+                    if ($loadedby_list->server_loadedby_id == 0) {
+                        $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
+                                        ->where('last_name', '=', $loadedby_list->last_name)->first();
+                        if (!isset($loadedby_check->id)) {
+                            $loadedby = new LoadedBy();
+
+                            $loadedby->first_name = $loadedby_list->first_name;
+                            $loadedby->last_name = $loadedby_list->last_name;
+                            $loadedby->password = Hash::make($loadedby_list->password);
+                            $loadedby->phone_number = $loadedby_list->phone_number;
+                            $loadedby->save();
+                            $loadedby_id = $loadedby->id;
+                        } else {
+                            $loadedby_id = $loadedby_check->id;
+                        }
+
+
+                        $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
+                    } else {
+                        $loadedby_id = $loadedby_list->server_loadedby_id;
+                    }
+
+                    $dc_labour = new App\DeliveryChallanLoadedBy();
+                    $dc_labour->delivery_challan_id = $delivery_challan_id;
+                    $dc_labour->loaded_by_id = $loadedby_id;
+                    $dc_labour->type = "sale";
+                    $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
+                    $dc_labour->total_qty = (isset($loadedby_list->product_type_id) && $loadedby_list->product_type_id == 1) ? $actual_qty['loaded_by_pipe'] : $actual_qty['loaded_by_structure'];
+                    $dc_labour->save();
+                }
+            }
+
+            $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
+
+
             if ($value->server_id > 0) {
                 $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $value->server_id)->where('order_type', '=', 'delivery_challan')->first();
                 $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
@@ -411,90 +437,87 @@ class APIsController extends Controller {
             $loader_arr = array();
             $loader_array = array();
             $loaders_data = array();
-            foreach ($delivery_order_data as $delivery_order_info) {
-                $arr = array();
-                $loaders = array();
-                if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
-                    foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
-                        $deliver_sum = 0;
-                        array_push($loaders, $challan_info->loaded_by_id);
-                        foreach ($challan_info->dc_delivery_challan as $info) {
-                            foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-                                $deliver_sum += $delivery_order_productinfo->actual_quantity;
-                            }
-                        }
-                        array_push($loader_array, $loaders);
-                        $all_kg = $deliver_sum / count($loaders);
-                        $all_tonnage = $all_kg;
-                        $loader_arr['delivery_id'] = $delivery_order_info['id'];
-                        $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
-                        $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
-                        $loader_arr['loaders'] = $loaders;
-                    }
-                }
-                $loaders_data[$var++] = $loader_arr;
-            }
-            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
-            $loaders_data = array_values($loaders_data);
-
-            $update_count = 0;
-            for ($i = 0; $i < count($loaders_data); $i++) {
-                $temp = \App\DeliveryChallanLoadedBy::
-                        where('total_qty', 0)->
-                        where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
-                        update([
-                    'total_qty' => $loaders_data[$i]['tonnage'],
-                    'updated_at' => DB::raw("created_at"),
-                ]);
-                $update_count += $temp;
-            }
-
-            foreach ($delivery_order_data as $delivery_order_info) {
-                $arr = array();
-                $arr_money = array();
-                $loaders = array();
-                if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
-                    foreach ($delivery_order_info->challan_labours as $challan_info) {
-                        $deliver_sum = 0.00;
-                        $money = 0.00;
-                        array_push($loaders, $challan_info->labours_id);
-                        foreach ($challan_info->dc_delivery_challan as $info) {
-                            foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
-                                $deliver_sum += $delivery_order_productinfo->actual_quantity;
-                            }
-                        }
-
-
-                        array_push($loader_array, $loaders);
-                        $all_kg = $deliver_sum / count($loaders);
-                        $all_tonnage = $all_kg;
-                        $loader_arr['delivery_id'] = $delivery_order_info['id'];
-                        $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
-                        $loader_arr['labours'] = $loaders;
-                        $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
-                    }
-                }
-                $loaders_data[$var] = $loader_arr;
-                $var++;
-            }
-
-            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
-            $loaders_data = array_values($loaders_data);
-
-            $update_count = 0;
-            for ($i = 0; $i < count($loaders_data); $i++) {
-                $temp = \App\DeliveryChallanLabours::
-                        where('total_qty', 0)->
-                        where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
-                        update([
-                    'total_qty' => $loaders_data[$i]['tonnage'],
-                    'updated_at' => DB::raw("created_at"),
-                ]);
-
-                $update_count += $temp;
-            }
+//            foreach ($delivery_order_data as $delivery_order_info) {
+//                $arr = array();
+//                $loaders = array();
+//                if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+//                    foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
+//                        $deliver_sum = 0;
+//                        array_push($loaders, $challan_info->loaded_by_id);
+//                        foreach ($challan_info->dc_delivery_challan as $info) {
+//                            foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+//                                $deliver_sum += $delivery_order_productinfo->actual_quantity;
+//                            }
+//                        }
+//                        array_push($loader_array, $loaders);
+//                        $all_kg = $deliver_sum / count($loaders);
+//                        $all_tonnage = $all_kg;
+//                        $loader_arr['delivery_id'] = $delivery_order_info['id'];
+//                        $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+//                        $loader_arr['tonnage'] = $all_tonnage;
+////                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+//                        $loader_arr['loaders'] = $loaders;
+//                    }
+//                }
+//                $loaders_data[$var++] = $loader_arr;
+//            }
+//            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+//            $loaders_data = array_values($loaders_data);
+//            $update_count = 0;
+//            for ($i = 0; $i < count($loaders_data); $i++) {
+//                $temp = \App\DeliveryChallanLoadedBy::
+//                        where('total_qty', 0)->
+//                        where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+//                        update([
+//                    'total_qty' => $loaders_data[$i]['tonnage'],
+//                    'updated_at' => DB::raw("created_at"),
+//                ]);
+//                $update_count += $temp;
+//            }
+//            foreach ($delivery_order_data as $delivery_order_info) {
+//                $arr = array();
+//                $arr_money = array();
+//                $loaders = array();
+//                if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+//                    foreach ($delivery_order_info->challan_labours as $challan_info) {
+//                        $deliver_sum = 0.00;
+//                        $money = 0.00;
+//                        array_push($loaders, $challan_info->labours_id);
+//                        foreach ($challan_info->dc_delivery_challan as $info) {
+//                            foreach ($info->delivery_challan_products as $delivery_order_productinfo) {
+//                                $deliver_sum += $delivery_order_productinfo->actual_quantity;
+//                            }
+//                        }
+//
+//
+//                        array_push($loader_array, $loaders);
+//                        $all_kg = $deliver_sum / count($loaders);
+//                        $all_tonnage = $all_kg;
+//                        $loader_arr['delivery_id'] = $delivery_order_info['id'];
+//                        $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
+//                        $loader_arr['labours'] = $loaders;
+//                        $loader_arr['tonnage'] = $all_tonnage;
+////                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                    }
+//                }
+//                $loaders_data[$var] = $loader_arr;
+//                $var++;
+//            }
+//
+//            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+//            $loaders_data = array_values($loaders_data);
+//            $update_count = 0;
+//            for ($i = 0; $i < count($loaders_data); $i++) {
+//                $temp = \App\DeliveryChallanLabours::
+//                        where('total_qty', 0)->
+//                        where('delivery_challan_id', $loaders_data[$i]['delivery_id'])->
+//                        update([
+//                    'total_qty' => $loaders_data[$i]['tonnage'],
+//                    'updated_at' => DB::raw("created_at"),
+//                ]);
+//
+//                $update_count += $temp;
+//            }
         }
         if (count($customer_list) > 0) {
             $delivery_challan_response['customer_new'] = $customer_list;
@@ -2191,9 +2214,9 @@ class APIsController extends Controller {
                 }
             }
             $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
-            
-            
-             /* add loadedby if new dc created */
+
+
+            /* add loadedby if new dc created */
             $loadedby_array = [];
             if ($value->server_id == 0 && isset($purchasechallanloadedby)) {
                 foreach ($purchasechallanloadedby as $key_loadedby => $loadedby_list) {
@@ -2231,7 +2254,6 @@ class APIsController extends Controller {
                 }
             }
             $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
-            
         }
         if (count($customer_list) > 0) {
             $purchase_challan_response['customer_new'] = $customer_list;
