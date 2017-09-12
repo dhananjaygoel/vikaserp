@@ -1737,7 +1737,7 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_product_has_from')->get();
+            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_advice.purchase_products')->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
@@ -1750,7 +1750,7 @@ class APIsController extends Controller {
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
-            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_product_has_from')
+            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_advice.purchase_products')
                     ->where('order_status', 'pending')
                     ->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
@@ -2402,7 +2402,7 @@ class APIsController extends Controller {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            $purchase_order_advise_products = $order['purchase_advice']['purchase_products'];
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
                     $product_size = $poapv['product_sub_category'];

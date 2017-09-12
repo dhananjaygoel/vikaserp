@@ -225,7 +225,7 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from','delivery_location')
+                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_advice.purchase_products','delivery_location')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
@@ -1025,7 +1025,8 @@ class PurchaseOrderController extends Controller {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            $purchase_order_advise_products = $order['purchase_advice']['purchase_products'];//            $purchase_order_advise_products = $order['purchase_product_has_from']; 
+           
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
                     $product_size = $poapv['product_sub_category'];
