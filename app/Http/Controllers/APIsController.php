@@ -268,6 +268,8 @@ class APIsController extends Controller {
                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
                     'empty_truck_weight' => isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0',
                     'final_truck_weight' => isset($value->final_truck_weight) ? $value->final_truck_weight : '0',
+                    'driver_contact_no' => isset($value->driver_contact_no) ? $value->driver_contact_no : '0',
+                    'vehicle_number' => isset($value->vehicle_number) ? $value->vehicle_number : '0',
                 ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
@@ -292,8 +294,12 @@ class APIsController extends Controller {
 
 
             $delivery_challan_products = array();
-            if ($value->server_id > 0)
+
+            if ($value->server_id > 0) {
                 AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
+                \App\DeliveryChallanLabours::where('delivery_challan_id', '=', $value->server_id)->delete();
+                \App\DeliveryChallanLoadedBy::where('delivery_challan_id', '=', $value->server_id)->delete();
+            }
 
             foreach ($deliverychallanproducts as $product_data) {
                 if ($product_data->delivery_challan_id == $value->id) {
@@ -324,7 +330,7 @@ class APIsController extends Controller {
                 else if ($labour_list->product_type_id == 2)
                     $data['labour_structure'][] = $labour_list;
             }
-            
+
             foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
                 if ($loadedby_list->product_type_id == 1)
                     $data['loaded_by_pipe'][] = $loadedby_list;
@@ -332,87 +338,88 @@ class APIsController extends Controller {
                     $data['loaded_by_structure'][] = $loadedby_list;
             }
 
-            
-            $actual_qty = $this->calc_actual_qty($delivery_challan_id, $data);           
-           
+
+            $actual_qty = $this->calc_actual_qty($delivery_challan_id, $data);
+
 
             /* add labours if new dc created */
-            if ($value->server_id == 0) {
-                $labour_array = [];
-                foreach ($deliverychallanlabour as $key_labour => $labour_list) {
-                    if ($value->id == $labour_list->local_dc_id) {
-                        /* if labour created offline */
-                        if ($labour_list->server_labour_id == 0) {
-                            $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
-                                            ->where('last_name', '=', $labour_list->last_name)->first();
-                            if (!isset($labour_check->id)) {
-                                $labour = new Labour();
-                                $labour->first_name = $labour_list->first_name;
-                                $labour->last_name = $labour_list->last_name;
-//                                $labour->password = Hash::make($labour_list->password);
-                                $labour->phone_number = $labour_list->phone_number;
-                                $labour->save();
-                                $labour_id = $labour->id;
-                            } else {
-                                $labour_id = $labour_check->id;
-                            }
 
-                            $labour_array[] = [$labour_list->local_labour_id => $labour_id];
+            $labour_array = [];
+            foreach ($deliverychallanlabour as $key_labour => $labour_list) {
+                if ($value->id == $labour_list->local_dc_id) {
+                    /* if labour created offline */
+                    if ($labour_list->server_labour_id == 0) {
+                        $labour_check = Labour::where('phone_number', '=', $labour_list->phone_number)->where('first_name', '=', $labour_list->first_name)
+                                        ->where('last_name', '=', $labour_list->last_name)->first();
+                        if (!isset($labour_check->id)) {
+                            $labour = new Labour();
+                            $labour->first_name = $labour_list->first_name;
+                            $labour->last_name = $labour_list->last_name;
+//                                $labour->password = Hash::make($labour_list->password);
+                            $labour->phone_number = $labour_list->phone_number;
+                            $labour->save();
+                            $labour_id = $labour->id;
                         } else {
-                            $labour_id = $labour_list->server_labour_id;
+                            $labour_id = $labour_check->id;
                         }
 
-                        $dc_labour = new App\DeliveryChallanLabours();
-                        $dc_labour->delivery_challan_id = $delivery_challan_id;
-                        $dc_labour->labours_id = $labour_id;
-                        $dc_labour->type = "sale";
-                        $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
-                        $dc_labour->total_qty = (isset($labour_list->product_type_id)&&$labour_list->product_type_id ==1)? $actual_qty['labour_pipe']:$actual_qty['labour_structure'];
-                        $dc_labour->save();
+                        $labour_array[] = [$labour_list->local_labour_id => $labour_id];
+                    } else {
+                        $labour_id = $labour_list->server_labour_id;
                     }
+
+                    $dc_labour = new App\DeliveryChallanLabours();
+                    $dc_labour->delivery_challan_id = $delivery_challan_id;
+                    $dc_labour->labours_id = $labour_id;
+                    $dc_labour->type = "sale";
+                    $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
+                    $dc_labour->total_qty = (isset($labour_list->product_type_id) && $labour_list->product_type_id == 1) ? $actual_qty['labour_pipe'] : $actual_qty['labour_structure'];
+                    $dc_labour->save();
                 }
             }
+
             $delivery_challan_response["labour_server_added"] = isset($labour_array) ? $labour_array : "";
 
             /* add loadedby if new dc created */
             $loadedby_array = [];
-            if ($value->server_id == 0) {
-                foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
-                    if ($value->id == $loadedby_list->local_dc_id) {
-                        /* if labour created offline */
-                        if ($loadedby_list->server_loadedby_id == 0) {
-                            $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
-                                            ->where('last_name', '=', $loadedby_list->last_name)->first();
-                            if (!isset($loadedby_check->id)) {
-                                $loadedby = new LoadedBy();
 
-                                $loadedby->first_name = $loadedby_list->first_name;
-                                $loadedby->last_name = $loadedby_list->last_name;
-                                $loadedby->password = Hash::make($loadedby_list->password);
-                                $loadedby->phone_number = $loadedby_list->phone_number;
-                                $loadedby->save();
-                                $loadedby_id = $loadedby->id;
-                            } else {
-                                $loadedby_id = $loadedby_check->id;
-                            }
+            foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
+                if ($value->id == $loadedby_list->local_dc_id) {
+                    /* if labour created offline */
+                    if ($loadedby_list->server_loadedby_id == 0) {
+                        $loadedby_check = LoadedBy::where('phone_number', '=', $loadedby_list->phone_number)->where('first_name', '=', $loadedby_list->first_name)
+                                        ->where('last_name', '=', $loadedby_list->last_name)->first();
+                        if (!isset($loadedby_check->id)) {
+                            $loadedby = new LoadedBy();
 
-
-                            $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
+                            $loadedby->first_name = $loadedby_list->first_name;
+                            $loadedby->last_name = $loadedby_list->last_name;
+                            $loadedby->password = Hash::make($loadedby_list->password);
+                            $loadedby->phone_number = $loadedby_list->phone_number;
+                            $loadedby->save();
+                            $loadedby_id = $loadedby->id;
                         } else {
-                            $loadedby_id = $loadedby_list->server_loadedby_id;
+                            $loadedby_id = $loadedby_check->id;
                         }
 
-                        $dc_labour = new App\DeliveryChallanLoadedBy();
-                        $dc_labour->delivery_challan_id = $delivery_challan_id;
-                        $dc_labour->loaded_by_id = $loadedby_id;
-                        $dc_labour->type = "sale";
-                        $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
-                        $dc_labour->total_qty = (isset($loadedby_list->product_type_id)&&$loadedby_list->product_type_id ==1)? $actual_qty['loaded_by_pipe']:$actual_qty['loaded_by_structure'];
-                        $dc_labour->save();
+
+                        $loadedby_array[] = [$loadedby_list->local_loadedby_id => $loadedby_id];
+                    } else {
+                        $loadedby_id = $loadedby_list->server_loadedby_id;
                     }
+
+                    $dc_labour = new App\DeliveryChallanLoadedBy();
+                    $dc_labour->delivery_challan_id = $delivery_challan_id;
+                    $dc_labour->loaded_by_id = $loadedby_id;
+                    $dc_labour->type = "sale";
+                    $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
+                    $dc_labour->total_qty = (isset($loadedby_list->product_type_id) && $loadedby_list->product_type_id == 1) ? $actual_qty['loaded_by_pipe'] : $actual_qty['loaded_by_structure'];
+                    $dc_labour->save();
                 }
             }
+
             $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
+
 
 
             if ($value->server_id > 0) {
@@ -460,6 +467,7 @@ class APIsController extends Controller {
 //            }
 //            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
 //            $loaders_data = array_values($loaders_data);
+
 
 //            $update_count = 0;
 //            for ($i = 0; $i < count($loaders_data); $i++) {
@@ -1737,7 +1745,7 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_product_has_from')->get();
+            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_advice.purchase_products')->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
@@ -1750,7 +1758,7 @@ class APIsController extends Controller {
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
-            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_product_has_from')
+            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_advice.purchase_products')
                     ->where('order_status', 'pending')
                     ->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
@@ -2402,7 +2410,7 @@ class APIsController extends Controller {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            $purchase_order_advise_products = $order['purchase_advice']['purchase_products'];
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
                     $product_size = $poapv['product_sub_category'];
