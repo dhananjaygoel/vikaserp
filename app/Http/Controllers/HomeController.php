@@ -1792,7 +1792,7 @@ class HomeController extends Controller {
                     'empty_truck_weight' => isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0',
                     'final_truck_weight' => isset($value->final_truck_weight) ? $value->final_truck_weight : '0',
                     'vehicle_number' => isset($value->vehicle_number) ? $value->vehicle_number : '0',
-                    'driver_contact_no' => isset($value->driver_contact_no) ? $value->driver_contact_no : '0',
+                    'driver_contact_no' => isset($value->driver_contact) ? $value->driver_contact : '0',
                     
                 ));
             }
