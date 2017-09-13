@@ -644,6 +644,15 @@ $(document).on('submit', '.labours_performance_search_form', function () {
     })
 });
 
+$(document).on('keyup', '.actualpieces', function () {
+    var finaltruckwt= $('#final_truck_weight').val();    
+    if(finaltruckwt=="" || finaltruckwt==0){        
+        $('#final_truck_weight').focus();
+        $(this).val("");
+        $('#final_truck_weight').addClass('error_validation');
+    }
+});
+
 function common_form_submit(form) {
     var url = $(form).attr('action');
     var submit_text = $(form).find('input[type="submit"]').val();

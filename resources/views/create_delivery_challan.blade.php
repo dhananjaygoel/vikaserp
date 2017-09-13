@@ -114,7 +114,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{($product->present_shipping==0)?'0':''}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity();" onclick="clear_actual_qty();" >
+                                                    <input id="actual_pieces_{{$key}}" class="form-control actualpieces" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{($product->present_shipping==0)?'0':''}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity();" onclick="clear_actual_qty();" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">

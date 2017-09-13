@@ -1728,6 +1728,12 @@ $.widget("custom.combobox1", {
                                 if (split_url[4] == 'purchaseorder_advise' && split_url[6] == 'edit') {
                                     jQuery('#add_purchase_advice_product_row')[0].click();
                                 }
+                                if (split_url[3] == 'delivery_order' && split_url[5] == 'edit') {
+                                    jQuery('#add_product_row_delivery_order')[0].click();
+                                }
+                                if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
+                                    jQuery('#add_product_row_delivery_order')[0].click();
+                                }
                             },
                         });
                     }
@@ -1958,6 +1964,12 @@ function getProductDetails() {
                                 }
                                 if (split_url[4] == 'purchaseorder_advise' && split_url[6] == 'edit') {
                                     jQuery('#add_purchase_advice_product_row')[0].click();
+                                }
+                                if (split_url[3] == 'delivery_order' && split_url[5] == 'edit') {
+                                    jQuery('#add_product_row_delivery_order')[0].click();
+                                }
+                                if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
+                                    jQuery('#add_product_row_delivery_order')[0].click();
                                 }
                                 
                             },
