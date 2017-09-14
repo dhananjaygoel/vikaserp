@@ -1791,6 +1791,9 @@ class HomeController extends Controller {
                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
                     'empty_truck_weight' => isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0',
                     'final_truck_weight' => isset($value->final_truck_weight) ? $value->final_truck_weight : '0',
+                    'vehicle_number' => isset($value->vehicle_number) ? $value->vehicle_number : '0',
+                    'driver_contact_no' => isset($value->driver_contact) ? $value->driver_contact : '0',
+                    
                 ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
