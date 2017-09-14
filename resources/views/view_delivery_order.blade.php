@@ -31,6 +31,18 @@
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
+                                    @if($delivery_data->order_source == 'supplier')
+                                    <tr>
+                                        <td><span>Supplier Name:</span>                                                                                
+                                            @foreach($customers as $customer)
+                                            @if($customer->id == $delivery_data->supplier_id)                                                                                                    
+                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                            @endif
+                                            @endforeach
+                                        
+                                        </td>
+                                    </tr>
+                                    @endif
                                     <tr>
                                         <td><span>Tally Name:</span>
                                             @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
@@ -39,7 +51,7 @@
                                             {{ $delivery_data['customer']->owner_name }}
                                             @endif
                                         </td>
-                                    </tr>
+                                    </tr>                                    
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>
                                         <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>

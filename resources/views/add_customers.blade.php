@@ -60,11 +60,15 @@
                             <div class="form-group">
                                 <label for="company_name">Company  Name</label>
                                 <input id="company_name" class="form-control" placeholder="Company Name" name="company_name" value="{{ Input::old('company_name')}}" type="text">
-                            </div>    
+                            </div>
+                            <div class="form-group">
+                                <label for="gstin_number">GST Number<span class="mandatory">*</span></label>
+                                <input id="gstin_number" class="form-control" placeholder="GST Number" name="gstin_number" value="{{ Input::old('gstin_number')}}" type="text">
+                            </div>
                             <div class="form-group">
                                 <label for="contact_person">Contact Person</label>
                                 <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{ Input::old('contact_person')}}" type="text">
-                            </div>  
+                            </div>                            
                             <div class="form-group">
                                 <label for="address1">Address 1</label>
                                 <input id="address1" class="form-control" placeholder="Address 1" name="address1" value="{{ Input::old('address1')}}" type="text">

@@ -54,7 +54,7 @@ class CustomerController extends Controller {
     /**
      * Display a listing of the customer.
      */
-    public function index() {
+    public function index() {        
         
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
@@ -62,14 +62,17 @@ class CustomerController extends Controller {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders');
-        }
+        }        
 
         $customers = '';
+        
+        $customer_filter = Input::get('customer_filter');
+        $customers = Customer::orderBy('tally_name', 'asc');
+        
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
 
-            $customers = Customer::orderBy('tally_name', 'asc')
-                    ->where(function($query) use($term) {
+            $customers = $customers->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
                             $q->where('city_name', 'like', $term)
                             ->where('customer_status', '=', 'permanent');
@@ -90,11 +93,23 @@ class CustomerController extends Controller {
                     ->orWhere('tally_name', 'like', $term)
                     ->orWhere('phone_number1', 'like', $term)
                     ->orWhere('phone_number2', 'like', $term)
-                    ->where('customer_status', '=', 'permanent')
-                    ->paginate(20);
-        } else {
-            $customers = Customer::orderBy('tally_name', 'asc')->where('customer_status', '=', 'permanent')->paginate(20);
+                    ->where('customer_status', '=', 'permanent');
+                    
+        } 
+        if (isset($customer_filter) && !empty($customer_filter)) {
+            if($customer_filter=='supplier'){                
+                $customers = $customers->where('is_supplier', '=', 'yes');                
+            }
+            elseif($customer_filter=='customer'){               
+                $customers = $customers->where('is_supplier', '!=', 'yes');                                       
+            }
+            
         }
+        
+//        dd($customer_filter);
+
+        $customers = $customers->where('customer_status', '=', 'permanent');
+        $customers = $customers->paginate(20);
         $customers->setPath('customers');
         $city = City::all();
         return View::make('customers', array('customers' => $customers, 'city' => $city));
@@ -148,6 +163,9 @@ class CustomerController extends Controller {
         }
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
+        }
+        if (Input::has('gstin_number')) {
+            $customer->gstin_number = Input::get('gstin_number');
         }
         if (Input::has('contact_person')) {
             $customer->contact_person = Input::get('contact_person');
@@ -377,9 +395,12 @@ class CustomerController extends Controller {
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
         }
+        if (Input::has('gstin_number')) {
+            $customer->gstin_number = Input::get('gstin_number');
+        }
         if (Input::has('contact_person')) {
             $customer->contact_person = Input::get('contact_person');
-        }
+        }        
         if (Input::has('address1')) {
             $customer->address1 = Input::get('address1');
         }

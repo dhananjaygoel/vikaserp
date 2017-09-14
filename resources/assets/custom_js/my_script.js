@@ -700,21 +700,36 @@ function print_challan(delivery_order_id) {
     $('#print_delivery_order').val(delivery_order_id);
 }
 
-function print_challan_do(el) {
+function print_challan_do(el) {    
     $('#print_delivery_order').val(el.id);
     var empty_truck_weight = $(el).data('bind');
-    $('#empty_truck_weight').val(empty_truck_weight);   
+    var customer_type = $(el).data('customer_type');
+//    $('#print_delivery_order').data("customer_type",customer_type);
+    $('#print_delivery_order').attr("data-customer_type",customer_type);
+    $('#empty_truck_weight').val(empty_truck_weight);    
+    if(customer_type=='supplier'){        
+        $('#empty_truck_weight').css('display',"none");
+        $('.empty_truck_weight_title').css('display',"none");
+    }else{        
+        $('#empty_truck_weight').val(empty_truck_weight);
+    }    
 }
 /*
  * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function () {
     var empty_truck_weight = parseInt($('#empty_truck_weight').val()); 
-    if(empty_truck_weight == "0" | empty_truck_weight =="" | isNaN(empty_truck_weight)){
-        $('#empty_truck_weight').addClass('error_validation');
-        return false;
-    }   
-    
+    var customer_type = $(this).data('customer_type');
+//    console.log(customer_type);
+    if(customer_type=='supplier'){
+        $('#empty_truck_weight').attr('value',0)
+    }else{
+        if(empty_truck_weight == "0" | empty_truck_weight =="" | isNaN(empty_truck_weight)){
+            $('#empty_truck_weight').addClass('error_validation');
+            return false;
+        } 
+    }
+           
     $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';

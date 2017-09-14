@@ -366,6 +366,14 @@ class DeliveryOrderController extends Controller {
         } else {
             $vat_price = 0;
         }
+        if ($input_data['status'] == 'warehouse') {
+            $order_status = 'warehouse';
+            $supplier_id = 0;
+        }
+        if ($input_data['status'] == 'supplier') {
+            $order_status = 'supplier';
+            $supplier_id = $input_data['supplier_id'];
+        }
 
         $delivery_location = 0;
         $location = "";
@@ -391,7 +399,9 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => isset($input_data['order_remark']) ? $input_data['order_remark'] : '',
             'vehicle_number' => $input_data['vehicle_number'],
-            'driver_contact_no' => $input_data['driver_contact']
+            'driver_contact_no' => $input_data['driver_contact'],
+            'order_source' => $order_status,
+            'supplier_id' => $supplier_id,
         ));
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {

@@ -109,7 +109,7 @@
             };
             var gdpData;
         </script>
-        <script>
+<!--        <script>
             var _rollbarConfig = {
                 accessToken: "e9b8125f7584473784540f13c939e75e",
                 captureUncaught: true,
@@ -268,7 +268,7 @@
                     }
                 }]);
 // End Rollbar Snippet
-        </script>
+        </script>-->
 
     </head>
     <body>

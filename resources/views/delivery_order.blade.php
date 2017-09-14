@@ -228,7 +228,7 @@
 
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" onclick="print_challan_do(this)">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -306,7 +306,7 @@
                                                 </div>
                                                 <hr>
                                                 <div class="col-md-3">
-                                                    <label><span title="Empty Truck Weight" class="smstooltip">Empty Truck Weight (Kg)</span></label>
+                                                    <label><span title="Empty Truck Weight" class="smstooltip empty_truck_weight_title">Empty Truck Weight (Kg)</span></label>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <input type="text" id="empty_truck_weight" value="" class="form-control empty_truck_weight" name="empty_truck_weight" maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);" >

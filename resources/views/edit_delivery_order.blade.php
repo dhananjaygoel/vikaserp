@@ -32,6 +32,57 @@
                         {!!Form::open(array('data-button'=>'btn_edit_delivery_order','method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
+                        
+                        <div class="form-group">
+                            @if($delivery_data->order_source == 'warehouse')
+                            <div class="radio">
+                                <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio" onchange="show_hide_supplier($delivery_data - > order_source)">
+                                @if(Auth::user()->role_id <> 5)
+                                <label for="warehouse_radio">Warehouse</label>
+                                @endif
+                                <input  value="supplier" id="supplier_radio" name="status" type="radio">
+                                @if(Auth::user()->role_id <> 5)
+                                <label for="supplier_radio">Supplier</label>
+                                @endif
+                            </div>
+                            <div class="supplier_order" style="display:none">
+                                <select class="form-control" name="supplier_id" id="add_status_type">
+                                    <option value="" selected="">Select supplier</option>
+                                    @if(count($customers)>0)
+                                    @foreach($customers as $customer)
+                                    <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            @elseif($delivery_data->order_source == 'supplier')
+                            <div class="radio">
+                                <input value="warehouse" id="warehouse_radio" name="status" type="radio">
+                                <label for="warehouse_radio">Warehouse</label>
+                                <input  checked="" value="supplier" id="supplier_radio" name="status" type="radio" onchange="show_hide_supplier($delivery_data - > order_source)">
+                                <label for="supplier_radio">Supplier</label>
+                            </div>
+                            <div class="supplier_order">
+                                <select class="form-control" name="supplier_id" id="add_status_type">
+                                    <option value="" disabled="">Select supplier</option>
+                                    @if(count($customers)>0)
+                                    @foreach($customers as $customer)
+                                    <option
+                                    <?php
+                                    if ($customer->id == $delivery_data->supplier_id) {
+                                        echo 'selected="selected"';
+                                    }
+                                    ?> value="{{$customer->id}}">
+                                        {{($customer->tally_name != "")?$customer->tally_name:$customer->owner_name}}
+                                    </option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            @endif
+                            <br/>
+                            <div class="clearfix"></div>
+                        </div>
                         @if($delivery_data['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
