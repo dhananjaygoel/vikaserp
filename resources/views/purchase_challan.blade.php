@@ -127,6 +127,21 @@
                                         <td class="text-center">{{isset($challan['purchase_advice']->purchase_advice_date)?date('F jS, Y',strtotime($challan['purchase_advice']->purchase_advice_date)):''}}</td>
                                         <td class="text-center">
                                             <?php
+//                                            $total_qty = 0;
+//                                            foreach ($challan['all_purchase_products'] as $pc) {
+//                                                if ($pc->unit_id == 1) {
+//                                                    $total_qty += $pc->quantity;
+//                                                }
+//                                                if ($pc->unit_id == 2) {
+//                                                    $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight);
+//                                                }
+//                                                if ($pc->unit_id == 3) {
+//                                                    $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
+//                                                }
+//                                            }
+//                                            echo round($challan['all_purchase_products']->sum('quantity'), 2);
+                                            ?>
+                                            <?php
                                             $total_qty = 0;
                                             foreach ($challan['all_purchase_products'] as $pc) {
                                                 if ($pc->unit_id == 1) {
@@ -139,7 +154,7 @@
                                                     $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
                                                 }
                                             }
-                                            echo round($challan['all_purchase_products']->sum('quantity'), 2);
+                                            echo round($total_qty, 2);
                                             ?>
                                         </td>
                                         <td class="text-center">
