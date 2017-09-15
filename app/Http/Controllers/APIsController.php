@@ -2413,7 +2413,7 @@ class APIsController extends Controller {
             $purchase_order_advise_products = $order['purchase_advice']['purchase_products'];
             if (count($purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    $product_size = $poapv['product_sub_category'];
+                    $product_size = $poapv['product_sub_category']; 
                     //$product_size = ProductSubCategory::find($poapv->product_category_id);
                     if ($poapv->unit_id == 1) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;

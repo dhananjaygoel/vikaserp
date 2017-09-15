@@ -54,7 +54,7 @@ class PurchaseOrder extends Model {
     }
 
     public function purchase_product_has_from(){
-        return $this->hasMany('App\PurchaseProducts', 'from', 'id')->with('product_sub_category');
+        return $this->hasMany('App\PurchaseProducts', 'from', 'id')->with('product_sub_category'); 
     }
 
 }
