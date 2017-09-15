@@ -1959,7 +1959,7 @@ class APIsController extends Controller {
 //        else
 //            $purchase_advice_response['latest_date'] = "";
 
-        $tables = ['purchase_advice', 'all_purchase_products'];
+        $tables = ['purchase_advice', 'all_purchase_products','purchase_advice'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
 
