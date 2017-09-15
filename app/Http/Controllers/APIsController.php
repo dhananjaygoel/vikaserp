@@ -1737,9 +1737,12 @@ class APIsController extends Controller {
 //         update sync table 
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
                 if ($real_sync_date->sync_date <= Input::get('purchase_order_sync_date')) {
+                    $real_sync_date_pa = SyncTableInfo::where('table_name', 'purchase_advice')->select('sync_date')->first();
+                    if($real_sync_date_pa->sync_date <= $real_sync_date->sync_date){
                     $purchase_order_response['purchase_order_server_added'] = [];
                     $purchase_order_response['latest_date'] = $real_sync_date->sync_date;
                     return json_encode($purchase_order_response);
+                     }
                 }
             }
             /* end of new code */
