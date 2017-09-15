@@ -54,7 +54,7 @@ class CustomerController extends Controller {
     /**
      * Display a listing of the customer.
      */
-    public function index() {        
+    public function index(Request $request) {        
         
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
@@ -112,6 +112,11 @@ class CustomerController extends Controller {
         $customers = $customers->paginate(20);
         $customers->setPath('customers');
         $city = City::all();
+        
+        $parameters = parse_url($request->fullUrl());
+        $parameters = isset($parameters['query']) ? $parameters['query'] : '';
+        Session::put('parameters', $parameters);
+
         return View::make('customers', array('customers' => $customers, 'city' => $city));
     }
 
@@ -527,8 +532,11 @@ class CustomerController extends Controller {
             $ec->set_updated_date_to_sync_table($tables);
             /* end code */
 
+            $parameter = Session::get('parameters');
+            $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
+            /* end code */            
 
-            return redirect('customers')->with('success', 'Customer details updated successfully');
+            return redirect('customers'. $parameters)->with('success', 'Customer details updated successfully');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');
         }
