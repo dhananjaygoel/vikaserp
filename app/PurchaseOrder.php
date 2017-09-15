@@ -50,11 +50,11 @@ class PurchaseOrder extends Model {
     }
 
     public function purchase_advice() {
-        return $this->hasOne('App\PurchaseAdvise', 'purchase_order_id', 'id');
+        return $this->hasMany('App\PurchaseAdvise', 'purchase_order_id', 'id');
     }
-
+   
     public function purchase_product_has_from(){
         return $this->hasMany('App\PurchaseProducts', 'from', 'id')->with('product_sub_category');
     }
-
+    
 }

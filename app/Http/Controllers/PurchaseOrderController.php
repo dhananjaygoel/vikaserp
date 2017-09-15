@@ -225,8 +225,9 @@ class PurchaseOrderController extends Controller {
         }
 
         $purchase_orders = $q->orderBy('created_at', 'desc')
-                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from','delivery_location')
+                ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_advice.purchase_products','delivery_location')
                 ->Paginate(20);
+
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
 
@@ -1023,25 +1024,26 @@ class PurchaseOrderController extends Controller {
         foreach ($purchase_orders as $key => $order) {
 
             $purchase_order_quantity = 0;
-            $purchase_order_advise_quantity = 0;
-            //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            $purchase_order_advise_quantity = 0;        
+            
+            $purchase_order_advise_products = $order['purchase_advice'];
             if (count($purchase_order_advise_products) > 0) {
-                foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    $product_size = $poapv['product_sub_category'];
-                    //$product_size = ProductSubCategory::find($poapv->product_category_id);
-                    if ($poapv->unit_id == 1) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
-                    }
-                    if ($poapv->unit_id == 2) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
-                    }
-                    if ($poapv->unit_id == 3) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                foreach ($purchase_order_advise_products as  $purchase_advice) {
+                    foreach ($purchase_advice['purchase_products'] as $prod) {
+                        $product_size = $prod['product_sub_category'];                    
+                        if ($prod->unit_id == 1) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity;
+                        }
+                        if ($prod->unit_id == 2) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * $product_size->weight;
+                        }
+                        if ($prod->unit_id == 3) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
                     }
                 }
             }
-
+                        
             if (count($order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
                     $product_size = $popv['product_sub_category'];
