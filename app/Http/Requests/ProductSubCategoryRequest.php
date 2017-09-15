@@ -29,7 +29,8 @@ class ProductSubCategoryRequest extends Request {
             'weight' => 'required',
             'standard_length' => 'required',
             'units' => 'required',
-            'difference' => 'required'
+            'difference' => 'required',
+            'hsn_code' => 'required',
         ];
     }
 

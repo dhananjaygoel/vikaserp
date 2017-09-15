@@ -678,7 +678,10 @@ class CustomerController extends Controller {
             }
 
             if ($cust_flag == 1) {
-                return Redirect::to('customers')->with('error', $cust_msg);
+                $parameter = Session::get('parameters');
+                $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
+                
+                return redirect('customers'. $parameters)->with('error', $cust_msg);
             } else {
                 $customer->delete();
                 $user = User::where('email', '=', $customer->email)
@@ -693,7 +696,11 @@ class CustomerController extends Controller {
                 $ec->set_updated_date_to_sync_table($tables);
                 /* end code */
 
-                return Redirect::to('customers')->with('success', 'Customer deleted successfully.');
+                $parameter = Session::get('parameters');
+                $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
+            /* end code */            
+
+                return redirect('customers'. $parameters)->with('success', 'Customer deleted successfully.');                
             }
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');

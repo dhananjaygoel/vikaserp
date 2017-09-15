@@ -68,6 +68,10 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
+                            <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
+                            <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="@if(isset($prod_sub_cat['hsn_code'])){{ $prod_sub_cat['hsn_code'] }}@endif" type="text">
+                        </div>
+                        <div class="form-group">
                             <label for="size">Product Size<span class="mandatory">*</span></label>
                             <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{$prod_sub_cat->size}}" type="text">
                         </div>
