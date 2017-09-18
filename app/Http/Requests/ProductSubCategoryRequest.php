@@ -30,7 +30,7 @@ class ProductSubCategoryRequest extends Request {
             'standard_length' => 'required',
             'units' => 'required',
             'difference' => 'required',
-            'hsn_code' => 'required',
+            'hsn_code' => 'required|min:2',
         ];
     }
 

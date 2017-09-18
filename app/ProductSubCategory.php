@@ -37,7 +37,7 @@ class ProductSubCategory extends Model implements AuthenticatableContract, CanRe
         'select_product_categroy' => 'required',
         'alias_name' => 'required|min:2|max:100',
         'size' => 'required',
-        'hsn_code' => 'required',
+        'hsn_code' => 'required|min:2',
         'weight' => 'required',
         'standard_length' => 'required',
         'units' => 'required',

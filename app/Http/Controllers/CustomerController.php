@@ -38,6 +38,7 @@ use App\Receipt;
 use Response;
 use App\CustomerReceiptsDebitedTo;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller {
 
@@ -357,189 +358,196 @@ class CustomerController extends Controller {
     /**
      * Update the specific customer in database.
      */
-    public function update(StoreCustomer $request, $id) {
+    public function update($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        $customer = Customer::find($id);
+        $validator = Validator::make(Input::all(), Customer::$customers_rules);
+        
+        if ($validator->passes()) {
+            $customer = Customer::find($id);
 
-        $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
-                ->where('id', '<>', $id)
-                ->get();
+            $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
+                    ->where('id', '<>', $id)
+                    ->get();
 
-        if (count($already_exists_mobile_number) > 0) {
-            return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
-        }
-
-
-//               
-        $users = User::where('role_id', '=', '5')
-                ->where('email', '=', $customer->email)
-                ->where('mobile_number', '=', $customer->phone_number1)
-                ->where('phone_number', '=', $customer->phone_number2)
-                ->where('created_at', '=', $customer->created_at)
-                ->first();
+            if (count($already_exists_mobile_number) > 0) {
+                return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
+            }
 
 
-        if (count($customer) < 1 && count($users) < 1) {
-            return redirect('customers/')->with('error', 'Trying to access an invalid customer');
-        }
-
-        $customer->owner_name = Input::get('owner_name');
-        if (Input::has('status')) {
-            $customer->is_supplier = Input::get('status');
-        }
-
-        if (Input::has('owner_name')) {
-            $users->first_name = Input::get('owner_name');
-        }
+    //               
+            $users = User::where('role_id', '=', '5')
+                    ->where('email', '=', $customer->email)
+                    ->where('mobile_number', '=', $customer->phone_number1)
+                    ->where('phone_number', '=', $customer->phone_number2)
+                    ->where('created_at', '=', $customer->created_at)
+                    ->first();
 
 
-        $users->role_id = '5';
+            if (count($customer) < 1 && count($users) < 1) {
+                return redirect('customers/')->with('error', 'Trying to access an invalid customer');
+            }
 
-        if (Input::has('company_name')) {
-            $customer->company_name = Input::get('company_name');
-        }
-        if (Input::has('gstin_number')) {
-            $customer->gstin_number = Input::get('gstin_number');
-        }
-        if (Input::has('contact_person')) {
-            $customer->contact_person = Input::get('contact_person');
-        }        
-        if (Input::has('address1')) {
-            $customer->address1 = Input::get('address1');
-        }
-        if (Input::has('address2')) {
-            $customer->address2 = Input::get('address2');
-        }
-        $customer->city = Input::get('city');
-        $customer->state = Input::get('state');
-        if (Input::has('zip')) {
-            $customer->zip = Input::get('zip');
-        }
-//        if (Input::has('email')) {
-        $customer->email = Input::get('email');
-        $users->email = Input::get('email');
-//        }
+            $customer->owner_name = Input::get('owner_name');
+            if (Input::has('status')) {
+                $customer->is_supplier = Input::get('status');
+            }
 
-        $customer->tally_name = Input::get('tally_name');
-        $customer->tally_category = Input::get('tally_category');
-        $customer->tally_sub_category = Input::get('tally_sub_category');
-        $customer->phone_number1 = Input::get('phone_number1');
-        $users->mobile_number = Input::get('phone_number1');
-        if (Input::has('phone_number2')) {
-            $customer->phone_number2 = Input::get('phone_number2');
-            $users->phone_number = Input::get('phone_number2');
-        }
-        if (Input::has('vat_tin_number')) {
-            $customer->vat_tin_number = Input::get('vat_tin_number');
-        }
-        if (Input::has('excise_number')) {
-            $customer->excise_number = Input::get('excise_number');
-        }
-        if (Input::has('username')) {
-            $customer->username = Input::get('username');
-        }
-        if (Input::has('credit_period')) {
-            $customer->credit_period = Input::get('credit_period');
-        }
-        if (Input::has('relationship_manager')) {
-            $customer->relationship_manager = Input::get('relationship_manager');
-        }
+            if (Input::has('owner_name')) {
+                $users->first_name = Input::get('owner_name');
+            }
 
-        $customer->delivery_location_id = Input::get('delivery_location');
 
-        if (Input::has('password') && Input::get('password') != '') {
-            $customer->password = Hash::make(Input::get('password'));
-            $users->password = Hash::make(Input::get('password'));
-        }
+            $users->role_id = '5';
 
-        if ($customer->save() && $users->save()) {
-            $product_category_id = Input::get('product_category_id');
-            if (isset($product_category_id)) {
-                foreach ($product_category_id as $key => $value) {
-                    if (Input::get('product_differrence')[$key] != '') {
-                        $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-                        if (count($product_difference) > 0) {
-                            $product_difference = $product_difference;
+            if (Input::has('company_name')) {
+                $customer->company_name = Input::get('company_name');
+            }
+            if (Input::has('gstin_number')) {
+                $customer->gstin_number = Input::get('gstin_number');
+            }
+            if (Input::has('contact_person')) {
+                $customer->contact_person = Input::get('contact_person');
+            }        
+            if (Input::has('address1')) {
+                $customer->address1 = Input::get('address1');
+            }
+            if (Input::has('address2')) {
+                $customer->address2 = Input::get('address2');
+            }
+            $customer->city = Input::get('city');
+            $customer->state = Input::get('state');
+            if (Input::has('zip')) {
+                $customer->zip = Input::get('zip');
+            }
+    //        if (Input::has('email')) {
+            $customer->email = Input::get('email');
+            $users->email = Input::get('email');
+    //        }
+
+            $customer->tally_name = Input::get('tally_name');
+            $customer->tally_category = Input::get('tally_category');
+            $customer->tally_sub_category = Input::get('tally_sub_category');
+            $customer->phone_number1 = Input::get('phone_number1');
+            $users->mobile_number = Input::get('phone_number1');
+            if (Input::has('phone_number2')) {
+                $customer->phone_number2 = Input::get('phone_number2');
+                $users->phone_number = Input::get('phone_number2');
+            }
+            if (Input::has('vat_tin_number')) {
+                $customer->vat_tin_number = Input::get('vat_tin_number');
+            }
+            if (Input::has('excise_number')) {
+                $customer->excise_number = Input::get('excise_number');
+            }
+            if (Input::has('username')) {
+                $customer->username = Input::get('username');
+            }
+            if (Input::has('credit_period')) {
+                $customer->credit_period = Input::get('credit_period');
+            }
+            if (Input::has('relationship_manager')) {
+                $customer->relationship_manager = Input::get('relationship_manager');
+            }
+
+            $customer->delivery_location_id = Input::get('delivery_location');
+
+            if (Input::has('password') && Input::get('password') != '') {
+                $customer->password = Hash::make(Input::get('password'));
+                $users->password = Hash::make(Input::get('password'));
+            }
+
+            if ($customer->save() && $users->save()) {
+                $product_category_id = Input::get('product_category_id');
+                if (isset($product_category_id)) {
+                    foreach ($product_category_id as $key => $value) {
+                        if (Input::get('product_differrence')[$key] != '') {
+                            $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
+                            if (count($product_difference) > 0) {
+                                $product_difference = $product_difference;
+                            } else {
+                                $product_difference = new CustomerProductDifference();
+                            }
+                            $product_difference->product_category_id = $value;
+                            $product_difference->customer_id = $customer->id;
+                            $product_difference->difference_amount = Input::get('product_differrence')[$key];
+                            $product_difference->save();
                         } else {
-                            $product_difference = new CustomerProductDifference();
-                        }
-                        $product_difference->product_category_id = $value;
-                        $product_difference->customer_id = $customer->id;
-                        $product_difference->difference_amount = Input::get('product_differrence')[$key];
-                        $product_difference->save();
-                    } else {
-                        $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-                        if (count($product_difference1) > 0) {
-                            $product_difference1->delete();
+                            $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)->first();
+                            if (count($product_difference1) > 0) {
+                                $product_difference1->delete();
+                            }
                         }
                     }
                 }
+
+
+                /*
+                  | ----------------------
+                  | SEND SMS TO  ADMIN AND CUSTOMER
+                  | ----------------------
+                 */
+
+                $customer = Customer::with('manager')->find($id);
+
+                if (count($customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited your profile - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+
+                if (count($customer['manager']) > 0) {
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a customer - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+
+
+                //         update sync table         
+                $tables = ['customers', 'users'];
+                $ec = new WelcomeController();
+                $ec->set_updated_date_to_sync_table($tables);
+                /* end code */
+
+                $parameter = Session::get('parameters');
+                $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
+                /* end code */            
+
+                return redirect('customers'. $parameters)->with('success', 'Customer details updated successfully');
+            } else {
+                return Redirect::back()->with('error', 'Some error occoured while saving customer');
             }
-
-
-            /*
-              | ----------------------
-              | SEND SMS TO  ADMIN AND CUSTOMER
-              | ----------------------
-             */
-
-            $customer = Customer::with('manager')->find($id);
-
-            if (count($customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited your profile - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
-
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-
-            if (count($customer['manager']) > 0) {
-                $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a customer - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
-
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer['manager']->mobile_number;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-
-
-            //         update sync table         
-            $tables = ['customers', 'users'];
-            $ec = new WelcomeController();
-            $ec->set_updated_date_to_sync_table($tables);
-            /* end code */
-
-            $parameter = Session::get('parameters');
-            $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-            /* end code */            
-
-            return redirect('customers'. $parameters)->with('success', 'Customer details updated successfully');
-        } else {
-            return Redirect::back()->with('error', 'Some error occoured while saving customer');
-        }
+        }else {
+            $error_msg = $validator->messages();
+            return Redirect::back()->withInput()->withErrors($validator);
+        }    
     }
 
     /**

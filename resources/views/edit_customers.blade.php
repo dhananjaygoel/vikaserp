@@ -63,7 +63,7 @@
                                 <input id="company_name" class="form-control" placeholder="Company Name" name="company_name" value="{{ $customer->company_name}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="gstin_number">GST Number</label>
+                                <label for="gstin_number">GST Number <span class="mandatory">*</span></label>
                                 <input id="gstin_number" class="form-control" placeholder="GST Number" name="gstin_number" value="@if(isset($customer->gstin_number)){{$customer->gstin_number}}@endif" type="text">
                             </div>
                             <div class="form-group">

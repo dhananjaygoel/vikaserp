@@ -53,7 +53,7 @@
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
-                                <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ old('hsn_code') }}" type="text">
+                                <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ old('hsn_code') }}" onkeypress=" return numbersOnly(this, event, false, false);" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="size">Product Size<span class="mandatory">*</span></label>
