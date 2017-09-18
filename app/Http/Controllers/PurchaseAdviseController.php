@@ -788,12 +788,23 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function print_purchase_advise($id) {
-
+        
+        if (Input::has('vehicle_number')) {
+            $vehicle_number = Input::get('vehicle_number');            
+        }        
         $current_date = date("/m/d/");
         $date_letter = 'PA' . $current_date . $id;
-        PurchaseAdvise::where('id', '=', $id)->update(array(
-            'serial_number' => $date_letter
-        ));
+        
+        if (isset($vehicle_number) && $vehicle_number!= "") {
+            PurchaseAdvise::where('id', '=', $id)->update(array(
+                'serial_number' => $date_letter,
+                'vehicle_number' => $vehicle_number,
+            ));    
+        }else{
+            PurchaseAdvise::where('id', '=', $id)->update(array(
+                'serial_number' => $date_letter
+            ));
+        }        
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $sms_flag = 0;
 

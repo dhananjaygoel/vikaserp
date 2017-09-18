@@ -726,7 +726,7 @@ function print_challan_do(el) {
  */
 $('.print_delivery_order').click(function () {
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
-    var vehicle_number = $('#vehicle_no').val()    
+    var vehicle_number = $('#vehicle_no').val()
     var customer_type = $(this).data('customer_type');    
 //    console.log(customer_type);
     var flag = true;
@@ -956,13 +956,19 @@ $('.print_purchase_challan').click(function () {
  * @param {type} purchase_advice_id
  * @returns {integer}
  */
-function print_purchase_advice(purchase_advice_id) {
+function print_purchase_advice(purchase_advice_id,vehicle_number) {
     $('#pa_id').val(purchase_advice_id);
+    $('#vehicle_no').val(vehicle_number);
 }
 /*
  * print purchase advice
  */
-$('.print_purchase_advise').click(function () {
+$('.print_purchase_advise').click(function () {        
+    var vehicle_number = $('#vehicle_no').val()
+    if(vehicle_number ==""){            
+        $('#vehicle_no').addClass('error_validation');
+        return false;
+    }    
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     var id = 0;
@@ -975,6 +981,7 @@ $('.print_purchase_advise').click(function () {
 
         $.ajax({
             type: "GET",
+            data: {vehicle_number:vehicle_number},
             url: base_url + '/print_purchase_advise/' + id + '?send_sms=' + send_sms,
             success: function (data) {
                 var printWindow = window.open('', '');

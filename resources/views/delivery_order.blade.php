@@ -316,7 +316,7 @@
                                                     <label><span title="Vehicle Number" class="smstooltip empty_truck_weight_title">Vehicle Number</span></label>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);" >
+                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" maxlength="10" >
                                                 </div>
                                                 <div class="checkbox col-md-12">
                                                     <label><input type="checkbox" id="checksms" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>

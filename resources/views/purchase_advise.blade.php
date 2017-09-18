@@ -204,7 +204,7 @@
                                             </span>
                                             @endif
                                             @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal" onclick="print_purchase_advice({{$pa->id}})">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal" data-vehicle_number="{{$pa->vehicle_number}}" onclick="print_purchase_advice({{$pa->id}},{{$pa->vehicle_number}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -281,9 +281,16 @@
                                                     <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
+                                                <div class="col-md-3">
+                                                    <label><span title="Vehicle Number" class="smstooltip empty_truck_weight_title">Vehicle Number</span></label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" maxlength="10"  >
+                                                </div>
+                                                <div class="clearfix"></div>
                                                 <hr>
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                                <input type="hidden" name="pa_id" id="pa_id"/>
+                                                <input type="hidden" name="pa_id" id="pa_id"/>                                                
                                                 <div >
                                                     <button type="button" class="btn btn-primary form_button_footer print_purchase_advise" data-dismiss="modal">Print</button>
                                                     <button class="btn btn-default form_button_footer" data-dismiss="modal">Cancel</button>
