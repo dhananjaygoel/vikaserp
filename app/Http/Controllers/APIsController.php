@@ -949,7 +949,7 @@ class APIsController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer[0]->customer_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                     foreach ($orderproduct as $product_data) {
-                        $product_size = ProductSubCategory::find($product_data->inquiry_product_id);
+                        $product_size = ProductSubCategory::find($product_data->product_category_id);                        
                         if (isset($product_data) && $product_data->product_name != "") {
 
                             $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", \n";
