@@ -1259,9 +1259,8 @@ class APIsController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->customer_name) ? $customer[0]->customer_name : $customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                 foreach ($inquiryproduct as $product_data) {
-
                     if (isset($product_data->product_name)) {
-                        $product_size = ProductSubCategory::find($product_data->id);
+                        $product_size = ProductSubCategory::find($product_data->inquiry_product_id);
                         if (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '5') {
                             $addon_message = '- ' . $product_data->price;
                         }
