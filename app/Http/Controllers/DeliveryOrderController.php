@@ -1042,6 +1042,12 @@ class DeliveryOrderController extends Controller {
                 DeliveryOrder::where('id', $id)->update(['empty_truck_weight' => $empty_truck_weight]);
             }
         }
+        if (Input::has('vehicle_number')) {
+            $vehicle_number = Input::get('vehicle_number');
+            if ($vehicle_number!= "") {
+                DeliveryOrder::where('id', $id)->update(['vehicle_number' => $vehicle_number]);
+            }
+        }
 
         $current_date = date("m/d/");
         $sms_flag = 0;
