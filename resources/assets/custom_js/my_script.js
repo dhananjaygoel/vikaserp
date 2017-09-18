@@ -712,6 +712,8 @@ function print_challan_do(el) {
         $('.empty_truck_weight_title').css('display',"none");
     }else{        
         $('#empty_truck_weight').val(empty_truck_weight);
+        $('#empty_truck_weight').css('display',"block");
+        $('.empty_truck_weight_title').css('display',"block");
     }    
 }
 /*
