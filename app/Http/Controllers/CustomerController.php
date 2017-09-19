@@ -91,9 +91,11 @@ class CustomerController extends Controller {
                             ->where('customer_status', '=', 'permanent');
                         });
                     })
-                    ->orWhere('tally_name', 'like', $term)
-                    ->orWhere('phone_number1', 'like', $term)
-                    ->orWhere('phone_number2', 'like', $term)
+                    ->orWhere(function ($query1) use($term){
+                        $query1->Where('tally_name', 'like', $term)
+                            ->orWhere('phone_number1', 'like', $term)
+                            ->orWhere('phone_number2', 'like', $term);
+                    })                
                     ->where('customer_status', '=', 'permanent');
                     
         } 
@@ -106,11 +108,11 @@ class CustomerController extends Controller {
             }
             
         }
-        
-//        dd($customer_filter);
+                
 
         $customers = $customers->where('customer_status', '=', 'permanent');
-        $customers = $customers->paginate(20);
+//        dd($customers->toSql());
+        $customers = $customers->paginate(20);        
         $customers->setPath('customers');
         $city = City::all();
         
