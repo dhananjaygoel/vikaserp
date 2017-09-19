@@ -95,7 +95,7 @@ class CustomerController extends Controller {
                         $query1->Where('tally_name', 'like', $term)
                             ->orWhere('phone_number1', 'like', $term)
                             ->orWhere('phone_number2', 'like', $term);
-                    })                
+                    })
                     ->where('customer_status', '=', 'permanent');
                     
         } 
@@ -111,7 +111,6 @@ class CustomerController extends Controller {
                 
 
         $customers = $customers->where('customer_status', '=', 'permanent');
-//        dd($customers->toSql());
         $customers = $customers->paginate(20);        
         $customers->setPath('customers');
         $city = City::all();
