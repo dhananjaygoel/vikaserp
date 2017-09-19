@@ -761,7 +761,7 @@ $('.print_delivery_order').click(function () {
 
     $.ajax({
         type: "GET",
-        data: {empty_truck_weight:empty_truck_weight,vehicle_number:vehicle_number},
+        data: {empty_truck_weight:empty_truck_weight,vehicle_number:vehicle_number,customer_type:customer_type},
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');
