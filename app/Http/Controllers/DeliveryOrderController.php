@@ -1048,6 +1048,9 @@ class DeliveryOrderController extends Controller {
                 DeliveryOrder::where('id', $id)->update(['vehicle_number' => $vehicle_number]);
             }
         }
+        if (Input::has('customer_type')) {
+            $customer_type = Input::get('customer_type');
+        }
 
         $current_date = date("m/d/");
         $sms_flag = 0;
@@ -1095,6 +1098,7 @@ class DeliveryOrderController extends Controller {
         $pdf->loadView('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
+            'customer_type' => $customer_type,
 //            'delivery_locations' => $delivery_locations,
 //            'customers' => $customers
         ]);
@@ -1185,7 +1189,7 @@ class DeliveryOrderController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        return view('print_delivery_order', compact('delivery_data', 'units'));
+        return view('print_delivery_order', compact('delivery_data', 'units','customer_type'));
     }
 
     /*
