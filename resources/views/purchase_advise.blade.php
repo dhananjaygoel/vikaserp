@@ -204,7 +204,7 @@
                                             </span>
                                             @endif
                                             @if($pa->serial_number == ""  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal" data-vehicle_number="{{$pa->vehicle_number}}" onclick="print_purchase_advice({{$pa->id}},{{$pa->vehicle_number}})">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#printModal" data-vehicle_number="{{$pa->vehicle_number}}" onclick="print_purchase_advice({{$pa->id}},'{{$pa->vehicle_number}}')">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -285,7 +285,7 @@
                                                     <label><span title="Vehicle Number" class="smstooltip empty_truck_weight_title">Vehicle Number</span></label>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" maxlength="10"  >
+                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>
