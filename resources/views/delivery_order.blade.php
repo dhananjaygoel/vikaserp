@@ -313,7 +313,7 @@
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <div class="col-md-3">
-                                                    <label><span title="Vehicle Number" class="smstooltip empty_truck_weight_title">Vehicle Number</span></label>
+                                                    <label><span title="Vehicle Number" class="smstooltip ">Vehicle Number</span></label>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >

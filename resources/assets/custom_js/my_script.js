@@ -713,12 +713,12 @@ function print_challan_do(el) {
     if(customer_type=='supplier'){
         $('#empty_truck_weight').css('display',"none");
         $('.empty_truck_weight_title').css('display',"none");
-        $('#vehicle_no').css('display',"none");
+//        $('#vehicle_no').css('display',"none");
     }else{
         $('#empty_truck_weight').val(empty_truck_weight);
         $('#empty_truck_weight').css('display',"block");
         $('.empty_truck_weight_title').css('display',"block");
-        $('#vehicle_no').css('display',"block");
+//        $('#vehicle_no').css('display',"block");
     }
 }
 /*
@@ -732,7 +732,11 @@ $('.print_delivery_order').click(function () {
     var flag = true;
     if(customer_type=='supplier'){
         $('#empty_truck_weight').attr('value',0)
-        $('#vehicle_no').attr('value',0)
+//        $('#vehicle_no').attr('value',0)
+        if(vehicle_number ==""){            
+            $('#vehicle_no').addClass('error_validation');
+            return false;            
+        }
     }else{
         if(empty_truck_weight == "0" | empty_truck_weight =="" | isNaN(empty_truck_weight)){
             $('#empty_truck_weight').addClass('error_validation');
