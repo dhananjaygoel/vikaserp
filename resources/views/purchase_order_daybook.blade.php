@@ -101,7 +101,7 @@
                                         <th>Deliverd To</th>
                                         <th>Order By </th>
                                         <th>Loaded By </th>
-                                        <th>Labors </th>
+                                        <th>Labours </th>
                                         <th>Actual Quantity</th>
                                         <th>Amount </th>
                                         <th>Bill Number</th>
@@ -152,8 +152,8 @@
                                                 <td>{{ $daybook->vehicle_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
                                                 <td>{{ (isset($daybook['orderedby']->first_name)?$daybook['orderedby']->first_name:'') }} </td>
-                                                <td>{{ (isset($daybook->unloaded_by)?$daybook->unloaded_by:'') }} </td>
-                                                <td>{{ $daybook->labours }}</td>
+                                                <td>{{ count($daybook['challan_loaded_by'])}} </td>
+                                                <td>{{ count($daybook['challan_labours']) }}</td>
                                                 <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
                                                 <td>{{ $daybook->grand_total}}</td>
                                                 <td>{{ $daybook->bill_number }}</td>
