@@ -975,13 +975,14 @@ class OrderController extends Controller {
                     $customer = Customer::with('manager')->find($ord->customer_id);
                     if (count($customer) > 0) {
                         $total_quantity = '';
+                        $str = '';
 
                         $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->get();
 
                         foreach ($input_data as $product_data) {
 
                             if ($product_data['order_product_details']->alias_name != "") {
-                                $product = ProductSubCategory::find($product_data['id']);
+                                $product = ProductSubCategory::find($product_data['id']);                                
                                 $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                                 if ($product_data['units'] == 1) {
                                     $total_quantity = $total_quantity + $product_data['quantity'];
