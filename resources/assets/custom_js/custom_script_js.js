@@ -659,14 +659,17 @@ function fetch_actual_quantity() {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
             Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
-            Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
-
+            if(!isNaN(parseFloat(amount))){
+                Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
+            }
         }
 
     }
     $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
-    $('#total_price').val(Total_Amount.toFixed(2));
-
+    if(Total_Amount>0){
+        $('#total_price').val(Total_Amount.toFixed(2));
+    }
+    
     /*to check is actual qty and total avg qty have diffence less than 5%*/
 
     var aq = $('#total_actual_quantity_calc').val();
@@ -697,7 +700,9 @@ function fetch_actual_quantity() {
             for (var i = 1; i <= current_row_count; i++) {
                 all_toatl_after_calc = parseFloat(all_toatl_after_calc) + (parseFloat($("#actual_quantity_" + i).val()) * parseFloat($("#product_price_" + i).val()));
             }
-            $("#total_price").val(all_toatl_after_calc.toFixed(2));
+            if(all_toatl_after_calc>0){
+                $("#total_price").val(all_toatl_after_calc.toFixed(2));
+            }
 
         }
 

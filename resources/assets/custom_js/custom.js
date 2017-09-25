@@ -1955,6 +1955,7 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
 $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var status_form = 0;
     var tot_products = $(".add_product_row").length;
+//    var tot_products = $(".add_product_row:visible").length;
     var j = 0;
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
     var final_truck_weight = parseInt($('#final_truck_weight').val());
@@ -1980,15 +1981,15 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
                     status_form = 1;
                 }
             }
-            if ($("#present_shipping_" + i).val() == "") {
+            if ($("#present_shipping_" + i).val() == "" && $("#add_row_" + i).css('display')!='none') {
                 $('#present_shipping_' + i).addClass('error_validation');
                 status_form = 1;
             }
-            if ($("#actual_quantity_" + i).val() == "") {
+            if ($("#actual_quantity_" + i).val() == "" && $("#add_row_" + i).css('display')!='none') {
                 $('#actual_quantity_' + i).addClass('error_validation');
                 status_form = 1;
             }
-            if ($("#product_price_" + i).val() == "") {
+            if ($("#product_price_" + i).val() == "" && $("#add_row_" + i).css('display')!='none' ) {
                 $('#product_price_' + i).addClass('error_validation');
                 status_form = 1;
             }
@@ -2994,4 +2995,3 @@ $(function () {
 });
 
 //
-
