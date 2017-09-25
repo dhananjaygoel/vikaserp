@@ -268,6 +268,8 @@ class APIsController extends Controller {
                 DeliveryOrder::where('id', '=', $value->server_del_order_id)->update(array(
                     'empty_truck_weight' => isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0',
                     'final_truck_weight' => isset($value->final_truck_weight) ? $value->final_truck_weight : '0',
+                    'driver_contact_no' => isset($value->driver_contact) ? $value->driver_contact : '0',
+                    'vehicle_number' => isset($value->vehicle_number) ? $value->vehicle_number : '0',
                 ));
             }
             $delivery_challan->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
@@ -416,6 +418,7 @@ class APIsController extends Controller {
             }
 
             $delivery_challan_response["loadedby_server_added"] = $loadedby_array;
+
 
 
             if ($value->server_id > 0) {
@@ -941,7 +944,7 @@ class APIsController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer[0]->customer_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                     foreach ($orderproduct as $product_data) {
-
+                        $product_size = ProductSubCategory::find($product_data->product_category_id);                        
                         if (isset($product_data) && $product_data->product_name != "") {
 
                             $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", \n";
@@ -949,10 +952,10 @@ class APIsController extends Controller {
                                 $total_quantity = $total_quantity + $product_data->quantity;
                             }
                             if ($product_data->unit_id == 2) {
-                                $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                                $total_quantity = $total_quantity + $product_data->quantity * $product_size->weight;
                             }
                             if ($product_data->unit_id == 3) {
-                                $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                                $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
                             }
                         } else {
                             $result['send_message'] = "Error";
@@ -1251,9 +1254,8 @@ class APIsController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . (isset($customer[0]->customer_name) ? $customer[0]->customer_name : $customer[0]->owner_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                 foreach ($inquiryproduct as $product_data) {
-
                     if (isset($product_data->product_name)) {
-                        $product_size = ProductSubCategory::find($product_data->id);
+                        $product_size = ProductSubCategory::find($product_data->inquiry_product_id);
                         if (isset($inquiries[0]->sms_role) && $inquiries[0]->sms_role == '5') {
                             $addon_message = '- ' . $product_data->price;
                         }
@@ -1729,15 +1731,18 @@ class APIsController extends Controller {
 //         update sync table 
             if ($real_sync_date->sync_date <> "0000-00-00 00:00:00") {
                 if ($real_sync_date->sync_date <= Input::get('purchase_order_sync_date')) {
+                    $real_sync_date_pa = SyncTableInfo::where('table_name', 'purchase_advice')->select('sync_date')->first();
+                    if($real_sync_date_pa->sync_date <= $real_sync_date->sync_date){
                     $purchase_order_response['purchase_order_server_added'] = [];
                     $purchase_order_response['latest_date'] = $real_sync_date->sync_date;
                     return json_encode($purchase_order_response);
+                     }
                 }
             }
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_product_has_from')->get();
+            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_advice.purchase_products')->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
@@ -1750,7 +1755,7 @@ class APIsController extends Controller {
             $purchase_order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
-            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_product_has_from')
+            $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_advice.purchase_products')
                     ->where('order_status', 'pending')
                     ->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
@@ -1951,7 +1956,7 @@ class APIsController extends Controller {
 //        else
 //            $purchase_advice_response['latest_date'] = "";
 
-        $tables = ['purchase_advice', 'all_purchase_products'];
+        $tables = ['purchase_advice', 'all_purchase_products','purchase_order'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
 
@@ -2402,19 +2407,20 @@ class APIsController extends Controller {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            $purchase_order_advise_products = $order['purchase_advice'];
             if (count($purchase_order_advise_products) > 0) {
-                foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    $product_size = $poapv['product_sub_category'];
-                    //$product_size = ProductSubCategory::find($poapv->product_category_id);
-                    if ($poapv->unit_id == 1) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
-                    }
-                    if ($poapv->unit_id == 2) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
-                    }
-                    if ($poapv->unit_id == 3) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                foreach ($purchase_order_advise_products as  $purchase_advice) {
+                    foreach ($purchase_advice['purchase_products'] as $prod) {
+                        $product_size = $prod['product_sub_category'];                    
+                        if ($prod->unit_id == 1) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity;
+                        }
+                        if ($prod->unit_id == 2) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * $product_size->weight;
+                        }
+                        if ($prod->unit_id == 3) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
                     }
                 }
             }
