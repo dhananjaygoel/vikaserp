@@ -107,8 +107,13 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
-
+//        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
+        $delivery_data = $q
+                ->whereHas('delivery_product',function($query){
+                    $query->where('present_shipping','>', '0');
+                })->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')
+                ->paginate(20);
+        
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
