@@ -109,6 +109,7 @@
                                         $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                         ?>
                                         @foreach($allorders as $challan)
+                                        <?php $lb_arr = []; $lbr_arr=[];?>
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
                                             <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
@@ -154,8 +155,31 @@
                                                 @endif
                                             </td>
                                             
-                                            <td>{{isset($challan['challan_loaded_by'])?count($challan['challan_loaded_by']):'0'}}</td>
-                                            <td>{{isset($challan['challan_labours'])?count($challan['challan_labours']):''}}</td>
+                                            <td>
+                                                @if(isset($challan['challan_loaded_by']))
+                                                @foreach($challan['challan_loaded_by'] as $load)
+                                                    <?php 
+                                                        if(!in_array($load->loaded_by_id,$lb_arr)){
+                                                            array_push($lb_arr, $load->loaded_by_id);
+                                                        } 
+                                                    ?>                                                    
+                                                @endforeach
+                                                @endif
+                                                {{count($lb_arr)}}
+                                            </td>
+                                            <td>
+                                                @if(isset($challan['challan_labours']))
+                                                @foreach($challan['challan_labours'] as $labour)                                                    
+                                                    <?php 
+                                                        if(!in_array($labour->labours_id,$lbr_arr)){
+                                                            array_push($lbr_arr, $labour->labours_id);
+                                                        } 
+                                                    ?>                                                    
+                                                @endforeach
+                                                @endif
+                                                {{count($lbr_arr)}}
+                                                {{isset($challan['challan_labours'])?count($challan['challan_labours']):''}}
+                                            </td>
                                             <td>
                                                 <?php
                                                 $total_qunatity = 0;
