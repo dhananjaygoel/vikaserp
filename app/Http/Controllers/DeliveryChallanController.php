@@ -302,13 +302,13 @@ class DeliveryChallanController extends Controller {
                 if ($date1 == $date2) {
                     $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                                     ->where('updated_at', 'like', $date1 . '%')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order_products', 'order_products', 'delivery_order')
+                                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 } else {
                     $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                                     ->where('updated_at', '>=', $date1)
                                     ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order_products', 'order_products', 'delivery_order')
+                                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 }
                 $search_dates = [
@@ -316,7 +316,7 @@ class DeliveryChallanController extends Controller {
                     'export_to_date' => $data["export_to_date"]
                 ];
             } else {
-                $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products', 'delivery_order_products', 'order_products', 'delivery_order')
+                $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             }
         } else {
@@ -326,13 +326,13 @@ class DeliveryChallanController extends Controller {
                 if ($date1 == $date2) {
                     $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
                                     ->where('updated_at', 'like', $date1 . '%')
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order_products', 'order_products', 'delivery_order')
+                                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 } else {
                     $allorders = DeliveryChallan::where('challan_status', '=', 'pending')
                                     ->where('updated_at', '>=', $date1)
                                     ->where('updated_at', '<=', $date2)
-                                    ->with('customer', 'delivery_challan_products', 'delivery_order_products', 'order_products', 'delivery_order')
+                                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 }
                 $search_dates = [
@@ -340,7 +340,7 @@ class DeliveryChallanController extends Controller {
                     'export_to_date' => $data["export_to_date"]
                 ];
             } else {
-                $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products', 'delivery_order_products', 'order_products', 'delivery_order')
+                $allorders = DeliveryChallan::where('challan_status', '=', 'pending')->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                 ->orderBy('updated_at', 'desc')->Paginate(20);
             }
         }
@@ -348,6 +348,7 @@ class DeliveryChallanController extends Controller {
         if (count($allorders) > 0) {
             foreach ($allorders as $key => $order) {
                 $order_quantity = 0;
+                $total_quantity = 0;
                 $order_quantity_do = 0;
                 $order_quantity_o = 0;
                 $order_quantity_pending = 0;
@@ -368,8 +369,29 @@ class DeliveryChallanController extends Controller {
                 if (count($order['order_products']) > 0) {
                     $order_quantity_o = $order['order_products']->sum('quantity');
                 }
+
+               foreach ($order['delivery_challan_products'] as $product_data) {                   
+
+                    $product_size = $product_data['product_sub_category'];
+                    if (isset($product_data)) {                       
+                        if ($product_data->unit_id == 1) {
+                            $total_quantity = $total_quantity + $product_data->actual_quantity;
+                        }
+                        if ($product_data->unit_id == 2) {
+                            $total_quantity = $total_quantity + $product_data->actual_quantity * $product_size->weight;
+                        }
+                        if ($product_data->unit_id == 3) {
+                            $total_quantity = $total_quantity + ($product_data->actual_quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
+                    } else {
+                        $result['send_message'] = "Error";
+                        $result['reasons'] = "Order not found.";
+//                            return json_encode($result);
+                    }
+                }
+
                 $allorders[$key]['total_quantity'] = $order_quantity;
-                $allorders[$key]['actual_quantity'] = $actual_quantity;
+                $allorders[$key]['actual_quantity'] = $total_quantity;
 
                 if (($order_quantity == $order_quantity_do) && ($order_quantity_do == $order_quantity_o)) {
                     $allorders[$key]['total_quantity_pending'] = 0;
