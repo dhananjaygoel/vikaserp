@@ -294,6 +294,7 @@ class APIsController extends Controller {
 
 
             $delivery_challan_products = array();
+
             if ($value->server_id > 0) {
                 AllOrderProducts::where('order_type', '=', 'delivery_challan')->where('order_id', '=', $value->server_id)->delete();
                 \App\DeliveryChallanLabours::where('delivery_challan_id', '=', $value->server_id)->delete();
@@ -466,6 +467,8 @@ class APIsController extends Controller {
 //            }
 //            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
 //            $loaders_data = array_values($loaders_data);
+
+
 //            $update_count = 0;
 //            for ($i = 0; $i < count($loaders_data); $i++) {
 //                $temp = \App\DeliveryChallanLoadedBy::
@@ -477,6 +480,7 @@ class APIsController extends Controller {
 //                ]);
 //                $update_count += $temp;
 //            }
+
 //            foreach ($delivery_order_data as $delivery_order_info) {
 //                $arr = array();
 //                $arr_money = array();
@@ -509,6 +513,7 @@ class APIsController extends Controller {
 //
 //            $loaders_data = array_filter(array_map('array_filter', $loaders_data));
 //            $loaders_data = array_values($loaders_data);
+
 //            $update_count = 0;
 //            for ($i = 0; $i < count($loaders_data); $i++) {
 //                $temp = \App\DeliveryChallanLabours::
@@ -944,7 +949,7 @@ class APIsController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer[0]->customer_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                     foreach ($orderproduct as $product_data) {
-                        $product_size = ProductSubCategory::find($product_data->product_category_id);                        
+                        $product_size = ProductSubCategory::find($product_data->product_category_id);
                         if (isset($product_data) && $product_data->product_name != "") {
 
                             $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", \n";
@@ -1183,7 +1188,7 @@ class APIsController extends Controller {
 
             $last_sync_date = Input::get('order_sync_date');
             $order_added_server = Order::with('all_order_products', 'delivery_orders')
-                    ->where('order_status', 'pending')
+                    ->where('order_status','!=','completed')
                     ->get();
             $order_added_server = $this->checkpending_quantity($order_added_server);
             $order_response['order_server_added'] = ($order_added_server && count($order_added_server) > 0) ? $order_added_server : array();
@@ -1196,7 +1201,7 @@ class APIsController extends Controller {
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
             $order_added_server = Order::with('all_order_products', 'delivery_orders')
-                    ->where('order_status', 'pending')
+                    ->where('order_status','!=','completed')
                     ->get();
 
             $order_added_server = $this->checkpending_quantity($order_added_server);
@@ -1742,7 +1747,7 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_order_sync_date');
-            $purchase_order_server = PurchaseOrder::where('order_status', 'pending')->with('purchase_products', 'purchase_advice.purchase_products')->get();
+            $purchase_order_server = PurchaseOrder::where('order_status','!=','completed')->with('purchase_products', 'purchase_advice.purchase_products')->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
 
@@ -1756,7 +1761,7 @@ class APIsController extends Controller {
         } else {
 //            $purchase_order_server = PurchaseOrder::with('purchase_products')->get();
             $purchase_order_server = PurchaseOrder::with('purchase_products', 'purchase_advice.purchase_products')
-                    ->where('order_status', 'pending')
+                    ->where('order_status','!=','completed')
                     ->get();
             $purchase_order_server = $this->quantity_calculation($purchase_order_server);
             $purchase_order_response['purchase_order_server_added'] = ($purchase_order_server && count($purchase_order_server) > 0) ? $purchase_order_server : array();
