@@ -177,8 +177,7 @@
                                                     ?>                                                    
                                                 @endforeach
                                                 @endif
-                                                {{count($lbr_arr)}}
-                                                {{isset($challan['challan_labours'])?count($challan['challan_labours']):''}}
+                                                {{count($lbr_arr)}}                                                
                                             </td>
                                             <td>
                                                 <?php
