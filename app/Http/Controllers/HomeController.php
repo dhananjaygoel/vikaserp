@@ -1477,7 +1477,7 @@ class HomeController extends Controller {
             $purchase_order_server = PurchaseOrder::with('purchase_products')
                     ->orderBy('id', 'DESC')
 //                ->where('id', '<', $last_id)
-                    ->where('order_status', '<>', 'pending')
+                    ->where('order_status', '=', 'completed')
                     ->skip($skip)
                     ->limit($limit)
                     ->get();
@@ -1485,7 +1485,7 @@ class HomeController extends Controller {
             $purchase_order_server = PurchaseOrder::with('purchase_products')
                     ->orderBy('id', 'DESC')
                     ->where('id', '<', $last_id)
-                    ->where('order_status', '<>', 'pending')
+                    ->where('order_status', '=', 'completed')
 //                ->skip($skip)
                     ->limit($limit)
                     ->get();
@@ -2360,7 +2360,7 @@ class HomeController extends Controller {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer[0]->customer_name) . "\nDT " . date("j M, Y") . "\n" . $message_body_cust_first . "\n";
                     foreach ($orderproduct as $product_data) {
-
+                        $product_size = ProductSubCategory::find($product_data->product_category_id);
                         if (isset($product_data) && $product_data->product_name != "") {
 
                             $str .= $product_data->product_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", \n";
@@ -2368,10 +2368,10 @@ class HomeController extends Controller {
                                 $total_quantity = $total_quantity + $product_data->quantity;
                             }
                             if ($product_data->unit_id == 2) {
-                                $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                                $total_quantity = $total_quantity + $product_data->quantity * $product_size->weight;
                             }
                             if ($product_data->unit_id == 3) {
-                                $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                                $total_quantity = $total_quantity + ($product_data->quantity / $product_size->standard_length ) * $product_size->weight;
                             }
                         } else {
                             $result['send_message'] = "Error";
@@ -2636,7 +2636,7 @@ class HomeController extends Controller {
             $order_added_server = Order::with('all_order_products')
                     ->orderBy('updated_at', 'DESC')
 //                    ->where('id', '<', $last_id)
-                    ->where('order_status', '<>', 'pending')
+                    ->where('order_status', '=', 'completed')
                     ->skip($skip)
                     ->limit($limit)
                     ->get();
@@ -2644,7 +2644,7 @@ class HomeController extends Controller {
             $order_added_server = Order::with('all_order_products')
                     ->orderBy('updated_at', 'DESC')
                     ->where('id', '<', $last_id)
-                    ->where('order_status', '<>', 'pending')
+                    ->where('order_status', '=', 'completed')
 //                ->skip($skip)
                     ->limit($limit)
                     ->get();
