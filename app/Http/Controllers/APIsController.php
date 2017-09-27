@@ -728,7 +728,7 @@ class APIsController extends Controller {
                     $customer_list[$value->id] = $add_customers->id;
                 }
                 $delivery_order->order_id = ($value->server_order_id > 0) ? $value->server_order_id : 0;
-                $delivery_order->order_source = 'warehouse';
+                $delivery_order->order_source = isset($value->order_source) ? $value->order_source : 0;
                 $delivery_order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $delivery_order->created_by = 1;
 //                $delivery_order->vat_percentage = ($value->vatPercentage > 0 ) ? $value->vatPercentage : '';
