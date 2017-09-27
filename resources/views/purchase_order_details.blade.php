@@ -28,7 +28,7 @@
                             <div class="table-responsive">
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
-                                        <tr><td><span>Supplier Name:</span>
+                                        <tr><td><span>Order From:</span>
                                                 @if($purchase_orders['customer']->owner_name != "" && $purchase_orders['customer']->tally_name != "")
                                                 {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}
                                                 @else
@@ -36,6 +36,20 @@
                                                 @endif
 
                                             </td></tr>
+                                        @if($purchase_orders->order_for == 0)
+                                        <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
+                                        @elseif($purchase_orders->order_for != 0)                                        
+                                        @foreach($customers as $customer)
+                                        @if($customer->id == $purchase_orders->order_for)
+                                        <tr>
+                                            <td>
+                                                <span><b>Order For:</b></span>
+                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                        @endif
                                         <?php if ($purchase_orders['customer']->contact_person != '') { ?>
                                             <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
                                         <?php } ?>

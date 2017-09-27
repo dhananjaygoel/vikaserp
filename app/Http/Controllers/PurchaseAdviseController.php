@@ -366,12 +366,12 @@ class PurchaseAdviseController extends Controller {
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
-        return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise));
+        return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise,'customers'=> $customers));
     }
 
     /**

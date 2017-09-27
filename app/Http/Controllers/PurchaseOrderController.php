@@ -535,8 +535,8 @@ class PurchaseOrderController extends Controller {
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
-
-        return view('purchase_order_details', compact('purchase_orders'));
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        return view('purchase_order_details', compact('purchase_orders','customers'));
     }
 
     /**

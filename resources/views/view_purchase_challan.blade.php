@@ -31,7 +31,7 @@
                                         <td><span>Serial Number: </span> {{ $purchase_challan->serial_number }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Tally Name: </span>
+                                        <td><span>Order From: </span>
                                             @if($purchase_challan['supplier']->owner_name != "" && $purchase_challan['supplier']->tally_name != "")
                                             {{$purchase_challan['supplier']->owner_name.'-'.$purchase_challan['supplier']->tally_name}}
                                             @else
@@ -40,6 +40,21 @@
 
                                         </td>
                                     </tr>
+                                    <?php // dd($purchase_challan['purchase_order']); ?>
+                                    @if($purchase_challan['purchase_order']->order_for == 0)
+                                        <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
+                                    @elseif($purchase_challan['purchase_order']->order_for != 0)
+                                        @foreach($customers as $customer)
+                                        @if($customer->id == $purchase_challan['purchase_order']->order_for)
+                                        <tr>
+                                            <td>
+                                                <span><b>Order For:</b></span>
+                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                    @endif
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>

@@ -15,9 +15,25 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-                    <div class="main-box-body clearfix">
+                    <div class="main-box-body clearfix">                        
+                        @if($allorder['order_details']->order_source == 'warehouse')                            
+                            <div class="form-group">
+                                <label><b>Order From:</b> Warehouse                                    
+                                </label>
+                            </div><hr>
+                        @elseif($allorder['order_details']->order_source == 'supplier')
                         <div class="form-group">
-                            <label><b>Tally Name:</b>
+                            <label><b>Order From:</b> 
+                                @foreach($customers as $customer)
+                                @if($customer->id == $allorder['order_details']->supplier_id)                                                                                                    
+                                    {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                @endif
+                                @endforeach
+                            </label>
+                        </div><hr>                        
+                        @endif
+                        <div class="form-group">
+                            <label><b>Order For:</b>
                                 {{($allorder->customer->tally_name != "")? $allorder->customer->tally_name : $allorder->customer->owner_name}}
                             </label>
                         </div><hr>

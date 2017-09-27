@@ -31,9 +31,11 @@
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
-                                    @if($delivery_data->order_source == 'supplier')
+                                    @if($delivery_data->order_source == 'warehouse')
+                                        <tr><td><span><b>Order From: </b></span> Warehouse</td></tr>
+                                    @elseif($delivery_data->order_source == 'supplier')
                                     <tr>
-                                        <td><span>Supplier Name:</span>                                                                                
+                                        <td><span>Order From:</span>                                                                                
                                             @foreach($customers as $customer)
                                             @if($customer->id == $delivery_data->supplier_id)                                                                                                    
                                                 {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
@@ -44,7 +46,7 @@
                                     </tr>
                                     @endif
                                     <tr>
-                                        <td><span>Tally Name:</span>
+                                        <td><span>Order For:</span>
                                             @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                                             {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
                                             @else
@@ -77,7 +79,7 @@
                                             @endforeach
                                             @endif
                                         </td>
-                                    </tr>
+                                    </tr>                                   
                                     <tr>
                                         <td><span>Delivery Freight: </span>
                                             {{$delivery_data->location_difference}}

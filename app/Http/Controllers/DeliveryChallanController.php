@@ -432,9 +432,9 @@ class DeliveryChallanController extends Controller {
             $order_product = 0;
         }
         $product_type = $this->check_product_type($allorder);
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
 
-
-        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type'));
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type','customers'));
     }
 
     public function check_product_type($delivery_data) {
