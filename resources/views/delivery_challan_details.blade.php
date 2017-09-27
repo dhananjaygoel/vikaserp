@@ -16,16 +16,16 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">                        
-                        @if($allorder['order_details']->order_source == 'warehouse')                            
+                        @if($allorder['delivery_order']->order_source == 'warehouse')                            
                             <div class="form-group">
                                 <label><b>Order From:</b> Warehouse                                    
                                 </label>
                             </div><hr>
-                        @elseif($allorder['order_details']->order_source == 'supplier')
+                        @elseif($allorder['delivery_order']->order_source == 'supplier')
                         <div class="form-group">
                             <label><b>Order From:</b> 
                                 @foreach($customers as $customer)
-                                @if($customer->id == $allorder['order_details']->supplier_id)                                                                                                    
+                                @if($customer->id == $allorder['delivery_order']->supplier_id)                                                                                                    
                                     {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
                                 @endif
                                 @endforeach
