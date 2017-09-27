@@ -748,6 +748,7 @@ class APIsController extends Controller {
                 }
                 $delivery_order->empty_truck_weight = isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0';
                 $delivery_order->final_truck_weight = isset($value->final_truck_weight) ? $value->final_truck_weight : '0';
+                $delivery_order->supplier_id = isset($value->server_supplier_id) ? $value->server_supplier_id : '0';
                 $delivery_order->save();
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
