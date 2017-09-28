@@ -710,6 +710,12 @@ function print_challan_do(el) {
     $('#empty_truck_weight').val(empty_truck_weight);
     $('#vehicle_no').val(vehicle_number);
     $('#vehicle_no').attr('value',vehicle_number);
+    if($('#vehicle_no').hasClass('error_validation')){        
+        $('#vehicle_no').removeClass('error_validation');
+    }
+    if($('#empty_truck_weight').hasClass('error_validation')){        
+        $('#empty_truck_weight').removeClass('error_validation');
+    }
     if(customer_type=='supplier'){
         $('#empty_truck_weight').css('display',"none");
         $('.empty_truck_weight_title').css('display',"none");
@@ -963,11 +969,14 @@ $('.print_purchase_challan').click(function () {
 function print_purchase_advice(purchase_advice_id,vehicle_number) {
     $('#pa_id').val(purchase_advice_id);
     $('#vehicle_no').val(vehicle_number);
+    if($('#vehicle_no').hasClass('error_validation')){        
+        $('#vehicle_no').removeClass('error_validation');
+    }
 }
 /*
  * print purchase advice
  */
-$('.print_purchase_advise').click(function () {        
+$('.print_purchase_advise').click(function () {    
     var vehicle_number = $('#vehicle_no').val()
     if(vehicle_number ==""){            
         $('#vehicle_no').addClass('error_validation');
