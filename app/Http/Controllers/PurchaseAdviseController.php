@@ -776,7 +776,7 @@ class PurchaseAdviseController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }

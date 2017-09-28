@@ -39,7 +39,7 @@
                 @endif
                 @if (Session::has('validation_message'))
                 <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
-                @endif
+                @endif                
                 <form data-button="btn_puradvice_to_purchallan" method="POST" action="{{URL::action('PurchaseChallanController@store')}}" accept-charset="UTF-8" id="onenter_prevent">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
@@ -193,33 +193,37 @@
                     <div class="form-group">
                         <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
                     </div>
-
-                    <div class="form-group">
-                        <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
-<!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
-                        <div class="form-group clearfix">
-                            <select id="loaded_by_select_pipe" name='unloaded_by[]' class="form-control" multiple="multiple">
-                                @if(isset($loaders))
-                                @foreach ($loaders as $loader)
-                                <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
-                                @endforeach
-                                @endif
-                            </select>
+                    @if(isset($purchase_advise['purchase_order']) && $purchase_advise['purchase_order'][0]->order_for == 0)
+                        <div class="form-group">
+                            <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
+    <!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
+                            <div class="form-group clearfix">
+                                <select id="loaded_by_select_pipe" name='unloaded_by[]' class="form-control" multiple="multiple">
+                                    @if(isset($loaders))
+                                    @foreach ($loaders as $loader)
+                                    <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
-<!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">-->
-                        <div class="form-group clearfix">
-                            <select id="labour_select_pipe" name="labour[]" class="form-control" multiple="multiple">
-                                @if(isset($labours))
-                                @foreach ($labours as $labour)
-                                <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
-                                @endforeach
-                                @endif
-                            </select>
+                        <div class="form-group">
+                            <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
+    <!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">-->
+                            <div class="form-group clearfix">
+                                <select id="labour_select_pipe" name="labour[]" class="form-control" multiple="multiple">
+                                    @if(isset($labours))
+                                    @foreach ($labours as $labour)
+                                    <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <input class="form-control"  name="unloaded_by[]" value="0" type="text" >
+                        <input class="form-control"  name="labour[]" value="0" type="text" >
+                    @endif
                     @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
                     <div class="form-group">
                         <label for="Plusvat"><b class="challan">Plus GST</b> : No </label>

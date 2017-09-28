@@ -136,6 +136,7 @@
                                             ?>
                                         </td>
                                     </tr>
+                                    @if($purchase_challan['purchase_order']->order_for == 0)
                                     <tr>
                                         <td><span>Unloaded By: </span>
                                             <?php
@@ -164,6 +165,7 @@
                                             ?>
                                         </td>
                                     </tr>
+                                    @endif
                                     @if($purchase_challan->vat_percentage>0)
                                     <tr>
                                         <td><span>GST Percentage: </span>{{ $purchase_challan->vat_percentage }}</td>
