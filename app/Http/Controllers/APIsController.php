@@ -2298,7 +2298,7 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_challan_sync_date');
-            $purchase_challan_server = PurchaseChallan::where('order_status', 'pending')->with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour','purchase_advice')->get();
+            $purchase_challan_server = PurchaseChallan::where('order_status', 'pending')->with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour','purchase_order')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
@@ -2307,7 +2307,7 @@ class APIsController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $purchase_challan_server = PurchaseChallan::with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour','purchase_advice')->where('order_status', 'pending')->get();
+            $purchase_challan_server = PurchaseChallan::with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour','purchase_order')->where('order_status', 'pending')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
         }
         $purchase_challan_response['latest_date'] = $real_sync_date->sync_date;
