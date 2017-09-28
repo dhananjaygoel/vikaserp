@@ -221,8 +221,8 @@
                             </div>
                         </div>
                     @else
-                        <input class="form-control"  name="unloaded_by[]" value="0" type="text" >
-                        <input class="form-control"  name="labour[]" value="0" type="text" >
+                        <input type="hidden" class="form-control"  name="unloaded_by[]" value="0" >
+                        <input type="hidden" class="form-control"  name="labour[]" value="0" >
                     @endif
                     @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
                     <div class="form-group">
