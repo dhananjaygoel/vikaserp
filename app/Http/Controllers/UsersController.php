@@ -218,5 +218,23 @@ class UsersController extends Controller {
             return redirect('users')->with('error', 'Unable to update the user details ');
         }
     }
-
+    
+    public function get_vehicle_list() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
+       
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+//        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
+        $do_vehicle_list = \App\DeliveryOrder::where('vehicle_number','!=',"")->select('vehicle_number')->paginate(20);
+        $pa_vehicle_list = \App\PurchaseAdvise::where('vehicle_number','!=',"")->select('vehicle_number')->paginate(20);
+//        $do_vehicle_list = \App\DeliveryOrder::where('vehicle_number','!=',"");
+//        dd($pa_vehicle_list);
+        $do_vehicle_list->setPath('vehicle-list');
+        $pa_vehicle_list->setPath('vehicle-list');
+        return view('vehicle_list', compact('do_vehicle_list','pa_vehicle_list'));
+    }    
 }

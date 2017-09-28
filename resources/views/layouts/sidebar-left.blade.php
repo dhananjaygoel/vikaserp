@@ -179,7 +179,7 @@
                         echo 'active';
                     }
                     ?>">
-                        @if(Auth::user()->role_id != 6)
+                        @if(Auth::user()->role_id != 6 && Auth::user()->role_id != 7)
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Order</span>
@@ -245,7 +245,7 @@
                         echo 'active';
                     }
                     ?>">
-                        @if(Auth::user()->role_id != 6)
+                        @if(Auth::user()->role_id != 6 && Auth::user()->role_id != 7)
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Purchase Order</span>
@@ -432,6 +432,15 @@
                         <a href="{{url('due-payment')}}">
                             <i class="fa fa-money"></i>
                             <span>Customers</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+                    @endif
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
+                    <li class="{{ (Request::is('vehicle-list*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Vehicle List">
+                        <a href="{{url('vehicle-list')}}">
+                            <i class="fa fa-truck"></i>
+                            <span>Vehicle List</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
