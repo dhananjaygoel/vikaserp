@@ -37,7 +37,7 @@ class UserRolesSeeder extends Seeder {
                     array(
                         'id' => '8',
                         'role_id' => '7',
-                        'name' => 'Security Guard'
+                        'name' => 'Security User'
                     ),
         ));
         
