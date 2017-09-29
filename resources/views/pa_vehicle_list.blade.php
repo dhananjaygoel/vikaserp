@@ -14,23 +14,40 @@
                 </div>
             </div>
         </div>
-        <div class="tab">
+        <div class="form-group">
+            <div class="col-md-6">
+                <div class="radio">
+                    <a href="{{url('vehicle-list')}}"><input  value="no" id="b" name="status" type="radio">
+                    @if(Auth::user()->role_id <> 5)
+                    <label style="color:black" for="customer_radio">Delivery Order Vehicle List</label></a>
+                    @endif
+                    <a href="{{url('pa-vehicle-list')}}"><input  checked="" value="yes" id="a" name="status" type="radio">
+                    @if(Auth::user()->role_id <> 5)
+                    <label style="color:black" for="supplier_radio">Purchase Advise Vehicle List</label></a>
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-6">
+                 <form method="GET" id="searchCustomerForm">                       
+                    <div class="input-group col-md-5 pull-right">
+                        <input type="text" class="form-control" name="search" id="search" placeholder="Vehicle Number" value="{{Request::get('search')}}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>                       
+                </form>
+            </div>
+        </div> 
+<!--        <div class="tab">
              <a href="{{url('vehicle-list')}}"><button class="tablinks" onclick="openCity(event, 'London')">Delivery Order Vehicle List</button></a>
             <a href="{{url('pa-vehicle-list')}}"><button class="tablinks active">Purchase Advise Vehicle List</button></a>
-        </div>
+        </div>-->
         <div id="Paris" class="tabcontent" style="display: block;">
           <div class="row">
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-md-12">                        
-                                <form method="GET" id="searchCustomerForm">                       
-                                    <div class="input-group col-md-2 pull-right">
-                                        <input type="text" class="form-control" name="search" id="search" placeholder="Vehicle Number" value="{{Request::get('search')}}">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                                        </span>
-                                    </div>                       
-                                </form>
+                               
                             </div>    
                         </div>
                         <div class="main-box clearfix">            
@@ -91,62 +108,5 @@
         </div>
         
     </div>
-</div>     
-<style>
-body {font-family: "Lato", sans-serif;}
-
-/* Style the tab */
-div.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-/* Style the buttons inside the tab */
-div.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-}
-
-/* Change background color of buttons on hover */
-div.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-div.tab button.active {
-    background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-</style>
-
-
-<script>
-function openCity(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-</script>
+</div>
 @endsection

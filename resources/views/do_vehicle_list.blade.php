@@ -14,23 +14,39 @@
                 </div>
             </div>
         </div>
-        <div class="tab">
+        <div class="form-group">
+            <div class="col-md-6">
+                <div class="radio">
+                    <a href="{{url('vehicle-list')}}"><input checked="" value="no" id="b" name="status" type="radio">
+                    @if(Auth::user()->role_id <> 5)
+                    <label style="color:black" for="customer_radio">Delivery Order Vehicle List</label></a>
+                    @endif
+                    <a href="{{url('pa-vehicle-list')}}"><input  value="yes" id="a" name="status" type="radio">
+                    @if(Auth::user()->role_id <> 5)
+                    <label style="color:black" for="supplier_radio">Purchase Advise Vehicle List</label></a>
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-6">
+                 <form method="GET" id="searchCustomerForm">                       
+                    <div class="input-group col-md-5 pull-right">
+                        <input type="text" class="form-control" name="search" id="search" placeholder="Vehicle Number" value="{{Request::get('search')}}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>                       
+                </form>
+            </div>
+        </div>           
+<!--        <div class="tab">
             <a href="{{url('vehicle-list')}}"><button class="tablinks active" onclick="openCity(event, 'DOLIST')">Delivery Order Vehicle List</button></a>
             <a href="{{url('pa-vehicle-list')}}"><button class="tablinks">Purchase Advise Vehicle List</button></a>
-        </div>
+        </div>-->
         <div id="DOLIST" class="tabcontent" style="display: block;">
           <div class="row">
                     <div class="col-lg-12">
                         <div class="row">
-                            <div class="col-md-12">                        
-                                <form method="GET" id="searchCustomerForm">                       
-                                    <div class="input-group col-md-2 pull-right">
-                                        <input type="text" class="form-control" name="search" id="search" placeholder="Vehicle Number" value="{{Request::get('search')}}">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                                        </span>
-                                    </div>                       
-                                </form>
+                            <div class="col-md-12">                                                        
                             </div>    
                         </div>
                         <div class="main-box clearfix">            
@@ -92,7 +108,7 @@
         
     </div>
 </div>     
-<style>
+<!--<style>
   
 /* Style the tab */
 div.tab {
@@ -130,5 +146,5 @@ div.tab button.active {
     border: 1px solid #ccc;
     border-top: none;
 }
-</style>
+</style>-->
 @endsection
