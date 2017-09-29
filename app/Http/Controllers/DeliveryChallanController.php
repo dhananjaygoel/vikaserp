@@ -913,7 +913,7 @@ class DeliveryChallanController extends Controller {
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
             $total_vat_amount = 0;
