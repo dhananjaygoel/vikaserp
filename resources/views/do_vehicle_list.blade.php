@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Vehicle List')
+@section('title','Truck List')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -7,10 +7,10 @@
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url()}}/dashboard">Home</a></li>
-                    <li class="active"><span>Vehicle List</span></li>
+                    <li class="active"><span>Truck List</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left">Vehicle List</h1>                    
+                    <h1 class="pull-left">Truck List</h1>                    
                 </div>
             </div>
         </div>
@@ -19,18 +19,18 @@
                 <div class="radio">
                     <a href="{{url('vehicle-list')}}"><input checked="" value="no" id="b" name="status" type="radio">
                     @if(Auth::user()->role_id <> 5)
-                    <label style="color:black" for="customer_radio">Delivery Order Vehicle List</label></a>
+                    <label style="color:black" for="customer_radio">Delivery Order Truck List</label></a>
                     @endif
                     <a href="{{url('pa-vehicle-list')}}"><input  value="yes" id="a" name="status" type="radio">
                     @if(Auth::user()->role_id <> 5)
-                    <label style="color:black" for="supplier_radio">Purchase Advise Vehicle List</label></a>
+                    <label style="color:black" for="supplier_radio">Purchase Advise Truck List</label></a>
                     @endif
                 </div>
             </div>
             <div class="col-md-6">
                  <form method="GET" id="searchCustomerForm">                       
                     <div class="input-group col-md-5 pull-right">
-                        <input type="text" class="form-control" name="search" id="search" placeholder="Vehicle Number" value="{{Request::get('search')}}">
+                        <input type="text" class="form-control" name="search" id="search" placeholder="Truck Number" value="{{Request::get('search')}}">
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                         </span>
@@ -58,7 +58,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="col-md-1">#</th>
-                                                <th>Vehicle Number</th>                                        
+                                                <th>Truck Number</th>                                        
                                             </tr>
                                         </thead>
                                         <tbody>                 
@@ -97,7 +97,7 @@
                                 </div>
                                 @else
                                 <div class="alert alert-info no_data_msg_container">
-                                    Currently no Vehicle Number available.
+                                    Currently no Truck Number available.
                                 </div>
                                 @endif
                             </div>
