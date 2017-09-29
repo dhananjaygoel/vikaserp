@@ -263,7 +263,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get_territory_locations', 'CollectionUserController@get_territory_locations');
     Route::post('settle_amount', 'ReceiptMasterController@settle_amount');
     Route::post('update_settle_amount', 'ReceiptMasterController@update_settle_amount');
-    Route::get('vehicle-list', 'UsersController@get_vehicle_list');
+    Route::get('vehicle-list', 'UsersController@get_do_vehicle_list');
+    Route::get('pa-vehicle-list', 'UsersController@get_pa_vehicle_list');
     
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
