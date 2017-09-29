@@ -93,10 +93,7 @@
     </div>
 </div>     
 <style>
-
-   button{
-        color: black !important;
-    }
+  
 /* Style the tab */
 div.tab {
     overflow: hidden;
