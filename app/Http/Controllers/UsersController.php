@@ -233,14 +233,13 @@ class UsersController extends Controller {
             $term = '%' . Input::get('search') . '%';
             $do_vehicle_list = \App\DeliveryOrder::where('order_status','=',"pending")
                                                   ->where('vehicle_number','!=',"")->select('vehicle_number')
-                                                  ->where('vehicle_number','like', $term)->paginate(20);
-            $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")->select('vehicle_number')->paginate(20);
+                                                  ->orderBy('updated_at', 'desc')
+                                                  ->where('vehicle_number','like', $term)->paginate(20);            
         }else{
             $do_vehicle_list = \App\DeliveryOrder::where('order_status','=',"pending")
                                                  ->where('vehicle_number','!=',"")                                                 
-                                                 ->select('vehicle_number')->paginate(20);
-            $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")
-                                                 ->select('vehicle_number')->paginate(20);
+                                                 ->select('vehicle_number')
+                                                 ->orderBy('updated_at', 'desc')->paginate(20);           
         }       
 //        dd($pa_vehicle_list);       
         $do_vehicle_list->setPath('vehicle-list');
@@ -261,11 +260,13 @@ class UsersController extends Controller {
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';            
             $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")->select('vehicle_number')
-                                                    ->where('vehicle_number','like', $term)    
+                                                    ->where('vehicle_number','like', $term)   
                                                     ->where('vehicle_number','!=',"")
+                                                    ->orderBy('updated_at', 'desc')
                                                     ->select('vehicle_number')->paginate(20);
         }else{            
             $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")
+                                                    ->orderBy('updated_at', 'desc')
                                                     ->select('vehicle_number')->paginate(20);
         }       
 //        dd($pa_vehicle_list);       
