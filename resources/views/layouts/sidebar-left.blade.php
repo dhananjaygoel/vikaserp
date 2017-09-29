@@ -391,6 +391,15 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
+                    <li class="{{ (Request::is('vehicle-list*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Vehicle List">
+                        <a href="{{url('vehicle-list')}}">
+                            <i class="fa fa-truck"></i>
+                            <span>Vehicle List</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+                    @endif
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0)
@@ -435,16 +444,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif
-                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
-                    <li class="{{ (Request::is('vehicle-list*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Vehicle List">
-                        <a href="{{url('vehicle-list')}}">
-                            <i class="fa fa-truck"></i>
-                            <span>Vehicle List</span>
-                            <span class="label label-info label-circle pull-right"></span>
-                        </a>
-                    </li>
-                    @endif
+                    @endif                    
                 </ul>
             </div>
             @endif
