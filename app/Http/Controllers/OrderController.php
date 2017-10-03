@@ -1134,7 +1134,7 @@ class OrderController extends Controller {
             $customer = Customer::with('manager')->find($order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\n Your order has been completed for following \n";
+                $str = "Dear " . $customer->owner_name . "\n Your order has been canceled for following \n";
                 foreach ($order['all_order_products'] as $product_data) {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                 }
