@@ -5,8 +5,7 @@
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
-                <ol class="breadcrumb">
-                    <li><a href="{{url()}}/dashboard">Home</a></li>
+                <ol class="breadcrumb">                    
                     <li class="active"><span>Truck List</span></li>
                 </ol>
                 <div class="clearfix">
