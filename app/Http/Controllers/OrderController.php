@@ -970,14 +970,14 @@ class OrderController extends Controller {
             if ($flag == 1) {
 
                 if (Input::has('way') && Input::get('way') == 'reject') {
-
+                    
                     $ord = Order::find($id);
                     $customer = Customer::with('manager')->find($ord->customer_id);
                     if (count($customer) > 0) {
                         $total_quantity = '';
                         $str = '';
 
-                        $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->get();
+                        $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->where('order_type','order')->get();
 
                         foreach ($input_data as $product_data) {
 
@@ -996,7 +996,7 @@ class OrderController extends Controller {
                             }
 
                             /* check for vat/gst items */
-                            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
+                            if (isset($ord['vat_percentage']) && $ord['vat_percentage'] > 0) {
                                 $sms_flag = 1;
                             }
                             /**/
