@@ -391,6 +391,8 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
+                    @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
                     <li class="<?php if (Request::is('vehicle-list*') || Request::is('pa-vehicle-list*')) {
                         echo 'active';
@@ -401,8 +403,6 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif
-                    @endif
                     @endif
                     @if(Auth::user()->role_id == 0)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
