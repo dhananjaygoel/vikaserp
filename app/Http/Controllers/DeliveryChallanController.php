@@ -370,10 +370,10 @@ class DeliveryChallanController extends Controller {
                     $order_quantity_o = $order['order_products']->sum('quantity');
                 }
 
-               foreach ($order['delivery_challan_products'] as $product_data) {                   
+                foreach ($order['delivery_challan_products'] as $product_data) {
 
                     $product_size = $product_data['product_sub_category'];
-                    if (isset($product_data)) {                       
+                    if (isset($product_data)) {
                         if ($product_data->unit_id == 1) {
                             $total_quantity = $total_quantity + $product_data->actual_quantity;
                         }
@@ -434,7 +434,7 @@ class DeliveryChallanController extends Controller {
         $product_type = $this->check_product_type($allorder);
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
 
-        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type','customers'));
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers'));
     }
 
     public function check_product_type($delivery_data) {
@@ -621,7 +621,7 @@ class DeliveryChallanController extends Controller {
             $delivery_challan_prod = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->first();
             $delivery_challan->updated_at = $delivery_challan_prod->updated_at;
             $delivery_challan->save();
-            
+
             $delivery_challan_id = $delivery_challan->id;
             $created_at = $delivery_challan->created_at;
             $updated_at = $delivery_challan->updated_at;
@@ -981,9 +981,6 @@ class DeliveryChallanController extends Controller {
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
-
-
-
 // //            $this->checkpending_quantity(); 
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 ////                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
@@ -1027,8 +1024,10 @@ class DeliveryChallanController extends Controller {
 
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
-        
-        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+
+//        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
+
+        $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
 
         /*
           | ------------------- -----------------------
@@ -1106,6 +1105,50 @@ class DeliveryChallanController extends Controller {
         /* end code */
 
         return view('print_delivery_challan', compact('allorder', 'total_vat_amount'));
+    }
+
+    function calc_hsn_wise($update_delivery_challan) {
+        $hsn_list = array();
+        $hsn_data = array();
+        foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
+
+            if (isset($delivery_challan_products['order_product_all_details']->hsn_code)) {
+                $amont = $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
+                
+
+                if (in_array($delivery_challan_products['order_product_all_details']->hsn_code, $hsn_list)) {
+                    foreach ($hsn_data as $key => $value) {
+                        if ($delivery_challan_products['order_product_all_details']->hsn_code == $value['id']) {
+                            
+                            $actual_quantity = $value['actual_quantity']+$delivery_challan_products->actual_quantity;
+                            $final_amount = $value['amount']+$amont;
+                            $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
+
+                            $hsn_data[$key] = [
+                                'id' => $delivery_challan_products['order_product_all_details']->hsn_code,
+                                'vat_percentage' => $update_delivery_challan->vat_percentage,
+                                'actual_quantity' => $actual_quantity,
+                                'amount' => $final_amount,
+                                'vat_amount' => $vat_amount,
+                            ];
+                        }
+                    }
+                } else {
+                    $hsn_list[] = $delivery_challan_products['order_product_all_details']->hsn_code;
+                    $hsn_data[] = [
+                        'id' => $delivery_challan_products['order_product_all_details']->hsn_code,
+                        'vat_percentage' => $update_delivery_challan->vat_percentage,
+                        'actual_quantity' => $delivery_challan_products->actual_quantity,
+                        'amount' => $amont,
+                        'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
+                    ];
+                }
+            }
+        }
+
+        $update_delivery_challan['hsn'] = $hsn_data;
+        return $update_delivery_challan;
+        
     }
 
     function calc_qty_product_type_wise($update_delivery_challan) {
