@@ -657,13 +657,12 @@ function product_autocomplete(id) {
 }
 
 
-function delivery_challan_product_autocomplete(id) {
-
+function delivery_challan_product_autocomplete(id) {    
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
         customer_id = 0;
     }
-    var location_difference = 0;
+    var location_difference = 0;    
     location_difference = $('#location_difference').val();
     var baseurl = $('#baseurl').attr('name');
     $("#delivery_challan_product_name_" + id).autocomplete({
@@ -802,7 +801,7 @@ function delivery_challan_product_autocomplete(id) {
 //        }
 //    });
 //}
-function purchase_order_advise_product_autocomplete(id) {
+function purchase_order_advise_product_autocomplete(id) {    
 
     var customer_id = $('#existing_customer_id').val();
     if (customer_id == "") {
@@ -850,21 +849,27 @@ function purchase_order_advise_product_autocomplete(id) {
 }
 
 $('#location_difference').on('keyup', function () {
-
+//    alert('hi');
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
+        var discount_type = $('#discount_type').val();
+        var discount_unit = $('#discount_unit').val();
+        var discount = $('#discount_amount').val();
         if (customer_id == "") {
             customer_id = 0;
         }
+        if (discount == "") {
+            discount = 0;
+        }        
         var location_difference = 0;
         location_difference = $('#location_difference').val();
         var rowId = $(this).attr('data-row-id');
-        var product = $(this).find('#add_product_name_' + rowId).val();
+        var product = $(this).find('#add_product_name_' + rowId).val();        
         if (product != '') {
             var product_id = $(this).find('#add_product_id_' + rowId).val();
             $.ajax({
                 url: baseurl + '/recalculate_product_price',
-                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference},
+                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference,'discount_type': discount_type,'discount_unit':discount_unit,'discount': discount},
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
@@ -874,6 +879,69 @@ $('#location_difference').on('keyup', function () {
         }
     });
 });
+
+$('#discount_amount').on('keyup', function () {
+    $(".add_product_row").each(function (index) {
+        var customer_id = $('#existing_customer_id').val();
+        var discount = $('#discount_amount').val();
+        var discount_type = $('#discount_type').val();
+        var discount_unit = $('#discount_unit').val();
+        if (customer_id == "") {
+            customer_id = 0;
+        }
+        if (discount == "") {
+            discount = 0;
+        }        
+        var location_difference = 0;
+        location_difference = $('#location_difference').val();        
+        var rowId = $(this).attr('data-row-id');        
+        var product = $(this).find('#add_product_name_' + rowId).val();
+        if (product != '') {
+            var product_id = $(this).find('#add_product_id_' + rowId).val();
+            $.ajax({
+                url: baseurl + '/recalculate_product_price',
+                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference, 'discount_type': discount_type,'discount_unit':discount_unit,'discount': discount},
+                success: function (data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    $('#product_price_' + rowId).val(arr1[0]['product_price']);
+                },
+            });
+        }
+    });
+});
+
+$('#discount_type,#discount_unit').on('change', function () {
+    $(".add_product_row").each(function (index) {
+        var customer_id = $('#existing_customer_id').val();
+        var discount = $('#discount_amount').val();
+        var discount_type = $('#discount_type').val();
+        var discount_unit = $('#discount_unit').val();        
+        if (customer_id == "") {
+            customer_id = 0;
+        }
+        if (discount == "") {
+            discount = 0;
+        }
+        var location_difference = 0;
+        location_difference = $('#location_difference').val();        
+        var rowId = $(this).attr('data-row-id');        
+        var product = $(this).find('#add_product_name_' + rowId).val();
+        if (product != '') {
+            var product_id = $(this).find('#add_product_id_' + rowId).val();
+            $.ajax({
+                url: baseurl + '/recalculate_product_price',
+                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference, 'discount_type': discount_type,'discount_unit':discount_unit,'discount': discount},
+                success: function (data) {
+                    var main_array = JSON.parse(data);
+                    var arr1 = main_array['data_array'];
+                    $('#product_price_' + rowId).val(arr1[0]['product_price']);
+                },
+            });
+        }
+    });
+});
+
 $('#add_order_location').on('change', function () {
 
     var location_difference = $('option:selected', this).attr('data-location-difference');

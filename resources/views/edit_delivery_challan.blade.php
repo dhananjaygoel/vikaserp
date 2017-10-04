@@ -57,6 +57,31 @@
                                 <label class="col-md-2"><b>Total Actual Quantity:</b></label>                                 
                                 <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" style="width: 10.33%;" value="{{(isset($allorder->delivery_order->final_truck_weight)&&isset($allorder->delivery_order->empty_truck_weight))?($allorder->delivery_order->final_truck_weight - $allorder->delivery_order->empty_truck_weight):'0'}}"> 
                             </div>
+                            <?php // dd($allorder);?>
+                            @if($allorder['delivery_order']->discount > 0)
+                                <div class="form-group">
+                                    <label><b>Discount/Premium :</b> </label>
+                                    {{$allorder['delivery_order']->discount_type}}
+                                </div>
+                                <div class="form-group">                                    
+                                        <label><b>Fixed/Percentage :</b> </label>
+                                        {{$allorder['delivery_order']->discount_unit}}
+                                </div>
+                                <div class="form-group">                                    
+                                        <label><b>Amount :</b> </label>
+                                        {{$allorder['delivery_order']->discount}}
+                                </div>
+                            @else
+                                <div class="form-group">                                
+                                    <label><b>Discount/Premium :</b> </label>                                
+                                </div>
+                                <div class="form-group">                                     
+                                         <label><b>Fixed/Percentage :</b> </label>                             
+                                </div>
+                                <div class="form-group">                                    
+                                        <label><b>Amount :</b> </label>                                
+                                </div>
+                            @endif
                             <hr>
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_challan" class="table table-hover">

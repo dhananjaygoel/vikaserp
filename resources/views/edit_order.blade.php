@@ -191,9 +191,33 @@
                                         <option id="other_location" value="other" {{($order->delivery_location_id == 0)?'selected':''}} >Other</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <label for="location">Freight</label>
                                     <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight" onkeypress=" return numbersOnly(this, event, true, true);" name="location_difference" value="{{$order->location_difference}}" type="tel" tabindex="3">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="location">Discount/Premium:</label>
+                                    @if(Auth::user()->role_id <> 5)
+                                    <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
+                                        <option value="discount" {{($order->discount_type == "discount")?'selected':''}}>Discount</option>
+                                        <option value="premium" {{($order->discount_type == "premium")?'selected':''}}>Premium</option>
+                                    </select>
+                                    @endif
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="location">Fixed/Percentage:</label>
+                                    @if(Auth::user()->role_id <> 5)
+                                    <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
+                                        <option value="fixed" {{($order->discount_unit == "fixed")?'selected':''}}>Fixed</option>
+                                        <option value="percent" {{($order->discount_unit== "percent")?'selected':''}}>Percent</option>
+                                    </select>
+                                    @endif
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="discount">Amount</label>
+                                      @if(Auth::user()->role_id <> 5)
+                                        <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
+                                      @endif
                                 </div>
                             </div>
                         </div>

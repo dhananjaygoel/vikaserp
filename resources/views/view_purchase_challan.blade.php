@@ -54,7 +54,44 @@
                                         </tr>
                                         @endif
                                         @endforeach
-                                    @endif
+                                    @endif 
+                                    <?php // dd($purchase_challan['purchase_order']); ?>
+                                    @if($purchase_challan['purchase_order']->discount > 0)
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                                {{$purchase_challan['purchase_order']->discount_type}}                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                                {{$purchase_challan['purchase_order']->discount_unit}}                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                                {{$purchase_challan['purchase_order']->discount}}                                            
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                            </td>
+                                        </tr>                                    
+                                    @endif                                    
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>

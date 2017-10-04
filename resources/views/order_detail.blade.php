@@ -72,6 +72,42 @@
                                             <td><span>Delivery Freight: </span>{{$order->location_difference}}</td>
                                             @endif
                                         </tr>
+                                        @if($order->discount > 0)
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                    {{$order->discount_type}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                    {{$order->discount_unit}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount</b> : </span>
+                                                    {{$order->discount}}                                            
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount</b> : </span>
+                                                </td>
+                                            </tr>                                    
+                                        @endif
                                         <tr><td colspan="2"><span class="underline">Ordered Product Details </span></td></tr>
                                     </tbody>
                                 </table>

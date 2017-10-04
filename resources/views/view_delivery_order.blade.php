@@ -85,6 +85,42 @@
                                             {{$delivery_data->location_difference}}
                                         </td>
                                     </tr>
+                                    @if($delivery_data->discount > 0)
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                                {{$delivery_data->discount_type}}                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                                {{$delivery_data->discount_unit}}                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                                {{$delivery_data->discount}}                                            
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                            </td>
+                                        </tr>                                    
+                                    @endif
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>

@@ -368,6 +368,9 @@ class OrderController extends Controller {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
+        $discount_type = $input_data['discount_type'];
+        $discount_unit = $input_data['discount_unit'];
+        $discount = $input_data['discount'];
 //        if ($input_data['status1'] == 'include_vat') {
 //            $vat_price = '';
 //        }
@@ -380,6 +383,9 @@ class OrderController extends Controller {
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
         $order->vat_percentage = $input_data['vat_price'];
+        $order->discount_type = $discount_type;
+        $order->discount_unit = $discount_unit;
+        $order->discount = $discount;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -620,7 +626,7 @@ class OrderController extends Controller {
      */
     public function update($id, PlaceOrderRequest $request) {
 
-        $input_data = Input::all();
+        $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_edit_order')) {
             $session_array = Session::get('forms_edit_order');
@@ -716,7 +722,10 @@ class OrderController extends Controller {
             'delivery_location_id' => $input_data['add_inquiry_location'],
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
-            'remarks' => $input_data['order_remark']
+            'remarks' => $input_data['order_remark'],
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ]);
         if ($input_data['add_inquiry_location'] == 'other') {
             $update_order = $order->update([

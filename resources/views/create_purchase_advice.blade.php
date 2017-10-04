@@ -64,6 +64,42 @@
                                                     <input type="hidden" name="supplier_id" value="{{$purchase_orders['customer']->id}}">
                                                 </td>
                                             </tr>
+                                            @if($purchase_orders->discount > 0)
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Discount/Premium :</b> </span>                                                                                                
+                                                    </td>
+                                                    <td>{{$purchase_orders->discount_type}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Fixed/Percentage :</b> </span>                                                    
+                                                    </td>
+                                                    <td>{{$purchase_orders->discount_unit}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Value</b> : </span>                                                    
+                                                    </td>
+                                                    <td>{{$purchase_orders->discount}}</td>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Discount/Premium :</b> </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Fixed/Percentage :</b> </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Value</b> : </span>
+                                                    </td>
+                                                </tr>                                    
+                                            @endif
                                         </tbody>
                                     </table>
                                     <table id="create_purchase_advise_table" class="table table-hover  ">

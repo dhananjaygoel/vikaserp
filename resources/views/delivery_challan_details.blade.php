@@ -52,6 +52,30 @@
                                 {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
                             </label>
                         </div><hr>
+                        @if($allorder['delivery_order']->discount > 0)
+                            <div class="form-group">
+                                <label><b>Discount/Premium :</b> </label>
+                                {{$allorder['delivery_order']->discount_type}}                                 
+                            </div>
+                            <div class="form-group">                                    
+                                <label><b>Fixed/Percentage :</b> </label>
+                                {{$allorder['delivery_order']->discount_unit}}                                    
+                            </div>
+                            <div class="form-group">                                    
+                                <label><b>Amount :</b> </label>
+                                {{$allorder['delivery_order']->discount}}                                   
+                            </div>
+                        @else
+                            <div class="form-group">                                
+                                <label><b>Discount/Premium :</b> </label>                                    
+                            </div>
+                            <div class="form-group">                                     
+                                     <label><b>Fixed/Percentage :</b> </label>                                   
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>                                    
+                            </div>
+                        @endif
                        
                         <div class="form-group">
                             <label><b><span class="underline">Product Details</span></b></label>

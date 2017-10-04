@@ -29,7 +29,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="main-box">
-            <div class="main-box-body clearfix">
+            <div class="main-box-body clearfix">                
                 @if (count($errors) > 0)
                 <div class="alert alert-warning">
                     @foreach ($errors->all() as $error)
@@ -62,7 +62,31 @@
                             <input type="hidden" name="supplier_id" id="supplier_id" value="{{$purchase_advise['supplier']->id }}"/>
                             <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/>
                         </label>
-                    </div>
+                    </div>                    
+                    @if($purchase_advise['purchase_order'][0]->discount > 0)
+                        <div class="form-group">
+                            <label><b>Discount/Premium :</b> </label>
+                            {{$purchase_advise['purchase_order'][0]->discount_type}}                             
+                        </div>
+                        <div class="form-group">                                    
+                                <label><b>Fixed/Percentage :</b> </label>
+                                {{$purchase_advise['purchase_order'][0]->discount_unit}}                                
+                        </div>
+                        <div class="form-group">                                    
+                                <label><b>Amount :</b> </label>
+                                {{$purchase_advise['purchase_order'][0]->discount}}                                
+                        </div>
+                    @else
+                        <div class="form-group">                                
+                            <label><b>Discount/Premium :</b> </label>                                
+                        </div>
+                        <div class="form-group">                                     
+                                 <label><b>Fixed/Percentage :</b> </label>                             
+                        </div>
+                        <div class="form-group">                                    
+                                <label><b>Amount :</b> </label>                                
+                        </div>
+                    @endif
                     <div class="table-responsive">
                         <table id="table-example" class="table table_deliverchallan serial purchaseorder_advide_table ">
                             <tbody>

@@ -1120,7 +1120,7 @@ class InquiryController extends Controller {
                     $data_array[] = [ 'value' => 'No Products'];
                 }
             }
-            if ($level == 4) {
+            if ($level == 4) {                
                 $products = \App\ProductSubCategory::where('id', '=', $id)->get();
                 foreach ($products as $product) {
                     $cust = 0;
@@ -1151,20 +1151,42 @@ class InquiryController extends Controller {
         $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
         $product_id = Input::get('product_id');
+        $discount_type = Input::get('discount_type');
+        $discount_unit = Input::get('discount_unit');
+        $discount = Input::get('discount');
         $location_diff = 0;
         $location_diff = Input::get('location_difference');
+        if($location_diff==""){
+            $location_diff =0;
+        }
         $term = Input::get('term');
-        $product = ProductSubCategory::find($product_id);
+        $product = ProductSubCategory::find($product_id);        
         $cust = 0;
         if ($customer_id > 0) {
             $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
             if (count($customer) > 0) {
                 $cust = $customer->difference_amount;
             }
+        }        
+        if($discount_type=='discount'){
+            if($discount_unit=='fixed'){
+                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+            }elseif($discount_unit=='percent'){
+                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+            }
         }
+        elseif($discount_type=='premium'){
+            if($discount_unit=='fixed'){
+                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+            }elseif($discount_unit=='percent'){
+                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+            }
+//            $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+        }        
+        
         $data_array[] = [ 'value' => $product->alias_name,
             'id' => $product->id,
-            'product_price' => $product['product_category']->price + $cust + $location_diff + $product->difference
+            'product_price' => $product_price,
         ];
         echo json_encode(array('data_array' => $data_array));
     }

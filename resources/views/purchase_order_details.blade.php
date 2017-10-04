@@ -58,7 +58,42 @@
                                         @if($purchase_orders['customer']->credit_period > 0 || $purchase_orders['customer']->credit_period != "")
                                         <tr> <td><span>Credit Period(Days): </span>{{$purchase_orders['customer']->credit_period}}</td></tr>
                                         @endif
-
+                                        @if($purchase_orders->discount > 0)
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                    {{$purchase_orders->discount_type}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                    {{$purchase_orders->discount_unit}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount</b> : </span>
+                                                    {{$purchase_orders->discount}}                                            
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount :</b> </span>
+                                                </td>
+                                            </tr>                                    
+                                        @endif
                                         <tr><td><span class="underline">Ordered Product Details </span></td>
                                     </tbody>
                                 </table>

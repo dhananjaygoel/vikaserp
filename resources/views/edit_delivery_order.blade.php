@@ -138,8 +138,39 @@
                                     <label for="location">Freight</label>
                                     <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight " onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="{{ $delivery_data->location_difference}}" type="tel" tabindex="3" >
                                 </div>
+                                
                             </div>
                         </div>
+                        @if($delivery_data->discount > 0)
+                            <div class="form-group">
+                                <label><b>Discount/Premium :</b> </label>
+                                {{$delivery_data->discount_type}} 
+                                <input type="hidden" id="discount_type" name="discount_type" value="{{$delivery_data->discount_type}}" >                                        
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Fixed/Percentage :</b> </label>
+                                    {{$delivery_data->discount_unit}}
+                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$delivery_data->discount_unit}}" >                                        
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>
+                                    {{$delivery_data->discount}}
+                                    <input type="hidden" id="discount_amount" name="discount" value="{{$delivery_data->discount}}" >                                        
+                            </div>
+                        @else
+                            <div class="form-group">                                
+                                <label><b>Discount/Premium :</b> </label>
+                                    <input type="hidden" id="discount_type" name="discount_type" value="{{$delivery_data->discount_type}}" >
+                            </div>
+                            <div class="form-group">                                     
+                                     <label><b>Fixed/Percentage :</b> </label>
+                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$delivery_data->discount_unit}}" >
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>
+                                    <input type="hidden" id="discount_amount" name="discount" value="{{$delivery_data->discount}}" >
+                            </div>
+                        @endif
                         <div class="clearfix"></div>
                         <div class="locationtext"<?php if ($delivery_data->delivery_location_id == 0) echo 'style="display:block;"'; ?>>
                             <div class="row">
@@ -148,7 +179,7 @@
                                     <input id="location" class="form-control" placeholder="Location Name" name="location" value="{{ $delivery_data->other_location}}" type="text">
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_order" class="table table-hover">

@@ -203,7 +203,7 @@ class DeliveryOrderController extends Controller {
             $vat_price = $input_data['vat_price'];
         } else {
             $vat_price = 0;
-        }
+        }        
         $delivery_order = new DeliveryOrder();
         $delivery_order->order_id = 0;
         $delivery_order->order_source = 'warehouse';
@@ -215,14 +215,14 @@ class DeliveryOrderController extends Controller {
         $delivery_order->remarks = $input_data['order_remark'];
         $delivery_order->vehicle_number = $input_data['vehicle_number'];
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
-        $delivery_order->order_status = "Pending";
+        $delivery_order->order_status = "Pending";       
         if (isset($input_data['add_order_location']) && ($input_data['add_order_location'] == "other")) {
             $delivery_order->other_location = $input_data['other_location_name'];
             $delivery_order->location_difference = $input_data['location_difference'];
         } else {
             $delivery_order->delivery_location_id = $input_data['add_order_location'];
             $delivery_order->location_difference = $input_data['location_difference'];
-        }
+        }        
         $delivery_order->save();
         $delivery_order_id = $delivery_order->id;
         $order_products = array();
@@ -391,7 +391,10 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => isset($input_data['order_remark']) ? $input_data['order_remark'] : '',
             'vehicle_number' => $input_data['vehicle_number'],
-            'driver_contact_no' => $input_data['driver_contact'],            
+            'driver_contact_no' => $input_data['driver_contact'],  
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ));
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {

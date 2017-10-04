@@ -89,20 +89,59 @@
                                 @else
                                 <tr>
                                     <td>
-                                        <span><b>Delivery Location</b>: </span>
+                                        <span><b>Delivery Location :</b> </span>
                                         {{$order->other_location}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span><b>Delivery Location Difference</b>: </span>
-                                        {{$order->location_difference}}
-                                        <input type="hidden" name="add_order_location" value="other" id="add_order_location">
-                                        <input type="hidden" name="location_difference" value="{{$order->location_difference}}" id="location_difference">
+                                        <span><b>Delivery Location Difference :</b> </span>
+                                        {{$order->location_difference}}                                       
                                     </td>
                                 </tr>
                                 @endif
-                                </tr>
+                                @if($order->discount > 0)
+                                    <tr>
+                                        <td>
+                                            <span><b>Discount/Premium :</b> </span>
+                                            {{$order->discount_type}} 
+                                            <input type="hidden" id="discount_type" name="discount_type" value="{{$order->discount_type}}" >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><b>Fixed/Percentage :</b> </span>
+                                            {{$order->discount_unit}}
+                                            <input type="hidden" id="discount_unit" name="discount_unit" value="{{$order->discount_unit}}" >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><b>Value</b> : </span>
+                                            {{$order->discount}}
+                                            <input type="hidden" id="discount" name="discount" value="{{$order->discount}}" >
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td>
+                                            <span><b>Discount/Premium :</b> </span>
+                                            <input type="hidden" id="discount_type" name="discount_type" value="{{$order->discount_type}}" >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><b>Fixed/Percentage :</b> </span>
+                                            <input type="hidden" id="discount_unit" name="discount_unit" value="{{$order->discount_unit}}" >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><b>Value</b> : </span>
+                                            <input type="hidden" id="discount" name="discount" value="{{$order->discount}}" >
+                                        </td>
+                                    </tr>                                    
+                                @endif
                             </tbody>
                         </table>
                         <div class="inquiry_table col-md-12">

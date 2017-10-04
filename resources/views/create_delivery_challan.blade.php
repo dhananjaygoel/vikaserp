@@ -62,6 +62,30 @@
                             </td>
                             <input type="hidden" name="location_difference" value="{{$delivery_data->location_difference}}" id="location_difference">
                         </div>
+                        @if($delivery_data->discount > 0)
+                            <div class="form-group">
+                                <span>Discount/Premium : </span>
+                                {{$delivery_data->discount_type}}                                 
+                            </div>
+                            <div class="form-group">                                    
+                                <span>Fixed/Percentage : </span>
+                                {{$delivery_data->discount_unit}}                                
+                            </div>
+                            <div class="form-group">                                    
+                                <span>Value : </span>
+                                {{$delivery_data->discount}}                                
+                            </div>
+                        @else
+                            <div class="form-group">                                
+                                <span>Discount/Premium : </span>                                    
+                            </div>
+                            <div class="form-group">                                     
+                                <span>Fixed/Percentage :</span>                                    
+                            </div>
+                            <div class="form-group">                                    
+                                 <span>Value : </span>                                    
+                            </div>
+                        @endif
                         <hr>
                         <div class="form-group row">
                             <span class="col-md-2">Empty Truck Weight(Kg):</span> 

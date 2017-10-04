@@ -351,6 +351,9 @@ class PurchaseOrderController extends Controller {
             'expected_delivery_date' => $expected_delivery_date,
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ];
 
         if ($input_data['purchase_order_location'] > 0) {
@@ -652,7 +655,10 @@ class PurchaseOrderController extends Controller {
             'vat_percentage' => $vat_percentage,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
-            'order_status' => "pending"
+            'order_status' => "pending",
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ];
         /*
          * ------------------- --------------
