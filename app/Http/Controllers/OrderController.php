@@ -1369,6 +1369,9 @@ class OrderController extends Controller {
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
             $delivery_order->driver_contact_no = $input_data['driver_contact'];
             $delivery_order->order_status = 'Pending';
+            $delivery_order->discount_type = $input_data['discount_type'];
+            $delivery_order->discount_unit = $input_data['discount_unit'];
+            $delivery_order->discount = $input_data['discount'];
             if ($order->other_location == '') {
                 $delivery_order->delivery_location_id = $order->delivery_location_id;
                 $delivery_order->other_location = '';
