@@ -48,7 +48,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index(PlaceOrderRequest $request) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -970,19 +970,19 @@ class OrderController extends Controller {
             if ($flag == 1) {
 
                 if (Input::has('way') && Input::get('way') == 'reject') {
-                    
+
                     $ord = Order::find($id);
                     $customer = Customer::with('manager')->find($ord->customer_id);
                     if (count($customer) > 0) {
                         $total_quantity = '';
                         $str = '';
 
-                        $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->where('order_type','order')->get();
+                        $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->where('order_type', 'order')->get();
 
                         foreach ($input_data as $product_data) {
 
                             if ($product_data['order_product_details']->alias_name != "") {
-                                $product = ProductSubCategory::find($product_data['id']);                                
+                                $product = ProductSubCategory::find($product_data['id']);
                                 $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                                 if ($product_data['units'] == 1) {
                                     $total_quantity = $total_quantity + $product_data['quantity'];
@@ -1003,7 +1003,18 @@ class OrderController extends Controller {
                         }
                         if ($sms_flag == 1) {
                             $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nAdmin has rejected your order for following items \n";
+                            foreach ($input_data as $product_data) {
+
+                                if ($product_data['order_product_details']->alias_name != "") {
+                                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
+                                    $total_quantity = $total_quantity + $product_data['quantity'];
+                                }
+                            }
                             $str .= "\nVIKAS ASSOCIATES";
+                            echo "<pre>";
+                            print_r($str);
+                            echo "</pre>";
+                            exit;
                             if (App::environment('development')) {
                                 $phone_number = Config::get('smsdata.send_sms_to');
                             } else {
@@ -1120,7 +1131,7 @@ class OrderController extends Controller {
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] <> '0.00') {
                 $sms_flag = 1;
             }
-        }        
+        }
         /**/
 
         /*
@@ -1130,7 +1141,7 @@ class OrderController extends Controller {
          */
 
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-        if ($sms_flag == 1) {           
+        if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
@@ -1313,7 +1324,7 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
-        
+
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
