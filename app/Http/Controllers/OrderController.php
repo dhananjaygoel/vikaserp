@@ -1010,11 +1010,8 @@ class OrderController extends Controller {
                                     $total_quantity = $total_quantity + $product_data['quantity'];
                                 }
                             }
-                            $str .= "\nVIKAS ASSOCIATES";
-                            echo "<pre>";
-                            print_r($str);
-                            echo "</pre>";
-                            exit;
+                            $str .= "\nVIKAS ASSOCIATES";                            
+                           
                             if (App::environment('development')) {
                                 $phone_number = Config::get('smsdata.send_sms_to');
                             } else {
