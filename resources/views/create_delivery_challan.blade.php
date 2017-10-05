@@ -72,7 +72,7 @@
                                 {{$delivery_data->discount_unit}}                                
                             </div>
                             <div class="form-group">                                    
-                                <span>Value : </span>
+                                <span>Amount : </span>
                                 {{$delivery_data->discount}}                                
                             </div>
                         @else
@@ -83,7 +83,7 @@
                                 <span>Fixed/Percentage :</span>                                    
                             </div>
                             <div class="form-group">                                    
-                                 <span>Value : </span>                                    
+                                 <span>Amount : </span>                                    
                             </div>
                         @endif
                         <hr>
