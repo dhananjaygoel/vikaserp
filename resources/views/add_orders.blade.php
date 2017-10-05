@@ -166,28 +166,22 @@
                                         
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="location">Discount/Premium:</label>
-                                        @if(Auth::user()->role_id <> 5)
+                                        <label for="location">Discount/Premium:</label>                                        
                                         <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
                                             <option value="discount" selected="">Discount</option>
                                             <option value="premium">Premium</option>
-                                        </select>
-                                        @endif
+                                        </select>                                        
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="location">Fixed/Percentage:</label>
-                                        @if(Auth::user()->role_id <> 5)
+                                        <label for="location">Fixed/Percentage:</label>                                        
                                         <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
                                             <option value="fixed" selected="">Fixed</option>
                                             <option value="percent">Percent</option>
-                                        </select>
-                                        @endif
+                                        </select>                                        
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="discount">Amount</label>
-                                          @if(Auth::user()->role_id <> 5)
-                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
-                                          @endif
+                                        <label for="discount">Amount</label>                                         
+                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                          
                                     </div>
                                 </div>
                             </div>
