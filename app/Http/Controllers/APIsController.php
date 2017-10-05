@@ -1995,14 +1995,12 @@ class APIsController extends Controller {
             }
             /* end of new code */
             $last_sync_date = Input::get('purchase_advice_sync_date');
-            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products','purchase_order')->get();
-            $purchase_advice_test = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_order')->get();
+            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products','purchase_order')->get();            
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
             $purchase_advice_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
-            $purchase_advice_response['customer_server_test'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
             /* Send New customers */
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_advice_response['customer_server_added'] = ($purchase_advice_test && count($purchase_advice_test) > 0) ? $purchase_advice_test : array();            
@@ -2011,11 +2009,7 @@ class APIsController extends Controller {
             $purchase_advice_server = PurchaseAdvise::with('purchase_products','purchase_order')
                     ->where('advice_status', 'in_process')
                     ->get();
-            $purchase_advice_test = PurchaseAdvise::with('purchase_order')
-                    ->where('advice_status', 'in_process')
-                    ->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
-            $purchase_advice_response['purchase_advice_test'] = ($purchase_advice_test && count($purchase_advice_test) > 0) ? $purchase_advice_test : array();
         }
         $purchase_advice_response['latest_date'] = $real_sync_date->sync_date;
         return json_encode($purchase_advice_response);
