@@ -1689,6 +1689,9 @@ class APIsController extends Controller {
             $purchase_order->remarks = $value->remarks;
             $purchase_order->order_status = $value->order_status;
             $purchase_order->is_view_all = $value->is_view_all;
+            $purchase_order->discount_type = ($value->discount_type != '') ? $value->discount_type : '';
+            $purchase_order->discount_unit = ($value->discount_unit != '') ? $value->discount_unit : '';
+            $purchase_order->discount = isset($value->discount) ? $value->discount : '0';
             if ($value->delivery_location_id > 0) {
                 $purchase_order->delivery_location_id = $value->delivery_location_id;
             } else {
@@ -1992,7 +1995,7 @@ class APIsController extends Controller {
             }
             /* end of new code */
             $last_sync_date = Input::get('purchase_advice_sync_date');
-            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products')->get();
+            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products','purchase_order')->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
             /* Send Updated customers */
@@ -2003,7 +2006,7 @@ class APIsController extends Controller {
             $purchase_advice_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_advice_server = PurchaseAdvise::with('purchase_products')->get();
-            $purchase_advice_server = PurchaseAdvise::with('purchase_products')
+            $purchase_advice_server = PurchaseAdvise::with('purchase_products','purchase_order')
                     ->where('advice_status', 'in_process')
                     ->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
