@@ -24,10 +24,17 @@
                     </a>
                     <a href="{{url('bulk_set_price')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Bulk Set Price
-                    </a>
-                    @endif
+                    </a>                    
+                    @endif                      
                     <form method="GET" id="searchCustomerForm">
-                        <div class="input-group col-md-3 pull-right">
+                        <div class="col-md-2 pull-right">                                                          
+                            <select class="form-control" id="customer_filter" name="customer_filter" onchange="this.form.submit();">
+                                <option value="" selected="">-- Customer Type --</option>
+                                <option <?php if (Input::get('customer_filter') == 'customer') echo 'selected=""'; ?> value="customer">Customers</option>
+                                <option <?php if (Input::get('customer_filter') == 'supplier') echo 'selected=""'; ?> value="supplier">Suppliers</option>
+                            </select>                                
+                        </div>
+                        <div class="input-group col-md-2 pull-right">
                             <input type="text" class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
@@ -37,10 +44,10 @@
                                                     <input class="form-control" name="search" id="search" placeholder="Tally Name, City, Delivery Location" value="{{Request::get('search')}}" type="text">
                                                     <i onclick="submit_filter_form();" class="fa fa-search search-icon"></i>
                                                 </div>-->
-                    </form>
+                    </form>                    
                 </div>
             </div>
-        </div>
+        </div>          
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -156,11 +163,17 @@
                             </table>
                             <span class="pull-right">
                                 <?php
-                                if (isset($_GET['search']) && Request::get('search') != '') {
-                                    echo $customers->appends(array('search' => Request::get('search')))->render();
-                                } else {
-                                    echo $customers->render();
-                                }
+                                                                    
+//                                if((isset($_GET['search']) && Request::get('search') != '') && (isset($_GET['customer_filter']) && Request::get('customer_filter') != '')) {
+//                                    echo $customers->appends(array('search' => Request::get('search')))->render();
+//                                } elseif (isset($_GET['search']) && Request::get('search') != '') {
+//                                    echo $customers->appends(array('search' => Request::get('search')))->render();
+//                                } else if (isset($_GET['customer_filter']) && Request::get('customer_filter') != '') {
+//                                    echo $customers->appends(array('search' => Request::get('customer_filter')))->render();
+//                                } else{
+//                                    echo $customers->render();
+//                                }
+                                 echo $customers->appends(Input::except('page'))->render();
                                 ?>
                             </span>
                             <span class="clearfix"></span>
@@ -186,7 +199,7 @@
                             <strong> Currently No customers found </strong>
                         </div>
                         @endif
-                    </div>
+                    </div>                      
                 </div>
             </div>
         </div>

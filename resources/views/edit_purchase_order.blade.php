@@ -123,6 +123,32 @@
                     @endif
                     <div class="inquiry_table col-md-12" >
                         <div class="table-responsive">
+                            <div class="form-group ">
+                                <div class="col-md-4">
+                                    <label for="location">Discount/Premium:</label>
+                                    @if(Auth::user()->role_id <> 5)
+                                    <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
+                                        <option value="discount" {{($purchase_order->discount_type == "discount")?'selected':''}}>Discount</option>
+                                        <option value="premium" {{($purchase_order->discount_type == "premium")?'selected':''}}>Premium</option>
+                                    </select>
+                                    @endif
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="location">Fixed/Percentage:</label>
+                                    @if(Auth::user()->role_id <> 5)
+                                    <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
+                                        <option value="fixed" {{($purchase_order->discount_unit == "fixed")?'selected':''}}>Fixed</option>
+                                        <option value="percent" {{($purchase_order->discount_unit== "percent")?'selected':''}}>Percent</option>
+                                    </select>
+                                    @endif
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="discount">Amount</label>
+                                      @if(Auth::user()->role_id <> 5)
+                                        <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$purchase_order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
+                                      @endif
+                                </div>
+                            </div>
                             <table id="add_product_table" class="table table-hover">
                                 <tbody>
                                     <tr class="headingunderline">
@@ -182,7 +208,7 @@
                                         ?>
                                         @foreach($purchase_order['purchase_products'] as $key=>$product)
                                         @if($product->order_type == 'purchase_order')
-                                        <tr id="add_row_{{$key}}" class="add_product_row">
+                                        <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
                                                 <div class="form-group searchproduct">
                                                     <input class="form-control each_product_detail" placeholder="Enter Product name " data-productid="{{$key}}" type="text" name="product[{{$key}}][name]" id="add_purchase_product_name_{{$key}}" value="{{$product['purchase_product_details']->alias_name}}" onfocus="product_autocomplete_purchase({{$key}});">

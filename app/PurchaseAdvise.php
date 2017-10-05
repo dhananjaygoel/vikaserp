@@ -38,6 +38,10 @@ class PurchaseAdvise extends Model {
     public function purchase_products() {
         return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id')->with('product_sub_category')->where('order_type', '=', 'purchase_advice')->where('product_category_id', '>', '0');
     }
+    
+    public function purchase_order() {
+        return $this->hasMany('App\PurchaseOrder','id','purchase_order_id');
+    }
 
     public static $store_purchase_validation = array(
         'bill_date' => 'required',

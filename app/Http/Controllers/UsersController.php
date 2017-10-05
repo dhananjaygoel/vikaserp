@@ -17,6 +17,7 @@ use Input;
 use DB;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UpdateUser;
+use Illuminate\Database\Eloquent\Collection;
 
 //use Jenssegers\Agent\Agent;
 
@@ -218,5 +219,61 @@ class UsersController extends Controller {
             return redirect('users')->with('error', 'Unable to update the user details ');
         }
     }
-
+    
+    public function get_do_vehicle_list() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
+       
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        if (Input::get('search') != '') {
+            $term = '%' . Input::get('search') . '%';
+            $do_vehicle_list = \App\DeliveryOrder::where('order_status','=',"pending")
+                                                  ->where('vehicle_number','!=',"")->select('vehicle_number')
+                                                  ->orderBy('updated_at', 'desc')
+                                                  ->where('vehicle_number','like', $term)->paginate(20);            
+        }else{
+            $do_vehicle_list = \App\DeliveryOrder::where('order_status','=',"pending")
+                                                 ->where('vehicle_number','!=',"")                                                 
+                                                 ->select('vehicle_number')
+                                                 ->orderBy('updated_at', 'desc')->paginate(20);           
+        }       
+//        dd($pa_vehicle_list);       
+        $do_vehicle_list->setPath('vehicle-list');
+//        $pa_vehicle_list->setPath('vehicle-list');              
+        
+        return view('do_vehicle_list', compact('do_vehicle_list','pa_vehicle_list'));
+    }
+    
+    public function get_pa_vehicle_list() {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
+       
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        if (Input::get('search') != '') {
+            $term = '%' . Input::get('search') . '%';            
+            $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")->select('vehicle_number')
+                                                    ->where('vehicle_number','like', $term)   
+                                                    ->where('vehicle_number','!=',"")
+                                                    ->orderBy('updated_at', 'desc')
+                                                    ->select('vehicle_number')->paginate(20);
+        }else{            
+            $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")
+                                                    ->orderBy('updated_at', 'desc')
+                                                    ->select('vehicle_number')->paginate(20);
+        }       
+//        dd($pa_vehicle_list);       
+        $pa_vehicle_list->setPath('pa-vehicle-list');
+//        $pa_vehicle_list->setPath('vehicle-list');              
+        
+        return view('pa_vehicle_list', compact('pa_vehicle_list'));
+    }
+    
 }

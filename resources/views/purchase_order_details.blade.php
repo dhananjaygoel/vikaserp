@@ -28,7 +28,7 @@
                             <div class="table-responsive">
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
-                                        <tr><td><span>Supplier Name:</span>
+                                        <tr><td><span>Order From:</span>
                                                 @if($purchase_orders['customer']->owner_name != "" && $purchase_orders['customer']->tally_name != "")
                                                 {{$purchase_orders['customer']->owner_name}}{{'-'.$purchase_orders['customer']->tally_name}}
                                                 @else
@@ -36,6 +36,20 @@
                                                 @endif
 
                                             </td></tr>
+                                        @if($purchase_orders->order_for == 0)
+                                        <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
+                                        @elseif($purchase_orders->order_for != 0)                                        
+                                        @foreach($customers as $customer)
+                                        @if($customer->id == $purchase_orders->order_for)
+                                        <tr>
+                                            <td>
+                                                <span><b>Order For:</b></span>
+                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                        @endif
                                         <?php if ($purchase_orders['customer']->contact_person != '') { ?>
                                             <tr><td><span>Contact Person:</span>{{$purchase_orders['customer']->contact_person}}</td></tr>
                                         <?php } ?>
@@ -44,7 +58,42 @@
                                         @if($purchase_orders['customer']->credit_period > 0 || $purchase_orders['customer']->credit_period != "")
                                         <tr> <td><span>Credit Period(Days): </span>{{$purchase_orders['customer']->credit_period}}</td></tr>
                                         @endif
-
+                                        @if($purchase_orders->discount > 0)
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                    {{$purchase_orders->discount_type}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                    {{$purchase_orders->discount_unit}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount</b> : </span>
+                                                    {{$purchase_orders->discount}}                                            
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount :</b> </span>
+                                                </td>
+                                            </tr>                                    
+                                        @endif
                                         <tr><td><span class="underline">Ordered Product Details </span></td>
                                     </tbody>
                                 </table>

@@ -728,7 +728,7 @@ class APIsController extends Controller {
                     $customer_list[$value->id] = $add_customers->id;
                 }
                 $delivery_order->order_id = ($value->server_order_id > 0) ? $value->server_order_id : 0;
-                $delivery_order->order_source = 'warehouse';
+                $delivery_order->order_source = isset($value->order_source) ? $value->order_source : '0';
                 $delivery_order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $delivery_order->created_by = 1;
 //                $delivery_order->vat_percentage = ($value->vatPercentage > 0 ) ? $value->vatPercentage : '';
@@ -739,6 +739,9 @@ class APIsController extends Controller {
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
                 $delivery_order->driver_contact_no = ($value->driver_contact_no != '') ? $value->driver_contact_no : '';
                 $delivery_order->order_status = $value->order_status;
+                $delivery_order->discount_type = ($value->discount_type != '') ? $value->discount_type : '';
+                $delivery_order->discount_unit = ($value->discount_unit != '') ? $value->discount_unit : '';
+                $delivery_order->discount = isset($value->discount) ? $value->discount : '0';
                 if ($value->delivery_location_id > 0) {
                     $delivery_order->delivery_location_id = $value->delivery_location_id;
                     $delivery_order->location_difference = $value->location_difference;
@@ -748,6 +751,7 @@ class APIsController extends Controller {
                 }
                 $delivery_order->empty_truck_weight = isset($value->empty_truck_weight) ? $value->empty_truck_weight : '0';
                 $delivery_order->final_truck_weight = isset($value->final_truck_weight) ? $value->final_truck_weight : '0';
+                $delivery_order->supplier_id = isset($value->server_supplier_id) ? $value->server_supplier_id : '0';
                 $delivery_order->save();
                 $delivery_order_id = $delivery_order->id;
                 $delivery_order_products = array();
@@ -793,7 +797,7 @@ class APIsController extends Controller {
                 if ($value->order_id == 0) {
                     $delivery_order->order_id = 0;
                 }
-                $delivery_order->order_source = 'warehouse';
+                $delivery_order->order_source = isset($value->order_source) ? $value->order_source : '0';
                 $delivery_order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $delivery_order->created_by = 1;
 //                $delivery_order->vat_percentage = ($value->vatPercentage > 0 ) ? $value->vatPercentage : '';
@@ -803,6 +807,9 @@ class APIsController extends Controller {
                 $delivery_order->vehicle_number = ($value->vehicle_number != '') ? $value->vehicle_number : '';
                 $delivery_order->driver_contact_no = ($value->driver_contact_no != '') ? $value->driver_contact_no : '';
                 $delivery_order->order_status = $value->order_status;
+                $delivery_order->discount_type = ($value->discount_type != '') ? $value->discount_type : '';
+                $delivery_order->discount_unit = ($value->discount_unit != '') ? $value->discount_unit : '';
+                $delivery_order->discount = isset($value->discount) ? $value->discount : '0';
                 if ($value->delivery_location_id > 0) {
                     $delivery_order->delivery_location_id = $value->delivery_location_id;
                     $delivery_order->location_difference = $value->location_difference;
@@ -1074,6 +1081,9 @@ class APIsController extends Controller {
                     $order->other_location = $value->other_location;
                     $order->location_difference = $value->other_location_difference;
                 }
+                $order->discount_type = $value->discount_type;
+                $order->discount_unit = $value->discount_unit;
+                $order->discount = $value->discount;
                 $order->is_approved = 'yes';
                 $order->save();
                 $order_id = $order->id;
@@ -1129,6 +1139,9 @@ class APIsController extends Controller {
                     $order->other_location = $value->other_location;
                     $order->location_difference = $value->other_location_difference;
                 }
+                $order->discount_type = $value->discount_type;
+                $order->discount_unit = $value->discount_unit;
+                $order->discount = $value->discount;
                 $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
@@ -1676,6 +1689,9 @@ class APIsController extends Controller {
             $purchase_order->remarks = $value->remarks;
             $purchase_order->order_status = $value->order_status;
             $purchase_order->is_view_all = $value->is_view_all;
+            $purchase_order->discount_type = ($value->discount_type != '') ? $value->discount_type : '';
+            $purchase_order->discount_unit = ($value->discount_unit != '') ? $value->discount_unit : '';
+            $purchase_order->discount = isset($value->discount) ? $value->discount : '0';
             if ($value->delivery_location_id > 0) {
                 $purchase_order->delivery_location_id = $value->delivery_location_id;
             } else {
@@ -1979,7 +1995,7 @@ class APIsController extends Controller {
             }
             /* end of new code */
             $last_sync_date = Input::get('purchase_advice_sync_date');
-            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products')->get();
+            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products','purchase_order')->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
             /* Send Updated customers */
@@ -1990,7 +2006,7 @@ class APIsController extends Controller {
             $purchase_advice_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
 //            $purchase_advice_server = PurchaseAdvise::with('purchase_products')->get();
-            $purchase_advice_server = PurchaseAdvise::with('purchase_products')
+            $purchase_advice_server = PurchaseAdvise::with('purchase_products','purchase_order')
                     ->where('advice_status', 'in_process')
                     ->get();
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
@@ -2297,7 +2313,7 @@ class APIsController extends Controller {
             /* end of new code */
 
             $last_sync_date = Input::get('purchase_challan_sync_date');
-            $purchase_challan_server = PurchaseChallan::where('order_status', 'pending')->with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->get();
+            $purchase_challan_server = PurchaseChallan::where('order_status', 'pending')->with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour','purchase_order')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
@@ -2306,7 +2322,7 @@ class APIsController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $purchase_challan_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $purchase_challan_server = PurchaseChallan::with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->where('order_status', 'pending')->get();
+            $purchase_challan_server = PurchaseChallan::with('all_purchase_products', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour','purchase_order')->where('order_status', 'pending')->get();
             $purchase_challan_response['purchase_challan_server_added'] = ($purchase_challan_server && count($purchase_challan_server) > 0) ? $purchase_challan_server : array();
         }
         $purchase_challan_response['latest_date'] = $real_sync_date->sync_date;

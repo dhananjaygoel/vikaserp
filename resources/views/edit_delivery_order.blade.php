@@ -32,6 +32,16 @@
                         {!!Form::open(array('data-button'=>'btn_edit_delivery_order','method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
+                        @if($delivery_data->order_source == 'supplier')
+                            <div class="form-group">
+                                <label for="cn"><b>Supplier Name: </b> 
+                                    @foreach($customers as $customer)
+                                        @if($customer->id == $delivery_data->supplier_id)                                                                                                    
+                                            {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                        @endif
+                                    @endforeach
+                            </div>
+                        @endif
                         @if($delivery_data['customer']->customer_status =="pending")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
@@ -128,8 +138,39 @@
                                     <label for="location">Freight</label>
                                     <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight " onkeypress=" return numbersOnly(this,event,true,true);" name="location_difference" value="{{ $delivery_data->location_difference}}" type="tel" tabindex="3" >
                                 </div>
+                                
                             </div>
                         </div>
+                        @if($delivery_data->discount > 0)
+                            <div class="form-group">
+                                <label><b>Discount/Premium :</b> </label>
+                                {{$delivery_data->discount_type}} 
+                                <input type="hidden" id="discount_type" name="discount_type" value="{{$delivery_data->discount_type}}" >                                        
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Fixed/Percentage :</b> </label>
+                                    {{$delivery_data->discount_unit}}
+                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$delivery_data->discount_unit}}" >                                        
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>
+                                    {{$delivery_data->discount}}
+                                    <input type="hidden" id="discount_amount" name="discount" value="{{$delivery_data->discount}}" >                                        
+                            </div>
+                        @else
+                            <div class="form-group">                                
+                                <label><b>Discount/Premium :</b> </label>
+                                    <input type="hidden" id="discount_type" name="discount_type" value="{{$delivery_data->discount_type}}" >
+                            </div>
+                            <div class="form-group">                                     
+                                     <label><b>Fixed/Percentage :</b> </label>
+                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$delivery_data->discount_unit}}" >
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>
+                                    <input type="hidden" id="discount_amount" name="discount" value="{{$delivery_data->discount}}" >
+                            </div>
+                        @endif
                         <div class="clearfix"></div>
                         <div class="locationtext"<?php if ($delivery_data->delivery_location_id == 0) echo 'style="display:block;"'; ?>>
                             <div class="row">
@@ -138,7 +179,7 @@
                                     <input id="location" class="form-control" placeholder="Location Name" name="location" value="{{ $delivery_data->other_location}}" type="text">
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_order" class="table table-hover">

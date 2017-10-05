@@ -208,7 +208,7 @@ class DeliveryOrderController extends Controller {
             $vat_price = $input_data['vat_price'];
         } else {
             $vat_price = 0;
-        }
+        }        
         $delivery_order = new DeliveryOrder();
         $delivery_order->order_id = 0;
         $delivery_order->order_source = 'warehouse';
@@ -220,14 +220,14 @@ class DeliveryOrderController extends Controller {
         $delivery_order->remarks = $input_data['order_remark'];
         $delivery_order->vehicle_number = $input_data['vehicle_number'];
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
-        $delivery_order->order_status = "Pending";
+        $delivery_order->order_status = "Pending";       
         if (isset($input_data['add_order_location']) && ($input_data['add_order_location'] == "other")) {
             $delivery_order->other_location = $input_data['other_location_name'];
             $delivery_order->location_difference = $input_data['location_difference'];
         } else {
             $delivery_order->delivery_location_id = $input_data['add_order_location'];
             $delivery_order->location_difference = $input_data['location_difference'];
-        }
+        }        
         $delivery_order->save();
         $delivery_order_id = $delivery_order->id;
         $order_products = array();
@@ -371,7 +371,7 @@ class DeliveryOrderController extends Controller {
         } else {
             $vat_price = 0;
         }
-
+        
         $delivery_location = 0;
         $location = "";
         $other_location_difference = "";
@@ -396,7 +396,10 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => isset($input_data['order_remark']) ? $input_data['order_remark'] : '',
             'vehicle_number' => $input_data['vehicle_number'],
-            'driver_contact_no' => $input_data['driver_contact']
+            'driver_contact_no' => $input_data['driver_contact'],  
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ));
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -1047,6 +1050,15 @@ class DeliveryOrderController extends Controller {
                 DeliveryOrder::where('id', $id)->update(['empty_truck_weight' => $empty_truck_weight]);
             }
         }
+        if (Input::has('vehicle_number')) {
+            $vehicle_number = Input::get('vehicle_number');
+            if ($vehicle_number!= "") {
+                DeliveryOrder::where('id', $id)->update(['vehicle_number' => $vehicle_number]);
+            }
+        }
+        if (Input::has('customer_type')) {
+            $customer_type = Input::get('customer_type');
+        }
 
         $current_date = date("m/d/");
         $sms_flag = 0;
@@ -1094,6 +1106,7 @@ class DeliveryOrderController extends Controller {
         $pdf->loadView('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
+            'customer_type' => $customer_type,
 //            'delivery_locations' => $delivery_locations,
 //            'customers' => $customers
         ]);
@@ -1184,7 +1197,7 @@ class DeliveryOrderController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        return view('print_delivery_order', compact('delivery_data', 'units'));
+        return view('print_delivery_order', compact('delivery_data', 'units','customer_type'));
     }
 
     /*

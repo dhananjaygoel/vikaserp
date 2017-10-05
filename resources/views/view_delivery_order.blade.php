@@ -31,15 +31,29 @@
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
+                                    @if($delivery_data->order_source == 'warehouse')
+                                        <tr><td><span><b>Order From: </b></span> Warehouse</td></tr>
+                                    @elseif($delivery_data->order_source == 'supplier')
                                     <tr>
-                                        <td><span>Tally Name:</span>
+                                        <td><span>Order From:</span>                                                                                
+                                            @foreach($customers as $customer)
+                                            @if($customer->id == $delivery_data->supplier_id)                                                                                                    
+                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                            @endif
+                                            @endforeach
+                                        
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    <tr>
+                                        <td><span>Order For:</span>
                                             @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
                                             {{ $delivery_data['customer']->owner_name }}-{{$delivery_data['customer']->tally_name}}
                                             @else
                                             {{ $delivery_data['customer']->owner_name }}
                                             @endif
                                         </td>
-                                    </tr>
+                                    </tr>                                    
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
                                     <tr>
                                         <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
@@ -65,12 +79,48 @@
                                             @endforeach
                                             @endif
                                         </td>
-                                    </tr>
+                                    </tr>                                   
                                     <tr>
                                         <td><span>Delivery Freight: </span>
                                             {{$delivery_data->location_difference}}
                                         </td>
                                     </tr>
+                                    @if($delivery_data->discount > 0)
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                                {{$delivery_data->discount_type}}                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                                {{$delivery_data->discount_unit}}                                            
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                                {{$delivery_data->discount}}                                            
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                            </td>
+                                        </tr>                                    
+                                    @endif
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>

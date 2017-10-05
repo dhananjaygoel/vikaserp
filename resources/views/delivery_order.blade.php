@@ -228,7 +228,7 @@
 
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" onclick="print_challan_do(this)">
+                                            <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -306,10 +306,17 @@
                                                 </div>
                                                 <hr>
                                                 <div class="col-md-3">
-                                                    <label><span title="Empty Truck Weight" class="smstooltip">Empty Truck Weight (Kg)</span></label>
+                                                    <label><span title="Empty Truck Weight" class="smstooltip empty_truck_weight_title">Empty Truck Weight (Kg)</span></label>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <input type="text" id="empty_truck_weight" value="" class="form-control empty_truck_weight" name="empty_truck_weight" maxlength="10" onkeypress=" return numbersOnly(this,event,false,false);" >
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="col-md-3">
+                                                    <label><span title="Vehicle Number" class="smstooltip ">Vehicle Number</span></label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
                                                 </div>
                                                 <div class="checkbox col-md-12">
                                                     <label><input type="checkbox" id="checksms" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>

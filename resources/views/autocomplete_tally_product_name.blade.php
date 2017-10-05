@@ -1020,7 +1020,7 @@
     }) !!} --}}
                 fac();
 //  --------------------------------------Dynamic delivery order product name---------------------------------------------           
-            $("#add_product_row_delivery_order").on("click", function () {
+            $("#add_product_row_delivery_order").on("click", function () {               
     var current_row_count = $(".add_product_row").length + 2;
             $.ajax({
             type: "GET",
@@ -1685,10 +1685,16 @@ $.widget("custom.combobox1", {
                     }else{
                     var term = $.trim(ui.item.value);
                     term = term.split(" (")[0];
-                 
+                    var location_difference = $('#location_difference').val();
+                    var discount_type = $('#discount_type').val();
+                    var discount_unit = $('#discount_unit').val();
+                    var discount = $('#discount_amount').val();
+                    if(discount==""){
+                        discount = 0;
+                    }
                     $.ajax({
                             url: baseurl + '/fetch_products',
-                            data: {"term": term},
+                            data: {"term": term,'location_difference':location_difference,'discount_type':discount_type,'discount_unit':discount_unit,'discount':discount},
                             cache: true,
                             success: function (data) { 
                                 var obj = jQuery.parseJSON(data);
@@ -1902,9 +1908,16 @@ function getProductDetails() {
                         var level = ui.item.level;
                         var term_type = ui.item.value;
                         var term_id = ui.item.id;
+                        var location_difference = $('#location_difference').val();
+                        var discount_type = $('#discount_type').val();
+                        var discount_unit = $('#discount_unit').val();
+                        var discount = $('#discount_amount').val();
+                        if(discount==""){
+                            discount = 0;
+                        }
                         $.ajax({
                             url: baseurl + '/fetch_products',
-                            data: {term: term,level:level, term_type: term_type,term_id:term_id},
+                            data: {term: term,level:level, term_type: term_type,term_id:term_id,location_difference:location_difference,discount_type:discount_type,discount_unit:discount_unit,discount:discount},
                             cache: true,
                             success: function (data) { 
                                 var obj = jQuery.parseJSON(data);
@@ -1915,12 +1928,19 @@ function getProductDetails() {
                             },
                         });
                     }else{
+//                    alert("hi");
                     var term = $.trim(ui.item.value);
                     term = term.split(" (")[0];
-                 
+                    var location_difference = $('#location_difference').val();
+                    var discount_type = $('#discount_type').val();
+                    var discount_unit = $('#discount_unit').val();
+                    var discount = $('#discount_amount').val();
+                    if(discount==""){
+                        discount = 0;
+                    }
                     $.ajax({
                             url: baseurl + '/fetch_products',
-                            data: {"term": term},
+                            data: {"term": term,'location_difference':location_difference,'discount_type':discount_type,'discount_unit':discount_unit,'discount':discount},
                             cache: true,
                             success: function (data) { 
                                 var obj = jQuery.parseJSON(data);

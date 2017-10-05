@@ -106,5 +106,20 @@ class Customer extends Model {
         $this->save();
         return $this;
     }
+    
+    public static $customers_rules = array(
+        'owner_name' => 'required|max:100',                        
+        'gstin_number' => 'required|min:2',                                        
+        'city' => 'required',
+        'state' => 'required',
+        'tally_name' => 'required|max:100',
+        'phone_number1' => 'required|integer|digits_between:10,15',
+//       'email' => 'required|email|unique:users',
+        'delivery_location' => 'required',
+        'password' => 'min:6|max:100',
+        'confirm_password' => 'min:6|max:100|same:password',
+    );
+    
+    
 
 }

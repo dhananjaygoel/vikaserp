@@ -170,6 +170,7 @@ class ProductsubController extends Controller {
         $ProductSubCategory = new ProductSubCategory();
         $ProductSubCategory->product_category_id = $request->input('select_product_categroy');
         $ProductSubCategory->alias_name = $request->input('alias_name');
+        $ProductSubCategory->hsn_code = $request->input('hsn_code');
         $ProductSubCategory->size = $request->input('size');
         $ProductSubCategory->weight = $request->input('weight');
         $ProductSubCategory->unit_id = $request->input('units');
@@ -197,6 +198,7 @@ class ProductsubController extends Controller {
                             "DT " . date("j M, Y") . "\n" .
                             Auth::user()->first_name . " has created a new size as "
                             . "'" . $request->input('size') . "', "
+                            . "'" . $request->input('hsn_code') . "', "
                             . "'" . $request->input('thickness') . "', "
                             . "'" . $request->input('weight') . "', "
                             . "'" . $request->input('alias_name') . "', "
@@ -287,6 +289,7 @@ class ProductsubController extends Controller {
             $pro_sub_cat = array(
                 'product_category_id' => $data['select_product_categroy'],
                 'size' => $data['size'],
+                'hsn_code' => $data['hsn_code'],
                 'weight' => $data['weight'],
                 'unit_id' => $data['units'],
                 'thickness' => $data['thickness'],
@@ -316,6 +319,7 @@ class ProductsubController extends Controller {
                                 . "'" . Auth::user()->first_name . "'"
                                 . " has updated a size category as "
                                 . "'" . $data['size'] . "' "
+                                . "'" . $data['hsn_code'] . "' "
                                 . "'" . $data['thickness'] . "' "
                                 . "'" . $data['weight'] . "' "
                                 . "'" . $data['alias_name'] . "' "

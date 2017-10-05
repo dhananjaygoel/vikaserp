@@ -700,21 +700,67 @@ function print_challan(delivery_order_id) {
     $('#print_delivery_order').val(delivery_order_id);
 }
 
-function print_challan_do(el) {
+function print_challan_do(el) {    
     $('#print_delivery_order').val(el.id);
     var empty_truck_weight = $(el).data('bind');
-    $('#empty_truck_weight').val(empty_truck_weight);   
+    var customer_type = $(el).data('customer_type');
+    var vehicle_number = $(el).data('vehicle_number');
+//    $('#print_delivery_order').data("customer_type",customer_type);
+    $('#print_delivery_order').attr("data-customer_type",customer_type);    
+    $('#empty_truck_weight').val(empty_truck_weight);
+    $('#vehicle_no').val(vehicle_number);
+    $('#vehicle_no').attr('value',vehicle_number);
+    if($('#vehicle_no').hasClass('error_validation')){        
+        $('#vehicle_no').removeClass('error_validation');
+    }
+    if($('#empty_truck_weight').hasClass('error_validation')){        
+        $('#empty_truck_weight').removeClass('error_validation');
+    }
+    if(customer_type=='supplier'){
+        $('#empty_truck_weight').css('display',"none");
+        $('.empty_truck_weight_title').css('display',"none");
+//        $('#vehicle_no').css('display',"none");
+    }else{
+        $('#empty_truck_weight').val(empty_truck_weight);
+        $('#empty_truck_weight').css('display',"block");
+        $('.empty_truck_weight_title').css('display',"block");
+//        $('#vehicle_no').css('display',"block");
+    }
 }
 /*
  * print challan to new page on delivery order  
  */
 $('.print_delivery_order').click(function () {
-    var empty_truck_weight = parseInt($('#empty_truck_weight').val()); 
-    if(empty_truck_weight == "0" | empty_truck_weight =="" | isNaN(empty_truck_weight)){
-        $('#empty_truck_weight').addClass('error_validation');
-        return false;
-    }   
-    
+    var empty_truck_weight = parseInt($('#empty_truck_weight').val());
+    var vehicle_number = $('#vehicle_no').val()
+    var customer_type = $(this).data('customer_type');    
+//    console.log(customer_type);
+    var flag = true;
+    if(customer_type=='supplier'){
+        $('#empty_truck_weight').attr('value',0)
+//        $('#vehicle_no').attr('value',0)
+        if(vehicle_number ==""){            
+            $('#vehicle_no').addClass('error_validation');
+            return false;            
+        }
+    }else{
+        if(empty_truck_weight == "0" | empty_truck_weight =="" | isNaN(empty_truck_weight)){
+            $('#empty_truck_weight').addClass('error_validation');
+            flag = false;
+        }else{
+            $('#empty_truck_weight').removeClass('error_validation');
+        }
+        if(vehicle_number ==""){            
+            $('#vehicle_no').addClass('error_validation');
+            flag = false;            
+        }else{
+            $('#vehicle_no').removeClass('error_validation');
+        }
+        if(flag==false){
+            return false;
+        }
+    }
+           
     $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
@@ -725,7 +771,7 @@ $('.print_delivery_order').click(function () {
 
     $.ajax({
         type: "GET",
-        data: {empty_truck_weight:empty_truck_weight},
+        data: {empty_truck_weight:empty_truck_weight,vehicle_number:vehicle_number,customer_type:customer_type},
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');
@@ -920,13 +966,22 @@ $('.print_purchase_challan').click(function () {
  * @param {type} purchase_advice_id
  * @returns {integer}
  */
-function print_purchase_advice(purchase_advice_id) {
+function print_purchase_advice(purchase_advice_id,vehicle_number) {
     $('#pa_id').val(purchase_advice_id);
+    $('#vehicle_no').val(vehicle_number);
+    if($('#vehicle_no').hasClass('error_validation')){        
+        $('#vehicle_no').removeClass('error_validation');
+    }
 }
 /*
  * print purchase advice
  */
-$('.print_purchase_advise').click(function () {
+$('.print_purchase_advise').click(function () {    
+    var vehicle_number = $('#vehicle_no').val()
+    if(vehicle_number ==""){            
+        $('#vehicle_no').addClass('error_validation');
+        return false;
+    }    
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
     var id = 0;
@@ -939,6 +994,7 @@ $('.print_purchase_advise').click(function () {
 
         $.ajax({
             type: "GET",
+            data: {vehicle_number:vehicle_number},
             url: base_url + '/print_purchase_advise/' + id + '?send_sms=' + send_sms,
             success: function (data) {
                 var printWindow = window.open('', '');

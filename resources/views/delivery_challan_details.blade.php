@@ -15,9 +15,25 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box">
-                    <div class="main-box-body clearfix">
+                    <div class="main-box-body clearfix">                        
+                        @if($allorder['delivery_order']->order_source == 'warehouse')                            
+                            <div class="form-group">
+                                <label><b>Order From:</b> Warehouse                                    
+                                </label>
+                            </div><hr>
+                        @elseif($allorder['delivery_order']->order_source == 'supplier')
                         <div class="form-group">
-                            <label><b>Tally Name:</b>
+                            <label><b>Order From:</b> 
+                                @foreach($customers as $customer)
+                                @if($customer->id == $allorder['delivery_order']->supplier_id)                                                                                                    
+                                    {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                @endif
+                                @endforeach
+                            </label>
+                        </div><hr>                        
+                        @endif
+                        <div class="form-group">
+                            <label><b>Order For:</b>
                                 {{($allorder->customer->tally_name != "")? $allorder->customer->tally_name : $allorder->customer->owner_name}}
                             </label>
                         </div><hr>
@@ -36,6 +52,30 @@
                                 {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
                             </label>
                         </div><hr>
+                        @if($allorder['delivery_order']->discount > 0)
+                            <div class="form-group">
+                                <label><b>Discount/Premium :</b> </label>
+                                {{$allorder['delivery_order']->discount_type}}                                 
+                            </div>
+                            <div class="form-group">                                    
+                                <label><b>Fixed/Percentage :</b> </label>
+                                {{$allorder['delivery_order']->discount_unit}}                                    
+                            </div>
+                            <div class="form-group">                                    
+                                <label><b>Amount :</b> </label>
+                                {{$allorder['delivery_order']->discount}}                                   
+                            </div>
+                        @else
+                            <div class="form-group">                                
+                                <label><b>Discount/Premium :</b> </label>                                    
+                            </div>
+                            <div class="form-group">                                     
+                                     <label><b>Fixed/Percentage :</b> </label>                                   
+                            </div>
+                            <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>                                    
+                            </div>
+                        @endif
                        
                         <div class="form-group">
                             <label><b><span class="underline">Product Details</span></b></label>

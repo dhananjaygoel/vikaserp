@@ -64,6 +64,51 @@
                                                     <input type="hidden" name="supplier_id" value="{{$purchase_orders['customer']->id}}">
                                                 </td>
                                             </tr>
+                                            @if($purchase_orders->discount > 0)
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Discount/Premium :</b> </span>                                                                                                
+                                                    </td>
+                                                    <td>{{$purchase_orders->discount_type}}</td>
+                                                    <input type="hidden" id="discount_type" name="discount_type" value="{{$purchase_orders->discount_type}}" >
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Fixed/Percentage :</b> </span>                                                    
+                                                    </td>
+                                                    <td>{{$purchase_orders->discount_unit}}</td>
+                                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$purchase_orders->discount_unit}}" >
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Amount :</b> </span>                                                    
+                                                    </td>
+                                                    <td>{{$purchase_orders->discount}}</td>
+                                                    <input type="hidden" id="discount_amount" name="discount" value="{{$purchase_orders->discount}}" >
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Discount/Premium :</b> </span>
+                                                        <input type="hidden" id="discount_type" name="discount_type" value="{{$purchase_orders->discount_type}}" >
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Fixed/Percentage :</b> </span>
+                                                        <input type="hidden" id="discount_unit" name="discount_unit" value="{{$purchase_orders->discount_unit}}" >
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span><b>Amount :</b> </span>
+                                                        <input type="hidden" id="discount_amount" name="discount" value="{{$purchase_orders->discount}}" >
+                                                    </td>
+                                                    <td></td>
+                                                </tr>                                    
+                                            @endif
                                         </tbody>
                                     </table>
                                     <table id="create_purchase_advise_table" class="table table-hover  ">

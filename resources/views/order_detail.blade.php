@@ -29,13 +29,13 @@
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
                                         @if($order->order_source == 'warehouse')
-                                        <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
+                                        <tr><td><span><b>Order From: </b></span> Warehouse</td></tr>
                                         @elseif($order->order_source == 'supplier')                                        
                                         @foreach($customers as $customer)
                                         @if($customer->id == $order->supplier_id)
                                         <tr>
                                             <td>
-                                                <span><b>Supplier Name:</b></span>
+                                                <span><b>Order From:</b></span>
                                                 {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
                                             </td>
                                         </tr>
@@ -46,7 +46,7 @@
                                         @if($customer->id == $order->customer_id)
                                         <tr>
                                             <td colspan="2">
-                                                <span><b>Tally Name:</b></span>
+                                                <span><b>Order For:</b></span>
                                                 {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
                                             </td>
                                         </tr>
@@ -55,10 +55,10 @@
                                         @if($customer->credit_period != "" || $customer->credit_period>0)
                                         <tr>
                                             <td><span><b>Credit Period(Days): </b></span>{{$customer->credit_period}}</td>
-                                        </tr>
+                                        </tr>                                        
                                         @endif
-                                        @endif
-                                        @endforeach
+                                        @endif                                        
+                                        @endforeach                                        
                                         <tr>
                                             @if($order->delivery_location_id !=0)
                                             @foreach($delivery_location as $location)
@@ -72,6 +72,42 @@
                                             <td><span>Delivery Freight: </span>{{$order->location_difference}}</td>
                                             @endif
                                         </tr>
+                                        @if($order->discount > 0)
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                    {{$order->discount_type}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                    {{$order->discount_unit}}                                            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount</b> : </span>
+                                                    {{$order->discount}}                                            
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td>
+                                                    <span><b>Discount/Premium :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Fixed/Percentage :</b> </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span><b>Amount</b> : </span>
+                                                </td>
+                                            </tr>                                    
+                                        @endif
                                         <tr><td colspan="2"><span class="underline">Ordered Product Details </span></td></tr>
                                     </tbody>
                                 </table>

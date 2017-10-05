@@ -159,7 +159,8 @@
                                                 @if(isset($challan['challan_loaded_by']))
                                                 @foreach($challan['challan_loaded_by'] as $load)
                                                     <?php 
-                                                        if(!in_array($load->loaded_by_id,$lb_arr)){
+
+                                                        if(!in_array($load->loaded_by_id,$lb_arr) && ($load->loaded_by_id!=0)){
                                                             array_push($lb_arr, $load->loaded_by_id);
                                                         } 
                                                     ?>                                                    
@@ -171,7 +172,8 @@
                                                 @if(isset($challan['challan_labours']))
                                                 @foreach($challan['challan_labours'] as $labour)                                                    
                                                     <?php 
-                                                        if(!in_array($labour->labours_id,$lbr_arr)){
+
+                                                        if(!in_array($labour->labours_id,$lbr_arr) && ($labour->labours_id!=0)){
                                                             array_push($lbr_arr, $labour->labours_id);
                                                         } 
                                                     ?>                                                    

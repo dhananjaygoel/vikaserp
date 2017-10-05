@@ -23,6 +23,7 @@ class StoreCustomer extends Request {
 	{
 		return [
 			'owner_name' => 'required|max:100',
+                        'gstin_number' => 'required|unique:customers',
 			'city' => 'required',
 			'state' => 'required',
 			'tally_name' => 'required|max:100',

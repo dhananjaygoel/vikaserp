@@ -351,6 +351,9 @@ class PurchaseOrderController extends Controller {
             'expected_delivery_date' => $expected_delivery_date,
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ];
 
         if ($input_data['purchase_order_location'] > 0) {
@@ -535,8 +538,8 @@ class PurchaseOrderController extends Controller {
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
-
-        return view('purchase_order_details', compact('purchase_orders'));
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        return view('purchase_order_details', compact('purchase_orders','customers'));
     }
 
     /**
@@ -652,7 +655,10 @@ class PurchaseOrderController extends Controller {
             'vat_percentage' => $vat_percentage,
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
-            'order_status' => "pending"
+            'order_status' => "pending",
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ];
         /*
          * ------------------- --------------
@@ -1021,23 +1027,24 @@ class PurchaseOrderController extends Controller {
     function quantity_calculation($purchase_orders) {
 
         foreach ($purchase_orders as $key => $order) {
-
+            
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
-            $purchase_order_advise_products = $order['purchase_product_has_from'];
+            $purchase_order_advise_products = $order['purchase_advice'];
             if (count($purchase_order_advise_products) > 0) {
-                foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    $product_size = $poapv['product_sub_category'];
-                    //$product_size = ProductSubCategory::find($poapv->product_category_id);
-                    if ($poapv->unit_id == 1) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
-                    }
-                    if ($poapv->unit_id == 2) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
-                    }
-                    if ($poapv->unit_id == 3) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                foreach ($purchase_order_advise_products as  $purchase_advice) {
+                    foreach ($purchase_advice['purchase_products'] as $prod) {
+                        $product_size = $prod['product_sub_category'];                    
+                        if ($prod->unit_id == 1) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity;
+                        }
+                        if ($prod->unit_id == 2) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * $product_size->weight;
+                        }
+                        if ($prod->unit_id == 3) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity / $product_size->standard_length ) * $product_size->weight;
+                        }
                     }
                 }
             }

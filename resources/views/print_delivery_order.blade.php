@@ -164,7 +164,7 @@
             <div class="trk-mobile">
                 <div class="trk-no">Vehicle No: {{ isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number :''}}</div>
                 <div class="mob-no">Driver Mob: {{ isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'' }}</div>
-                <div class="empty-truck-weight">Empty Truck Weight: {{ isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0' }} Kg</div>
+                @if($customer_type!="supplier")<div class="empty-truck-weight">Empty Truck Weight: {{ isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0' }} Kg</div>@endif
             </div>
             <div class="del">
                 Delivery @: {{(isset($delivery_data->delivery_location_id) && $delivery_data->delivery_location_id!=0) ? $delivery_data['location']->area_name : (isset($delivery_data->other_location)?$delivery_data->other_location:'') }}

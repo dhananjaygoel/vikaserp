@@ -366,12 +366,12 @@ class PurchaseAdviseController extends Controller {
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
-        return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise));
+        return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise,'customers'=> $customers));
     }
 
     /**
@@ -387,7 +387,7 @@ class PurchaseAdviseController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
@@ -462,8 +462,8 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
-        $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $id)->first();
-        $purchase_advise->updated_at = $purchase_advice_prod->updated_at;
+//        $purchase_advice_prod = PurchaseProducts::where('order_type', '=', 'purchase_advice')->where('purchase_order_id', '=', $id)->first();
+//        $purchase_advise->updated_at = $purchase_advice_prod->updated_at;
         $purchase_advise->save();
 
         /* inventory code */
@@ -776,7 +776,7 @@ class PurchaseAdviseController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details')->find($id);
+        $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
         if (count($purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
@@ -788,12 +788,23 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function print_purchase_advise($id) {
-
+        
+        if (Input::has('vehicle_number')) {
+            $vehicle_number = Input::get('vehicle_number');            
+        }        
         $current_date = date("/m/d/");
         $date_letter = 'PA' . $current_date . $id;
-        PurchaseAdvise::where('id', '=', $id)->update(array(
-            'serial_number' => $date_letter
-        ));
+        
+        if (isset($vehicle_number) && $vehicle_number!= "") {
+            PurchaseAdvise::where('id', '=', $id)->update(array(
+                'serial_number' => $date_letter,
+                'vehicle_number' => $vehicle_number,
+            ));    
+        }else{
+            PurchaseAdvise::where('id', '=', $id)->update(array(
+                'serial_number' => $date_letter
+            ));
+        }        
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $sms_flag = 0;
 

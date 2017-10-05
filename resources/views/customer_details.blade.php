@@ -29,10 +29,16 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr>
+                                        <td><span>Customer Type:</span> @if($customer->is_supplier =='yes')Supplier @else Customer @endif</td>
+                                    </tr>
+                                    <tr>
                                         <td><span>Owner Name:</span> {{($customer->owner_name)?$customer->owner_name:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Company Name:</span> {{($customer->company_name)?$customer->company_name:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>GST Number:</span> {{($customer->gstin_number)?$customer->gstin_number:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Contact Person:</span> {{($customer->contact_person)?$customer->contact_person:''}}</td>
@@ -118,8 +124,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
+        </div>        
     </div>
 </div>
 @stop

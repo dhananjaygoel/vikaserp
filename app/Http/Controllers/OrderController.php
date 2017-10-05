@@ -48,7 +48,7 @@ class OrderController extends Controller {
      * Functioanlity: Display order details
      */
     public function index(PlaceOrderRequest $request) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -368,6 +368,9 @@ class OrderController extends Controller {
             $order_status = 'supplier';
             $supplier_id = $input_data['supplier_id'];
         }
+        $discount_type = $input_data['discount_type'];
+        $discount_unit = $input_data['discount_unit'];
+        $discount = $input_data['discount'];
 //        if ($input_data['status1'] == 'include_vat') {
 //            $vat_price = '';
 //        }
@@ -380,6 +383,9 @@ class OrderController extends Controller {
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
         $order->vat_percentage = $input_data['vat_price'];
+        $order->discount_type = $discount_type;
+        $order->discount_unit = $discount_unit;
+        $order->discount = $discount;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
@@ -620,7 +626,7 @@ class OrderController extends Controller {
      */
     public function update($id, PlaceOrderRequest $request) {
 
-        $input_data = Input::all();
+        $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_edit_order')) {
             $session_array = Session::get('forms_edit_order');
@@ -716,7 +722,10 @@ class OrderController extends Controller {
             'delivery_location_id' => $input_data['add_inquiry_location'],
             'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
-            'remarks' => $input_data['order_remark']
+            'remarks' => $input_data['order_remark'],
+            'discount_type' => $input_data['discount_type'],
+            'discount_unit' => $input_data['discount_unit'],
+            'discount' => $input_data['discount'],
         ]);
         if ($input_data['add_inquiry_location'] == 'other') {
             $update_order = $order->update([
@@ -977,7 +986,7 @@ class OrderController extends Controller {
                         $total_quantity = '';
                         $str = '';
 
-                        $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->get();
+                        $input_data = AllOrderProducts::with('order_product_details')->where('order_id', '=', Input::get('user_id'))->where('order_type', 'order')->get();
 
                         foreach ($input_data as $product_data) {
 
@@ -996,14 +1005,22 @@ class OrderController extends Controller {
                             }
 
                             /* check for vat/gst items */
-                            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
+                            if (isset($ord['vat_percentage']) && $ord['vat_percentage'] > 0) {
                                 $sms_flag = 1;
                             }
                             /**/
                         }
                         if ($sms_flag == 1) {
                             $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nAdmin has rejected your order for following items \n";
-                            $str .= "\nVIKAS ASSOCIATES";
+                            foreach ($input_data as $product_data) {
+
+                                if ($product_data['order_product_details']->alias_name != "") {
+                                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
+                                    $total_quantity = $total_quantity + $product_data['quantity'];
+                                }
+                            }
+                            $str .= "\nVIKAS ASSOCIATES";                            
+                           
                             if (App::environment('development')) {
                                 $phone_number = Config::get('smsdata.send_sms_to');
                             } else {
@@ -1120,7 +1137,7 @@ class OrderController extends Controller {
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] <> '0.00') {
                 $sms_flag = 1;
             }
-        }        
+        }
         /**/
 
         /*
@@ -1130,11 +1147,11 @@ class OrderController extends Controller {
          */
 
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-        if ($sms_flag == 1) {           
+        if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($order['customer']->id);
             if (count($customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\n Your order has been completed for following \n";
+                $str = "Dear " . $customer->owner_name . "\n Your order has been canceled for following \n";
                 foreach ($order['all_order_products'] as $product_data) {
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                 }
@@ -1313,7 +1330,7 @@ class OrderController extends Controller {
     public function store_delivery_order($id) {
 
         $input_data = Input::all();
-        
+
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
@@ -1352,6 +1369,9 @@ class OrderController extends Controller {
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
             $delivery_order->driver_contact_no = $input_data['driver_contact'];
             $delivery_order->order_status = 'Pending';
+            $delivery_order->discount_type = $input_data['discount_type'];
+            $delivery_order->discount_unit = $input_data['discount_unit'];
+            $delivery_order->discount = $input_data['discount'];
             if ($order->other_location == '') {
                 $delivery_order->delivery_location_id = $order->delivery_location_id;
                 $delivery_order->other_location = '';

@@ -66,8 +66,7 @@ use Illuminate\Support\Facades\Session;
                                     }
                                     ?>>
                                     <label for="new_supplier">New Supplier</label>
-                                </div>
-
+                                </div>                                   
                                 <?php
                                 if (Input::old('supplier_status') == "new_supplier") {
                                     $style = 'style="display: none"';
@@ -117,7 +116,7 @@ use Illuminate\Support\Facades\Session;
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" value="{{Input::old('credit_period')}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);">
                                 </div>
-                            </div>
+                            </div>                             
                             <div class="inquiry_table col-md-12">
                                 <div class="table-responsive">
 <!--                                    <table id="add_product_table_purchase" class="table table-hover  ">
@@ -184,7 +183,32 @@ use Illuminate\Support\Facades\Session;
                                         </tbody>
                                     </table>-->
 
-
+                                    <div class="form-group ">
+                                        <div class="col-md-4">
+                                            <label for="location">Discount/Premium:</label>
+                                            @if(Auth::user()->role_id <> 5)
+                                            <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
+                                                <option value="discount" selected="">Discount</option>
+                                                <option value="premium">Premium</option>
+                                            </select>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="location">Fixed/Percentage:</label>
+                                            @if(Auth::user()->role_id <> 5)
+                                            <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
+                                                <option value="fixed" selected="">Fixed</option>
+                                                <option value="percent">Percent</option>
+                                            </select>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="discount">Amount</label>
+                                              @if(Auth::user()->role_id <> 5)
+                                                <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
+                                              @endif
+                                        </div>
+                                    </div>
                                     <table id="add_product_table" class="table table-hover  ">
                                         <tbody>
                                             <tr class="headingunderline">
@@ -203,7 +227,7 @@ use Illuminate\Support\Facades\Session;
                                             $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
-                                                <tr id="add_row_{{$i}}" class="add_product_row">
+                                                <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class="form-group searchproduct">
                                                             <input class="form-control each_product_detail focus_on_enter tabindex{{$i}}" data-productid="{{$i}}" placeholder="Enter Product name " type="text" name="product[{{$i}}][name]" id="add_purchase_product_name_{{$i}}" onfocus="product_autocomplete_purchase({{$i}});" value="<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="{{$z}}">

@@ -118,6 +118,8 @@
                                             $total_qty = 0;
                                             $total_amount = 0;
                                             $total_qunatity = 0;
+                                            $lb_arr = [];
+                                            $lbr_arr = [];
                                             ?>
                                             @foreach($daybook['all_purchase_products'] as $total)
                                             <?php
@@ -152,8 +154,30 @@
                                                 <td>{{ $daybook->vehicle_number }}</td>
                                                 <td>{{ $daybook['supplier']->owner_name }}</td>
                                                 <td>{{ (isset($daybook['orderedby']->first_name)?$daybook['orderedby']->first_name:'') }} </td>
-                                                <td>{{ count($daybook['challan_loaded_by'])}} </td>
-                                                <td>{{ count($daybook['challan_labours']) }}</td>
+                                                <td>
+                                                    @if(isset($daybook['challan_loaded_by']))
+                                                    @foreach($daybook['challan_loaded_by'] as $load)
+                                                        <?php 
+                                                            if(!in_array($load->loaded_by_id,$lb_arr) && ($load->loaded_by_id!=0)){
+                                                                array_push($lb_arr, $load->loaded_by_id);
+                                                            } 
+                                                        ?>                                                    
+                                                    @endforeach
+                                                    @endif
+                                                    {{count($lb_arr)}}                                                    
+                                                </td>
+                                                <td>
+                                                    @if(isset($daybook['challan_labours']))
+                                                    @foreach($daybook['challan_labours'] as $labour)                                                    
+                                                        <?php 
+                                                            if(!in_array($labour->labours_id,$lbr_arr) && ($labour->labours_id!=0)){
+                                                                array_push($lbr_arr, $labour->labours_id);
+                                                            } 
+                                                        ?>                                                    
+                                                    @endforeach
+                                                    @endif
+                                                {{count($lbr_arr)}}                                                      
+                                                </td>
                                                 <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
                                                 <td>{{ $daybook->grand_total}}</td>
                                                 <td>{{ $daybook->bill_number }}</td>

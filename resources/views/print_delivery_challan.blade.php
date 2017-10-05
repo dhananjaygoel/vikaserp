@@ -221,6 +221,7 @@
                     <div class="divCell2">Sr.</div>
                     <!--<div class="divCell2">Product</div>-->
                     <div class="divCell">Size</div>
+                    <div class="divCell2">HSN</div>
                     <div class="divCell2">Pcs</div>
                     <div class="divCell">Qty</div>
                     <div class="divCell">GST</div>
@@ -241,6 +242,7 @@
                     <div class="divCell2">{{ $i++ }}</div>
                     <!--                    <div class="divCell2">{{$prod->order_product_all_details->product_category->product_type->name}} </div>-->
                     <div class="divCell">{{ $prod->order_product_all_details->alias_name }}</div>
+                    <div class="divCell2">{{ $prod->order_product_all_details->hsn_code }}</div>
                     <div class="divCell2">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
                     <div class="divCell">{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</div>
@@ -328,6 +330,50 @@
                     <div class="divTable" style="width: 85%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
                         <div class="headRow">
                             <div class="divRow">
+                                <div class="divCell"><b>HSN CODE</b></div>
+                                <div class="divCell"><b>Qty</b></div>
+                                <div class="divCell"><b>Amount</b></div>
+                                <div class="divCell"><b>GST</b></div>
+                                <div class="divCell" style="display: inline-block; white-space: nowrap;"><b>Total Inc GST</b></div>
+                            </div>
+                            <td>   </td>
+                            <td> </td>
+                            <td>  </td>
+                            <td> </td> 
+                            <?php
+                            $gst_percentage=0;
+                            $total_amount=0;
+                            $total_qty=0;
+                            $total_inc_gst=0;
+                            ?>
+                            @foreach($allorder['hsn'] as $hsn)
+                            <div class="divRow">
+                                <div class="divCell">{{$hsn['id']}}</div>
+                                <div class="divCell">{{ round($hsn['actual_quantity'], 2) }}</div>
+                                <div class="divCell">{{ round($hsn['amount'], 2) }}</div>
+                                <div class="divCell">{{ round($hsn['vat_percentage'], 2) }}</div>
+                                <div class="divCell">{{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</div>
+                                <?php
+                                $gst_percentage = $hsn['vat_percentage'];
+                                $total_amount += $hsn['amount'];
+                                $total_qty += $hsn['actual_quantity'];
+                                $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
+                                ?>
+                            </div>                           
+                           @endforeach
+                            
+                            <div class="divRow">
+                                <div class="divCell"><b>Total</b></div>
+                                <div class="divCell"><b>{{  round($total_qty, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($total_amount, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($gst_percentage, 2) }}</b></div>
+                                <div class="divCell"><b>{{ round($total_inc_gst, 2) }}</b></div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="divTable" style="width: 85%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
+                        <div class="headRow">
+                            <div class="divRow">
 
                                 <div class="divCell"><b>Product</b></div>
                                 <div class="divCell"><b>Qty</b></div>
@@ -371,7 +417,7 @@
                                 <div class="divCell"><b>{{ round($allorder->pipe_vat_amount, 2) + round($allorder->structure_vat_amount, 2) }}</b></div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <br>
 
                     <div>

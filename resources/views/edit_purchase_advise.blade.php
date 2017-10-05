@@ -56,7 +56,37 @@
                             </div>
                             <div class="form-group">
                                 <label for="cn"><b>Supplier Name:</b> {{$purchase_advise['supplier']->owner_name.'-'.$purchase_advise['supplier']->tally_name}}</label>
-                            </div>
+                            </div>                            
+                            @if($purchase_advise['purchase_order'][0]->discount > 0)
+                                <div class="form-group">
+                                    <label><b>Discount/Premium :</b> </label>
+                                    {{$purchase_advise['purchase_order'][0]->discount_type}}
+                                    <input type="hidden" id="discount_type" name="discount_type" value="{{$purchase_advise['purchase_order'][0]->discount_type}}" >
+                                </div>
+                                <div class="form-group">                                    
+                                    <label><b>Fixed/Percentage :</b> </label>
+                                    {{$purchase_advise['purchase_order'][0]->discount_unit}}
+                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$purchase_advise['purchase_order'][0]->discount_unit}}" >
+                                </div>
+                                <div class="form-group">                                    
+                                    <label><b>Amount :</b> </label>
+                                    {{$purchase_advise['purchase_order'][0]->discount}}
+                                    <input type="hidden" id="discount_amount" name="discount" value="{{$purchase_advise['purchase_order'][0]->discount}}" >
+                                </div>
+                            @else
+                                <div class="form-group">                                
+                                    <label><b>Discount/Premium :</b> </label> 
+                                    <input type="hidden" id="discount_type" name="discount_type" value="{{$purchase_advise['purchase_order'][0]->discount_type}}" >
+                                </div>
+                                <div class="form-group">                                     
+                                         <label><b>Fixed/Percentage :</b> </label>
+                                         <input type="hidden" id="discount_unit" name="discount_unit" value="{{$purchase_advise['purchase_order'][0]->discount_unit}}" >
+                                </div>
+                                <div class="form-group">                                    
+                                        <label><b>Amount :</b> </label>
+                                        <input type="hidden" id="discount_amount" name="discount" value="{{$purchase_advise['purchase_order'][0]->discount}}" >
+                                </div>
+                            @endif
                             <div class="inquiry_table col-md-12" >
                                 <div class="table-responsive">
                                     <table id="create_purchase_advise_table" class="table table-hover">

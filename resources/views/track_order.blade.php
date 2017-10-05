@@ -41,7 +41,7 @@
 
                                 <?php
                                 $flag =0;
-                                
+                                $status = "";
                                 foreach ($order_status_responase['order_details'] as $delivery_order) {
                                     if ($delivery_order->order_status == 'pending') {
                                         $status = 'pending';

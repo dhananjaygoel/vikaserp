@@ -477,12 +477,13 @@ class PurchaseChallanController extends Controller {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
-        $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
+        $purchase_challan = PurchaseChallan::with('purchase_advice','purchase_order','delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
         if (count($purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
 
-        return view('view_purchase_challan', compact('purchase_challan'));
+        return view('view_purchase_challan', compact('purchase_challan','customers'));
     }
 
     /**

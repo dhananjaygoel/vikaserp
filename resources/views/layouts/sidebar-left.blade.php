@@ -179,7 +179,7 @@
                         echo 'active';
                     }
                     ?>">
-                        @if(Auth::user()->role_id != 6)
+                        @if(Auth::user()->role_id != 6 && Auth::user()->role_id != 7)
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Order</span>
@@ -245,7 +245,7 @@
                         echo 'active';
                     }
                     ?>">
-                        @if(Auth::user()->role_id != 6)
+                        @if(Auth::user()->role_id != 6 && Auth::user()->role_id != 7)
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Purchase Order</span>
@@ -393,6 +393,17 @@
                     </li>
                     @endif
                     @endif
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
+                    <li class="<?php if (Request::is('vehicle-list*') || Request::is('pa-vehicle-list*')) {
+                        echo 'active';
+                        } ?> menutooltip" data-placement='right' data-original-title="Vehicle List">
+                        <a href="{{url('vehicle-list')}}">
+                            <i class="fa fa-truck"></i>
+                            <span>Vehicle List</span>
+                            <span class="label label-info label-circle pull-right"></span>
+                        </a>
+                    </li>
+                    @endif
                     @if(Auth::user()->role_id == 0)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <div style="display:none">
@@ -435,7 +446,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif
+                    @endif                    
                 </ul>
             </div>
             @endif

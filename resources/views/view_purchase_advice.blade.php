@@ -26,12 +26,12 @@
                     <div class="main-box-body main_contents clearfix">
                         <div class="table-responsive">
                             <table id="table-example" class="table customerview_table">
-                                <tbody>
+                                <tbody>                                    
                                     <tr>
                                         <td><span>Bill Date:</span> {{date('F jS, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
-                                    </tr>
+                                    </tr>                                    
                                     <tr>
-                                        <td><span>Supplier Name:</span>
+                                        <td><span>Order From:</span>
                                             @if($purchase_advise['supplier']->owner_name != "" && $purchase_advise['supplier']->tally_name != "")
                                             {{$purchase_advise['supplier']->owner_name}}-{{$purchase_advise['supplier']->tally_name}}
                                             @else
@@ -39,6 +39,20 @@
                                             @endif
                                         </td>
                                     </tr>
+                                    @if($purchase_advise['purchase_order'][0]->order_for == 0)
+                                        <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
+                                    @elseif($purchase_advise['purchase_order'][0]->order_for != 0)                                        
+                                        @foreach($customers as $customer)
+                                        @if($customer->id == $purchase_advise['purchase_order'][0]->order_for)
+                                        <tr>
+                                            <td>
+                                                <span><b>Order For:</b></span>
+                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                            </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                    @endif
                                     <tr><td><span>Contact Person: </span> {{$purchase_advise['supplier']->contact_person}}</td></tr>
 
                                     <tr><td><span>Serial Number: </span>{{$purchase_advise->serial_number}}</td></tr>
@@ -48,6 +62,45 @@
                                     <tr>
                                         <td><span>Credit Period(Days): </span> {{$purchase_advise['supplier']->credit_period}}</td>
                                     </tr>
+                                    <?php // dd($purchase_advise['purchase_order'][0]->discount); ?>
+                                    @if($purchase_advise['purchase_order'][0]->discount > 0)
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                                {{$purchase_advise['purchase_order'][0]->discount_type}}
+                                            </td>                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                                {{$purchase_advise['purchase_order'][0]->discount_unit}}
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span> 
+                                                {{$purchase_advise['purchase_order'][0]->discount}}
+                                            </td>
+                                            
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>
+                                                <span><b>Discount/Premium :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fixed/Percentage :</b> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Amount :</b> </span>
+                                            </td>
+                                        </tr>                                    
+                                    @endif
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>
