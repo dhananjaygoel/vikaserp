@@ -92,18 +92,21 @@
                                                         <span><b>Discount/Premium :</b> </span>
                                                         <input type="hidden" id="discount_type" name="discount_type" value="{{$purchase_orders->discount_type}}" >
                                                     </td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <span><b>Fixed/Percentage :</b> </span>
                                                         <input type="hidden" id="discount_unit" name="discount_unit" value="{{$purchase_orders->discount_unit}}" >
                                                     </td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <span><b>Amount :</b> </span>
                                                         <input type="hidden" id="discount_amount" name="discount" value="{{$purchase_orders->discount}}" >
                                                     </td>
+                                                    <td></td>
                                                 </tr>                                    
                                             @endif
                                         </tbody>
