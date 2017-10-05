@@ -61,14 +61,17 @@
                                 <div class="form-group">
                                     <label><b>Discount/Premium :</b> </label>
                                     {{$purchase_advise['purchase_order'][0]->discount_type}}
+                                    <input type="hidden" id="discount_type" name="discount_type" value="{{$purchase_advise['purchase_order'][0]->discount_type}}" >
                                 </div>
                                 <div class="form-group">                                    
-                                        <label><b>Fixed/Percentage :</b> </label>
-                                        {{$purchase_advise['purchase_order'][0]->discount_unit}}
+                                    <label><b>Fixed/Percentage :</b> </label>
+                                    {{$purchase_advise['purchase_order'][0]->discount_unit}}
+                                    <input type="hidden" id="discount_unit" name="discount_unit" value="{{$purchase_advise['purchase_order'][0]->discount_unit}}" >
                                 </div>
                                 <div class="form-group">                                    
-                                        <label><b>Amount :</b> </label>
-                                        {{$purchase_advise['purchase_order'][0]->discount}}
+                                    <label><b>Amount :</b> </label>
+                                    {{$purchase_advise['purchase_order'][0]->discount}}
+                                    <input type="hidden" id="discount_amount" name="discount" value="{{$purchase_advise['purchase_order'][0]->discount}}" >
                                 </div>
                             @else
                                 <div class="form-group">                                

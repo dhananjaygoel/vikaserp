@@ -975,6 +975,14 @@ class InquiryController extends Controller {
     public function fetch_products() {
         $term = Input::get();
         $term = Input::get('term');
+        $discount_type = Input::get('discount_type');
+        $discount_unit = Input::get('discount_unit');
+        $discount = Input::get('discount');
+        $location_diff = 0;
+        $location_diff = Input::get('location_difference');
+        if($location_diff==""){
+            $location_diff =0;
+        }
         $customer_id = Input::get('customer_id');
         if ($term != '' && strpos($term, '#') === false) {
             $products = ProductSubCategory::with('product_category.product_type')
@@ -986,19 +994,37 @@ class InquiryController extends Controller {
                                 $query->where('name', 'like', '%' . Input::get('term') . '%');
                             })
                             ->orderBy('alias_name')->get();
-            if (count($products) > 0) {
+            if (count($products) > 0) {                
                 foreach ($products as $product) {
-                    $cust = 0;
+                    $cust = 0;                    
                     if ($customer_id > 0) {
                         $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
                         if (count($customer) > 0) {
                             $cust = $customer->difference_amount;
                         }
                     }
+                    if($discount!="" && $discount>0 ){                        
+                        if($discount_type=='discount'){
+                            if($discount_unit=='fixed'){
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+                            }elseif($discount_unit=='percent'){
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                            }
+                        }
+                        elseif($discount_type=='premium'){
+                            if($discount_unit=='fixed'){
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+                            }elseif($discount_unit=='percent'){
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                            }        
+                        }
+                    }else{                        
+                        $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference;
+                    }
                     $data_array[] = [
                         'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
                         'id' => $product->id,
-                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
+                        'product_price' => $product_price
                     ];
                 }
             } else {

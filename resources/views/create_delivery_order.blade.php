@@ -117,9 +117,9 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span><b>Value</b> : </span>
+                                            <span><b>Amount :</b> </span>
                                             {{$order->discount}}
-                                            <input type="hidden" id="discount" name="discount" value="{{$order->discount}}" >
+                                            <input type="hidden" id="discount_amount" name="discount" value="{{$order->discount}}" >
                                         </td>
                                     </tr>
                                 @else
@@ -137,8 +137,8 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span><b>Value</b> : </span>
-                                            <input type="hidden" id="discount" name="discount" value="{{$order->discount}}" >
+                                            <span><b>Amount :</b> </span>
+                                            <input type="hidden" id="discount_amount" name="discount" value="{{$order->discount}}" >
                                         </td>
                                     </tr>                                    
                                 @endif
