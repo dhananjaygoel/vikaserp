@@ -945,6 +945,12 @@ $('#discount_type,#discount_unit').on('change', function () {
 $('#add_order_location').on('change', function () {
 
     var location_difference = $('option:selected', this).attr('data-location-difference');
+    var discount = $('#discount_amount').val();
+    var discount_type = $('#discount_type').val();
+    var discount_unit = $('#discount_unit').val(); 
+    if (discount == "") {
+        discount = 0;
+    }
     $('#location_difference').val(location_difference);
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
@@ -958,7 +964,7 @@ $('#add_order_location').on('change', function () {
             var product_id = $(this).find('#add_product_id_' + rowId).val();
             $.ajax({
                 url: baseurl + '/recalculate_product_price',
-                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference},
+                data: {"product_id": product_id, 'customer_id': customer_id, 'location_difference': location_difference,'discount_type': discount_type,'discount_unit':discount_unit,'discount': discount},
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
