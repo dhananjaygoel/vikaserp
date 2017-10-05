@@ -1075,6 +1075,9 @@ class APIsController extends Controller {
                     $order->other_location = $value->other_location;
                     $order->location_difference = $value->other_location_difference;
                 }
+                $order->discount_type = $value->discount_type;
+                $order->discount_unit = $value->discount_unit;
+                $order->discount = $value->discount;
                 $order->is_approved = 'yes';
                 $order->save();
                 $order_id = $order->id;
@@ -1130,6 +1133,9 @@ class APIsController extends Controller {
                     $order->other_location = $value->other_location;
                     $order->location_difference = $value->other_location_difference;
                 }
+                $order->discount_type = $value->discount_type;
+                $order->discount_unit = $value->discount_unit;
+                $order->discount = $value->discount;
                 $order->customer_id = ($value->customer_server_id == 0) ? $customer_list[$value->id] : $value->customer_server_id;
                 $order->expected_delivery_date = $datetime->format('Y-m-d');
                 AllOrderProducts::where('order_type', '=', 'order')->where('order_id', '=', $order->id)->delete();
