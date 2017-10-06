@@ -169,15 +169,15 @@
                                     <div class="col-md-2">
                                         <label for="location">Discount/Premium:</label>                                        
                                         <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
-                                            <option value="discount" selected="">Discount</option>
-                                            <option value="premium">Premium</option>
+                                            <option value="Discount" selected="">Discount</option>
+                                            <option value="Premium">Premium</option>
                                         </select>                                        
                                     </div>
                                     <div class="col-md-2">
                                         <label for="location">Fixed/Percentage:</label>                                        
                                         <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
-                                            <option value="fixed" selected="">Fixed</option>
-                                            <option value="percent">Percent</option>
+                                            <option value="Fixed" selected="">Fixed</option>
+                                            <option value="Percent">Percent</option>
                                         </select>                                        
                                     </div>
                                     <div class="col-md-2">

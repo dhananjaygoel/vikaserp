@@ -206,15 +206,15 @@
                                     <div class="col-md-2">
                                         <label for="location">Discount/Premium:</label>                                    
                                         <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
-                                            <option value="discount" {{($order->discount_type == "discount")?'selected':''}}>Discount</option>
-                                            <option value="premium" {{($order->discount_type == "premium")?'selected':''}}>Premium</option>
+                                            <option value="Discount" {{(strtolower($order->discount_type) == "discount")?'selected':''}}>Discount</option>
+                                            <option value="Premium" {{(strtolower($order->discount_type) == "premium")?'selected':''}}>Premium</option>
                                         </select>                                    
                                     </div>
                                     <div class="col-md-2">
                                         <label for="location">Fixed/Percentage:</label>                                    
                                         <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
-                                            <option value="fixed" {{($order->discount_unit == "fixed")?'selected':''}}>Fixed</option>
-                                            <option value="percent" {{($order->discount_unit== "percent")?'selected':''}}>Percent</option>
+                                            <option value="Fixed" {{(strtolower($order->discount_unit) == "fixed")?'selected':''}}>Fixed</option>
+                                            <option value="Percent" {{(strtolower($order->discount_unit)== "percent")?'selected':''}}>Percent</option>
                                         </select>                                    
                                     </div>
                                     <div class="col-md-2">

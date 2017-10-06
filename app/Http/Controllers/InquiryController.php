@@ -1177,8 +1177,8 @@ class InquiryController extends Controller {
         $delivery_location = Input::get('delivery_location');
         $customer_id = Input::get('customer_id');
         $product_id = Input::get('product_id');
-        $discount_type = Input::get('discount_type');
-        $discount_unit = Input::get('discount_unit');
+        $discount_type = strtolower(Input::get('discount_type'));
+        $discount_unit = strtolower(Input::get('discount_unit'));
         $discount = Input::get('discount');
         $location_diff = 0;
         $location_diff = Input::get('location_difference');
