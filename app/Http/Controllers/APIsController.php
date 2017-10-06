@@ -2002,8 +2002,7 @@ class APIsController extends Controller {
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
             $purchase_advice_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
             /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
-            $purchase_advice_response['customer_server_added'] = ($purchase_advice_test && count($purchase_advice_test) > 0) ? $purchase_advice_test : array();            
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();            
         } else {
 //            $purchase_advice_server = PurchaseAdvise::with('purchase_products')->get();
             $purchase_advice_server = PurchaseAdvise::with('purchase_products','purchase_order')
