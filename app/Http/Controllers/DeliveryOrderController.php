@@ -1261,7 +1261,7 @@ class DeliveryOrderController extends Controller {
                 if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {                         
 
-                        if (isset($popv) && $popv->parent>0) {
+                        if (isset($popv)) {
                             $product_size = $popv['product_sub_category'];
                             //$product_size = ProductSubCategory::find($popv->product_category_id);
 
@@ -1282,7 +1282,7 @@ class DeliveryOrderController extends Controller {
                                             $total_old_shipping += $track_do_product->present_shipping;
                                         }                                    
                                 }
-                                if (isset($prd_details)) {
+                                if (isset($prd_details) && $popv->parent>0) {
                                     if ($is_slice == 0)
                                         $pending_order_temp = $prd_details->quantity - $popv->quantity;
                                     else
@@ -1311,7 +1311,7 @@ class DeliveryOrderController extends Controller {
                                         $total_old_shipping += $track_do_product->present_shipping;
                                     }
                                 }
-                                if (isset($prd_details)) {
+                                if (isset($prd_details) && $popv->parent>0) {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
@@ -1347,7 +1347,7 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
 
-                                if (isset($prd_details)) {
+                                if (isset($prd_details) && $popv->parent>0) {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
