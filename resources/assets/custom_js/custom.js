@@ -1768,13 +1768,16 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
     var tot_products = $(".add_product_row:visible").length;
     var j = 0;
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
+    var order_source = parseInt($('#order_source').val());
     var final_truck_weight = parseInt(final_truck_weight - empty_truck_weight);
     var total_actual_qty_truck = parseInt($('#total_actual_qty_truck').val());
     var total_actual_quantity = parseInt($('#total_actual_quantity').val());
-    if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
-        status_form = 1;
-        $('#empty_truck_weight').addClass('error_validation');
-    }
+    if(order_source!="supplier"){
+        if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
+            status_form = 1;
+            $('#empty_truck_weight').addClass('error_validation');
+        }
+    }    
     if (final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');

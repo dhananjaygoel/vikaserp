@@ -882,9 +882,9 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-        if ($empty_truck_weight == '0' | $final_truck_weight == '0') {
-            return Redirect::back()->with('validation_message', 'Please Add Truck Weight');
-        }
+//        if ($empty_truck_weight == '0' | $final_truck_weight == '0') {
+//            return Redirect::back()->with('validation_message', 'Please Add Truck Weight');
+//        }
 
 
         if (Session::has('forms_delivery_challan')) {

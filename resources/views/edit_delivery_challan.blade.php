@@ -34,6 +34,7 @@
                             <input type="hidden" name="order_id" value="{{$allorder->delivery_order_id}}">
                             <input type="hidden" id="customer_id" name="customer_id" value="{{$allorder->customer_id}}">
                             <input type="hidden" name="existing_customer_id" value="{{$allorder->customer_id}}" id="existing_customer_id">
+                            <input type="hidden" id="order_source" value="{{$allorder['delivery_order']->order_source}}">                            
                             <div class="form-group">
                                 <label><b>Party Name:</b> {{$allorder->customer->owner_name}}</label>
                             </div>
