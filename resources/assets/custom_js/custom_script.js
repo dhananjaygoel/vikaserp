@@ -880,7 +880,7 @@ $('#location_difference').on('keyup', function () {
     });
 });
 
-$('#discount_amount').on('keyup', function () {
+$('#discount_amount').on('blur', function () {
     $(".add_product_row").each(function (index) {
         var customer_id = $('#existing_customer_id').val();
         var discount = $('#discount_amount').val();

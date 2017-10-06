@@ -1957,12 +1957,15 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var tot_products = $(".add_product_row").length;
 //    var tot_products = $(".add_product_row:visible").length;
     var j = 0;
+    var order_source = $('#order_source').val();    
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
     var final_truck_weight = parseInt($('#final_truck_weight').val());
-    if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
-        status_form = 1;
-        $('#empty_truck_weight').addClass('error_validation');
-    }
+    if(order_source != "supplier"){
+        if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
+            status_form = 1;
+            $('#empty_truck_weight').addClass('error_validation');
+        }
+    }    
     if (final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');

@@ -1261,9 +1261,11 @@ class DeliveryOrderController extends Controller {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
                 $pending_order_temp = 0;
-                $pending_order = 0;
+                $pending_order = 0;                
+//                dd($del_order['track_order_product']);
                 if (count($del_order['delivery_product']) > 0) {
-                    foreach ($del_order['delivery_product'] as $popk => $popv) {
+                    foreach ($del_order['delivery_product'] as $popk => $popv) {                         
+
                         if (isset($popv)) {
                             $product_size = $popv['product_sub_category'];
                             //$product_size = ProductSubCategory::find($popv->product_category_id);
@@ -1277,15 +1279,15 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                                 $is_slice = 0;
-                                $total_old_shipping = 0;
-                                foreach ($del_order['track_do_product'] as $track_do_product) {
+                                $total_old_shipping = 0;                                
+                                foreach ($del_order['track_do_product'] as $track_do_product) {                                    
 
-                                    if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
-                                        $is_slice++;
-                                        $total_old_shipping += $track_do_product->present_shipping;
-                                    }
+                                        if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
+                                            $is_slice++;
+                                            $total_old_shipping += $track_do_product->present_shipping;
+                                        }                                    
                                 }
-                                if (isset($prd_details)) {
+                                if (isset($prd_details) && $popv->parent>0) {
                                     if ($is_slice == 0)
                                         $pending_order_temp = $prd_details->quantity - $popv->quantity;
                                     else
@@ -1296,7 +1298,7 @@ class DeliveryOrderController extends Controller {
                                     } else {
                                         $pending_order = $pending_order + $pending_order_temp;
                                     }
-                                }
+                                }                               
                             } elseif ($popv->unit_id == 2) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
@@ -1314,7 +1316,7 @@ class DeliveryOrderController extends Controller {
                                         $total_old_shipping += $track_do_product->present_shipping;
                                     }
                                 }
-                                if (isset($prd_details)) {
+                                if (isset($prd_details) && $popv->parent>0) {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
@@ -1350,7 +1352,7 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
 
-                                if (isset($prd_details)) {
+                                if (isset($prd_details) && $popv->parent>0) {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
@@ -1368,7 +1370,7 @@ class DeliveryOrderController extends Controller {
                                         $pending_order = $pending_order + $pending_order_temp;
                                     }
                                 }
-                            }
+                            }                             
                         } else {
                             $delivery_order_quantity = 0;
                             $delivery_order_present_shipping = 0;
@@ -1376,7 +1378,7 @@ class DeliveryOrderController extends Controller {
                         }
                     }
                 }
-
+               
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
                 $delivery_orders[$key]['pending_order'] = ($pending_order < 0 ? 0 : $pending_order);

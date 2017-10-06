@@ -85,6 +85,13 @@
                         @elseif($inquiry['customer']->customer_status == "permanent")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
+                            @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id <> 5)
+                                <div class="form-group searchproduct">
+                                    <div class="col-md-4">
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1" disabled="" tabindex="1" >
+                                    </div>
+                                </div>
+                            @endif
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)

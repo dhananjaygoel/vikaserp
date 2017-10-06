@@ -74,37 +74,37 @@
                                         </tr>
                                         @if($order->discount > 0)
                                             <tr>
-                                                <td>
+                                                <td colspan="2">
                                                     <span><b>Discount/Premium :</b> </span>
                                                     {{$order->discount_type}}                                            
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
+                                                <td colspan="2">
                                                     <span><b>Fixed/Percentage :</b> </span>
                                                     {{$order->discount_unit}}                                            
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <span><b>Amount</b> : </span>
+                                                <td colspan="2">
+                                                    <span><b>Amount :</b> </span>
                                                     {{$order->discount}}                                            
                                                 </td>
                                             </tr>
                                         @else
                                             <tr>
-                                                <td>
+                                                <td colspan="2">
                                                     <span><b>Discount/Premium :</b> </span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
+                                                <td colspan="2">
                                                     <span><b>Fixed/Percentage :</b> </span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <span><b>Amount</b> : </span>
+                                                <td colspan="2">
+                                                    <span><b>Amount :</b> </span>
                                                 </td>
                                             </tr>                                    
                                         @endif

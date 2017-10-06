@@ -128,8 +128,8 @@
                                     <label for="location">Discount/Premium:</label>
                                     @if(Auth::user()->role_id <> 5)
                                     <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
-                                        <option value="discount" {{($purchase_order->discount_type == "discount")?'selected':''}}>Discount</option>
-                                        <option value="premium" {{($purchase_order->discount_type == "premium")?'selected':''}}>Premium</option>
+                                        <option value="discount" {{(strtolower($purchase_order->discount_type) == "discount")?'selected':''}}>Discount</option>
+                                        <option value="premium" {{(strtolower($purchase_order->discount_type) == "premium")?'selected':''}}>Premium</option>
                                     </select>
                                     @endif
                                 </div>
@@ -137,8 +137,8 @@
                                     <label for="location">Fixed/Percentage:</label>
                                     @if(Auth::user()->role_id <> 5)
                                     <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
-                                        <option value="fixed" {{($purchase_order->discount_unit == "fixed")?'selected':''}}>Fixed</option>
-                                        <option value="percent" {{($purchase_order->discount_unit== "percent")?'selected':''}}>Percent</option>
+                                        <option value="fixed" {{(strtolower($purchase_order->discount_unit) == "fixed")?'selected':''}}>Fixed</option>
+                                        <option value="percent" {{(strtolower($purchase_order->discount_unit) == "percent")?'selected':''}}>Percent</option>
                                     </select>
                                     @endif
                                 </div>
