@@ -51,6 +51,7 @@
                         </div>
                         <hr>
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
+                        <input type="hidden" id="order_source"  value="{{ $delivery_data->order_source }}"/>
                         <div class="form-group">
                             <td><span>Party:</span>
                                 @if(isset($delivery_data['customer']->owner_name) && $delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
