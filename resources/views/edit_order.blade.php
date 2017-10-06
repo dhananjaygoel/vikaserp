@@ -125,6 +125,13 @@
                         @elseif($order['customer']->customer_status == "permanent")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
+                            @if(Auth::user()->role_id == 5 & $order['createdby']->role_id <> 5)
+                                <div class="form-group searchproduct">
+                                    <div class="col-md-4">
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order['customer']->tally_name}}" id="existing_customer_name1" disabled="" tabindex="1" >
+                                    </div>
+                                </div>
+                            @endif
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
@@ -134,7 +141,7 @@
                                 @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
-                            </div>
+                            </div>                            
                             <?php if (isset($is_approval['way']) && $is_approval['way'] == 'approval') { ?>                                      
                                 <input id="way" class="form-control way" name="way" value="{{$is_approval['way']}}" type="hidden">
                             <?php } ?>
