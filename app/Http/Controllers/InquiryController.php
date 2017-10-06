@@ -975,8 +975,8 @@ class InquiryController extends Controller {
     public function fetch_products() {
         $term = Input::get();
         $term = Input::get('term');
-        $discount_type = Input::get('discount_type');
-        $discount_unit = Input::get('discount_unit');
+        $discount_type = strtolower(Input::get('discount_type'));
+        $discount_unit = strtolower(Input::get('discount_unit'));
         $discount = Input::get('discount');
         $location_diff = 0;
         $location_diff = Input::get('location_difference');
