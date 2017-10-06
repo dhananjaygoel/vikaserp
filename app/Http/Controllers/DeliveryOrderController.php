@@ -107,8 +107,13 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
-
+//        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
+        $delivery_data = $q
+                ->whereHas('delivery_product',function($query){
+                    $query->where('present_shipping','>', '0');
+                })->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')
+                ->paginate(20);
+        
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
@@ -877,9 +882,9 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-        if ($empty_truck_weight == '0' | $final_truck_weight == '0') {
-            return Redirect::back()->with('validation_message', 'Please Add Truck Weight');
-        }
+//        if ($empty_truck_weight == '0' | $final_truck_weight == '0') {
+//            return Redirect::back()->with('validation_message', 'Please Add Truck Weight');
+//        }
 
 
         if (Session::has('forms_delivery_challan')) {
