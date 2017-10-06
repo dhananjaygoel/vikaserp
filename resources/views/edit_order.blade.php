@@ -125,6 +125,13 @@
                         @elseif($order['customer']->customer_status == "permanent")
                         <div class="form-group">
                             <label>Customer<span class="mandatory">*</span></label>
+                            @if(Auth::user()->role_id == 5 & $order['createdby']->role_id <> 5)
+                                <div class="form-group searchproduct">
+                                    <div class="col-md-4">
+                                        <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order['customer']->tally_name}}" id="existing_customer_name1" disabled="" tabindex="1" >
+                                    </div>
+                                </div>
+                            @endif
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
                                 @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
@@ -134,7 +141,7 @@
                                 @if(Auth::user()->role_id <> 5 & $order['createdby']->role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
-                            </div>
+                            </div>                            
                             <?php if (isset($is_approval['way']) && $is_approval['way'] == 'approval') { ?>                                      
                                 <input id="way" class="form-control way" name="way" value="{{$is_approval['way']}}" type="hidden">
                             <?php } ?>
@@ -195,24 +202,31 @@
                                     <label for="location">Freight</label>
                                     <input id="location_difference" class="form-control focus_on_enter" placeholder="Freight" onkeypress=" return numbersOnly(this, event, true, true);" name="location_difference" value="{{$order->location_difference}}" type="tel" tabindex="3">
                                 </div>
-                                <div class="col-md-2">
-                                    <label for="location">Discount/Premium:</label>                                    
-                                    <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
-                                        <option value="discount" {{($order->discount_type == "discount")?'selected':''}}>Discount</option>
-                                        <option value="premium" {{($order->discount_type == "premium")?'selected':''}}>Premium</option>
-                                    </select>                                    
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="location">Fixed/Percentage:</label>                                    
-                                    <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
-                                        <option value="fixed" {{($order->discount_unit == "fixed")?'selected':''}}>Fixed</option>
-                                        <option value="percent" {{($order->discount_unit== "percent")?'selected':''}}>Percent</option>
-                                    </select>                                    
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="discount">Amount</label>                                      
-                                        <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                      
-                                </div>
+                                @if(Auth::user()->role_id <> 5)
+                                    <div class="col-md-2">
+                                        <label for="location">Discount/Premium:</label>                                    
+                                        <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
+                                            <option value="Discount" {{(strtolower($order->discount_type) == "discount")?'selected':''}}>Discount</option>
+                                            <option value="Premium" {{(strtolower($order->discount_type) == "premium")?'selected':''}}>Premium</option>
+                                        </select>                                    
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="location">Fixed/Percentage:</label>                                    
+                                        <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
+                                            <option value="Fixed" {{(strtolower($order->discount_unit) == "fixed")?'selected':''}}>Fixed</option>
+                                            <option value="Percent" {{(strtolower($order->discount_unit)== "percent")?'selected':''}}>Percent</option>
+                                        </select>                                    
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="discount">Amount</label>                                      
+                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                      
+                                    </div>
+                                @endif
+                                @if(Auth::user()->role_id == 5) 
+                                    <input type = "hidden" name ="discount_type"  value="{{$order->discount_type}}">
+                                    <input type = "hidden" name ="discount_unit"  value="{{$order->discount_unit}}">
+                                    <input type = "hidden" name ="discount"  value="{{$order->discount}}">
+                                @endif
                             </div>
                         </div>
                         <div class="clearfix"></div>

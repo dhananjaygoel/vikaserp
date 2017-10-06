@@ -1995,15 +1995,14 @@ class APIsController extends Controller {
             }
             /* end of new code */
             $last_sync_date = Input::get('purchase_advice_sync_date');
-            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products','purchase_order')->get();
+            $purchase_advice_server = PurchaseAdvise::where('advice_status', 'in_process')->with('purchase_products','purchase_order')->get();            
             $purchase_advice_response['purchase_advice_server_added'] = ($purchase_advice_server && count($purchase_advice_server) > 0) ? $purchase_advice_server : array();
 
             /* Send Updated customers */
             $customer_updated_server = Customer::where('updated_at', '>', $last_sync_date)->whereRaw('updated_at > created_at')->get();
             $purchase_advice_response['customer_server_updated'] = ($customer_updated_server && count($customer_updated_server) > 0) ? $customer_updated_server : array();
             /* Send New customers */
-            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
-            $purchase_advice_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
+            $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();            
         } else {
 //            $purchase_advice_server = PurchaseAdvise::with('purchase_products')->get();
             $purchase_advice_server = PurchaseAdvise::with('purchase_products','purchase_order')
