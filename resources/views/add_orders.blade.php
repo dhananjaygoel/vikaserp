@@ -165,6 +165,7 @@
                                         @endif
                                         
                                     </div>
+                                    @if(Auth::user()->role_id <> 5)
                                     <div class="col-md-2">
                                         <label for="location">Discount/Premium:</label>                                        
                                         <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
@@ -183,6 +184,12 @@
                                         <label for="discount">Amount</label>                                         
                                             <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                          
                                     </div>
+                                    @endif
+                                    @if(Auth::user()->role_id == 5) 
+                                        <input type = "hidden" name ="discount_type"  value = "">
+                                        <input type = "hidden" name ="discount_unit"  value = "">
+                                        <input type = "hidden" name ="discount"  value = "0">
+                                    @endif
                                 </div>
                             </div>
                             <br>
