@@ -1360,6 +1360,9 @@ class InquiryController extends Controller {
         } else {
             $vat_price = 0;
         }
+        $discount_type = $input_data['discount_type'];
+        $discount_unit = $input_data['discount_unit'];
+        $discount = $input_data['discount'];
 
         $order = new Order();
         $order->order_source = $order_status;
