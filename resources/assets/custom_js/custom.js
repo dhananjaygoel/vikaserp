@@ -1782,10 +1782,10 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');
     }
-    if (total_actual_qty_truck != total_actual_quantity) {
-        status_form = 1;
-        $('#final_truck_weight').addClass('error_validation');
-    }    
+//    if (total_actual_qty_truck != total_actual_quantity) {
+//        status_form = 1;
+//        $('#final_truck_weight').addClass('error_validation');
+//    }    
 
     for (i = 1; i <= tot_products - 1; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
