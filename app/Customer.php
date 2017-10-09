@@ -66,7 +66,7 @@ class Customer extends Model {
     public static $new_customer_inquiry_rules = array(
         'customer_name' => 'required|min:2|max:100',
         'contact_person' => 'required|min:2|max:100',
-        'mobile_number' => 'integer|digits_between:10,15|required|unique:customers,phone_number1',
+        'mobile_number' => 'integer|digits:10|required|unique:customers,phone_number1',
         'credit_period' => 'integer|required',
     );
     public static $existing_customer_inquiry_rules = array(
@@ -74,7 +74,7 @@ class Customer extends Model {
     );
     public static $new_supplier_inquiry_rules = array(
         'supplier_name' => 'required|min:2|max:100',
-        'mobile_number' => 'integer|digits_between:10,15|required',
+        'mobile_number' => 'integer|digits:10|required',
         'credit_period' => 'integer|required',
     );
     public static $existing_supplier_inquiry_rules = array(
@@ -85,7 +85,7 @@ class Customer extends Model {
     );
     public static $new_supplier_rules = array(
         'supplier_name' => 'required|min:2|max:100',
-        'mobile_number' => 'integer|digits_between:10,15|required',
+        'mobile_number' => 'integer|digits:10|required',
         'credit_period' => 'integer|required',
     );
     public static $existing_supplier_rules = array(
@@ -113,7 +113,7 @@ class Customer extends Model {
         'city' => 'required',
         'state' => 'required',
         'tally_name' => 'required|max:100',
-        'phone_number1' => 'required|integer|digits_between:10,15',
+        'phone_number1' => 'required|integer|digits:10',
 //       'email' => 'required|email|unique:users',
         'delivery_location' => 'required',
         'password' => 'min:6|max:100',

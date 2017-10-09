@@ -333,7 +333,7 @@
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">GST Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_price" onkeypress=" return onlyPercentage(event);" value="" type="text"></td>
+                                                <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_price" onkeypress=" return onlyPercentage(event);" value="{{ (isset($session_data['vat_price'])) ? $session_data['vat_price']:''}}" type="text"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -350,7 +350,7 @@
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="order_remark">Remark</label>
-                                <textarea class="form-control" id="order_remark" name="order_remark" rows="3"></textarea>
+                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ (isset($session_data['order_remark'])) ? $session_data['order_remark']:''}}</textarea>
                             </div>
                             <div class="checkbox customer_select_order">
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
