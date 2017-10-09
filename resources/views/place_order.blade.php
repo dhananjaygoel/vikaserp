@@ -168,6 +168,59 @@
                             </div>
                         </div>
                         @endif
+                        <div class="row col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="location">Delivery Location:<span class="mandatory">*</span></label>
+                                    <select class="form-control" name="add_inquiry_location" id="add_order_location">
+                                        <option value="0">Delivery Location</option>
+                                        @foreach($delivery_location as $location)
+                                        <option value="{{$location->id}}" <?php
+                                                        if ($inquiry->delivery_location_id == $location->id) {
+                                                            echo 'selected="selected"';
+                                                        }
+                                                        ?> data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
+                                        @endforeach
+                                        <option id="other_location" value="other" <?php
+                                        if ($inquiry->delivery_location_id == 0) {
+                                            echo 'selected="selected"';
+                                        }
+                                                        ?>>Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="location">Freight</label>
+                                    <input id="location_difference" class="form-control" placeholder="Freight " onkeypress=" return numbersOnly(this, event, true, true);" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
+                                </div>
+                                @if(Auth::user()->role_id <> 5)
+                                    <div class="col-md-2">
+                                        <label for="location">Discount/Premium:</label>                                        
+                                        <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
+                                            <option value="Discount" selected="">Discount</option>
+                                            <option value="Premium">Premium</option>
+                                        </select>                                        
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="location">Fixed/Percentage:</label>                                        
+                                        <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
+                                            <option value="Fixed" selected="">Fixed</option>
+                                            <option value="Percent">Percent</option>
+                                        </select>                                        
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="discount">Amount</label>                                         
+                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                          
+                                    </div>
+                                    @endif
+                                    @if(Auth::user()->role_id == 5) 
+                                        <input type = "hidden" name ="discount_type"  value = "">
+                                        <input type = "hidden" name ="discount_unit"  value = "">
+                                        <input type = "hidden" name ="discount"  value = "0">
+                                    @endif
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <br>
                         <div class="inquiry_table col-md-12">
                             <div class="table-responsive">
                                 <table id="add_product_table" class="table table-hover  ">
@@ -269,33 +322,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div class="row col-md-12">
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                    <select class="form-control" name="add_inquiry_location" id="add_order_location">
-                                        <option value="0">Delivery Location</option>
-                                        @foreach($delivery_location as $location)
-                                        <option value="{{$location->id}}" <?php
-                                                        if ($inquiry->delivery_location_id == $location->id) {
-                                                            echo 'selected="selected"';
-                                                        }
-                                                        ?> data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
-                                        @endforeach
-                                        <option id="other_location" value="other" <?php
-                                        if ($inquiry->delivery_location_id == 0) {
-                                            echo 'selected="selected"';
-                                        }
-                                                        ?>>Other</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="location">Freight</label>
-                                    <input id="location_difference" class="form-control" placeholder="Freight " onkeypress=" return numbersOnly(this, event, true, true);" name="location_difference" value="{{$inquiry->location_difference}}" type="tel">
-                                </div>
-                            </div>
-                        </div>
+                        </div>                        
                         <div class="clearfix"></div>
                         <br>
                         @if($inquiry->delivery_location_id == 0)
