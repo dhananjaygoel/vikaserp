@@ -1111,21 +1111,26 @@ class DeliveryChallanController extends Controller {
         $hsn_list = array();
         $hsn_data = array();
         foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
-
-            if (isset($delivery_challan_products['order_product_all_details']->hsn_code)) {
+            
+            if(isset($delivery_challan_products['order_product_all_details']->hsn_code) && !empty($delivery_challan_products['order_product_all_details']->hsn_code)){
+                $temp_var = $delivery_challan_products['order_product_all_details']->hsn_code;
+            }else{
+                $temp_var = $delivery_challan_products['order_product_all_details']->alias_name;
+            }
+            if (isset($temp_var)) {
                 $amont = $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
                 
 
-                if (in_array($delivery_challan_products['order_product_all_details']->hsn_code, $hsn_list)) {
+                if (in_array($temp_var, $hsn_list)) {
                     foreach ($hsn_data as $key => $value) {
-                        if ($delivery_challan_products['order_product_all_details']->hsn_code == $value['id']) {
+                        if ($temp_var == $value['id']) {
                             
                             $actual_quantity = $value['actual_quantity']+$delivery_challan_products->actual_quantity;
                             $final_amount = $value['amount']+$amont;
                             $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
 
                             $hsn_data[$key] = [
-                                'id' => $delivery_challan_products['order_product_all_details']->hsn_code,
+                                'id' => $temp_var,
                                 'vat_percentage' => $update_delivery_challan->vat_percentage,
                                 'actual_quantity' => $actual_quantity,
                                 'amount' => $final_amount,
@@ -1134,9 +1139,9 @@ class DeliveryChallanController extends Controller {
                         }
                     }
                 } else {
-                    $hsn_list[] = $delivery_challan_products['order_product_all_details']->hsn_code;
+                    $hsn_list[] = $temp_var;
                     $hsn_data[] = [
-                        'id' => $delivery_challan_products['order_product_all_details']->hsn_code,
+                        'id' => $temp_var,
                         'vat_percentage' => $update_delivery_challan->vat_percentage,
                         'actual_quantity' => $delivery_challan_products->actual_quantity,
                         'amount' => $amont,
