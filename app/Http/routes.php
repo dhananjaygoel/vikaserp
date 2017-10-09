@@ -376,7 +376,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('performance/labours', 'LabourController');
     Route::get('performance', 'LabourController@index');
-
+    Route::get('update_products', 'WelcomeController@update_product_sub_cat');
+    
 
     /* Account */
     Route::resource('account', 'CollectionUserController');
