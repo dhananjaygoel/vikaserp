@@ -1823,6 +1823,24 @@ class WelcomeController extends Controller {
          
          echo $count." records deleted";
     }
+     
+    public function update_product_sub_cat() {
+           
+        $a1 = array('41','42','43','44','45', '46', '47','48','54','55');
+        $a2 = array('49');
+        $a3 = array('50','51','73');
+        $a4 = array('52','53');
+        $a5 = array('70','71');
+        $a6 = array('75','76','77','78','79','80');
+        $count1 = \App\ProductSubCategory::whereIn('product_category_id', $a1)->update(['hsn_code' => 7216]);
+        $count2 = \App\ProductSubCategory::whereIn('product_category_id', $a2)->update(['hsn_code' => 7211]);
+        $count3 = \App\ProductSubCategory::whereIn('product_category_id', $a3)->update(['hsn_code' => 7214]);
+        $count4 = \App\ProductSubCategory::whereIn('product_category_id', $a4)->update(['hsn_code' => 7208]);
+        $count5 = \App\ProductSubCategory::whereIn('product_category_id', $a5)->update(['hsn_code' => 7313]);
+        $count6 = \App\ProductSubCategory::whereIn('product_category_id', $a6)->update(['hsn_code' => 7306]);        
+             
+        $count = $count1+$count2+$count3+$count4+$count5+$count6;
+        echo $count." records updated";
         
-    
+    }        
 }

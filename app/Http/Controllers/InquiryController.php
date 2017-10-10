@@ -1360,6 +1360,9 @@ class InquiryController extends Controller {
         } else {
             $vat_price = 0;
         }
+        $discount_type = $input_data['discount_type'];
+        $discount_unit = $input_data['discount_unit'];
+        $discount = $input_data['discount'];
 
         $order = new Order();
         $order->order_source = $order_status;
@@ -1371,6 +1374,9 @@ class InquiryController extends Controller {
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
+        $order->discount_type = $discount_type;
+        $order->discount_unit = $discount_unit;
+        $order->discount = $discount;
         if ('other' == $input_data['add_inquiry_location']) {
             $order->other_location = $input_data['other_location_name'];
             $order->location_difference = $input_data['location_difference'];

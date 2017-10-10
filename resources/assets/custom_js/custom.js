@@ -1782,10 +1782,10 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');
     }
-    if (total_actual_qty_truck != total_actual_quantity) {
-        status_form = 1;
-        $('#final_truck_weight').addClass('error_validation');
-    }    
+//    if (total_actual_qty_truck != total_actual_quantity) {
+//        status_form = 1;
+//        $('#final_truck_weight').addClass('error_validation');
+//    }    
 
     for (i = 1; i <= tot_products - 1; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
@@ -1963,17 +1963,21 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var order_source = $('#order_source').val();    
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
     var final_truck_weight = parseInt($('#final_truck_weight').val());
+    var final_truck_weight = parseInt($('#final_truck_weight').val());
+    var total_actual_qty_truck = parseInt($('#total_actual_qty_truck').val());
+    var total_avg_qty = parseInt($('#total_avg_qty').val());
+     
     if(order_source != "supplier"){
         if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
             status_form = 1;
             $('#empty_truck_weight').addClass('error_validation');
         }
     }    
-    if (final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) {
+    if ((final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) || (total_avg_qty!=total_actual_qty_truck)) {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');
     }
-
+    
     for (i = 1; i <= tot_products; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#actual_quantity_" + i).val() == "")) {
             j++;
