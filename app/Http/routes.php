@@ -377,8 +377,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('performance/labours', 'LabourController');
     Route::get('performance', 'LabourController@index');
     Route::get('update_products', 'WelcomeController@update_product_sub_cat');
+    Route::get('change_admin_password_date', 'WelcomeController@update_password_change_date');
     
-
+    
     /* Account */
     Route::resource('account', 'CollectionUserController');
     Route::post('account/export_collection_user', 'CollectionUserController@export_collection_users');

@@ -1842,5 +1842,13 @@ class WelcomeController extends Controller {
         $count = $count1+$count2+$count3+$count4+$count5+$count6;
         echo $count." records updated";
         
-    }        
+    }
+    
+    public function update_password_change_date() {
+                   
+        $count = \App\User::where('id', 1)->update(['password_updated_at' => "2017-9-01 10:43:37"]);
+                
+        echo $count." records updated";
+        
+    }
 }
