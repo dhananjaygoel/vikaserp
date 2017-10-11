@@ -1995,7 +1995,6 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
 //    }
 
     if(total_avg_qty > total_actual_qty_truck){
-        alert(total_avg_qty);
         var total_avg_qty_percent = total_avg_qty*10/100;        
         var discount_price1 = total_avg_qty + total_avg_qty_percent;
         var discount_price2 = total_avg_qty - total_avg_qty_percent;        
@@ -2005,7 +2004,6 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
             $('#final_truck_weight').addClass('error_validation');
         }
     }else if(total_avg_qty < total_actual_qty_truck){
-        alert(total_actual_qty_truck);
         var total_actual_qty_truck_percent = total_actual_qty_truck*10/100;        
         var discount_price1 = total_actual_qty_truck + total_actual_qty_truck_percent;
         var discount_price2 = total_actual_qty_truck - total_actual_qty_truck_percent;        
