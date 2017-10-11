@@ -46,6 +46,7 @@ use Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use App\SyncTableInfo;
+use App\OrderCancelled;
 
 class APIsController extends Controller {
 
