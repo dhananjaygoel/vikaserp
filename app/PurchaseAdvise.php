@@ -40,7 +40,7 @@ class PurchaseAdvise extends Model {
     }
     
     public function purchase_order() {
-        return $this->hasMany('App\PurchaseOrder','id','purchase_order_id');
+        return $this->hasMany('App\PurchaseOrder','id','purchase_order_id')->withTrashed();;
     }
 
     public static $store_purchase_validation = array(
