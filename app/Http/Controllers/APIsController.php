@@ -1047,9 +1047,9 @@ class APIsController extends Controller {
         }
         if(isset($order_cancelled) && !empty($order_cancelled)){
           foreach ($order_cancelled as $key => $value) {
-          if ($value->server_id > 0) {
+          if ($value->server_order_id > 0) {
                 $cancel_order = OrderCancelled::create([
-                    'order_id' => $value->server_id,
+                    'order_id' => $value->server_order_id,
                     'order_type' => 'Order',
                     'reason_type' => $value->reason_type,
                     'reason' => $value->reason,
