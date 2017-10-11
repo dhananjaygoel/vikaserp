@@ -40,6 +40,9 @@ class LoadByController extends Controller {
     }
 
     public function index() {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         $loader = '';
         if (Auth::user()->role_id != 0) {
             return redirect()->back();
@@ -190,6 +193,9 @@ class LoadByController extends Controller {
     }
 
     public function performance(Request $request) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
         if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }

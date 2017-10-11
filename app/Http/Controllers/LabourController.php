@@ -52,6 +52,10 @@ class LabourController extends Controller {
      * @return Response
      */
     public function index(Request $request) {
+        
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }        
         $request->url();
         if (Auth::user()->role_id != 0) {
             return redirect()->back();
@@ -273,6 +277,9 @@ class LabourController extends Controller {
     }
 
     public function labourPerformance(Request $request) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        } 
         if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
