@@ -46,6 +46,7 @@ use Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use App\SyncTableInfo;
+use App\OrderCancelled;
 
 class APIsController extends Controller {
 
@@ -1042,6 +1043,22 @@ class APIsController extends Controller {
         if (Input::has('order_product')) {
             $orderproduct = (json_decode($data['order_product']));
         }
+        if (Input::has('order_cancelled')) {
+            $order_cancelled = (json_decode($data['order_cancelled']));
+        }
+        if(isset($order_cancelled) && !empty($order_cancelled)){
+          foreach ($order_cancelled as $key => $value) {
+          if ($value->server_order_id > 0) {
+                $cancel_order = OrderCancelled::create([
+                    'order_id' => $value->server_order_id,
+                    'order_type' => 'Order',
+                    'reason_type' => $value->reason_type,
+                    'reason' => $value->reason,
+                    'cancelled_by' => $value->cancelled_by
+            ]);
+            }
+          }
+        }
         foreach ($orders as $key => $value) {
             if ($value->server_id == 0) {
                 if ($value->customer_server_id == 0 || $value->customer_server_id == '0') {
@@ -1200,7 +1217,7 @@ class APIsController extends Controller {
 
 
             $last_sync_date = Input::get('order_sync_date');
-            $order_added_server = Order::with('all_order_products', 'delivery_orders')
+            $order_added_server = Order::with('all_order_products', 'delivery_orders','order_cancelled')
                     ->where('order_status','!=','completed')
                     ->get();
             $order_added_server = $this->checkpending_quantity($order_added_server);
@@ -1213,7 +1230,7 @@ class APIsController extends Controller {
             $customer_added_server = Customer::where('created_at', '>', $last_sync_date)->get();
             $order_response['customer_server_added'] = ($customer_added_server && count($customer_added_server) > 0) ? $customer_added_server : array();
         } else {
-            $order_added_server = Order::with('all_order_products', 'delivery_orders')
+            $order_added_server = Order::with('all_order_products', 'delivery_orders','order_cancelled')
                     ->where('order_status','!=','completed')
                     ->get();
 
