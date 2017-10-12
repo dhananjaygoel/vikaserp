@@ -175,7 +175,7 @@ class PurchaseOrderController extends Controller {
             $q = $q->where('order_status', '=', $data['order_filter']);
         } else {
             $q = $q->where('order_status', '=', 'pending');
-        }
+        }        
 
         if (Auth::user()->role_id > 1) {
             $q->where('is_view_all', '=', 1);
@@ -228,7 +228,7 @@ class PurchaseOrderController extends Controller {
                 ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from','delivery_location')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
-
+        
 
 //        foreach ($purchase_orders as $key => $purchase_order) {
 //
@@ -821,6 +821,10 @@ class PurchaseOrderController extends Controller {
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
+        $purchase_orders =  PurchaseOrder::orderBy('created_at', 'desc')
+                ->with('purchase_products.purchase_product_details', 'purchase_product_has_from')->Paginate(20);
+        $purchase_orders = $this->quantity_calculation($purchase_orders);
+        
         return redirect('purchase_orders' . $parameters)->with('flash_message', 'Purchase order details successfully updated.');
     }
 
@@ -1072,7 +1076,7 @@ class PurchaseOrderController extends Controller {
             }
             
             if( $purchase_orders[$key]['pending_quantity'] == 0){                
-               $purchase_orders[$key]['order_status'] = 'completed';   
+               $purchase_orders[$key]['order_status'] = 'completed';                 
                PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
             }
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
