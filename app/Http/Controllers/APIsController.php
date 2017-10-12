@@ -1728,7 +1728,7 @@ class APIsController extends Controller {
                         'purchase_order_id' => $purchase_order_id,
                         'product_category_id' => $product_data->product_category_id,
                         'unit_id' => $product_data->unit_id,
-                        'quantity' => $product_data->actual_pieces,
+                        'quantity' => $product_data->quantity,
                         'price' => $product_data->price,
                         'remarks' => '',
                     ];
