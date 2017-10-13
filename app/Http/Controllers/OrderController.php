@@ -307,35 +307,13 @@ class OrderController extends Controller {
             Session::put('forms_order', $forms_array);
         }
         $rules = ['status' => 'required'];
-        $validator = Validator::make($input_data, $rules);
-        if ($validator->fails()) {
+        $validator1 = Validator::make($input_data, $rules);
+        if (!$validator1->passes()) {
             Session::forget('product');
             Session::put('input_data', $input_data);
-            return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::back()->withErrors($validator1)->withInput();
         }
-        if ($input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            if ($validator->passes()) {
-                $customers = new Customer();
-                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_order_location']);
-                $customer_id = $newcustomer->id;
-            } else {
-                $error_msg = $validator->messages();
-                Session::forget('product');
-                Session::put('input_data', $input_data);
-                return Redirect::back()->withErrors($validator)->withInput();
-            }
-        } elseif ($input_data['customer_status'] == "existing_customer") {
-            $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
-            if ($validator->passes()) {
-                $customer_id = $input_data['existing_customer_name'];
-            } else {
-                $error_msg = $validator->messages();
-                Session::forget('product');
-                Session::put('input_data', $input_data);
-                return Redirect::back()->withErrors($validator)->withInput();
-            }
-        }
+        
         $i = 0;
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
@@ -359,6 +337,30 @@ class OrderController extends Controller {
         if ($input_data['expected_date'] == '') {
             return Redirect::back()->withInput()->with('flash_message', 'Please select Expected Delivery date.');
         }
+        if ($input_data['customer_status'] == "new_customer") {
+            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            if ($validator->passes() && $validator1->passes()) {                
+                $customers = new Customer();
+                $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_order_location']);
+                $customer_id = $newcustomer->id;               
+            } else {
+                $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+        } elseif ($input_data['customer_status'] == "existing_customer") {
+            $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
+            if ($validator->passes()) {
+                $customer_id = $input_data['existing_customer_name'];
+            } else {
+                $error_msg = $validator->messages();
+                Session::forget('product');
+                Session::put('input_data', $input_data);
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+        }
+        
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
             $supplier_id = 0;
