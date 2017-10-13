@@ -872,16 +872,20 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id == 5 | $order_id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-
+        
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products', 'purchase_products.purchase_product_advise')->find($order_id);
-
-        foreach ($purchase_orders['purchase_products'] as $key => $value) {
+        
+        foreach ($purchase_orders['purchase_products'] as $key => $value) {                                  $total_advise_product_quantity =0;
             if (isset($value['purchase_product_advise']) && count($value['purchase_product_advise'])) {
                 $purchase_advise_products = $value['purchase_product_advise'];
             } else {
-                $purchase_advise_products = PurchaseProducts::where('parent', '=', $value->id)->get();
+                $purchase_advise_products = PurchaseProducts::where('from', '=', $value->purchase_order_id)->where('product_category_id', '=', $value->product_category_id)->where('order_type','=','purchase_advice')->get();
             }
-            $total_advise_product_quantity = $purchase_advise_products->sum('quantity');
+            if(isset($purchase_advise_products) && !empty($purchase_advise_products)){
+                foreach ($purchase_advise_products as $prod) {
+                    $total_advise_product_quantity = $total_advise_product_quantity+ $prod->quantity;
+                }
+            }
             $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);
         }
         if (count($purchase_orders) < 1) {
