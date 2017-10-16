@@ -33,6 +33,7 @@ class Kernel extends HttpKernel {
         'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
         'loggedin' => 'App\Http\Middleware\LoggedinMiddleware',
         'validIP' => 'App\Http\Middleware\validIpMiddleware',
+        'preventBackHistory' => 'App\Http\Middleware\PreventBackHistory',
     ];
 
 }
