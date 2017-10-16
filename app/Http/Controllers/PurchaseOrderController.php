@@ -886,8 +886,13 @@ class PurchaseOrderController extends Controller {
                     $total_advise_product_quantity = $total_advise_product_quantity+ $prod->quantity;
                 }
             }
-            $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);
+            if($value->quantity - $total_advise_product_quantity>0){
+                $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);                
+            }else{
+               unset($purchase_orders['purchase_products'][$key]);
+            }
         }
+        
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
