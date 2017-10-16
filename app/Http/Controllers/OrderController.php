@@ -331,9 +331,9 @@ class OrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->withInput()->with('flash_message', 'Please insert product details');
         }
-        if ($input_data['add_order_location'] == '') {
-            return Redirect::back()->withInput()->with('flash_message', 'Please select Delivery Location.');
-        }
+//        if ($input_data['add_order_location'] == '') {
+//            return Redirect::back()->withInput()->with('flash_message', 'Please select Delivery Location.');
+//        }
         if ($input_data['expected_date'] == '') {
             return Redirect::back()->withInput()->with('flash_message', 'Please select Expected Delivery date.');
         }

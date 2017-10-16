@@ -122,7 +122,7 @@
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                          @if(Auth::user()->role_id <> 5)
                                         <select class="form-control focus_on_enter tabindex2" name="add_order_location" id="add_order_location" tabindex="2" >
-                                            <option value="0" selected="">Delivery Location</option>
+                                            <option value="" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                             <option value="{{$delivery_location->id}}" data-location-difference="{{$delivery_location->difference}}">{{$delivery_location->area_name}}</option>
