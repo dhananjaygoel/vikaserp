@@ -28,7 +28,7 @@
                 $ip_array = array($ipaddress);
             }
             ?>
-            @if(!Auth::user()->hasOldPassword())
+            @if(Auth::check() && !Auth::user()->hasOldPassword())
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                 <ul class="nav nav-pills nav-stacked" id="menuulbox">
                     <?php
