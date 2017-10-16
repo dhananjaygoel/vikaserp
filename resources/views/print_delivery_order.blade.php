@@ -159,7 +159,13 @@
                 </div>
             </div>
             <div class="name">
-                Name: {{(isset($delivery_data['customer']->tally_name) && $delivery_data['customer']->tally_name != "") ? $delivery_data['customer']->tally_name : '' }}
+                Name: 
+                @if(isset($delivery_data['customer']->tally_name) && $delivery_data['customer']->tally_name != "")
+                                            {{$delivery_data['customer']->tally_name}}
+                                            @else
+                                            {{isset($delivery_data['customer']->owner_name)?$delivery_data['customer']->owner_name:'N/A'}}
+
+                                            @endif
             </div>
             <div class="trk-mobile">
                 <div class="trk-no">Vehicle No: {{ isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number :''}}</div>
