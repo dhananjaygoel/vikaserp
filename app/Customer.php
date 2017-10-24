@@ -67,8 +67,7 @@ class Customer extends Model {
         'customer_name' => 'required|min:2|max:100',
         'contact_person' => 'required|min:2|max:100',
         'mobile_number' => 'integer|digits:10|required|unique:customers,phone_number1',
-        'credit_period' => 'integer|required',
-        'delivery_location_id' => 'required',
+        'credit_period' => 'integer|required',        
     );
     public static $existing_customer_inquiry_rules = array(
         'existing_customer_name' => 'required',

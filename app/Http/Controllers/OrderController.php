@@ -331,9 +331,9 @@ class OrderController extends Controller {
         if ($i == $j) {
             return Redirect::back()->withInput()->with('flash_message', 'Please insert product details');
         }
-//        if ($input_data['add_order_location'] == '') {
-//            return Redirect::back()->withInput()->with('flash_message', 'Please select Delivery Location.');
-//        }
+        if ($input_data['add_order_location'] == '') {
+            return Redirect::back()->withInput()->with('flash_message', 'Please select Delivery Location.');
+        }
         if ($input_data['expected_date'] == '') {
             return Redirect::back()->withInput()->with('flash_message', 'Please select Expected Delivery date.');
         }
@@ -345,7 +345,7 @@ class OrderController extends Controller {
                 $customer_id = $newcustomer->id;               
             } else {
                 $error_msg = $validator->messages();
-                Session::forget('product');
+//                Session::forget('product');
                 Session::put('input_data', $input_data);
                 return Redirect::back()->withErrors($validator)->withInput();
             }
