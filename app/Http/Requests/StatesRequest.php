@@ -22,7 +22,7 @@ class StatesRequest extends Request {
      */
     public function rules() {
         return [
-            'state_name' => 'required|unique:state,deleted_at,NULL'
+            'state_name' => 'required|unique:state,state_name,deleted_at,NULL'
         ];
     }
 
