@@ -217,11 +217,12 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
-                                            $session_data = Session::get('input_data');
+                                            
+                                            $session_data = Session::get('input_data');                                            
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
-                                            $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
+                                            $j = (isset($total_products_added) && ($total_products_added > 1)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
