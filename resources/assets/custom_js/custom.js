@@ -3042,3 +3042,8 @@ $(function () {
 });
 
 //
+$(document).on('click', '#export-inventory-list', function (event) {
+    $('#export-data-field').val('Export Inventory List');
+    $('#export-data-field').attr('value','Export Inventory List');
+    $('#filter_search').submit();
+});
