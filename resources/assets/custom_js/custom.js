@@ -2645,13 +2645,13 @@ $('body').delegate("#vat_percentage", "blur", function () {
     //var cur_product_id = $(this).attr("data-productid");
     //var related_cur_product_id = $('#add_product_id_' + cur_product_id).val();
     if (vat_percentage == "") {
-        $(this).focus();
+//        $(this).focus();
         $(this).css('border-color', 'red');
         $(this).css('box-shadow', 'none');
-        $(this).addClass('error_validation');
+//        $(this).addClass('error_validation');
     } else {
         $(this).css('border-color', '#e7ebee');
-        $(this).removeClass('error_validation');
+//        $(this).removeClass('error_validation');
     }
 });
 
