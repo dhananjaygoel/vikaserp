@@ -668,7 +668,7 @@ class OrderController extends Controller {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            $validator = Validator::make($input_data, Customer::$new_customer_edit_inquiry_rules);
             if ($validator->passes()) {
                 if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
                     $pending_cust = array(
