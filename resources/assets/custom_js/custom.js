@@ -1068,9 +1068,10 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
 
 
         if (status_form == 1) {
+            $('#flash_error').css('display','none');
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
-            }, 1000);
+            }, 400);
             return false;
         } else {
             var curid = $(this).attr("id");
