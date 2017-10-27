@@ -205,7 +205,7 @@ use Illuminate\Support\Facades\Session;
                                         <div class="col-md-4">
                                             <label for="discount">Amount</label>
                                               @if(Auth::user()->role_id <> 5)
-                                                <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
+                                                <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
                                               @endif
                                         </div>
                                     </div>
