@@ -365,7 +365,7 @@ use Illuminate\Support\Facades\Session;
                                         <tbody>
                                             <tr class="cdtable">
                                                 <td class="cdfirst">GST Percentage:</td>
-                                                <td><input id="price" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{Input::old('vat_percentage')}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
+                                                <td><input id="price" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{Input::old('vat_percentage')}}" type="text" onkeypress=" return onlyPercentage(event);"></td>
                                             </tr>
                                         </tbody>
                                     </table>
