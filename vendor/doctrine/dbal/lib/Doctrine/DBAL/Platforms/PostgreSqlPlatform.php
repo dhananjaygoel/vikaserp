@@ -237,7 +237,7 @@ class PostgreSqlPlatform extends AbstractPlatform
     {
         return "SELECT schema_name AS nspname
                 FROM   information_schema.schemata
-                WHERE  schema_name NOT LIKE 'pg\_%'
+                WHERE  schema_name NOT LIKE 'pg_%'
                 AND    schema_name != 'information_schema'";
     }
 
@@ -249,7 +249,7 @@ class PostgreSqlPlatform extends AbstractPlatform
         return "SELECT sequence_name AS relname,
                        sequence_schema AS schemaname
                 FROM   information_schema.sequences
-                WHERE  sequence_schema NOT LIKE 'pg\_%'
+                WHERE  sequence_schema NOT LIKE 'pg_%'
                 AND    sequence_schema != 'information_schema'";
     }
 
@@ -261,7 +261,7 @@ class PostgreSqlPlatform extends AbstractPlatform
         return "SELECT quote_ident(table_name) AS table_name,
                        table_schema AS schema_name
                 FROM   information_schema.tables
-                WHERE  table_schema NOT LIKE 'pg\_%'
+                WHERE  table_schema NOT LIKE 'pg_%'
                 AND    table_schema != 'information_schema'
                 AND    table_name != 'geometry_columns'
                 AND    table_name != 'spatial_ref_sys'
@@ -318,7 +318,7 @@ class PostgreSqlPlatform extends AbstractPlatform
     public function getListTableConstraintsSQL($table)
     {
         $table = new Identifier($table);
-        $table = $this->quoteStringLiteral($table->getName());
+        $table = $table->getName();
 
         return "SELECT
                     quote_ident(relname) as relname
@@ -327,7 +327,7 @@ class PostgreSqlPlatform extends AbstractPlatform
                 WHERE oid IN (
                     SELECT indexrelid
                     FROM pg_index, pg_class
-                    WHERE pg_class.relname = $table
+                    WHERE pg_class.relname = '$table'
                         AND pg_class.oid = pg_index.indrelid
                         AND (indisunique = 't' OR indisprimary = 't')
                         )";
@@ -364,14 +364,13 @@ class PostgreSqlPlatform extends AbstractPlatform
         $whereClause = $namespaceAlias.".nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast') AND ";
         if (strpos($table, ".") !== false) {
             list($schema, $table) = explode(".", $table);
-            $schema = $this->quoteStringLiteral($schema);
+            $schema = "'" . $schema . "'";
         } else {
             $schema = "ANY(string_to_array((select replace(replace(setting,'\"\$user\"',user),' ','') from pg_catalog.pg_settings where name = 'search_path'),','))";
         }
 
         $table = new Identifier($table);
-        $table = $this->quoteStringLiteral($table->getName());
-        $whereClause .= "$classAlias.relname = " . $table . " AND $namespaceAlias.nspname = $schema";
+        $whereClause .= "$classAlias.relname = '" . $table->getName() . "' AND $namespaceAlias.nspname = $schema";
 
         return $whereClause;
     }
@@ -446,9 +445,7 @@ class PostgreSqlPlatform extends AbstractPlatform
      */
     public function getCloseActiveDatabaseConnectionsSQL($database)
     {
-        $database = $this->quoteStringLiteral($database);
-
-        return "SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE datname = $database";
+        return "SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE datname = '$database'";
     }
 
     /**
@@ -535,7 +532,7 @@ class PostgreSqlPlatform extends AbstractPlatform
                 $type = $column->getType();
 
                 // here was a server version check before, but DBAL API does not support this anymore.
-                $query = 'ALTER ' . $oldColumnName . ' TYPE ' . $type->getSQLDeclaration($column->toArray(), $this);
+                $query = 'ALTER ' . $oldColumnName . ' TYPE ' . $type->getSqlDeclaration($column->toArray(), $this);
                 $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' ' . $query;
             }
 
@@ -548,7 +545,7 @@ class PostgreSqlPlatform extends AbstractPlatform
             }
 
             if ($columnDiff->hasChanged('notnull')) {
-                $query = 'ALTER ' . $oldColumnName . ' ' . ($column->getNotnull() ? 'SET' : 'DROP') . ' NOT NULL';
+                $query = 'ALTER ' . $oldColumnName . ' ' . ($column->getNotNull() ? 'SET' : 'DROP') . ' NOT NULL';
                 $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' ' . $query;
             }
 
@@ -577,7 +574,7 @@ class PostgreSqlPlatform extends AbstractPlatform
             }
 
             if ($columnDiff->hasChanged('length')) {
-                $query = 'ALTER ' . $oldColumnName . ' TYPE ' . $column->getType()->getSQLDeclaration($column->toArray(), $this);
+                $query = 'ALTER ' . $oldColumnName . ' TYPE ' . $column->getType()->getSqlDeclaration($column->toArray(), $this);
                 $sql[] = 'ALTER TABLE ' . $diff->getName($this)->getQuotedName($this) . ' ' . $query;
             }
         }
@@ -1071,14 +1068,7 @@ class PostgreSqlPlatform extends AbstractPlatform
      */
     public function getTruncateTableSQL($tableName, $cascade = false)
     {
-        $tableIdentifier = new Identifier($tableName);
-        $sql = 'TRUNCATE ' . $tableIdentifier->getQuotedName($this);
-
-        if ($cascade) {
-            $sql .= ' CASCADE';
-        }
-
-        return $sql;
+        return 'TRUNCATE '.$tableName.' '.(($cascade)?'CASCADE':'');
     }
 
     /**
@@ -1109,7 +1099,6 @@ class PostgreSqlPlatform extends AbstractPlatform
             'bool'          => 'boolean',
             'boolean'       => 'boolean',
             'text'          => 'text',
-            'tsvector'      => 'text',
             'varchar'       => 'string',
             'interval'      => 'string',
             '_varchar'      => 'string',
@@ -1166,7 +1155,7 @@ class PostgreSqlPlatform extends AbstractPlatform
      */
     protected function getReservedKeywordsClass()
     {
-        return Keywords\PostgreSQLKeywords::class;
+        return 'Doctrine\DBAL\Platforms\Keywords\PostgreSQLKeywords';
     }
 
     /**
@@ -1175,15 +1164,5 @@ class PostgreSqlPlatform extends AbstractPlatform
     public function getBlobTypeDeclarationSQL(array $field)
     {
         return 'BYTEA';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function quoteStringLiteral($str)
-    {
-        $str = str_replace('\\', '\\\\', $str); // PostgreSQL requires backslashes to be escaped aswell.
-
-        return parent::quoteStringLiteral($str);
     }
 }

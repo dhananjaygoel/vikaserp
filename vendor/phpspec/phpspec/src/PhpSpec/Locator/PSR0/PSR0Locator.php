@@ -358,7 +358,7 @@ class PSR0Locator implements ResourceLocatorInterface
      */
     private function validatePsr0Classname($classname)
     {
-        $pattern = '/\A([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*[\/\\\\]?)*[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\z/';
+        $pattern = '/^([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*[\/\\\\]?)*[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/';
 
         if (!preg_match($pattern, $classname)) {
             throw new InvalidArgumentException(

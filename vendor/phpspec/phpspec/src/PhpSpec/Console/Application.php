@@ -86,14 +86,7 @@ class Application extends BaseApplication
 
         $this->setDispatcher($this->container->get('console_event_dispatcher'));
 
-        if (class_exists('\Symfony\Component\Console\Terminal')) {
-            $terminal = new \Symfony\Component\Console\Terminal();
-            $consoleWidth = $terminal->getWidth();
-        } else {
-            $consoleWidth = $this->getTerminalWidth();
-        }
-
-        $this->container->get('console.io')->setConsoleWidth($consoleWidth);
+        $this->container->get('console.io')->setConsoleWidth($this->getTerminalWidth());
 
         StreamWrapper::reset();
         foreach ($this->container->getByPrefix('loader.resource_loader.spec_transformer') as $transformer) {
@@ -147,8 +140,6 @@ class Application extends BaseApplication
     {
         $config = $this->parseConfigurationFile($input);
 
-        $this->populateContainerParameters($container, $config);
-
         foreach ($config as $key => $val) {
             if ('extensions' === $key && is_array($val)) {
                 foreach ($val as $class) {
@@ -163,14 +154,7 @@ class Application extends BaseApplication
 
                     $extension->load($container);
                 }
-            }
-        }
-    }
-
-    private function populateContainerParameters(ServiceContainer $container, array $config)
-    {
-        foreach ($config as $key => $val) {
-            if ('extensions' !== $key) {
+            } else {
                 $container->setParam($key, $val);
             }
         }

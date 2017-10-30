@@ -119,34 +119,28 @@ class ApplicationContext implements Context
      */
     public function iRunPhpspecAndAnswerWhenAskedIfIWantToGenerateTheCode($answer, $option=null)
     {
-        $this->runPhpSpecAndAnswerQuestions($answer, 1, $option);
-    }
-
-    /**
-     * @When I run phpspec and answer :answer to (the) :amount questions
-     */
-    public function iRunPhpspecAndAnswerToBothQuestions($amount, $answer)
-    {
-        $this->runPhpSpecAndAnswerQuestions($answer, ($amount === 'both' ? 2 : 3));
-    }
-
-    /**
-     * @param string  $answer
-     * @param integer $times
-     * @param string  $option
-     */
-    private function runPhpSpecAndAnswerQuestions($answer, $times, $option = null)
-    {
         $arguments = array (
             'command' => 'run'
         );
 
         $this->addOptionToArguments($option, $arguments);
 
-        $i = 0;
-        while ($i++ < $times) {
-            $this->prompter->setAnswer($answer=='y');
-        }
+        $this->prompter->setAnswer($answer=='y');
+
+        $this->lastExitCode = $this->tester->run($arguments, array('interactive' => true));
+    }
+
+    /**
+     * @When I run phpspec and answer :answer to both questions
+     */
+    public function iRunPhpspecAndAnswerToBothQuestions($answer)
+    {
+        $arguments = array (
+            'command' => 'run'
+        );
+
+        $this->prompter->setAnswer($answer=='y');
+        $this->prompter->setAnswer($answer=='y');
 
         $this->lastExitCode = $this->tester->run($arguments, array('interactive' => true));
     }
@@ -365,17 +359,5 @@ class ApplicationContext implements Context
         $string = preg_replace('/\([0-9]+ms\)/', '', $string);
 
         return $string;
-    }
-    
-    /**
-     * @Then I should not be prompted for more questions
-     */
-    public function iShouldNotBePromptedForMoreQuestions()
-    {
-        if ($this->prompter->hasUnansweredQuestions()) {
-            throw new \Exception(
-                'Not all questions were answered. This might lead into further code generation not reflected in the scenario.'
-            );
-        }
     }
 }

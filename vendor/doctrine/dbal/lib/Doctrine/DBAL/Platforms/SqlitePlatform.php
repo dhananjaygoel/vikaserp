@@ -21,12 +21,12 @@ namespace Doctrine\DBAL\Platforms;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Constraint;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Identifier;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\ForeignKeyConstraint;
+use Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\Identifier;
+use Doctrine\DBAL\Schema\Constraint;
 
 /**
  * The SqlitePlatform class describes the specifics and dialects of the SQLite
@@ -405,9 +405,8 @@ class SqlitePlatform extends AbstractPlatform
     public function getListTableConstraintsSQL($table)
     {
         $table = str_replace('.', '__', $table);
-        $table = $this->quoteStringLiteral($table);
 
-        return "SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name = $table AND sql NOT NULL ORDER BY name";
+        return "SELECT sql FROM sqlite_master WHERE type='index' AND tbl_name = '$table' AND sql NOT NULL ORDER BY name";
     }
 
     /**
@@ -416,9 +415,8 @@ class SqlitePlatform extends AbstractPlatform
     public function getListTableColumnsSQL($table, $currentDatabase = null)
     {
         $table = str_replace('.', '__', $table);
-        $table = $this->quoteStringLiteral($table);
 
-        return "PRAGMA table_info($table)";
+        return "PRAGMA table_info('$table')";
     }
 
     /**
@@ -427,9 +425,8 @@ class SqlitePlatform extends AbstractPlatform
     public function getListTableIndexesSQL($table, $currentDatabase = null)
     {
         $table = str_replace('.', '__', $table);
-        $table = $this->quoteStringLiteral($table);
 
-        return "PRAGMA index_list($table)";
+        return "PRAGMA index_list('$table')";
     }
 
     /**
@@ -498,14 +495,6 @@ class SqlitePlatform extends AbstractPlatform
     /**
      * {@inheritDoc}
      */
-    public function supportsInlineColumnComments()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
         return 'sqlite';
@@ -516,8 +505,7 @@ class SqlitePlatform extends AbstractPlatform
      */
     public function getTruncateTableSQL($tableName, $cascade = false)
     {
-        $tableIdentifier = new Identifier($tableName);
-        $tableName = str_replace('.', '__', $tableIdentifier->getQuotedName($this));
+        $tableName = str_replace('.', '__', $tableName);
 
         return 'DELETE FROM ' . $tableName;
     }
@@ -582,14 +570,6 @@ class SqlitePlatform extends AbstractPlatform
     /**
      * {@inheritDoc}
      */
-    public function getInlineColumnCommentSQL($comment)
-    {
-        return '--' . str_replace("\n", "\n--", $comment) . "\n";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     protected function initializeDoctrineTypeMappings()
     {
         $this->doctrineTypeMapping = array(
@@ -633,7 +613,7 @@ class SqlitePlatform extends AbstractPlatform
      */
     protected function getReservedKeywordsClass()
     {
-        return Keywords\SQLiteKeywords::class;
+        return 'Doctrine\DBAL\Platforms\Keywords\SQLiteKeywords';
     }
 
     /**
@@ -777,9 +757,8 @@ class SqlitePlatform extends AbstractPlatform
     public function getListTableForeignKeysSQL($table, $database = null)
     {
         $table = str_replace('.', '__', $table);
-        $table = $this->quoteStringLiteral($table);
 
-        return "PRAGMA foreign_key_list($table)";
+        return "PRAGMA foreign_key_list('$table')";
     }
 
     /**

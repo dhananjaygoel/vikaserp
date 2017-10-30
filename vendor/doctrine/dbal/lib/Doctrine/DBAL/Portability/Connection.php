@@ -71,11 +71,11 @@ class Connection extends \Doctrine\DBAL\Connection
                 } elseif ($this->getDatabasePlatform()->getName() === "sqlite") {
                     $params['portability'] = $params['portability'] & self::PORTABILITY_SQLITE;
                 } elseif ($this->getDatabasePlatform()->getName() === "drizzle") {
-                    $params['portability'] = $params['portability'] & self::PORTABILITY_DRIZZLE;
+                    $params['portability'] = self::PORTABILITY_DRIZZLE;
                 } elseif ($this->getDatabasePlatform()->getName() === 'sqlanywhere') {
-                    $params['portability'] = $params['portability'] & self::PORTABILITY_SQLANYWHERE;
+                    $params['portability'] = self::PORTABILITY_SQLANYWHERE;
                 } elseif ($this->getDatabasePlatform()->getName() === 'db2') {
-                    $params['portability'] = $params['portability'] & self::PORTABILITY_DB2;
+                    $params['portability'] = self::PORTABILITY_DB2;
                 } elseif ($this->getDatabasePlatform()->getName() === 'mssql') {
                     $params['portability'] = $params['portability'] & self::PORTABILITY_SQLSRV;
                 } else {
@@ -141,7 +141,7 @@ class Connection extends \Doctrine\DBAL\Connection
     {
         $this->connect();
 
-        $stmt = $this->_conn->query(...func_get_args());
+        $stmt = call_user_func_array(array($this->_conn, 'query'), func_get_args());
         $stmt = new Statement($stmt, $this);
         $stmt->setFetchMode($this->defaultFetchMode);
 

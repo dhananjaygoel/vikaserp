@@ -138,9 +138,6 @@ class Statement implements \IteratorAggregate, DriverStatement
      */
     public function bindParam($name, &$var, $type = PDO::PARAM_STR, $length = null)
     {
-        $this->params[$name] = $var;
-        $this->types[$name] = $type;
-
         return $this->stmt->bindParam($name, $var, $type, $length);
     }
 
@@ -252,19 +249,29 @@ class Statement implements \IteratorAggregate, DriverStatement
     }
 
     /**
-     * {@inheritdoc}
+     * Fetches the next row from a result set.
+     *
+     * @param integer|null $fetchMode
+     *
+     * @return mixed The return value of this function on success depends on the fetch type.
+     *               In all cases, FALSE is returned on failure.
      */
-    public function fetch($fetchMode = null, $cursorOrientation = \PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
+    public function fetch($fetchMode = null)
     {
         return $this->stmt->fetch($fetchMode);
     }
 
     /**
-     * {@inheritdoc}
+     * Returns an array containing all of the result set rows.
+     *
+     * @param integer|null $fetchMode
+     * @param mixed        $fetchArgument
+     *
+     * @return array An array containing all of the remaining rows in the result set.
      */
-    public function fetchAll($fetchMode = null, $fetchArgument = null, $ctorArgs = null)
+    public function fetchAll($fetchMode = null, $fetchArgument = 0)
     {
-        if ($fetchArgument) {
+        if ($fetchArgument !== 0) {
             return $this->stmt->fetchAll($fetchMode, $fetchArgument);
         }
 

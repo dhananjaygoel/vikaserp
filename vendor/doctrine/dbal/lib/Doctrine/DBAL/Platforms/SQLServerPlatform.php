@@ -22,11 +22,11 @@ namespace Doctrine\DBAL\Platforms;
 use Doctrine\DBAL\LockMode;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Identifier;
+use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\TableDiff;
 
 /**
  * The SQLServerPlatform provides the behavior, features and SQL dialect of the
@@ -40,35 +40,6 @@ use Doctrine\DBAL\Schema\TableDiff;
  */
 class SQLServerPlatform extends AbstractPlatform
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrentDateSQL()
-    {
-        return $this->getConvertExpression('date', 'GETDATE()');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrentTimeSQL()
-    {
-        return $this->getConvertExpression('time', 'GETDATE()');
-    }
-
-    /**
-     * Returns an expression that converts an expression of one data type to another.
-     *
-     * @param string $dataType   The target native data type. Alias data types cannot be used.
-     * @param string $expression The SQL expression to convert.
-     *
-     * @return string
-     */
-    private function getConvertExpression($dataType, $expression)
-    {
-        return sprintf('CONVERT(%s, %s)', $dataType, $expression);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -173,7 +144,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function supportsCreateDropDatabase()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -189,16 +160,13 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getDropForeignKeySQL($foreignKey, $table)
     {
-        if (! $foreignKey instanceof ForeignKeyConstraint) {
-            $foreignKey = new Identifier($foreignKey);
+        if ($foreignKey instanceof ForeignKeyConstraint) {
+            $foreignKey = $foreignKey->getQuotedName($this);
         }
 
-        if (! $table instanceof Table) {
-            $table = new Identifier($table);
+        if ($table instanceof Table) {
+            $table = $table->getQuotedName($this);
         }
-
-        $foreignKey = $foreignKey->getQuotedName($this);
-        $table = $table->getQuotedName($this);
 
         return 'ALTER TABLE ' . $table . ' DROP CONSTRAINT ' . $foreignKey;
     }
@@ -957,14 +925,12 @@ class SQLServerPlatform extends AbstractPlatform
     {
         if (strpos($table, ".") !== false) {
             list($schema, $table) = explode(".", $table);
-            $schema = $this->quoteStringLiteral($schema);
-            $table = $this->quoteStringLiteral($table);
+            $schema = "'" . $schema . "'";
         } else {
             $schema = "SCHEMA_NAME()";
-            $table = $this->quoteStringLiteral($table);
         }
 
-        return "({$tableColumn} = {$table} AND {$schemaColumn} = {$schema})";
+        return "({$tableColumn} = '{$table}' AND {$schemaColumn} = {$schema})";
     }
 
     /**
@@ -1221,7 +1187,7 @@ class SQLServerPlatform extends AbstractPlatform
         // Even if the TOP n is very large, the use of a CTE will
         // allow the SQL Server query planner to optimize it so it doesn't
         // actually scan the entire range covered by the TOP clause.
-        $selectPattern = '/^(\s*SELECT\s+(?:DISTINCT\s+)?)(.*)$/im';
+        $selectPattern = '/^(\s*SELECT\s+(?:DISTINCT\s+)?)(.*)$/i';
         $replacePattern = sprintf('$1%s $2', "TOP $end");
         $query = preg_replace($selectPattern, $replacePattern, $query);
 
@@ -1253,16 +1219,12 @@ class SQLServerPlatform extends AbstractPlatform
      */
     private function scrubInnerOrderBy($query)
     {
-        $count = substr_count(strtoupper($query), 'ORDER BY');
+        $count = substr_count(strtoupper($query), "ORDER BY");
         $offset = 0;
 
         while ($count-- > 0) {
-            $orderByPos = stripos($query, ' ORDER BY', $offset);
-            if ($orderByPos === false) {
-                break;
-            }
-
             $qLen = strlen($query);
+            $orderByPos = stripos($query, " ORDER BY", $offset);
             $parenCount = 0;
             $currentPosition = $orderByPos;
 
@@ -1314,7 +1276,7 @@ class SQLServerPlatform extends AbstractPlatform
             }
 
             // Only yank query text on the same nesting level as the ORDER BY clause.
-            $subQueryBuffer = ($parenCount === 0 ? $query[$currentPosition] : ' ') . $subQueryBuffer;
+            $subQueryBuffer = ($parenCount === 0 ? $query[$currentPosition] : " ") . $subQueryBuffer;
 
             $currentPosition--;
         }
@@ -1512,7 +1474,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getReservedKeywordsClass()
     {
-        return Keywords\SQLServerKeywords::class;
+        return 'Doctrine\DBAL\Platforms\Keywords\SQLServerKeywords';
     }
 
     /**
@@ -1528,9 +1490,7 @@ class SQLServerPlatform extends AbstractPlatform
      */
     public function getTruncateTableSQL($tableName, $cascade = false)
     {
-        $tableIdentifier = new Identifier($tableName);
-
-        return 'TRUNCATE TABLE ' . $tableIdentifier->getQuotedName($this);
+        return 'TRUNCATE TABLE '.$tableName;
     }
 
     /**
@@ -1590,7 +1550,7 @@ class SQLServerPlatform extends AbstractPlatform
             $check = (isset($field['check']) && $field['check']) ?
                 ' ' . $field['check'] : '';
 
-            $typeDecl = $field['type']->getSQLDeclaration($field, $this);
+            $typeDecl = $field['type']->getSqlDeclaration($field, $this);
             $columnDef = $typeDecl . $collation . $notnull . $unique . $check;
         }
 
