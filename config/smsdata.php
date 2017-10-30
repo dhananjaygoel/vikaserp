@@ -5,7 +5,7 @@ return [
     'password' => 'its1782',
     'sender_id' => 'VikasPipes',
     'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
-    'send' => false,
+    'send' => true,
 //    'send_sms_to' => '9373312962', // Changed on 02-09-2015
 //    'send_sms_to' => '9158344455', // Previous upto 02-09-2015
 //    'send_sms_to' => '9975755595', //testing 02-09-2015
