@@ -763,7 +763,11 @@ class CustomerController extends Controller {
     public function get_city() {
 
         $state_id = Input::get('state');
-        $data = City::where('state_id', $state_id)->get();
+        if($state_id ==0){
+           $data = City::orderBy('city_name', 'ASC')->get();
+        }else{
+           $data = City::where('state_id', $state_id)->get(); 
+        }        
         $city = array();
         $i = 0;
         foreach ($data as $key => $val) {

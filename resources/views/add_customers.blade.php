@@ -89,7 +89,7 @@
 
                                 <label for="state">State<span class="mandatory">*</span></label>
                                 <select class="form-control" id="state" name="state" onchange="state_option()" >
-                                    <option value="" >Select State</option>
+                                    <option value="0" >Select State</option>
                                     @foreach($states as $state)
                                     @if(Input::old('state')!='' && Input::old('state')==$state->id)
                                     <option  selected="" value="{{$state->id}}">{{$state->state_name}}</option>
