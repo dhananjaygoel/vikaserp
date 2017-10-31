@@ -43,11 +43,11 @@
                             @endif
                             <div class="form-group">
                                 <div class="radio">
-                                    <input checked="" value="no" id="customer_radio" name="status" type="radio">
+                                    <input checked="" value="no" id="customer_radio" name="status" type="radio" {{(Input::old('status') == "no")?'checked':''}}>
                                     @if(Auth::user()->role_id <> 5)
                                     <label for="customer_radio">Only Customer</label>
                                     @endif
-                                    <input  value="yes" id="supplier_radio" name="status" type="radio">
+                                    <input  value="yes" id="supplier_radio" name="status" type="radio" {{(Input::old('status') == "yes")?'checked':''}}>
                                     @if(Auth::user()->role_id <> 5)
                                     <label for="supplier_radio">Supplier</label>
                                     @endif
