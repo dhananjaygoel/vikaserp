@@ -396,10 +396,10 @@
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
                     <li class="<?php if (Request::is('vehicle-list*') || Request::is('pa-vehicle-list*')) {
                         echo 'active';
-                        } ?> menutooltip" data-placement='right' data-original-title="Vehicle List">
+                        } ?> menutooltip" data-placement='right' data-original-title="Truck List">
                         <a href="{{url('vehicle-list')}}">
                             <i class="fa fa-truck"></i>
-                            <span>Vehicle List</span>
+                            <span>Truck List</span>
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
