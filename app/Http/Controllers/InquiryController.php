@@ -185,9 +185,9 @@ class InquiryController extends Controller {
                 $i++;
             }
         }
-        if ($i == $j) {
-            return Redirect::back()->with('flash_message', 'Please insert product details');
-        }
+//        if ($i == $j) {
+//            return Redirect::back()->with('flash_message', 'Please insert product details');
+//        }
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -508,7 +508,7 @@ class InquiryController extends Controller {
         }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            $validator = Validator::make($input_data, Customer::$new_customer_edit_inquiry_rules);
             if ($validator->passes()) {
                 $customers->owner_name = $input_data['customer_name'];
                 $customers->contact_person = $input_data['contact_person'];
@@ -1182,6 +1182,16 @@ class InquiryController extends Controller {
         $discount_type = strtolower(Input::get('discount_type'));
         $discount_unit = strtolower(Input::get('discount_unit'));
         $discount = Input::get('discount');
+        if($discount_type==""){
+            $discount_type='discount';
+        }
+        if($discount_unit==""){
+            $discount_unit='fixed';
+        }
+        
+        if($discount==""){
+            $discount=0;
+        }        
         $location_diff = 0;
         $product_price = 0;
         $location_diff = Input::get('location_difference');

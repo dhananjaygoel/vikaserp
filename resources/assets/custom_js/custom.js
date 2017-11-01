@@ -581,22 +581,32 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
         if ($('#customer_name').val() == "") {
             $('#customer_name').addClass('error_validation');
             status_form = 1;
-        }
+        }else{
+            $('#customer_name').removeClass('error_validation');
+        }        
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
-        }
+        }else{
+            $('#add_order_location').removeClass('error_validation');
+        }        
         if ($('#contact_person').val() == '') {
             $('#contact_person').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#contact_person').removeClass('error_validation');
         }
         if ($('#mobile_number').val() == '') {
             $('#mobile_number').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#mobile_number').removeClass('error_validation');
         }
         if ($('#period').val() == '') {
             $('#period').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#period').removeClass('error_validation');
         }
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function () {
@@ -618,7 +628,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             if (status_form != 1)
                 status_form = 0;
         }
-        var tot_products = $(".add_product_row").length;
+        var tot_products = $(".add_product_row").length;        
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
@@ -626,7 +636,11 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
                     $('#add_product_name_' + i).addClass('error_validation');
+                     $('#product_all_' + i).addClass('error_validation');
                     status_form = 1;
+                }else{
+                    $('#product_all_' + i).removeClass('error_validation');
+                     status_form = 0;
                 }
                 if ($("#quantity_" + i).val() == "") {
                     $('#quantity_' + i).addClass('error_validation');
@@ -642,6 +656,12 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                 $('#quantity_1').addClass('error_validation');
             }
             status_form = 1;
+        }
+        
+        if ($("#add_product_name_1").val() != "") {
+//            console.log(tot_products,j);
+            $('#add_product_name_1').removeClass('error_validation');
+            $('#product_all_1').removeClass('error_validation');            
         }
 
 //        alert(status_form);
@@ -664,12 +684,17 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
     } else {
 
         if ($('#existing_customer_id').val() == "" || $('#existing_customer_name').val() == "") {
-            $('#existing_customer_name').addClass('error_validation');
+//            $('#existing_customer_name').addClass('error_validation');
+            $('#existing_customer_name').closest('.searchproduct').find('.custom-combobox-input').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#existing_customer_name').closest('.searchproduct').find('.custom-combobox-input').removeClass('error_validation');
         }
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#add_order_location').removeClass('error_validation');
         }
 
 
@@ -700,7 +725,10 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
                     $('#add_product_name_' + i).addClass('error_validation');
+                    $('#product_all_' + i).addClass('error_validation');
                     status_form = 1;
+                }else{
+                    $('#product_all_' + i).removeClass('error_validation');
                 }
                 if ($("#quantity_" + i).val() == "") {
                     $('#quantity_' + i).addClass('error_validation');
@@ -711,6 +739,9 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
         if (j == tot_products) {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_product_name_1').addClass('error_validation');
+                $('#product_all_1').addClass('error_validation');
+            }else{
+                $('#product_all_1').removeClass('error_validation');
             }
             if ($("#quantity_1").val() == "") {
                 $('#quantity_1').addClass('error_validation');
@@ -759,28 +790,38 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
 $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function () {
 
     var status_form = 0;
-    if ($('input[name=customer_status]:checked').val() == "new_customer") {
+    if ($('input[name=customer_status]:checked').val() == "new_customer") {        
         if ($('#name').val() == "") {
             $('#name').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#name').removeClass('error_validation');
         }
-        if ($('#contact_person').val() == "") {
+        if ($('#contact_person').val() == '') {
             $('#contact_person').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#contact_person').removeClass('error_validation');
         }
         if ($('#mobile_number').val() == '') {
             $('#mobile_number').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#mobile_number').removeClass('error_validation');
         }
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#add_order_location').removeClass('error_validation');
         }
         if ($('#period').val() == '') {
             $('#period').addClass('error_validation');
             status_form = 1;
+        }else{
+            $('#period').removeClass('error_validation');
         }
-
+        
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function () {
             CheckBoxArray.push($(this).val());
