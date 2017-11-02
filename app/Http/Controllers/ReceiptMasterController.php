@@ -218,7 +218,7 @@ class ReceiptMasterController extends Controller {
                         }
                     }
                     /* new code */
-                    if (isset($settle_amount_debited_to)) {
+                    if (isset($settle_amount_debited_to) && count($settle_amount_debited_to)>0 && !empty($settle_amount_debited_to)) {
                         foreach ($settle_amount_debited_to as $key => $user) {
                             if ($key != '') {
                                 $customerReceiptObj = new CustomerReceiptsDebitedTo();
