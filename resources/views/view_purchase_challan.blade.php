@@ -177,35 +177,42 @@
                                             ?>
                                         </td>
                                     </tr>
-                                    @if($purchase_challan['purchase_order']->order_for == 0)
-                                    <tr>
-                                        <td><span>Unloaded By: </span>
-                                            <?php
-                                            if (isset($purchase_challan['challan_loaded_by'])) {
-                                                foreach ($purchase_challan['challan_loaded_by'] as $challan_loaded_by) {
-                                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                                        echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                    @if(isset($purchase_challan['purchase_order']) && $purchase_challan['purchase_order']->order_for == 0)
+                                        <tr>
+                                            <td><span>Unloaded By: </span>
+                                                <?php
+                                                if (isset($purchase_challan['challan_loaded_by'])) {
+                                                    foreach ($purchase_challan['challan_loaded_by'] as $challan_loaded_by) {
+                                                        foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                                            echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>Labour: </span>
-                                            <?php
-                                            if (isset($purchase_challan['challan_labours']) && !empty($purchase_challan['challan_labours'])) {
-                                                foreach ($purchase_challan['challan_labours'] as $challan_labour) {
-                                                    foreach ($challan_labour['dc_labour'] as $labour) {
-                                                        echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span>Labour: </span>
+                                                <?php
+                                                if (isset($purchase_challan['challan_labours']) && !empty($purchase_challan['challan_labours'])) {
+                                                    foreach ($purchase_challan['challan_labours'] as $challan_labour) {
+                                                        foreach ($challan_labour['dc_labour'] as $labour) {
+                                                            echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                                        }
                                                     }
+                                                } else {
+                                                    echo "N/A";
                                                 }
-                                            } else {
-                                                echo "N/A";
-                                            }
-                                            ?>
-                                        </td>
-                                    </tr>
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td><span>Unloaded By: </span>
+                                        </tr>
+                                        <tr>
+                                            <td><span>Labour: </span>
+                                        </tr>    
                                     @endif
                                     @if($purchase_challan->vat_percentage>0)
                                     <tr>
