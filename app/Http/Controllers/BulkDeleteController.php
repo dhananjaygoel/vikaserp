@@ -676,8 +676,12 @@ class BulkDeleteController extends Controller {
                         $result_data[$key][0] = $temp['supplier']->owner_name;
 
                     $result_data[$key][1] = $temp->serial_number;
-                    $result_data[$key][2] = $temp->bill_number;
-                    $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
+                    $result_data[$key][2] = $temp->bill_number;  
+                    if(isset($temp['purchase_advice']) && count($temp['purchase_advice'])>0){
+                        $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
+                    }else{
+                        $result_data[$key][3]="-";
+                    }
                     $total_qty = 0;
 
                     foreach ($temp['all_purchase_products'] as $pc) {
