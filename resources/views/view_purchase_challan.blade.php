@@ -22,7 +22,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr>
-                                        <td><span>Bill Date:</span> {{ date('F jS, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)) }}</td>
+                                        <td><span>Bill Date:</span> @if($purchase_challan['purchase_advice']){{ date('F jS, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)) }}@endif</td>
                                     </tr>
                                     <tr>
                                         <td><span>Bill Number:</span> {{ $purchase_challan->bill_number }}</td>
