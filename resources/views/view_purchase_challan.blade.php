@@ -41,22 +41,26 @@
                                         </td>
                                     </tr>
                                     <?php // dd($purchase_challan['purchase_order']); ?>
-                                    @if($purchase_challan['purchase_order']->order_for == 0)
-                                        <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
-                                    @elseif($purchase_challan['purchase_order']->order_for != 0)
-                                        @foreach($customers as $customer)
-                                        @if($customer->id == $purchase_challan['purchase_order']->order_for)
-                                        <tr>
-                                            <td>
-                                                <span><b>Order For:</b></span>
-                                                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
-                                            </td>
-                                        </tr>
+                                    @if(isset($purchase_challan['purchase_order']) && count($purchase_challan['purchase_order'])>0)
+                                        @if($purchase_challan['purchase_order']->order_for == 0)
+                                            <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
+                                        @elseif($purchase_challan['purchase_order']->order_for != 0)
+                                            @foreach($customers as $customer)
+                                            @if($customer->id == $purchase_challan['purchase_order']->order_for)
+                                            <tr>
+                                                <td>
+                                                    <span><b>Order For:</b></span>
+                                                    {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
                                         @endif
-                                        @endforeach
-                                    @endif 
+                                    @else    
+                                        <tr><td><span><b>Order For: </b></span> </td></tr>    
+                                    @endif    
                                     <?php // dd($purchase_challan['purchase_order']); ?>
-                                    @if($purchase_challan['purchase_order']->discount > 0)
+                                    @if(isset($purchase_challan['purchase_order']) && count($purchase_challan['purchase_order'])>0 && $purchase_challan['purchase_order']->discount > 0)
                                         <tr>
                                             <td>
                                                 <span><b>Discount/Premium :</b> </span>
