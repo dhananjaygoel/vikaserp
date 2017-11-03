@@ -22,13 +22,13 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr>
-                                        <td><span>Bill Date:</span> @if(isset($purchase_challan['purchase_advice']) && count($purchase_challan['purchase_advice'])){{ date('F jS, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)) }}@endif</td>
+                                        <td><span>Bill Date:</span> {{isset($purchase_challan['purchase_advice']->purchase_advice_date)?date('F jS, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)):''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Bill Number:</span> {{ $purchase_challan->bill_number }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Serial Number: </span> {{ $purchase_challan->serial_number }}</td>
+                                        <td><span>Serial Number: </span> {{isset($purchase_challan->serial_number)?$purchase_challan->serial_number:''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Order From: </span>
