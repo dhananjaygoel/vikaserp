@@ -95,6 +95,11 @@ $("#optionsRadios5").click(function () {
 
 });
 
+$("#existing_customer,#new_customer").click(function () {    
+    $("#flash_error").hide();
+    $(".alert-warning").hide();
+});
+
 $(document).ready(function () {
     $("#addmore1").click(function () {
         $(".row5").hide();
