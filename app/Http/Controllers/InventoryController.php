@@ -2279,5 +2279,10 @@ class InventoryController extends Controller {
                         ->with('product_column', $product_column)
                         ->with('report_arr', $report_arr);
     }
-
+    
+    public function reset_minimal_and_opening() {
+        $count = DB::table('inventory')->update(array('minimal' => 0,'opening_qty' => 0));
+        echo $count." records updated";        
+    }
+    
 }
