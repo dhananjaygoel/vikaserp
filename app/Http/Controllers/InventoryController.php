@@ -2282,8 +2282,8 @@ class InventoryController extends Controller {
     
     public function reset_minimal_and_opening() {
         
-        $count = DB::table('inventory')->update(array('minimal' => 0,'opening_qty' => 0));
-        echo $count." records updated";
+//        $count = DB::table('inventory')->update(array('minimal' => 0,'opening_qty' => 0));
+//        echo $count." records updated";
         
     }
     
