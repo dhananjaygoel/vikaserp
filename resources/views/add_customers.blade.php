@@ -43,11 +43,11 @@
                             @endif
                             <div class="form-group">
                                 <div class="radio">
-                                    <input checked="" value="no" id="customer_radio" name="status" type="radio">
+                                    <input checked="" value="no" id="customer_radio" name="status" type="radio" {{(Input::old('status') == "no")?'checked':''}}>
                                     @if(Auth::user()->role_id <> 5)
                                     <label for="customer_radio">Only Customer</label>
                                     @endif
-                                    <input  value="yes" id="supplier_radio" name="status" type="radio">
+                                    <input  value="yes" id="supplier_radio" name="status" type="radio" {{(Input::old('status') == "yes")?'checked':''}}>
                                     @if(Auth::user()->role_id <> 5)
                                     <label for="supplier_radio">Supplier</label>
                                     @endif
@@ -89,7 +89,7 @@
 
                                 <label for="state">State<span class="mandatory">*</span></label>
                                 <select class="form-control" id="state" name="state" onchange="state_option()" >
-                                    <option value="" >Select State</option>
+                                    <option value="0" >Select State</option>
                                     @foreach($states as $state)
                                     @if(Input::old('state')!='' && Input::old('state')==$state->id)
                                     <option  selected="" value="{{$state->id}}">{{$state->state_name}}</option>

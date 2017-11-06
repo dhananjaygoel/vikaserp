@@ -84,11 +84,11 @@ $(document).ready(function () {
     });
     $("#existing_supplier").click(function () {
         $(".exist_field").hide();
-        $(".customer_select").show();
+        $(".customer_select_order").show();
     });
     $("#new_supplier").click(function () {
         $(".exist_field").show();
-        $(".customer_select").hide();
+        $(".customer_select_order").hide();
     });
     $("#exclusive_of_vat").click(function () {
         $(".plusvat").show();

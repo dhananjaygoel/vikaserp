@@ -306,6 +306,9 @@ class PendingCustomerController extends Controller {
         if (Input::has('company_name')) {
             $customer->company_name = Input::get('company_name');
         }
+        if (Input::has('gstin_number')) {
+            $customer->gstin_number = Input::get('gstin_number');
+        }
         if (Input::has('contact_person')) {
             $customer->contact_person = Input::get('contact_person');
         }

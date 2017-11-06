@@ -185,9 +185,9 @@ class InquiryController extends Controller {
                 $i++;
             }
         }
-        if ($i == $j) {
-            return Redirect::back()->with('flash_message', 'Please insert product details');
-        }
+//        if ($i == $j) {
+//            return Redirect::back()->with('flash_message', 'Please insert product details');
+//        }
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -508,7 +508,7 @@ class InquiryController extends Controller {
         }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            $validator = Validator::make($input_data, Customer::$new_customer_edit_inquiry_rules);
             if ($validator->passes()) {
                 $customers->owner_name = $input_data['customer_name'];
                 $customers->contact_person = $input_data['contact_person'];
@@ -1047,8 +1047,10 @@ class InquiryController extends Controller {
             }
         } elseif (strpos($term, '#') !== false) {
             $data = explode("#", $term);
-            $level = $data[1];
-            $id = $data[2];
+            if(isset($data[1]) && isset($data[2])){
+                $level = $data[1];
+                $id = $data[2];
+            }            
             if (Input::hasFile('level')) {
                 $level = Input::get('level');
             }
@@ -1180,40 +1182,58 @@ class InquiryController extends Controller {
         $discount_type = strtolower(Input::get('discount_type'));
         $discount_unit = strtolower(Input::get('discount_unit'));
         $discount = Input::get('discount');
+        if($discount_type==""){
+            $discount_type='discount';
+        }
+        if($discount_unit==""){
+            $discount_unit='fixed';
+        }
+        
+        if($discount==""){
+            $discount=0;
+        }        
         $location_diff = 0;
+        $product_price = 0;
         $location_diff = Input::get('location_difference');
         if($location_diff==""){
             $location_diff =0;
         }
         $term = Input::get('term');
-        $product = ProductSubCategory::find($product_id);        
-        $cust = 0;
-        if ($customer_id > 0) {
-            $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-            if (count($customer) > 0) {
-                $cust = $customer->difference_amount;
+        if(isset($product_id) && $product_id!=""){
+            $product = ProductSubCategory::find($product_id);        
+            $cust = 0;
+            if ($customer_id > 0) {
+                $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
+                if (count($customer) > 0) {
+                    $cust = $customer->difference_amount;
+                }
+            }        
+            if($discount_type=='discount'){
+                if($discount_unit=='fixed'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+                }elseif($discount_unit=='percent'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                }
             }
-        }        
-        if($discount_type=='discount'){
-            if($discount_unit=='fixed'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
-            }elseif($discount_unit=='percent'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+            elseif($discount_type=='premium'){
+                if($discount_unit=='fixed'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+                }elseif($discount_unit=='percent'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                }
+    //            $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
             }
+            $data_array[] = [ 'value' => $product->alias_name,
+                'id' => $product->id,
+                'product_price' => $product_price,
+            ];
+        }else{
+            $data_array[] = [ 'value' => 0,
+                'id' => 0,
+                'product_price' => $product_price,
+            ]; 
         }
-        elseif($discount_type=='premium'){
-            if($discount_unit=='fixed'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
-            }elseif($discount_unit=='percent'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
-            }
-//            $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
-        }        
         
-        $data_array[] = [ 'value' => $product->alias_name,
-            'id' => $product->id,
-            'product_price' => $product_price,
-        ];
         echo json_encode(array('data_array' => $data_array));
     }
 

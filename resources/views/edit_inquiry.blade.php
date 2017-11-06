@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="mobile_number">Phone Number <span class="mandatory">*</span></label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="text">
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " name="mobile_number" value="{{$inquiry['customer']->phone_number1}}" type="tel" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10">
                             </div>
 
                             <div class="form-group">
@@ -458,5 +458,10 @@
         </div>
     </div>
 </div>
+<style>
+    .gr_ver_2{
+        top: 20px !important;
+    }
+</style>
 {{-- @include('autocomplete_tally_product_name') --}}
 @stop

@@ -145,7 +145,7 @@
                                 <div class="col-md-4">
                                     <label for="discount">Amount</label>
                                       @if(Auth::user()->role_id <> 5)
-                                        <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$purchase_order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
+                                        <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="{{$purchase_order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
                                       @endif
                                 </div>
                             </div>
@@ -401,7 +401,7 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">GST Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="tel" onkeypress=" return onlyPercentage(event);"></td>
+                                        <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="text" onkeypress=" return onlyPercentage(event);"></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -8,6 +8,7 @@ use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
 use Config;
 use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -33,8 +34,15 @@ class Handler extends ExceptionHandler {
     public function report(Exception $e)
     {
         if ($this->shouldReport($e)) {
-            app('sentry')->captureException($e);
-        }
+            if ($e instanceof NotFoundHttpException)
+            {
+//                app('sentry')->captureException($e);
+            }else{
+                app('sentry')->captureException($e);
+            }
+            
+        }        
+
         parent::report($e);
     }
 

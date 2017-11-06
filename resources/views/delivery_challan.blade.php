@@ -122,8 +122,14 @@
                                     @if($challan->challan_status == 'pending')
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
-                                        <td class="text-center">
-                                            {{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}
+                                        <td class="text-center">                                          
+                                            @if(isset($challan['customer']->tally_name) && $challan['customer']->tally_name!="")
+                                                {{ $challan['customer']->tally_name}}
+                                            @elseif(isset($challan['customer']->owner_name))
+                                                {{ $challan['customer']->owner_name}}
+                                            @else
+                                                Anonymous User
+                                            @endif
                                         </td>
 <!--                                        <td class="text-center">
                                             {{ ($challan->serial_number != '') ? $challan->serial_number : '' }}
