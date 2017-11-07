@@ -34,7 +34,7 @@
                                 <select class="form-control" name="product_type" id="product_sub_category_select">
                                     <option disabled="" selected="" value="">--Select Product Category--</option>
                                     @foreach($product_type as $prod_type)
-                                    <option value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}"> {{$prod_type->name}}</option>
+                                    <option value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}" {{(Input::old('product_type') == $prod_type->id)?'selected':''}}> {{$prod_type->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
