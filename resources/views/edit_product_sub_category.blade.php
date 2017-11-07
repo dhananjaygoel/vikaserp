@@ -81,7 +81,7 @@
                                 <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ $prod_sub_cat->thickness }}" type="text">
                             </div>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group">
                             <label for="weight">Product weight<span class="mandatory">*</span></label>
                             <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="{{$prod_sub_cat->weight}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                         </div>
