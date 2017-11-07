@@ -96,6 +96,10 @@ $(document).ready(function () {
         if (prod == 2) {
             $('.thick12').css('display', 'none');
         }
+        
+        if (prod == 3) {
+            $('.thick12').css('display', 'block');
+        }
 
         var product_type_id = $("#product_sub_category_select").val();
         var url = $('#baseurl2').val();

@@ -87,8 +87,10 @@
                                             <td>
                                                 @if($product->product_type_id == 1)
                                                 {{'Pipe'}}
-                                                @else
+                                                @elseif($product->product_type_id == 2)
                                                 {{'structure'}}
+                                                @else
+                                                {{'Profile'}}
                                                 @endif
                                             </td>
                                             <td>

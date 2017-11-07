@@ -74,8 +74,8 @@
                         <div class="form-group">
                             <label for="size">Product Size<span class="mandatory">*</span></label>
                             <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{$prod_sub_cat->size}}" type="text">
-                        </div>
-                        <div class="thick12" style="display: none;">   
+                        </div>                        
+                        <div class="thick12" style="@if(isset($prod_type->id) && $prod_type->id==2) display: none; @else  @endif">   
                             <div class="form-group ">
                                 <label for="thickness">Product Thickness</label>
                                 <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ $prod_sub_cat->thickness }}" type="text">
