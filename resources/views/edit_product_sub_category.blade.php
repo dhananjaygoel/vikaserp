@@ -83,7 +83,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="weight">Product weight<span class="mandatory">*</span></label>
-                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="{{$prod_sub_cat->weight}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
