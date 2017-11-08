@@ -844,7 +844,7 @@ class CustomerController extends Controller {
 
             $term = '%' . Input::get('search') . '%';
 
-            $customer = Customer::orderBy('tally_name', 'ASC')
+            $customer = Customer::with('customerproduct.product_category')->orderBy('tally_name', 'ASC')
                     ->where(function($query) use($term) {
                         $query->whereHas('city', function($q) use ($term) {
                             $q->where('city_name', 'like', $term)
