@@ -65,7 +65,7 @@
 <!--                                            <td>Pipe</td>
                                             <td>Structure</td>-->
                                             @foreach($product_type as $key => $type)
-                                                <td>{{$type->name}}</td>
+                                                <td class="product_type_col">{{$type->name}}</td>
                                             @endforeach
                                         </tr>
                                     </thead>

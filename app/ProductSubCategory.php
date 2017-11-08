@@ -33,8 +33,8 @@ class ProductSubCategory extends Model implements AuthenticatableContract, CanRe
     }
 
     public static $product_sub_category_rules = array(
-        'product_type' => 'required',
-        'select_product_categroy' => 'required',
+        'product_category' => 'required',
+        'sub_product_name' => 'required',
         'alias_name' => 'required|min:2|max:100',
         'size' => 'required',
         'hsn_code' => 'required|min:2',

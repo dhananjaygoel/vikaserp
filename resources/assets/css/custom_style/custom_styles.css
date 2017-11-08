@@ -245,3 +245,6 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     color: gray;
     border: 1px solid #ddd;
 }
+.product_type_col{
+    width: 150px !important;
+  } 
