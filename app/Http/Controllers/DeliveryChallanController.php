@@ -440,6 +440,7 @@ class DeliveryChallanController extends Controller {
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
+        $produc_type['profile'] = "0";
         foreach ($delivery_data['all_order_products'] as $key => $value) {
             if (isset($value['order_type']) && $value['order_type'] == "delivery_challan") {
                 if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
@@ -447,6 +448,9 @@ class DeliveryChallanController extends Controller {
                 }
                 if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 2) {
                     $produc_type['structure'] = "1";
+                }
+                if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 3) {
+                    $produc_type['profile'] = "1";
                 }
             }
         }

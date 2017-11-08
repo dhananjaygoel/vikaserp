@@ -623,6 +623,7 @@ class DeliveryOrderController extends Controller {
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
+        $produc_type['profile'] = "0";
 
         foreach ($delivery_data['delivery_product'] as $key => $value) {
             if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
@@ -630,6 +631,9 @@ class DeliveryOrderController extends Controller {
             }
             if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 2) {
                 $produc_type['structure'] = "1";
+            }
+            if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 3) {
+                $produc_type['profile'] = "1";
             }
         }
         return $produc_type;
@@ -793,6 +797,22 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
         }
+        if (isset($input_data['loaded_by_profile'])) {
+            $loaders = $input_data['loaded_by_profile'];
+            $loaders_info = [];
+            foreach ($loaders as $loader) {
+                $loaders_info[] = [
+                    'delivery_challan_id' => $delivery_challan_id,
+                    'loaded_by_id' => $loader,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'sale',
+                    'product_type_id' => '3',
+                    'total_qty' => $actual_qty['loaded_by_profile'],
+                ];
+            }
+            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+        }
         if (isset($input_data['labour_pipe'])) {
             $labours = $input_data['labour_pipe'];
             $labours_info = [];
@@ -825,6 +845,22 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
+        if (isset($input_data['labour_profile'])) {
+            $labours = $input_data['labour_profile'];
+            $labours_info = [];
+            foreach ($labours as $labour) {
+                $labours_info[] = [
+                    'delivery_challan_id' => $delivery_challan_id,
+                    'labours_id' => $labour,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'sale',
+                    'product_type_id' => '3',
+                    'total_qty' => $actual_qty['labour_profile'],
+                ];
+            }
+            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+        }
 
 
         return $delivery_challan_id;
@@ -833,10 +869,13 @@ class DeliveryOrderController extends Controller {
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
         $actual_qty['pipe'] = "0";
         $actual_qty['structure'] = "0";
+        $actual_qty['profile'] = "0";
         $actual_qty['loaded_by_pipe'] = "0";
         $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['loaded_by_profile'] = "0";
         $actual_qty['labour_pipe'] = "0";
         $actual_qty['labour_structure'] = "0";
+        $actual_qty['labour_profile'] = "0";
 
         if ($dc_id != 0 && $input_data != []) {
             $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
@@ -846,6 +885,8 @@ class DeliveryOrderController extends Controller {
                     $actual_qty['pipe'] += $value->actual_quantity;
                 } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
                     $actual_qty['structure'] += $value->actual_quantity;
+                }else if ($value['order_product_details']['product_category']->product_type_id == 3) {
+                    $actual_qty['profile'] += $value->actual_quantity;
                 }
             }
 
@@ -855,11 +896,17 @@ class DeliveryOrderController extends Controller {
             if (isset($input_data['loaded_by_structure'])) {
                 $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
             }
+            if (isset($input_data['loaded_by_profile'])) {
+                $actual_qty['loaded_by_profile'] = $actual_qty['profile'] / count($input_data['loaded_by_profile']);
+            }
             if (isset($input_data['labour_pipe'])) {
                 $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
             }
             if (isset($input_data['labour_structure'])) {
                 $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+            if (isset($input_data['labour_profile'])) {
+                $actual_qty['labour_profile'] = $actual_qty['profile'] / count($input_data['labour_profile']);
             }
         }
 
@@ -878,7 +925,7 @@ class DeliveryOrderController extends Controller {
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
             if ($delivery_order_details->order_status == 'completed') {
-                return Redirect::back()->with('validation_message', 'This delivry order is already converted to delivry challan. Please refresh the page');
+                return Redirect::back()->with('validation_message', 'This delivery order is already converted to delivry challan. Please refresh the page');
             }
         }
 
@@ -960,7 +1007,8 @@ class DeliveryOrderController extends Controller {
 
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
-        /* all items without VAT */ elseif ($total_product_count == $total_without_vat_items) {
+        /* all items without VAT */ 
+        elseif ($total_product_count == $total_without_vat_items) {
 
             $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
             // exit;
@@ -968,7 +1016,8 @@ class DeliveryOrderController extends Controller {
             $case = 'all_without_vat';
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
-        /* all items with and without VAT */ else {
+        /* all items with and without VAT */ 
+        else {
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {

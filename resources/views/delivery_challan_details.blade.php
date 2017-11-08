@@ -216,6 +216,22 @@
                         </div>
                         <hr>
                         @endif
+                        @if($product_type['profile'] == 1)
+                        <div class="form-group">
+                            <label for="loadedby"><b class="challan">Loaded By (Profile): </b></label> <?php
+                            if (isset($allorder['challan_loaded_by'])) {
+                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 3 | $challan_loaded_by->product_type_id == 0)) {
+                                        echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                        }
+                                    }
+                                }
+                            }
+                            ?>
+                        </div>
+                        <hr>
+                        @endif
                         @if($product_type['pipe'] == 1)
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour (Pipe): </b></label>
@@ -246,6 +262,27 @@
                                 foreach ($allorder['challan_labours'] as $challan_labour) {
                                     foreach ($challan_labour['dc_labour'] as $labour) {
                                         if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 2 | $challan_labour->product_type_id == 0)) {
+                                            echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo "N/A";
+                            }
+                            ?>
+
+                        </div>
+                        <hr>
+                        @endif
+                        @if($product_type['profile'] == 1)
+                        <div class="form-group">
+                            <label for="labour"><b class="challan">Labour (Profile): </b></label>
+
+                            <?php
+                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                foreach ($allorder['challan_labours'] as $challan_labour) {
+                                    foreach ($challan_labour['dc_labour'] as $labour) {
+                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 3 | $challan_labour->product_type_id == 0)) {
                                             echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
                                         }
                                     }

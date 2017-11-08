@@ -27,7 +27,7 @@ $('#performance-months').datepicker({
 
 $(document).ready(function () {
 
-    $('#loaded_by_select_pipe,#loaded_by_select_structure,#multi-territory-location ,#labour_select_pipe,#labour_select_structure,#unloaded_by_select_pipe,#unloaded_by_select_structure').multiselect({
+    $('#loaded_by_select_pipe,#loaded_by_select_structure,#multi-territory-location ,#labour_select_pipe,#labour_select_structure,#unloaded_by_select_pipe,#unloaded_by_select_structure,#loaded_by_select_profile,#labour_select_profile').multiselect({
         nonSelectedText: 'Please Select',
         includeSelectAllOption: true,
         enableFiltering: true,

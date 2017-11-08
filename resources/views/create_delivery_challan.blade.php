@@ -335,6 +335,18 @@
                                         </select>
                                     </div>
                                     @endif
+                                    @if($produc_type['profile'] == 1)
+                                    <label for="loadedby_profile"><b class="challan">Loaded By (Profile)</b></label>
+                                    <div class="form-group clearfix">
+                                        <select id="loaded_by_select_profile" name='loaded_by_profile[]' class="form-control" multiple="multiple">
+                                            @if(isset($loaders))
+                                            @foreach ($loaders as $loader)
+                                            <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    @endif
 <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">-->
                                 </div>
                                 <div class="form-group">
@@ -354,6 +366,18 @@
                                     <label for="labour_structure"><b class="challan">Labour (Structure)</b></label>
                                     <div class="form-group clearfix">
                                         <select id="labour_select_structure" name="labour_structure[]" class="form-control" multiple="multiple">
+                                            @if(isset($labours))
+                                            @foreach ($labours as $labour)
+                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    @endif
+                                    @if($produc_type['profile'] == 1)
+                                    <label for="labour_profile"><b class="challan">Labour (Profile)</b></label>
+                                    <div class="form-group clearfix">
+                                        <select id="labour_select_profile" name="labour_profile[]" class="form-control" multiple="multiple">
                                             @if(isset($labours))
                                             @foreach ($labours as $labour)
                                             <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
