@@ -30,9 +30,9 @@
                             <div class="form-group productcategory col-md-3">
                                 <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
-                                <label for="status">Select Product Category<span class="mandatory">*</span></label>
+                                <label for="status">Select Product Type<span class="mandatory">*</span></label>
                                 <select class="form-control" name="product_type" id="product_sub_category_select">
-                                    <option disabled="" selected="" value="">--Select Product Category--</option>
+                                    <option disabled="" selected="" value="">--Select Product Type--</option>
                                     @foreach($product_type as $prod_type)
                                     <option value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}"> {{$prod_type->name}}</option>
                                     @endforeach

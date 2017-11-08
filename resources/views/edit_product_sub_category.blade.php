@@ -41,9 +41,9 @@
                             <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" /> 
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
-                            <label for="status">Select Product Category<span class="mandatory">*</span></label>
+                            <label for="status">Select Product Type<span class="mandatory">*</span></label>
                             <select class="form-control" name="product_type" id="product_sub_category_select">
-                                <option disabled="" selected="" value="">--Select Product Category--</option>
+                                <option disabled="" selected="" value="">--Select Product Type--</option>
                                 @foreach($product_type as $prod_type)
                                 <option <?php if ($prod_sub_cat['product_category']->product_type_id == $prod_type->id) echo 'selected="selected"'; ?>  value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}"> {{$prod_type->name}}</option>
                                 @endforeach
