@@ -885,16 +885,14 @@ class DeliveryChallanController extends Controller {
         $current_date = date("m/d/");
         $sms_flag = 0;
 //        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
-        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details', 'customer', 'delivery_order.location')->find($id);
-
-
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);        
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 //                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
 
-            $total_vat_amount = 0;
+            $total_vat_amount = 0;            
 
             foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
                 if ($delivery_challan_products->vat_percentage > 0) {
@@ -920,10 +918,24 @@ class DeliveryChallanController extends Controller {
             $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
+            $profile_present = 0;
             $total_vat_amount = 0;
+            $product_type_id = "";
             if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
                 foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
-                    if ($delivery_challan_products->vat_percentage > 0) {
+//                   dd($delivery_challan_products['order_product_all_details']);
+                    if(isset($delivery_challan_products['order_product_all_details']) && isset($delivery_challan_products['order_product_all_details']['product_category'])){
+                        $product_cat = $delivery_challan_products['order_product_all_details']['product_category'];
+                        $product_type_id = $product_cat->product_type_id;
+                    }
+//                dd($product_type_id);
+                if(isset($product_type_id) && $product_type_id==3){
+                    $profile_present = 1;
+                    if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                        $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                    }
+                }
+                elseif ($delivery_challan_products->vat_percentage > 0) {
                         $vat_applicable = 1;
                         if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
                             $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
@@ -954,6 +966,8 @@ class DeliveryChallanController extends Controller {
                         } else {
                             $list = explode("/", $connected_dc->serial_number);
                             $modified_id = substr($list[count($list) - 1], 0, -1);
+                            $modified_str = explode("V", $modified_id);
+                            $modified_id = $modified_str[0];
                         }
                     } else {
                         $modified_id = $number;
@@ -967,20 +981,31 @@ class DeliveryChallanController extends Controller {
                         } else {
                             $list = explode("/", $connected_dc->serial_number);
                             $modified_id = substr($list[count($list) - 1], 0, -1);
+                            $modified_str = explode("V", $modified_id);
+                            $modified_id = $modified_str[0];
+                            
                         }
                     } else {
                         $modified_id = $number;
                     }
                 }
-            }
+            }            
 
 //            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
 //                $modified_id = $id;
 //            } else {
 //                $modified_id = $update_delivery_challan->ref_delivery_challan_id;
-//            }
-            $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
-
+//            }                        
+            if($profile_present>0){
+                $suffix = 'VP';
+            }
+            elseif($vat_applicable>0){
+                $suffix = 'P';
+            }else{
+                $suffix = 'A';
+            }
+//            $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+            $date_letter = 'DC/' . $current_date . $modified_id . $suffix;
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
