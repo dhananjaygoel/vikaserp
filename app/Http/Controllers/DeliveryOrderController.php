@@ -979,7 +979,7 @@ class DeliveryOrderController extends Controller {
         $total_actual_quantity_vat = 0;
         $total_actual_quantity_without_vat = 0;
         $total_actual_quantity_profile = 0;
-
+        $profile_vat_amount = 0;
         $case = array();
 
         foreach ($input_data['product'] as $product) {
@@ -993,7 +993,17 @@ class DeliveryOrderController extends Controller {
                     $total_profile_items ++;
                     $profile_product[$counter_profile++] = $product;
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
-                    $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);                    
+//                    $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
+                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
+                        $profile_vat_amount = $input_data['vat_percentage'];
+                        $product_price = $product['price'] * $product['actual_quantity'];
+                        $prod_vat_price = ($product_price * $input_data['vat_percentage'])/100;
+                        $product_price = $product_price + $prod_vat_price;
+                        $total_profile_price = $total_profile_price + $product_price;
+                    }else{
+                        $product_price = $product['price'] * $product['actual_quantity'];
+                        $total_profile_price = $total_profile_price + $product_price;                        
+                    }
                 }
                 else if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
                     $total_vat_items ++;
@@ -1005,17 +1015,18 @@ class DeliveryOrderController extends Controller {
                     $without_vat_product[$counter_without_vat++] = $product;
                     $total_actual_quantity_without_vat = $total_actual_quantity_without_vat + $product['actual_quantity'];
                     $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
-                }                
+                }
             }
-        }       
+        }        
         if ($total_product_count == $total_profile_items) {
-            $case = 'all_profile';            
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
-            $all_vat_share_overhead = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
-            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+            $case = 'all_profile';
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $profile_vat_amount;
+            $all_vat_share_overhead = number_format((float) $total_profile_price + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+//            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+            $all_vat_on_overhead_count = 0;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
-
+            
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with puls VAT */
@@ -1045,34 +1056,32 @@ class DeliveryOrderController extends Controller {
         else {            
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $profile_input_data = $input_data;
-//            dd($vat_input_data);
             if ($input_data['total_price'] <> 0) {
                 $ratio_with_vat = number_format((float) ((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
                 $ratio_without_vat = number_format((float) ((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_profile = number_format((float) ((($total_profile_price) * 100) / $input_data['total_price']), 2, '.', '');
             }
 
             $total_overhead = $input_data['loading'] + $input_data['freight'] + $input_data['discount'];
 
             $vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
             $without_vat_share_overhead = number_format((float) (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
-
-
-
+            $profile_share_overhead = number_format((float) (($ratio_profile * $total_overhead) / 100), 2, '.', '');
 
 
             $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
-            $vat_on_overhead_count = number_format((float) (($vat_share_overhead * $input_data['vat_percentage']) / 100), 2, '.', '');
-
+            $vat_on_overhead_count = number_format((float) (($ratio_profile * $input_data['vat_percentage']) / 100), 2, '.', '');
+                                
             if(isset($total_profile_items) && $total_profile_items > 0){
                 $profile_input_data['product'] = $profile_product;
                 $profile_input_data['total_actual_quantity'] = $total_actual_quantity_profile;
                 $profile_input_data['total_price'] = number_format((float) $total_profile_price, 2, '.', '');
-                $profile_input_data['discount'] = number_format((float) ($ratio_with_vat * $input_data['discount']) / 100, 2, '.', '');
-                $profile_input_data['freight'] = number_format((float) ($ratio_with_vat * $input_data['freight']) / 100, 2, '.', '');
-                $profile_input_data['loading'] = number_format((float) ($ratio_with_vat * $input_data['loading']) / 100, 2, '.', '');
-                $profile_input_data['round_off'] = number_format((float) ($ratio_with_vat * $input_data['round_off']) / 100, 2, '.', '');
-                $profile_input_data['freight_vat_percentage'] = $profile_input_data['loading_vat_percentage'] = $profile_input_data['discount_vat_percentage'] = number_format((float) $profile_input_data['vat_percentage'], 2, '.', '');
-                $profile_input_data['grand_total'] = number_format((float) ($total_profile_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $profile_input_data['round_off']), 2, '.', '');
+                $profile_input_data['discount'] = number_format((float) ($ratio_profile * $input_data['discount']) / 100, 2, '.', '');
+                $profile_input_data['freight'] = number_format((float) ($ratio_profile * $input_data['freight']) / 100, 2, '.', '');
+                $profile_input_data['loading'] = number_format((float) ($ratio_profile * $input_data['loading']) / 100, 2, '.', '');
+                $profile_input_data['round_off'] = number_format((float) ($ratio_profile * $input_data['round_off']) / 100, 2, '.', '');
+                $profile_input_data['freight_vat_percentage'] = $profile_input_data['loading_vat_percentage'] = $profile_input_data['discount_vat_percentage'] = $profile_input_data['vat_percentage'] = number_format((float) $profile_vat_amount, 2, '.', '');
+                $profile_input_data['grand_total'] = number_format((float) ($total_profile_price + $profile_share_overhead + $profile_input_data['round_off']), 2, '.', '');
             }
             if(isset($total_vat_items) && $total_vat_items > 0) {
                 $vat_input_data['product'] = $vat_product;
