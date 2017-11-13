@@ -301,6 +301,7 @@ class LoadByController extends Controller {
                 $loader_arr[$id]['tonnage'] = $total_qty_temp + $loaded_by_value['total_qty'];
                 array_push($temp_pipe, $loaded_by_value['loaded_by_id']);
                 array_push($temp, $loaded_by_value['loaded_by_id']);
+                array_push($temp_profile, $loaded_by_value['loaded_by_id']);
                 $loader_arr[$id]['loaders'] = $temp_pipe;
                 if ($loaded_by_value['product_type_id'] == 1) {
                     $loader_arr[$id]['pipe_loaders'] = $temp_pipe;
@@ -308,8 +309,8 @@ class LoadByController extends Controller {
                 } else if ($loaded_by_value['product_type_id'] == 2) {
                     $loader_arr[$id]['structure_loaders'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $loaded_by_value['total_qty'];
-                }else if ($loaded_by_value['product_type_id'] == 3) {
-                    $loader_arr[$id]['profile_loaders'] = $temp;
+                } else if ($loaded_by_value['product_type_id'] == 3) {
+                    $loader_arr[$id]['profile_loaders'] = $temp_profile;
                     $loader_arr[$id]['profile_tonnage'] = $loaded_by_value['total_qty'];
                 }
             }
@@ -335,7 +336,7 @@ class LoadByController extends Controller {
                 $loaders_data[$var++]['loaders'] = $value_temp['profile_loaders'];
             }
 
-            if (!isset($value_temp['structure_loaders']) && !isset($value_temp['pipe_loaders'])) {
+            if (!isset($value_temp['structure_loaders']) && !isset($value_temp['pipe_loaders']) && !isset($value_temp['profile_loaders'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;
