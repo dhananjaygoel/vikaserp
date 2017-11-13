@@ -1079,16 +1079,22 @@ class InquiryController extends Controller {
                 }
             }
             if ($level == 2) {
+//                $products = \App\ProductSubCategory::with('product_category')
+//                        ->where('product_category_id', '=', $id)
+//                        ->orderBy('size', 'asc')
+//                        ->groupBy('size')
+//                        ->selectRaw('size, group_concat(id) ids')
+//                        ->get();
                 $products = \App\ProductSubCategory::with('product_category')
                         ->where('product_category_id', '=', $id)
                         ->orderBy('size', 'asc')
                         ->groupBy('size')
-                        ->selectRaw('size, group_concat(id) ids')
-                        ->get();
+                        ->selectRaw('size, group_concat(id) ids,product_category_id')
+                        ->get();                
                 $type_id = 1;
-
-                if (isset($products[0]['product_category']['product_type_id'])) {
-                    $type_id = $products[0]['product_category']['product_type_id'];
+                
+                if (isset($products[0]['product_category']->product_type_id)) {
+                    $type_id = $products[0]['product_category']->product_type_id;
                 }
 
                 if (count($products) > 0) {
