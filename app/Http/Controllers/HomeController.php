@@ -5077,10 +5077,12 @@ class HomeController extends Controller {
 
         if ($server_id[0]->server_id != "") {
             $id = $server_id[0]->server_id;
-            $DC = DeliveryChallan::with('delivery_challan_products')->find($id);
+            $DC = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category')->find($id);
             $update_delivery_challan = $DC;
             $vat_applicable = 0;
             $total_vat_amount = 0;
+            $profile_present = 0;
+            $product_type_id = "";
 
             if ($DC->serial_number != "") {
                 $delivery_data = DeliveryChallan::where('id', '=', $id)
@@ -5102,7 +5104,16 @@ class HomeController extends Controller {
 
                 if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
                     foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
-                        if ($delivery_challan_products->vat_percentage > 0) {
+                        if(isset($delivery_challan_products['order_product_all_details']) && isset($delivery_challan_products['order_product_all_details']['product_category'])){
+                            $product_cat = $delivery_challan_products['order_product_all_details']['product_category'];
+                            $product_type_id = $product_cat->product_type_id;
+                        }
+                        if(isset($product_type_id) && $product_type_id==3){
+                            $profile_present = 1;
+                            if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                                $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                            }
+                        }else if ($delivery_challan_products->vat_percentage > 0) {
                             $vat_applicable = 1;
                             if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
                                 $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
@@ -5158,9 +5169,18 @@ class HomeController extends Controller {
                         }
                     }
                 }
+                
+                if($profile_present>0){
+                $suffix = 'VP';
+                }
+                elseif($vat_applicable>0){
+                    $suffix = 'P';
+                }else{
+                    $suffix = 'A';
+                }
 
-                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
-
+//                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+                $date_letter = 'DC/' . $current_date . $modified_id . $suffix;
 
                 if ($update_delivery_challan->serial_number == '')
                     $update_delivery_challan->serial_number = $date_letter;
