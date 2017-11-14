@@ -5150,6 +5150,8 @@ class HomeController extends Controller {
                             } else {
                                 $list = explode("/", $connected_dc->serial_number);
                                 $modified_id = substr($list[count($list) - 1], 0, -1);
+                                $modified_str = explode("V", $modified_id);
+                                $modified_id = $modified_str[0];
                             }
                         } else {
                             $modified_id = $number;
@@ -5163,6 +5165,8 @@ class HomeController extends Controller {
                             } else {
                                 $list = explode("/", $connected_dc->serial_number);
                                 $modified_id = substr($list[count($list) - 1], 0, -1);
+                                $modified_str = explode("V", $modified_id);
+                                $modified_id = $modified_str[0];
                             }
                         } else {
                             $modified_id = $number;
