@@ -326,17 +326,26 @@ class APIsController extends Controller {
             $data = array();
 
             foreach ($deliverychallanlabour as $key_labour => $labour_list) {
-                if ($labour_list->product_type_id == 1)
+                if ($labour_list->product_type_id == 1){
                     $data['labour_pipe'][] = $labour_list;
-                else if ($labour_list->product_type_id == 2)
+                }
+                else if ($labour_list->product_type_id == 2){
                     $data['labour_structure'][] = $labour_list;
+                }else if($labour_list->product_type_id == 3){
+                    $data['labour_profile'][] = $labour_list;                    
+                }
             }
 
             foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
-                if ($loadedby_list->product_type_id == 1)
+                if ($loadedby_list->product_type_id == 1){
                     $data['loaded_by_pipe'][] = $loadedby_list;
-                else if ($loadedby_list->product_type_id == 2)
+                }
+                else if ($loadedby_list->product_type_id == 2){
                     $data['loaded_by_structure'][] = $loadedby_list;
+                }
+                else if ($loadedby_list->product_type_id == 3){
+                    $data['loaded_by_profile'][] = $loadedby_list;
+                }
             }
 
 
@@ -578,19 +587,24 @@ class APIsController extends Controller {
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
         $actual_qty['pipe'] = "0";
         $actual_qty['structure'] = "0";
+        $actual_qty['profile'] = "0";
         $actual_qty['loaded_by_pipe'] = "0";
         $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['loaded_by_profile'] = "0";
         $actual_qty['labour_pipe'] = "0";
         $actual_qty['labour_structure'] = "0";
+        $actual_qty['labour_profile'] = "0";
 
         if ($dc_id != 0 && $input_data != []) {
-            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
+            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details.product_category')->find($dc_id);
 
             foreach ($allorder['delivery_challan_products'] as $key => $value) {
                 if ($value['order_product_details']['product_category']->product_type_id == 1) {
                     $actual_qty['pipe'] += $value->actual_quantity;
                 } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
                     $actual_qty['structure'] += $value->actual_quantity;
+                } else if ($value['order_product_details']['product_category']->product_type_id == 3) {
+                    $actual_qty['profile'] += $value->actual_quantity;
                 }
             }
 
@@ -600,11 +614,17 @@ class APIsController extends Controller {
             if (isset($input_data['loaded_by_structure'])) {
                 $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
             }
+            if (isset($input_data['loaded_by_profile'])) {
+                $actual_qty['loaded_by_profile'] = $actual_qty['profile'] / count($input_data['loaded_by_profile']);
+            }
             if (isset($input_data['labour_pipe'])) {
                 $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
             }
             if (isset($input_data['labour_structure'])) {
                 $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+            if (isset($input_data['labour_profile'])) {
+                $actual_qty['labour_profile'] = $actual_qty['profile'] / count($input_data['labour_profile']);
             }
         }
 
