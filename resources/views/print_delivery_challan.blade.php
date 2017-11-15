@@ -245,7 +245,13 @@
                     <div class="divCell2">{{ $prod->order_product_all_details->hsn_code }}</div>
                     <div class="divCell2">{{ $prod->actual_pieces }}</div>
                     <div class="divCell">{{ round($prod->actual_quantity) }}</div>
-                    <div class="divCell">{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</div>
+                    <div class="divCell">
+                        @if($prod->vat_percentage==1)
+                            {{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}
+                        @else
+                            0
+                        @endif
+                    </div>
                     <div class="divCell"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->actual_quantity; ?>
