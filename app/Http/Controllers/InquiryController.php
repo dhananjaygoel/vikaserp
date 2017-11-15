@@ -149,7 +149,7 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
 
-        $input_data = Input::all();
+        $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
@@ -226,7 +226,7 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
-        if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+        if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5)
             $add_inquiry->is_approved = 'yes';
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
