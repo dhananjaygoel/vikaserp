@@ -592,7 +592,7 @@ class InquiryController extends Controller {
         $inquiry->updated_at = $inquiry_products->updated_at;
 
         if ($inquiry->is_approved == 'no') {
-            if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {
+            if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
                 $inquiry->is_approved = 'yes';
             }
         }
