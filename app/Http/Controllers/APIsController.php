@@ -356,6 +356,7 @@ class APIsController extends Controller {
 
             $labour_array = [];
             foreach ($deliverychallanlabour as $key_labour => $labour_list) {
+                $total_qnty = 0;
                 if ($value->id == $labour_list->local_dc_id) {
                     /* if labour created offline */
                     if ($labour_list->server_labour_id == 0) {
@@ -377,13 +378,20 @@ class APIsController extends Controller {
                     } else {
                         $labour_id = $labour_list->server_labour_id;
                     }
-
+                    
+                    if(isset($labour_list->product_type_id) && $labour_list->product_type_id==1){
+                        $total_qnty = $actual_qty['labour_pipe'];
+                    }else if(isset($labour_list->product_type_id) && $labour_list->product_type_id==2){
+                        $total_qnty = $actual_qty['labour_structure'];
+                    }else if(isset($labour_list->product_type_id) && $labour_list->product_type_id==3){
+                        $total_qnty = $actual_qty['labour_profile'];
+                    }
                     $dc_labour = new App\DeliveryChallanLabours();
                     $dc_labour->delivery_challan_id = $delivery_challan_id;
                     $dc_labour->labours_id = $labour_id;
                     $dc_labour->type = "sale";
                     $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
-                    $dc_labour->total_qty = (isset($labour_list->product_type_id) && $labour_list->product_type_id == 1) ? $actual_qty['labour_pipe'] : $actual_qty['labour_structure'];
+                    $dc_labour->total_qty = $total_qnty;
                     $dc_labour->save();
                 }
             }
@@ -394,6 +402,7 @@ class APIsController extends Controller {
             $loadedby_array = [];
 
             foreach ($deliverychallanloadedby as $key_labour => $loadedby_list) {
+                $total_qnty = 0;
                 if ($value->id == $loadedby_list->local_dc_id) {
                     /* if labour created offline */
                     if ($loadedby_list->server_loadedby_id == 0) {
@@ -418,12 +427,19 @@ class APIsController extends Controller {
                         $loadedby_id = $loadedby_list->server_loadedby_id;
                     }
 
+                    if(isset($loadedby_list->product_type_id) && $loadedby_list->product_type_id==1){
+                        $total_qnty = $actual_qty['loaded_by_pipe'];
+                    }else if(isset($loadedby_list->product_type_id) && $loadedby_list->product_type_id==2){
+                        $total_qnty = $actual_qty['loaded_by_structure'];
+                    }else if(isset($loadedby_list->product_type_id) && $loadedby_list->product_type_id==3){
+                        $total_qnty = $actual_qty['loaded_by_profile'];
+                    }
                     $dc_labour = new App\DeliveryChallanLoadedBy();
                     $dc_labour->delivery_challan_id = $delivery_challan_id;
                     $dc_labour->loaded_by_id = $loadedby_id;
                     $dc_labour->type = "sale";
                     $dc_labour->product_type_id = isset($loadedby_list->product_type_id) ? $loadedby_list->product_type_id : '0';
-                    $dc_labour->total_qty = (isset($loadedby_list->product_type_id) && $loadedby_list->product_type_id == 1) ? $actual_qty['loaded_by_pipe'] : $actual_qty['loaded_by_structure'];
+                    $dc_labour->total_qty = $total_qnty;
                     $dc_labour->save();
                 }
             }
