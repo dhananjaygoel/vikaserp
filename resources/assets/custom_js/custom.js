@@ -319,9 +319,10 @@ $(document).ready(function () {
             $('.delete_records_empty').focus();
         } else {
             $('#password_delete').val($('#password_delete_completetd').val());
+            $('#is_delete_all').attr('value','');
             $('#frmdeleterecords').submit();
         }
-    });
+    });    
     $('.submit_delete_all').on("click", function (e) {
         e.preventDefault();
         var checkedAtLeastOne = false;
