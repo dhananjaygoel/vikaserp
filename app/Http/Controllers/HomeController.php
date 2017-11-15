@@ -3347,6 +3347,7 @@ class HomeController extends Controller {
                                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                                 $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                                 $add_inquiry->inquiry_status = $value->inquiry_status;
+                                $add_inquiry->is_approved = $value->is_approved;
                                 $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
                                 foreach ($inquiryproduct as $product_data) {
                                     $inquiry_products = array();
@@ -3400,6 +3401,7 @@ class HomeController extends Controller {
                                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                                 $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                                 $add_inquiry->inquiry_status = $value->inquiry_status;
+                                $add_inquiry->is_approved = $value->is_approved;
                                 $add_inquiry->save();
                                 $inquiry_id = $add_inquiry->id;
                                 $inquiry_products_track = 0;
