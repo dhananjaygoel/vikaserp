@@ -294,19 +294,23 @@
 
                         </div>
                         <hr>
-                        @endif
-                        @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
+                        @endif                        
 
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">GST Percentage: </b> {{$allorder->vat_percentage}} %</label>
+                            <label for="driver_contact"><b class="challan">GST Percentage: </b> 
+                               @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
+                                {{$allorder->vat_percentage}} %
+                               @else
+                                0 %
+                               @endif
+                            </label>
                         </div>
                         <hr>
-                        @else
+                        
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">GST: </b> No</label>
                                                 </div>
-                                                <hr>-->
-                        @endif
+                                                <hr>-->                        
                         <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b> {{$allorder->round_off}}</label>
                         </div>
