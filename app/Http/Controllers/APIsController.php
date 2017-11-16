@@ -354,9 +354,9 @@ class APIsController extends Controller {
             $actual_qty = $this->calc_actual_qty($delivery_challan_id, $data);
            
             /* add labours if new dc created */
-
+            
             $labour_array = [];
-            foreach ($deliverychallanlabour as $key_labour => $labour_list) {                
+            foreach ($deliverychallanlabour as $key_labour => $labour_list) {
                 $total_qnty = 0;
                 if ($value->id == $labour_list->local_dc_id) {
                     /* if labour created offline */
@@ -378,118 +378,21 @@ class APIsController extends Controller {
                         $labour_array[] = [$labour_list->local_labour_id => $labour_id];
                     } else {
                         $labour_id = $labour_list->server_labour_id;
-                    }
-                        $input_data = $data;
-                        if (isset($input_data['loaded_by_pipe'])) {
-                            $loaders = $input_data['loaded_by_pipe'];
-                            $loaders_info = [];
-                            foreach ($loaders as $loader) {
-                                $loaders_info[] = [
-                                    'delivery_challan_id' => $delivery_challan_id,
-                                    'loaded_by_id' => $loader,
-                                    'created_at' => $created_at,
-                                    'updated_at' => $updated_at,
-                                    'type' => 'sale',
-                                    'product_type_id' => '1',
-                                    'total_qty' => $actual_qty['loaded_by_pipe'],
-                                ];
-                            }
-                            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
-                        }
-                        if (isset($input_data['loaded_by_structure'])) {
-                            $loaders = $input_data['loaded_by_structure'];
-                            $loaders_info = [];
-                            foreach ($loaders as $loader) {
-                                $loaders_info[] = [
-                                    'delivery_challan_id' => $delivery_challan_id,
-                                    'loaded_by_id' => $loader,
-                                    'created_at' => $created_at,
-                                    'updated_at' => $updated_at,
-                                    'type' => 'sale',
-                                    'product_type_id' => '2',
-                                    'total_qty' => $actual_qty['loaded_by_structure'],
-                                ];
-                            }
-                            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
-                        }
-                        if (isset($input_data['loaded_by_profile'])) {
-                            $loaders = $input_data['loaded_by_profile'];
-                            $loaders_info = [];
-                            foreach ($loaders as $loader) {
-                                $loaders_info[] = [
-                                    'delivery_challan_id' => $delivery_challan_id,
-                                    'loaded_by_id' => $loader,
-                                    'created_at' => $created_at,
-                                    'updated_at' => $updated_at,
-                                    'type' => 'sale',
-                                    'product_type_id' => '3',
-                                    'total_qty' => $actual_qty['loaded_by_profile'],
-                                ];
-                            }
-                            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
-                        }
-                        if (isset($input_data['labour_pipe'])) {
-                            $labours = $input_data['labour_pipe'];
-                            $labours_info = [];
-                            foreach ($labours as $labour) {
-                                $labours_info[] = [
-                                    'delivery_challan_id' => $delivery_challan_id,
-                                    'labours_id' => $labour,
-                                    'created_at' => $created_at,
-                                    'updated_at' => $updated_at,
-                                    'type' => 'sale',
-                                    'product_type_id' => '1',
-                                    'total_qty' => $actual_qty['labour_pipe'],
-                                ];
-                            }
-                            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                        }
-                        if (isset($input_data['labour_structure'])) {
-                            $labours = $input_data['labour_structure'];
-                            $labours_info = [];
-                            foreach ($labours as $labour) {
-                                $labours_info[] = [
-                                    'delivery_challan_id' => $delivery_challan_id,
-                                    'labours_id' => $labour,
-                                    'created_at' => $created_at,
-                                    'updated_at' => $updated_at,
-                                    'type' => 'sale',
-                                    'product_type_id' => '2',
-                                    'total_qty' => $actual_qty['labour_structure'],
-                                ];
-                            }
-                            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                        }
-                        if (isset($input_data['labour_profile'])) {
-                            $labours = $input_data['labour_profile'];
-                            $labours_info = [];
-                            foreach ($labours as $labour) {
-                                $labours_info[] = [
-                                    'delivery_challan_id' => $delivery_challan_id,
-                                    'labours_id' => $labour,
-                                    'created_at' => $created_at,
-                                    'updated_at' => $updated_at,
-                                    'type' => 'sale',
-                                    'product_type_id' => '3',
-                                    'total_qty' => $actual_qty['labour_profile'],
-                                ];
-                            }
-                            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                        }
-//                    if(isset($labour_list->product_type_id) && $labour_list->product_type_id==1){                        
-//                        $total_qnty = $actual_qty['labour_pipe'];
-//                    }else if(isset($labour_list->product_type_id) && $labour_list->product_type_id==2){
-//                        $total_qnty = $actual_qty['labour_structure'];
-//                    }else if(isset($labour_list->product_type_id) && $labour_list->product_type_id==3){
-//                        $total_qnty = $actual_qty['labour_profile'];
-//                    }
-//                    $dc_labour = new App\DeliveryChallanLabours();
-//                    $dc_labour->delivery_challan_id = $delivery_challan_id;
-//                    $dc_labour->labours_id = $labour_id;
-//                    $dc_labour->type = "sale";
-//                    $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
-//                    $dc_labour->total_qty = $total_qnty;                    
-//                    $dc_labour->save();
+                    }    
+                    if(isset($labour_list->product_type_id) && $labour_list->product_type_id==1){                        
+                        $total_qnty = $actual_qty['labour_pipe'];
+                    }else if(isset($labour_list->product_type_id) && $labour_list->product_type_id==2){
+                        $total_qnty = $actual_qty['labour_structure'];
+                    }else if(isset($labour_list->product_type_id) && $labour_list->product_type_id==3){
+                        $total_qnty = $actual_qty['labour_profile'];
+                    }           
+                    $dc_labour = new App\DeliveryChallanLabours();
+                    $dc_labour->delivery_challan_id = $delivery_challan_id;
+                    $dc_labour->labours_id = $labour_id;
+                    $dc_labour->type = "sale";
+                    $dc_labour->product_type_id = isset($labour_list->product_type_id) ? $labour_list->product_type_id : '0';
+                    $dc_labour->total_qty = $total_qnty;  
+                    $dc_labour->save();
                 }
             }
 
