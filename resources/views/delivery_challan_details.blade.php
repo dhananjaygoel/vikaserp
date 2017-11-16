@@ -183,6 +183,11 @@
                         <div class="form-group">
                             <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount); ?>
                         </div>
+                        <?php   
+                                echo "<pre>";
+                                print_r($allorder->toArray());
+                                echo "<pre>"; 
+                        ?>
                         <hr>
                         @if($product_type['pipe'] == 1)
                         <div class="form-group">
