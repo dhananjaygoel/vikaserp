@@ -39,10 +39,9 @@
                                 <div class="radio">
 
                                     @foreach($product_type as $prod_type)
-                                    <input value="{{$prod_type->id}}" id="optionsRadios{{$prod_type->id}}" name="product_type" type="radio">
+                                    <input value="{{$prod_type->id}}" id="optionsRadios{{$prod_type->id}}" name="product_type" type="radio" {{(Input::old('product_type') == $prod_type->id)?'checked':''}}>
                                     <label for="optionsRadios{{$prod_type->id}}">{{$prod_type->name}}</label>
-                                    @endforeach                      
-
+                                    @endforeach
                                 </div>                               
                             </div>
                             <div class="form-group">

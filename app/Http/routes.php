@@ -265,7 +265,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('update_settle_amount', 'ReceiptMasterController@update_settle_amount');
     Route::get('vehicle-list', 'UsersController@get_do_vehicle_list');
     Route::get('pa-vehicle-list', 'UsersController@get_pa_vehicle_list');
-    
+    Route::get('reset_inventory', 'InventoryController@reset_minimal_and_opening');
+        
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
     Route::post('add_pending_customers/{id}', 'PendingCustomerController@add_pending_customers');

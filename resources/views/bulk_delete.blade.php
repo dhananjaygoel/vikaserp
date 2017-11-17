@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Session;
                         @if(isset($msg)&&(!empty($msg)))
                         <div id="flash_error" class="alert alert-success no_data_msg_container">{{ucfirst(str_replace('_',' ',$msg))}}</div>
                         @endif
-                        <form id="" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
+                        <form id="bulk_delete_form" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors) > 0)
                             <div role="alert" class="alert alert-warning">
@@ -92,14 +92,24 @@ use Illuminate\Support\Facades\Session;
                                             <input type="text" name="expected_date" class="form-control" id="expected_date" value="{{isset($expected_date)?$expected_date:''}}">
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-2 targetdate">
+                                    <div class="form-group col-md-1 targetdate">
                                         <label for="date"></label>
                                         <div class="input-group">
                                             <input type="submit" class="btn btn-primary" value="Search">
                                         </div>
                                     </div>
+                                    @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())
+                                    <input id="is_delete_all" type="hidden" name="is_delete_all" value="">
+                                    <div class="form-group col-md-2 targetdate">
+                                        <label for="date"></label>
+                                        <div class="input-group">
+                                            <button id="bulk-delete-all-records" class="btn btn-primary pull-left">Delete All Records</button>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
+                            <input type="hidden" name="password_delete_all" id="password_delete_all">
                         </form>
                         <div class="clearfix"></div>
                     </div>
@@ -222,6 +232,40 @@ use Illuminate\Support\Facades\Session;
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                 <button type="button" class="btn btn-default delete_records_modal">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal fade" id="delete_all_records_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Bulk Delete</h4>
+                            </div>                            
+                            <div class="modal-body">
+                                <div class="alert alert-danger alert-dismissable delete_records_empty">
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    Please Enter Password Here
+                                </div>
+                                <div class="delete">
+                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                    <div class="pwd">
+                                        <div class="pwdl"><b>Password:</b></div>
+                                        <div class="pwdr" id="pwdr">
+                                            <input class="form-control" id="password_delete_field" placeholder="" name="password_delete_field" type="password">
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="delp">Are you sure you want to <b>delete this </b> records?</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-default delete_all_records_btn">Yes</button>
                             </div>
                         </div>
                     </div>

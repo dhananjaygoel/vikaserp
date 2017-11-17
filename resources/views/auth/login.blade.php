@@ -8,7 +8,9 @@ header('Content-Type: text/html');?>
 @include('layouts.includes')
 
 <!-- Favicon -->
-
+<meta http-equiv="cache-control" content="private, max-age=0, no-cache">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
 <body id="login-page">
     <div class="container">
         <div class="row">

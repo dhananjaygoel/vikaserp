@@ -122,7 +122,7 @@
                                         <label for="location">Delivery Location:<span class="mandatory">*</span></label>
                                          @if(Auth::user()->role_id <> 5)
                                         <select class="form-control focus_on_enter tabindex2" name="add_order_location" id="add_order_location" tabindex="2" >
-                                            <option value="0" selected="">Delivery Location</option>
+                                            <option value="" selected="">Delivery Location</option>
                                             @foreach($delivery_locations as $delivery_location)
                                             @if($delivery_location->status=='permanent' && $delivery_location->id!=0)
                                             <option value="{{$delivery_location->id}}" data-location-difference="{{$delivery_location->difference}}">{{$delivery_location->area_name}}</option>
@@ -217,18 +217,19 @@
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
-                                            $session_data = Session::get('input_data');
+                                            
+                                            $session_data = Session::get('input_data');                                            
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
-                                            $j = (isset($total_products_added) && ($total_products_added > 10)) ? $total_products_added : 1;
+                                            $j = (isset($total_products_added) && ($total_products_added > 1)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
                                                 ?>
                                                 <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}">
                                                     <td class="col-md-3">
                                                         <div class = "form-group searchproduct">
                                                             <input class = "form-control focus_on_enter each_product_detail tabindex4" placeholder = "Enter Product name" data-productid="{{$i}}" type = "text" name = "product[{{$i}}][name]" id = "add_product_name_{{$i}}" onfocus = "product_autocomplete({{$i}});" value = "<?php if (isset($session_data['product'][$i]['name'])) { ?>{{$session_data['product'][$i]['name']}}<?php } ?>" tabindex="4" >
-                                                            <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "">
+                                                            <input type = "hidden" name = "product[{{$i}}][id]" id = "add_product_id_{{$i}}" value = "<?php if (isset($session_data['product'][$i]['id'])) { ?>{{$session_data['product'][$i]['id']}}<?php } ?>">
                                                             <!--<i class = "fa fa-search search-icon"></i>-->
                                                         </div>
                                                     </td>

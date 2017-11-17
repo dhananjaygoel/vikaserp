@@ -149,7 +149,7 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
 
-        $input_data = Input::all();
+        $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
@@ -185,9 +185,9 @@ class InquiryController extends Controller {
                 $i++;
             }
         }
-        if ($i == $j) {
-            return Redirect::back()->with('flash_message', 'Please insert product details');
-        }
+//        if ($i == $j) {
+//            return Redirect::back()->with('flash_message', 'Please insert product details');
+//        }
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -226,7 +226,7 @@ class InquiryController extends Controller {
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
-        if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+        if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5)
             $add_inquiry->is_approved = 'yes';
         $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
@@ -508,7 +508,7 @@ class InquiryController extends Controller {
         }
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            $validator = Validator::make($input_data, Customer::$new_customer_edit_inquiry_rules);
             if ($validator->passes()) {
                 $customers->owner_name = $input_data['customer_name'];
                 $customers->contact_person = $input_data['contact_person'];
@@ -592,7 +592,7 @@ class InquiryController extends Controller {
         $inquiry->updated_at = $inquiry_products->updated_at;
 
         if ($inquiry->is_approved == 'no') {
-            if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {
+            if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
                 $inquiry->is_approved = 'yes';
             }
         }
@@ -1047,8 +1047,10 @@ class InquiryController extends Controller {
             }
         } elseif (strpos($term, '#') !== false) {
             $data = explode("#", $term);
-            $level = $data[1];
-            $id = $data[2];
+            if(isset($data[1]) && isset($data[2])){
+                $level = $data[1];
+                $id = $data[2];
+            }            
             if (Input::hasFile('level')) {
                 $level = Input::get('level');
             }
@@ -1077,16 +1079,22 @@ class InquiryController extends Controller {
                 }
             }
             if ($level == 2) {
+//                $products = \App\ProductSubCategory::with('product_category')
+//                        ->where('product_category_id', '=', $id)
+//                        ->orderBy('size', 'asc')
+//                        ->groupBy('size')
+//                        ->selectRaw('size, group_concat(id) ids')
+//                        ->get();
                 $products = \App\ProductSubCategory::with('product_category')
                         ->where('product_category_id', '=', $id)
                         ->orderBy('size', 'asc')
                         ->groupBy('size')
-                        ->selectRaw('size, group_concat(id) ids')
-                        ->get();
+                        ->selectRaw('size, group_concat(id) ids,product_category_id')
+                        ->get();                
                 $type_id = 1;
-
-                if (isset($products[0]['product_category']['product_type_id'])) {
-                    $type_id = $products[0]['product_category']['product_type_id'];
+                
+                if (isset($products[0]['product_category']->product_type_id)) {
+                    $type_id = $products[0]['product_category']->product_type_id;
                 }
 
                 if (count($products) > 0) {
@@ -1180,40 +1188,58 @@ class InquiryController extends Controller {
         $discount_type = strtolower(Input::get('discount_type'));
         $discount_unit = strtolower(Input::get('discount_unit'));
         $discount = Input::get('discount');
+        if($discount_type==""){
+            $discount_type='discount';
+        }
+        if($discount_unit==""){
+            $discount_unit='fixed';
+        }
+        
+        if($discount==""){
+            $discount=0;
+        }        
         $location_diff = 0;
+        $product_price = 0;
         $location_diff = Input::get('location_difference');
         if($location_diff==""){
             $location_diff =0;
         }
         $term = Input::get('term');
-        $product = ProductSubCategory::find($product_id);        
-        $cust = 0;
-        if ($customer_id > 0) {
-            $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-            if (count($customer) > 0) {
-                $cust = $customer->difference_amount;
+        if(isset($product_id) && $product_id!=""){
+            $product = ProductSubCategory::find($product_id);        
+            $cust = 0;
+            if ($customer_id > 0) {
+                $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
+                if (count($customer) > 0) {
+                    $cust = $customer->difference_amount;
+                }
+            }        
+            if($discount_type=='discount'){
+                if($discount_unit=='fixed'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+                }elseif($discount_unit=='percent'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                }
             }
-        }        
-        if($discount_type=='discount'){
-            if($discount_unit=='fixed'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
-            }elseif($discount_unit=='percent'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+            elseif($discount_type=='premium'){
+                if($discount_unit=='fixed'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+                }elseif($discount_unit=='percent'){
+                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                }
+    //            $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
             }
+            $data_array[] = [ 'value' => $product->alias_name,
+                'id' => $product->id,
+                'product_price' => $product_price,
+            ];
+        }else{
+            $data_array[] = [ 'value' => 0,
+                'id' => 0,
+                'product_price' => $product_price,
+            ]; 
         }
-        elseif($discount_type=='premium'){
-            if($discount_unit=='fixed'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
-            }elseif($discount_unit=='percent'){
-                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
-            }
-//            $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
-        }        
         
-        $data_array[] = [ 'value' => $product->alias_name,
-            'id' => $product->id,
-            'product_price' => $product_price,
-        ];
         echo json_encode(array('data_array' => $data_array));
     }
 

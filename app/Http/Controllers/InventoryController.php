@@ -1623,7 +1623,7 @@ class InventoryController extends Controller {
             $product_id = $product_last[0]->id;
             //dd($product_id);
             $product_type = $product_last[0]->product_type_id;
-            if ($product_type == 1) {
+            if ($product_type == 1 || $product_type == 3) {
                 $product_column = "Size";
                 foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                     if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -1714,7 +1714,7 @@ class InventoryController extends Controller {
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
             foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -1805,7 +1805,7 @@ class InventoryController extends Controller {
             $report_arr = [];
             $final_arr = [];
             $product_type = $product_last[0]->product_type_id;
-            if ($product_type == 1) {
+            if ($product_type == 1 || $product_type == 3) {
                 $product_column = "Size";
                 foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                     if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -1881,7 +1881,7 @@ class InventoryController extends Controller {
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
             foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -1954,7 +1954,7 @@ class InventoryController extends Controller {
         $new_price = $request->input('new_price');
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             if (isset($product_id) && isset($size) && isset($thickness)) {
                 $subproduct = ProductSubCategory::where('product_category_id', '=', $product_id)
                                 ->where('thickness', '=', $thickness)
@@ -1993,7 +1993,7 @@ class InventoryController extends Controller {
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
             foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -2063,7 +2063,7 @@ class InventoryController extends Controller {
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
             foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -2140,7 +2140,7 @@ class InventoryController extends Controller {
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
             foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -2220,7 +2220,7 @@ class InventoryController extends Controller {
         $report_arr = [];
         $final_arr = [];
         $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1) {
+        if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
             foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
@@ -2279,5 +2279,12 @@ class InventoryController extends Controller {
                         ->with('product_column', $product_column)
                         ->with('report_arr', $report_arr);
     }
-
+    
+    public function reset_minimal_and_opening() {
+        
+//        $count = DB::table('inventory')->update(array('minimal' => 0,'opening_qty' => 0));
+//        echo $count." records updated";
+        
+    }
+    
 }

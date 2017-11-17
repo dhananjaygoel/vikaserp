@@ -42,8 +42,8 @@
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <label for="status">Select Product Category<span class="mandatory">*</span></label>
-                            <select class="form-control" name="product_type" id="product_sub_category_select">
-                                <option disabled="" selected="" value="">--Select Product Category--</option>
+                            <select class="form-control" name="product_category" id="product_sub_category_select">
+                                <option disabled="" selected="" value="">--Select Product Type--</option>
                                 @foreach($product_type as $prod_type)
                                 <option <?php if ($prod_sub_cat['product_category']->product_type_id == $prod_type->id) echo 'selected="selected"'; ?>  value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}"> {{$prod_type->name}}</option>
                                 @endforeach
@@ -52,7 +52,7 @@
                         <div class="clearfix"></div>
                         <div class="form-group productcategory col-md-3">
                             <label for="status">Sub Product Name<span class="mandatory">*</span></label>
-                            <select class="form-control" name="select_product_categroy" id="select_product_categroy">
+                            <select class="form-control" name="sub_product_name" id="select_product_categroy">
                                 <option disabled="" value="">--Sub Product Name--</option>
                                 <option selected="selected" value="{{ $prod_sub_cat['product_category']->id }}">{{ $prod_sub_cat['product_category']->product_category_name }}</option>
 
@@ -74,16 +74,16 @@
                         <div class="form-group">
                             <label for="size">Product Size<span class="mandatory">*</span></label>
                             <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{$prod_sub_cat->size}}" type="text">
-                        </div>
-                        <div class="thick12" style="display: none;">   
+                        </div>                        
+                        <div class="thick12" style="@if(isset($prod_type->id) && $prod_type->id==2) display: none; @else  @endif">   
                             <div class="form-group ">
                                 <label for="thickness">Product Thickness</label>
                                 <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ $prod_sub_cat->thickness }}" type="text">
                             </div>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group">
                             <label for="weight">Product weight<span class="mandatory">*</span></label>
-                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                            <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="{{$prod_sub_cat->weight}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">

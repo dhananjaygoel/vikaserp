@@ -22,8 +22,8 @@ class ProductSubCategoryRequest extends Request {
      */
     public function rules() {
         return [
-            'product_type' => 'required',
-            'select_product_categroy' => 'required',
+            'product_category' => 'required',
+            'sub_product_name' => 'required',
             'alias_name' => 'unique:product_sub_category|required|min:2|max:100',
             'size' => 'required',
             'weight' => 'required',

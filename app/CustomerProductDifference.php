@@ -19,4 +19,7 @@ class CustomerProductDifference extends Model {
      * @var array
      */
 //    protected $fillable = ['state_id', 'city_id', 'area_name'];
+    public function product_category() {
+        return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
+    }
 }

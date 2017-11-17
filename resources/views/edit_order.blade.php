@@ -266,7 +266,7 @@
                                         <?php
                                         $session_data = Session::get('input_data');
                                         if (isset($session_data['product'])) {
-                                            $total_products_added = sizeof($session_data['product']);
+                                            $total_products_added = sizeof($session_data['product'])-1;                                           
                                             for ($i = 0; $i <= $total_products_added; $i++) {
                                                 if (isset($session_data['product'][$i]['name'])) {
                                                     ?>
@@ -299,9 +299,9 @@
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
-                                                            <div class="form-group inquiry_vat_chkbox">
-                                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="GST percentage" value="<?php if (isset($session_data['product'][$i]['vat_percentage'])) { ?>{{$session_data['product'][$i]['vat_percentage']}}<?php } ?>">
-                                                            </div>
+                                                            <div class="form-group inquiry_vat_chkbox">                                                            
+                                                                <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" @if(isset($session_data['product'][$i]['vat_percentage']) && ($session_data['product'][$i]['vat_percentage']=='yes' || $session_data['product'][$i]['vat_percentage']=='on')) checked="" @endif>
+                                                            </div>                                                            
                                                         </td>
                                                         <td class="col-md-3">
                                                             <div class="form-group">
@@ -419,7 +419,16 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">GST Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" onkeypress=" return onlyPercentage(event);" name="vat_percentage" value="{{$order->vat_percentage}}" type="tel"></td>
+                                            <?php
+                                                $vat_percent ="";
+                                                if(isset($order->vat_percentage)){
+                                                    $vat_percent = $order->vat_percentage;
+                                                 }
+                                                if(isset($session_data['vat_percentage'])){
+                                                    $vat_percent = $session_data['vat_percentage'];
+                                                }
+                                                    ?>
+                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" onkeypress=" return onlyPercentage(event);" name="vat_percentage" value="{{ $vat_percent}}" type="text"></td>
                                         </tr>
                                     </tbody>
                                 </table>

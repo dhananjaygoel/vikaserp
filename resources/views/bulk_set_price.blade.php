@@ -41,7 +41,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        @endif
+                        @endif                        
 
 
                         @if(Session::has('success'))
@@ -62,8 +62,11 @@
                                         <tr>
                                             <td>#</td>
                                             <td>Customer</td>
-                                            <td>Pipe</td>
-                                            <td>Structure</td>
+<!--                                            <td>Pipe</td>
+                                            <td>Structure</td>-->
+                                            @foreach($product_type as $key => $type)
+                                                <td class="product_type_col">{{$type->name}}</td>
+                                            @endforeach
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -78,14 +81,34 @@
                                             <?php
                                             $pipe_diff = '';
                                             $structure_diff = '';
-                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][0]) && isset($c['customerproduct'][0]->difference_amount)) {
-                                                if (isset($c['customerproduct'][0]->difference_amount)) {
-                                                    $pipe_diff = $c['customerproduct'][0]->difference_amount;
-                                                }
+                                            $profile_diff = '';
+                                            if(isset($c['customerproduct'])){
+                                                foreach($c['customerproduct'] as $val => $cust_prod){
+                                                    if(isset($cust_prod['product_category'])){
+                                                        if($cust_prod['product_category']->product_type_id ==1){
+                                                            $pipe_diff = $c['customerproduct'][$val]->difference_amount;
+                                                        }
+                                                        if($cust_prod['product_category']->product_type_id ==2){
+                                                            $structure_diff = $c['customerproduct'][$val]->difference_amount;
+                                                        }
+                                                        if($cust_prod['product_category']->product_type_id ==3){
+                                                            $profile_diff = $c['customerproduct'][$val]->difference_amount;
+                                                        }
+                                                    }
+                                                } 
                                             }
-                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][13]) && isset($c['customerproduct'][13]->difference_amount)) {
-                                                $structure_diff = $c['customerproduct'][13]->difference_amount;
-                                            }
+//                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][0]) && isset($c['customerproduct'][0]->difference_amount)) {
+//                                                if (isset($c['customerproduct'][0]->difference_amount)) {
+//                                                    $pipe_diff = $c['customerproduct'][0]->difference_amount;
+//                                                }
+//                                            }
+//                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][$pipe_category_count]) && isset($c['customerproduct'][$pipe_category_count]->difference_amount)) {
+//                                                $structure_diff = $c['customerproduct'][$pipe_category_count]->difference_amount;
+//                                            }
+//                                            $profile_count= $pipe_category_count+$struct_category_count;
+//                                            if (isset($c['customerproduct']) && isset($c['customerproduct'][$profile_count]) && isset($c['customerproduct'][$profile_count]->difference_amount)) {
+//                                                $profile_diff = $c['customerproduct'][$profile_count]->difference_amount;
+//                                            }
                                             ?>
                                             <td>
                                                 <input type='tel' id="valueSconto_{{$key}}" name="set_diff[{{$key}}][pipe]"
@@ -96,6 +119,11 @@
                                                 <input type='tel' id="valuestructure_{{$key}}" name="set_diff[{{$key}}][structure]"
                                                        maxlength="6" onkeypress="return numbersOnly(this, event, true, false);"
                                                        value="{{isset($structure_diff)?$structure_diff:''}}" style="width: 40px;">
+                                            </td>
+                                            <td>
+                                                <input type='tel' id="valueprofile_{{$key}}" name="set_diff[{{$key}}][profile]"
+                                                       maxlength="6" onkeypress="return numbersOnly(this, event, true, false);"
+                                                       value="{{isset($profile_diff)?$profile_diff:''}}" style="width: 40px;">
                                             </td>
                                             <td>
                                                 <input type='hidden' name="set_diff[{{$key}}][cust_id]"

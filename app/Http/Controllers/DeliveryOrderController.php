@@ -623,6 +623,7 @@ class DeliveryOrderController extends Controller {
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
+        $produc_type['profile'] = "0";
 
         foreach ($delivery_data['delivery_product'] as $key => $value) {
             if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
@@ -630,6 +631,9 @@ class DeliveryOrderController extends Controller {
             }
             if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 2) {
                 $produc_type['structure'] = "1";
+            }
+            if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 3) {
+                $produc_type['profile'] = "1";
             }
         }
         return $produc_type;
@@ -667,7 +671,7 @@ class DeliveryOrderController extends Controller {
      */
 
     public function store_delivery_challan_vat_wise($input_data, $id = "", $refid = NULL) {
-
+        
         $delivery_challan = new DeliveryChallan();
         $delivery_challan->order_id = $input_data['order_id'];
         $delivery_challan->delivery_order_id = $id;
@@ -793,6 +797,22 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
         }
+        if (isset($input_data['loaded_by_profile'])) {
+            $loaders = $input_data['loaded_by_profile'];
+            $loaders_info = [];
+            foreach ($loaders as $loader) {
+                $loaders_info[] = [
+                    'delivery_challan_id' => $delivery_challan_id,
+                    'loaded_by_id' => $loader,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'sale',
+                    'product_type_id' => '3',
+                    'total_qty' => $actual_qty['loaded_by_profile'],
+                ];
+            }
+            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+        }
         if (isset($input_data['labour_pipe'])) {
             $labours = $input_data['labour_pipe'];
             $labours_info = [];
@@ -825,6 +845,22 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
+        if (isset($input_data['labour_profile'])) {
+            $labours = $input_data['labour_profile'];
+            $labours_info = [];
+            foreach ($labours as $labour) {
+                $labours_info[] = [
+                    'delivery_challan_id' => $delivery_challan_id,
+                    'labours_id' => $labour,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'sale',
+                    'product_type_id' => '3',
+                    'total_qty' => $actual_qty['labour_profile'],
+                ];
+            }
+            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+        }
 
 
         return $delivery_challan_id;
@@ -833,19 +869,24 @@ class DeliveryOrderController extends Controller {
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
         $actual_qty['pipe'] = "0";
         $actual_qty['structure'] = "0";
+        $actual_qty['profile'] = "0";
         $actual_qty['loaded_by_pipe'] = "0";
         $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['loaded_by_profile'] = "0";
         $actual_qty['labour_pipe'] = "0";
         $actual_qty['labour_structure'] = "0";
+        $actual_qty['labour_profile'] = "0";
 
         if ($dc_id != 0 && $input_data != []) {
-            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
+            $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details.product_category')->find($dc_id);
 
             foreach ($allorder['delivery_challan_products'] as $key => $value) {
                 if ($value['order_product_details']['product_category']->product_type_id == 1) {
                     $actual_qty['pipe'] += $value->actual_quantity;
                 } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
                     $actual_qty['structure'] += $value->actual_quantity;
+                }else if ($value['order_product_details']['product_category']->product_type_id == 3) {
+                    $actual_qty['profile'] += $value->actual_quantity;
                 }
             }
 
@@ -855,11 +896,17 @@ class DeliveryOrderController extends Controller {
             if (isset($input_data['loaded_by_structure'])) {
                 $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
             }
+            if (isset($input_data['loaded_by_profile'])) {
+                $actual_qty['loaded_by_profile'] = $actual_qty['profile'] / count($input_data['loaded_by_profile']);
+            }
             if (isset($input_data['labour_pipe'])) {
                 $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
             }
             if (isset($input_data['labour_structure'])) {
                 $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+            if (isset($input_data['labour_profile'])) {
+                $actual_qty['labour_profile'] = $actual_qty['profile'] / count($input_data['labour_profile']);
             }
         }
 
@@ -878,7 +925,7 @@ class DeliveryOrderController extends Controller {
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
             if ($delivery_order_details->order_status == 'completed') {
-                return Redirect::back()->with('validation_message', 'This delivry order is already converted to delivry challan. Please refresh the page');
+                return Redirect::back()->with('validation_message', 'This delivery order is already converted to delivry challan. Please refresh the page');
             }
         }
 
@@ -918,21 +965,47 @@ class DeliveryOrderController extends Controller {
             $total_product_count = 0;
 
         $total_vat_items = 0;
-        $total_vat_price = 0;
+        $total_vat_price = 0;        
         $total_without_vat_items = 0;
         $total_without_vat_price = 0;
+        $total_profile_items = 0;
+        $total_profile_price = 0;        
         $counter_vat = 0;
         $counter_without_vat = 0;
+        $counter_profile = 0;
         $vat_product;
         $without_vat_product;
+        $profile_product;        
         $total_actual_quantity_vat = 0;
         $total_actual_quantity_without_vat = 0;
-
+        $total_actual_quantity_profile = 0;
+        $profile_vat_amount = 0;
         $case = array();
 
         foreach ($input_data['product'] as $product) {
-            if (isset($product['actual_quantity']) && isset($product['price'])) {
-                if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
+            $product_id = $product['id'];                                
+            $product_sub = ProductSubCategory::with('product_category')->where('id','=',$product_id)->get();            
+            if(isset($product_sub) && isset($product_sub[0]['product_category'])){
+                $product_type_id = $product_sub[0]['product_category']->product_type_id;
+            }
+            if (isset($product['actual_quantity']) && isset($product['price'])) {                
+                if (isset($product_type_id) && $product_type_id==3) {                    
+                    $total_profile_items ++;
+                    $profile_product[$counter_profile++] = $product;
+                    $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
+//                    $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
+                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
+                        $profile_vat_amount = $input_data['vat_percentage'];
+                        $product_price = $product['price'] * $product['actual_quantity'];
+                        $prod_vat_price = ($product_price * $input_data['vat_percentage'])/100;
+                        $product_price = $product_price + $prod_vat_price;
+                        $total_profile_price = $total_profile_price + $product_price;
+                    }else{
+                        $product_price = $product['price'] * $product['actual_quantity'];
+                        $total_profile_price = $total_profile_price + $product_price;                        
+                    }
+                }
+                else if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
                     $total_vat_items ++;
                     $vat_product[$counter_vat++] = $product;
                     $total_actual_quantity_vat = $total_actual_quantity_vat + $product['actual_quantity'];
@@ -944,10 +1017,20 @@ class DeliveryOrderController extends Controller {
                     $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
                 }
             }
-        }
+        }            
+        if ($total_product_count == $total_profile_items) {
+            $case = 'all_profile';
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $profile_vat_amount;
+            $all_vat_share_overhead = number_format((float) $total_profile_price + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+//            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+            $all_vat_on_overhead_count = 0;
 
+            $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
+            
+            $this->store_delivery_challan_vat_wise($input_data, $id);
+        }
         /* all items with puls VAT */
-        if ($total_product_count == $total_vat_items) {
+        elseif ($total_product_count == $total_vat_items) {
             $case = 'all_vat';
 
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
@@ -957,10 +1040,11 @@ class DeliveryOrderController extends Controller {
             $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
-
+            
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
-        /* all items without VAT */ elseif ($total_product_count == $total_without_vat_items) {
+        /* all items without VAT */ 
+        elseif ($total_product_count == $total_without_vat_items) {
 
             $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
             // exit;
@@ -968,49 +1052,81 @@ class DeliveryOrderController extends Controller {
             $case = 'all_without_vat';
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
-        /* all items with and without VAT */ else {
+        /* all items with and without VAT */ 
+        else {            
             $case = 'all_mixed';
-            $vat_input_data = $without_vat_input_data = $input_data;
+            $vat_input_data = $without_vat_input_data = $profile_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
                 $ratio_with_vat = number_format((float) ((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
                 $ratio_without_vat = number_format((float) ((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_profile = number_format((float) ((($total_profile_price) * 100) / $input_data['total_price']), 2, '.', '');
             }
 
             $total_overhead = $input_data['loading'] + $input_data['freight'] + $input_data['discount'];
 
             $vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
             $without_vat_share_overhead = number_format((float) (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
+            $profile_share_overhead = number_format((float) (($ratio_profile * $total_overhead) / 100), 2, '.', '');
 
 
-
-
-
-            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
-            $vat_on_overhead_count = number_format((float) (($vat_share_overhead * $input_data['vat_percentage']) / 100), 2, '.', '');
-
-
-            $vat_input_data['product'] = $vat_product;
-            $vat_input_data['total_actual_quantity'] = $total_actual_quantity_vat;
-            $vat_input_data['total_price'] = number_format((float) $total_vat_price, 2, '.', '');
-            $vat_input_data['discount'] = number_format((float) ($ratio_with_vat * $input_data['discount']) / 100, 2, '.', '');
-            $vat_input_data['freight'] = number_format((float) ($ratio_with_vat * $input_data['freight']) / 100, 2, '.', '');
-            $vat_input_data['loading'] = number_format((float) ($ratio_with_vat * $input_data['loading']) / 100, 2, '.', '');
-            $vat_input_data['round_off'] = number_format((float) ($ratio_with_vat * $input_data['round_off']) / 100, 2, '.', '');
-            $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');
-            $vat_input_data['grand_total'] = number_format((float) ($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $vat_input_data['round_off']), 2, '.', '');
-
-            $without_vat_input_data['product'] = $without_vat_product;
-            $without_vat_input_data['total_actual_quantity'] = $total_actual_quantity_without_vat;
-            $without_vat_input_data['total_price'] = number_format((float) $total_without_vat_price, 2, '.', '');
-            $without_vat_input_data['discount'] = number_format((float) ($ratio_without_vat * $input_data['discount']) / 100, 2, '.', '');
-            $without_vat_input_data['freight'] = number_format((float) ($ratio_without_vat * $input_data['freight']) / 100, 2, '.', '');
-            $without_vat_input_data['loading'] = number_format((float) ($ratio_without_vat * $input_data['loading']) / 100, 2, '.', '');
-            $without_vat_input_data['round_off'] = number_format((float) ($ratio_without_vat * $input_data['round_off']) / 100, 2, '.', '');
-            $without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
-            $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');
-
-            $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
-            $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
+//            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
+//            $vat_on_overhead_count = number_format((float) (($ratio_profile * $input_data['vat_percentage']) / 100), 2, '.', '');
+                                
+            if(isset($total_profile_items) && $total_profile_items > 0){
+                $profile_input_data['product'] = $profile_product;
+                $profile_input_data['total_actual_quantity'] = $total_actual_quantity_profile;
+                $profile_input_data['total_price'] = number_format((float) $total_profile_price, 2, '.', '');
+                $profile_input_data['discount'] = number_format((float) ($ratio_profile * $input_data['discount']) / 100, 2, '.', '');
+                $profile_input_data['freight'] = number_format((float) ($ratio_profile * $input_data['freight']) / 100, 2, '.', '');
+                $profile_input_data['loading'] = number_format((float) ($ratio_profile * $input_data['loading']) / 100, 2, '.', '');
+                $profile_input_data['round_off'] = number_format((float) ($ratio_profile * $input_data['round_off']) / 100, 2, '.', '');
+                $profile_input_data['freight_vat_percentage'] = $profile_input_data['loading_vat_percentage'] = $profile_input_data['discount_vat_percentage'] = $profile_input_data['vat_percentage'] = number_format((float) $profile_vat_amount, 2, '.', '');
+                $profile_input_data['grand_total'] = number_format((float) ($total_profile_price + $profile_share_overhead + $profile_input_data['round_off']), 2, '.', '');
+            }
+            if(isset($total_vat_items) && $total_vat_items > 0) {
+                $vat_input_data['product'] = $vat_product;
+                $vat_input_data['total_actual_quantity'] = $total_actual_quantity_vat;
+                $vat_input_data['total_price'] = number_format((float) $total_vat_price, 2, '.', '');
+                $vat_input_data['discount'] = number_format((float) ($ratio_with_vat * $input_data['discount']) / 100, 2, '.', '');
+                $vat_input_data['freight'] = number_format((float) ($ratio_with_vat * $input_data['freight']) / 100, 2, '.', '');
+                $vat_input_data['loading'] = number_format((float) ($ratio_with_vat * $input_data['loading']) / 100, 2, '.', '');
+                $vat_input_data['round_off'] = number_format((float) ($ratio_with_vat * $input_data['round_off']) / 100, 2, '.', '');
+                $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');                
+//                $vat_input_data['grand_total'] = number_format((float) ($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $vat_input_data['round_off']), 2, '.', '');
+                $total_amnt= $total_vat_price + $vat_input_data['freight'] + $vat_input_data['discount']+ $vat_input_data['loading'];
+                $gst_amount = $total_amnt * $vat_input_data['vat_percentage']/100;
+                $vat_input_data['grand_total'] = $total_amnt + $gst_amount + $vat_input_data['round_off'];
+            }
+            if(isset($total_without_vat_items) && $total_without_vat_items > 0) {
+                $without_vat_input_data['product'] = $without_vat_product;
+                $without_vat_input_data['total_actual_quantity'] = $total_actual_quantity_without_vat;
+                $without_vat_input_data['total_price'] = number_format((float) $total_without_vat_price, 2, '.', '');
+                $without_vat_input_data['discount'] = number_format((float) ($ratio_without_vat * $input_data['discount']) / 100, 2, '.', '');
+                $without_vat_input_data['freight'] = number_format((float) ($ratio_without_vat * $input_data['freight']) / 100, 2, '.', '');
+                $without_vat_input_data['loading'] = number_format((float) ($ratio_without_vat * $input_data['loading']) / 100, 2, '.', '');
+                $without_vat_input_data['round_off'] = number_format((float) ($ratio_without_vat * $input_data['round_off']) / 100, 2, '.', '');
+                $without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
+                $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');                
+            }
+            
+            if($total_profile_items > 0 && $total_vat_items>0 && $total_without_vat_items>0){
+                $savedid = $this->store_delivery_challan_vat_wise($profile_input_data, $id);
+                $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id, $savedid);
+                $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
+            }
+            elseif($total_profile_items > 0 && $total_vat_items > 0) {
+                $savedid = $this->store_delivery_challan_vat_wise($profile_input_data, $id);
+                $this->store_delivery_challan_vat_wise($vat_input_data, $id, $savedid);
+            }
+            elseif($total_profile_items > 0 && $total_without_vat_items > 0) {
+                $savedid = $this->store_delivery_challan_vat_wise($profile_input_data, $id);
+                $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
+            }
+            elseif($total_vat_items > 0 && $total_without_vat_items > 0) {
+                $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
+                $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
+            }
+                                    
         }
         DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed',
             'empty_truck_weight' => $empty_truck_weight,
@@ -1188,10 +1304,16 @@ class DeliveryOrderController extends Controller {
 
         Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
-        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);        
 //        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
-
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        $response = curl_exec($ch);        
+//        curl_close($ch);
+        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            
         //         update sync table         
         $tables = ['delivery_order', 'all_order_products'];
         $ec = new WelcomeController();

@@ -182,7 +182,7 @@
                         <hr>
                         <div class="form-group">
                             <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount); ?>
-                        </div>
+                        </div>                        
                         <hr>
                         @if($product_type['pipe'] == 1)
                         <div class="form-group">
@@ -207,6 +207,22 @@
                                 foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
                                     foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
                                         if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 2 | $challan_loaded_by->product_type_id == 0)) {
+                                        echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                        }
+                                    }
+                                }
+                            }
+                            ?>
+                        </div>
+                        <hr>
+                        @endif
+                        @if($product_type['profile'] == 1)
+                        <div class="form-group">
+                            <label for="loadedby"><b class="challan">Loaded By (Profile): </b></label> <?php
+                            if (isset($allorder['challan_loaded_by'])) {
+                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 3 | $challan_loaded_by->product_type_id == 0)) {
                                         echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
                                         }
                                     }
@@ -258,18 +274,43 @@
                         </div>
                         <hr>
                         @endif
-                        @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
-
+                        @if($product_type['profile'] == 1)
                         <div class="form-group">
-                            <label for="driver_contact"><b class="challan">GST Percentage: </b> {{$allorder->vat_percentage}} %</label>
+                            <label for="labour"><b class="challan">Labour (Profile): </b></label>
+
+                            <?php
+                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                foreach ($allorder['challan_labours'] as $challan_labour) {
+                                    foreach ($challan_labour['dc_labour'] as $labour) {
+                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 3 | $challan_labour->product_type_id == 0)) {
+                                            echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo "N/A";
+                            }
+                            ?>
+
                         </div>
                         <hr>
-                        @else
+                        @endif                        
+
+                        <div class="form-group">
+                            <label for="driver_contact"><b class="challan">GST Percentage: </b> 
+                               @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
+                                {{$allorder->vat_percentage}} %
+                               @else
+                                0 %
+                               @endif
+                            </label>
+                        </div>
+                        <hr>
+                        
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">GST: </b> No</label>
                                                 </div>
-                                                <hr>-->
-                        @endif
+                                                <hr>-->                        
                         <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b> {{$allorder->round_off}}</label>
                         </div>

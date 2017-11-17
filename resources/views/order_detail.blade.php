@@ -187,7 +187,7 @@
                                         <?php } ?>  
                                 @endif
                                 @if( Auth::user()->role_id  == 5)
-                                <a href="{{url('order/'.$order->id.'-track')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                                 @endif
                             </div>
                         </div>

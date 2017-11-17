@@ -24,14 +24,14 @@
                             <p>{{ $error }}</p>
                             @endforeach                        
                         </div>
-                        @endif 
+                        @endif                         
                         <form  method="POST" action="{{URL::action('ProductsubController@store')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <div class="form-group productcategory col-md-3">
                                 <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" />
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <label for="status">Select Product Category<span class="mandatory">*</span></label>
-                                <select class="form-control" name="product_type" id="product_sub_category_select">
+                                <select class="form-control" name="product_category" id="product_sub_category_select">
                                     <option disabled="" selected="" value="">--Select Product Category--</option>
                                     @foreach($product_type as $prod_type)
                                     <option value="{{$prod_type->id}}" id="product_type{{$prod_type->id}}"> {{$prod_type->name}}</option>
@@ -41,7 +41,7 @@
                             <div class="clearfix"></div>
                             <div class="form-group productcategory col-md-3">
                                 <label for="status">Sub Product Name<span class="mandatory">*</span></label>
-                                <select class="form-control" name="select_product_categroy" id="select_product_categroy">
+                                <select class="form-control" name="sub_product_name" id="select_product_categroy">
                                     <option disabled="" selected="" value="">--Sub Product Name--</option>
                                 </select>
                             </div>
@@ -65,9 +65,9 @@
                                     <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group ">
                                 <label for="weight">Product Weight<span class="mandatory">*</span></label>
-                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="1" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                                <input id="weight" class="form-control" placeholder="Product Weight" name="weight" value="{{ old('weight') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">

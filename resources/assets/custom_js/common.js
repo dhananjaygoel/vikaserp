@@ -27,7 +27,7 @@ $('#performance-months').datepicker({
 
 $(document).ready(function () {
 
-    $('#loaded_by_select_pipe,#loaded_by_select_structure,#multi-territory-location ,#labour_select_pipe,#labour_select_structure,#unloaded_by_select_pipe,#unloaded_by_select_structure').multiselect({
+    $('#loaded_by_select_pipe,#loaded_by_select_structure,#multi-territory-location ,#labour_select_pipe,#labour_select_structure,#unloaded_by_select_pipe,#unloaded_by_select_structure,#loaded_by_select_profile,#labour_select_profile').multiselect({
         nonSelectedText: 'Please Select',
         includeSelectAllOption: true,
         enableFiltering: true,
@@ -688,3 +688,21 @@ function common_form_submit(form) {
         return false;
     }
 }
+
+    $(document).on('click', '#bulk-delete-all-records', function (event) {
+        event.preventDefault();
+        $('#delete_all_records_modal').modal('show');
+    });           
+    
+    $('.delete_all_records_btn').on("click", function (e) {
+        if ($('#password_delete_field').val().trim().length == 0) {
+            $('.delete_records_empty').text("Please enter your password");
+            $('.delete_records_empty').css("display", "block");
+            $('.delete_records_empty').css("opacity", "1");
+            $('.delete_records_empty').focus();
+        } else {
+            $('#password_delete_all').val($('#password_delete_field').val());
+            $('#is_delete_all').attr('value','yes');
+            $('#bulk_delete_form').submit();            
+        }
+    });

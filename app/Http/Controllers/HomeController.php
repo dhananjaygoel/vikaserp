@@ -3344,6 +3344,7 @@ class HomeController extends Controller {
                                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                                 $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                                 $add_inquiry->inquiry_status = $value->inquiry_status;
+                                $add_inquiry->is_approved = $value->is_approved;
                                 $delete_old_inquiry_products = InquiryProducts::where('inquiry_id', '=', $value->server_id)->delete();
                                 foreach ($inquiryproduct as $product_data) {
                                     $inquiry_products = array();
@@ -3397,6 +3398,7 @@ class HomeController extends Controller {
                                 $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
                                 $add_inquiry->remarks = ($value->remarks != '') ? $value->remarks : '';
                                 $add_inquiry->inquiry_status = $value->inquiry_status;
+                                $add_inquiry->is_approved = $value->is_approved;
                                 $add_inquiry->save();
                                 $inquiry_id = $add_inquiry->id;
                                 $inquiry_products_track = 0;
@@ -5074,10 +5076,12 @@ class HomeController extends Controller {
 
         if ($server_id[0]->server_id != "") {
             $id = $server_id[0]->server_id;
-            $DC = DeliveryChallan::with('delivery_challan_products')->find($id);
+            $DC = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category')->find($id);
             $update_delivery_challan = $DC;
             $vat_applicable = 0;
             $total_vat_amount = 0;
+            $profile_present = 0;
+            $product_type_id = "";
 
             if ($DC->serial_number != "") {
                 $delivery_data = DeliveryChallan::where('id', '=', $id)
@@ -5099,7 +5103,16 @@ class HomeController extends Controller {
 
                 if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
                     foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
-                        if ($delivery_challan_products->vat_percentage > 0) {
+                        if(isset($delivery_challan_products['order_product_all_details']) && isset($delivery_challan_products['order_product_all_details']['product_category'])){
+                            $product_cat = $delivery_challan_products['order_product_all_details']['product_category'];
+                            $product_type_id = $product_cat->product_type_id;
+                        }
+                        if(isset($product_type_id) && $product_type_id==3){
+                            $profile_present = 1;
+                            if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                                $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                            }
+                        }else if ($delivery_challan_products->vat_percentage > 0) {
                             $vat_applicable = 1;
                             if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
                                 $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
@@ -5136,6 +5149,8 @@ class HomeController extends Controller {
                             } else {
                                 $list = explode("/", $connected_dc->serial_number);
                                 $modified_id = substr($list[count($list) - 1], 0, -1);
+                                $modified_str = explode("V", $modified_id);
+                                $modified_id = $modified_str[0];
                             }
                         } else {
                             $modified_id = $number;
@@ -5149,15 +5164,26 @@ class HomeController extends Controller {
                             } else {
                                 $list = explode("/", $connected_dc->serial_number);
                                 $modified_id = substr($list[count($list) - 1], 0, -1);
+                                $modified_str = explode("V", $modified_id);
+                                $modified_id = $modified_str[0];
                             }
                         } else {
                             $modified_id = $number;
                         }
                     }
                 }
+                
+                if($profile_present>0){
+                $suffix = 'VP';
+                }
+                elseif($vat_applicable>0){
+                    $suffix = 'P';
+                }else{
+                    $suffix = 'A';
+                }
 
-                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
-
+//                $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+                $date_letter = 'DC/' . $current_date . $modified_id . $suffix;
 
                 if ($update_delivery_challan->serial_number == '')
                     $update_delivery_challan->serial_number = $date_letter;
@@ -6948,6 +6974,9 @@ class HomeController extends Controller {
                 if (!isset($loader_arr[$id]['structure_labour'])) {
                     $temp = array();
                 }
+                if (!isset($loader_arr[$id]['profile_labour'])) {
+                    $temp_profile = array();
+                }
                 $summedArray[$id] = $total_qty_temp + $labour_value['total_qty'];
                 $loader_arr[$id]['delivery_id'] = $id;
                 $loader_arr[$id]['delivery_date'] = date('Y-m-d', strtotime($labour_value['created_at']));
@@ -6955,6 +6984,7 @@ class HomeController extends Controller {
                 $loader_arr[$id]['tonnage'] = $total_qty_temp + $labour_value['total_qty'];
                 array_push($temp_pipe, $labour_value['labours_id']);
                 array_push($temp, $labour_value['labours_id']);
+                array_push($temp_profile, $labour_value['labours_id']);
                 $loader_arr[$id]['labours'] = $temp_pipe;
                 if ($labour_value['product_type_id'] == 1) {
                     $loader_arr[$id]['pipe_labour'] = $temp_pipe;
@@ -6962,6 +6992,9 @@ class HomeController extends Controller {
                 } else if ($labour_value['product_type_id'] == 2) {
                     $loader_arr[$id]['structure_labour'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $labour_value['total_qty'];
+                } else if ($labour_value['product_type_id'] == 3) {
+                    $loader_arr[$id]['profile_labour'] = $temp_profile;
+                    $loader_arr[$id]['profile_tonnage'] = $labour_value['total_qty'];
                 }
             }
         }
@@ -6973,14 +7006,20 @@ class HomeController extends Controller {
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
-            }
-            if (isset($value_temp['structure_labour'])) {
+            } 
+            if (isset($value_temp['structure_labour'])) { 
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['structure_labour'];
             }
-            if (!isset($value_temp['pipe_labour']) && !isset($value_temp['structure_labour'])) {
+            if (isset($value_temp['profile_labour'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['profile_tonnage'] / 1000;
+                $loaders_data[$var++]['labours'] = $value_temp['profile_labour'];
+            }
+            if(!isset($value_temp['pipe_labour']) && !isset($value_temp['structure_labour']) && !isset($value_temp['profile_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'] / 1000;
@@ -7262,6 +7301,9 @@ class HomeController extends Controller {
                 if (!isset($loader_arr[$id]['structure_loaders'])) {
                     $temp = array();
                 }
+                if (!isset($loader_arr[$id]['profile_loaders'])) {
+                    $temp_profile = array();
+                }
                 $summedArray[$id] = $total_qty_temp + $loaded_by_value['total_qty'];
                 $loader_arr[$id]['delivery_id'] = $id;
                 $loader_arr[$id]['delivery_date'] = date('Y-m-d', strtotime($loaded_by_value['created_at']));
@@ -7269,6 +7311,7 @@ class HomeController extends Controller {
                 $loader_arr[$id]['tonnage'] = $total_qty_temp + $loaded_by_value['total_qty'];
                 array_push($temp_pipe, $loaded_by_value['loaded_by_id']);
                 array_push($temp, $loaded_by_value['loaded_by_id']);
+                array_push($temp_profile, $loaded_by_value['loaded_by_id']);
                 $loader_arr[$id]['loaders'] = $temp_pipe;
                 if ($loaded_by_value['product_type_id'] == 1) {
                     $loader_arr[$id]['pipe_loaders'] = $temp_pipe;
@@ -7276,6 +7319,9 @@ class HomeController extends Controller {
                 } else if ($loaded_by_value['product_type_id'] == 2) {
                     $loader_arr[$id]['structure_loaders'] = $temp;
                     $loader_arr[$id]['structure_tonnage'] = $loaded_by_value['total_qty'];
+                } else if ($loaded_by_value['product_type_id'] == 3) {
+                    $loader_arr[$id]['profile_loaders'] = $temp_profile;
+                    $loader_arr[$id]['profile_tonnage'] = $loaded_by_value['total_qty'];
                 }
             }
         }
@@ -7293,7 +7339,15 @@ class HomeController extends Controller {
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
                 $loaders_data[$var++]['loaders'] = $value_temp['structure_loaders'];
-            } else {
+            }
+            else if (isset($value_temp['profile_loaders'])) {
+                $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
+                $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
+                $loaders_data[$var]['tonnage'] = $value_temp['profile_tonnage'] / 1000;
+                $loaders_data[$var++]['loaders'] = $value_temp['profile_loaders'];
+            }
+
+            if (!isset($value_temp['structure_loaders']) && !isset($value_temp['pipe_loaders']) && !isset($value_temp['profile_loaders'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['tonnage'];

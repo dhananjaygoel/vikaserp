@@ -168,7 +168,7 @@ class ProductsubController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $ProductSubCategory = new ProductSubCategory();
-        $ProductSubCategory->product_category_id = $request->input('select_product_categroy');
+        $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->hsn_code = $request->input('hsn_code');
         $ProductSubCategory->size = $request->input('size');
@@ -287,7 +287,7 @@ class ProductsubController extends Controller {
         if ($validator->passes()) {
             $data = Input::all();
             $pro_sub_cat = array(
-                'product_category_id' => $data['select_product_categroy'],
+                'product_category_id' => $data['sub_product_name'],
                 'size' => $data['size'],
                 'hsn_code' => $data['hsn_code'],
                 'weight' => $data['weight'],

@@ -398,6 +398,37 @@
                                 </div>
                             </div>
                             @endif
+                            @if($product_type['profile'] == 1)
+                            <div class="form-group">
+                                <label for="loadedby"><b class="challan">Loaded By (Profile):</b></label>
+
+                                <?php
+                                if (isset($allorder['challan_loaded_by'])) {
+                                    foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                                        foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                                            if (isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 3) {
+                                                echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                                            }
+                                        }
+                                    }
+                                }
+                                ?>  
+
+                                <div class="form-group clearfix" style="display: none">
+                                    <select id="loaded_by_select_profile" name='loaded_by_profile[]' class="form-control" multiple="multiple">
+                                        @if(isset($allorder['challan_loaded_by']))
+                                        @foreach ($allorder['challan_loaded_by'] as $challan_loaded_by)
+                                        @foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby)
+                                        @if(isset($challan_loaded_by->product_type_id) && $challan_loaded_by->product_type_id == 3)
+                                        <option value="{{$loadedby->id}}" selected="">{{$loadedby->first_name}} {{$loadedby->last_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
                             @if($product_type['pipe'] == 1)
                             <div class="form-group">
                                 <label for="labours"><b class="challan">Labours (Pipe):</b></label>
@@ -454,6 +485,39 @@
                                         @foreach ($allorder['challan_labours'] as $challan_labour)
                                         @foreach ($challan_labour['dc_labour'] as $labour)
                                         @if(isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 2)
+                                        <option value="{{$labour->id}}" selected="">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+
+                            </div>
+                            @endif
+                            @if($product_type['profile'] == 1)
+                            <div class="form-group">
+                                <label for="labours"><b class="challan">Labours (Profile):</b></label>                               
+                                <?php
+                                if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                                    foreach ($allorder['challan_labours'] as $challan_labour) {
+                                        foreach ($challan_labour['dc_labour'] as $labour) {
+                                            if (isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 3) {
+                                                echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    echo "N/A";
+                                }
+                                ?>
+
+                                <div class="form-group clearfix" style="display: none">
+                                    <select id="labour_select_profile" name="labour_profile[]" class="form-control" multiple="multiple">
+                                        @if(isset($allorder['challan_labours']) && !empty($allorder['challan_labours']))
+                                        @foreach ($allorder['challan_labours'] as $challan_labour)
+                                        @foreach ($challan_labour['dc_labour'] as $labour)
+                                        @if(isset($challan_labour->product_type_id) && $challan_labour->product_type_id == 3)
                                         <option value="{{$labour->id}}" selected="">{{$labour->first_name}} {{$labour->last_name}}</option>
                                         @endif
                                         @endforeach

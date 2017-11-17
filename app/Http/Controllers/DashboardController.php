@@ -86,12 +86,13 @@ class DashboardController extends Controller {
         $order_pending_sum = $order_pending_sum / 1000;
 
         $inquiry = Inquiry::all()->count();
-        $pending_inquiry = Inquiry::where('inquiry_status', 'pending')->count();
+        $pending_inquiry = Inquiry::where('inquiry_status', 'pending')
+                                    ->where('is_approved', 'yes')->count();
         $inquiry_pending_sum = 0;
         $inquiries = Inquiry::with('inquiry_products')->get();
         foreach ($inquiries as $inquiry) {
             foreach ($inquiry->inquiry_products as $all_inquiry_products) {
-                if ($inquiry->inquiry_status == 'pending') {
+                if ($inquiry->inquiry_status == 'pending' && $inquiry->is_approved == 'yes') {
                     if ($all_inquiry_products->unit_id == 1)
                         $inquiry_pending_sum += $all_inquiry_products->quantity;
                     elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))

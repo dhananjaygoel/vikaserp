@@ -122,7 +122,8 @@
                                                 <td class="col-md-1">Price</td>
                                                 <td class="col-md-3"><span>Remark</span></td>
                                             </tr>
-                                            @foreach($purchase_orders['purchase_products'] as $key=>$product_data)
+                                            <?php $key = 0;?>
+                                            @foreach($purchase_orders['purchase_products'] as $product_data)
                                             @if($product_data->order_type == 'purchase_order' && $product_data->pending_quantity > 0)
                                             <tr id="add_row_{{++$key}}" class="add_product_row">
                                                 <td>

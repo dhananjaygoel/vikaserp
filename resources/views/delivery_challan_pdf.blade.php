@@ -9,7 +9,7 @@
         <style>
             body{
                 font-size: 10px;
-                font-family: Arial !important;
+                font-family: Helvetica !important;
                 font-weight: bold !important;
             }
             .divTable{

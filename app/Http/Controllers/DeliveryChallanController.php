@@ -440,6 +440,7 @@ class DeliveryChallanController extends Controller {
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
+        $produc_type['profile'] = "0";
         foreach ($delivery_data['all_order_products'] as $key => $value) {
             if (isset($value['order_type']) && $value['order_type'] == "delivery_challan") {
                 if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
@@ -447,6 +448,9 @@ class DeliveryChallanController extends Controller {
                 }
                 if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 2) {
                     $produc_type['structure'] = "1";
+                }
+                if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 3) {
+                    $produc_type['profile'] = "1";
                 }
             }
         }
@@ -881,16 +885,14 @@ class DeliveryChallanController extends Controller {
         $current_date = date("m/d/");
         $sms_flag = 0;
 //        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
-        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details', 'customer', 'delivery_order.location')->find($id);
-
-
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);        
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 //                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
 
-            $total_vat_amount = 0;
+            $total_vat_amount = 0;            
 
             foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
                 if ($delivery_challan_products->vat_percentage > 0) {
@@ -913,13 +915,27 @@ class DeliveryChallanController extends Controller {
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         } else {
             $vat_applicable = 0;
+            $profile_present = 0;
             $total_vat_amount = 0;
+            $product_type_id = "";
             if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
                 foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
-                    if ($delivery_challan_products->vat_percentage > 0) {
+//                   dd($delivery_challan_products['order_product_all_details']);
+                    if(isset($delivery_challan_products['order_product_all_details']) && isset($delivery_challan_products['order_product_all_details']['product_category'])){
+                        $product_cat = $delivery_challan_products['order_product_all_details']['product_category'];
+                        $product_type_id = $product_cat->product_type_id;
+                    }
+//                dd($product_type_id);
+                if(isset($product_type_id) && $product_type_id==3){
+                    $profile_present = 1;
+                    if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                        $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                    }
+                }
+                elseif ($delivery_challan_products->vat_percentage > 0) {
                         $vat_applicable = 1;
                         if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
                             $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
@@ -950,6 +966,8 @@ class DeliveryChallanController extends Controller {
                         } else {
                             $list = explode("/", $connected_dc->serial_number);
                             $modified_id = substr($list[count($list) - 1], 0, -1);
+                            $modified_str = explode("V", $modified_id);
+                            $modified_id = $modified_str[0];
                         }
                     } else {
                         $modified_id = $number;
@@ -963,20 +981,31 @@ class DeliveryChallanController extends Controller {
                         } else {
                             $list = explode("/", $connected_dc->serial_number);
                             $modified_id = substr($list[count($list) - 1], 0, -1);
+                            $modified_str = explode("V", $modified_id);
+                            $modified_id = $modified_str[0];
+                            
                         }
                     } else {
                         $modified_id = $number;
                     }
                 }
-            }
+            }            
 
 //            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
 //                $modified_id = $id;
 //            } else {
 //                $modified_id = $update_delivery_challan->ref_delivery_challan_id;
-//            }
-            $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
-
+//            }                        
+            if($profile_present>0){
+                $suffix = 'VP';
+            }
+            elseif($vat_applicable>0){
+                $suffix = 'P';
+            }else{
+                $suffix = 'A';
+            }
+//            $date_letter = 'DC/' . $current_date . $modified_id . (($vat_applicable > 0) ? "P" : "A");
+            $date_letter = 'DC/' . $current_date . $modified_id . $suffix;
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
@@ -1013,7 +1042,7 @@ class DeliveryChallanController extends Controller {
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-//            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());            
         }
 
         /* inventory code */
@@ -1111,7 +1140,6 @@ class DeliveryChallanController extends Controller {
         $hsn_list = array();
         $hsn_data = array();
         foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
-            
             if(isset($delivery_challan_products['order_product_all_details']->hsn_code) && !empty($delivery_challan_products['order_product_all_details']->hsn_code)){
                 $temp_var = $delivery_challan_products['order_product_all_details']->hsn_code;
             }else{
@@ -1122,12 +1150,22 @@ class DeliveryChallanController extends Controller {
                 
 
                 if (in_array($temp_var, $hsn_list)) {
-                    foreach ($hsn_data as $key => $value) {
+                    foreach ($hsn_data as $key => $value) {                        
                         if ($temp_var == $value['id']) {
                             
                             $actual_quantity = $value['actual_quantity']+$delivery_challan_products->actual_quantity;
                             $final_amount = $value['amount']+$amont;
-                            $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
+                            if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
+                                if($delivery_challan_products->vat_percentage == 1){
+                                    $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
+                                }
+                                else{
+                                    $vat_amount = $value['vat_amount'];
+                                }
+                            }
+                            else{
+                                $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
+                            }                            
 
                             $hsn_data[$key] = [
                                 'id' => $temp_var,
@@ -1138,15 +1176,37 @@ class DeliveryChallanController extends Controller {
                             ];
                         }
                     }
-                } else {
-                    $hsn_list[] = $temp_var;
-                    $hsn_data[] = [
-                        'id' => $temp_var,
-                        'vat_percentage' => $update_delivery_challan->vat_percentage,
-                        'actual_quantity' => $delivery_challan_products->actual_quantity,
-                        'amount' => $amont,
-                        'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
-                    ];
+                } else { 
+                    if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
+                        $hsn_list[] = $temp_var;
+                        if($delivery_challan_products->vat_percentage == 1){
+                            $hsn_data[] = [
+                                'id' => $temp_var,
+                                'vat_percentage' => $update_delivery_challan->vat_percentage,
+                                'actual_quantity' => $delivery_challan_products->actual_quantity,
+                                'amount' => $amont,
+                                'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
+                            ];
+                        }else{                            
+                            $hsn_data[] = [
+                                'id' => $temp_var,
+                                'vat_percentage' => 0,
+                                'actual_quantity' => $delivery_challan_products->actual_quantity,
+                                'amount' => $amont,
+                                'vat_amount' => 0,
+                            ];
+                        }
+                        
+                    }else{
+                        $hsn_list[] = $temp_var;
+                        $hsn_data[] = [
+                            'id' => $temp_var,
+                            'vat_percentage' => $update_delivery_challan->vat_percentage,
+                            'actual_quantity' => $delivery_challan_products->actual_quantity,
+                            'amount' => $amont,
+                            'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
+                        ];
+                    }                    
                 }
             }
         }
