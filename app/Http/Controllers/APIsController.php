@@ -285,9 +285,9 @@ class APIsController extends Controller {
             $delivery_challan->round_off = ($value->round_off != '') ? $value->round_off : '';
             $delivery_challan->loaded_by = ($value->loaded_by != '') ? $value->loaded_by : '';
             $delivery_challan->labours = ($value->labours != '') ? $value->labours : '';
-//            if (isset($value->vat_percentage) && $value->vat_percentage > 0) {
-//                $delivery_challan->vat_percentage = $value->vat_percentage;
-//            }
+            if (isset($value->vat_percentage) && $value->vat_percentage > 0) {
+                $delivery_challan->vat_percentage = $value->vat_percentage;
+            }
             $delivery_challan->grand_price = $value->grand_price;
             $delivery_challan->remarks = $value->remarks;
             $delivery_challan->challan_status = ($value->server_id > 0) ? $value->challan_status : "Pending";
