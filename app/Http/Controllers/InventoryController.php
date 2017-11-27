@@ -211,12 +211,14 @@ class InventoryController extends Controller {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
 
-
+        $today = Carbon::now()->toDateString();                    
         $purchase_challan_completed = PurchaseChallan::where('order_status', '=', 'completed')
                 ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
-                            }])->get();
+                            }])
+                            ->whereRaw('DATE(purchase_challan.created_at) = ?', [$today])
+                            ->get();
         $update_inventory_data = [];
         foreach ($inventory_list as $inventory) {
             $order_qty = 0;
