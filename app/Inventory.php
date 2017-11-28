@@ -33,6 +33,7 @@ class Inventory extends Model {
         $inventory_list = Inventory::update([
             'opening_qty' => DB::raw("`physical_closing_qty`"),
             'purchase_challan_qty' => 0,
+            'sales_challan_qty' => 0,
             'physical_closing_qty' => 0,
             'opening_qty_date' => date('Y-m-d H:i:s'),
             ]);
