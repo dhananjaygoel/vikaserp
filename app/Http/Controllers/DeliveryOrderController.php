@@ -1312,7 +1312,7 @@ class DeliveryOrderController extends Controller {
 //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //        $response = curl_exec($ch);        
 //        curl_close($ch);
-        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+//        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             
         //         update sync table         
         $tables = ['delivery_order', 'all_order_products'];
