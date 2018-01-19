@@ -178,13 +178,14 @@ class InventoryController extends Controller {
 //                        ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_category_ids) {
 //                                $q->whereIn('product_category_id', $product_category_ids);
 //                            }])->get();
-
+        $today = Carbon::now()->toDateString();                            
         $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')
-                        ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
-                                $q->whereIn('product_category_id', $product_category_ids);
-                            }])->get();
-
-        $today = Carbon::now()->toDateString();        
+                            ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
+                                    $q->whereIn('product_category_id', $product_category_ids);
+                                }])
+                            ->whereRaw('DATE(delivery_challan.created_at) = ?', [$today])
+                            ->get();
+                                
         $delivery_challan_completed = DeliveryChallan::where('challan_status', '=', 'completed')
                 ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
@@ -205,13 +206,14 @@ class InventoryController extends Controller {
                         ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])->get();
-
+        $today = Carbon::now()->toDateString();
         $purchase_challan = PurchaseChallan::where('order_status', '=', 'pending')
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
-                            }])->get();
-
-        $today = Carbon::now()->toDateString();                    
+                            }])
+                            ->whereRaw('DATE(purchase_challan.created_at) = ?', [$today])        
+                            ->get();
+                            
         $purchase_challan_completed = PurchaseChallan::where('order_status', '=', 'completed')
                 ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
