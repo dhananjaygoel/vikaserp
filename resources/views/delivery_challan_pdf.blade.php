@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <body>
+    <head>
         <style>
             body{
                 font-size: 10px;
@@ -235,6 +235,8 @@
             }
             
         </style>
+    </head>
+    <body>
         <div class="invoice">
             <div class="title">Estimate</div>
             <div class="name-date">
