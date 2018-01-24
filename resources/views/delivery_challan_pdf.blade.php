@@ -1,10 +1,5 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Delivery Challan </title>
-        <meta charset="windows-1252">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
     <body>
         <style>
             body{
@@ -296,9 +291,6 @@
                 $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
 
                 $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
-
-
-//              
                 ?>
                 @endif
                 @endforeach
@@ -387,7 +379,6 @@
                 </table>
             </div>
         </div>
-
         <?php
         if (!function_exists('convert_number')) {
 
