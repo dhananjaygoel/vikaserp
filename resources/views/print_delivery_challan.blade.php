@@ -1,10 +1,5 @@
 <!DOCTYPE html>
 <html>
-<!--    <head>
-        <title>Delivery Challan </title>
-        <meta charset="windows-1252">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>-->
     <body>
         <style>
             body{
@@ -187,6 +182,9 @@
                 border-top: 1px solid rgb(204, 204, 204);
                 border-left: 1px solid #ccc;
                 /*padding: 0 5px 0 0px;*/
+            }
+            head{
+                display: none;
             }
         </style>
         <div class="invoice">
