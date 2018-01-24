@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html><head>
         <title>Delivery Order</title>
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    </head>
-    <body>
+    </head><body>
         <style>
             body{
                 font-size: 10px;
@@ -217,5 +215,4 @@
                 <div class="content">{{ isset($delivery_data->remarks)?$delivery_data->remarks :''}}</div>
             </div>
         </div>
-    </body>
-</html>
+    </body></html>
