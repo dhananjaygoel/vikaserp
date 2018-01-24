@@ -7,45 +7,11 @@
                 font-family: Helvetica !important;
                 font-weight: bold !important;
             }
-            .divTable{
-                display:table;
-                width:100%;
-                background-color:#fff;
-                border-top: 1px solid #ccc;
-                border-bottom: 1px solid #ccc;
-            }
-            .divRow{
-                width:auto;
-                clear:both;
-                border-top: 1px solid #ccc;
-            }
-            .divCell2{
-                float:left;
-                display:table-column;
-                width:6%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-            }
-            .divCell{
-                float:left;
-                display:table-column;
-                width:13.2%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-            }
+            
             .bob{
                 border-top: none !important;
             }
-            .divCell:last-child{
-                border: none;
-            }
-            .divRow:last-child{
-                border-top: none;
-                border-bottom:  1px solid #ccc;
-            }
-            .headRow{
-                display:table-row;
-            }
+            
             .footer{
                 width: 100%;
                 float: left;
@@ -257,46 +223,46 @@
                 <div class="time-gen"> Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</div>
                 <div class="time-prnt">Time Print: {{ date("h:i:sa") }}</div>
             </div>
-            <div class="divTable">
-                <div class="headRow">
-                    <div class="divCell2">Sr.</div>
-                    <div class="divCell">Size</div>
-                    <div class="divCell">Pcs</div>
-                    <div class="divCell">Qty</div>
-                    <div class="divCell">GST</div>
-                    <div class="divCell">Rate</div>
-                    <div class="divCell">Amount</div>
-                </div>
-                <?php
-                $i = 1;
-                $total_price = 0;
-//                $total_qty = 0;
-                $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
-                $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
-                $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-                ?>
-                @foreach($allorder['delivery_challan_products'] as $prod)
-                @if($prod->order_type == 'delivery_challan')
-                <div class="divRow">
-                    <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $prod->order_product_all_details->alias_name }}</div>
-                    <div class="divCell">{{ $prod->actual_pieces }}</div>
-                    <div class="divCell">{{ round($prod->actual_quantity) }}</div>
-                    <div class="divCell">{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</div>
-                    <div class="divCell"><?php echo $rate = $prod->price; ?></div>
-                    <div class="divCell">
+            <table class="table-responsive details_table">
+                <tr>
+                    <th >Sr.</th>
+                    <th >Size</th>
+                    <th >Pcs</th>
+                    <th >Qty</th>
+                    <th >GST</th>
+                    <th >Rate</th>
+                    <th >Amount</th>
+                </tr>
+                 <?php
+                        $i = 1;
+                        $total_price = 0;
+        //                $total_qty = 0;
+                        $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
+                        $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
+                        $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+                        ?>
+                        @foreach($allorder['delivery_challan_products'] as $prod)
+                        @if($prod->order_type == 'delivery_challan')
+                <tr>
+                    <td class="tdCell2">{{ $i++ }}</td>
+                    <td>{{ $prod->order_product_all_details->alias_name }}</td>
+                    <td>{{ $prod->actual_pieces }}</td>
+                    <td>{{ round($prod->actual_quantity) }}</td>
+                    <td>{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</td>
+                    <td><?php echo $rate = $prod->price; ?></td>
+                    <td>
                         <?php $total_price += $rate * $prod->actual_quantity; ?>
                         {{ ($rate * $prod->actual_quantity) }}
-                    </div>
-                </div>
+                    </td>
+                </tr>
                 <?php
-                $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
+                        $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
 
-                $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
-                ?>
-                @endif
-                @endforeach
-            </div>
+                        $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                        ?>
+                        @endif
+                        @endforeach
+            </table>
             <div class="footer">
                 <div class="total-desc">
                     <div class="quantity">
