@@ -17,7 +17,7 @@ class UserSeeder extends Seeder {
                         'phone_number' => '1234567890',
                         'mobile_number' => '9898989890',
                         'email' => 'sadmin@admin.com',
-                        'password' => '$2y$10$CscOJeTOQHM3cLOBmIRFT.7owVhR7NUjT/UTlo3Z9PR3SS9w3m.Ia',
+                        'password' => '$2y$10$vkxXDsOalnfS.ANuYhDIkunjjtZGzvVD497Tvl0/vCnBAMKxkcaYC',
                         'role_id' => '0'
                     ),
                     //Admin
