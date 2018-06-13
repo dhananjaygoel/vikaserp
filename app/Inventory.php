@@ -34,7 +34,7 @@ class Inventory extends Model {
             'opening_qty' => DB::raw("`physical_closing_qty`"),
             'purchase_challan_qty' => 0,
             'sales_challan_qty' => 0,
-            'physical_closing_qty' => 0,
+            'physical_closing_qty' => DB::raw("`physical_closing_qty`"),
             'opening_qty_date' => date('Y-m-d H:i:s'),
             ]);
         return $inventory_list;
