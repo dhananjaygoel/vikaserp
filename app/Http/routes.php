@@ -211,10 +211,10 @@ Route::get('dataSeeding', function () {
     define('STDIN', fopen("php://stdin", "r"));
     Artisan::call('db:seed', array('--force' => true));
 });
-Route::get('rollback', function() {
+/*Route::get('rollback', function() {
     define('STDIN', fopen("php://stdin", "r"));
     Artisan::call('migrate:rollback', ['--quiet' => true, '--force' => true]);
-});
+});*/
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
