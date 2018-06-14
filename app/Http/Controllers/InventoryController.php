@@ -108,11 +108,9 @@ class InventoryController extends Controller {
             });
         }
 
-        $alias_name = '%' . Input::get('search_inventory') . '%';
-        $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
-
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
-            
+            $alias_name = '%' . Input::get('search_inventory') . '%';
+            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
             if (count($product_sub_id)) {
                 $query->where('product_sub_category_id', '=', $product_sub_id->id);
             }
