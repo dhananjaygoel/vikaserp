@@ -130,14 +130,18 @@ class InventoryController extends Controller {
                 ->paginate(50);
         $inventory_newlist->setPath('inventory');
         if (count($inventory_newlist)) {
+
+            $virtual_stock_qty = array();
             foreach ($inventory_newlist as $product_categoriy) {
                 $product_category_ids[] = $product_categoriy->product_sub_category_id;
+                $virtual_qty = ($product_categoriy->physical_closing_qty + $product_categoriy->pending_purchase_order_qty + $product_categoriy->pending_purchase_advise_qty) - ($product_categoriy->pending_sales_order_qty + $product_categoriy->pending_delivery_order_qty);
+                array_push($virtual_stock_qty,$virtual_qty);
             }
 
             $this->inventoryCalc($product_category_ids);
         }
 
-        return view('add_inventory')->with(['inventory_list' => $inventory_newlist, 'product_category' => $product_category]);
+        return view('add_inventory')->with(['inventory_list' => $inventory_newlist,'virtual_qty'=>$virtual_stock_qty, 'product_category' => $product_category]);
     }
 
     /* find latested updated records */

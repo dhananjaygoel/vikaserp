@@ -114,8 +114,6 @@
                                         <?php
                                         $total = ($inventory->physical_closing_qty - $inventory->pending_delivery_order_qty - $inventory->pending_sales_order_qty + $inventory->pending_purchase_advise_qty);
 
-                                        $virtual_qty = ($inventory->physical_closing_qty + $inventory->pending_purchase_order_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
-
                                         ?>
                                         @if((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))
                                         @if($inventory->minimal < $total)
@@ -143,7 +141,7 @@
                                             <td id="pending_deliver_order_{{$inventory->id}}">{{($inventory->pending_delivery_order_qty <= 0) ? 0 : $inventory->pending_delivery_order_qty}}</td>
                                             <td id="pending_purchase_order_{{$inventory->id}}">{{($inventory->pending_purchase_order_qty <= 0) ? 0 : $inventory->pending_purchase_order_qty }}</td>
                                             <td id="pending_purchase_advise_{{$inventory->id}}">{{($inventory->pending_purchase_advise_qty <= 0) ? 0 : $inventory->pending_purchase_advise_qty}}</td>
-                                            <td id="virtual_qty_{{$inventory->id}}">{{$virtual_qty}}</td>
+                                            <td id="virtual_qty_{{$inventory->id}}">{{$virtual_qty[$i-1]}}</td>
                                             @if(auth()->user()->role_id == 0)
                                             <td>
                                                 <div class="row product-price">                                                
@@ -181,7 +179,7 @@
                                             <td id="pending_deliver_order_{{$inventory->id}}">{{($inventory->pending_delivery_order_qty <= 0) ? 0 : $inventory->pending_delivery_order_qty}}</td>
                                             <td id="pending_purchase_order_{{$inventory->id}}">{{($inventory->pending_purchase_order_qty <= 0) ? 0 : $inventory->pending_purchase_order_qty }}</td>
                                             <td id="pending_purchase_advise_{{$inventory->id}}">{{($inventory->pending_purchase_advise_qty <= 0) ? 0 : $inventory->pending_purchase_advise_qty}}</td>
-                                            <td id="virtual_qty_{{$inventory->id}}">{{$virtual_qty}}</td>
+                                            <td id="virtual_qty_{{$inventory->id}}">{{$virtual_qty[$i-1]}}</td>
                                             @if(auth()->user()->role_id == 0)
                                             <td>
                                                 <div class="row product-price">                                                
