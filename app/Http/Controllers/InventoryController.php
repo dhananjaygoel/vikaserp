@@ -460,7 +460,7 @@ class InventoryController extends Controller {
                             foreach ($purchase_orders_purchase_advice as $purchase_advice_details) {
                                 if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
                                     foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
-                                        if ($purchase_advice_product_details['product_category_id'] == $product_sub_id && $purchase_advice_product_details['order_id'] == $purchase_advice_product_details->id) {
+                                        if ($purchase_advice_product_details['product_category_id'] == $product_sub_id && $purchase_advice_product_details['order_id'] == $orders_details->id) {
                                             if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
 //                                        $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
                                                 if ($purchase_advice_product_details->unit_id == 1) {
