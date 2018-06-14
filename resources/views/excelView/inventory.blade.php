@@ -14,10 +14,8 @@
             <td class="heading1">Pending Purchase Advise</td>
             <td class="heading1">Virtual Stock</td>
         </tr>
+        <?php $i = 0; ?>
         @foreach ($inventorys as $inventorylist)
-        <?php 
-            $virtual_qty = ($inventorylist->physical_closing_qty + $inventorylist->pending_purchase_order_qty + $inventorylist->pending_purchase_advise_qty) - ($inventorylist->pending_sales_order_qty + $inventorylist->pending_delivery_order_qty);
-        ?>
         <tr>
             <td>{{isset($inventorylist['product_sub_category']->alias_name)?$inventorylist['product_sub_category']->alias_name:""}}</td>
             <td>{{isset($inventorylist->opening_qty)?$inventorylist->opening_qty:""}}</td>
@@ -28,8 +26,9 @@
             <td>{{isset($inventorylist->pending_delivery_order_qty)?$inventorylist->pending_delivery_order_qty:""}}</td>
             <td>{{isset($inventorylist->pending_purchase_order_qty)?$inventorylist->pending_purchase_order_qty:""}}</td>
             <td>{{isset($inventorylist->pending_purchase_advise_qty)?$inventorylist->pending_purchase_advise_qty:""}}</td>
-            <td>{{isset($virtual_qty)?$virtual_qty:""}}</td>
+            <td>{{isset($virtual_stock_qty[$i])?$virtual_stock_qty[$i]:""}}</td>
         </tr>
+        <?php $i++; ?>
         @endforeach
     </table>
 </html>

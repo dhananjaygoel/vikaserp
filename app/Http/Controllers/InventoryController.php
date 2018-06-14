@@ -805,9 +805,17 @@ class InventoryController extends Controller {
                 ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
                 ->orderBy('product_sub_category.alias_name', 'ASC')
                 ->get();
+        
+
         Excel::create('Inventory List', function($excel) use($inventorys) {
             $excel->sheet('Inventory-List', function($sheet) use($inventorys) {
-                $sheet->loadView('excelView.inventory', array('inventorys' => $inventorys));
+                $virtual_stock_qty = array();
+                foreach ($inventorys as $inventory) {
+                    $virtual_qty = ($inventory->physical_closing_qty + $inventory->pending_purchase_order_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
+                    array_push($virtual_stock_qty,$virtual_qty);
+                }
+                
+                $sheet->loadView('excelView.inventory', array('inventorys' => $inventorys,'virtual_stock_qty'=>$virtual_stock_qty));
             });
         })->export('xls');
         exit();
