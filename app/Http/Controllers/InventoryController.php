@@ -66,7 +66,7 @@ class InventoryController extends Controller {
             $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
             $inventory_details->physical_closing_qty = $physical_qty;
             $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-            $inventory_details->virtual_qty = $virtual_qty;
+            //$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
             $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
             $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
@@ -93,7 +93,7 @@ class InventoryController extends Controller {
         }
 
 //        $this->updateOpeningStock();
-//        $this->inventoryCalc();
+        
 
         $query = Inventory::query();
         if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
@@ -108,9 +108,11 @@ class InventoryController extends Controller {
             });
         }
 
+        $alias_name = '%' . Input::get('search_inventory') . '%';
+        $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
+
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
-            $alias_name = '%' . Input::get('search_inventory') . '%';
-            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
+            
             if (count($product_sub_id)) {
                 $query->where('product_sub_category_id', '=', $product_sub_id->id);
             }
@@ -454,7 +456,7 @@ class InventoryController extends Controller {
                             foreach ($purchase_orders_purchase_advice as $purchase_advice_details) {
                                 if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
                                     foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
-                                        if ($purchase_advice_product_details['product_category_id'] == $product_sub_id && $purchase_advice_product_details['order_id'] == $orders_details->id) {
+                                        if ($purchase_advice_product_details['product_category_id'] == $product_sub_id && $purchase_advice_product_details['order_id'] == $purchase_advice_product_details->id) {
                                             if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
 //                                        $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + $purchase_advice_product_details->quantity;
                                                 if ($purchase_advice_product_details->unit_id == 1) {
@@ -611,7 +613,7 @@ class InventoryController extends Controller {
             $inventory_details->pending_purchase_order_qty = $pending_purchase_order_qty;
             $inventory_details->pending_purchase_advise_qty = $pending_purchase_advice_qty;
             $virtual_qty = ($physical_closing + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-            $inventory_details->virtual_qty = $virtual_qty;
+            //$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
         }
     }
@@ -657,7 +659,7 @@ class InventoryController extends Controller {
                 $physical_qty = ($data_dup[$opening_qty_value] + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
                 $inventory_details->physical_closing_qty = $physical_qty;
                 $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-                $inventory_details->virtual_qty = $virtual_qty;
+                //$inventory_details->virtual_qty = $virtual_qty;
                 $inventory_details->save();
             }
             $i++;
