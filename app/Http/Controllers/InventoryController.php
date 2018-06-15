@@ -133,7 +133,7 @@ class InventoryController extends Controller {
             foreach ($inventory_newlist as $product_categoriy) {
                 $product_category_ids[] = $product_categoriy->product_sub_category_id;
                 $virtual_qty = ($product_categoriy->physical_closing_qty + $product_categoriy->pending_purchase_order_qty + $product_categoriy->pending_purchase_advise_qty) - ($product_categoriy->pending_sales_order_qty + $product_categoriy->pending_delivery_order_qty);
-                array_push($virtual_stock_qty,number_format($virtual_qty,2));
+                array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
             }
 
             $this->inventoryCalc($product_category_ids);
@@ -812,7 +812,7 @@ class InventoryController extends Controller {
                 $virtual_stock_qty = array();
                 foreach ($inventorys as $inventory) {
                     $virtual_qty = ($inventory->physical_closing_qty + $inventory->pending_purchase_order_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
-                    array_push($virtual_stock_qty,number_format($virtual_qty,2));
+                    array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
                 }
 
                 $sheet->loadView('excelView.inventory', array('inventorys' => $inventorys,'virtual_stock_qty'=>$virtual_stock_qty));
