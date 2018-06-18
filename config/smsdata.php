@@ -2,7 +2,7 @@
 
 return [
     'profile_id' => '20085313',
-    'password' => '664z6b',
+    'password' => 'its1782',
     'sender_id' => 'VikasPipes',
     'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
     'send' => true,
