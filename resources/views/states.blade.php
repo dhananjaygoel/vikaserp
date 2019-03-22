@@ -47,8 +47,9 @@
                                         <th class="col-md-1">#</th>
 
                                         <th>State</th>
+                                        <th>Local State</th>
                                         @if( Auth::user()->role_id == 0 )
-                                        <th class="text-center">Actions</th>
+                                            <th class="text-center">Actions</th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -58,6 +59,7 @@
                                     <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$states_data->state_name}}</td>
+                                        <td>{{($states_data->local_state==0)?'No':'Yes'}}</td>
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
                                             <a href="{{ Url::action('StatesController@edit', ['id' => $states_data->id]) }}" class="table-link">
@@ -72,7 +74,6 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
                                         </td>
                                         @endif
                                     </tr>

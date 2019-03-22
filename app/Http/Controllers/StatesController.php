@@ -30,7 +30,7 @@ class StatesController extends Controller {
     public function index() {
         if (Auth::user()->role_id == 5 ) {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }           
+        }
         $states = States::orderBy('created_at', 'desc')->Paginate(20);
         $states->setPath('states');
         return view('states', compact('states'));
@@ -50,11 +50,13 @@ class StatesController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StatesRequest $staterequest) {
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
         $add_states = States::create([
-                    'state_name' => $staterequest->input('state_name')
+                    'state_name' => $staterequest->input('state_name'),
+                    'local_state' => $staterequest->input('local_state')
         ]);
         $id = DB::getPdo()->lastInsertId();
         return redirect('states')->with('flash_success_message', 'State details successfully added.');
@@ -87,7 +89,7 @@ class StatesController extends Controller {
         }
         $check_state_exists = States::where('state_name', '=', $request->input('state_name'))->where('id', '!=', $id)->count();
         if ($check_state_exists == 0) {
-            $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name')]);
+            $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name'),'local_state' => Input::get('local_state')]);
             return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully modified.');
         }
         return redirect('states')->with('flash_success_message', 'State name already exists.');

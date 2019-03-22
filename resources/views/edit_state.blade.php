@@ -42,6 +42,15 @@
                             <label for="state_name">State<span class="mandatory">*</span></label>
                             <input id="state_name" class="form-control" placeholder="State Name" name="state_name" value="{{$state->state_name}}" type="text">
                         </div>
+
+                        <div class="form-group">
+                            <label for="state_name">Local State<span class="mandatory">*</span></label>
+                            <select class="form-control"  name="local_state" required>
+                                <option value="0" {{($state->local_state==0)?'selected':''}}> No </option>
+                                <option value="1" {{($state->local_state==1)?'selected':''}}> Yes </option>
+                            </select>
+                        </div>
+
                         <hr>
                         <div>
                             <input type="submit" class="btn btn-primary form_button_footer" value="Submit">

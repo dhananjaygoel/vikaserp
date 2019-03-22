@@ -21,7 +21,7 @@ class States extends Model {
      *
      * @var array
      */
-    protected $fillable = ['state_name'];
+    protected $fillable = ['state_name','local_state'];
     protected $dates = ['deleted_at'];
 
 }

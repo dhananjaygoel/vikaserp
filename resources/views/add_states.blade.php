@@ -33,11 +33,22 @@
                                 </ul>
                             </div>
                             @endif
+
                             <div class="form-group">
                                 <label for="state_name">State Name<span class="mandatory">*</span></label>
                                 <input id="state_name" class="form-control" placeholder="State" name="state_name" value="{{Input::old('state_name')}}" type="text">
                             </div>
-                            <hr>
+
+
+                            <div class="form-group">
+                                <label for="state_name">Local State<span class="mandatory">*</span></label>
+                                <select class="form-control"  name="local_state" required>
+                                    <option value="0"> No </option>
+                                    <option value="1"> Yes </option>
+                                </select>
+                            </div>
+
+                            <hr/>
                             <div >
                                 <!--<button type="submit" class="btn btn-primary form_button_footer" >Submit</button>-->
                                 <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
