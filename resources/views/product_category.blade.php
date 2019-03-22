@@ -90,7 +90,7 @@
                                                 @elseif($product->product_type_id == 2)
                                                 {{'structure'}}
                                                 @else
-                                                {{'Profile'}}
+                                                {{'Sheets'}}
                                                 @endif
                                             </td>
                                             <td>
