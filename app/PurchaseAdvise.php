@@ -43,6 +43,10 @@ class PurchaseAdvise extends Model {
         return $this->hasMany('App\PurchaseOrder','id','purchase_order_id')->withTrashed();;
     }
 
+    public function purchase_order_single() {
+        return $this->belongsTo('App\PurchaseOrder','purchase_order_id','id');
+    }
+
     public static $store_purchase_validation = array(
         'bill_date' => 'required',
         'vehicle_number' => 'required'

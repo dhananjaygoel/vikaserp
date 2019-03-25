@@ -791,9 +791,17 @@ class PurchaseAdviseController extends Controller {
         
         if (Input::has('vehicle_number')) {
             $vehicle_number = Input::get('vehicle_number');            
-        }        
+        }
         $current_date = date("/m/d/");
-        $date_letter = 'PA' . $current_date . $id;
+        $pr_a = PurchaseAdvise::where('id','=',$id)->with('purchase_order_single')->first();
+        $vat_status = $pr_a->purchase_order_single->vat_percentage;
+
+        if($vat_status == "" OR $vat_status == null){
+            $date_letter = 'A' . $current_date . $id;
+        }
+        else{
+            $date_letter = 'P' . $current_date . $id;
+        }
         
         if (isset($vehicle_number) && $vehicle_number!= "") {
             PurchaseAdvise::where('id', '=', $id)->update(array(
@@ -804,7 +812,8 @@ class PurchaseAdviseController extends Controller {
             PurchaseAdvise::where('id', '=', $id)->update(array(
                 'serial_number' => $date_letter
             ));
-        }        
+        }
+
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $sms_flag = 0;
 
@@ -833,6 +842,7 @@ class PurchaseAdviseController extends Controller {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = $total_quantity + $product_data->quantity;
                 }
+
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
