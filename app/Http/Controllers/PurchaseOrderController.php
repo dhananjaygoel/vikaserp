@@ -348,6 +348,7 @@ class PurchaseOrderController extends Controller {
             'created_by' => Auth::id(),
             'order_for' => $input_data['order_for'],
             'vat_percentage' => $input_data['vat_percentage'],
+            'vat_status' => $input_data['vat_status'],
             'expected_delivery_date' => $expected_delivery_date,
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",

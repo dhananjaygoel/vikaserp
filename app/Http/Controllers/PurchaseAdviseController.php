@@ -797,12 +797,12 @@ class PurchaseAdviseController extends Controller {
         $vat_status = $pr_a->purchase_order_single->vat_percentage;
 
         if($vat_status == "" OR $vat_status == null){
-            $date_letter = 'A' . $current_date . $id;
+            $date_letter = 'PA' . $current_date . $id."A";
         }
         else{
-            $date_letter = 'P' . $current_date . $id;
+            $date_letter = 'PA' . $current_date . $id.'P';
         }
-        
+
         if (isset($vehicle_number) && $vehicle_number!= "") {
             PurchaseAdvise::where('id', '=', $id)->update(array(
                 'serial_number' => $date_letter,

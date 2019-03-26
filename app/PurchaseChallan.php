@@ -51,6 +51,10 @@ class PurchaseChallan extends Model {
         return $this->hasOne('App\PurchaseOrder', 'id', 'purchase_order_id')->withTrashed();
     }
 
+    public function purchase_order_single() {
+        return $this->belongsTo('App\PurchaseOrder', 'purchase_order_id', 'id');
+    }
+
     public function purchase_product() {
         return $this->hasMany('App\PurchaseProducts', 'purchase_order_id', 'id');
     }
