@@ -240,12 +240,25 @@ class PurchaseChallanController extends Controller {
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_purchase_challan', $forms_array);
         }
+
+
+
+        $current_date = date("m/d");
+        $sms_flag = 0;
+
+
+
+
+
+
         $add_challan = new PurchaseChallan();
         $add_challan->expected_delivery_date = $request->input('bill_date');
         $add_challan->purchase_advice_id = $request->input('purchase_advice_id');
         $add_challan->purchase_order_id = $request->input('purchase_order_id');
         $add_challan->delivery_location_id = $request->input('delivery_location_id');
+
         $add_challan->serial_number = $request->input('serial_no');
+
         $add_challan->supplier_id = $request->input('supplier_id');
         $add_challan->created_by = $request->input('created_by');
         $add_challan->vehicle_number = $request->input('vehicle_number');
@@ -260,6 +273,19 @@ class PurchaseChallanController extends Controller {
         $add_challan->save();
 
         $challan_id = DB::getPdo()->lastInsertId();
+
+        $pr_c = PurchaseChallan::where('id','=',$challan_id)->with('purchase_order_single')->first();
+        $vat_status = $pr_c->purchase_order_single->vat_percentage;
+        if($vat_status == "" OR $vat_status == null){
+            $date_letter = 'PC/' . $current_date . "/" . $challan_id.'A';
+        }
+        else{
+            $date_letter = 'PC/' . $current_date . "/" . $challan_id.'P';
+        }
+
+        PurchaseChallan::where('id',$challan_id)->update(['serial_number'=>$date_letter]);
+
+
         $created_at = $add_challan->created_at;
         $updated_at = $add_challan->updated_at;
 
@@ -584,22 +610,22 @@ class PurchaseChallanController extends Controller {
 
     public function print_purchase_challan($id) {
 
-        $current_date = date("m/d");
+        //$current_date = date("m/d");
         $sms_flag = 0;
 
-        $pr_c = PurchaseChallan::where('id','=',$id)->with('purchase_order_single')->first();
+       /* $pr_c = PurchaseChallan::where('id','=',$id)->with('purchase_order_single')->first();
         $vat_status = $pr_c->purchase_order_single->vat_percentage;
         if($vat_status == "" OR $vat_status == null){
             $date_letter = 'PC/' . $current_date . "/" . $id.'A';
         }
         else{
             $date_letter = 'PC/' . $current_date . "/" . $id.'P';
-        }
+        }*/
 
         PurchaseChallan::where('id', $id)
                 ->where('order_status', '<>', 'Completed')
                 ->update(array(
-                    'serial_number' => $date_letter,
+                  //  'serial_number' => $date_letter,
                     'order_status' => "Completed"
         ));
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
