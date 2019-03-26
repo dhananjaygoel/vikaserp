@@ -74,13 +74,29 @@
                                 <label for="difference">Standard Length<span class="mandatory">*</span></label>
                                 <input id="standard_length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
+
                             <div class="form-group">
                                 <label for="difference">Difference<span class="mandatory">*</span></label>
                                 <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);">
                             </div>
-                            <div>
+                            <div class="form-group" id="length_u" hidden>
+                                <label for="difference">Length Unit<span class="mandatory">*</span></label>
+
+                                <div class="raw">
+                                    <div class="col-md-3" style="padding-left: 0;">
+                                        <input  class="form-control" placeholder="Value" id="length" name="length" value="{{ old('difference') }}" type="number">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="radio" class="length_unit" name="length_unit" value="ft" checked> FT
+                                        <input type="radio" class="length_unit" name="length_unit"  value="mm"> MM
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12" style="padding-bottom: 10px;padding-top: 10px;padding-left: 0;">
                                 <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>
                             </div>
+
                             <hr>
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
@@ -95,4 +111,5 @@
         </div>
     </div>
 </div>
+
 @endsection

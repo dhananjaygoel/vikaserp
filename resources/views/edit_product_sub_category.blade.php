@@ -94,7 +94,23 @@
                             <label for="difference">Difference<span class="mandatory">*</span></label>
                             <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{$prod_sub_cat->difference}}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);">
                         </div>
-                        <div>
+
+                            <div class="form-group" id="length_u" {{($prod_sub_cat['product_category']->product_type_id == 3)?'':'hidden'}}>
+                                <label for="difference">Length Unit<span class="mandatory">*</span></label>
+
+                                <div class="raw">
+                                    <div class="col-md-3" style="padding-left: 0;">
+                                        <input  class="form-control" placeholder="Value" id="length" name="length" value="{{ old('difference') }}" type="number">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="radio" class="length_unit" name="length_unit" value="ft" {{(isset($prod_sub_cat->length_unit) && $prod_sub_cat->length_unit=="ft")?'checked':''}}> FT
+                                        <input type="radio" class="length_unit" name="length_unit"  value="mm" {{(isset($prod_sub_cat->length_unit) && $prod_sub_cat->length_unit=="mm")?'checked':''}}> MM
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        <div class="col-lg-12" style="padding-bottom: 10px;padding-top: 10px;padding-left: 0;">
                             <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>
                         </div>
                         <hr>

@@ -168,6 +168,7 @@ class ProductsubController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $ProductSubCategory = new ProductSubCategory();
+
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->hsn_code = $request->input('hsn_code');
@@ -177,6 +178,14 @@ class ProductsubController extends Controller {
         $ProductSubCategory->thickness = $request->input('thickness');
         $ProductSubCategory->standard_length = $request->input('standard_length');
         $ProductSubCategory->difference = $request->input('difference');
+
+        if($request->input('product_category') == 3){
+            $ProductSubCategory->length_unit = $request->input('length_unit');
+        }
+
+        // mm and ft
+        //$ProductSubCategory->length_unit = $request->input('length_unit');
+
         if($ProductSubCategory->save() && isset($ProductSubCategory->id)){
             $inventory = new \App\Inventory();
             $inventory->product_sub_category_id = $ProductSubCategory->id;
@@ -296,6 +305,10 @@ class ProductsubController extends Controller {
                 'standard_length' => $data['standard_length'],
                 'difference' => $data['difference']
             );
+            if(isset($data['product_category']) && $data['product_category'] == 3){
+                $pro_sub_cat['length_unit'] = $data['length_unit'];
+            }
+
             $alias_count = ProductSubCategory::where('id', '!=', $id)->where('alias_name', '=', $data['alias_name'])->count();
             if ($alias_count > 0) {
                 return Redirect::back()->withInput()->with('alias', 'Alias name already taken.');

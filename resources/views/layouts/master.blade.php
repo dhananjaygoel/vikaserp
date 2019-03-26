@@ -613,9 +613,32 @@
                 $('.infographic-box .value .timer').countTo({});
 
             });
+
+            $("#product_sub_category_select").change(function () {
+               if(this.value == 3){
+                   $('#length_u').show();
+               }
+               else{
+                   $('#length_u').hide();
+               }
+            });
+
+            $(".length_unit").change(function(){
+                var val = $("#length").val();
+                var l_u = $('#length_u .length_unit:checked').val();
+
+                if(l_u == 'mm'){
+                    val = val * 305;
+                    $("#length").val(val);
+                }
+                else{
+                    val = val / 305;
+                    $("#length").val(val);
+                }
+            });
         </script>
 
 
-        <input type="hidden" id="site_url" value="{{url()}}"
+        <input type="hidden" id="site_url" value="{{url()}}"/>
     </body>
 </html>
