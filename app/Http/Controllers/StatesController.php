@@ -66,7 +66,7 @@ class StatesController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-        //
+        return redirect('states');
     }
 
     /**
