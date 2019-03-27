@@ -104,7 +104,7 @@ class ProductsubController extends Controller {
             exit();
         }
 
-        $product_sub_cat = $q->orderBy('id', 'asc')->paginate(20);
+        $product_sub_cat = $q->orderBy('id', 'DESC')->paginate(20);
 
         $filter = array(Input::get('product_size'), Input::get('search_text'), Input::get('product_filter'));
         $product_sub_cat->setPath('product_sub_category');
@@ -257,11 +257,23 @@ class ProductsubController extends Controller {
 
             if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
                 ProductSubCategory::destroy($id);
+                if(isset($_GET['page']) && $_GET['page'] != ""){
+                    $page = $_REQUEST['page'];
+                    return redirect('product_sub_category?page='.$page)->with('success', 'Product sub category details successfully deleted.');
+                }
                 return redirect('product_sub_category')->with('success', 'Product sub category details successfully deleted.');
             } else {
+                if(isset($_GET['page']) && $_GET['page'] != ""){
+                    $page = $_REQUEST['page'];
+                    return redirect('product_sub_category?page='.$page)->with('wrong', 'Product size has already added by user, you can not delete this record.');
+                }
                 return redirect('product_sub_category')->with('wrong', 'Product size has already added by user, you can not delete this record.');
             }
         } else {
+            if(isset($_GET['page']) && $_GET['page'] != ""){
+                $page = $_REQUEST['page'];
+                return redirect('product_sub_category?page='.$page)->with('wrong', 'You have entered wrong credentials');
+            }
             return redirect('product_sub_category')->with('wrong', 'You have entered wrong credentials');
         }
     }
