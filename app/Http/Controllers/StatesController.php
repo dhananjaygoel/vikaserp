@@ -54,6 +54,11 @@ class StatesController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
+
+        $this->validate($staterequest, [
+            'state_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+        ]);
+
         $add_states = States::create([
                     'state_name' => $staterequest->input('state_name'),
                     'local_state' => $staterequest->input('local_state')
@@ -87,6 +92,10 @@ class StatesController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
+        $this->validate($request, [
+            'state_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+        ]);
+
         $check_state_exists = States::where('state_name', '=', $request->input('state_name'))->where('id', '!=', $id)->count();
         if ($check_state_exists == 0) {
             $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name'),'local_state' => Input::get('local_state')]);

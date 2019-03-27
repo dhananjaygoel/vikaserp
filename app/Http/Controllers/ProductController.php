@@ -75,6 +75,9 @@ class ProductController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        $this->validate($request, [
+            'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+        ]);
         if (Session::has('forms_product_category')) {
             $session_array = Session::get('forms_product_category');
             if (count($session_array) > 0) {
@@ -189,6 +192,10 @@ class ProductController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+        $this->validate($request, [
+            'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+        ]);
+
         $product_data = array(
             'product_type_id' => $request->input('product_type'),
             'product_category_name' => $request->input('product_category_name'),
