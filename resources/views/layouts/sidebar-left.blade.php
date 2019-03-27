@@ -213,6 +213,7 @@
                                     Delivery Challan
                                 </a>
                             </li>
+
                             @endif
                             @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                             <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
@@ -319,6 +320,12 @@
                             <li class="{{ (Request::is('*product_sub_category*') ? 'active' : '') }}">
                                 <a href="{{url()}}/product_sub_category">
                                     Product Size
+                                </a>
+                            </li>
+
+                            <li class="{{ (Request::is('*thickness*') ? 'active' : '') }}">
+                                <a href="{{url()}}/thickness">
+                                    Thickness
                                 </a>
                             </li>
 

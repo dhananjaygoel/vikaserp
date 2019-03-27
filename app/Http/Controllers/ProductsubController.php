@@ -169,13 +169,15 @@ class ProductsubController extends Controller {
         }
         $ProductSubCategory = new ProductSubCategory();
 
+        $thickness = explode(':',$request->input('thickness'))[0];
+
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->hsn_code = $request->input('hsn_code');
         $ProductSubCategory->size = $request->input('size');
         $ProductSubCategory->weight = $request->input('weight');
         $ProductSubCategory->unit_id = $request->input('units');
-        $ProductSubCategory->thickness = $request->input('thickness');
+        $ProductSubCategory->thickness = $thickness;
         $ProductSubCategory->standard_length = $request->input('standard_length');
         $ProductSubCategory->difference = $request->input('difference');
 
@@ -313,9 +315,9 @@ class ProductsubController extends Controller {
                 'hsn_code' => $data['hsn_code'],
                 'weight' => $data['weight'],
                 'unit_id' => $data['units'],
-                'thickness' => $data['thickness'],
+                'thickness' => $thickness = explode(':',$data['thickness'])[0],
                 'standard_length' => $data['standard_length'],
-                'difference' => $data['difference']
+                'difference' => $data['difference'],
             );
             if(isset($data['product_category']) && $data['product_category'] == 3){
                 $pro_sub_cat['length_unit'] = $data['length_unit'];

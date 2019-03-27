@@ -78,7 +78,15 @@
                         <div class="thick12" style="@if(isset($prod_type->id) && $prod_type->id==2) display: none; @else  @endif">   
                             <div class="form-group ">
                                 <label for="thickness">Product Thickness</label>
-                                <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ $prod_sub_cat->thickness }}" type="text">
+                                <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
+                                    @foreach(\App\Thickness::all() as $thick)
+                                        @if($thick->thickness==$prod_sub_cat->thickness)
+                                            <option value="{{$prod_sub_cat->thickness.':'}}" selected> {{$prod_sub_cat->thickness}}</option>
+                                        @else
+                                            <option value="{{$thick->thickness.':'.$thick->diffrence}}"> {{$thick->thickness}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -96,6 +104,7 @@
                                 <input type="radio"  class="length_unit" name="length_unit" value="ft" {{(isset($prod_sub_cat->length_unit) && $prod_sub_cat->length_unit=="ft")?'checked':''}}> ft
                                 <input type="radio" class="length_unit" name="length_unit"  value="mm" {{(isset($prod_sub_cat->length_unit) && $prod_sub_cat->length_unit=="mm")?'checked':''}}> mm
                             </div>
+
 
 
                         <div class="form-group">

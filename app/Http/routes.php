@@ -11,7 +11,7 @@
   |
  */
 
-
+//$2y$10$jpxgWw.w0OgC6yT2/DIycOO/VeeNfxus6FFiZuiglNcPAtirgDTOm
 Route::post('applogin', 'HomeController@applogin');
 Route::post('appuserresetpassword', 'HomeController@appUserResetPassword');
 Route::post('apporderstatus', 'HomeController@appOrderStatus');
@@ -219,6 +219,12 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+
+/*Route::get('/', function (){
+    echo \Illuminate\Support\Facades\Hash::make('123456');
+});*/
+
+
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::get('logout', 'Auth\AuthController@getLogout');
 /*cron for update stock value*/
@@ -279,6 +285,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::post('product_sub_category/{id}-delete', 'ProductsubController@destroy');
     Route::resource('product_sub_category', 'ProductsubController');
+
+    Route::resource('thickness', 'ThicknessController');
+
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::get('get_product_type', 'ProductsubController@get_product_type');
     Route::resource('inventory', 'InventoryController');
@@ -352,7 +361,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
     Route::get('pass_journal_entry', 'CustomerController@pass_journal_entry');
 
-//    Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
+//  Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
@@ -470,8 +479,6 @@ Route::get('receipt-master/bank', 'ReceiptMasterController@create_bank_receipt')
 Route::get('receipt-master/cash', 'ReceiptMasterController@create_cash_receipt');
 Route::delete('receipt-master/delete-customer-receipt/{id}', 'ReceiptMasterController@delete_customer_receipt');
 Route::resource('receipt-master', 'ReceiptMasterController');
-
-
 
 Route::post('graph_order_temp', 'DashboardController@graph_order_temp');
 

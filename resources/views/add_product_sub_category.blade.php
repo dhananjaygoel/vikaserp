@@ -62,7 +62,12 @@
                             <div class="thick12" style="display: none;">   
                                 <div class="form-group ">
                                     <label for="thickness">Product Thickness</label>
-                                    <input id="thickness" class="form-control" placeholder="Product Thickness" name="thickness" value="{{ old('thickness') }}" type="text">
+
+                                    <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
+                                        @foreach(\App\Thickness::all() as $thick)
+                                            <option value="{{$thick->thickness.':'.$thick->diffrence}}"> {{$thick->thickness}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -83,7 +88,7 @@
 
                             <div class="form-group">
                                 <label for="difference">Difference<span class="mandatory">*</span></label>
-                                <input id="diffrence" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);">
+                                <input id="difference" class="form-control" placeholder=" Difference" name="difference" value="{{ old('difference') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,true);">
                             </div>
 
 

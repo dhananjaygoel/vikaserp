@@ -636,6 +636,18 @@
                     $("#length").val(val);
                 }
             });
+
+            function setDiffrence(val) {
+                var diff = val.split(':')[1];
+                if(diff){
+                    $("#difference").val(diff);
+                }
+                else{
+                    $("#difference").val(0);
+                }
+            }
+
+
         </script>
 
 
