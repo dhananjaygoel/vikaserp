@@ -1064,18 +1064,30 @@ class PurchaseOrderController extends Controller {
             }
 
             if (count($order['purchase_products']) > 0) {
+
                 foreach ($order['purchase_products'] as $popk => $popv) {
                     $product_size = $popv['product_sub_category'];
+                    $productsubcat = App\ProductCategory::find($product_size->product_category_id);
+                    if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
+                        if($product_size->length_unit == "ft"){
+                            $purchase_order_quantity = $product_size->weight * $product_size->standard_length;
+                        }
+                        else{
+                            $purchase_order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                        }
+                    }
+                    else{
+                        if ($popv->unit_id == 1) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                        }
+                        if ($popv->unit_id == 2) {
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                        }
+                        if ($popv->unit_id == 3) {
+                            $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        }
+                    }
                     //$product_size = ProductSubCategory::find($popv->product_category_id);
-                    if ($popv->unit_id == 1) {
-                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
-                    }
-                    if ($popv->unit_id == 2) {
-                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
-                    }
-                    if ($popv->unit_id == 3) {
-                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                    }
                 }
             }
 
