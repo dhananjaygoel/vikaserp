@@ -40,7 +40,7 @@ class validIpMiddleware {
             else
                 $ipaddress = 'UNKNOWN';
             if ($ipaddress != 'UNKNOWN') {
-                if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+                if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9) {
                     return redirect('dashboard');
                 }
             }

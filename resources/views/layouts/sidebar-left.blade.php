@@ -173,18 +173,18 @@
                     </li>
                     @endif
                     @endif
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
                     <li class="<?php
                     if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')) {
                         echo 'active';
                     }
                     ?>">
-                        @if(Auth::user()->role_id != 6 && Auth::user()->role_id != 7)
+                        @if(Auth::user()->role_id != 6 && Auth::user()->role_id != 7 )
                         <a href="#" class="dropdown-toggle">
                             <i class="fa fa-shopping-cart"></i>
                             <span>Order</span>
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
-                        </a>                        
+                        </a>
                         <ul class="submenu">
                             @if(Auth::user()->role_id == 5)
                             <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
@@ -194,12 +194,14 @@
                             </li>
 
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 )
-                            <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
-                                <a href="{{url('orders')}}" >
-                                    Order
-                                </a>
-                            </li>
+                            @if(Auth::user()->role_id == 9 || Auth::user()->role_id == 8 || Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 )
+                                @if(Auth::user()->role_id != 8 && Auth::user()->role_id != 9)
+                                <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
+                                    <a href="{{url('orders')}}" >
+                                        Order
+                                    </a>
+                                </li>
+                                @endif
                             <li class="{{ (Request::is('*delivery_order*') ? 'active' : '') }}">
                                 <a href="{{url('delivery_order')}}">
                                     Delivery Order
@@ -322,13 +324,11 @@
                                     Product Size
                                 </a>
                             </li>
-
                             <li class="{{ (Request::is('*thickness*') ? 'active' : '') }}">
                                 <a href="{{url()}}/thickness">
                                     Product Thickness
                                 </a>
                             </li>
-
                         </ul>
                     </li>
                     @endif
@@ -453,7 +453,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
-                    @endif                    
+                    @endif
                 </ul>
             </div>
             @endif

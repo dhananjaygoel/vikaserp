@@ -57,7 +57,7 @@ class DeliveryOrderController extends Controller {
             return redirect('change_password');
         }
         gc_disable();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
         $session_sort_type_order = Session::get('order-sort-type');
@@ -282,9 +282,12 @@ class DeliveryOrderController extends Controller {
      */
     public function edit($id = "") {
 
+
+
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
+
 
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
@@ -292,8 +295,13 @@ class DeliveryOrderController extends Controller {
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
+
+
+
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
+
+
         return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'pending_orders'));
     }
 
