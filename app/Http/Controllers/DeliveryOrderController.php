@@ -57,6 +57,7 @@ class DeliveryOrderController extends Controller {
             return redirect('change_password');
         }
         gc_disable();
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
