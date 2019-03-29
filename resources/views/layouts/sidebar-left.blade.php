@@ -325,7 +325,7 @@
 
                             <li class="{{ (Request::is('*thickness*') ? 'active' : '') }}">
                                 <a href="{{url()}}/thickness">
-                                    Thickness
+                                    Product Thickness
                                 </a>
                             </li>
 
