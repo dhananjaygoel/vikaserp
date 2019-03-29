@@ -47,6 +47,11 @@ class DashboardController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
+
+        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+            return Redirect::to('delivery_order');
+        }
+
         if (Auth::user()->role_id == 7) {
             return Redirect::to('vehicle-list');
         }
