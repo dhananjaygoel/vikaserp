@@ -66,7 +66,7 @@ class ThicknessController extends Controller {
 	 */
 	public function show($id)
 	{
-		return view('thickness');
+		return redirect('thickness');
 	}
 
 	/**

@@ -287,6 +287,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('product_sub_category', 'ProductsubController');
 
     Route::resource('thickness', 'ThicknessController');
+    Route::resource('gst', 'GstController');
 
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::get('get_product_type', 'ProductsubController@get_product_type');
