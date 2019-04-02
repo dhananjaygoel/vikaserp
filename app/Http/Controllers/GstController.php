@@ -40,7 +40,7 @@ class GstController extends Controller {
 	public function store(Request $request)
 	{
         $this->validate($request, [
-            'gst' => 'required|integer',
+            'gst' => 'required|integer|unique:gst,gst',
             'sgst' => 'required|integer',
             'cgst' => 'required|integer',
             'igst' => 'required|integer',
@@ -96,7 +96,7 @@ class GstController extends Controller {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
-            'gst' => 'required|integer',
+            'gst' => 'required|integer|unique:gst,gst',
             'sgst' => 'required|integer',
             'cgst' => 'required|integer',
             'igst' => 'required|integer',

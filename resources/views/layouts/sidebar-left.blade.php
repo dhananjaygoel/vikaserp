@@ -457,7 +457,7 @@
 
 
                         @if(Auth::user()->role_id == 0)
-                            <li class="{{ (Request::is('gst*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Due Payment">
+                            <li class="{{ (Request::is('gst*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="GST">
                                 <a href="{{url('gst')}}">
                                     <i class="fa fa-money"></i>
                                     <span>GST</span>
