@@ -47,11 +47,34 @@
                             <div class="form-group">
                                 <label for="cat_name">Product Category Name<span class="mandatory">*</span></label>
                                 <input id="cat_name" class="form-control" placeholder="Product Category Name" name="product_category_name" value="{{ old('product_category_name') }}" type="text">
-                            </div>                            
+                            </div>
+
+                            <div class="form-group" >
+                                <label for="">GST<span class="mandatory">*</span></label>
+                                <select name="gst" class="form-control">
+                                    @foreach(\App\Gst::orderBy('id','DESC')->get() as $gst)
+                                        <option value="{{$gst->gst}}">{{$gst->gst}} %</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="price">Price<span class="mandatory">*</span></label>
                                 <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
+
+                            <div class="form-group">
+                                <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
+                                <input id="hsn_code" class="form-control" placeholder="HST Code" name="hsn_code" value="{{ old('hsn_code') }}" type="text">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="hsn_desc">HSN Description<span class="mandatory">*</span></label>
+                                <textarea name="hsn_desc" id="hsn_desc" class="form-control">{{old('hsn_desc')}}</textarea>
+                            </div>
+
+
                             <div>
                                 <button type="button" class="btn btn-primary" id="sendSMS" data-id='product-id-submit-btn'>Send SMS</button>
                             </div>

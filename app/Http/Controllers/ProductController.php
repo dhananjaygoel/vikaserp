@@ -77,6 +77,8 @@ class ProductController extends Controller {
         }
         $this->validate($request, [
             'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+            'gst' => 'required',
+            'hsn_code' => 'required'
         ]);
         if (Session::has('forms_product_category')) {
             $session_array = Session::get('forms_product_category');
@@ -97,6 +99,9 @@ class ProductController extends Controller {
         $product_category->product_type_id = $request->input('product_type');
         $product_category->product_category_name = $request->input('product_category_name');
         $product_category->price = $request->input('price');
+        $product_category->gst = $request->input('gst');
+        $product_category->hsn_code = $request->input('hsn_code');
+        $product_category->hsn_desc = $request->input('hsn_desc');
         $product_category->save();
 
         /*
@@ -194,12 +199,17 @@ class ProductController extends Controller {
         }
         $this->validate($request, [
             'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+            'gst' => 'required',
+            'hsn_code' => 'required'
         ]);
 
         $product_data = array(
             'product_type_id' => $request->input('product_type'),
             'product_category_name' => $request->input('product_category_name'),
             'price' => $request->input('price'),
+            'gst' => $request->input('gst'),
+            'hsn_code' => $request->input('hsn_code'),
+            'hsn_desc' => $request->input('hsn_desc'),
         );
         ProductCategory::where('id', $id)->update($product_data);
 
@@ -232,9 +242,7 @@ class ProductController extends Controller {
                 }
             }
         }
-        
-       
-        
+
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
