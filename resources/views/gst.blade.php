@@ -57,10 +57,10 @@
                                         <?php $i = ($gst->currentPage() - 1) * $gst->perPage() + 1; ?>
                                         @foreach($gst as $gsts)
                                             <tr>
-                                                <td>{{$gsts->gst}} %</td>
-                                                <td>{{$gsts->sgst}} %</td>
-                                                <td>{{$gsts->cgst}} %</td>
-                                                <td>{{$gsts->igst}} %</td>
+                                                <td>{{$gsts->gst}}  </td>
+                                                <td>{{$gsts->sgst}} </td>
+                                                <td>{{$gsts->cgst}} </td>
+                                                <td>{{$gsts->igst}} </td>
                                                 @if( Auth::user()->role_id == 0 )
                                                     <td class="text-center">
                                                         <a href="{{ Url::action('GstController@edit', ['id' => $gsts->id]) }}" class="table-link">
