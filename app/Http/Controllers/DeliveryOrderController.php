@@ -57,7 +57,6 @@ class DeliveryOrderController extends Controller {
             return redirect('change_password');
         }
         gc_disable();
-        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9) {
             return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
         }
@@ -1006,7 +1005,16 @@ class DeliveryOrderController extends Controller {
                     if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
                         $profile_vat_amount = $input_data['vat_percentage'];
                         $product_price = $product['price'] * $product['actual_quantity'];
-                        $prod_vat_price = ($product_price * $input_data['vat_percentage'])/100;
+
+                        if(isset($input_data['vat_percentage'])){
+                            $prod_vat_price = ($product_price * $input_data['vat_percentage'])/100;
+                        }
+                        else{
+                            $prod_vat_price = ($product_price * 0)/100;
+                        }
+
+
+
                         $product_price = $product_price + $prod_vat_price;
                         $total_profile_price = $total_profile_price + $product_price;
                     }else{
@@ -1220,10 +1228,11 @@ class DeliveryOrderController extends Controller {
                     $order_qty = $order_qty + (($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * $do_product_details->product_sub_category->weight);
                 }
             }
-
             $delivery_data->total_quantity = round($order_qty / 1000, 2);
         }
         $units = Units::all();
+        //['product_sub_category']['product_category']
+        //dd($delivery_data->toArray());
 //        $delivery_locations = DeliveryLocation::all();
 //        $customers = Customer::all();
 
