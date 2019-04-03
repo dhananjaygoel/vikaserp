@@ -275,7 +275,6 @@ class OrderController extends Controller {
      * Functioanlity: Flag order
      */
     public function flagOrder() {
-
         $data = Input::all();
         if ($data['module'] == 'order') {
             $order_details = Order::find(Input::get('order_id'));
@@ -390,7 +389,7 @@ class OrderController extends Controller {
         $order->supplier_id = $supplier_id;
         $order->customer_id = $customer_id;
         $order->created_by = Auth::id();
-        $order->vat_percentage = $input_data['vat_price'];
+        //$order->vat_percentage = $input_data['vat_price'];
         $order->discount_type = $discount_type;
         $order->discount_unit = $discount_unit;
         $order->discount = $discount;

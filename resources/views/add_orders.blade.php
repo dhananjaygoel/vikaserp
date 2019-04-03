@@ -89,8 +89,6 @@
                                             <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order->tally_name}}" id="existing_customer_name1" tabindex="1" disabled="yes">
                                               <input type="hidden" id="existing_customer_id" name="existing_customer_name" value="{{$order->id}}">
                                             <input type="hidden" id="customer_default_location" value="{{$order->delivery_location_id}}">
-                                            
-                                         
                                          @endif   
                                             
                                         </div>
@@ -98,6 +96,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+
                             <div class="new_customer_details" style="{{(Input::old('customer_status') == "new_customer")?'display:block':'display:none'}}">
                                 <div class="form-group">
                                     <label for="name">Customer Name<span class="mandatory">*</span></label>
@@ -116,6 +115,7 @@
                                     <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return numbersOnly(this, event, false, false);" value="{{old('credit_period')}}" type="tel">
                                 </div>
                             </div>
+
                             <div class="row col-md-12">
                                 <div class="form-group">
                                     <div class="col-md-3">
@@ -328,19 +328,7 @@
                                 </div>
                             </div>
                             -->
-                            <div class="vat_field ">
-                                <div class="form-group">
-                                    <table id="table-example" class="table">
-                                        <tbody>
-                                            <tr class="cdtable">
-                                                <td class="cdfirst">GST Percentage:</td>
-                                                <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_price" onkeypress=" return onlyPercentage(event);" value="{{ (isset($session_data['vat_price'])) ? $session_data['vat_price']:''}}" type="text"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
+
                             <div class="form-group col-md-4 targetdate">
                                 <label for="time">Expected Delivery Date:<span class="mandatory">*</span> </label>
                                 <div class="input-group">
@@ -348,6 +336,7 @@
                                     <input type="text" name="expected_date" value="{{Input::old('expected_date')!=''?Input::old('expected_date'):date('m-d-Y')}}" class="form-control" id="expected_delivery_date_order">
                                 </div>
                             </div>
+
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="order_remark">Remark</label>
