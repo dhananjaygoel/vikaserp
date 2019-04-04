@@ -457,7 +457,7 @@
 
 
                         @if(Auth::user()->role_id == 0)
-                            <li class="{{ (Request::is('gst*') || Request::is('hsn*')) ? 'active' : '' }} menutooltip" data-placement='right' data-original-title="Tax">
+                            <li class="{{ (Request::is('gst*') || Request::is('hsn*')) ? 'active' : '' }} menutooltip" data-placement='right' data-original-title="">
 
 
 
