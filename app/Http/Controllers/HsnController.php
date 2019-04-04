@@ -125,9 +125,9 @@ class HsnController extends Controller {
 
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             Hsn::find($id)->delete();
-            return redirect('gst')->with('flash_success_message', 'Gst details successfully deleted.');
+            return redirect('hsn')->with('flash_success_message', 'Gst details successfully deleted.');
         } else
-            return redirect('gst')->with('flash_message', 'Please enter a correct password');
+            return redirect('hsn')->with('flash_message', 'Please enter a correct password');
 	}
 
 }
