@@ -38,7 +38,14 @@
                             @endif
 
                             <input type="hidden" name="id" value="{{$hsn->id}}">
-
+                            <div class="form-group">
+                                <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
+                                <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ $hsn->hsn_code }}" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="hsn_desc">HSN Description<span class="mandatory">*</span></label>
+                                <textarea name="hsn_desc" id="hsn_desc" class="form-control">{{$hsn->hsn_desc}}</textarea>
+                            </div>
 
                             <div class="form-group" >
                                 <label for="">GST<span class="mandatory">*</span></label>
@@ -49,16 +56,10 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
-                                <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ $hsn->hsn_code }}" type="text">
-                            </div>
 
 
-                            <div class="form-group">
-                                <label for="hsn_desc">HSN Description<span class="mandatory">*</span></label>
-                                <textarea name="hsn_desc" id="hsn_desc" class="form-control">{{$hsn->hsn_desc}}</textarea>
-                            </div>
+
+
 
                             <hr>
                             <div>
