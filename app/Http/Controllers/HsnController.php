@@ -29,7 +29,8 @@ class HsnController extends Controller {
 	 * Show the form for creating a new resource.
 	 *
 	 * @return Response
-	 */
+	*/
+
 	public function create()
 	{
 		return view('hsn_add');
@@ -54,7 +55,7 @@ class HsnController extends Controller {
         $thickness->hsn_desc = $request->hsn_desc;
         $thickness->save();
 
-        return redirect('hsn')->with('flash_success_message', 'Hsn successfully added.');
+        return redirect('hsn')->with('flash_success_message', 'HSN successfully added.');
 	}
 
 	/**
@@ -108,7 +109,7 @@ class HsnController extends Controller {
             'gst' => $request->gst
         ]);
 
-        return redirect('hsn')->with('flash_success_message', 'Hsn updated successfully');
+        return redirect('hsn')->with('flash_success_message', 'HSN updated successfully');
 	}
 
 	/**
@@ -125,7 +126,7 @@ class HsnController extends Controller {
 
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             Hsn::find($id)->delete();
-            return redirect('hsn')->with('flash_success_message', 'Gst details successfully deleted.');
+            return redirect('hsn')->with('flash_success_message', 'HSN details successfully deleted.');
         } else
             return redirect('hsn')->with('flash_message', 'Please enter a correct password');
 	}
