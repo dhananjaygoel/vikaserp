@@ -61,7 +61,7 @@
 
                                 <div>
                                     <input type="submit" class="btn btn-primary form_button_footer" value="Submit">
-                                    <a href="{{URL::to('gst')}}" class="btn btn-default form_button_footer">Back</a>
+                                    <a href="{{URL::to('hsn')}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
                                 <div class="clearfix"></div>
                             </form>
