@@ -1660,6 +1660,9 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
             if (status_form != 1)
                 status_form = 0;
         }
+
+
+
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
@@ -2186,18 +2189,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
         status_form = 1;
     }
 
-    CheckBoxArray = [];
-    $("input:checkbox[class='vat_chkbox']:checked").each(function () {
-        CheckBoxArray.push($(this).val());
-        if ($.trim($('#vat_percentage').val()) == "" | $('#vat_percentage').val() == "0") {
-            $('#vat_percentage').addClass('error_validation');
-            status_form = 1;
-        } else {
-            $('#vat_percentage').removeClass('error_validation');
-            if (status_form != 1)
-                status_form = 0;
-        }
-    });
+
 
 //    if (j == tot_products) {
 //        for (i = 0; i <= tot_products+1; i++) {

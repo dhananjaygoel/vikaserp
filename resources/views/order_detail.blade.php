@@ -152,18 +152,7 @@
                                 </table>
                                 <table id="table-example" class="table table-hover customerview_table ">
                                     <tbody>
-                                        @if($order->vat_percentage !=0)
-<!--                                        <tr>
-                                            <td><span>Plus GST: </span>Yes</td>
-                                        </tr>-->
-                                        <tr>
-                                            <td><span>GST Percentage: </span>{{$order->vat_percentage}}</td>
-                                        </tr>
-                                        @elseif($order->vat_percentage ==0)
-                                        <tr>
-                                            <td><span>Plus GST: </span>No</td>
-                                        </tr>
-                                        @endif
+
 <!--                                        <tr>
                                             <td><span>Total: </span></td>
                                         </tr>-->

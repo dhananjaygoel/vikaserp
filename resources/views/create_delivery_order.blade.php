@@ -259,13 +259,7 @@
                         <div class="clearfix"></div>
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
-                                <tr class="cdtable">
-                                    <td class="cdfirst">GST Percentage:</td>
-                                    <td>
-                                        {{-- $order->vat_percentage --}}
-                                        <input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="text" onblur="grand_total_delivery_order();" onkeypress=" return onlyPercentage(event);">
-                                    </td>
-                                </tr>
+
                                 @if($order->vat_percentage == 0)
 <!--                                <tr class="cdtable">
                                     <td class="cdfirst">Plus VAT:</td>

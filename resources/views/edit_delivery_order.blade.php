@@ -493,18 +493,7 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="plusvat " >
-                                <div class="form-group">
-                                    <table id="table-example" class="table ">
-                                        <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst" style="font-weight: 500;">GST Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_price" value="{{ isset($delivery_data->vat_percentage)? $delivery_data->vat_percentage:0}}" onkeypress=" return onlyPercentage(event);" type="text" onblur="grand_total_delivery_order({{isset($key)?(($key!='')?$key:1):''}});"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label for="vehicle_name">Vehicle Number</label>
                                 <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
@@ -515,28 +504,7 @@
                             </div>
                             <div class="clearfix"></div>
 
-                        <!-- {{--
-                            <div class="form-group">
-                                <div class="radio">
-                                    <input checked="" value="include_vat" id="optionsRadios5" name="status1" type="radio" onclick="grand_total_delivery_order();">
-                                    <label for="optionsRadios5">All Inclusive</label>
-                                    <input value="exclude_vat" id="optionsRadios6" name="status1" type="radio" onclick="grand_total_delivery_order();" {{($delivery_data->vat_percentage != '')?'checked':''}}>
-                                    <label for="optionsRadios6">Plus VAT</label>
-                                </div>
-                            </div>
-                          --}}  -->
-                        <!--  {{--                      <div class="plusvat " style="{{($delivery_data->vat_percentage != '') ?"display:block" : ""}}">
-                                                        <div class="form-group">
-                                                            <table id="table-example" class="table ">
-                                                                <tbody>
-                                                                    <tr class="cdtable">
-                                                                        <td class="cdfirst">VAT Percentage:</td>
-                                                                        <td><input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_price" value="{{ $delivery_data->vat_percentage }}" type="tel" onblur="grand_total_delivery_order({{($key!='')?$key:1}});"></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div> --}} -->
+
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <label for="inquiry_remark">Remark</label>
@@ -547,7 +515,6 @@
                             </div>
                             <hr>
                             <div>
-                            <!--<input type="hidden" name="row_count" value="{{sizeof($delivery_data['delivery_product'])}}">-->
                                 <button type="submit" class="btn btn-primary form_button_footer btn_edit_delivery_order">Submit</button>
                                 <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                             </div>

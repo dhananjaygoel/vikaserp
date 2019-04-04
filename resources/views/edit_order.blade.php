@@ -413,27 +413,7 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="plusvat">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">GST Percentage:</td>
-                                            <?php
-                                                $vat_percent ="";
-                                                if(isset($order->vat_percentage)){
-                                                    $vat_percent = $order->vat_percentage;
-                                                 }
-                                                if(isset($session_data['vat_percentage'])){
-                                                    $vat_percent = $session_data['vat_percentage'];
-                                                }
-                                                    ?>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" onkeypress=" return onlyPercentage(event);" name="vat_percentage" value="{{ $vat_percent}}" type="text"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        
                         @if($order->vat_percentage == 0)
 
                         <!--                        <div class="form-group">

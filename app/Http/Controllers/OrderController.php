@@ -633,6 +633,8 @@ class OrderController extends Controller {
      */
     public function update($id, PlaceOrderRequest $request) {
 
+
+
         $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_edit_order')) {
@@ -657,6 +659,8 @@ class OrderController extends Controller {
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
+
+
         $i = 0;
         $customer_id = 0;
         $j = count($input_data['product']);
@@ -703,6 +707,8 @@ class OrderController extends Controller {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
+
+
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
             $supplier_id = 0;
@@ -727,7 +733,7 @@ class OrderController extends Controller {
             'customer_id' => $customer_id,
 //            'created_by' => Auth::id(),
             'delivery_location_id' => $input_data['add_inquiry_location'],
-            'vat_percentage' => $input_data['vat_percentage'],
+         //   'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['order_remark'],
             'discount_type' => $input_data['discount_type'],
@@ -744,6 +750,7 @@ class OrderController extends Controller {
                 'location_difference' => $input_data['location_difference']
             ]);
         }
+
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if (($product_data['name'] != "") && ($product_data['order'] != '') && ($product_data['id'] != '') && ($product_data['id'] != 0)) {
@@ -909,6 +916,8 @@ class OrderController extends Controller {
                 }
             }
         }
+
+
 
         /*
           | ---------------------------------------------
@@ -1372,7 +1381,7 @@ class OrderController extends Controller {
             $delivery_order->supplier_id = $order->supplier_id;
             $delivery_order->created_by = $user->id;
 //            $delivery_order->vat_percentage = $order->vat_percentage;
-            $delivery_order->vat_percentage = $input_data['vat_percentage'];
+          //  $delivery_order->vat_percentage = $input_data['vat_percentage'];
             $delivery_order->expected_delivery_date = $order->expected_delivery_date;
             $delivery_order->remarks = $input_data['remarks'];
             $delivery_order->vehicle_number = $input_data['vehicle_number'];
