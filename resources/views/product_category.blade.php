@@ -72,7 +72,7 @@
                                             <th class="col-md-1">#</th>
                                             <th class="col-md-2">Name</th>
                                             <th class="col-md-2">Type</th>
-                                            <th class="col-md-1">GST</th>
+
                                             <th class="col-md-1">HSN Code</th>
                                             <th class="col-md-2">HSN DEScription</th>
 
@@ -97,7 +97,7 @@
                                                 {{'Sheets'}}
                                                 @endif
                                             </td>
-                                            <td>{{$product->gst}}</td>
+                                           
                                             <td>{{$product->hsn_code}}</td>
                                             <td>{{$product->hsn_desc}}</td>
                                             <td>

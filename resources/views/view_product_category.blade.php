@@ -46,6 +46,17 @@
                                             <span>Price: </span>{{ $product_cat->price }}
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <span>HSN Code: </span>{{ $product_cat->hsn_code }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span>HSN Description: </span>{{ $product_cat->hsn_desc }}
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <a href="{{url()}}/product_category" class="btn btn-default form_button_footer">Back</a>
