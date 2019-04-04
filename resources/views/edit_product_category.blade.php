@@ -46,23 +46,23 @@
                 </div>-->
 
 
-                    <div class="form-group" >
-                        <label for="">GST<span class="mandatory">*</span></label>
-                        <select name="gst" class="form-control">
-                            @foreach(\App\Gst::orderBy('id','DESC')->get() as $gst)
-                                <option value="{{$gst->gst}}" {{($gst->gst == $product_cat[0]['gst'])?'selected':''}}>{{$gst->gst}} %</option>
-                            @endforeach
-                        </select>
-                    </div>
+
 
                 <div class="form-group">
                     <label for="price">Price<span class="mandatory">*</span></label>
                     <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                 </div>
 
-                    <div class="form-group">
-                        <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
-                        <input id="hsn_code" class="form-control" placeholder="HST Code" name="hsn_code" value="{{ $product_cat[0]['hsn_code'] }}" type="text">
+
+
+                    <div class="form-group" >
+                        <label for="">HSN Code<span class="mandatory">*</span></label>
+                        <select name="hsn_code" class="form-control" id="hsn_desc_get_desc" required>
+                            <option value="">Hsn Code</option>
+                            @foreach(\App\Hsn::orderBy('id','DESC')->get() as $hsn)
+                                <option value="{{$hsn->hsn_code.':'.$hsn->hsn_desc}}" {{($hsn->hsn_code==$product_cat[0]['hsn_code'])?'selected':''}}>{{$hsn->hsn_code}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
 

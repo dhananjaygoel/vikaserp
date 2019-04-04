@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!--        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}-->
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">--> 
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">-->
 
         <!-- RTL support - for demo only -->
         {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
@@ -71,7 +71,7 @@
                 height: 35px;
             }
         </style>
-        <!--define method before load page--> 
+        <!--define method before load page-->
         <script>
             product_autocomplete = function () {
             };
@@ -278,9 +278,9 @@
             <div id="page-wrapper" class="container dashboard-nav nav-small">
 
                 <div class="row">
-                    @include('layouts.sidebar-left')                    
+                    @include('layouts.sidebar-left')
                     <div id="content-wrapper">
-                        @yield('content')                       
+                        @yield('content')
                         @include('layouts.footer')
                     </div>
                 </div>
@@ -297,9 +297,9 @@
 <script src="js/pace.min.js"></script>-->
         <!-- global scripts -->
         {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery.js') !!}   
+        {!! HTML::script('/resources/assets/js/jquery.js') !!}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        {!! HTML::script('/resources/assets/js/bootstrap.js') !!}  
+        {!! HTML::script('/resources/assets/js/bootstrap.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
         {!! HTML::script('/resources/assets/js/demo.js') !!}
         <!-- this page specific scripts -->
@@ -331,7 +331,7 @@
         {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
         {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
         <!--{!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}-->
-        
+
         {!! HTML::script('/resources/assets/js/daterangepicker.js') !!}
 
         <!-- theme scripts -->
@@ -363,11 +363,11 @@
         ?>
 
 
-        {!! HTML::script('/resources/assets/js/jquery.validate.min.js') !!}       
+        {!! HTML::script('/resources/assets/js/jquery.validate.min.js') !!}
         {!! HTML::script('/resources/assets/js/bootstrap-multiselect.min.js') !!}
 
 
-        <script src="{{url()."/resources/assets/custom_js/laravel.js"}}"></script> 
+        <script src="{{url()."/resources/assets/custom_js/laravel.js"}}"></script>
         <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
 
         <?php
@@ -646,6 +646,14 @@
                     $("#difference").val(0);
                 }
             }
+
+            $("#hsn_desc_get_desc").on('change',function () {
+               var hsncode = this.value;
+               if(hsncode){
+                    var hsndesc = hsncode.split(':')[1];
+                    $('#hsn_desc').val(hsndesc);
+               }
+            });
 
 
         </script>

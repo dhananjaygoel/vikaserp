@@ -457,12 +457,27 @@
 
 
                         @if(Auth::user()->role_id == 0)
-                            <li class="{{ (Request::is('gst*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="GST">
-                                <a href="{{url('gst')}}">
-                                    <i class="fa fa-money"></i>
-                                    <span>GST</span>
-                                    <span class="label label-info label-circle pull-right"></span>
+                            <li class="{{ (Request::is('gst*') || Request::is('hsn*')) ? 'active' : '' }} menutooltip" data-placement='right' data-original-title="Tax">
+
+
+
+                                <a href="#" class="dropdown-toggle">
+                                    <i class="fa fa-inr"></i>
+                                    <span>Tax</span>
+                                    <i class="fa fa-chevron-circle-right drop-icon"></i>
                                 </a>
+                                <ul  class="submenu">
+                                    <li class="{{ (Request::is('*gst*') ? 'active' : '') }}">
+                                        <a href="{{url('gst')}}">
+                                            GST
+                                        </a>
+                                    </li>
+                                    <li class="{{ (Request::is('*hsn*') ? 'active' : '') }}">
+                                        <a href="{{url("hsn")}}">
+                                            HSN
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
                 </ul>

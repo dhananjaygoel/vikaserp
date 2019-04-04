@@ -288,6 +288,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('thickness', 'ThicknessController');
     Route::resource('gst', 'GstController');
+    Route::resource('hsn', 'HsnController');
 
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::get('get_product_type', 'ProductsubController@get_product_type');
@@ -490,13 +491,11 @@ Route::get('delete_purchase_order', 'WelcomeController@delete_purchase_order');
 Route::get('delete_purchase_advise', 'WelcomeController@delete_purchase_advise');
 Route::get('inventoryupdate', 'WelcomeController@inventoryupdate');
 
-
 Route::get('save_table_sync_date','WelcomeController@save_table_sync_date');
 Route::get('set_updated_date_to_sync_table','WelcomeController@set_updated_date_to_sync_table');
 Route::get('current_time','HomeController@current_time');
 
 Route::get('update_labour_performance_chart','WelcomeController@update_labour_performance_chart');
 Route::get('update_loadedby_performance_chart','WelcomeController@update_loadedby_performance_chart');
-
 
 Route::get('remove_test_labour','WelcomeController@remove_test_labour');
