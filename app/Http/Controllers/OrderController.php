@@ -50,10 +50,7 @@ class OrderController extends Controller {
     public function index(PlaceOrderRequest $request) {
 
 
-        Units::where('id',6)->delete();
-        Units::where('id',7)->delete();
-        Units::where('id',8)->delete();
-        Units::where('id',9)->delete();
+        
 
 
         if (Auth::user()->hasOldPassword()) {
