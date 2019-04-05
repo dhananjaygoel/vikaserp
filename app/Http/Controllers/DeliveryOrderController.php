@@ -1263,7 +1263,7 @@ class DeliveryOrderController extends Controller {
 //        $customers = Customer::all();
 
         $pdf = app('dompdf.wrapper');
-        $pdf->loadView('f', [
+        $pdf->loadView('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
             'customer_type' => $customer_type,
