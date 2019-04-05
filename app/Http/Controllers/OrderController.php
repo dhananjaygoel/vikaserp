@@ -50,8 +50,6 @@ class OrderController extends Controller {
     public function index(PlaceOrderRequest $request) {
 
 
-        Units::create(['unit_name'=>'ft']);
-        Units::create(['unit_name'=>'mm']);
 
 
         if (Auth::user()->hasOldPassword()) {
