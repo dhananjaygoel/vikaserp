@@ -202,30 +202,34 @@
                     <div class="divCell">{{ $product->present_shipping }}</div>
 
                     <div class="divCell">
-                        @if($delivery_data->customer->states)
-                            <?php
-                            $hsn_code = $product->product_sub_category->product_category->hsn_code;
-                            $is_gst = false;
-                            if($hsn_code){
-                                $is_gst = true;
-                                $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
-                                $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                        @if($product->vat_percentage > 0)
+                            @if($delivery_data->customer->states)
+                                <?php
+                                $hsn_code = $product->product_sub_category->product_category->hsn_code;
+                                $is_gst = false;
+                                if($hsn_code){
+                                    $is_gst = true;
+                                    $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
+                                    $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
 
-                            }
-                            ?>
-                            @if($is_gst)
+                                }
+                                ?>
+                                @if($is_gst)
                                     @if($delivery_data->customer->states->local_state == 1)
                                         {{$gst_det->sgst + $gst_det->cgst}} %
                                     @else
                                         {{$gst_det->igst}} %
                                     @endif
-                            @else
+                                @else
                                     @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                                @endif
+                            @else
+                                @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                             @endif
-
                         @else
                             @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                         @endif
+
                     </div>
                 </div>
                 @endif
