@@ -1370,6 +1370,8 @@ class DeliveryOrderController extends Controller {
      * calculate the pending quantity of the order.
      */
 
+    
+
     public function pending_quantity_order($id) {
 
         $pending_orders = array();
