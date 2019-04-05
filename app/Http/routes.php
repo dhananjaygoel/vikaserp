@@ -12,6 +12,12 @@
  */
 
 //$2y$10$jpxgWw.w0OgC6yT2/DIycOO/VeeNfxus6FFiZuiglNcPAtirgDTOm
+
+
+
+
+
+
 Route::post('applogin', 'HomeController@applogin');
 Route::post('appuserresetpassword', 'HomeController@appUserResetPassword');
 Route::post('apporderstatus', 'HomeController@appOrderStatus');
@@ -291,6 +297,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('hsn', 'HsnController');
 
     Route::get('get_product_category', 'ProductsubController@get_product_category');
+    Route::get('get_hsn_code', 'ProductsubController@get_hsn_code');
+
     Route::get('get_product_type', 'ProductsubController@get_product_type');
     Route::resource('inventory', 'InventoryController');
     Route::get('fillinventorylist', 'InventoryController@fillInventoryList');
