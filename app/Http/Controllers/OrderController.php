@@ -49,6 +49,11 @@ class OrderController extends Controller {
      */
     public function index(PlaceOrderRequest $request) {
 
+
+        Units::create(['unit_name'=>'ft']);
+        Units::create(['unit_name'=>'mm']);
+
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -465,6 +470,12 @@ class OrderController extends Controller {
                         if ($product_data['units'] == 3) {
                             $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
                         }
+                        if ($product_data['units'] == 4) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                        }
+                        if ($product_data['units'] == 5) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * ($product->weight / 305);
+                        }
                     }
                 }
                 $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
@@ -829,6 +840,13 @@ class OrderController extends Controller {
                             if ($product_data['units'] == 3) {
                                 $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
                             }
+
+                            if ($product_data['units'] == 4) {
+                                $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                            }
+                            if ($product_data['units'] == 5) {
+                                $total_quantity = $total_quantity + $product_data['quantity'] * ($product->weight / 305);
+                            }
                         }
                     }
                     $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
@@ -880,6 +898,12 @@ class OrderController extends Controller {
                             }
                             if ($product_data['units'] == 3) {
                                 $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                            }
+                            if ($product_data['units'] == 4) {
+                                $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                            }
+                            if ($product_data['units'] == 5) {
+                                $total_quantity = $total_quantity + $product_data['quantity'] * ($product->weight / 305);
                             }
                         }
                     }
@@ -1546,6 +1570,12 @@ class OrderController extends Controller {
                                 $order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
                             }
                         }
+                        elseif($dopv->unit_id == 4){
+                            $order_quantity = $product_size->weight * $product_size->standard_length;
+                        }
+                        elseif($dopv->unit_id == 5){
+                            $order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                        }
                     }
 
                 }
@@ -1581,6 +1611,12 @@ class OrderController extends Controller {
                             } else {
                                 $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                             }
+                        }
+                        elseif($opv->unit_id == 4){
+                            $order_quantity = $product_size->weight * $product_size->standard_length;
+                        }
+                        elseif($opv->unit_id == 5){
+                            $order_quantity = ($product_size->weight/305) * $product_size->standard_length;
                         }
                     }
 
