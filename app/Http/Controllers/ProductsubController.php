@@ -144,6 +144,12 @@ class ProductsubController extends Controller {
         exit;
     }
 
+    public function get_hsn_code(){
+        $product_cat = ProductCategory::where('id', Input::get('id'))->first();
+        echo $product_cat->hsn_code;
+        exit;
+    }
+
     public function get_product_type() {
 
         $product_cat = ProductType::get();

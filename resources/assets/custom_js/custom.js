@@ -121,6 +121,22 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#select_product_categroy").on('change',function () {
+        var id = this.value;
+        var url = $('#baseurl2').val();
+        var token = $('#_token').val();
+        $.ajax({
+            type: 'get',
+            url: url + '/get_hsn_code',
+            data: {id: id, _token: token},
+            success: function (data) {
+                $('#hsn_code').val(data);
+            }
+        });
+    });
+
+
 });
 $(document).ready(function () {
     $('body').on('click', '.delete-purchase-order-daybook', function () {

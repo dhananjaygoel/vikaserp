@@ -79,12 +79,15 @@
                                 <label for="difference">Standard Length<span class="mandatory">*</span></label>
                                 <input id="length" class="form-control" placeholder=" Standard Length" name="standard_length" value="{{ old('standard_length') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
+
                             <div class="form-group" id="length_u" hidden>
                                 <label for="">Length Unit<span class="mandatory">*</span></label>
                                 <br/>
                                 <input type="radio" class="length_unit" name="length_unit" value="ft" checked> ft
                                 <input type="radio" class="length_unit" name="length_unit"  value="mm"> mm
                             </div>
+
+
 
                             <div class="form-group">
                                 <label for="difference">Difference<span class="mandatory">*</span></label>
