@@ -28,7 +28,7 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     );
 
     public function delivery_product() {
-        return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->with('product_sub_category')->where('order_type', '=', 'delivery_order')->where('product_category_id', '>', '0');
+            return $this->hasMany('App\AllOrderProducts', 'order_id', 'id')->with('product_sub_category')->where('order_type', '=', 'delivery_order')->where('product_category_id', '>', '0');
     }
     
     public function track_do_product() {
@@ -40,7 +40,7 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     }
 
     public function customer() {
-        return $this->hasOne('App\Customer', 'id', 'customer_id');
+        return $this->hasOne('App\Customer', 'id', 'customer_id')->with('states');
     }
 
     public function order_details() {

@@ -214,6 +214,11 @@
                 <div class="time-prnt">Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</div>
             </div>
             <br>
+            <?php
+            $cust_id = $allorder->customer_id;
+            $state = \App\Customer::where('id',$cust_id)->first()->state;
+            $local_state = App\States::where('id',$state)->first()->local_state;
+            ?>
             <div class="divTable">
                 <div class="headRow">
                     <div class="divCell2">Sr.</div>
@@ -221,9 +226,14 @@
                     <div class="divCell">Size</div>
                     <div class="divCell2">HSN</div>
                     <div class="divCell2">Pcs</div>
-                    <div class="divCell">Qty</div>
-                    <div class="divCell">GST</div>
-                    <div class="divCell">Rate</div>
+                    <div class="divCell2">Qty</div>
+                    @if($local_state)
+                        <div  class="divCell2">SGST</div>
+                        <div  class="divCell2">CGST</div>
+                    @else
+                        <div  class="divCell">IGST</div>
+                    @endif
+                    <div class="divCell2">Rate</div>
                     <div class="divCell">Amount</div>
                 </div>
                 <?php
@@ -233,6 +243,8 @@
                 $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                 $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+
+
                 ?>
                 @foreach($allorder['delivery_challan_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
@@ -242,39 +254,58 @@
                     <div class="divCell">{{ $prod->order_product_all_details->alias_name }}</div>
                     <div class="divCell2">{{ $prod->order_product_all_details->hsn_code }}</div>
                     <div class="divCell2">{{ $prod->actual_pieces }}</div>
-                    <div class="divCell">{{ round($prod->actual_quantity) }}</div>
-                    <div class="divCell">
-                        @if($prod->vat_percentage==1)
-                            {{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}
+                    <div class="divCell2">{{ round($prod->actual_quantity) }}</div>
+
+                    <?php
+
+                    $productsub = \App\ProductSubCategory::where('id',$prod['product_category_id'])->first();
+                    $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
+                    $sgst = 0;
+                    $cgst = 0;
+                    $igst = 0;
+                    $rate = $prod->price;
+                    if(isset($prod->vat_percentage) && $prod->vat_percentage!=''){
+                        if($product_cat->hsn_code){
+                            $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                            $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+
+                            if($local_state){
+                                $sgst = $gst_det->sgst;
+                                $cgst = $gst_det->cgst;
+                            }
+                            else{
+                                $igst = $gst_det->igst;
+                            }
+                        }
+                    }
+                    ?>
+                    @if(isset($prod->vat_percentage) && $prod->vat_percentage!='')
+                        @if($local_state)
+                            <div class="divCell2">{{$sgst}}</div>
+                            <div class="divCell2">{{$cgst}}</div>
                         @else
-                            0
+                            <div class="divCell">{{$igst}}</div>
                         @endif
-                    </div>
-                    <div class="divCell"><?php echo $rate = $prod->price; ?></div>
+                    @else
+                        <div class="divCell">{{$igst}}</div>
+                    @endif
+
+
+
+                    <div class="divCell2"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
                         <?php $total_price += $rate * $prod->actual_quantity; ?>
                         {{ ($rate * $prod->actual_quantity) }}
                     </div>
                 </div>
                 <?php
-                $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
+                $total_pr = $sgst + $cgst + $igst;
+
+                $total_vat_amount = ($total_price * $total_pr) / 100;
+
 
                 $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
 
-
-//                if ($prod->unit_id == 1) {
-//                    $total_qty += $prod->actual_quantity;
-//                }
-//
-//                if ($prod->unit_id == 2) {
-//                    echo $prod['order_product_details']['product_category']->weight;
-//                    $total_qty += $prod->actual_quantity * $prod['order_product_details']->weight;
-//                }
-//
-//                if ($prod->unit_id == 3) {
-//                    echo $prod['order_product_details']['product_category']->standard_length;
-//                    $total_qty += ($prod->actual_quantity / $prod['order_product_details']->standard_length) * $prod['order_product_details']->weight;
-//                }
                 ?>
                 @endif
                 @endforeach
@@ -296,7 +327,7 @@
                             <td> <?php
                     $vat = $final_vat_amount;
                     ?>
-                                {{ round($vat,2) }} </td>
+                                {{  round($vat,2) }} </td>
                             <td> {{ round($allorder->grand_price, 2) }} </td>
                         </tr>
                     </table>-->
@@ -331,50 +362,7 @@
                         </tr>
                         
                     </table>-->
-                    <div class="divTable" style="width: 85%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
-                        <div class="headRow">
-                            <div class="divRow">
-                                <div class="divCell"><b>HSN CODE</b></div>
-                                <div class="divCell"><b>Qty</b></div>
-                                <div class="divCell"><b>Amount</b></div>
-                                <div class="divCell"><b>GST</b></div>
-                                <div class="divCell" style="display: inline-block; white-space: nowrap;"><b>Total Inc GST</b></div>
-                            </div>
-                            <td>   </td>
-                            <td> </td>
-                            <td>  </td>
-                            <td> </td> 
-                            <?php
-                            $gst_percentage=0;
-                            $total_amount=0;
-                            $total_qty=0;
-                            $total_inc_gst=0;
-                            ?>
-                            @foreach($allorder['hsn'] as $hsn)
-                            <div class="divRow">
-                                <div class="divCell">{{$hsn['id']}}</div>
-                                <div class="divCell">{{ round($hsn['actual_quantity'], 2) }}</div>
-                                <div class="divCell">{{ round($hsn['amount'], 2) }}</div>
-                                <div class="divCell">{{ round($hsn['vat_percentage'], 2) }}</div>
-                                <div class="divCell">{{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</div>
-                                <?php
-                                $gst_percentage = $hsn['vat_percentage'];
-                                $total_amount += $hsn['amount'];
-                                $total_qty += $hsn['actual_quantity'];
-                                $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
-                                ?>
-                            </div>                           
-                           @endforeach
-                            
-                            <div class="divRow">
-                                <div class="divCell"><b>Total</b></div>
-                                <div class="divCell"><b>{{  round($total_qty, 2) }}</b></div>
-                                <div class="divCell"><b>{{ round($total_amount, 2) }}</b></div>
-                                <div class="divCell"><b>{{ round($gst_percentage, 2) }}</b></div>
-                                <div class="divCell"><b>{{ round($total_inc_gst, 2) }}</b></div>
-                            </div>
-                        </div>
-                    </div>
+
 <!--                    <div class="divTable" style="width: 85%;border-left: 1px solid #ccc; border-right: 1px solid #ccc;">
                         <div class="headRow">
                             <div class="divRow">
@@ -459,7 +447,11 @@ $loading_vat = $allorder->loading_vat_percentage;
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
-                        <div class="label">&nbsp; GST</div>
+                        <div class="label">&nbsp; Total GST = @if($local_state)
+                                SGST + CGST
+                            @else
+                                IGST
+                            @endif</div>
                         <div class="value">
 <?php
 $vat = $final_vat_amount;
@@ -489,7 +481,7 @@ if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
     $grand_price = 0;
 }
 ?>
-                            {{ round($grand_price, 2) }}
+                            {{ round($grand_price + $final_vat_amount, 2) }}
                             &nbsp;
                         </div>
                     </div>

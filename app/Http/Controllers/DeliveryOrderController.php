@@ -1001,13 +1001,36 @@ class DeliveryOrderController extends Controller {
                     $total_profile_items ++;
                     $profile_product[$counter_profile++] = $product;
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
-//                    $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
+//                  $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
                     if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
-                        $profile_vat_amount = $input_data['vat_percentage'];
+                        //dd($product);
+                        //die;
+                        $cust_id = $delivery_order_details->customer_id;
+                        $state = Customer::where('id',$cust_id)->first()->state;
+                        $local_state = App\States::where('id',$state)->first()->local_state;
+                        $productsub = ProductSubCategory::where('id',$product['id'])->first();
+                        $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
+
+                        if($product_cat->hsn_code){
+                            $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                            $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                            if($local_state){
+                                $profile_vat_amount = $gst_det->cgst + $gst_det->sgst;
+                            }
+                            else{
+                                $profile_vat_amount = $gst_det->igst;
+                            }
+                        }
+                        else{
+                            $profile_vat_amount = 0;
+                        }
+
+                        //$profile_vat_amount = $input_data['vat_percentage'];
+
                         $product_price = $product['price'] * $product['actual_quantity'];
 
                         if(isset($input_data['vat_percentage'])){
-                            $prod_vat_price = ($product_price * $input_data['vat_percentage'])/100;
+                            $prod_vat_price = ($product_price * $profile_vat_amount)/100;
                         }
                         else{
                             $prod_vat_price = ($product_price * 0)/100;
@@ -1017,6 +1040,9 @@ class DeliveryOrderController extends Controller {
 
                         $product_price = $product_price + $prod_vat_price;
                         $total_profile_price = $total_profile_price + $product_price;
+
+
+
                     }else{
                         $product_price = $product['price'] * $product['actual_quantity'];
                         $total_profile_price = $total_profile_price + $product_price;                        
@@ -1237,7 +1263,7 @@ class DeliveryOrderController extends Controller {
 //        $customers = Customer::all();
 
         $pdf = app('dompdf.wrapper');
-        $pdf->loadView('print_delivery_order', [
+        $pdf->loadView('f', [
             'delivery_data' => $delivery_data,
             'units' => $units,
             'customer_type' => $customer_type,
@@ -1322,7 +1348,7 @@ class DeliveryOrderController extends Controller {
 
         Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
         $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
-        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);        
+        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
         //$connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
 //        $ch = curl_init();

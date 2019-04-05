@@ -229,17 +229,24 @@
                     <th >Size</th>
                     <th >Pcs</th>
                     <th >Qty</th>
-                    <th >GST</th>
+                    <th >SGST</th>
+                    <th >CGST</th>
+                    <th >IGST</th>
                     <th >Rate</th>
                     <th >Amount</th>
                 </tr>
                  <?php
                         $i = 1;
                         $total_price = 0;
-        //                $total_qty = 0;
-                        $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
-                        $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
+        //              $total_qty = 0;
+                        $loading_vat_amount =  ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
+                        $freight_vat_amount =  ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                         $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+
+                        $cust_id = $allorder->customer_id;
+                        $state = \App\Customer::where('id',$cust_id)->first()->state;
+                        $local_state = App\States::where('id',$state)->first()->local_state;
+
                         ?>
                         @foreach($allorder['delivery_challan_products'] as $prod)
                         @if($prod->order_type == 'delivery_challan')
@@ -248,7 +255,33 @@
                     <td>{{ $prod->order_product_all_details->alias_name }}</td>
                     <td>{{ $prod->actual_pieces }}</td>
                     <td>{{ round($prod->actual_quantity) }}</td>
-                    <td>{{(isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):''}}</td>
+                    <?php
+
+                    $productsub = \App\ProductSubCategory::where('id',$prod['product_category_id'])->first();
+                    $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
+                    $sgst = 0;
+                    $cgst = 0;
+                    $igst = 0;
+                    $rate = $prod->price;
+                    if($product_cat->hsn_code){
+                        $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                        $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                        if($local_state){
+                            $sgst = $gst_det->sgst;
+                            $cgst = $gst_det->cgst;
+                        }
+                        else{
+                            $igst = $gst_det->igst;
+                        }
+                    }
+                    else{
+                        $sgst = (isset($prod->vat_percentage) && $prod->vat_percentage!='')?round($allorder->vat_percentage):0;
+                    }
+                    ?>
+                    <td>{{$sgst}}</td>
+                    <td>{{$cgst}}</td>
+                    <td>{{$igst}}</td>
+
                     <td><?php echo $rate = $prod->price; ?></td>
                     <td>
                         <?php $total_price += $rate * $prod->actual_quantity; ?>
@@ -259,6 +292,7 @@
                         $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
 
                         $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+
                         ?>
                         @endif
                         @endforeach
