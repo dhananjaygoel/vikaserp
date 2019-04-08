@@ -3051,6 +3051,8 @@ function unitType(parameters) {
         $('.kg_list_' + id).show();
         $('.pieces_list_' + id).hide();
         $('.meter_list_' + id).hide();
+        $('.ff_list_' + id).hide();
+        $('.mm_list_' + id).hide();
         $('#quantity_' + id).val($('#kg_list_' + id).val());
     }
     if (i == "2") {
@@ -3058,6 +3060,8 @@ function unitType(parameters) {
         $('.kg_list_' + id).hide();
         $('.pieces_list_' + id).show();
         $('.meter_list_' + id).hide();
+        $('.ff_list_' + id).hide();
+        $('.mm_list_' + id).hide();
         $('#quantity_' + id).val($('#pieces_list_' + id).val());
 
     }
@@ -3066,6 +3070,8 @@ function unitType(parameters) {
         $('.kg_list_' + id).hide();
         $('.pieces_list_' + id).hide();
         $('.meter_list_' + id).show();
+        $('.ff_list_' + id).hide();
+        $('.mm_list_' + id).hide();
         $('#quantity_' + id).val("");
 
     }
@@ -3073,18 +3079,21 @@ function unitType(parameters) {
     if (i == "4")
     {
         $('.kg_list_' + id).hide();
-        $('.ff_list_' + id).show();
+        $('.pieces_list_' + id).hide();
         $('.meter_list_' + id).hide();
+        $('.ff_list_' + id).show();
         $('.mm_list_' + id).hide();
         $('#quantity_' + id).val($('#ff_list_' + id).val());
     }
 
     if (i == "5")
     {
-        $('.mm_list_' + id).show();
-        $('.ff_list_' + id).hide();
+
         $('.kg_list_' + id).hide();
+        $('.pieces_list_' + id).hide();
         $('.meter_list_' + id).hide();
+        $('.ff_list_' + id).hide();
+        $('.mm_list_' + id).show();
         $('#quantity_' + id).val($('#mm_list_' + id).val());
     }
 
