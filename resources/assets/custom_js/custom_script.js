@@ -408,6 +408,7 @@ $(document).ready(function () {
             }
             $("#units_" + current_row_count).html(html);
         });
+
         var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
                 '<td class="col-md-3">' +
                 '<div class="form-group searchproduct">' +
