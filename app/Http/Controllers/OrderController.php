@@ -50,7 +50,7 @@ class OrderController extends Controller {
     public function index(PlaceOrderRequest $request) {
 
 
-        
+
 
 
         if (Auth::user()->hasOldPassword()) {
@@ -98,7 +98,7 @@ class OrderController extends Controller {
                 }
             } else {
                 $q->where('order_status', '=', 'pending')
-                        ->where('is_approved', '=', 'yes');
+                  ->where('is_approved', '=', 'yes');
             }
             if (isset($data["territory_filter"]) && $data["territory_filter"] != '') {
                 $loc_arr = [];
@@ -123,7 +123,7 @@ class OrderController extends Controller {
                     $q->where('order_source', '=', 'warehouse');
                 }
                 if ($data['fulfilled_filter'] == 'all') {
-                    $q->where('order_source', '=', 'supplier');
+                    $q->where('order_source','=', 'supplier');
                 }
             }
             if ((isset($data['location_filter'])) && $data['location_filter'] != '') {
@@ -221,6 +221,7 @@ class OrderController extends Controller {
                 $excel_sheet_name = 'Cancelled';
                 $excel_name = 'Order-Cancelled-' . date('dmyhis');
             }
+
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -250,21 +251,22 @@ class OrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id == 5) {
-            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+           $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
                     ->where('email', '=', Auth::user()->email)
                     ->first();
 
-            $order = Customer::with('delivery_location')->find($cust->id);
+           $order = Customer::with('delivery_location')->find($cust->id);
 
 //         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
-//        if (count($order) < 1) {
+//         if (count($order) < 1) {
 //            return redirect('orders')->with('flash_message', 'Order does not exist.');
-//        }
+//         }
 
-            if (count($order) < 1) {
-                return redirect('order')->with('flash_message', 'Order does not exist.');
-            }
+           if (count($order) < 1) {
+               return redirect('order')->with('flash_message', 'Order does not exist.');
+           }
+
         }
 
 
@@ -431,7 +433,6 @@ class OrderController extends Controller {
                     'updated_at' => date('Y-m-d H:i:s')
                 ];
                 array_push($order_products, $tmp);
-
                 /* check for vat/gst items */
                 if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
                     $sms_flag = 1;
@@ -606,6 +607,7 @@ class OrderController extends Controller {
      * Functioanlity: Show edit order details page
      */
     public function edit($id, PlaceOrderRequest $request) {
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -1569,7 +1571,7 @@ class OrderController extends Controller {
                                 $order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
                             }
                         }
-                        elseif($dopv->unit_id == 4){
+                        elseif($dopv->unit_id == 4) {
                             $order_quantity = $product_size->weight * $product_size->standard_length;
                         }
                         elseif($dopv->unit_id == 5){
@@ -1606,7 +1608,6 @@ class OrderController extends Controller {
                         } elseif ($opv->unit_id == 3) {
                             if ($product_size->standard_length) {
                                 $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
-
                             } else {
                                 $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                             }

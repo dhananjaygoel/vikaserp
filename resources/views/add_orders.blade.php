@@ -319,14 +319,14 @@
                             </div>
                             <div class="clearfix"></div>
                             <!--
-                            <div class="form-group">
-                                <div class="radio">
-                                    <input checked="" value="include_vat" id="all_inclusive" name="status1" type="radio">
-                                    <label for="all_inclusive">All Inclusive</label>
-                                    <input value="exclude_vat" id="vat_inclusive" name="status1" type="radio">
-                                    <label for="vat_inclusive">Plus VAT</label>
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <input checked="" value="include_vat" id="all_inclusive" name="status1" type="radio">
+                                        <label for="all_inclusive">All Inclusive</label>
+                                        <input value="exclude_vat" id="vat_inclusive" name="status1" type="radio">
+                                        <label for="vat_inclusive">Plus VAT</label>
+                                    </div>
                                 </div>
-                            </div>
                             -->
 
                             <div class="form-group col-md-4 targetdate">
@@ -338,15 +338,16 @@
                             </div>
 
                             <div class="clearfix"></div>
+
                             <div class="form-group">
                                 <label for="order_remark">Remark</label>
-                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ (isset($session_data['order_remark'])) ? $session_data['order_remark']:''}}</textarea>
+                                <textarea class="form-control" id="order_remark" name="order_remark" rows="3">{{ (isset($session_data['order_remark'])) ? $session_data['order_remark']:''}}</textarea>
                             </div>
                             <div class="checkbox customer_select_order">
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                             </div>
                             <div>
-<!--                                <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_add_order_sms" id="add_order_sendSMS" >Save and Send SMS</button>-->
+                                <!-- <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_add_order_sms" id="add_order_sendSMS" >Save and Send SMS</button>-->
                             </div>
                             <hr>
                             <div>

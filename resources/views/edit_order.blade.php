@@ -219,7 +219,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label for="discount">Amount</label>                                      
-                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                      
+                                        <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="discount " name="discount" value="{{$order->discount}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
                                     </div>
                                 @endif
                                 @if(Auth::user()->role_id == 5) 
@@ -283,7 +283,7 @@
                                                             <div class="form-group ">
                                                                 <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                     @foreach($units as $unit)
-                                                                    <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -328,10 +328,10 @@
                                                 </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group ">
-                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
+                                                        <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);" >
                                                             @foreach($units as $unit)
                                                             @if($product->unit_id == $unit->id)
-                                                            <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                            <option value="{{$unit->id}}" selected>{{$unit->unit_name}}</option>
                                                             @else
                                                             <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                             @endif
@@ -363,6 +363,29 @@
                                                             ?>                                                 
                                                         </select>
                                                     </div>
+                                                    <div class = "form-group ff_list_{{$key}}" {{($product->unit_id=='4')?'':'style=display:none'}}>
+                                                        <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                            <?php
+                                                            // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class = "form-group mm_list_{{$key}}" {{($product->unit_id=='5')?'':'style=display:none'}}>
+                                                        <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                            <?php
+                                                            // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+
+
                                                 </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group">
@@ -484,13 +507,10 @@
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer btn_edit_order">Submit</button>
                             <?php if (isset($is_approval['way']) && $is_approval['way'] == 'approval') { ?>
-
                                 <a href="{{url('orders?order_filter=approval')}}" class="btn btn-default form_button_footer">Back</a>      
-                            <?php } else { ?> 
-
+                            <?php } else { ?>
                                 <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
-                            <?php } ?>  
-
+                            <?php } ?>
                         </div>
                         <div class="clearfix"></div>
                         </form>
@@ -501,5 +521,7 @@
         </div>
     </div>
 </div>
+
 {{-- @include('autocomplete_tally_product_name') --}}
 @stop
+

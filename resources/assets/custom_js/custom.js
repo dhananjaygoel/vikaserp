@@ -3041,7 +3041,6 @@ function showProductCategory(el) {
 
 
 function unitType(parameters) {
-
     var id = parameters.id.split("_");
     id = id[id.length - 1];
 
@@ -3069,6 +3068,24 @@ function unitType(parameters) {
         $('.meter_list_' + id).show();
         $('#quantity_' + id).val("");
 
+    }
+
+    if (i == "4")
+    {
+        $('.kg_list_' + id).hide();
+        $('.ff_list_' + id).show();
+        $('.meter_list_' + id).hide();
+        $('.mm_list_' + id).hide();
+        $('#quantity_' + id).val($('#ff_list_' + id).val());
+    }
+
+    if (i == "5")
+    {
+        $('.mm_list_' + id).show();
+        $('.ff_list_' + id).hide();
+        $('.kg_list_' + id).hide();
+        $('.meter_list_' + id).hide();
+        $('#quantity_' + id).val($('#mm_list_' + id).val());
     }
 
 }
