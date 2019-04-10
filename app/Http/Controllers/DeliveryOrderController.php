@@ -1543,13 +1543,9 @@ class DeliveryOrderController extends Controller {
                                         $pending_order = $pending_order + $pending_order_temp;
                                     }
                                 }
-                            }
-                            elseif ($popv->unit_id == 4){
-                                if ($product_size->standard_length == 0)
-                                    $product_size->standard_length = 1;
-                                $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
-
+                            } elseif ($popv->unit_id == 4) {
+                                $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
@@ -1564,7 +1560,6 @@ class DeliveryOrderController extends Controller {
                                         $total_old_shipping += $track_do_product->present_shipping;
                                     }
                                 }
-
                                 if (isset($prd_details) && $popv->parent>0) {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
@@ -1573,10 +1568,7 @@ class DeliveryOrderController extends Controller {
                                         else
                                             $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
                                     }
-
-
-                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
-
+                                    $pending_order_temp = ($remaining * $product_size->weight);
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
@@ -1587,8 +1579,8 @@ class DeliveryOrderController extends Controller {
                             elseif ($popv->unit_id == 5){
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+                                $delivery_order_quantity = $delivery_order_quantity + (($product_size->weight/305 ) * $popv->quantity);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + (( $product_size->weight / 305 ) *  $popv->present_shipping);
 
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -1632,6 +1624,7 @@ class DeliveryOrderController extends Controller {
                         }
                     }
                 }
+               // dd($pending_order);
                
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;

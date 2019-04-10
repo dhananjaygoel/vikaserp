@@ -1552,10 +1552,28 @@ class OrderController extends Controller {
 //                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
-                        if($product_size->length_unit == "ft"){
+                        /*if($product_size->length_unit == "ft"){
                             $delivery_order_quantity = $dopv->quantity * $product_size->weight;
                         }
                         else{
+                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
+                        }*/
+
+                        if ($dopv->unit_id == 1) {
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+                        } elseif ($dopv->unit_id == 2) {
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                        } elseif ($dopv->unit_id == 3) {
+                            if ($product_size->standard_length) {
+                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                            } else {
+                                $delivery_order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
+                            }
+                        }
+                        elseif($dopv->unit_id == 4) {
+                            $delivery_order_quantity = $dopv->quantity * $product_size->weight;
+                        }
+                        elseif($dopv->unit_id == 5){
                             $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
                         }
                     }
@@ -1592,10 +1610,27 @@ class OrderController extends Controller {
 
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
-                        if($product_size->length_unit == "ft"){
+                        /*if($product_size->length_unit == "ft"){
                             $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
                         }
                         else{
+                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
+                        }*/
+                        if ($opv->unit_id == 1) {
+                            $order_quantity = $order_quantity + $opv->quantity;
+                        } elseif ($opv->unit_id == 2) {
+                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                        } elseif ($opv->unit_id == 3) {
+                            if ($product_size->standard_length) {
+                                $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                            } else {
+                                $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                            }
+                        }
+                        elseif($opv->unit_id == 4) {
+                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
+                        }
+                        elseif($opv->unit_id == 5){
                             $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
                         }
                     }
