@@ -276,6 +276,25 @@
                                                         ?>                                                 
                                                     </select>
                                                 </div>
+
+                                                <div class = "form-group ff_list_{{$i}}" style="display:none">
+                                                    <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$i}}" onchange="setQty(this);">
+                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                        <option value = "{{$z}}">{{$z}}</option>
+                                                        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                        } ?>
+                                                    </select>
+                                                </div>
+
+                                                <div class = "form-group mm_list_{{$i}}" style="display:none">
+                                                    <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$i}}" onchange="setQty(this);">
+                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                        <option value = "{{$z}}">{{$z}}</option>
+                                                        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                        } ?>
+                                                    </select>
+                                                </div>
+
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">

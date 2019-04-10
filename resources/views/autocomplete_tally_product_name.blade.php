@@ -1155,13 +1155,23 @@
             '<div class = "form-group kg_list_' + current_row_count + '" >'+
             ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
             <?php for ($n = 50; $n <= 15000; $n++) { ?>
-            '<option value = "'+{{$n}} +'">'+{{$n}} +'</option>'+
+            '<option value = "'+ {{$n}} +'">'+ {{$n}} + '</option>'+
             <?php $n = $n + 49; } ?>
             ' </select>'+
             '</div>'+
             '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
             '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+           
             qtyPieces + 
+            '</select>'+
+            '</div>'+
+            '<div class = "form-group ff_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control ff_list " name = "ff_list" id = "ff_list_' + current_row_count + '" onchange="setQty(this);">'+
+            qtyPieces +
+            '</select>'+
+            '</div>'+
+            '<div class = "form-group mm_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control mm_list " name = "mm_list" id = "mm_list_' + current_row_count + '" onchange="setQty(this);">'+
+            qtyPieces +
             '</select>'+
             '</div>'+
             '</td>' +            

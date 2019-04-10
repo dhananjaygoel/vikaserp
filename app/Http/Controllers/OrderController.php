@@ -1553,10 +1553,10 @@ class OrderController extends Controller {
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
                         if($product_size->length_unit == "ft"){
-                            $order_quantity = $product_size->weight * $product_size->standard_length;
+                            $delivery_order_quantity = $dopv->quantity * $product_size->weight;
                         }
                         else{
-                            $order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
                         }
                     }
                     else{
@@ -1568,17 +1568,16 @@ class OrderController extends Controller {
                             if ($product_size->standard_length) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
                             } else {
-                                $order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
+                                $delivery_order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $order_quantity = $product_size->weight * $product_size->standard_length;
+                            $delivery_order_quantity = $dopv->quantity * $product_size->weight;
                         }
                         elseif($dopv->unit_id == 5){
-                            $order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
                         }
                     }
-
                 }
             }
             if (count($order['all_order_products']) > 0) {
@@ -1594,10 +1593,10 @@ class OrderController extends Controller {
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
                         if($product_size->length_unit == "ft"){
-                            $order_quantity = $product_size->weight * $product_size->standard_length;
+                            $order_quantity = $opv->quantity * $product_size->weight;
                         }
                         else{
-                            $order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                            $order_quantity = $opv->quantity * ($product_size->weight/305);
                         }
                     }
                     else{
@@ -1612,11 +1611,11 @@ class OrderController extends Controller {
                                 $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
                             }
                         }
-                        elseif($opv->unit_id == 4){
-                            $order_quantity = $product_size->weight * $product_size->standard_length;
+                        elseif($opv->unit_id == 4) {
+                            $order_quantity = $opv->quantity * $product_size->weight;
                         }
                         elseif($opv->unit_id == 5){
-                            $order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                            $order_quantity = $opv->quantity * ($product_size->weight/305);
                         }
                     }
 
