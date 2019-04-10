@@ -696,11 +696,13 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->round_off = $input_data['round_off'];
         //$delivery_challan->loaded_by = $input_data['loadedby'];
 //        $delivery_challan->labours = $input_data['labour'];        
+
         if (isset($input_data['vat_percentage'])) {
             $delivery_challan->vat_percentage = $input_data['vat_percentage'];
         } else {
             $delivery_challan->vat_percentage = 0;
         }
+
         if (isset($input_data['loading_vat_percentage'])) {
             $delivery_challan->loading_vat_percentage = $input_data['loading_vat_percentage'];
         } else {
@@ -1063,8 +1065,6 @@ class DeliveryOrderController extends Controller {
                 }
             }
         }
-
-
         if ($total_product_count == $total_profile_items) {
             $case = 'all_profile';
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $profile_vat_amount;
@@ -1080,11 +1080,11 @@ class DeliveryOrderController extends Controller {
         elseif ($total_product_count == $total_vat_items) {
             $case = 'all_vat';
 
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage']; //= $input_data['discount_vat_percentage'] ;
+            //$input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
 
 
             $all_vat_share_overhead = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
-            //$all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+           // $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
             $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
@@ -1096,7 +1096,7 @@ class DeliveryOrderController extends Controller {
 
             $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
             // exit;
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage']  = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
             $case = 'all_without_vat';
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
