@@ -1567,14 +1567,14 @@ class OrderController extends Controller {
                             if ($product_size->standard_length) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
                             } else {
-                                $delivery_order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
+                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity * $product_size->weight);
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
                         }
                         elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight/305);
                         }
                     }
                     else{
@@ -1586,14 +1586,14 @@ class OrderController extends Controller {
                             if ($product_size->standard_length) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
                             } else {
-                                $delivery_order_quantity = $order_quantity + ($dopv->quantity * $product_size->weight);
+                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity * $product_size->weight);
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
                         }
                         elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight/305);
                         }
                     }
                 }
