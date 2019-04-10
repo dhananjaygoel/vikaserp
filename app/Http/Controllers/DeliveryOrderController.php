@@ -1139,10 +1139,11 @@ class DeliveryOrderController extends Controller {
                 $vat_input_data['freight'] = number_format((float) ($ratio_with_vat * $input_data['freight']) / 100, 2, '.', '');
                 $vat_input_data['loading'] = number_format((float) ($ratio_with_vat * $input_data['loading']) / 100, 2, '.', '');
                 $vat_input_data['round_off'] = number_format((float) ($ratio_with_vat * $input_data['round_off']) / 100, 2, '.', '');
-                $vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');                
+                //$vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');
 //                $vat_input_data['grand_total'] = number_format((float) ($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $vat_input_data['round_off']), 2, '.', '');
                 $total_amnt= $total_vat_price + $vat_input_data['freight'] + $vat_input_data['discount']+ $vat_input_data['loading'];
-                $gst_amount = $total_amnt * $vat_input_data['vat_percentage']/100;
+               // $gst_amount = $total_amnt * $vat_input_data['vat_percentage']/100;
+                $gst_amount = $total_amnt * 100;
                 $vat_input_data['grand_total'] = $total_amnt + $gst_amount + $vat_input_data['round_off'];
             }
             if(isset($total_without_vat_items) && $total_without_vat_items > 0) {
@@ -1153,7 +1154,7 @@ class DeliveryOrderController extends Controller {
                 $without_vat_input_data['freight'] = number_format((float) ($ratio_without_vat * $input_data['freight']) / 100, 2, '.', '');
                 $without_vat_input_data['loading'] = number_format((float) ($ratio_without_vat * $input_data['loading']) / 100, 2, '.', '');
                 $without_vat_input_data['round_off'] = number_format((float) ($ratio_without_vat * $input_data['round_off']) / 100, 2, '.', '');
-                $without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
+                //$without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
                 $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');                
             }
             
@@ -1551,6 +1552,7 @@ class DeliveryOrderController extends Controller {
                                         $prd_details = $track_order_product;
                                     }
                                 }
+
                                 $is_slice = 0;
                                 $total_old_shipping = 0;
                                 foreach ($del_order['track_do_product'] as $track_do_product) {
