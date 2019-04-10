@@ -114,7 +114,7 @@ class DeliveryOrderController extends Controller {
                 })->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')
                 ->paginate(20);
 
-       // dd($delivery_data->toArray());
+        //dd($delivery_data->toArray());
         
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -1507,6 +1507,46 @@ class DeliveryOrderController extends Controller {
                             } elseif ($popv->unit_id == 3) {
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
+                                    $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                                    $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+
+                                foreach ($del_order['track_order_product'] as $track_order_product) {
+                                    if ($popv->parent == $track_order_product->id) {
+                                        $prd_details = $track_order_product;
+                                    }
+                                }
+                                $is_slice = 0;
+                                $total_old_shipping = 0;
+                                foreach ($del_order['track_do_product'] as $track_do_product) {
+
+                                    if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
+                                        $is_slice++;
+                                        $total_old_shipping += $track_do_product->present_shipping;
+                                    }
+                                }
+
+                                if (isset($prd_details) && $popv->parent>0) {
+                                    $remaining = 0;
+                                    if ($prd_details->quantity > $popv->quantity) {
+                                        if ($is_slice == 0)
+                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                        else
+                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                    }
+
+
+                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+
+                                    if ($pending_order == 0) {
+                                        $pending_order = $pending_order_temp;
+                                    } else {
+                                        $pending_order = $pending_order + $pending_order_temp;
+                                    }
+                                }
+                            }
+                            elseif ($popv->unit_id == 4){
+                                if ($product_size->standard_length == 0)
+                                    $product_size->standard_length = 1;
                                 $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
 
@@ -1543,7 +1583,48 @@ class DeliveryOrderController extends Controller {
                                         $pending_order = $pending_order + $pending_order_temp;
                                     }
                                 }
-                            }                             
+                            }
+                            elseif ($popv->unit_id == 5){
+                                if ($product_size->standard_length == 0)
+                                    $product_size->standard_length = 1;
+                                $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+
+                                foreach ($del_order['track_order_product'] as $track_order_product) {
+                                    if ($popv->parent == $track_order_product->id) {
+                                        $prd_details = $track_order_product;
+                                    }
+                                }
+                                $is_slice = 0;
+                                $total_old_shipping = 0;
+                                foreach ($del_order['track_do_product'] as $track_do_product) {
+
+                                    if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
+                                        $is_slice++;
+                                        $total_old_shipping += $track_do_product->present_shipping;
+                                    }
+                                }
+
+                                if (isset($prd_details) && $popv->parent>0) {
+                                    $remaining = 0;
+                                    if ($prd_details->quantity > $popv->quantity) {
+                                        if ($is_slice == 0)
+                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                        else
+                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                    }
+
+
+                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+
+                                    if ($pending_order == 0) {
+                                        $pending_order = $pending_order_temp;
+                                    } else {
+                                        $pending_order = $pending_order + $pending_order_temp;
+                                    }
+                                }
+                            }
+
                         } else {
                             $delivery_order_quantity = 0;
                             $delivery_order_present_shipping = 0;
