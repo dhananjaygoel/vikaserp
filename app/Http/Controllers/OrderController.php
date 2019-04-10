@@ -1593,10 +1593,10 @@ class OrderController extends Controller {
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
                         if($product_size->length_unit == "ft"){
-                            $order_quantity = $opv->quantity * $product_size->weight;
+                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
                         }
                         else{
-                            $order_quantity = $opv->quantity * ($product_size->weight/305);
+                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
                         }
                     }
                     else{
@@ -1612,10 +1612,10 @@ class OrderController extends Controller {
                             }
                         }
                         elseif($opv->unit_id == 4) {
-                            $order_quantity = $opv->quantity * $product_size->weight;
+                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
                         }
                         elseif($opv->unit_id == 5){
-                            $order_quantity = $opv->quantity * ($product_size->weight/305);
+                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
                         }
                     }
 
