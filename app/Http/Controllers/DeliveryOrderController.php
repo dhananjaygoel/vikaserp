@@ -113,6 +113,8 @@ class DeliveryOrderController extends Controller {
                     $query->where('present_shipping','>', '0');
                 })->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')
                 ->paginate(20);
+
+       // dd($delivery_data->toArray());
         
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -1076,11 +1078,12 @@ class DeliveryOrderController extends Controller {
         elseif ($total_product_count == $total_vat_items) {
             $case = 'all_vat';
 
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] ;
 
 
             $all_vat_share_overhead = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
-            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+            //$all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
+            $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
             
@@ -1091,7 +1094,7 @@ class DeliveryOrderController extends Controller {
 
             $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
             // exit;
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage']  = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
             $case = 'all_without_vat';
             $this->store_delivery_challan_vat_wise($input_data, $id);
         }
@@ -1370,7 +1373,7 @@ class DeliveryOrderController extends Controller {
      * calculate the pending quantity of the order.
      */
 
-    
+
 
     public function pending_quantity_order($id) {
 
