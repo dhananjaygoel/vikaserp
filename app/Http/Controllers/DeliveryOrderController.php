@@ -1062,7 +1062,9 @@ class DeliveryOrderController extends Controller {
                     $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
                 }
             }
-        }            
+        }
+
+
         if ($total_product_count == $total_profile_items) {
             $case = 'all_profile';
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $profile_vat_amount;
@@ -1078,7 +1080,7 @@ class DeliveryOrderController extends Controller {
         elseif ($total_product_count == $total_vat_items) {
             $case = 'all_vat';
 
-            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] ;
+            $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage']; //= $input_data['discount_vat_percentage'] ;
 
 
             $all_vat_share_overhead = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
