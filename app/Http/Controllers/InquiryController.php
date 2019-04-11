@@ -1390,11 +1390,12 @@ class InquiryController extends Controller {
 //        if ($input_data['vat_status'] == 'exclude_vat') {
 //            $vat_price = $input_data['vat_percentage'];
 //        }
-        if (isset($input_data['vat_percentage'])) {
+        /*if (isset($input_data['vat_percentage'])) {
             $vat_price = $input_data['vat_percentage'];
         } else {
-            $vat_price = 0;
-        }
+
+        }*/
+        $vat_price = 0;
         $discount_type = $input_data['discount_type'];
         $discount_unit = $input_data['discount_unit'];
         $discount = $input_data['discount'];
@@ -1405,7 +1406,7 @@ class InquiryController extends Controller {
         $order->customer_id = $customer_id;
 //        $order->created_by = Auth::id();
         $order->created_by = $inquiry->created_by;
-        $order->vat_percentage = $vat_price;
+       // $order->vat_percentage = $vat_price;
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['inquiry_remark'];
         $order->order_status = "Pending";
@@ -1449,6 +1450,12 @@ class InquiryController extends Controller {
                         }
                         if ($product_data['units'] == 3) {
                             $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                        }
+                        if ($product_data['units'] == 4) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                        }
+                        if ($product_data['units'] == 5) {
+                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * ($product->weight/305);
                         }
                     }
                 }

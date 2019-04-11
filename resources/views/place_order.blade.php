@@ -364,18 +364,7 @@
                         </div>
                         @endif
                         <div class="clearfix"></div>
-                        <div class="plusvat">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">GST Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" onkeypress=" return onlyPercentage(event);" value="{{$inquiry->vat_percentage}}" type="text"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+
                         @if($inquiry->vat_percentage == 0)
                         <!--
                         <div class="form-group">
