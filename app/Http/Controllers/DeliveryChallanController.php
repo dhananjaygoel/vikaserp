@@ -903,18 +903,17 @@ class DeliveryChallanController extends Controller {
                 }
             }
 
-
             $date_letter = $update_delivery_challan->serial_number;
 
             $pdf = app('dompdf.wrapper');
             $pdf->loadView('delivery_challan_pdf', [
                 'allorder' => $allorder,
-                'total_vat_amount' => $total_vat_amount
+                'total_vat_amount' => $total_vat_amount,
             ]);
 
            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
-            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+           chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
 
         } else {
             $vat_applicable = 0;
@@ -930,9 +929,18 @@ class DeliveryChallanController extends Controller {
                     }
 //                dd($product_type_id);
                 if(isset($product_type_id) && $product_type_id==3){
-                    $profile_present = 1;
+
                     if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                        $profile_present = 1;
                         $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                    }
+                    else{
+                        if($delivery_challan_products->vat_percentage > 0){
+                            $vat_applicable = 1;
+                            if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
+                                $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                            }
+                        }
                     }
                 }
                 elseif ($delivery_challan_products->vat_percentage > 0) {
@@ -983,7 +991,6 @@ class DeliveryChallanController extends Controller {
                             $modified_id = substr($list[count($list) - 1], 0, -1);
                             $modified_str = explode("V", $modified_id);
                             $modified_id = $modified_str[0];
-                            
                         }
                     } else {
                         $modified_id = $number;

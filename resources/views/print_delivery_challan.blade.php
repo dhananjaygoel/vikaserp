@@ -209,10 +209,23 @@
                     <div class="time-prnt">Time Print: {{ date("h:i:sa") }}</div>
                 </div>
             </div>
-            <div class="time">
-                <div class="time-gen">  Empty Truck Weight: {{ isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}</div>
-                <div class="time-prnt">Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</div>
-            </div>
+            <?php
+            $is_allincludive = 0;
+            foreach($allorder['delivery_challan_products'] as $prod){
+                if(isset($prod->vat_percentage) && $prod->vat_percentage>0){
+                    $is_allincludive = 1;
+                }
+            }
+            ?>
+            @if($is_allincludive)
+                <div class="time">
+                    <div class="time-gen">  Empty Truck Weight: {{ isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}</div>
+                    <div class="time-prnt">Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</div>
+                </div>
+            @endif
+
+
+
             <br>
             <?php
             $cust_id = $allorder->customer_id;

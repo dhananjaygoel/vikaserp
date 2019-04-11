@@ -42,16 +42,32 @@
                                 {{($allorder->serial_number != '') ? $allorder->serial_number : $allorder->delivery_order->serial_no}}
                             </label>
                         </div><hr>
-                        <div class="form-group">
-                            <label><b>Empty Truck Weight:</b>                                
-                                {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}}
-                            </label>
-                        </div><hr>
-                        <div class="form-group">
-                            <label><b>Final Truck Weight:</b>
-                                {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
-                            </label>
-                        </div><hr>
+                           <?php
+                             $is_allincludive = 0;
+                             foreach ($allorder['all_order_products'] as $key=>$product){
+                                 if($product->order_type =='delivery_challan'){
+                                     if($product->vat_percentage>0){
+                                         $is_allincludive = 1;
+                                         break;
+                                     }
+                                 }
+                             }
+                           ?>
+                        @if($is_allincludive)
+                                <div class="form-group">
+                                    <label><b>Empty Truck Weight:</b>
+                                        {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}}
+                                    </label>
+                                </div><hr>
+                                <div class="form-group">
+                                    <label><b>Final Truck Weight:</b>
+                                        {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
+                                    </label>
+                                </div><hr>
+                        @endif
+
+
+
                         @if($allorder['delivery_order']->discount > 0)
                             <div class="form-group">
                                 <label><b>Discount/Premium :</b> </label>

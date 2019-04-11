@@ -1277,6 +1277,12 @@ class DeliveryOrderController extends Controller {
                 if ($do_product_details->unit_id == 3) {
                     $order_qty = $order_qty + (($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * $do_product_details->product_sub_category->weight);
                 }
+                if ($do_product_details->unit_id == 4) {
+                    $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight);
+                }
+                if ($do_product_details->unit_id == 5) {
+                    $order_qty = $order_qty + ($do_product_details->quantity * ($do_product_details->product_sub_category->weight/305));
+                }
             }
             $delivery_data->total_quantity = round($order_qty / 1000, 2);
         }
@@ -1626,8 +1632,7 @@ class DeliveryOrderController extends Controller {
                                             $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
                                     }
 
-
-                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * ($product_size->weight/305));
 
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
