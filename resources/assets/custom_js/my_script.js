@@ -797,9 +797,19 @@ $('.print_delivery_order').click(function () {
         }
     });
 });
-function print_delivery_challan(challan_id) {
+function print_delivery_challan(challan_id,allinc) {
     $('#print_delivery_challan').val(challan_id);
+    if(allinc){
+        $("#checksms").prop("disabled", true);
+        $('#checksms_span').attr('data-original-title','SMS would be sent to Party');
+    }
+    else{
+        $("#checksms").prop("disabled", true);
+        $('#checksms_span').attr('data-original-title','Sending SMS not allowed');
+    }
 }
+
+
 $('.print_delivery_challan').click(function () {
     $('.print_delivery_challan').html('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');

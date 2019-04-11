@@ -154,8 +154,16 @@
                                                 </span>
                                             </a>
                                             @endif
-
-                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
+                                            <?php
+                                                $is_allinc = 0;
+                                                foreach ($challan->delivery_challan_products as $dchallanp){
+                                                    if(isset($dchallanp->vat_percentage) && $dchallanp->vat_percentage != "" && $dchallanp->vat_percentage > 0){
+                                                        $is_allinc = 1;
+                                                        break;
+                                                    }
+                                                }
+                                            ?>
+                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}},{{$is_allinc}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -279,7 +287,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="checkbox">
-                                                    <label><input type="checkbox" value="" id="checksms"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                    <label>
+                                                        <input type="checkbox" value="" id="checksms">
+                                                        <span title="SMS would be sent to Party" id="checksms_span" class="checksms smstooltip">Send SMS</span>
+                                                    </label>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>

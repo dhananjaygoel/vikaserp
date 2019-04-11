@@ -384,8 +384,16 @@
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id <> 5)
-
-                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
+                                            <?php
+                                             $is_allinclusive = 0;
+                                             foreach ($order->all_order_products as $dord){
+                                                 if(isset($dord->vat_percentage) && $dord->vat_percentage != "" && $dord->vat_percentage > 0){
+                                                     $is_allinclusive = 1;
+                                                     break;
+                                                 }
+                                             }
+                                            ?>
+                                            <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}},{{$is_allinclusive}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
@@ -633,7 +641,7 @@
                                             </div>
                                             <div class="checkbox">
                                                 <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
-                                                <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
+                                                <label><input type="checkbox" id="is_sendsms" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
