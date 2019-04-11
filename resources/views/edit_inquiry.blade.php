@@ -316,6 +316,28 @@
                                                             ?>                                                 
                                                         </select>
                                                     </div>
+
+                                                    <div class = "form-group ff_list_{{$key}}" {{($product->unit_id=='4')?'':'style=display:none'}}>
+                                                        <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                            <?php
+                                                            // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class = "form-group mm_list_{{$key}}" {{($product->unit_id=='5')?'':'style=display:none'}}>
+                                                        <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                            <?php
+                                                            // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
                                                 </td>
                                                 <td class="col-md-2">
                                                     <div class="form-group">
@@ -368,18 +390,7 @@
                         </div>
 
                         <div class="clearfix"></div>
-                        <div class="plusvat">
-                            <div class="form-group">
-                                <table id="table-example" class="table ">
-                                    <tbody>
-                                        <tr class="cdtable">
-                                            <td class="cdfirst">GST Percentage:</td>
-                                            <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" onkeypress=" return onlyPercentage(event);" value="{{$inquiry->vat_percentage}}" type="text" ></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+
 
                         @if($inquiry->vat_percentage == 0)
                         <!--

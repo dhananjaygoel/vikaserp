@@ -222,7 +222,7 @@ class InquiryController extends Controller {
             $add_inquiry->delivery_location_id = $input_data['add_inquiry_location'];
             $add_inquiry->location_difference = $input_data['location_difference'];
         }
-        $add_inquiry->vat_percentage = $input_data['vat_percentage'];
+        //$add_inquiry->vat_percentage = $input_data['vat_percentage'];
         $add_inquiry->expected_delivery_date = $datetime->format('Y-m-d');
         $add_inquiry->remarks = $input_data['inquiry_remark'];
         $add_inquiry->inquiry_status = "Pending";
@@ -274,6 +274,13 @@ class InquiryController extends Controller {
                         }
                         if ($product_data['units'] == 3) {
                             $total_quantity = $total_quantity + ($product_data['quantity'] / $product_size->standard_length ) * $product_size->weight;
+                        }
+
+                        if ($product_data['units'] == 4) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * $product_size->weight;
+                        }
+                        if ($product_data['units'] == 5) {
+                            $total_quantity = $total_quantity + $product_data['quantity'] * ($product_size->weight / 305);
                         }
                     }
                 }
@@ -501,11 +508,13 @@ class InquiryController extends Controller {
 //            $vat_price = $input_data['vat_percentage'];
 //        }
 
-        if (isset($input_data['vat_percentage'])) {
+        /*if (isset($input_data['vat_percentage'])) {
             $vat_price = $input_data['vat_percentage'];
         } else {
             $vat_price = 0;
-        }
+        }*/
+        $vat_price = 0;
+
         $customers = Customer::find($input_data['customer_id']);
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_edit_inquiry_rules);
