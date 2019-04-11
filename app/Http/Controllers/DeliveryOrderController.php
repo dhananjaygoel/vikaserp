@@ -1000,13 +1000,15 @@ class DeliveryOrderController extends Controller {
             if(isset($product_sub) && isset($product_sub[0]['product_category'])){
                 $product_type_id = $product_sub[0]['product_category']->product_type_id;
             }
+
             if (isset($product['actual_quantity']) && isset($product['price'])) {                
-                if (isset($product_type_id) && $product_type_id==3) {                    
-                    $total_profile_items ++;
-                    $profile_product[$counter_profile++] = $product;
+                if (isset($product_type_id) && $product_type_id==3) {
+
+
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
 //                  $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
                     if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
+
                         //dd($product);
                         //die;
                         $cust_id = $delivery_order_details->customer_id;
@@ -1045,11 +1047,18 @@ class DeliveryOrderController extends Controller {
                         $product_price = $product_price + $prod_vat_price;
                         $total_profile_price = $total_profile_price + $product_price;
 
-
+                        $total_profile_items ++;
+                        $profile_product[$counter_profile++] = $product;
 
                     }else{
+
                         $product_price = $product['price'] * $product['actual_quantity'];
-                        $total_profile_price = $total_profile_price + $product_price;                        
+                        $total_profile_price = $total_profile_price + $product_price;
+
+                        $total_without_vat_items ++;
+                        $without_vat_product[$counter_without_vat++] = $product;
+                        $total_actual_quantity_without_vat = $total_actual_quantity_without_vat + $product['actual_quantity'];
+                        $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
                     }
                 }
                 else if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
@@ -1065,6 +1074,13 @@ class DeliveryOrderController extends Controller {
                 }
             }
         }
+
+
+        //dd($total_product_count. " ". $total_profile_items);
+        //dd("asdsa");
+
+
+
         if ($total_product_count == $total_profile_items) {
             $case = 'all_profile';
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $profile_vat_amount;
@@ -1157,8 +1173,10 @@ class DeliveryOrderController extends Controller {
                 //$without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
                 $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');                
             }
-            
-            if($total_profile_items > 0 && $total_vat_items>0 && $total_without_vat_items>0){
+
+
+
+            if($total_profile_items > 0 && $total_vat_items > 0 && $total_without_vat_items>0){
                 $savedid = $this->store_delivery_challan_vat_wise($profile_input_data, $id);
                 $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id, $savedid);
                 $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
