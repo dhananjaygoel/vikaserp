@@ -434,7 +434,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->role_id == 0)
+                    @if(Auth::user()->role_id == 0 OR Auth::user()->role_id == 10)
                     <li class="{{ (Request::is('bulk-delete') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Bulk Delete">
                         <a href="{{url('bulk-delete')}}">
                             <i class="fa fa-trash-o"></i>

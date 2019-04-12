@@ -63,7 +63,8 @@ use Illuminate\Support\Facades\Session;
                                             <!--<option id="other_location" {{(isset($module) && $module == "delivery_order")?'selected':''}} value="delivery_order">Delivery Orders</option>-->
                                             <optgroup label="Delivery Challan">
                                                 <option id="other_location" {{(isset($module) && $module == "delivery_challan_pending")?'selected':''}} value="delivery_challan_pending">Pending</option>
-                                            <option id="other_location" {{(isset($module) && $module == "delivery_challan_completed")?'selected':''}} value="delivery_challan_completed">Completed</option>
+                                                <option id="other_location" {{(isset($module) && $module == "delivery_challan_completed")?'selected':''}} value="delivery_challan_completed">Completed</option>
+                                                <option id="other_location" {{(isset($module) && $module == "all_inclusive_completed")?'selected':''}} value="all_inclusive_completed">All inclusive Completed</option>
                                             </optgroup>
                                             <!--<option id="other_location" {{(isset($module) && $module == "delivery_challan")?'selected':''}} value="delivery_challan">Delivery Challan</option>-->
                                             <optgroup label="Purchase Orders">
@@ -79,7 +80,7 @@ use Illuminate\Support\Facades\Session;
 <!--                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice")?'selected':''}} value="purchase_advice">Purchase Advise</option>-->
                                             <optgroup label="Purchase Challan">
                                                 <option id="other_location" {{(isset($module) && $module == "purchase_challan_pending")?'selected':''}} value="purchase_challan_pending">Pending</option>
-                                            <option id="other_location" {{(isset($module) && $module == "purchase_challan_completed")?'selected':''}} value="purchase_challan_completed">Completed</option>
+                                                <option id="other_location" {{(isset($module) && $module == "purchase_challan_completed")?'selected':''}} value="purchase_challan_completed">Completed</option>
                                             </optgroup>
 <!--                                            <option id="other_location" {{(isset($module) && $module == "purchase_challan")?'selected':''}} value="purchase_challan">Purchase Challan</option>-->
                                         </select>
@@ -218,7 +219,7 @@ use Illuminate\Support\Facades\Session;
                                     Please Enter Password Here
                                 </div>
                                 <div class="delete">
-                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
+                                    <div><b>UserID:</b> {{Auth::user()->mobile_number}} </div>
                                     <div class="pwd">
                                         <div class="pwdl"><b>Password:</b></div>
                                         <div class="pwdr" id="pwdr">

@@ -59,12 +59,18 @@ class DashboardController extends Controller {
             return Redirect::to('inquiry');
         }
 
+        if (Auth::user()->role_id == 10) {
+            return Redirect::to('bulk-delete');
+        }
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
             return Redirect::to('customers');
         }
         if (Auth::user()->role_id == 6) {
             return Redirect::to('due-payment');
         }
+
+
         $inquiries_stats_all = [];
         $orders_stats_all = [];
         $delivery_challan_stats_all = [];

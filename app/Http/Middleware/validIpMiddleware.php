@@ -43,6 +43,10 @@ class validIpMiddleware {
                 if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9) {
                     return redirect('dashboard');
                 }
+
+                if(Auth::user()->role_id == 10){
+                    return redirect('bulk-delete');
+                }
             }
         }
         return $next($request);

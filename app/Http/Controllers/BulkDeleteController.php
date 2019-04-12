@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 //use App\Http\Controllers\Redirect;
 use App\Http\Controllers\Controller;
+use App\UserRoles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Input;
 use App\Inquiry;
 use App\Order;
@@ -35,11 +37,16 @@ class BulkDeleteController extends Controller {
      * @return Response
      */
     public function index() {
+        UserRoles::create([
+            'role_id'=>10,
+            'name' => 'Bulk Delete User'
+        ]);
+
         return view('bulk_delete');
     }
 
     public function show_result() {
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 10 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $module = Input::get('select_module');
@@ -445,6 +452,60 @@ class BulkDeleteController extends Controller {
 
 
                 break;
+            case 'all_inclusive_completed':
+                $head[0] = 'TALLY NAME';
+                $head[1] = 'SERIAL NUMBER';
+                $head[2] = 'PRESENT SHIPPING';
+                /*
+                 * Delete selected delivery challan.
+                 */
+                $newdate = ((strlen(Input::get('expected_date')) > 1) ? Input::get('expected_date') : date('Y-m-d')) . ' 23:59:59';
+                if (isset($is_delete_all) && !empty($is_delete_all) && $is_delete_all == 'yes') {
+                    $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('created_at', '<=', $newdate)->delete();
+                }else if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
+                    foreach ($delete_seletected_module as $delete_module) {
+//                        DeliveryChallan::find($delete_module)->delete();
+                        $delete = DeliveryChallan::where('id', $delete_module)->first();
+                        if ($delete != null) {
+                            $delete->delete();
+                        }
+                    }
+                }
+                /*
+                 * Delete selected delivery challan end.
+                 */
+                $result_temp = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->with('customer', 'delivery_challan_products', 'delivery_order')
+                                /*->select(DB::raw('SUBSTRING(TRIM(serial_number),"P", -1) as searial_num'))
+                                ->where('searial_num', '=', 'P')*/
+                                ->where('serial_number','LIKE','%P%')
+                                ->where('created_at', '<=', $newdate)
+                                ->orderBy('updated_at', 'desc')->Paginate(50);
+
+                $present_shipping = 0;
+                foreach ($result_temp as $key => $temp) {
+                    $tr_id[$key] = $temp->id;
+                    if (isset($temp['customer']->tally_name)) {
+                        if ($temp['customer']->tally_name != '')
+                            $result_data[$key][0] = $temp['customer']->tally_name;
+                        else
+                            $result_data[$key][0] = $temp['customer']->owner_name;
+                    }
+                    else {
+                        $result_data[$key][0] = "Anonymous User";
+                    }
+                    $result_data[$key][1] = $temp->serial_number;
+                    foreach ($temp['delivery_challan_products'] as $delivery_challan_products) {
+                        $present_shipping = $present_shipping + round($delivery_challan_products->present_shipping, 2);
+                    }
+
+                    $result_data[$key][2] = $present_shipping;
+                    $present_shipping = 0;
+                }
+
+
+                break;
 
             case 'delivery_challan_pending':
                 $head[0] = 'TALLY NAME';
@@ -489,7 +550,7 @@ class BulkDeleteController extends Controller {
                     $present_shipping = 0;
                 }
                 break;
-//----------------------------------------------------            
+//----------------------------------------------------
             case 'purchase_orders_completed':
                 $head[0] = 'SUPPLIER NAME';
                 $head[1] = 'MOBILE';
