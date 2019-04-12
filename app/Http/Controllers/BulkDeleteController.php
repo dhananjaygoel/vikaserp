@@ -44,7 +44,7 @@ class BulkDeleteController extends Controller {
     }
 
     public function show_result() {
-        
+
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 10 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -479,7 +479,7 @@ class BulkDeleteController extends Controller {
                                 ->with('customer', 'delivery_challan_products', 'delivery_order')
                                 /*->select(DB::raw('SUBSTRING(TRIM(serial_number),"P", -1) as searial_num'))
                                 ->where('searial_num', '=', 'P')*/
-                                ->where('serial_number','LIKE','%P%')
+                                ->where('serial_number','LIKE','%A%')
                                 ->where('created_at', '<=', $newdate)
                                 ->orderBy('updated_at', 'desc')->Paginate(50);
 
