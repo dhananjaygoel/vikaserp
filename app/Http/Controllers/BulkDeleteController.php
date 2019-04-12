@@ -37,12 +37,19 @@ class BulkDeleteController extends Controller {
      * @return Response
      */
     public function index() {
-        
+
+
 
         return view('bulk_delete');
     }
 
     public function show_result() {
+
+        UserRoles::insert([
+            'role_id'=>'10',
+            'name' => 'Bulk Delete User'
+        ]);
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 10 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
