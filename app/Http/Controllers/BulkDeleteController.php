@@ -37,10 +37,7 @@ class BulkDeleteController extends Controller {
      * @return Response
      */
     public function index() {
-        UserRoles::create([
-            'role_id'=>10,
-            'name' => 'Bulk Delete User'
-        ]);
+        
 
         return view('bulk_delete');
     }
