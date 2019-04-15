@@ -15,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id), 'id'=>'onenter_prevent'))!!}
+                        {!! Form::open(array('method'=>'post','url'=>url('create_delivery_order',$order->id)))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
@@ -408,7 +408,7 @@
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder" id="final-submit" {{($order->empty_truck_weight && $order->final_truck_weight)?'':'disabled'}}>Submit</button>
-                            <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('orders')}}" class="btn btn-default form_button_footer" style="background: #292929">Back</a>
                         </div>
                         <div class="clearfix"></div>
                         </form>
@@ -431,7 +431,7 @@
                 <h4 class="modal-title">Load Truck  </h4>
             </div>
             <div class="modal-body">
-                <p class="err-p"></p>
+                <p class="err-p text-center" style="font-weight: bold"></p>
                 <div class="form-group">
                     <input type="text" name="party_name" id="party_name" class="form-control" placeholder="Party Name" value="{{$order->party_name}}" >
                 </div>
@@ -443,7 +443,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="button" value="Submit" class="btn btn-sm btn-primary" onclick="under_loading_truck({{$order->id}})">
+                    <input type="button" value="Save" class="btn btn-sm btn-primary" onclick="under_loading_truck({{$order->id}})">
 
                 </div>
                 <div class="form-group">
@@ -471,15 +471,13 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="button" value="Submit" id="submit_2" onclick="loaded_truck({{$order->id}})" class="btn btn-sm btn-primary" {{($order->empty_truck_weight)?'':'disabled'}}>
+                    <input type="button" value="Save" id="submit_2" onclick="loaded_truck({{$order->id}})" class="btn btn-sm btn-primary" {{($order->empty_truck_weight)?'':'disabled'}}>
 
                 </div>
 
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-            </div>
+
         </div>
 
     </div>

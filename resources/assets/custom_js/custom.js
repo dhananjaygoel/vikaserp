@@ -3110,13 +3110,13 @@ function under_loading_truck(order_id) {
                         $(".err-p").removeClass('text-danger').addClass('text-success').html('Empty truck weight updated successful');
                         setTimeout(function(){
                             $(".err-p").html('');
-                        }, 3000);
+                        }, 5000);
                     }
                     else{
                         $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
                         setTimeout(function(){
                             $(".err-p").html('');
-                        }, 3000);
+                        }, 5000);
                     }
                 }
             });
@@ -3125,14 +3125,14 @@ function under_loading_truck(order_id) {
             $(".err-p").removeClass('text-success').addClass('text-danger').html('Please enter empty truck weight');
             setTimeout(function(){
                 $(".err-p").html('');
-            }, 3000);
+            }, 5000);
         }
     }
     else{
         $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
         setTimeout(function(){
             $(".err-p").html('');
-        }, 3000);
+        }, 5000);
 
     }
 }
@@ -3172,13 +3172,13 @@ function loaded_truck(order_id) {
                         $(".err-p").removeClass('text-danger').addClass('text-success').html('Final truck weight updated successful');
                         setTimeout(function(){
                             $(".err-p").html('');
-                        }, 3000);
+                        }, 5000);
                     }
                     else{
                         $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
                         setTimeout(function(){
                             $(".err-p").html('');
-                        }, 3000);
+                        }, 5000);
                     }
                 }
             });
@@ -3187,14 +3187,14 @@ function loaded_truck(order_id) {
             $(".err-p").removeClass('text-success').addClass('text-danger').html('Please enter final truck weight');
             setTimeout(function(){
                 $(".err-p").html('');
-            }, 3000);
+            }, 5000);
         }
     }
     else{
         $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
         setTimeout(function(){
             $(".err-p").html('');
-        }, 3000);
+        }, 5000);
 
     }
 }
