@@ -256,6 +256,100 @@
                                 </table>
                             </div>
                         </div>
+
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-group">
+                        &nbsp;&nbsp;&nbsp;   🔘 Free      &nbsp;&nbsp;&nbsp;&nbsp;     🔵 Loaded    &nbsp;&nbsp;&nbsp;&nbsp;  🔴 Under Loading
+                    </div>
+
+                    <div class="form-group col-md-10 " >
+                        <div class="col-md-2">
+                            <label for="time">Delivery Supervisor</label>
+                            <div class="input-group">
+                                <select class="form-control" name="del_supervisor" id="del_supervisor">
+                                    <option value="">-->Delivery Supervisor<--</option>
+                                    @foreach(\App\User::where('role_id',8)->get() as $user)
+                                        <?php
+                                            if($user->status == 0){
+                                                $class = "🔘";
+                                            }
+                                            elseif($user->status == 1){
+                                                $class = "🔵";
+
+                                            }
+                                            else{
+                                                $class = "🔴";
+                                            }
+                                        ?>
+                                            @if($order->del_supervisor == $user->id)
+                                                <option value="{{$user->id}}" selected >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                            @else
+                                                <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                            @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="time">Delivery Boy</label>
+                            <div class="input-group">
+                                <select class="form-control" name="del_boy" id="del_boy">
+                                    <option value="" >-->Delivery Boy<--</option>
+                                    @foreach(\App\User::where('role_id',9)->get() as $user)
+                                        <?php
+                                        if($user->status == 0){
+                                            $class = "🔘";
+                                        }
+                                        elseif($user->status == 1){
+                                            $class = "🔵";
+                                        }
+                                        else{
+                                            $class = "🔴";
+                                        }
+                                        ?>
+                                        @if($order->del_boy == $user->id)
+                                                <option value="{{$user->id}}" selected >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                        @else
+                                                <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                        @endif
+
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label for="time"></label>
+                            <div class="input-group">
+                                <?php
+                                $disable = "disabled";
+                                if($order->del_boy OR $order->del_supervisor){
+                                    $disable = "";
+                                }
+                                ?>
+                                <button class="btn btn-primary" id="truck_load" data-toggle="modal" data-target="#myModal" type="button" {{$disable}}>Load</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="clearfix"></div>
+
+
+
+
+
+
+
+
+
+
+
                         <div class="clearfix"></div>
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
@@ -279,8 +373,10 @@
                                 </tr>-->
                                 @endif
                                 <tr class="cdtable">
-                                    <td class="cdfirst">Vehicle Number:</td>
-                                    <td><input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{old('vehicle_number')}}" type="text" onblur="grand_total_delivery_order();"></td>
+
+                                    <td>
+                                        <input  class="form-control" placeholder="Vehicle Number" id="vehicle_number1" value="{{$order->vehicle_number}}" name="vehicle_number" type="hidden" >
+                                    </td>
                                 </tr>
                                 <tr class="cdtable">
                                     <td class="cdfirst">Driver Contact:</td>
@@ -311,7 +407,7 @@
                         <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         <hr>
                         <div >
-                            <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder">Submit</button>
+                            <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder" id="final-submit" {{($order->empty_truck_weight && $order->final_truck_weight)?'':'disabled'}}>Submit</button>
                             <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
@@ -323,5 +419,72 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Load Truck  </h4>
+            </div>
+            <div class="modal-body">
+                <p class="err-p"></p>
+                <div class="form-group">
+                    <input type="text" name="party_name" id="party_name" class="form-control" placeholder="Party Name" value="{{$order->party_name}}" >
+                </div>
+                <div class="form-group">
+                    <input  class="form-control" placeholder="Vehicle Number" name="vehicle_number" id="vehicle_number" type="text" value="{{$order->vehicle_number}}" onblur="grand_total_delivery_order();">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="empty_truck_weight" id="empty_truck_weight" class="form-control" placeholder="Emty Truck Weight" value="{{$order->empty_truck_weight}}">
+                </div>
+
+                <div class="form-group">
+                    <input type="button" value="Submit" class="btn btn-sm btn-primary" onclick="under_loading_truck({{$order->id}})">
+
+                </div>
+                <div class="form-group">
+                    <input type="number" name="final_truck_weight" id="final_truck_weight" class="form-control" placeholder="Final Truck Weight" value="{{$order->final_truck_weight}}" {{($order->empty_truck_weight)?'':'disabled'}}>
+                </div>
+
+                <div class="form-group">
+                    <textarea name="product_detail_table" id="product_detail_table" class="form-control" placeholder="Product Detail Table" {{($order->empty_truck_weight)?'':'disabled'}}>{{$order->product_detail_table}}</textarea>
+                </div>
+                <div class="form-group">
+                    <select name="labour_pipe" id="labour_pipe" class="form-control" {{($order->empty_truck_weight)?'':'disabled'}}>
+                        <option value="">-->Labour Pipe<--</option>
+                        @foreach(\App\Labour::orderby('id','DESC')->get() as $labour)
+                            <option value="{{$labour->id}}" {{($order->labour_pipe==$labour->id)?'selected':''}}>{{$labour->first_name." ".$labour->last_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="labour_structure" class="form-control" id="labour_structure" {{($order->empty_truck_weight)?'':'disabled'}}>
+                        <option value="">-->Labour Structure<--</option>
+                        @foreach(\App\Labour::orderby('id','DESC')->get() as $labour_2)
+                            <option value="{{$labour_2->id}}" {{($order->labour_pipe==$labour_2->id)?'selected':''}}>{{$labour_2->first_name." ".$labour_2->last_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="button" value="Submit" id="submit_2" onclick="loaded_truck({{$order->id}})" class="btn btn-sm btn-primary" {{($order->empty_truck_weight)?'':'disabled'}}>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 {{-- @include('autocomplete_tally_product_name') --}}
 @stop

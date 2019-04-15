@@ -70,6 +70,21 @@
             .select2-container .select2-selection--single{
                 height: 35px;
             }
+
+            .dt_grey::first-letter {
+                color: grey;
+                font-size: 18px;
+            }
+
+            .dt_green::first-letter {
+                color: green;
+                font-size: 18px;
+            }
+
+            .dt_green::first-letter {
+                color: red;
+                font-size: 18px;
+            }
         </style>
         <!--define method before load page-->
         <script>
@@ -399,7 +414,8 @@
                     <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
 
         <script>
-
+            var token = '{{csrf_token()}}';
+            var url = '{{url()}}';
             $(function ($) {
                 $('#datepickerDate').datepicker({
                     format: 'dd-mm-yyyy'
@@ -655,8 +671,31 @@
                }
             });
 
+            $("#del_supervisor").on('change',function () {
+                var del_supervisor = this.value;
+                if(del_supervisor){
+                    $("#truck_load").prop('disabled', false);
+                }
+                else{
+                    $("#truck_load").prop('disabled', true);
+                }
+            });
+
+            $("#del_boy").on('change',function () {
+                var del_boy = this.value;
+                if(del_boy){
+                    $("#truck_load").prop('disabled', false);
+                }
+                else{
+                    $("#truck_load").prop('disabled', true);
+                }
+            });
 
         </script>
+
+
+
+
 
 
         <input type="hidden" id="site_url" value="{{url()}}"/>

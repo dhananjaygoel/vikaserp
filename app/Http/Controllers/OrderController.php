@@ -47,6 +47,54 @@ class OrderController extends Controller {
     /**
      * Functioanlity: Display order details
      */
+
+    public function under_loading_truck(Request $request){
+        $update = Order::where('id',$request->order_id)->update([
+            'del_supervisor'=>$request->del_spervisor,
+            'del_boy' => $request->del_boy,
+            'empty_truck_weight' => $request->empty_truck_weight,
+            'party_name' => $request->party_name,
+            'vehicle_number' => $request->vehical_number
+        ]);
+        if($update){
+            if($request->del_spervisor){
+                User::where('id',$request->del_spervisor)->update(['status'=>2]);
+            }
+            if($request->del_boy){
+                User::where('id',$request->del_boy)->update(['status'=>2]);
+            }
+            echo "success";
+        }
+        else{
+            echo "failed";
+        }
+    }
+
+
+    public function loaded_truck(Request $request){
+        $update = Order::where('id',$request->order_id)->update([
+            'del_supervisor'=>$request->del_spervisor,
+            'del_boy' => $request->del_boy,
+            'final_truck_weight' => $request->final_truck_weight,
+            'product_detail_table' => $request->product_detail_table,
+            'labour_pipe' => $request->labour_pipe,
+            'labour_structure' => $request->labour_structure
+        ]);
+        if($update){
+            if($request->del_spervisor){
+                User::where('id',$request->del_spervisor)->update(['status'=>1]);
+            }
+            if($request->del_boy){
+                User::where('id',$request->del_boy)->update(['status'=>1]);
+            }
+            echo "success";
+        }
+        else{
+            echo "failed";
+        }
+    }
+
+
     public function index(PlaceOrderRequest $request) {
 
 
@@ -197,6 +245,7 @@ class OrderController extends Controller {
 //        if (isset($data['order_filter']) && $data['order_filter'] != '' && $data['order_filter'] == 'approval') {
 //            $allorders = $non_approved_orders;
 //        }
+
         $all_territories = Territory::get();
 
 
@@ -266,10 +315,7 @@ class OrderController extends Controller {
            if (count($order) < 1) {
                return redirect('order')->with('flash_message', 'Order does not exist.');
            }
-
         }
-
-
 
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -1423,6 +1469,16 @@ class OrderController extends Controller {
                 $delivery_order->other_location = $order->other_location;
                 $delivery_order->location_difference = $order->location_difference;
             }
+
+            $delivery_order->empty_truck_weight = $order->empty_truck_weight;
+            $delivery_order->final_truck_weight = $order->final_truck_weight;
+            $delivery_order->del_supervisor = $order->del_supervisor;
+            $delivery_order->del_boy = $order->del_boy;
+            $delivery_order->party_name = $order->party_name;
+            $delivery_order->product_detail_table = $order->product_detail_table;
+            $delivery_order->labour_pipe = $order->labour_pipe;
+            $delivery_order->labour_structure = $order->labour_structure;
+
             $delivery_order->save();
             $delivery_order_id = $delivery_order->id;
             $created_at = $delivery_order->created_at;

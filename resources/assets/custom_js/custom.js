@@ -41,7 +41,7 @@ $(document).ready(function () {
 //    if (split_url[4] == 'place_order') {
 //        $('#add_product_row').trigger('click');
 //    }
-//    if (split_url[3] == 'purchase_orders' && split_url[5] == 'edit') {       
+//    if (split_url[3] == 'purchase_orders' && split_url[5] == 'edit') {
 ////        $('#add_purchase_product_row').trigger('click');
 ////        jQuery('#add_purchase_product_row')[0].click();
 //    }
@@ -96,7 +96,7 @@ $(document).ready(function () {
         if (prod == 2) {
             $('.thick12').css('display', 'none');
         }
-        
+
         if (prod == 3) {
             $('.thick12').css('display', 'block');
         }
@@ -338,7 +338,7 @@ $(document).ready(function () {
             $('#is_delete_all').attr('value','');
             $('#frmdeleterecords').submit();
         }
-    });    
+    });
     $('.submit_delete_all').on("click", function (e) {
         e.preventDefault();
         var checkedAtLeastOne = false;
@@ -356,7 +356,7 @@ $(document).ready(function () {
 //                $('#empty_select_completed').fadeTo(1500, 0).slideUp(500, function () {
 //                });
 //            }, 5000);
-//        } 
+//        }
         if (checkedAtLeastOne) {
             $('#delete_records_modal').modal('show');
 //            $(this).closest("form").unbind("submit");
@@ -372,6 +372,7 @@ $(document).ready(function () {
         }
     });
     $('#add_more_product').on("click", function () {
+
         var current_row_count = $(".add_product_row").length + 1;
         $.ajax({
             type: "GET",
@@ -449,64 +450,7 @@ function create_purchase_challan_function() {
         }
         $("#units_" + current_row_count).html(html);
     });
-    var str = ' <tr id="add_row_' + current_row_count + '" class="add_product_row">' +
-            '    <td>' +
-            '<div class="form-group searchproduct">' +
-            '<input class="form-control each_product_detail" data-productid="' + current_row_count + '" placeholder="Enter product name " type="text" name="product[' + current_row_count + '][name]" id="add_purchase_product_name_' + current_row_count + '" onfocus="product_autocomplete_purchase(' + current_row_count + ');">' +
-            '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
-            '<i class="fa fa-search search-icon"></i>' +
-            '</div>' +
-            '    </td>' +
-            '    <td>' +
-            '        <div class="form-group">' +
-            '           <select class="form-control" name="product[' + current_row_count + '][unit_id]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
-            '               ' +
-            '           </select>' +
-            '        </div>' +
-            '    </td>  ' +
-            '    <td>' +
-            '        <div class="form-group meter_list_' + current_row_count + '" style="display:none">' +
-            '            <input id="actual_quantity_' + current_row_count + '" class="form-control each_product_qty" placeholder="Actual Quantity" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="purchase_challan_calculation();">' +
-            '        </div>' +
-            '       <div class = "form-group kg_list_' + current_row_count + '" >' +
-            '           <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">' +
-            '               <option value = "50">50</option>' +
-            '               <option value = "50">100</option>' +
-            '               <option value = "50">150</option>' +
-            '               <option value = "50">200</option>' +
-            '               <option value = "50">250</option>' +
-            '               <option value = "50">300</option>' +
-            '           </select>' +
-            '       </div>' +
-            '       <div class = "form-group pieces_list_' + current_row_count + '" style="display:none">' +
-            '           <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">' +
-            '               <option value = "1">1</option>' +
-            '               <option value = "5">5</option>' +
-            '               <option value = "10">10</option>' +
-            '               <option value = "15">15</option>' +
-            '               <option value = "20">20</option>' +
-            '               <option value = "25">25</option>' +
-            '           </select>' +
-            '       </div>' +
-            '    </td>' +
-            '    <td>  ' +
-            '        <div class="form-group">' +
-            '            <input id="shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text">' +
-            '        </div>' +
-            '    </td>' +
-            '    <td class="shippingcolumn">' +
-            '        <div class="row ">' +
-            '            <div class="form-group col-md-12">' +
-            '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="purchase_challan_calculation();">' +
-            '            </div>' +
-            '        </div>' +
-            '    </td>' +
-            '    <td>   ' +
-            '        <div class="form-group">' +
-            '            <div id="amount_' + current_row_count + '"></div>' +
-            '        </div>' +
-            '    </td>' +
-            '</tr>';
+
     $("#table-example").children("tbody").append(str);
 }
 
@@ -573,7 +517,7 @@ $('#onenter_prevent input,#onenter_prevent textarea').keypress(function (e) {
 //$('#pwdr').keypress(function (e) {
 //    if (e.which == 13) {
 //        $('.delete_orders_modal_submit').focus();
-//        return false; 
+//        return false;
 //    }
 //});
 
@@ -588,6 +532,7 @@ $('form#onenter_prevent').keypress(function (e) {
         }
     }
 });
+
 $('body').delegate("#add_order_location", "blur", function () {
     if ($(this).val() == '0') {
         $(this).addClass('error_validation');
@@ -604,13 +549,13 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             status_form = 1;
         }else{
             $('#customer_name').removeClass('error_validation');
-        }        
+        }
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
         }else{
             $('#add_order_location').removeClass('error_validation');
-        }        
+        }
         if ($('#contact_person').val() == '') {
             $('#contact_person').addClass('error_validation');
             status_form = 1;
@@ -649,7 +594,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             if (status_form != 1)
                 status_form = 0;
         }
-        var tot_products = $(".add_product_row").length;        
+        var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
@@ -678,11 +623,11 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
             }
             status_form = 1;
         }
-        
+
         if ($("#add_product_name_1").val() != "") {
 //            console.log(tot_products,j);
             $('#add_product_name_1').removeClass('error_validation');
-            $('#product_all_1').removeClass('error_validation');            
+            $('#product_all_1').removeClass('error_validation');
         }
 
 //        alert(status_form);
@@ -811,7 +756,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
 $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function () {
 
     var status_form = 0;
-    if ($('input[name=customer_status]:checked').val() == "new_customer") {        
+    if ($('input[name=customer_status]:checked').val() == "new_customer") {
         if ($('#name').val() == "") {
             $('#name').addClass('error_validation');
             status_form = 1;
@@ -842,7 +787,7 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
         }else{
             $('#period').removeClass('error_validation');
         }
-        
+
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function () {
             CheckBoxArray.push($(this).val());
@@ -1843,7 +1788,7 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
             status_form = 1;
             $('#empty_truck_weight').addClass('error_validation');
         }
-    }    
+    }
     if (final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight) {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');
@@ -1851,7 +1796,7 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
 //    if (total_actual_qty_truck != total_actual_quantity) {
 //        status_form = 1;
 //        $('#final_truck_weight').addClass('error_validation');
-//    }    
+//    }
 
     for (i = 1; i <= tot_products - 1; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
@@ -2026,61 +1971,61 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var tot_products = $(".add_product_row").length;
 //    var tot_products = $(".add_product_row:visible").length;
     var j = 0;
-    var order_source = $('#order_source').val();    
+    var order_source = $('#order_source').val();
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
     var final_truck_weight = parseInt($('#final_truck_weight').val());
     var final_truck_weight = parseInt($('#final_truck_weight').val());
     var total_actual_qty_truck = parseInt($('#total_actual_qty_truck').val());
     var total_avg_qty = parseInt($('#total_avg_qty').val());
-     
+
     if(order_source != "supplier"){
         if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
             status_form = 1;
             $('#empty_truck_weight').addClass('error_validation');
         }
-    }        
-    
+    }
+
     if ((final_truck_weight == "" | final_truck_weight == 0 | final_truck_weight == "0" | final_truck_weight <= empty_truck_weight)) {
         status_form = 1;
         $('#final_truck_weight').addClass('error_validation');
     }
-    
+
 //    if(total_avg_qty!=0 && total_actual_qty_truck!=0){
 //        var total_avg_qty_percent = total_avg_qty*10/100;
 //        var total_actual_qty_truck_percent = total_actual_qty_truck*10/100;
-//        
+//
 //        var discount_price1 = total_actual_qty_truck + total_actual_qty_truck_percent;
 //        var discount_price2 = total_actual_qty_truck - total_actual_qty_truck_percent;
 //        var discount_price3 = total_actual_qty_truck + total_actual_qty_truck_percent;
 //        var discount_price4 = total_actual_qty_truck - total_actual_qty_truck_percent;
-//        
-//        if(total_avg_qty>discount_price1 || total_avg_qty<discount_price2){            
+//
+//        if(total_avg_qty>discount_price1 || total_avg_qty<discount_price2){
 //            status_form = 1;
 //            $('#final_truck_weight').addClass('error_validation');
 //        }
 //    }
 
     if(total_avg_qty > total_actual_qty_truck){
-        var total_avg_qty_percent = total_avg_qty*10/100;        
+        var total_avg_qty_percent = total_avg_qty*10/100;
         var discount_price1 = total_avg_qty + total_avg_qty_percent;
-        var discount_price2 = total_avg_qty - total_avg_qty_percent;        
-        
-        if(total_actual_qty_truck>discount_price1 || total_actual_qty_truck<discount_price2){            
+        var discount_price2 = total_avg_qty - total_avg_qty_percent;
+
+        if(total_actual_qty_truck>discount_price1 || total_actual_qty_truck<discount_price2){
             status_form = 1;
             $('#final_truck_weight').addClass('error_validation');
         }
     }else if(total_avg_qty < total_actual_qty_truck){
-        var total_actual_qty_truck_percent = total_actual_qty_truck*10/100;        
+        var total_actual_qty_truck_percent = total_actual_qty_truck*10/100;
         var discount_price1 = total_actual_qty_truck + total_actual_qty_truck_percent;
-        var discount_price2 = total_actual_qty_truck - total_actual_qty_truck_percent;        
-        
-        if(total_avg_qty>discount_price1 || total_avg_qty<discount_price2){            
+        var discount_price2 = total_actual_qty_truck - total_actual_qty_truck_percent;
+
+        if(total_avg_qty>discount_price1 || total_avg_qty<discount_price2){
             status_form = 1;
             $('#final_truck_weight').addClass('error_validation');
         }
     }
-    
-    
+
+
     for (i = 1; i <= tot_products; i++) {
         if (($("#add_product_id_" + i).val() == "") && ($("#actual_quantity_" + i).val() == "")) {
             j++;
@@ -3116,7 +3061,7 @@ $(function () {
         showButtonPanel: false,
         dateFormat: 'MM yy',
         showWeek: true,
-//        onClose: function(dateText, inst) { 
+//        onClose: function(dateText, inst) {
 //            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
 //        }
     });
@@ -3128,3 +3073,128 @@ $(document).on('click', '#export-inventory-list', function (event) {
     $('#export-data-field').attr('value','Export Inventory List');
     $('#filter_search').submit();
 });
+
+
+function under_loading_truck(order_id) {
+
+    var del_spervisor = $("#del_supervisor").val();
+    var del_boy = $("#del_boy").val();
+    var empty_truck_weight = $("#empty_truck_weight").val();
+    var party_name = $("#party_name").val();
+    var vehical_number = $("#vehicle_number").val();
+
+    if(del_spervisor || del_boy){
+        if(empty_truck_weight){
+            $.ajax({
+                type: 'POST',
+                url: url + '/under_loading_truck',
+                data: {
+                        party_name: party_name,
+                        vehical_number: vehical_number,
+                        del_spervisor: del_spervisor,
+                        del_boy:del_boy,
+                        empty_truck_weight:empty_truck_weight,
+                        order_id:order_id,
+                        _token: token
+                },
+                success: function (data) {
+                    if(data=='success'){
+                        $("#vehicle_number1").val(vehical_number);
+                        $("#final_truck_weight").prop('disabled', false);
+                        $("#party_name").prop('disabled', false);
+                        $("#product_detail_table").prop('disabled', false);
+                        $("#labour_pipe").prop('disabled', false);
+                        $("#labour_structure").prop('disabled', false);
+                        $("#submit_2").prop('disabled', false);
+
+                        $(".err-p").removeClass('text-danger').addClass('text-success').html('Empty truck weight updated successful');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 3000);
+                    }
+                    else{
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 3000);
+                    }
+                }
+            });
+        }
+        else{
+            $(".err-p").removeClass('text-success').addClass('text-danger').html('Please enter empty truck weight');
+            setTimeout(function(){
+                $(".err-p").html('');
+            }, 3000);
+        }
+    }
+    else{
+        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
+        setTimeout(function(){
+            $(".err-p").html('');
+        }, 3000);
+
+    }
+}
+
+
+function loaded_truck(order_id) {
+
+    var del_spervisor = $("#del_supervisor").val();
+    var del_boy = $("#del_boy").val();
+    var vehicle_number = $("#vehicle_number").val();
+
+    var final_truck_weight = $("#final_truck_weight").val();
+    var product_detail_table = $("#product_detail_table").val();
+    var labour_pipe = $("#labour_pipe").val();
+    var labour_structure = $("#labour_structure").val();
+
+    if(del_spervisor || del_boy){
+        if(final_truck_weight){
+            $.ajax({
+                type: 'POST',
+                url: url + '/loaded_truck',
+                data: {
+                    labour_structure: labour_structure,
+                    labour_pipe: labour_pipe,
+                    product_detail_table: product_detail_table,
+                    del_spervisor: del_spervisor,
+                    del_boy:del_boy,
+                    final_truck_weight:final_truck_weight,
+                    order_id:order_id,
+                    _token: token
+                },
+                success: function (data) {
+                    if(data=='success'){
+                        $("#final-submit").prop('disabled',false);
+                        $("#vehicle_number1").val(vehicle_number);
+
+                        $(".err-p").removeClass('text-danger').addClass('text-success').html('Final truck weight updated successful');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 3000);
+                    }
+                    else{
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 3000);
+                    }
+                }
+            });
+        }
+        else{
+            $(".err-p").removeClass('text-success').addClass('text-danger').html('Please enter final truck weight');
+            setTimeout(function(){
+                $(".err-p").html('');
+            }, 3000);
+        }
+    }
+    else{
+        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
+        setTimeout(function(){
+            $(".err-p").html('');
+        }, 3000);
+
+    }
+}

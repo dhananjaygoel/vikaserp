@@ -77,7 +77,7 @@
                                 <div class="customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
                                     <div class="col-md-4">
                                         <div class="form-group searchproduct">
-                                             @if(Auth::user()->role_id <> 5)
+                                         @if(Auth::user()->role_id <> 5)
                                             <input class="form-control focus_on_enter tabindex1" placeholder="Enter Tally Name " type="text" id="existing_customer_name" autocomplete="off" name="existing_customer_name" tabindex="1" >
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
@@ -238,7 +238,7 @@
                                                         <div class = "form-group ">
                                                             <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}">
                                                                 @foreach($units as $unit)
-                                                                <option value = "{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                    <option value = "{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -246,8 +246,9 @@
 
                                                     <td class="col-md-1">
                                                         <div class = "form-group meter_list_{{$i}}" style="display:none">
- <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['quantity'])) ? $session_data['product'][$i]['quantity']:'50'}}"> 
+                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['quantity'])) ? $session_data['product'][$i]['quantity']:'50'}}">
                                                         </div>
+
                                                         <div class = "form-group kg_list_{{$i}}" >
                                                             <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$i}}" onchange="setQty(this);">
                                                                 <?php for ($n = 50; $n <= 15000; $n++) { ?>
@@ -257,12 +258,13 @@
                                                                 ?>
                                                             </select>
                                                         </div>
+
                                                         <div class = "form-group pieces_list_{{$i}}" style="display:none">
                                                             <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$i}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                     <option value = "{{$z}}">{{$z}}</option>
-        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4; 
-        } ?>                                                 
+                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                                } ?>
                                                             </select>
                                                         </div>
 
@@ -283,10 +285,6 @@
                                                                 } ?>
                                                             </select>
                                                         </div>
-
-
-
-
 
                                                     </td>
                                                     <td class="col-md-2">

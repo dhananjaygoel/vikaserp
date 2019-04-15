@@ -724,6 +724,8 @@ class DeliveryOrderController extends Controller {
         if ($refid != NULL) {
             $delivery_challan->ref_delivery_challan_id = $refid;
         }
+
+
         $delivery_challan->save();
 
         $delivery_challan_id = $delivery_challan->id;
@@ -873,7 +875,6 @@ class DeliveryOrderController extends Controller {
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
         }
-
 
         return $delivery_challan_id;
     }
@@ -1204,6 +1205,7 @@ class DeliveryOrderController extends Controller {
         foreach ($product_categories as $product_categoriy) {
             $product_category_ids[] = $product_categoriy->product_category_id;
         }
+
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
 
@@ -1216,7 +1218,12 @@ class DeliveryOrderController extends Controller {
 
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-
+        if($delivery_order_details->del_supervisor){
+            App\User::where('id',$delivery_order_details->del_supervisor)->update(['status'=>0]);
+        }
+        if($delivery_order_details->del_boy){
+            App\User::where('id',$delivery_order_details->del_boy)->update(['status'=>0]);
+        }
         return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
     }
 

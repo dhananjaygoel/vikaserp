@@ -15,7 +15,7 @@
 
 
 
-
+//INSERT INTO `user_roles` (`id`, `role_id`, `name`, `description`, `created_at`, `updated_at`) VALUES (NULL, '10', 'Bulk Delete User', '', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000');
 
 
 Route::post('applogin', 'HomeController@applogin');
@@ -298,6 +298,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('get_product_category', 'ProductsubController@get_product_category');
     Route::get('get_hsn_code', 'ProductsubController@get_hsn_code');
+    Route::post('under_loading_truck', 'OrderController@under_loading_truck');
+    Route::post('loaded_truck', 'OrderController@loaded_truck');
 
     Route::get('get_product_type', 'ProductsubController@get_product_type');
     Route::resource('inventory', 'InventoryController');
