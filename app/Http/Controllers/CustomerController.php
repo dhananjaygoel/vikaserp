@@ -6,6 +6,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCustomer;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
+use QuickBooksOnline\API\Facades\Vendor;
 use View;
 use Hash;
 use Auth;
@@ -55,8 +57,10 @@ class CustomerController extends Controller {
     /**
      * Display a listing of the customer.
      */
-    public function index(Request $request) {        
-        
+    public function index(Request $request) {
+
+
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -122,6 +126,62 @@ class CustomerController extends Controller {
         return View::make('customers', array('customers' => $customers, 'city' => $city));
     }
 
+    function quickbook_create_customer($data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $customerObj = \QuickBooksOnline\API\Facades\Customer::create($data);
+        $resultingCustomerObj = $dataService->Add($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
+
+    function quickbook_create_supplier($data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $customerObj = Vendor::create($data);
+        $resultingCustomerObj = $dataService->Add($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
+
+    function getToken(){
+       require_once base_path('quickbook/vendor/autoload.php');
+       $quickbook = App\QuickbookToken::first();
+       return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "123146439616474",
+            'baseUrl' => "Production"
+       ));
+    }
+
+
+    function refresh_token(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = App\QuickbookToken::first();
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
+
+
+
+
     /**
      * Show the form for creating a new customer.
      */
@@ -164,6 +224,47 @@ class CustomerController extends Controller {
         if (count($already_exists_mobile_number) > 0) {
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
+
+        $status = Input::get('status');
+        $Qdata = [
+            "BillAddr" => [
+                "Line1"=>  Input::get('address1'),
+                "City"=>  Input::get('city'),
+                "CountrySubDivisionCode"=>  Input::get('state'),
+            ],
+            "Title"=>  Input::get('tally_name'),
+            "GivenName"=>  Input::get('tally_name'),
+            "Suffix"=>  Input::get('tally_name'),
+            "FullyQualifiedName"=> Input::get('tally_name'),
+            "CompanyName"=>  Input::get('company_name'),
+            "DisplayName"=>  Input::get('tally_name'),
+            "PrimaryPhone"=>  [
+                "FreeFormNumber"=>  Input::get('phone_number1')
+            ],
+            "PrimaryEmailAddr"=>  [
+                "Address" => Input::get('email')
+            ]];
+
+
+        $res = $this->quickbook_create_customer($Qdata);
+        if($res['status']){
+            $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
+            if(isset($status) && Input::get('status') == 'yes'){
+                $res_q = $this->quickbook_create_supplier($Qdata);
+                if($res_q['status']){
+                    $customer->quickbook_supplier_id = $res_q['message']->BillAddr->Id;
+                }
+            }
+        }
+        else{
+            $this->refresh_token();
+            $res = $this->quickbook_create_customer($Qdata);
+            if($res['status']){
+                $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
+            }
+        }
+
+
 
         if (Input::has('status')) {
             $customer->is_supplier = Input::get('status');
@@ -220,6 +321,7 @@ class CustomerController extends Controller {
             $users->password = Hash::make(Input::get('password'));
         }
         $customer->customer_status = 'permanent';
+
         if ($customer->save() && $users->save()) {
             $product_category_id = Input::get('product_category_id');
             if (isset($product_category_id)) {
