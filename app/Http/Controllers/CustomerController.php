@@ -59,12 +59,12 @@ class CustomerController extends Controller {
      */
     public function index(Request $request) {
 
-        /*App\QuickbookToken::create([
+        App\QuickbookToken::create([
             'client'=>'Q0exOpk5ncmFxPbI1HFYYXimHZm5H13bBQtJW9xzkiyKgHymL4',
             'secret'=>'sPtMjs8xByXgxdG5IqgQqSAw94aPXmUOo8YAPU0R',
             'access_token'=>'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..3_OxQvHUXiD7dVz0p14F2Q.514ygsOTsbQrCxBNI8MmKD5C-eKwZdW5THBzaGgwRtBerXA5H4zKGXs03MhVopjS7dT9T7ihoCck_O5wPC0SzO0oOhl1b81fB5b1iSFU6XFojnd-VVBeQyUzD6BQm7P4muAu7zMELABCt0BW3R566LrDWw47cNGk7zN2Tz-npMLoNMzPHVf-KZpAP5VggW_A4iSxzoF5sCT026MiDFpj7sz_o0mz-Fmds7JZ1F9AgS1Hd1-g1SW5ksKrRf1D4PoCh1CCRK8V5yENAQmDY2o33U-t2ItJZDkGKHdHtP_X3LnwmybSJvc-ySw1MaqZ-YpTDYeAe3oyeRJ3dmTRd_cqUyejvlOIGjiaMKrQXMNw0t2OBBAlzRdRabkdApFSwcFnN069kAlT_PfmQYbWJIe-rq_fa86OTWAM-5BBTVjcr0OS8Duux7lXE6xcuWAdgSiCpi1_X-ttLRZDl6pbDci5kt4WPqUjPCwf9Hr_0hoIbS-SvTkY5N-g17s4fqA57x6ZG2LtlsW7VTrFMvGZXrs6aubkowwtMfiCl5_XESAADrTW3crQrMVtWkULDLqY_LUvxNMBFDZwgoeoXMiT-fqkUKKMP3z6qvM0fLDWfwT304JGVs8Zbw-L8g1uHmao6sqKBpXlQFf49-htzHNhrCK8AK-kiBL4Q5aLb9Zn9Iiar5YZ3rCjxqEvEdxmoSuhO0X3.BVib82eox2wQraEGYKopNg',
             'refresh_token'=>'Q0115642973481o7l4vBUhTkSYiv7b1k5sU3ss3fNEGpEmxo1v'
-        ]);*/
+        ]);
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
@@ -269,7 +269,7 @@ class CustomerController extends Controller {
             }
         }
 
-        dd($res);
+
 
 
 
