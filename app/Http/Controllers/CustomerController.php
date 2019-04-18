@@ -248,7 +248,7 @@ class CustomerController extends Controller {
             ],
             "PrimaryEmailAddr"=>  [
                 "Address" => Input::get('email')
-            ]];
+        ]];
 
 
         $res = $this->quickbook_create_customer($Qdata);
@@ -268,6 +268,8 @@ class CustomerController extends Controller {
                 $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
             }
         }
+
+        dd($res);
 
 
 
