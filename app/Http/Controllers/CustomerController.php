@@ -58,13 +58,13 @@ class CustomerController extends Controller {
      * Display a listing of the customer.
      */
     public function index(Request $request) {
-
-        App\QuickbookToken::create([
+/*
+        App\QuickbookToken::where('id',1)->update([
             'client'=>'Q0exOpk5ncmFxPbI1HFYYXimHZm5H13bBQtJW9xzkiyKgHymL4',
             'secret'=>'sPtMjs8xByXgxdG5IqgQqSAw94aPXmUOo8YAPU0R',
-            'access_token'=>'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..3_OxQvHUXiD7dVz0p14F2Q.514ygsOTsbQrCxBNI8MmKD5C-eKwZdW5THBzaGgwRtBerXA5H4zKGXs03MhVopjS7dT9T7ihoCck_O5wPC0SzO0oOhl1b81fB5b1iSFU6XFojnd-VVBeQyUzD6BQm7P4muAu7zMELABCt0BW3R566LrDWw47cNGk7zN2Tz-npMLoNMzPHVf-KZpAP5VggW_A4iSxzoF5sCT026MiDFpj7sz_o0mz-Fmds7JZ1F9AgS1Hd1-g1SW5ksKrRf1D4PoCh1CCRK8V5yENAQmDY2o33U-t2ItJZDkGKHdHtP_X3LnwmybSJvc-ySw1MaqZ-YpTDYeAe3oyeRJ3dmTRd_cqUyejvlOIGjiaMKrQXMNw0t2OBBAlzRdRabkdApFSwcFnN069kAlT_PfmQYbWJIe-rq_fa86OTWAM-5BBTVjcr0OS8Duux7lXE6xcuWAdgSiCpi1_X-ttLRZDl6pbDci5kt4WPqUjPCwf9Hr_0hoIbS-SvTkY5N-g17s4fqA57x6ZG2LtlsW7VTrFMvGZXrs6aubkowwtMfiCl5_XESAADrTW3crQrMVtWkULDLqY_LUvxNMBFDZwgoeoXMiT-fqkUKKMP3z6qvM0fLDWfwT304JGVs8Zbw-L8g1uHmao6sqKBpXlQFf49-htzHNhrCK8AK-kiBL4Q5aLb9Zn9Iiar5YZ3rCjxqEvEdxmoSuhO0X3.BVib82eox2wQraEGYKopNg',
+            'access_token'=>'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..urDU4hVFEJJaIi4-0D0New.vhVcIxjF48LFM_sJLiT9E3NtCs84CLVFlmnrZ62LFCKLG2C1_0d-gHeD3Cosu_8JAD_fp2WWP8ilBJsecaHETnXgwXwdN6BFIDjGnUd2JXBmagEvCmvR_zWcZUCvY4o_TtzGIy7Oab1dwh9gGSx9xdGySNP754X-ECz2HrNcvEcRJLnp9c49bcEnJb9HIV-sC1ZzIb6Lk1CT2VdBonO6SqIb_7ONV-dEDFz_s_GYICkDlkOD19oFBvAUxmy9POH7HtDB-Po5lwPJqpv16eP1CztczsUWEXKKELs_wjMmFKEo7KLV4LHH1LEEIOIL6lQW1_vGq5leUkJwSKOBfji1-tRT-v7tupCnNt75eeTYIoap_6zA1aTD4VKk7Igx0Vv3htaEfDYUu_V5uNH0fl6ap9hbpzNfVoTAWxkzgwwIlOl1ohQ1SJNJjqSj2M38vYQWbkGHA8FZzyti9eTuDxIj4DoYZuCv8dq7VQ2khZLevAKf7h9ENfd88SfEcDVz1zdDk5H4IZOwr3FNt9giodwCTssxGvotAN-M5KORAO1nZBS72SfP2vvYGrHFDsVZtPQiZy_OebqEOsNezII6c_e_uH5k7TpWYystLNXGuoBuvqCYanXPy2gKcNa4bEizDhz66x4xPinO-jqv2GCKnsOxmop_g2x5YOwxCNbHOTr8tG5ChhebSe2Olm2o95gzmGvy.j62-SDvug21XRGiAzhEo9g',
             'refresh_token'=>'Q0115642973481o7l4vBUhTkSYiv7b1k5sU3ss3fNEGpEmxo1v'
-        ]);
+        ]);*/
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
