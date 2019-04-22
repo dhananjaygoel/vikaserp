@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
+use QuickBooksOnline\API\Data\IPPTaxCode;
+use QuickBooksOnline\API\Facades\Invoice;
 use View;
 use App\DeliveryChallan;
 use App\Order;
@@ -879,6 +883,134 @@ class DeliveryChallanController extends Controller {
     /*
      * Generate Serial number and print Delivery Challan
      */
+
+    function quickbook_create_item($data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $customerObj = Item::create($data);
+        $resultingCustomerObj = $dataService->Add($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
+
+    function getToken(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = App\QuickbookToken::first();
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "123146439616474",
+            'baseUrl' => "Production"
+        ));
+    }
+
+
+    function refresh_token(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = App\QuickbookToken::first();
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
+
+    public function generate_invoice($id){
+
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
+
+       // dd($update_delivery_challan->toArray());
+
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+
+
+        if($update_delivery_challan->doc_number){
+            $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
+            $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            $pdfNAme = explode('invoice/',$pdf)[1];
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+        }
+        else{
+            $line = [];
+            $i = 0;
+            foreach ($update_delivery_challan->delivery_challan_products as $del_products){
+                $TaxCodeRef = 24;
+                $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->product_category->hsn_code)->first();
+                if($hsn){
+                    $gst = App\Gst::where('gst',$hsn->gst)->first();
+                    if($gst){
+                        if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
+                            $TaxCodeRef = $gst->quick_gst_id;
+                        }
+                    }
+                }
+                $i++;
+                $line[] = [
+                    "Id" => $i,
+                    "LineNum" => $i,
+                    "Description" => "",
+                    "Amount" => $del_products->quantity * $del_products->order_product_all_details->product_category->price,
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "ItemRef" => [
+                            "value" => $del_products->order_product_all_details->quickbook_item_id
+                        ],
+                        "UnitPrice" => $del_products->order_product_all_details->product_category->price,
+                        "Qty" => $del_products->quantity,
+                        "TaxCodeRef" => [
+                            "value" => $TaxCodeRef
+                        ]
+                    ]
+                ];
+            }
+
+            // dd($update_delivery_challan->customer->quickbook_customer_id);
+
+            $theResourceObj = Invoice::create([
+                "Line" => $line,
+                "CustomerRef"=> [
+                    "value"=> $update_delivery_challan->customer->quickbook_customer_id
+                ]
+            ]);
+
+            $inv = $dataService->add($theResourceObj);
+            $error = $dataService->getLastError();
+            if ($error) {
+                $this->refresh_token();
+                $dataService = $this->getToken();
+                $inv = $dataService->add($theResourceObj);
+                $error = $dataService->getLastError();
+                if($error){
+                    echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
+                    echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
+                    echo "The Response message is: " . $error->getResponseBody() . "\n";
+                }
+                else{
+                    $doc_num =  $inv->Id;
+                }
+            }
+            else {
+                $doc_num =  $inv->Id;
+            }
+            DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
+
+            $invoice = $dataService->Query("select * from Invoice where id = '".$doc_num."' ");
+            $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            $pdfNAme = explode('invoice/',$pdf)[1];
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+        }
+
+    }
+
 
     public function print_delivery_challan($id, DropboxStorageRepository $connection) {
         $serial_number_delivery_order = Input::get('serial_number');

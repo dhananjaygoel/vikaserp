@@ -22,6 +22,8 @@ use App\AllOrderProducts;
 use App\PurchaseProducts;
 use App\InquiryProducts;
 use Maatwebsite\Excel\Facades\Excel;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
+use QuickBooksOnline\API\Facades\Item;
 
 class ProductsubController extends Controller {
 
@@ -50,6 +52,7 @@ class ProductsubController extends Controller {
     }
 
     public function index() {
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -164,6 +167,46 @@ class ProductsubController extends Controller {
         exit;
     }
 
+
+    function quickbook_create_item($data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $customerObj = Item::create($data);
+        $resultingCustomerObj = $dataService->Add($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
+
+    function getToken(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = App\QuickbookToken::first();
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "123146439616474",
+            'baseUrl' => "Production"
+        ));
+    }
+
+
+    function refresh_token(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = App\QuickbookToken::first();
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
+
     /*
      * Add new product sub category data in to database
      *
@@ -176,6 +219,32 @@ class ProductsubController extends Controller {
         $ProductSubCategory = new ProductSubCategory();
 
         $thickness = explode(':',$request->input('thickness'))[0];
+
+        $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
+
+        $Qdata = [
+            "Name" => $request->input('alias_name'),
+            "Active" => true,
+            "FullyQualifiedName" => $request->input('alias_name'),
+            "UnitPrice" => $pcat->price,
+            "Type" => "NonInventory",
+            "IncomeAccountRef"=> [
+                "value"=> 3,
+                "name" => "IncomRef"
+            ],
+            "TrackQtyOnHand"=>false
+        ];
+        $res = $this->quickbook_create_item($Qdata);
+        if($res['status']){
+            $ProductSubCategory->quickbook_item_id = $res['message']->Id;
+        }
+        else{
+            $this->refresh_token();
+            $res = $this->quickbook_create_item($Qdata);
+            if($res['status']){
+                $ProductSubCategory->quickbook_item_id = $res['message']->Id;
+            }
+        }
 
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
@@ -233,7 +302,7 @@ class ProductsubController extends Controller {
                         $phone_number = $admin->mobile_number;
                     }
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -313,6 +382,7 @@ class ProductsubController extends Controller {
     public function update($id) {
 
         $validator = Validator::make(Input::all(), ProductSubCategory::$product_sub_category_rules);
+
         if ($validator->passes()) {
             $data = Input::all();
             $pro_sub_cat = array(

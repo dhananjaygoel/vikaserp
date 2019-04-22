@@ -24,20 +24,20 @@ $dataService->throwExceptionOnError(true);
 //Add a new Invoice
 $theResourceObj = Invoice::create([
      "Line" => [
-   [
-     "Amount" => 100.00,
-     "DetailType" => "SalesItemLineDetail",
-     "SalesItemLineDetail" => [
-       "ItemRef" => [
-         "value" => 20,
-         "name" => "Hours"
-        ]
-      ]
-      ]
-    ],
-    "CustomerRef"=> [
-      "value"=> 59
-    ],
+       [
+         "Amount" => 100.00,
+         "DetailType" => "SalesItemLineDetail",
+         "SalesItemLineDetail" => [
+           "ItemRef" => [
+             "value" => 20,
+             "name" => "Hours"
+            ]
+          ]
+          ]
+        ],
+        "CustomerRef"=> [
+          "value"=> 59
+        ],
       "BillEmail" => [
             "Address" => "Familiystore@intuit.com"
       ],

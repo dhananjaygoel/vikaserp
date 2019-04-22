@@ -60,6 +60,15 @@
                                 <input id="igst" class="form-control" placeholder="IGST" name="igst" value="{{$gst->igst}}" type="number">
                             </div>
 
+                            <div class="form-group">
+                                <label for="igst">Quickbook GST<span class="mandatory">*</span></label>
+                                <select class="form-control" name="quick_gst_id" required>
+                                    @foreach($quickgst as $gstq)
+                                        <option value="{{$gstq->Id}}" {{($gstq->Id==$gst->quick_gst_id)?'selected':''}}>{{$gstq->Name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <hr>
                             <div>
                                 <input type="submit" class="btn btn-primary form_button_footer" value="Submit">

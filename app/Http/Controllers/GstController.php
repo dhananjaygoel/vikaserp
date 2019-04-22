@@ -4,11 +4,13 @@ use App\Gst;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\QuickbookToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 
 class GstController extends Controller {
 
@@ -28,9 +30,46 @@ class GstController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+    function getToken(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = QuickbookToken::first();
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "123146439616474",
+            'baseUrl' => "Production"
+        ));
+    }
+
+
+    function refresh_token(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = QuickbookToken::first();
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
+
 	public function create()
 	{
-		return view('gst_add');
+        require_once base_path('quickbook/vendor/autoload.php');
+	    //$quickgst = [];
+	    $dataService = $this->getToken();
+        $quickgst = $dataService->Query('select * From TaxCode');
+        $error = $dataService->getLastError();
+        if ($error) {
+            $this->refresh_token();
+            $dataService = $this->getToken();
+            $quickgst = $dataService->Query('select * From TaxCode');
+        }
+        //dd($quickgst);
+		return view('gst_add',compact('quickgst'));
 	}
 
 	/**
@@ -45,6 +84,7 @@ class GstController extends Controller {
             'sgst' => 'required|integer',
             'cgst' => 'required|integer',
             'igst' => 'required|integer',
+            'quick_gst_id'=>'required'
         ]);
 
         $thickness = new Gst();
@@ -52,6 +92,7 @@ class GstController extends Controller {
         $thickness->sgst = $request->sgst;
         $thickness->cgst = $request->cgst;
         $thickness->igst = $request->igst;
+        $thickness->quick_gst_id = $request->quick_gst_id;
         $thickness->save();
 
 
@@ -78,11 +119,22 @@ class GstController extends Controller {
 	public function edit($id)
 	{
 
+        require_once base_path('quickbook/vendor/autoload.php');
+        //$quickgst = [];
+        $dataService = $this->getToken();
+        $quickgst = $dataService->Query('select * From TaxCode');
+        $error = $dataService->getLastError();
+        if ($error) {
+            $this->refresh_token();
+            $dataService = $this->getToken();
+            $quickgst = $dataService->Query('select * From TaxCode');
+        }
+
         if (Auth::user()->role_id != 0) {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
         $gst = Gst::find($id);
-        return view('gst_edit', compact('gst'));
+        return view('gst_edit', compact('gst','quickgst'));
 	}
 
 	/**
@@ -97,17 +149,19 @@ class GstController extends Controller {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
-            'gst' => 'required|integer|unique:gst,gst',
+            'gst' => 'required|integer',
             'sgst' => 'required|integer',
             'cgst' => 'required|integer',
             'igst' => 'required|integer',
+            'quick_gst_id'=>'required'
         ]);
 
         Gst::where('id',$id)->update([
             'gst' => $request->gst,
             'sgst' => $request->sgst,
             'cgst' => $request->cgst,
-            'igst' => $request->igst
+            'igst' => $request->igst,
+            'quick_gst_id'=>$request->quick_gst_id
         ]);
 
         return redirect('gst')->with('flash_success_message', 'Gst updated successfully');
