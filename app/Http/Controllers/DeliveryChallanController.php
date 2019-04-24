@@ -939,7 +939,7 @@ class DeliveryChallanController extends Controller {
         }
 
         if($update_delivery_challan->doc_number){
-            $invoice = $dataService->Query("select * from Invoice where id = 1002 ");
+            $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
             $error = $dataService->getLastError();
             if ($error) {
                 $this->refresh_token();
