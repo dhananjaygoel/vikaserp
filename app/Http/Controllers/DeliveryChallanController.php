@@ -980,13 +980,13 @@ class DeliveryChallanController extends Controller {
                     "Id" => $i,
                     "LineNum" => $i,
                     "Description" => "",
-                    "Amount" => $del_products->quantity * ($del_products->price+$del_products->order_product_all_details->difference),
+                    "Amount" => $del_products->quantity * $del_products->price,
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
                             "value" => $del_products->order_product_all_details->quickbook_item_id
                         ],
-                        "UnitPrice" => $del_products->price + $del_products->order_product_all_details->difference,
+                        "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
