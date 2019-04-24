@@ -59,9 +59,9 @@ class CustomerController extends Controller {
      */
     public function index(Request $request) {
 
-        App\QuickbookToken::where('id',1)->update([
+        /*App\QuickbookToken::where('id',1)->update([
             'refresh_token'=>'Q011564811807Zwx0xhCGlcy2tlQqn2FdXczw2kh9uIKY2dL7H',
-        ]);
+        ]);*/
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
