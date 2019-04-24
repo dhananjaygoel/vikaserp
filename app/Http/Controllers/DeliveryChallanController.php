@@ -981,13 +981,13 @@ class DeliveryChallanController extends Controller {
                     "Id" => $i,
                     "LineNum" => $i,
                     "Description" => "",
-                    "Amount" => $del_products->quantity * $del_products->price,
+                    "Amount" => $del_products->quantity * 63.70,
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
                             "value" => $del_products->order_product_all_details->quickbook_item_id
                         ],
-                        "UnitPrice" => $del_products->price,
+                        "UnitPrice" => 63.70,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
@@ -1011,11 +1011,12 @@ class DeliveryChallanController extends Controller {
                 $this->refresh_token();
                 $dataService = $this->getToken();
                 $inv = $dataService->add($theResourceObj);
-                $error = $dataService->getLastError();
-                if($error){
+                $error1 = $dataService->getLastError();
+                if($error1){
                     echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
                     echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
                     echo "The Response message is: " . $error->getResponseBody() . "\n";
+                    die;
                 }
                 else{
                     $doc_num =  $inv->Id;
