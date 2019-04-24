@@ -234,7 +234,7 @@ class ProductsubController extends Controller {
             "Name" => $request->input('alias_name'),
             "Active" => true,
             "FullyQualifiedName" => $request->input('alias_name'),
-            "UnitPrice" => $pcat->price,
+            "UnitPrice" => $pcat->price + $request->input('difference'),
             "Type" => "NonInventory",
             "IncomeAccountRef"=> [
                 "value"=> 3,
