@@ -926,7 +926,7 @@ class DeliveryChallanController extends Controller {
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
-        //dd($update_delivery_challan->toArray());
+        dd($update_delivery_challan->toArray());
 
         require_once base_path('quickbook/vendor/autoload.php');
         $dataService = $this->getToken();
