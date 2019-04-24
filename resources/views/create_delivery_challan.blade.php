@@ -104,7 +104,7 @@
                         <hr>
                         <div class="form-group row">
                             <span class="col-md-2">Final Truck Weight(Kg):</span> 
-                            <input type="text" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
+                            <input type="text" name="final_truck_weight" value="" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
                         </div>
                         <hr>
                         <div class="form-group underline">Product Details</div>
