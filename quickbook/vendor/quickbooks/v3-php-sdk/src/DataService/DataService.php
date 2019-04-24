@@ -672,14 +672,12 @@ class DataService
     public function Update($entity)
     {
         $this->serviceContext->IppConfiguration->Logger->RequestLog->Log(TraceLevel::Info, "Called Method: Update.");
-
         // Validate parameter
         if (!$entity) {
             $this->serviceContext->IppConfiguration->Logger->RequestLog->Log(TraceLevel::Error, "Argument Null Exception");
             throw new IdsException('Argument Null Exception');
         }
         $this->verifyOperationAccess($entity, __FUNCTION__);
-
         $httpsPostBody = $this->executeObjectSerializer($entity, $urlResource);
 
         // Builds resource Uri
