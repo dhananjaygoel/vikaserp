@@ -926,7 +926,7 @@ class DeliveryChallanController extends Controller {
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
-        dd($update_delivery_challan->toArray());
+        //dd($update_delivery_challan->toArray());
 
         require_once base_path('quickbook/vendor/autoload.php');
         $dataService = $this->getToken();
@@ -975,6 +975,7 @@ class DeliveryChallanController extends Controller {
                         }
                     }
                 }
+
                 $i++;
                 $line[] = [
                     "Id" => $i,
@@ -1027,8 +1028,9 @@ class DeliveryChallanController extends Controller {
             if(Auth::user()->role_id != 0){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
-            $invoice = $dataService->Query("select * from Invoice where id = '".$doc_num."' ");
-            $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+
+           // $invoice = $dataService->Query("select * from Invoice where id = '".$doc_num."' ");
+            $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
         }
