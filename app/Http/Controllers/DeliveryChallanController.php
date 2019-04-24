@@ -926,7 +926,7 @@ class DeliveryChallanController extends Controller {
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
-        //dd($update_delivery_challan->toArray());
+        dd($update_delivery_challan->toArray());
 
         require_once base_path('quickbook/vendor/autoload.php');
         $dataService = $this->getToken();
@@ -980,13 +980,13 @@ class DeliveryChallanController extends Controller {
                     "Id" => $i,
                     "LineNum" => $i,
                     "Description" => "",
-                    "Amount" => $del_products->quantity * ($del_products->order_product_all_details->product_category->price+$del_products->order_product_all_details->difference),
+                    "Amount" => $del_products->quantity * ($del_products->price+$del_products->order_product_all_details->difference),
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
                             "value" => $del_products->order_product_all_details->quickbook_item_id
                         ],
-                        "UnitPrice" => $del_products->order_product_all_details->product_category->price + $del_products->order_product_all_details->difference,
+                        "UnitPrice" => $del_products->price + $del_products->order_product_all_details->difference,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
