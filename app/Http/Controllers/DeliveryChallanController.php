@@ -36,7 +36,6 @@ use DB;
 class DeliveryChallanController extends Controller {
 
     public function __construct() {
-
         date_default_timezone_set("Asia/Calcutta");
         define('PROFILE_ID', Config::get('smsdata.profile_id'));
         define('PASS', Config::get('smsdata.password'));
@@ -927,17 +926,38 @@ class DeliveryChallanController extends Controller {
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
-       // dd($update_delivery_challan->toArray());
+        //dd($update_delivery_challan->toArray());
 
         require_once base_path('quickbook/vendor/autoload.php');
         $dataService = $this->getToken();
 
+        if(Auth::user()->role_id != 0){
+            if($update_delivery_challan->is_print_user != 0){
+                \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
+                return redirect('delivery_challan?status_filter=completed');
+            }
+        }
 
         if($update_delivery_challan->doc_number){
-            $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
-            $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            $invoice = $dataService->Query("select * from Invoice where id = 1002 ");
+            $error = $dataService->getLastError();
+            if ($error) {
+                $this->refresh_token();
+                $dataService = $this->getToken();
+                $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
+                $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            }
+            else{
+                $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            }
             $pdfNAme = explode('invoice/',$pdf)[1];
+
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+
+            if(Auth::user()->role_id != 0){
+                DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
+            }
+
         }
         else{
             $line = [];
@@ -949,7 +969,9 @@ class DeliveryChallanController extends Controller {
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
-                            $TaxCodeRef = $gst->quick_gst_id;
+                            if($del_products->vat_percentage > 0){
+                                $TaxCodeRef = $gst->quick_gst_id;
+                            }
                         }
                     }
                 }
@@ -958,13 +980,13 @@ class DeliveryChallanController extends Controller {
                     "Id" => $i,
                     "LineNum" => $i,
                     "Description" => "",
-                    "Amount" => $del_products->quantity * $del_products->order_product_all_details->product_category->price,
+                    "Amount" => $del_products->quantity * ($del_products->order_product_all_details->product_category->price+$del_products->order_product_all_details->difference),
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
                             "value" => $del_products->order_product_all_details->quickbook_item_id
                         ],
-                        "UnitPrice" => $del_products->order_product_all_details->product_category->price,
+                        "UnitPrice" => $del_products->order_product_all_details->product_category->price + $del_products->order_product_all_details->difference,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
@@ -1002,7 +1024,9 @@ class DeliveryChallanController extends Controller {
                 $doc_num =  $inv->Id;
             }
             DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
-
+            if(Auth::user()->role_id != 0){
+                DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
+            }
             $invoice = $dataService->Query("select * from Invoice where id = '".$doc_num."' ");
             $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];

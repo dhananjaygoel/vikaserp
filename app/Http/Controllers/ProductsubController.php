@@ -53,6 +53,8 @@ class ProductsubController extends Controller {
 
     public function index() {
 
+
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -192,7 +194,8 @@ class ProductsubController extends Controller {
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
             'QBORealmID' => "123146439616474",
-            'baseUrl' => "Production"
+            'baseUrl' => "Production",
+            'minorVersion'=>34
         ));
     }
 
@@ -216,11 +219,16 @@ class ProductsubController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
+
+
+
+
         $ProductSubCategory = new ProductSubCategory();
 
         $thickness = explode(':',$request->input('thickness'))[0];
 
         $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
+
 
         $Qdata = [
             "Name" => $request->input('alias_name'),
@@ -232,10 +240,15 @@ class ProductsubController extends Controller {
                 "value"=> 3,
                 "name" => "IncomRef"
             ],
-            "TrackQtyOnHand"=>false
+            "TrackQtyOnHand"=>false,
+            /*"TaxClassificationRef"=>[
+                "value"=>1204
+            ]*/
+
         ];
         $res = $this->quickbook_create_item($Qdata);
         if($res['status']){
+
             $ProductSubCategory->quickbook_item_id = $res['message']->Id;
         }
         else{
@@ -245,6 +258,8 @@ class ProductsubController extends Controller {
                 $ProductSubCategory->quickbook_item_id = $res['message']->Id;
             }
         }
+
+        //dd($res);
 
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');

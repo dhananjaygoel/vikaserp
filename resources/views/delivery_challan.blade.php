@@ -10,6 +10,10 @@
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
                 <div class="filter-block">
+
+
+
+
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
                             <?php
@@ -88,6 +92,7 @@
 
         <div class="row">
             <div class="col-lg-12">
+
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         <div id="flash_message" class="alert no_data_msg_container"></div>
@@ -99,6 +104,14 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
+
+                            @if (Session::has('flash_message_err'))
+                                <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('flash_message_err') }}</div>
+                            @endif
+
+
+
+
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -163,6 +176,7 @@
                                                     }
                                                 }
                                             ?>
+
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}},{{$is_allinc}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -215,12 +229,28 @@
                                             @endif
 
                                             @if(Auth::user()->role_id == 0)
-                                                <a href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
-                                                </span>
+                                                <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                                                    </span>
                                                 </a>
+                                            @else
+                                                @if($challan->is_print_user > 0)
+                                                    <span class="table-link normal_cursor" title="Delivery challan">
+                                                        <span class="fa-stack">
+                                                           <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </span>
+                                                @else
+                                                    <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                    </a>
+                                                @endif
                                             @endif
 
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
