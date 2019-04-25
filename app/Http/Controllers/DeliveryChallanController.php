@@ -987,7 +987,7 @@ class DeliveryChallanController extends Controller {
                         "ItemRef" => [
                             "value" => $del_products->order_product_all_details->quickbook_item_id
                         ],
-                        "UnitPrice" => $del_products->price,
+                        "UnitPrice" => (integer)$del_products->price,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
@@ -996,7 +996,7 @@ class DeliveryChallanController extends Controller {
                 ];
             }
 
-            dd($line);
+           // dd($line);
 
             $theResourceObj = Invoice::create([
                 "Line" => $line,
