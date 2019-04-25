@@ -980,14 +980,14 @@ class DeliveryChallanController extends Controller {
                 $line[] = [
                     "Id" => $i,
                     "LineNum" => $i,
-                    "Description" => "",
+                    //"Description" => "",
                     "Amount" => $del_products->quantity * $del_products->price,
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
                             "value" => $del_products->order_product_all_details->quickbook_item_id
                         ],
-                        "UnitPrice" => (integer)$del_products->price,
+                        "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
@@ -996,7 +996,7 @@ class DeliveryChallanController extends Controller {
                 ];
             }
 
-            //dd($line);
+            dd($line);
 
             $theResourceObj = Invoice::create([
                 "Line" => $line,
@@ -1004,7 +1004,7 @@ class DeliveryChallanController extends Controller {
                     "value"=> $update_delivery_challan->customer->quickbook_customer_id
                 ]
             ]);
-            dd($theResourceObj);
+
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {
