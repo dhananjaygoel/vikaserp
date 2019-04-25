@@ -190,9 +190,6 @@
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-
-
-
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
                                                 <span class="fa-stack">

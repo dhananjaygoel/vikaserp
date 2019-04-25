@@ -231,6 +231,13 @@
                                 </a>
                             </li>
                             @endif
+                                @if((Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 4) && (Auth::user()->role_id == 2 || Auth::user()->role_id != 3))
+                                    <li class="{{ (Request::is('*daily_pro_forma_invoice*') ? 'active' : '') }}">
+                                        <a href="{{url('daily_pro_forma_invoice')}}">
+                                            Daily Pro Forma Invoice
+                                        </a>
+                                    </li>
+                            @endif
 
                             <!--                            <li class="{{ (Request::is('*pending_order_report*') ? 'active' : '') }}">
                                                             <a href="{{url('pending_order_report')}}">
