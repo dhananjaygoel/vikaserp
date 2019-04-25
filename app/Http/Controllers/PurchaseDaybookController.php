@@ -65,6 +65,49 @@ class PurchaseDaybookController extends Controller {
         return view('purchase_order_daybook', compact('purchase_daybook'));
     }
 
+
+
+    function purchase_estimate(){
+        $data = Input::all();
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 ) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $v = "P";
+                $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
+                    ->where('order_status', 'completed')
+                    ->where('updated_at', 'like', $date1 . '%')
+                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->orderBy('updated_at', 'desc')
+                    ->Paginate(20);
+            } else {
+                $v = "P";
+                $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
+                    ->where('order_status', 'completed')
+                    ->where('updated_at', '>=', $date1)
+                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->where('updated_at', '<=', $date2.' 23:59:59')
+                    ->orderBy('updated_at', 'desc')
+                    ->Paginate(20);
+            }
+        } else {
+            $v = "P";
+            $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
+                ->where('order_status', 'completed')
+                ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                ->orderBy('updated_at', 'desc')
+                ->Paginate(20);
+        }
+        $purchase_daybook->setPath('purchase_order_daybook');
+        return view('purchase_estimate', compact('purchase_daybook'));
+    }
+
     /*
      * Delete all purchase day book
      *
