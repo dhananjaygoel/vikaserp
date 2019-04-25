@@ -996,7 +996,7 @@ class DeliveryChallanController extends Controller {
                 ];
             }
 
-           // dd($line);
+            //dd($line);
 
             $theResourceObj = Invoice::create([
                 "Line" => $line,
@@ -1004,7 +1004,7 @@ class DeliveryChallanController extends Controller {
                     "value"=> $update_delivery_challan->customer->quickbook_customer_id
                 ]
             ]);
-
+            dd($theResourceObj);
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {
