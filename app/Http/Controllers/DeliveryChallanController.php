@@ -995,9 +995,6 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
             }
-
-            dd($line);
-
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
