@@ -221,6 +221,7 @@ Route::get('dataSeeding', function () {
     define('STDIN', fopen("php://stdin", "r"));
     Artisan::call('migrate:rollback', ['--quiet' => true, '--force' => true]);
 });*/
+
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
@@ -246,14 +247,14 @@ Route::group(['middleware' => ['auth']], function() {
 //    });
     Route::resource('bulk-delete', 'BulkDeleteController');
     Route::get('bulk-delete', 'BulkDeleteController@show_result');
-//    Route::post('bulk-delete', 'BulkDeleteController@show_result');
+//  Route::post('bulk-delete', 'BulkDeleteController@show_result');
     Route::get('old-password-reset', 'APIsController@getOldPasswordReset');
     Route::resource('security', 'SecurityController');
     Route::get('dashboard', 'DashboardController@index');
     Route::get('home', 'DashboardController@homeredirect');
     Route::get('graph-inquiry', 'DashboardController@graph_inquiry');
     Route::post('graph-order', 'DashboardController@graph_order');
-//    Route::get('graph-order', 'DashboardController@graph_order_temp');
+//  Route::get('graph-order', 'DashboardController@graph_order_temp');
     Route::get('graph-delivery-challan', 'DashboardController@graph_delivery_challan');
     Route::get('update-opening-stock', 'InventoryController@updateOpeningStock');
     Route::resource('unit', 'UnitController');
@@ -315,6 +316,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('pending_delivery_order', 'DeliveryOrderController@pending_delivery_order');
     Route::resource('purchase_order_daybook', 'PurchaseDaybookController');
     Route::resource('purchase_estimate', 'PurchaseDaybookController@purchase_estimate');
+    Route::post('expert_purchase_estimate', 'PurchaseDaybookController@expert_purchase_estimate');
     Route::post('purchase_order_daybook/{id}', 'PurchaseDaybookController@destroy');
     Route::post('delete_all_daybook', 'PurchaseDaybookController@delete_all_daybook');
     Route::post('export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
@@ -512,3 +514,6 @@ Route::get('update_labour_performance_chart','WelcomeController@update_labour_pe
 Route::get('update_loadedby_performance_chart','WelcomeController@update_loadedby_performance_chart');
 
 Route::get('remove_test_labour','WelcomeController@remove_test_labour');
+
+
+

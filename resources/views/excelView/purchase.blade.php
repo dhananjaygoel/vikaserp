@@ -37,6 +37,7 @@
             <td class="heading1">Vehicle Number/Remark</td>
             <!--<td class="heading1">Remark</td>-->
             <td class="heading1">Ref NUM</td>
+            <td class="heading1">Remark</td>
         </tr>
         <?php
          $VchNo=1;
@@ -129,7 +130,8 @@
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
                     {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}    
             </td> 
-             <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
+              <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
+            <td>{{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}</td>
        
             <?php }?>
              

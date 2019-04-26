@@ -31,7 +31,7 @@
                                         ?>>
                                     <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                                 </form>
-                                <form class="pull-left" method="POST" action="{{URL::action('PurchaseDaybookController@expert_purchase_daybook')}}">
+                                <form class="pull-left" method="POST" action="{{URL::action('PurchaseDaybookController@expert_purchase_estimate')}}">
                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                     <input type="hidden" name="export_from_date" id="export_from_date" <?php
                                         if (Input::get('export_to_date') != "") {
