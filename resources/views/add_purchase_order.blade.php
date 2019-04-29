@@ -239,7 +239,7 @@ use Illuminate\Support\Facades\Session;
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
                                                                 @foreach($units as $unit)
-                                                                    @if($unit->unit_name == 'ft' OR $unit->unit_name == 'mt')
+                                                                    @if($unit->id == 4 OR $unit->id == 5)
                                                                     @else
                                                                         <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                     @endif
