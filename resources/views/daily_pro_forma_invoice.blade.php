@@ -99,7 +99,7 @@
                                                 <th>Amount</th>
                                                 <th>Bill Number</th>
                                                 <th>Remarks </th>
-                                                <th>Editable </th>
+                                                <th>Edited </th>
                                                 @if( Auth::user()->role_id == 0)
                                                     <th>Action </th>
                                                 @endif
