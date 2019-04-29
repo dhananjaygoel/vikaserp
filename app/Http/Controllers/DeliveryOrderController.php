@@ -535,10 +535,10 @@ class DeliveryOrderController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
+        DeliveryOrder::where('id',$id)->update(['is_editable'=>1]);
         return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
     }
 
@@ -694,8 +694,10 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->freight = $input_data['freight'];
         $delivery_challan->loading_charge = $input_data['loading'];
         $delivery_challan->round_off = $input_data['round_off'];
+
+
         //$delivery_challan->loaded_by = $input_data['loadedby'];
-//        $delivery_challan->labours = $input_data['labour'];        
+        //$delivery_challan->labours = $input_data['labour'];
 
         if (isset($input_data['vat_percentage'])) {
             $delivery_challan->vat_percentage = $input_data['vat_percentage'];
@@ -1091,7 +1093,7 @@ class DeliveryOrderController extends Controller {
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
             
-            $this->store_delivery_challan_vat_wise($input_data, $id);
+           $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with puls VAT */
         elseif ($total_product_count == $total_vat_items) {
@@ -1105,8 +1107,8 @@ class DeliveryOrderController extends Controller {
             $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
-            
-            $this->store_delivery_challan_vat_wise($input_data, $id);
+
+            $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items without VAT */ 
         elseif ($total_product_count == $total_without_vat_items) {
@@ -1115,7 +1117,7 @@ class DeliveryOrderController extends Controller {
             // exit;
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
             $case = 'all_without_vat';
-            $this->store_delivery_challan_vat_wise($input_data, $id);
+            $savedid =  $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with and without VAT */ 
         else {            
@@ -1224,6 +1226,9 @@ class DeliveryOrderController extends Controller {
         if($delivery_order_details->del_boy){
             App\User::where('id',$delivery_order_details->del_boy)->update(['status'=>0]);
         }
+
+        DeliveryChallan::where('id',$savedid)->update(['is_editable'=>$delivery_order_details->is_editable]);
+
         return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
     }
 

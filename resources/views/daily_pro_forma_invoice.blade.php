@@ -99,6 +99,7 @@
                                                 <th>Amount</th>
                                                 <th>Bill Number</th>
                                                 <th>Remarks </th>
+                                                <th>Editable </th>
                                                 @if( Auth::user()->role_id == 0)
                                                     <th>Action </th>
                                                 @endif
@@ -211,6 +212,13 @@
                                                             {{trim($challan->remarks)}}
                                                         @endif
                                                     </td>
+                                                        <td>
+                                                            @if($challan->is_editable > 0)
+                                                                <span class="text-success">Yes</span>
+                                                            @else
+                                                                <span class="text-info">No</span>
+                                                            @endif
+                                                        </td>
                                                     @if( Auth::user()->role_id == 0)
                                                         <td>
                                                             <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_sales_daybook",$challan->id)}}'>
@@ -221,6 +229,7 @@
                                                             </a>
                                                         </td>
                                                     @endif
+
                                                 </tr>
                                                 @if( Auth::user()->role_id == 0  )
 

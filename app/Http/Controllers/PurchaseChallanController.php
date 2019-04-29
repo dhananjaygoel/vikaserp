@@ -270,6 +270,7 @@ class PurchaseChallanController extends Controller {
         $add_challan->grand_total = $request->input('grand_total');
         $add_challan->order_status = 'pending';
         $add_challan->freight = $input_data['Freight'];
+        $add_challan->is_editable = $purchase_advise_details->is_editable;
         $add_challan->save();
 
         $challan_id = DB::getPdo()->lastInsertId();

@@ -99,6 +99,7 @@
                                             <th>Amount</th>
                                             <th>Bill Number</th>
                                             <th>Remarks </th>
+                                            <th>Edited</th>
                                             @if( Auth::user()->role_id == 0)
                                             <th>Action </th>
                                             @endif
@@ -209,6 +210,13 @@
                                                 {{ substr(trim($challan->remarks),0,50)}} ..
                                                 @else
                                                 {{trim($challan->remarks)}}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($challan->is_editable > 0)
+                                                    <span class="text-success">Yes</span>
+                                                @else
+                                                    <span class="text-info">No</span>
                                                 @endif
                                             </td>
                                             @if( Auth::user()->role_id == 0)

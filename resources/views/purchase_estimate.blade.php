@@ -106,6 +106,7 @@
                                                     <th>Amount </th>
                                                     <th>Bill Number</th>
                                                     <th>Remarks </th>
+                                                    <th>Edited </th>
                                                     @if(Auth::user()->role_id == 0)
                                                         <th>Action </th>
                                                     @endif
@@ -188,13 +189,20 @@
                                                                 {{trim($daybook->remarks)}}
                                                             @endif
                                                         </td>
+                                                        <td>
+                                                            @if($daybook->is_editable==1)
+                                                                <span class="text-info">Yes</span>
+                                                            @else
+                                                                <span class="text-danger">No</span>
+                                                            @endif
+                                                        </td>
                                                         @if(Auth::user()->role_id == 0)
                                                             <td>
                                                                 <a href="#" class="table-link danger delete-purchase-order-daybook" data-toggle="modal" data-target="#delete-purchase-order-daybook" data-url='{{url('purchase_order_daybook',$daybook->id)}}'>
-                                                        <span class="fa-stack">
-                                                            <i class="fa fa-square fa-stack-2x"></i>
-                                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                        </span>
+                                                                    <span class="fa-stack">
+                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                                    </span>
                                                                 </a>
                                                             </td>
                                                         @endif

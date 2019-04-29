@@ -553,6 +553,9 @@ class PurchaseAdviseController extends Controller {
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
+        PurchaseAdvise::where('id',$id)->update(['is_editable'=>1]);
+
+
         return redirect('purchaseorder_advise' . $parameters)->with('success', 'Purchase advise updated successfully');
     }
 
@@ -625,6 +628,7 @@ class PurchaseAdviseController extends Controller {
 
 
         if ($validator->passes()) {
+            $orderp = PurchaseOrder::where('id',$input_data['id'])->first();
             $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
             $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
             $datetime = new DateTime($date);
@@ -641,7 +645,8 @@ class PurchaseAdviseController extends Controller {
                 'remarks' => $input_data['grand_remark'],
                 'advice_status' => 'in_process',
                 'vehicle_number' => $input_data['vehicle_number'],
-                'purchase_order_id' => $input_data['id']
+                'purchase_order_id' => $input_data['id'],
+                'is_editable'=>$orderp->is_editable
             ];
             $add_purchase_advice = PurchaseAdvise::create($add_purchase_advice_array);
             $purchase_advice_id = DB::getPdo()->lastInsertId();

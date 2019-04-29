@@ -825,6 +825,8 @@ class PurchaseOrderController extends Controller {
         $purchase_orders =  PurchaseOrder::orderBy('created_at', 'desc')
                 ->with('purchase_products.purchase_product_details', 'purchase_product_has_from')->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
+
+        PurchaseOrder::where('id',$id)->update(['is_editable'=>1]);
         
         return redirect('purchase_orders' . $parameters)->with('flash_message', 'Purchase order details successfully updated.');
     }

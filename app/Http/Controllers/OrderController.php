@@ -1033,6 +1033,10 @@ class OrderController extends Controller {
         $ec->set_updated_date_to_sync_table($tables);
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
+
+
+        Order::where('id',$id)->update(['is_editable'=>1]);
+
         /* end code */
         return redirect('orders' . $parameters)->with('flash_message', 'Order details successfully modified.');
     }
@@ -1478,6 +1482,8 @@ class OrderController extends Controller {
             $delivery_order->product_detail_table = $order->product_detail_table;
             $delivery_order->labour_pipe = $order->labour_pipe;
             $delivery_order->labour_structure = $order->labour_structure;
+
+            $delivery_order->is_editable = $order->is_editable;
 
             $delivery_order->save();
             $delivery_order_id = $delivery_order->id;

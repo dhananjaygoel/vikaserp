@@ -800,6 +800,8 @@ class DeliveryChallanController extends Controller {
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
+        DeliveryChallan::where('id',$id)->update(['is_editable'=>1]);
+
         return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
 
