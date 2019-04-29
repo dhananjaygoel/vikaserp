@@ -179,16 +179,21 @@
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                 @foreach($units as $unit)
-                                                                <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                    @if($unit->unit_name == 'ft' OR $unit->unit_name == 'mt')
+                                                                    @else
+                                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                    @endif
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                     </td>
+
                                                     <td class="col-md-1">
                                                         <div class="form-group">
                                                             <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
                                                         </div>
                                                     </td>
+
                                                     <td class="col-md-2">
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" id="product_price_{{$i}}" name="product[{{$i}}][price]" placeholder="Price" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">

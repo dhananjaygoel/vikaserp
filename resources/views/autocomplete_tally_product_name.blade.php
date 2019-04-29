@@ -1537,8 +1537,16 @@
             var arr1 = main_array['units'];
             var html = '';
             for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+                    if(arr1[key].unit_name == 'ft' || arr1[key].unit_name == 'mt'){
+
+                    }
+                    else{
+                        html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+                    }
+
+
+
+            }
     $("#units_" + current_row_count).html(html);
     });
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
