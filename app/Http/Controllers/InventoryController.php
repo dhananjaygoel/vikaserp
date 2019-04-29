@@ -1020,7 +1020,7 @@ class InventoryController extends Controller {
                 }
             }
         }
-
+        sort($thickness_array);
         $report_arr = $final_arr;
         $html = view('_inventory_report')->with('product_cat', $product_cat)
                 ->with('product_last', $product_last)
@@ -1028,7 +1028,6 @@ class InventoryController extends Controller {
                 ->with('report_arr', $report_arr)
                 ->with('product_column', $product_column)
                 ->render();
-
         return Response::json(['success' => true, 'html' => $html]);
 //        return view('inventory_report')->with('product_cat',$product_cat)->with('product_last',$product_last);
     }
