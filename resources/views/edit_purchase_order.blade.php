@@ -226,11 +226,15 @@
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
                                                         @foreach($units as $unit)
-                                                        @if($product->unit_id == $unit->id)
-                                                        <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                        @else
-                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                        @endif
+                                                            @if($unit->unit_name == 'ft' OR $unit->unit_name == 'mt')
+                                                            @else
+                                                                @if($product->unit_id == $unit->id)
+                                                                    <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                                @else
+                                                                    <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                                                @endif
+                                                            @endif
+
                                                         @endforeach
                                                     </select>
                                                 </div>
