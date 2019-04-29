@@ -1537,7 +1537,7 @@
             var arr1 = main_array['units'];
             var html = '';
             for (var key in arr1) {
-                    if(arr1[key].unit_name == 'ft' || arr1[key].unit_name == 'mt'){
+                    if(arr1[key].id == 4 || arr1[key].id == 5){
 
                     }
                     else{
