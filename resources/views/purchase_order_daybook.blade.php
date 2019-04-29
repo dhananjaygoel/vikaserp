@@ -106,6 +106,7 @@
                                         <th>Amount </th>
                                         <th>Bill Number</th>
                                         <th>Remarks </th>
+                                                <th>Edited </th>
                                         @if(Auth::user()->role_id == 0)
                                         <th>Action </th>
                                         @endif
@@ -186,6 +187,13 @@
                                                     {{ substr(trim($daybook->remarks),0,50)}} ..
                                                     @else
                                                     {{trim($daybook->remarks)}}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($daybook->is_editable==1)
+                                                        <span class="text-info">Yes</span>
+                                                    @else
+                                                        <span class="text-danger">No</span>
                                                     @endif
                                                 </td>
                                                 @if(Auth::user()->role_id == 0)
