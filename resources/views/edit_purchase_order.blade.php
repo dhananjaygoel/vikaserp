@@ -226,7 +226,7 @@
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
                                                         @foreach($units as $unit)
-                                                            @if($unit->unit_name == 'ft' OR $unit->unit_name == 'mt')
+                                                            @if($unit->id == 4 OR $unit->id == 5)
                                                             @else
                                                                 @if($product->unit_id == $unit->id)
                                                                     <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
