@@ -1131,7 +1131,7 @@ class DeliveryOrderController extends Controller {
 
             $total_overhead = $input_data['loading'] + $input_data['freight'] + $input_data['discount'];
 
-            $vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
+            //$vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
             $without_vat_share_overhead = number_format((float) (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
             $profile_share_overhead = number_format((float) (($ratio_profile * $total_overhead) / 100), 2, '.', '');
 

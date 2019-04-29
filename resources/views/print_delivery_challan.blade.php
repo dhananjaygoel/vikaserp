@@ -240,12 +240,17 @@
                     <div class="divCell2">HSN</div>
                     <div class="divCell2">Pcs</div>
                     <div class="divCell2">Qty</div>
-                    @if($local_state)
-                        <div  class="divCell2">SGST</div>
-                        <div  class="divCell2">CGST</div>
+                    @if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0)
+                        @if($local_state)
+                            <div  class="divCell2">SGST</div>
+                            <div  class="divCell2">CGST</div>
+                        @else
+                            <div  class="divCell">IGST</div>
+                        @endif
                     @else
-                        <div  class="divCell">IGST</div>
+                        <div  class="divCell">GST</div>
                     @endif
+
                     <div class="divCell2">Rate</div>
                     <div class="divCell">Amount</div>
                 </div>
@@ -277,11 +282,10 @@
                     $cgst = 0;
                     $igst = 0;
                     $rate = $prod->price;
-                    if(isset($prod->vat_percentage) && $prod->vat_percentage!=''){
+                    if(isset($prod->vat_percentage) && $prod->vat_percentage > 0){
                         if($product_cat->hsn_code){
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                             $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
-
                             if($local_state){
                                 $sgst = $gst_det->sgst;
                                 $cgst = $gst_det->cgst;
@@ -290,6 +294,9 @@
                                 $igst = $gst_det->igst;
                             }
                         }
+                    }
+                    else{
+                        $igst = 0;
                     }
                     ?>
                     @if(isset($prod->vat_percentage) && $prod->vat_percentage!='')
@@ -302,8 +309,6 @@
                     @else
                         <div class="divCell">{{$igst}}</div>
                     @endif
-
-
 
                     <div class="divCell2"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
@@ -437,6 +442,7 @@
                     <div class="">
                         <div class="label"> &nbsp; Total</div>
                         <div class="value bob"> {{ round($total_price, 2) }} &nbsp;</div>
+
                         <div class="label ">&nbsp; Loading</div>
                         <div class="value">
 <?php
@@ -470,17 +476,18 @@ $loading_vat = $allorder->loading_vat_percentage;
 $vat = $final_vat_amount;
 // $vat = (isset($allorder->vat_percentage) && ($with_total != "")) ? round(($with_total * $allorder->vat_percentage) / 100, 2) : 0; 
 ?>
-                            {{ round($vat,2) }}
+                            {{ round($vat,5) }}
                             &nbsp;
                         </div>
                         <div class="label">&nbsp; Round Off</div>
                         <div class="value">
 <?php
-if (isset($allorder->round_off) && ($allorder->round_off != "")) {
-    $roundoff = $allorder->round_off;
-} else {
-    $roundoff = 0;
-}
+//if (isset($allorder->round_off) && ($allorder->round_off != "")) {
+//    $roundoff = $allorder->round_off;
+//} else {
+//    $roundoff = 0;
+//}*/
+                            $roundoff = $vat;
 ?>
                             {{ round($roundoff,2) }}
                             &nbsp;
@@ -488,11 +495,23 @@ if (isset($allorder->round_off) && ($allorder->round_off != "")) {
                         <div class="label" style="border-bottom: 1px solid #ccc;">&nbsp; GT</div>
                         <div class="value" style="border-bottom: 1px solid #ccc;">
 <?php
-if (isset($allorder->grand_price) && ($allorder->grand_price != "")) {
-    $grand_price = $allorder->grand_price;
-} else {
-    $grand_price = 0;
-}
+
+                            $grand_price = $total_price;
+
+                            if($loading_charge != ""){
+                                $grand_price = $grand_price + $loading_charge;
+                            }
+
+                            if($allorder->freight != ""){
+                                $grand_price = $grand_price + $allorder->freight;
+                            }
+
+                            if($allorder->discount != ""){
+                                $grand_price = $grand_price + $allorder->discount;
+                            }
+
+
+
 ?>
                             {{ round($grand_price + $final_vat_amount, 2) }}
                             &nbsp;
