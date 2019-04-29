@@ -147,7 +147,19 @@
                                         <?php
                                         $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
                                         ?>
-                                        @endif                                      
+                                        @endif
+
+                                            @if($prod['unit']->unit_name == 'ft')
+                                                <?php
+                                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                                ?>
+                                            @endif
+
+                                            @if($prod['unit']->unit_name == 'mt')
+                                                <?php
+                                                $qty += $prod->quantity * ($prod['inquiry_product_details']->weight / 305);
+                                                ?>
+                                            @endif
                                         @endforeach
 
                                         <td class="text-center">{{ round($qty, 2) }}</td>

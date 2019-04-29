@@ -115,6 +115,10 @@ class InquiryController extends Controller {
         Session::put('parameters', $parameters);
 
         $inquiries->setPath('inquiry');
+
+
+       // dd($inquiries->toArray());
+
         return view('inquiry', compact('inquiries'));
     }
 
@@ -1432,7 +1436,7 @@ class InquiryController extends Controller {
          * ----------------------------------
          */
         $input = Input::all();
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+//      if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             if (count($customer) > 0) {
