@@ -239,34 +239,33 @@ class CustomerController extends Controller {
         ];
 
         if(isset($status) && Input::get('status') == 'yes'){
-
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
-                $customer->quickbook_supplier_id = $res_q['message']->BillAddr->Id;
+                $customer->quickbook_supplier_id = $res_q['message']->Id;
             }
         } else{
             $res = $this->quickbook_create_customer($Qdata);
             if($res['status']){
-                $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
+                $customer->quickbook_customer_id = $res['message']->Id;
                 $res_q = $this->quickbook_create_supplier($Qdata);
                 if($res_q['status']){
-                    $customer->quickbook_supplier_id = $res_q['message']->BillAddr->Id;
+                    $customer->quickbook_supplier_id = $res_q['message']->Id;
                 }
             }
             else{
                 $this->refresh_token();
                 $res = $this->quickbook_create_customer($Qdata);
                 if($res['status']){
-                    $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
+                    $customer->quickbook_customer_id = $res['message']->Id;
                     $res_q = $this->quickbook_create_supplier($Qdata);
                     if($res_q['status']){
-                        $customer->quickbook_supplier_id = $res_q['message']->BillAddr->Id;
+                        $customer->quickbook_supplier_id = $res_q['message']->Id;
                     }
                 }
             }
         }
 
-        
+
 
 
 
