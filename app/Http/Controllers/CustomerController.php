@@ -112,7 +112,6 @@ class CustomerController extends Controller {
             elseif($customer_filter=='customer'){               
                 $customers = $customers->where('is_supplier', '!=', 'yes');                                       
             }
-            
         }
                 
 
@@ -229,30 +228,25 @@ class CustomerController extends Controller {
 
         $status = Input::get('status');
         $Qdata = [
-            "BillAddr" => [
-                "Line1"=>  Input::get('address1'),
-                "City"=>  Input::get('city'),
-                "CountrySubDivisionCode"=>  Input::get('state'),
-            ],
-            "Title"=>  Input::get('tally_name'),
             "GivenName"=>  Input::get('tally_name'),
-            "Suffix"=>  Input::get('tally_name'),
             "FullyQualifiedName"=> Input::get('tally_name'),
             "CompanyName"=>  Input::get('company_name'),
             "DisplayName"=>  Input::get('tally_name'),
             "PrimaryPhone"=>  [
                 "FreeFormNumber"=>  Input::get('phone_number1')
             ],
-            "PrimaryEmailAddr"=>  [
-                "Address" => Input::get('email')
-        ]];
+        ];
 
         if(isset($status) && Input::get('status') == 'yes'){
+
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
                 $customer->quickbook_supplier_id = $res_q['message']->BillAddr->Id;
             }
         } else{
+
+
+
             $res = $this->quickbook_create_customer($Qdata);
             if($res['status']){
                 $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
@@ -273,6 +267,8 @@ class CustomerController extends Controller {
                 }
             }
         }
+
+        dd($res);
 
 
 
