@@ -245,9 +245,6 @@ class CustomerController extends Controller {
                 $customer->quickbook_supplier_id = $res_q['message']->BillAddr->Id;
             }
         } else{
-
-
-
             $res = $this->quickbook_create_customer($Qdata);
             if($res['status']){
                 $customer->quickbook_customer_id = $res['message']->BillAddr->Id;
@@ -269,7 +266,7 @@ class CustomerController extends Controller {
             }
         }
 
-        dd($res);
+        
 
 
 
