@@ -1069,6 +1069,20 @@
             qtyPieces + 
             '</select>'+
             '</div>'+
+
+
+
+                '<div class = "form-group ff_list_' + current_row_count + '" style="display:none">'+
+                '<select class = "form-control ff_list " name = "ff_list" id = "ff_list_' + current_row_count + '" onchange="setQty(this);">'+
+                qtyPieces +
+                '</select>'+
+                '</div>'+
+                '<div class = "form-group mm_list_' + current_row_count + '" style="display:none">'+
+                '<select class = "form-control mm_list " name = "mm_list" id = "mm_list_' + current_row_count + '" onchange="setQty(this);">'+
+                qtyPieces +
+                '</select>'+
+                '</div>'+
+                    
             '</td>' +
             
             
