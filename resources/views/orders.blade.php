@@ -641,7 +641,7 @@
                                             </div>
                                             <div class="checkbox">
                                                 <label class="marginsms"><input type="checkbox" name="send_email" value="true"><span class="checksms">Send Email to Party</span></label>
-                                                <label><input type="checkbox" id="is_sendsms" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
+                                                <label><input type="checkbox" id="is_sendsms" value="true" name="sendsms" checked><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                             </div>
                                         </div>
                                         <div class="modal-footer">

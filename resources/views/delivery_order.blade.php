@@ -139,10 +139,12 @@
                                         <th>Present Shipping</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
+                                        <th>Delivery Supervisor/ Boy</th>
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
                                         @endif
                                         <th class="text-center col-md-2">Actions</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -181,6 +183,55 @@
                                         <td>
                                             {{$delivery->vehicle_number}}
                                         </td>
+                                        <td>
+                                            <div class="col-md-12">
+                                                <label for="time">Delivery Supervisor</label>
+                                                <div class="input-group">
+                                                    <select class="form-control del_supervisor" name="del_supervisor" id="del_supervisor">
+                                                        <option value="">-->Delivery Supervisor<--</option>
+                                                        @foreach(\App\User::where('role_id',8)->get() as $user)
+                                                            <?php
+                                                                if($user->status == 0){
+                                                                    $class = "🔘";
+                                                                }
+                                                                elseif($user->status == 1){
+                                                                    $class = "🔵";
+
+                                                                }
+                                                                else{
+                                                                    $class = "🔴";
+                                                                }
+                                                            ?>
+                                                                <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                                                
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="time">Delivery Boy</label>
+                                                <div class="input-group">
+                                                    <select class="form-control del_boy" name="del_boy" id="del_boy">
+                                                        <option value="" >-->Delivery Boy<--</option>
+                                                        @foreach(\App\User::where('role_id',9)->get() as $user)
+                                                            <?php
+                                                            if($user->status == 0){
+                                                                $class = "🔘";
+                                                            }
+                                                            elseif($user->status == 1){
+                                                                $class = "🔵";
+                                                            }
+                                                            else{
+                                                                $class = "🔴";
+                                                            }
+                                                            ?>                                                                
+                                                            <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+
 
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
@@ -202,6 +253,21 @@
                                         </td>
                                         @endif
                                         <td class="text-center">
+                                            <?php
+                                                  $disable = "disabled";
+                                                  if($delivery->order_details['del_boy'] OR $delivery->order_details['del_supervisor'])
+                                                  {
+                                                     $disable = "";
+                                                  }
+                                            ?>
+                                            <button class="btn btn-primary truck_load" id="truck_load" data-order_id="{{$delivery->order_id}}" data-final_truck_weight="{{$delivery->order_details['final_truck_weight']}}" data-product_detail_table="{{$delivery->order_details['product_detail_table']}}" data-labour_pipe="{{$delivery->order_details['labour_pipe']}}" data-labour_structure="{{$delivery->order_details['labour_structure']}}" data-toggle="modal" data-target="#myModal" type="button" {{$disable}} style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></button>
+                                            <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal"  {{$disable}}>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> -->
+                                            
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -259,6 +325,13 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($delivery->order_details['final_truck_weight']!=null || $delivery->order_details['final_truck_weight']!=0)
+                                                    🔵 Loaded    
+                                            @else
+                                                    🔴 Under Loading
                                             @endif
                                         </td>
                                     </tr>
@@ -384,4 +457,70 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Load Truck  </h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden"  name="order_id" id="order_id" class="form-control">
+                <div class="form-group">
+                    <input type="number" name="final_truck_weight" id="final_truck_weight" class="form-control" placeholder="Final Truck Weight" value="">
+                </div>
+
+                <div class="form-group">
+                    <textarea name="product_detail_table" id="product_detail_table" class="form-control" placeholder="Product Detail Table"></textarea>
+                </div>
+                <div class="form-group">
+                    <select name="labour_pipe" id="labour_pipe" class="form-control">
+                        <option value="">-->Labour Pipe<--</option>
+                        @foreach(\App\Labour::orderby('id','DESC')->get() as $labour)
+                            <option value="{{$labour->id}}">{{$labour->first_name." ".$labour->last_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="labour_structure" class="form-control" id="labour_structure">
+                        <option value="">-->Labour Structure<--</option>
+                        @foreach(\App\Labour::orderby('id','DESC')->get() as $labour_2)
+                            <option value="{{$labour_2->id}}">{{$labour_2->first_name." ".$labour_2->last_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="button" value="Save" id="submit_2" onclick="loaded_truck_delivery()" class="btn btn-sm btn-primary">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(document).on("click", "#truck_load", function () {
+     var final_truck_weight = $(this).data('final_truck_weight');
+     var Order_id = $(this).data('order_id');
+     var product_detail_table = $(this).data('product_detail_table');
+     var labour_pipe = $(this).data('labour_pipe');
+     var labour_structure = $(this).data('labour_structure');
+     $(".modal-body #order_id").val( Order_id );
+     $(".modal-body #final_truck_weight").val( final_truck_weight );
+     $(".modal-body #product_detail_table").val( product_detail_table );
+     $(".modal-body #labour_pipe").val( labour_pipe );
+     $(".modal-body #labour_structure").val( labour_structure );
+});
+</script>
+
 @stop

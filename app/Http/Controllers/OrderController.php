@@ -93,6 +93,28 @@ class OrderController extends Controller {
             echo "failed";
         }
     }
+    public function loaded_truck_delivery(Request $request){        
+        $update = Order::where('id',$request->order_id)->update([
+            'del_supervisor'=>$request->del_spervisor,
+            'del_boy' => $request->del_boy,
+            'final_truck_weight' => $request->final_truck_weight,
+            'product_detail_table' => $request->product_detail_table,
+            'labour_pipe' => $request->labour_pipe,
+            'labour_structure' => $request->labour_structure
+        ]);
+        if($update){
+            if($request->del_spervisor){
+                User::where('id',$request->del_spervisor)->update(['status'=>1]);
+            }
+            if($request->del_boy){
+                User::where('id',$request->del_boy)->update(['status'=>1]);
+            }
+            echo "success";
+        }
+        else{
+            echo "failed";
+        }
+    }
 
 
     public function index(PlaceOrderRequest $request) {

@@ -680,6 +680,17 @@
                     $("#truck_load").prop('disabled', true);
                 }
             });
+            // $(".del_supervisor").each(function () {
+            //     $(this).click(function () {
+            //         var del_supervisor = this.value;
+            //         if(del_supervisor){
+            //             $(".truck_load").removeAttr('disabled');
+            //         }
+            //         else{
+            //             $(".truck_load").attr('disabled', 'disabled');
+            //         }
+            //     });
+            // });
 
             $("#del_boy").on('change',function () {
                 var del_boy = this.value;

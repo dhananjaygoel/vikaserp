@@ -119,7 +119,7 @@ class Customer extends Model {
         'city' => 'required',
         'state' => 'required',
         'tally_name' => 'required|max:100',
-        'phone_number1' => 'required|integer|digits:10',
+        'phone_number1' => 'required|digits:10',
 //       'email' => 'required|email|unique:users',
         'delivery_location' => 'required',
         'password' => 'min:6|max:100',

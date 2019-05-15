@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
@@ -155,7 +154,41 @@ class CustomerController extends Controller {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
     }
+/* This will start update customer*/    
+    function quickbook_update_customer($quickbook_id,$data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        // $dataService->throwExceptionOnError(true);
+        $resultingObj  = $dataService->FindById('Customer', $quickbook_id);
+        $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$data);
+        // dd($customerObj);
+        $resultingCustomerObj = $dataService->Update($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
 
+    function quickbook_update_supplier($quickbook_id,$data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        // $dataService->throwExceptionOnError(true);
+        // dd($dataService);
+        $resultingObj  = $dataService->FindById('vendor', $quickbook_id);
+        $customerObj = Vendor::update($resultingObj,$data);
+        $resultingCustomerObj = $dataService->Update($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
+/* This is End for Update */
     function getToken(){
        require_once base_path('quickbook/vendor/autoload.php');
        $quickbook = App\QuickbookToken::first();
@@ -472,6 +505,7 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $validator = Validator::make(Input::all(), Customer::$customers_rules);
+        // dd(Input::get('status'));
         
         if ($validator->passes()) {
             $customer = Customer::find($id);
@@ -499,9 +533,9 @@ class CustomerController extends Controller {
             }
 
             $customer->owner_name = Input::get('owner_name');
-            if (Input::has('status')) {
+            // if (Input::has('status')) {
                 $customer->is_supplier = Input::get('status');
-            }
+            // }
 
             if (Input::has('owner_name')) {
                 $users->first_name = Input::get('owner_name');
@@ -567,6 +601,64 @@ class CustomerController extends Controller {
                 $users->password = Hash::make(Input::get('password'));
             }
 
+
+
+            $status = Input::get('status'); 
+            if(Input::get('status') == 'yes')
+                $quickbook_id=$customer->quickbook_supplier_id;
+            else
+                $quickbook_id=$customer->quickbook_customer_id;
+            if($quickbook_id)
+            {     
+                    // $objdata=[
+                      // "MiddleName": "Mark", 
+                      // "SyncToken"=> "0", 
+                      // "Id"=> $quickbook_id, 
+                      // "sparse"=> true
+                    // ];
+                    $Qdata = [
+                        // "Id"=> $quickbook_id ,
+                        "GivenName"=>  Input::get('tally_name'),
+                        "FullyQualifiedName"=> Input::get('tally_name'),
+                        "CompanyName"=>  Input::get('company_name'),
+                        "DisplayName"=>  Input::get('tally_name'),
+                        "PrimaryPhone"=>  [
+                            "FreeFormNumber"=>  Input::get('phone_number1')
+                        ],
+                            "BillAddr"=> [
+                              "City"=> Input::get('city'), 
+                              "Line1"=> Input::get('address1')                  
+                            ], 
+                    ];
+                // dd($Qdata);
+                    if(isset($status) && Input::get('status') == 'yes'){
+                        $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
+                        // if($res_q['status']){
+                        //     $customer->quickbook_supplier_id = $res_q['message']->Id;
+                        // }
+                    } else{
+                        $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
+                        if($res['status']){
+                           // $customer->quickbook_customer_id = $res['message']->Id;                   
+                            $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
+                            if($res_q['status']){
+                                // $customer->quickbook_supplier_id = $res_q['message']->Id;
+                            }
+                        }
+                        else{
+                            $this->refresh_token();
+                            $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
+                            if($res['status']){
+                               // $customer->quickbook_customer_id = $res['message']->Id;                        
+                                $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
+                                if($res_q['status']){
+                                    // $customer->quickbook_supplier_id = $res_q['message']->Id;
+                                }
+                            }
+                        }
+                    }
+            }            
+            // dd($customer);
             if ($customer->save() && $users->save()) {
                 $product_category_id = Input::get('product_category_id');
                 if (isset($product_category_id)) {

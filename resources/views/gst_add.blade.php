@@ -36,22 +36,22 @@
 
                                 <div class="form-group">
                                     <label for="gst">GST<span class="mandatory">*</span></label>
-                                    <input id="gst" class="form-control" placeholder="GST" name="gst" value="{{Input::old('gst')}}" type="number">
+                                    <input id="gst" class="form-control" placeholder="GST" name="gst" value="{{Input::old('gst')}}" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="sgst">SGST<span class="mandatory">*</span></label>
-                                    <input id="sgst" class="form-control" placeholder="SGST" name="sgst" value="{{Input::old('sgst')}}" type="number">
+                                    <input id="sgst" class="form-control" placeholder="SGST" name="sgst" value="{{Input::old('sgst')}}" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="cgst">CGST<span class="mandatory">*</span></label>
-                                    <input id="cgst" class="form-control" placeholder="CGST" name="cgst" value="{{Input::old('cgst')}}" type="number">
+                                    <input id="cgst" class="form-control" placeholder="CGST" name="cgst" value="{{Input::old('cgst')}}" type="text">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="igst">IGST<span class="mandatory">*</span></label>
-                                    <input id="igst" class="form-control" placeholder="IGST" name="igst" value="{{Input::old('igst')}}" type="number">
+                                    <input id="igst" class="form-control" placeholder="IGST" name="igst" value="{{Input::old('igst')}}" type="text">
                                 </div>
 
                                 <div class="form-group">

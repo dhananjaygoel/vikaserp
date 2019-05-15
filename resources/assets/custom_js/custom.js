@@ -3198,3 +3198,65 @@ function loaded_truck(order_id) {
 
     }
 }
+
+function loaded_truck_delivery() {
+
+    var order_id = $("#order_id").val();
+    var del_spervisor = $("#del_supervisor").val();
+    var del_boy = $("#del_boy").val();
+    //var vehicle_number = $("#vehicle_number").val();
+    
+    var final_truck_weight = $("#final_truck_weight").val();
+    var product_detail_table = $("#product_detail_table").val();
+    var labour_pipe = $("#labour_pipe").val();
+    var labour_structure = $("#labour_structure").val();
+
+    if(del_spervisor || del_boy){
+        if(final_truck_weight){
+            $.ajax({
+                type: 'POST',
+                url: url + '/loaded_truck_delivery',
+                data: {
+                    labour_structure: labour_structure,
+                    labour_pipe: labour_pipe,
+                    product_detail_table: product_detail_table,
+                    del_spervisor: del_spervisor,
+                    del_boy:del_boy,
+                    final_truck_weight:final_truck_weight,
+                    order_id:order_id,
+                    _token: token
+                },
+                success: function (data) {
+                    if(data=='success'){
+                        $("#final-submit").prop('disabled',false);
+                        $("#vehicle_number1").val(vehicle_number);
+
+                        $(".err-p").removeClass('text-danger').addClass('text-success').html('Final truck weight updated successful');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
+                    }
+                    else{
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
+                    }
+                }
+            });
+        }
+        else{
+            $(".err-p").removeClass('text-success').addClass('text-danger').html('Please enter final truck weight');
+            setTimeout(function(){
+                $(".err-p").html('');
+            }, 5000);
+        }
+    }
+    else{
+        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
+        setTimeout(function(){
+            $(".err-p").html('');
+        }, 5000);
+
+    }
+}

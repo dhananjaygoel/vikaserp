@@ -42,22 +42,22 @@
 
                             <div class="form-group">
                                 <label for="gst">GST<span class="mandatory">*</span></label>
-                                <input id="gst" class="form-control" placeholder="GST" name="gst" value="{{$gst->gst}}" type="number">
+                                <input id="gst" class="form-control" placeholder="GST" name="gst" value="{{$gst->gst}}" type="text">
                             </div>
 
                             <div class="form-group">
                                 <label for="sgst">SGST<span class="mandatory">*</span></label>
-                                <input id="sgst" class="form-control" placeholder="SGST" name="sgst" value="{{$gst->sgst}}" type="number">
+                                <input id="sgst" class="form-control" placeholder="SGST" name="sgst" value="{{$gst->sgst}}" type="text">
                             </div>
 
                             <div class="form-group">
                                 <label for="cgst">CGST<span class="mandatory">*</span></label>
-                                <input id="cgst" class="form-control" placeholder="CGST" name="cgst" value="{{$gst->cgst}}" type="number">
+                                <input id="cgst" class="form-control" placeholder="CGST" name="cgst" value="{{$gst->cgst}}" type="text">
                             </div>
 
                             <div class="form-group">
                                 <label for="igst">IGST<span class="mandatory">*</span></label>
-                                <input id="igst" class="form-control" placeholder="IGST" name="igst" value="{{$gst->igst}}" type="number">
+                                <input id="igst" class="form-control" placeholder="IGST" name="igst" value="{{$gst->igst}}" type="text">
                             </div>
 
                             <div class="form-group">

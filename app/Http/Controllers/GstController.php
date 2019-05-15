@@ -79,13 +79,21 @@ class GstController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-        $this->validate($request, [
-            'gst' => 'required|integer|unique:gst,gst',
-            'sgst' => 'required|integer',
-            'cgst' => 'required|integer',
-            'igst' => 'required|integer',
+        // $this->validate($request, [
+        //     'gst' => 'required|integer|unique:gst,gst',
+        //     'sgst' => 'required|integer',
+        //     'cgst' => 'required|integer',
+        //     'igst' => 'required|integer',
+        //     'quick_gst_id'=>'required'
+        // ]);
+         $this->validate($request, [
+            'gst' => 'required|numeric|between:0,99.99|unique:gst,gst',
+            'sgst' => 'required|numeric|between:0,99.99',
+            'cgst' => 'required|numeric|between:0,99.99',
+            'igst' => 'required|numeric|between:0,99.99',
             'quick_gst_id'=>'required'
         ]);
+
 
         $thickness = new Gst();
         $thickness->gst = $request->gst;
@@ -149,10 +157,10 @@ class GstController extends Controller {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
-            'gst' => 'required|integer',
-            'sgst' => 'required|integer',
-            'cgst' => 'required|integer',
-            'igst' => 'required|integer',
+            'gst' => 'required|numeric|between:0,99.99',
+            'sgst' => 'required|numeric|between:0,99.99',
+            'cgst' => 'required|numeric|between:0,99.99',
+            'igst' => 'required|numeric|between:0,99.99',
             'quick_gst_id'=>'required'
         ]);
 

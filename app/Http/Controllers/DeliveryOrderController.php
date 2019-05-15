@@ -122,8 +122,7 @@ class DeliveryOrderController extends Controller {
 
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
-        Session::put('parameters', $parameters);
-
+        Session::put('parameters', $parameters);        
         return view('delivery_order', compact('delivery_data', 'search_dates'));
     }
 

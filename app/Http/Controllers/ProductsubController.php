@@ -183,6 +183,22 @@ class ProductsubController extends Controller {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
     }
+    function quickbook_update_item($quickbook_item_id,$data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getToken();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        // $dataService->throwExceptionOnError(true);
+        $resultingObj  = $dataService->FindById('Item', $quickbook_item_id);
+        $customerObj = Item::update($resultingObj,$data);
+        // dd($dataService->Update($customerObj));
+        $resultingCustomerObj = $dataService->Update($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -395,8 +411,8 @@ class ProductsubController extends Controller {
      */
 
     public function update($id) {
-
         $validator = Validator::make(Input::all(), ProductSubCategory::$product_sub_category_rules);
+ 
 
         if ($validator->passes()) {
             $data = Input::all();
@@ -419,6 +435,65 @@ class ProductsubController extends Controller {
                 return Redirect::back()->withInput()->with('alias', 'Alias name already taken.');
             } else {
                 $pro_sub_cat['alias_name'] = Input::get('alias_name');
+            }
+            $pcat = ProductCategory::where('id',$data['sub_product_name'])->first();
+                $Qdata = [
+                "Name" => Input::get('alias_name'),
+                // "Active" => true,
+                "sparse"=> false, 
+                "Active"=> true, 
+                "SyncToken"=> "3",
+                "FullyQualifiedName" => Input::get('alias_name'),
+                "UnitPrice" => $pcat->price + $data['difference'],
+                "Type" => "NonInventory",
+                "QtyOnHand"=> 1,
+                // "PurchaseCost"=> $pcat->price,                
+                "IncomeAccountRef"=> [
+                    "value"=> 3,
+                    "name" => "IncomRef"
+                ],
+                "TrackQtyOnHand"=>false
+                // "TaxClassificationRef"=>[
+                //     "value"=>1204
+                // ]
+            ];
+
+            // $Qdata = [
+            //   "FullyQualifiedName" => "Rock Fountain", 
+            //   "domain"=> "QBO", 
+            //   "Id" => "28", 
+            //   "Name" => "Rock Fountain", 
+            //   "Type"=> "NonInventory", 
+            //   "PurchaseCost"=> 125, 
+            //   "ReverseChargeRate"=>1.0,
+            //   "sparse" => false, 
+            //   "Active" => true, 
+            //   "SyncToken" => "2", 
+            //   "UnitPrice" => 275, 
+            //   "IncomeAccountRef"=> [
+            //     "name" => "IncomRef", 
+            //     "value" => "3"
+            //   ], 
+            //   "PurchaseDesc" => "Rock Fountain", 
+            //   "Description" => "New, updated description for Rock Fountain"
+            // ];
+
+            // $ProductSubCategory = ProductSubCategory::where('id',$id)->first();
+            $ProductSubCategory = ProductSubCategory::find($id);
+            $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
+            if($quickbook_item_id)  
+            {          
+                $res = $this->quickbook_update_item($quickbook_item_id,$Qdata);
+                if($res['status']){
+                    // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
+                }
+                else{
+                    $this->refresh_token();
+                    $res = $this->quickbook_update_item($quickbook_item_id,$Qdata);
+                    if($res['status']){
+                        // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
+                    }
+                }
             }
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
