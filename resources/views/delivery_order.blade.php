@@ -248,7 +248,7 @@
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
-                                            @if($delivery->final_truck_weight!=null || $delivery->final_truck_weight!=0)
+                                            @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0)
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -342,7 +342,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($delivery->final_truck_weight!=null || $delivery->final_truck_weight!=0)
+                                            @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0)
                                                     🔵 Loaded    
                                             @else
                                                     🔴 Under Loading
