@@ -205,9 +205,9 @@
                                                                 }
                                                             ?>
                                                             @if($delivery->del_supervisor == $user->id)
-                                                                <option value="{{$user->id}}" selected >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                                                <option value="{{$user->id}}" selected > {{$user->first_name.' '.$user->last_name}} </option>
                                                             @else
-                                                                <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                                                <option value="{{$user->id}}" > {{$user->first_name.' '.$user->last_name}} </option>
                                                             @endif
                                                                 
                                                         @endforeach
@@ -233,9 +233,9 @@
                                                             }
                                                             ?>                                                                
                                                             @if($delivery->del_boy == $user->id)
-                                                                    <option value="{{$user->id}}" selected >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                                                    <option value="{{$user->id}}" selected > {{$user->first_name.' '.$user->last_name}} </option>
                                                             @else
-                                                                    <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
+                                                                    <option value="{{$user->id}}" > {{$user->first_name.' '.$user->last_name}} </option>
                                                              @endif
                                                         @endforeach
                                                     </select>
