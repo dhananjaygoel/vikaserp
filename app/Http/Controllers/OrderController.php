@@ -95,7 +95,7 @@ class OrderController extends Controller {
     }
     public function loaded_truck_delivery(Request $request){
         $delivery_data = DeliveryOrder::where('order_id',$request->order_id)->first();
-        if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_boy)) 
+        if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_spervisor)) 
         {       
             $update = Order::where('id',$request->order_id)->update([
                 'final_truck_weight' => $request->final_truck_weight,
@@ -1541,8 +1541,8 @@ class OrderController extends Controller {
                 $delivery_order->location_difference = $order->location_difference;
             }
 
-            $delivery_order->empty_truck_weight = $order->empty_truck_weight;
-            $delivery_order->final_truck_weight = $order->final_truck_weight;
+            // $delivery_order->empty_truck_weight = $order->empty_truck_weight;
+            // $delivery_order->final_truck_weight = $order->final_truck_weight;
             $delivery_order->del_supervisor = $order->del_supervisor;
             $delivery_order->del_boy = $order->del_boy;
             $delivery_order->party_name = $order->party_name;
