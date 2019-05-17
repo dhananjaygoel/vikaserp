@@ -3200,44 +3200,45 @@ function loaded_truck(order_id) {
 }
 
 function loaded_truck_delivery() {
-
     var order_id = $("#order_id").val();
-    var del_spervisor = $("#del_supervisor").val();
-    var del_boy = $("#del_boy").val();
+    // var del_spervisor = $(".del_supervisor").val();
+    // var del_boy = $(".del_boy").val();
     //var vehicle_number = $("#vehicle_number").val();
-    
-    var final_truck_weight = $("#final_truck_weight").val();
-    var product_detail_table = $("#product_detail_table").val();
-    var labour_pipe = $("#labour_pipe").val();
-    var labour_structure = $("#labour_structure").val();
+    var final_truck_weight = $("#final_truck_weight").val();   
+    // var product_detail_table = $("#product_detail_table").val();
+    // var labour_pipe = $("#labour_pipe").val();
+    // var labour_structure = $("#labour_structure").val();
 
-    if(del_spervisor || del_boy){
+    // if(del_spervisor || del_boy){
         if(final_truck_weight){
             $.ajax({
                 type: 'POST',
                 url: url + '/loaded_truck_delivery',
                 data: {
-                    labour_structure: labour_structure,
-                    labour_pipe: labour_pipe,
-                    product_detail_table: product_detail_table,
-                    del_spervisor: del_spervisor,
-                    del_boy:del_boy,
+                    // labour_structure: labour_structure,
+                    // labour_pipe: labour_pipe,
+                    // product_detail_table: product_detail_table,
+                    // del_spervisor: del_spervisor,
+                    // del_boy:del_boy,
                     final_truck_weight:final_truck_weight,
                     order_id:order_id,
                     _token: token
                 },
                 success: function (data) {
+                    // alert(data);
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);
-                        $("#vehicle_number1").val(vehicle_number);
+                        // $("#vehicle_number1").val(vehicle_number);
 
                         $(".err-p").removeClass('text-danger').addClass('text-success').html('Final truck weight updated successful');
                         setTimeout(function(){
                             $(".err-p").html('');
                         }, 5000);
+                        window.location.reload();
                     }
                     else{
-                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        // $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
                         setTimeout(function(){
                             $(".err-p").html('');
                         }, 5000);
@@ -3252,11 +3253,59 @@ function loaded_truck_delivery() {
             }, 5000);
         }
     }
-    else{
-        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
-        setTimeout(function(){
-            $(".err-p").html('');
-        }, 5000);
+//     else{
+//         $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
+//         setTimeout(function(){
+//             $(".err-p").html('');
+//         }, 5000);
 
-    }
+//     }
+// }
+function del_super_change(elem) {
+  var del_spervisor = $(elem).val();
+  var order_id = $(elem).data("order_id");
+  var delivery_id = $(elem).data("delivery_id");
+  $.ajax({
+        type: 'POST',
+        url: url + '/delivery_order_spervisor',
+        data: {
+            del_spervisor: del_spervisor,                        
+            order_id:order_id,
+            delivery_id:delivery_id,
+            _token: token
+        },
+        success: function (data) {
+            // alert(data);
+        }
+    });
 }
+function del_boy_change(elem) {
+  var del_boy = $(elem).val();
+  var order_id = $(elem).data("order_id");
+  var delivery_id = $(elem).data("delivery_id");
+  $.ajax({
+        type: 'POST',
+        url: url + '/delivery_order_del_boy',
+        data: {
+            del_boy: del_boy,                        
+            order_id:order_id,
+            delivery_id:delivery_id,
+            _token: token
+        },
+        success: function (data) {
+            // alert(data);
+        }
+    });
+}
+$(document).on("click", "#truck_load", function () {
+     var Order_id = $(this).data('order_id');
+     var final_truck_weight = $(this).data('final_truck_weight');
+     // var product_detail_table = $(this).data('product_detail_table');
+     // var labour_pipe = $(this).data('labour_pipe');
+     // var labour_structure = $(this).data('labour_structure');
+     $(".modal-body #order_id").val( Order_id );
+     $(".modal-body #final_truck_weight").val( final_truck_weight );
+     // $(".modal-body #product_detail_table").val( product_detail_table );
+     // $(".modal-body #labour_pipe").val( labour_pipe );
+     // $(".modal-body #labour_structure").val( labour_structure );
+});

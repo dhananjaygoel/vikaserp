@@ -260,96 +260,8 @@
 
                     <div class="clearfix"></div>
 
-                    <div class="form-group">
-                        &nbsp;&nbsp;&nbsp;   🔘 Free      &nbsp;&nbsp;&nbsp;&nbsp;     🔵 Loaded    &nbsp;&nbsp;&nbsp;&nbsp;  🔴 Under Loading
-                    </div>
-
-                    <div class="form-group col-md-10 " >
-                        <div class="col-md-2">
-                            <label for="time">Delivery Supervisor</label>
-                            <div class="input-group">
-                                <select class="form-control" name="del_supervisor" id="del_supervisor">
-                                    <option value="">-->Delivery Supervisor<--</option>
-                                    @foreach(\App\User::where('role_id',8)->get() as $user)
-                                        <?php
-                                            if($user->status == 0){
-                                                $class = "🔘";
-                                            }
-                                            elseif($user->status == 1){
-                                                $class = "🔵";
-
-                                            }
-                                            else{
-                                                $class = "🔴";
-                                            }
-                                        ?>
-                                            @if($order->del_supervisor == $user->id)
-                                                <option value="{{$user->id}}" selected >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
-                                            @else
-                                                <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
-                                            @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="time">Delivery Boy</label>
-                            <div class="input-group">
-                                <select class="form-control" name="del_boy" id="del_boy">
-                                    <option value="" >-->Delivery Boy<--</option>
-                                    @foreach(\App\User::where('role_id',9)->get() as $user)
-                                        <?php
-                                        if($user->status == 0){
-                                            $class = "🔘";
-                                        }
-                                        elseif($user->status == 1){
-                                            $class = "🔵";
-                                        }
-                                        else{
-                                            $class = "🔴";
-                                        }
-                                        ?>
-                                        @if($order->del_boy == $user->id)
-                                                <option value="{{$user->id}}" selected >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
-                                        @else
-                                                <option value="{{$user->id}}" >{{$class}} {{$user->first_name.' '.$user->last_name}} </option>
-                                        @endif
-
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label for="time"></label>
-                            <div class="input-group">
-                                <?php
-                                $disable = "disabled";
-                                if($order->del_boy OR $order->del_supervisor){
-                                    $disable = "";
-                                }
-                                ?>
-                                <button class="btn btn-primary" id="truck_load" data-toggle="modal" data-target="#myModal" type="button" {{$disable}}>Load</button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
 
                     <div class="clearfix"></div>
-
-
-
-
-
-
-
-
-
-
-
                         <div class="clearfix"></div>
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
@@ -407,7 +319,7 @@
                         <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         <hr>
                         <div >
-                            <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder" id="final-submit" {{($order->empty_truck_weight && $order->final_truck_weight)?'':'disabled'}}>Submit</button>
+                            <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder" id="final-submit">Submit</button>
                             <a href="{{url('orders')}}" class="btn btn-default form_button_footer" style="background: #292929">Back</a>
                         </div>
                         <div class="clearfix"></div>

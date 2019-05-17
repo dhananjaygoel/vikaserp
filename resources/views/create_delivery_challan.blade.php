@@ -103,8 +103,17 @@
                         </div>
                         <hr>
                         <div class="form-group row">
-                            <span class="col-md-2">Final Truck Weight(Kg):</span> 
+                            <span class="col-md-2">Final Truck Weight(Kg):</span>
+                            @if(isset($delivery_data->final_truck_weight))
+                            @if($delivery_data->final_truck_weight > 0)                            
+                            <input type="text" name="final_truck_weight" value="{{ $delivery_data->final_truck_weight}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
+                            <input type="hidden" name="empty_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight">
+                            @else
+                            <input type="text" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
+                            @endif
+                            @else
                             <input type="text" name="final_truck_weight" value="" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
+                            @endif 
                         </div>
                         <hr>
                         <div class="form-group underline">Product Details</div>

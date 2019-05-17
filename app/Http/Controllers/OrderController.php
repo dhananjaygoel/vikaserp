@@ -93,27 +93,71 @@ class OrderController extends Controller {
             echo "failed";
         }
     }
-    public function loaded_truck_delivery(Request $request){        
+    public function loaded_truck_delivery(Request $request){
+        $delivery_data = DeliveryOrder::where('order_id',$request->order_id)->first();
+        if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_boy)) 
+        {       
+            $update = Order::where('id',$request->order_id)->update([
+                'final_truck_weight' => $request->final_truck_weight,
+            ]);  
+            $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
+                'final_truck_weight' => $request->final_truck_weight,
+            ]);      
+            if($update){            
+                echo "success";
+            }
+            else{
+                echo "failed";
+            }
+        }
+        // else{
+
+        //         echo "failed".$delivery_data; 
+        //         // return Redirect::back()->withInput()->with('err-p', 'Please select delivery supervisor or delivery boy');
+        // }
+        
+
+    }
+    public function delivery_order_spervisor(Request $request){
+      if($request->del_spervisor==null)
+            $request->del_spervisor=null;  
         $update = Order::where('id',$request->order_id)->update([
-            'del_supervisor'=>$request->del_spervisor,
-            'del_boy' => $request->del_boy,
-            'final_truck_weight' => $request->final_truck_weight,
-            'product_detail_table' => $request->product_detail_table,
-            'labour_pipe' => $request->labour_pipe,
-            'labour_structure' => $request->labour_structure
-        ]);
+            'del_supervisor'=>$request->del_spervisor  
+        ]);  
+        $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
+            'del_supervisor'=>$request->del_spervisor,            
+        ]);      
         if($update){
             if($request->del_spervisor){
                 User::where('id',$request->del_spervisor)->update(['status'=>1]);
-            }
-            if($request->del_boy){
-                User::where('id',$request->del_boy)->update(['status'=>1]);
-            }
+            }            
             echo "success";
         }
         else{
             echo "failed";
+        }        
+
+    }
+    public function delivery_order_del_boy(Request $request){  
+    if($request->del_boy==null)
+            $request->del_boy=null; 
+
+        $update = Order::where('id',$request->order_id)->update([
+            'del_boy'=>$request->del_boy  
+        ]);  
+        $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
+            'del_boy'=>$request->del_boy,            
+        ]);      
+        if($update){
+            if($request->del_boy){
+                User::where('id',$request->del_boy)->update(['status'=>1]);
+            }            
+            echo "success";
         }
+        else{
+            echo "failed";
+        }        
+
     }
 
 
@@ -1360,6 +1404,7 @@ class OrderController extends Controller {
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
+
         foreach ($order['all_order_products'] as $key => $value) {
             //old
             //$delivery_order_products = AllOrderProducts::where('parent', '=', $value->id)->get();
