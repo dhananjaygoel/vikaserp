@@ -537,6 +537,7 @@ class OrderController extends Controller {
                     'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
+                    'length' => $product_data['length'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -757,8 +758,6 @@ class OrderController extends Controller {
      */
     public function update($id, PlaceOrderRequest $request) {
 
-
-
         $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_edit_order')) {
@@ -882,6 +881,7 @@ class OrderController extends Controller {
                     'order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
+                    'length' => $product_data['length'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -895,6 +895,7 @@ class OrderController extends Controller {
                     'order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
+                    'length' => $product_data['length'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,

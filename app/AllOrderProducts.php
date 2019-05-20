@@ -10,7 +10,7 @@ class AllOrderProducts extends Model {
     use SoftDeletes;
 
     protected $table = 'all_order_products';
-    protected $fillable = ['order_id', 'order_type', 'from', 'product_category_id', 'unit_id', 'quantity', 'actual_pieces', 'price', 'vat_percentage', 'present_shipping', 'remarks', 'parent', 'actual_quantity','app_product_id'];
+    protected $fillable = ['order_id', 'order_type', 'from', 'product_category_id', 'unit_id', 'quantity', 'actual_pieces', 'price', 'vat_percentage', 'present_shipping', 'remarks', 'parent', 'actual_quantity','app_product_id','length'];
     protected $dates = ['deleted_at'];
 
     public function unit() {

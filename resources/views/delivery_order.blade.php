@@ -190,7 +190,7 @@
                                                 <label for="time">Delivery Supervisor</label>
                                                 <div class="input-group">
                                                     <select class="form-control del_supervisor" name="del_supervisor" onchange="del_super_change(this)" data-order_id="{{$delivery->order_id}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor_" @if($delivery->serial_no == "") disabled @endif>
-                                                        <option value="">-->Delivery Supervisor<--</option>
+                                                        <option value="">Delivery Supervisor</option>
                                                         @foreach(\App\User::where('role_id',8)->get() as $user)
                                                             <?php
                                                                 if($user->status == 0){
@@ -219,7 +219,7 @@
                                                 <label for="time">Delivery Boy</label>
                                                 <div class="input-group">
                                                     <select class="form-control del_boy" name="del_boy" onchange="del_boy_change(this)" data-order_id="{{$delivery->order_id}}" data-delivery_id="{{$delivery->id}}" id="del_boy_" @if($delivery->serial_no == "") disabled @endif>
-                                                        <option value="" >-->Delivery Boy<--</option>
+                                                        <option value="" >Delivery Boy</option>
                                                         @foreach(\App\User::where('role_id',9)->get() as $user)
                                                             <?php
                                                             if($user->status == 0){
@@ -273,7 +273,7 @@
                                                   //    $disable = "";
                                                   // }
                                             ?>                                           
-                                            <button class="btn btn-primary truck_load" id="truck_load" data-order_id="{{$delivery->order_id}}" data-final_truck_weight="{{$delivery->order_details['final_truck_weight']}}" data-product_detail_table="{{$delivery->order_details['product_detail_table']}}" data-labour_pipe="{{$delivery->order_details['labour_pipe']}}" data-labour_structure="{{$delivery->order_details['labour_structure']}}" data-toggle="modal" data-target="#myModal" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></button>
+                                            <button class="btn btn-primary truck_load" id="truck_load" data-order_id="{{$delivery->order_id}}" data-final_truck_weight="{{$delivery->final_truck_weight}}" data-product_detail_table="{{$delivery->product_detail_table}}" data-labour_pipe="{{$delivery->labour_pipe}}" data-labour_structure="{{$delivery->labour_structure}}" data-toggle="modal" data-target="#myModal" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></button>
                                                
                                             <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
                                                 <span class="fa-stack">

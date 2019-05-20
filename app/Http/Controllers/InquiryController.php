@@ -1037,7 +1037,8 @@ class InquiryController extends Controller {
                     $data_array[] = [
                         'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
                         'id' => $product->id,
-                        'product_price' => $product_price
+                        'product_price' => $product_price,
+                        'type_id'=>$product['product_category']['product_type']->id
                     ];
                 }
             } else {
@@ -1077,14 +1078,16 @@ class InquiryController extends Controller {
                         'value' => '<-- Back',
                         'id' => '0',
                         'level' => '0',
-                        'product_price' => ''
+                        'product_price' => '',
+                        'type_id'=>$id
                     ];
                     foreach ($products as $product) {
                         $data_array[] = [
                             'value' => $product['product_category_name'],
                             'id' => $product['id'],
                             'level' => '2',
-                            'product_price' => ''
+                            'product_price' => '',
+                            'type_id'=>$id
                         ];
                     }
                 } else {
@@ -1115,14 +1118,15 @@ class InquiryController extends Controller {
                         'value' => '<-- Back',
                         'id' => $type_id,
                         'level' => '1',
-                        'product_price' => ''
+                        'product_price' => '',
                     ];
                     foreach ($products as $product) {
                         $data_array[] = [
                             'value' => $product['size'],
                             'id' => $product['ids'],
                             'level' => '3',
-                            'product_price' => ''
+                            'product_price' => '',
+                            'type_id'=>$product['product_category']->product_type_id
                         ];
                     }
                 } else {
@@ -1160,7 +1164,8 @@ class InquiryController extends Controller {
                             'value' => $mixed,
                             'id' => $product['id'],
                             'level' => '4',
-                            'product_price' => ''
+                            'product_price' => '',
+                            'type_id'=>$product['product_category']->product_type_id
                         ];
                     }
                 } else {
@@ -1180,12 +1185,12 @@ class InquiryController extends Controller {
                     $data_array[] = [
                         'value' => $product->alias_name,
                         'id' => $product->id,
-                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference
+                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference,
+                        'type_id'=>$product['product_category']->product_type_id
                     ];
                 }
             }
         }
-
         echo json_encode(array('data_array' => $data_array));
     }
 

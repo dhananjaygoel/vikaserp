@@ -1161,6 +1161,11 @@
             '</select>' +
             '</div>' +
             '</td>' +
+            '<td class="col-md-1" >' +
+            '<div class="form-group length_list_' + current_row_count + '">' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
+            '</div>' +
+            '</td>' +
             
             '<td class="col-md-1">' +
             '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
@@ -1696,7 +1701,17 @@ $.widget("custom.combobox1", {
 
             this._on(this.input, {
                 autocompleteselect: function (event, ui) {
-                   
+        //         	var i = $('#units_' + id).val();
+    				// alert(i);
+        //            console.log(ui);
+                   if(ui.item.type_id == 3)
+                   {
+                   		$('#length_'+id).attr('disabled', false);
+                   }
+                   else
+                   {
+                   		$('#length_'+id).attr('disabled', true);
+                   }
                     if(ui.item.product_price == ""){
                         var term = '';
                         var level = ui.item.level;
@@ -1707,7 +1722,8 @@ $.widget("custom.combobox1", {
                             data: {term: term,level:level, term_type: term_type,term_id:term_id},
                             cache: true,
                             success: function (data) { 
-                                var obj = jQuery.parseJSON(data);
+                            	var obj = jQuery.parseJSON(data);
+
                                 $('#product_button_'+id).attr("data-level", level)
                                 $('#product_button_'+id).attr("data-id", term_id)
                                 $("#product_all_"+id).val(" ");
@@ -1730,7 +1746,6 @@ $.widget("custom.combobox1", {
                             cache: true,
                             success: function (data) { 
                                 var obj = jQuery.parseJSON(data);
-                                
                                 $("#add_product_id_"+id).val(obj.data_array[0].id);
                                 $("#product_all_"+id).val(term);
                                 $("#product_price_"+id).val(obj.data_array[0].product_price);
@@ -1934,7 +1949,15 @@ function getProductDetails() {
 
             this._on(this.input, {
                 autocompleteselect: function (event, ui) {
-                   
+                   // console.log(ui);
+                   if(ui.item.type_id == 3)
+                   {
+                   		$('#length_'+id).attr('disabled', false);
+                   }
+                   else
+                   {
+                   		$('#length_'+id).attr('disabled', true);
+                   }
                     if(ui.item.product_price == ""){
                         var term = '';
                         var level = ui.item.level;

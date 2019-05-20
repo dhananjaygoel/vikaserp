@@ -257,8 +257,8 @@
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Length</span></td>
                                             <td><span>Quantity</span></td>
-
                                             <td><span>Price</span><span class="mandatory">*</span></td>
                                             <td class="inquiry_vat_chkbox"><span>GST Percentage</span></td>
                                             <td><span>Remark</span></td>
@@ -286,6 +286,13 @@
                                                                         <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                     @endforeach
                                                                 </select>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-md-1">
+                                                            <div class = "form-group">
+                                                                <div class = "form-group length_list_{{$i}}">
+                                                                <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>">
+                                                            </div>
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
@@ -337,6 +344,13 @@
                                                             @endif
                                                             @endforeach
                                                         </select>
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <div class = "form-group">
+                                                        <div class = "form-group length_list_{{$key}}">
+                                                        <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{$product->length}}">
+                                                    </div>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
