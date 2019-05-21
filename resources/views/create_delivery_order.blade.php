@@ -152,6 +152,7 @@
                                         <tr class="headingunderline">
                                             <td><span><b>Select Product(Alias)</b></span></td>
                                             <td><span><b>Unit</b></span></td>
+                                            <td><span><b>Length</b></span></td>
                                             <td><span><b>Quantity</b></span></td>
                                             <td><span><b>Present Shipping</b></span></td>
                                             <td><span><b>Price</b></span></td>
@@ -173,7 +174,7 @@
                                                 </div>
                                             </td>
                                             
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group ">
                                                     @foreach($units as $unit)
                                                     @if($product->unit_id == $unit->id)
@@ -181,6 +182,12 @@
                                                     <input type="hidden" value="{{$unit->id}}" name="product[{{$key}}][units]">
                                                     @endif
                                                     @endforeach
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    {{$product->length}}
+                                                    <input id="length_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][length]" value="{{$product->length}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
