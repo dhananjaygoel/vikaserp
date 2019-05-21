@@ -1052,7 +1052,11 @@
             '</td>' +
             
             
-            
+            '<td class="col-md-1" >' +
+            '<div class="form-group length_list_' + current_row_count + '">' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
+            '</div>' +
+            '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
             '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
