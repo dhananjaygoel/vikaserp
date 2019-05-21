@@ -1570,6 +1570,7 @@ class OrderController extends Controller {
                         'from' => $id,
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
+                        'length' => $product_data['length'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
@@ -1590,6 +1591,7 @@ class OrderController extends Controller {
                         'order_type' => 'delivery_order',
                         'from' => '',
                         'product_category_id' => $product_data['product_category_id'],
+                        'length' => $product_data['length'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
@@ -1670,12 +1672,15 @@ class OrderController extends Controller {
             /* old */
 
             if (count($delivery_order_products) > 0) {
+                // echo "in del;";
+                // dd($delivery_order_products);
 
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     //new 
                     $product_size = $dopv['product_sub_category'];
                     //new
                     /* old */
+
                     //$product_size = ProductSubCategory::find($dopv->product_category_id);
 
                     /* old */
@@ -1784,6 +1789,7 @@ class OrderController extends Controller {
                         elseif($opv->unit_id == 5){
                             $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305) * ($opv->length/305);
                         }
+                        // echo $delivery_order_quantity."-->".$order_quantity."<--;<br>";
                     }
 
                     /* new */
@@ -1797,9 +1803,9 @@ class OrderController extends Controller {
             }
 
            // $pr_s_c = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
-
             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
+            
         }
         return $allorders;
     }
