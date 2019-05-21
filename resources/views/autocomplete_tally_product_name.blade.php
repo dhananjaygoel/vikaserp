@@ -1044,7 +1044,7 @@
 //            '<i class="fa fa-search search-icon"></i>' +
             '</div>' +
             '</td>' +
-            '<td class="col-md-2">' +
+            '<td class="col-md-1">' +
             '<div class="form-group ">' +
             '<select class="form-control unit" onchange="unitType(this);" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
@@ -1099,7 +1099,7 @@
             
             
             
-            '<td class="col-md-2">' +
+            '<td class="col-md-1">' +
             '<div class="form-group">' +
             '<input type="text" class="form-control" placeholder="price" id="product_price_' + current_row_count + '" name="product[' + current_row_count + '][price]" onblur="grand_total_delivery_order();">' +
             '</div>' +

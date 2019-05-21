@@ -116,6 +116,7 @@
                                         <tr class="headingunderline">
                                             <td><span>Product(Alias)</span></td>
                                             <td><span>Qty</span></td>
+                                            <td><span>Length</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
                                             <td><span>GST</span></td>
@@ -131,6 +132,7 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1"><div class="form-group">{{$product->quantity}}</div></td>
+                                            <td class="col-md-1"><div class="form-group ">{{$product->length}}</div></td>
                                             <td class="col-md-2"><div class="form-group ">{{$product['unit']->unit_name}}</div></td>
                                             <td class="col-md-2">
                                                 <div class="form-group">{{$product->price}}
