@@ -899,9 +899,36 @@ class DeliveryChallanController extends Controller {
         }
     }
 
+    function getTokenWihtoutGST(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(2);
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            // 'QBORealmID' => "123146439616474",
+            'QBORealmID' => "123146504590899",
+            'baseUrl' => "Production"
+        ));
+    }
+    function refresh_token_Wihtout_GST(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(2);
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        // dd($accessTokenObj);  
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::first();
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(1);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -909,14 +936,16 @@ class DeliveryChallanController extends Controller {
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
             'QBORealmID' => "123146439616474",
+            // 'QBORealmID' => "123146504590899",
             'baseUrl' => "Production"
         ));
     }
-
-
+    
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::first();
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(1);   
+
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -928,10 +957,13 @@ class DeliveryChallanController extends Controller {
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
-        //dd($update_delivery_challan->toArray());
 
         require_once base_path('quickbook/vendor/autoload.php');
-        $dataService = $this->getToken();
+        if($update_delivery_challan->vat_percentage==0)
+            $dataService = $this->getTokenWihtoutGST();
+        else
+            $dataService = $this->getToken();
+
 
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
@@ -944,8 +976,15 @@ class DeliveryChallanController extends Controller {
             $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
             $error = $dataService->getLastError();
             if ($error) {
-                $this->refresh_token();
-                $dataService = $this->getToken();
+                if($update_delivery_challan->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST();                    
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+                }
                 $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
@@ -977,7 +1016,6 @@ class DeliveryChallanController extends Controller {
                         }
                     }
                 }
-
                 $i++;
                 $line[] = [
                     "Id" => $i,
@@ -1004,13 +1042,23 @@ class DeliveryChallanController extends Controller {
                     "value"=> $update_delivery_challan->customer->quickbook_customer_id
                 ]
             ]);
+                
 
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
-            if ($error) {
-                $this->refresh_token();
-                $dataService = $this->getToken();
-                $inv = $dataService->add($theResourceObj);
+            if ($error) {  
+            if($del_products->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST(); 
+                    // $inv = $dataService->add($theResourceObj);                   
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+
+                }              
+                $inv = $dataService->add($theResourceObj);                
                 $error1 = $dataService->getLastError();
                 if($error1){
                     echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
