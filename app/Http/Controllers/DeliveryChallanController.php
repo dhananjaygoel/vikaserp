@@ -978,7 +978,9 @@ class DeliveryChallanController extends Controller {
                 if($update_delivery_challan->vat_percentage==0)
                 {
                     $this->refresh_token_Wihtout_GST();
-                    $dataService = $this->getTokenWihtoutGST();                    
+                    $dataService = $this->getTokenWihtoutGST();
+        dd($dataService);
+
                 }
                 else{
                     $this->refresh_token();
@@ -1046,8 +1048,7 @@ class DeliveryChallanController extends Controller {
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {  
-        dd($del_products->vat_percentage);
-                
+
             if($del_products->vat_percentage==0)
                 {
                     $this->refresh_token_Wihtout_GST();
