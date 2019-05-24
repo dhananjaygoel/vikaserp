@@ -903,7 +903,6 @@ class DeliveryChallanController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
-        dd($quickbook);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -958,7 +957,8 @@ class DeliveryChallanController extends Controller {
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
-
+        dd($update_delivery_challan);
+        
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->vat_percentage==0)
             $dataService = $this->getTokenWihtoutGST();
