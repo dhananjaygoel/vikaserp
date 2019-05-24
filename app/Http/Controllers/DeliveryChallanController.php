@@ -956,10 +956,9 @@ class DeliveryChallanController extends Controller {
     public function generate_invoice($id){
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
-dd($update_delivery_challan);
 
         require_once base_path('quickbook/vendor/autoload.php');
-        if($update_delivery_challan->vat_percentage==0)
+        if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
             $dataService = $this->getTokenWihtoutGST();
         else
             $dataService = $this->getToken();
@@ -976,7 +975,7 @@ dd($update_delivery_challan);
             $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
             $error = $dataService->getLastError();
             if ($error) {
-                if($update_delivery_challan->vat_percentage==0)
+                if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
                 {
                     $this->refresh_token_Wihtout_GST();
                     $dataService = $this->getTokenWihtoutGST();                    
