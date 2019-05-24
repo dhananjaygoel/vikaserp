@@ -958,9 +958,9 @@ class DeliveryChallanController extends Controller {
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
 
         require_once base_path('quickbook/vendor/autoload.php');
-        if($update_delivery_challan->vat_percentage==0)
-            $dataService = $this->getTokenWihtoutGST();
-        else
+        // if($update_delivery_challan->vat_percentage==0)
+        //     $dataService = $this->getTokenWihtoutGST();
+        // else
             $dataService = $this->getToken();
 
 
