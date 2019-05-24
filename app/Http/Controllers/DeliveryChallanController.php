@@ -899,7 +899,7 @@ class DeliveryChallanController extends Controller {
         }
     }
 
-    /*function getTokenWihtoutGST(){
+    function getTokenWihtoutGST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
@@ -924,7 +924,7 @@ class DeliveryChallanController extends Controller {
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
-    }*/
+    }
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
@@ -956,11 +956,12 @@ class DeliveryChallanController extends Controller {
     public function generate_invoice($id){
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
+dd($update_delivery_challan);
 
         require_once base_path('quickbook/vendor/autoload.php');
-        // if($update_delivery_challan->vat_percentage==0)
-        //     $dataService = $this->getTokenWihtoutGST();
-        // else
+        if($update_delivery_challan->vat_percentage==0)
+            $dataService = $this->getTokenWihtoutGST();
+        else
             $dataService = $this->getToken();
 
 
@@ -975,17 +976,15 @@ class DeliveryChallanController extends Controller {
             $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
             $error = $dataService->getLastError();
             if ($error) {
-        //         if($update_delivery_challan->vat_percentage==0)
-        //         {
-        //             $this->refresh_token_Wihtout_GST();
-        //             $dataService = $this->getTokenWihtoutGST();
-        // dd($dataService);
-
-        //         }
-        //         else{
+                if($update_delivery_challan->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST();                    
+                }
+                else{
                     $this->refresh_token();
                     $dataService = $this->getToken();
-                // }
+                }
                 $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
@@ -1048,18 +1047,17 @@ class DeliveryChallanController extends Controller {
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {  
-
-                // if($del_products->vat_percentage==0)
-                // {
-                //     $this->refresh_token_Wihtout_GST();
-                //     $dataService = $this->getTokenWihtoutGST(); 
-                //     // $inv = $dataService->add($theResourceObj);                   
-                // }
-                // else{
+            if($del_products->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST(); 
+                    // $inv = $dataService->add($theResourceObj);                   
+                }
+                else{
                     $this->refresh_token();
                     $dataService = $this->getToken();
 
-                // }              
+                }              
                 $inv = $dataService->add($theResourceObj);                
                 $error1 = $dataService->getLastError();
                 if($error1){
