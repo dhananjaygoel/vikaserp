@@ -1054,7 +1054,7 @@
             
             '<td class="col-md-1" >' +
             '<div class="form-group length_list_' + current_row_count + '">' +
-            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="0" type="tel" disabled>' +
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
@@ -1167,7 +1167,7 @@
             '</td>' +
             '<td class="col-md-1" >' +
             '<div class="form-group length_list_' + current_row_count + '">' +
-            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="0" type="tel" disabled>' +
             '</div>' +
             '</td>' +
             

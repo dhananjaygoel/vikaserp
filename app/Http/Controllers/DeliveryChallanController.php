@@ -944,8 +944,7 @@ class DeliveryChallanController extends Controller {
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(1);   
-
+        $quickbook = App\QuickbookToken::find(1); 
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1016,6 +1015,16 @@ class DeliveryChallanController extends Controller {
                     }
                 }
                 $i++;
+
+                if($del_products->vat_percentage==0)
+                {
+                    $quickbook_item_id=$del_products->order_product_all_details->quickbook_a_item_id;
+                }
+                else{
+                    $quickbook_item_id=$del_products->order_product_all_details->quickbook_item_id;
+
+                } 
+
                 $line[] = [
                     "Id" => $i,
                     "LineNum" => $i,
@@ -1024,7 +1033,7 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "value" => $del_products->order_product_all_details->quickbook_item_id
+                            "value" => $quickbook_item_id
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
@@ -1035,10 +1044,19 @@ class DeliveryChallanController extends Controller {
                 ];
             }
 
+            if($del_products->vat_percentage==0)
+            {
+                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
+            }
+            else
+            {
+                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
+            } 
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
-                    "value"=> $update_delivery_challan->customer->quickbook_customer_id
+                    // "value"=> $update_delivery_challan->customer->quickbook_customer_id,
+                    "value"=> $quickbook_customer_id
                 ]
             ]);
                 
