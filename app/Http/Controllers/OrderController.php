@@ -284,6 +284,7 @@ class OrderController extends Controller {
                 $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         }
+        dd($allorders);
         $users = User::all();
         if (Auth::user()->role_id <> 5) {
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -346,7 +347,7 @@ class OrderController extends Controller {
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
-        dd($allorders->toArray());
+        //dd($allorders->toArray());
 
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
