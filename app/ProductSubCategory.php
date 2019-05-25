@@ -20,7 +20,7 @@ class ProductSubCategory extends Model implements AuthenticatableContract, CanRe
      */
     protected $table = 'product_sub_category';
 
-    protected $fillable = ['product_category_id', 'alias_name', 'size', 'hsn_code', 'unit_id', 'weight', 'thickness', 'standard_length', 'difference', 'length_unit', 'quickbook_item_id'];
+    protected $fillable = ['product_category_id', 'alias_name', 'size', 'hsn_code', 'unit_id', 'weight', 'thickness', 'standard_length', 'difference', 'length_unit', 'quickbook_item_id', 'quickbook_a_item_id'];
 
     public function product_category() {
         return $this->hasone('App\ProductCategory', 'id', 'product_category_id');
@@ -45,6 +45,7 @@ class ProductSubCategory extends Model implements AuthenticatableContract, CanRe
         'units' => 'required',
         'difference' => 'required',
         'quickbook_item_id' => 'sometimes',
+        'quickbook_a_item_id' => 'sometimes',
         'length_unit' => 'sometimes'
     );
 
