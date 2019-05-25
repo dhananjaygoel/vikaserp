@@ -163,7 +163,6 @@ class OrderController extends Controller {
 
     public function index(PlaceOrderRequest $request) {
 
-dd($request);
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -347,7 +346,7 @@ dd($request);
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
-        //dd($allorders->toArray());
+        dd($allorders->toArray());
 
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
