@@ -308,8 +308,8 @@ class OrderController extends Controller {
 //            $allorders = $non_approved_orders;
 //        }
 
-        $all_territories = Territory::get();
 dd("ii");
+        $all_territories = Territory::get();
 
         if (Input::has('export_data')) {
             $data = Input::all();
