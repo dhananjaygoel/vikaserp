@@ -309,7 +309,7 @@ class OrderController extends Controller {
 //        }
 
         $all_territories = Territory::get();
-
+dd("ii");
 
         if (Input::has('export_data')) {
             $data = Input::all();
