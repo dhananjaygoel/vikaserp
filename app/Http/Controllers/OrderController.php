@@ -291,7 +291,6 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
         }
-        dd($customers);
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
         $product_size = ProductSubCategory::all();
@@ -333,7 +332,6 @@ class OrderController extends Controller {
                 $excel_sheet_name = 'Cancelled';
                 $excel_name = 'Order-Cancelled-' . date('dmyhis');
             }
-
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -344,6 +342,7 @@ class OrderController extends Controller {
             })->export('xls');
         }
         $parameters = parse_url($request->fullUrl());
+        dd($parameters);            
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
