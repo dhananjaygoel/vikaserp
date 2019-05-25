@@ -76,7 +76,7 @@ return [
 //			'strict'    => false,
 //		],
 //            
-		/*'mysql' => [
+		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'vikasags_vikasdb',
@@ -86,8 +86,8 @@ return [
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 			'strict'    => false,
-		],*/
-		'mysql' => [
+		],
+		/*'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'vikasags_vikasdb',
@@ -97,7 +97,7 @@ return [
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 			'strict'    => false,
-		],
+		],*/
 
 		'pgsql' => [
 			'driver'   => 'pgsql',
