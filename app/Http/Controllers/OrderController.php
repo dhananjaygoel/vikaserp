@@ -162,7 +162,6 @@ class OrderController extends Controller {
 
 
     public function index(PlaceOrderRequest $request) {
-        dd($request);
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
