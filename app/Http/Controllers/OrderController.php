@@ -342,11 +342,11 @@ class OrderController extends Controller {
             })->export('xls');
         }
         $parameters = parse_url($request->fullUrl());
-        dd($parameters);            
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
-        //dd($allorders->toArray());
+        // dd($allorders->toArray());
+        // dd($delivery_location);            
 
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
@@ -524,6 +524,7 @@ class OrderController extends Controller {
             $order->location_difference = $input_data['location_difference'];
         }
         $order->save();
+                    // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
         $order_id = $order->id;
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {          
@@ -534,8 +535,8 @@ class OrderController extends Controller {
                     'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
-                    'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
                     'quantity' => $product_data['quantity'],
+                    'length' => $product_data['length'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
