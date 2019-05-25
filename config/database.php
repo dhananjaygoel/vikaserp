@@ -76,12 +76,23 @@ return [
 //			'strict'    => false,
 //		],
 //            
-		'mysql' => [
+		/*'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'vikasags_vikasdb',
 			'username'  => 'vikasags_vikuser',
 			'password'  => 'CFpNH.#JblZe',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+			'strict'    => false,
+		],*/
+		'mysql' => [
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'database'  => 'vikasags_vikasdb',
+			'username'  => 'root',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
