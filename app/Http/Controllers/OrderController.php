@@ -284,7 +284,7 @@ class OrderController extends Controller {
                 $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         }
-        dd($allorders);
+        // dd($allorders);
         $users = User::all();
         if (Auth::user()->role_id <> 5) {
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -535,7 +535,8 @@ class OrderController extends Controller {
                     'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
-                    'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
+                    'length' => $product_data['length'],
+                    // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
