@@ -816,7 +816,7 @@ dd("ii");
                 Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-        } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
+        } else if (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
             //mail
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
