@@ -291,6 +291,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
         }
+        dd("ii");
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
         $product_size = ProductSubCategory::all();
@@ -308,7 +309,7 @@ class OrderController extends Controller {
 //            $allorders = $non_approved_orders;
 //        }
 
-dd("ii");
+
         $all_territories = Territory::get();
 
         if (Input::has('export_data')) {
