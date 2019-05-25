@@ -530,14 +530,15 @@ class OrderController extends Controller {
         $order->save();
         $order_id = $order->id;
         $order_products = array();
-        foreach ($input_data['product'] as $product_data) {
+        foreach ($input_data['product'] as $product_data) {          
+
             if (($product_data['name'] != "") && ($product_data['id'] != "") && ($product_data['id'] > 0)) {
                 $tmp = [
                     'order_id' => $order_id,
                     'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
-                    'length' => $product_data['length'],
+                    'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
