@@ -1044,6 +1044,7 @@ class DeliveryChallanController extends Controller {
                 ];
             }
 
+
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1052,12 +1053,68 @@ class DeliveryChallanController extends Controller {
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
             } 
+            // dd($update_delivery_challan->discount);
+            if($update_delivery_challan->freight>0){
+                $i++;
+                 $line[] = [
+                        "Id" => $i,
+                        "LineNum" => $i,
+                        //"Description" => "",
+                        "Amount" => $update_delivery_challan->freight,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Frieght Charges", 
+                                "value" => $quickbook_item_id
+                            ],
+                            "UnitPrice" => $update_delivery_challan->freight,
+                            "Qty" => 1,
+                            "TaxCodeRef"=>[
+                                "value" => $TaxCodeRef
+                            ],
+                        ]
+                    ];
+            }
+            if($update_delivery_challan->loading_charge>0){
+                $i++;
+                 $line[] = [
+                        "Id" => $i,
+                        "LineNum" => $i,
+                        //"Description" => "",
+                        "Amount" => $update_delivery_challan->loading_charge,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Loading Charges", 
+                                "value" => $quickbook_item_id
+                            ],
+                            "UnitPrice" => $update_delivery_challan->loading_charge,
+                            "Qty" => 1,
+                            "TaxCodeRef"=>[
+                                "value" => $TaxCodeRef
+                            ],
+                        ]
+                    ];
+            }
+            if($update_delivery_challan->discount>0){
+            $line[] = [ 
+                    "DetailType" => "DiscountLineDetail",
+                    "Amount" => $update_delivery_challan->discount,
+                    "DiscountLineDetail" => [ 
+                        "DiscountAccountRef" => [
+                            "name" => "Discounts given", 
+                            "value" => "130"
+                        ]
+                    ],
+                ];
+            }
+            // dd($line);
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
                     // "value"=> $update_delivery_challan->customer->quickbook_customer_id,
-                    "value"=> $quickbook_customer_id
-                ]
+                    "value"=> $quickbook_customer_id,
+                ],
             ]);
                 
 
