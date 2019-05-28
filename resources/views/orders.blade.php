@@ -894,7 +894,7 @@
                                             </a>
                                             @endif
 
-
+<?php dd("hi"); ?>
                                             @if(Auth::user()->role_id <> 5)
 
                                             <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
