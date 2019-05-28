@@ -296,7 +296,7 @@
                     @include('layouts.sidebar-left')
                     <div id="content-wrapper">
                         @yield('content')
-                        @include('layouts.footer')
+                        
                     </div>
                 </div>
             </div>
