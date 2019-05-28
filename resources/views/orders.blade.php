@@ -784,7 +784,7 @@
 
 
 
-
+<?php dd("hi"); ?>
                         @if( Auth::user()->role_id == 5)
 
 
@@ -814,7 +814,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php dd("hi"); ?>
+                                    
                                     @foreach($allorders as $order)                              
                                     @if(isset($order->order_status))
                                     @if($k==1)
