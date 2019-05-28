@@ -482,7 +482,7 @@
                                     @endif
                                     @endforeach
 
-<?php dd($allorders); ?>
+
 
                                     @foreach($allorders as $order)
                                     @if((isset($order->order_status) && $order->order_status == 'completed') || (Input::get('territory_filter') != ''))
@@ -613,6 +613,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <?php dd("hi"); ?>
                             <div class="modal fade" id="cancel_order_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
