@@ -1015,7 +1015,8 @@ class DeliveryChallanController extends Controller {
                     }
                 }
                 $i++;
-
+                
+                
                 if($del_products->vat_percentage==0)
                 {
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_a_item_id;
@@ -1055,20 +1056,25 @@ class DeliveryChallanController extends Controller {
             } 
             // dd($update_delivery_challan->discount);
             if($update_delivery_challan->freight>0){
+                $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
+                if($del_products->vat_percentage==0)
+                    $freight_id=$freight_item->quickbook_a_item_id;
+                else
+                    $freight_id=$freight_item->quickbook_item_id;
                 $i++;
                  $line[] = [
                         "Id" => $i,
                         "LineNum" => $i,
-                        //"Description" => "",
+                        // "Description" => "Frieght Charges",
                         "Amount" => $update_delivery_challan->freight,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
                                 "name" => "Frieght Charges", 
-                                "value" => $quickbook_item_id
+                                "value" => $freight_id
                             ],
-                            "UnitPrice" => $update_delivery_challan->freight,
-                            "Qty" => 1,
+                            // "UnitPrice" => $update_delivery_challan->freight,
+                            // "Qty" => 1,
                             "TaxCodeRef"=>[
                                 "value" => $TaxCodeRef
                             ],
@@ -1076,37 +1082,66 @@ class DeliveryChallanController extends Controller {
                     ];
             }
             if($update_delivery_challan->loading_charge>0){
+                $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
+                if($del_products->vat_percentage==0)
+                    $loading_id=$loading_item->quickbook_a_item_id;
+                else
+                    $loading_id=$loading_item->quickbook_item_id;
                 $i++;
                  $line[] = [
                         "Id" => $i,
                         "LineNum" => $i,
-                        //"Description" => "",
+                        // "Description" => "Loading Charges",
                         "Amount" => $update_delivery_challan->loading_charge,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
                                 "name" => "Loading Charges", 
-                                "value" => $quickbook_item_id
+                                "value" => $loading_id
                             ],
-                            "UnitPrice" => $update_delivery_challan->loading_charge,
-                            "Qty" => 1,
+                            // "UnitPrice" => $update_delivery_challan->loading_charge,
+                            // "Qty" => 1,
                             "TaxCodeRef"=>[
                                 "value" => $TaxCodeRef
                             ],
                         ]
                     ];
             }
-            if($update_delivery_challan->discount>0){
-            $line[] = [ 
-                    "DetailType" => "DiscountLineDetail",
-                    "Amount" => $update_delivery_challan->discount,
-                    "DiscountLineDetail" => [ 
-                        "DiscountAccountRef" => [
-                            "name" => "Discounts given", 
-                            "value" => "130"
+            if($update_delivery_challan->discount>0){ 
+            $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
+            if($del_products->vat_percentage==0)
+                    $discount_id=$loading_item->quickbook_a_item_id;
+                else
+                    $discount_id=$loading_item->quickbook_item_id;              
+                $i++;
+                 $line[] = [
+                        "Id" => $i,
+                        "LineNum" => $i,
+                        // "Description" => "Discounts",
+                        "Amount" => floatval(-$update_delivery_challan->discount),
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Discounts", 
+                                "value" => $discount_id
+                            ],
+                            // "UnitPrice" => floatval(-$update_delivery_challan->discount),
+                            // "Qty" => 1,
+                            "TaxCodeRef"=>[
+                                "value" => $TaxCodeRef
+                            ],                            
                         ]
-                    ],
-                ];
+                    ];
+            // $line[] = [ 
+            //         "Amount" => floatval($update_delivery_challan->discount),
+            //         "DetailType" => "DiscountLineDetail",
+            //         "DiscountLineDetail" => [ 
+            //             "DiscountAccountRef" => [
+            //                 "name" => "Discounts given", 
+            //                 "value" => "130",
+            //             ],
+            //         ],
+            //     ];
             }
             // dd($line);
             $theResourceObj = Invoice::create([
