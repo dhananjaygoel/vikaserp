@@ -297,7 +297,6 @@ class OrderController extends Controller {
         // $product_size = ProductSubCategory::all();
 
         $pending_orders = $this->checkpending_quantity($allorders);
-        dd($pending_orders);
         $allorders->setPath('orders');
 //        $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location', 'createdby')
 //                ->where('is_approved', '=', 'no')
@@ -348,7 +347,7 @@ class OrderController extends Controller {
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
-        // dd($allorders->toArray());
+        dd($allorders->toArray());
         // dd($delivery_location);            
 
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
