@@ -766,28 +766,7 @@
                             @endif
                         </div>
                         @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php dd("hi"); ?>
                         @if( Auth::user()->role_id == 5)
-
-
                         <div class="table-responsive tablepending">
                             <table id="table-example" class="table table-hover">
                                 <?php
@@ -814,7 +793,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+
                                     @foreach($allorders as $order)                              
                                     @if(isset($order->order_status))
                                     @if($k==1)
