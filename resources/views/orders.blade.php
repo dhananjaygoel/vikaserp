@@ -814,6 +814,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php dd("hi"); ?>
                                     @foreach($allorders as $order)                              
                                     @if(isset($order->order_status))
                                     @if($k==1)
@@ -839,7 +840,7 @@
                                             {{"Anonymous User"}}
                                             @endif
                                         </td>
-                                        <?php dd("hi"); ?>
+
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order->delivery_location_id ==0 )
