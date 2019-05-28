@@ -294,9 +294,10 @@ class OrderController extends Controller {
 
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
+        dd($delivery_order);
 
         $product_size = ProductSubCategory::get()->limit(10);
-        dd($product_size);
+        
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
 //        $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location', 'createdby')
