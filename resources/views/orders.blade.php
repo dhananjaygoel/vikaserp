@@ -245,7 +245,7 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
-                        <?php dd($allorders); ?>
+
                         @if(sizeof($allorders)==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no orders have been added.
@@ -482,7 +482,7 @@
                                     @endif
                                     @endforeach
 
-
+<?php dd($allorders); ?>
 
                                     @foreach($allorders as $order)
                                     @if((isset($order->order_status) && $order->order_status == 'completed') || (Input::get('territory_filter') != ''))
