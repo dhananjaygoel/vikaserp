@@ -613,7 +613,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            
+
                             <div class="modal fade" id="cancel_order_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -839,6 +839,7 @@
                                             {{"Anonymous User"}}
                                             @endif
                                         </td>
+                                        <?php dd("hi"); ?>
                                         @if($order->delivery_location_id !=0)
                                         <td class="text">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif($order->delivery_location_id ==0 )
@@ -894,7 +895,7 @@
                                             </a>
                                             @endif
 
-<?php dd("hi"); ?>
+
                                             @if(Auth::user()->role_id <> 5)
 
                                             <a href="#" class="table-link" title="manual complete" data-toggle="modal" data-target="#cancel_order_modal" onclick="cancel_order_row({{$order->id}})">
