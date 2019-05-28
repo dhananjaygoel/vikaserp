@@ -93,13 +93,75 @@ class OrderController extends Controller {
             echo "failed";
         }
     }
+    public function loaded_truck_delivery(Request $request){
+        $delivery_data = DeliveryOrder::where('order_id',$request->order_id)->first();
+        if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_spervisor)) 
+        {       
+            $update = Order::where('id',$request->order_id)->update([
+                'final_truck_weight' => $request->final_truck_weight,
+            ]);  
+            $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
+                'final_truck_weight' => $request->final_truck_weight,
+            ]);      
+            if($update){            
+                echo "success";
+            }
+            else{
+                echo "failed";
+            }
+        }
+        // else{
+
+        //         echo "failed".$delivery_data; 
+        //         // return Redirect::back()->withInput()->with('err-p', 'Please select delivery supervisor or delivery boy');
+        // }
+        
+
+    }
+    public function delivery_order_spervisor(Request $request){
+      if($request->del_spervisor==null)
+            $request->del_spervisor=null;  
+        $update = Order::where('id',$request->order_id)->update([
+            'del_supervisor'=>$request->del_spervisor  
+        ]);  
+        $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
+            'del_supervisor'=>$request->del_spervisor,            
+        ]);      
+        if($update){
+            if($request->del_spervisor){
+                User::where('id',$request->del_spervisor)->update(['status'=>1]);
+            }            
+            echo "success";
+        }
+        else{
+            echo "failed";
+        }        
+
+    }
+    public function delivery_order_del_boy(Request $request){  
+    if($request->del_boy==null)
+            $request->del_boy=null; 
+
+        $update = Order::where('id',$request->order_id)->update([
+            'del_boy'=>$request->del_boy  
+        ]);  
+        $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
+            'del_boy'=>$request->del_boy,            
+        ]);      
+        if($update){
+            if($request->del_boy){
+                User::where('id',$request->del_boy)->update(['status'=>1]);
+            }            
+            echo "success";
+        }
+        else{
+            echo "failed";
+        }        
+
+    }
 
 
     public function index(PlaceOrderRequest $request) {
-
-
-
-
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
@@ -229,9 +291,12 @@ class OrderController extends Controller {
         if (Auth::user()->role_id == 5) {
             $customers = Customer::where('id', '=', $cust->id)->orderBy('tally_name', 'ASC')->get();
         }
+
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
-        $product_size = ProductSubCategory::all();
+
+        // $product_size = ProductSubCategory::get();
+        
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
 //        $non_approved_orders = Order::with('all_order_products', 'customer', 'delivery_location', 'createdby')
@@ -246,8 +311,8 @@ class OrderController extends Controller {
 //            $allorders = $non_approved_orders;
 //        }
 
-        $all_territories = Territory::get();
 
+        $all_territories = Territory::get();
 
         if (Input::has('export_data')) {
             $data = Input::all();
@@ -270,7 +335,6 @@ class OrderController extends Controller {
                 $excel_sheet_name = 'Cancelled';
                 $excel_name = 'Order-Cancelled-' . date('dmyhis');
             }
-
             $units = Units::all();
             $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
             $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -284,8 +348,8 @@ class OrderController extends Controller {
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
-        //dd($allorders->toArray());
-
+        // dd($allorders->toArray());
+        // dd($delivery_location);
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
 
@@ -462,9 +526,11 @@ class OrderController extends Controller {
             $order->location_difference = $input_data['location_difference'];
         }
         $order->save();
+                    // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
         $order_id = $order->id;
         $order_products = array();
-        foreach ($input_data['product'] as $product_data) {
+        foreach ($input_data['product'] as $product_data) {          
+
             if (($product_data['name'] != "") && ($product_data['id'] != "") && ($product_data['id'] > 0)) {
                 $tmp = [
                     'order_id' => $order_id,
@@ -472,6 +538,7 @@ class OrderController extends Controller {
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
+                    'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
@@ -691,8 +758,6 @@ class OrderController extends Controller {
      */
     public function update($id, PlaceOrderRequest $request) {
 
-
-
         $input_data = Input::all();        
         $sms_flag = 0;
         if (Session::has('forms_edit_order')) {
@@ -753,7 +818,7 @@ class OrderController extends Controller {
                 Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-        } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
+        } else if (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
             //mail
             $validator = Validator::make($input_data, Customer::$existing_customer_order_rules);
             if ($validator->passes()) {
@@ -816,6 +881,7 @@ class OrderController extends Controller {
                     'order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
+                    'length' => $product_data['length'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -829,6 +895,7 @@ class OrderController extends Controller {
                     'order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
+                    'length' => $product_data['length'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -1338,6 +1405,7 @@ class OrderController extends Controller {
         if (count($order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
+
         foreach ($order['all_order_products'] as $key => $value) {
             //old
             //$delivery_order_products = AllOrderProducts::where('parent', '=', $value->id)->get();
@@ -1474,8 +1542,8 @@ class OrderController extends Controller {
                 $delivery_order->location_difference = $order->location_difference;
             }
 
-            $delivery_order->empty_truck_weight = $order->empty_truck_weight;
-            $delivery_order->final_truck_weight = $order->final_truck_weight;
+            // $delivery_order->empty_truck_weight = $order->empty_truck_weight;
+            // $delivery_order->final_truck_weight = $order->final_truck_weight;
             $delivery_order->del_supervisor = $order->del_supervisor;
             $delivery_order->del_boy = $order->del_boy;
             $delivery_order->party_name = $order->party_name;
@@ -1502,6 +1570,7 @@ class OrderController extends Controller {
                         'from' => $id,
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
+                        'length' => $product_data['length'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
                         'price' => $product_data['price'],
@@ -1522,6 +1591,7 @@ class OrderController extends Controller {
                         'order_type' => 'delivery_order',
                         'from' => '',
                         'product_category_id' => $product_data['product_category_id'],
+                        'length' => $product_data['length'],
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
@@ -1602,12 +1672,15 @@ class OrderController extends Controller {
             /* old */
 
             if (count($delivery_order_products) > 0) {
+                // echo "in del;";
+                // dd($delivery_order_products);
 
                 foreach ($delivery_order_products as $dopk => $dopv) {
                     //new 
                     $product_size = $dopv['product_sub_category'];
                     //new
                     /* old */
+
                     //$product_size = ProductSubCategory::find($dopv->product_category_id);
 
                     /* old */
@@ -1615,10 +1688,10 @@ class OrderController extends Controller {
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
                         /*if($product_size->length_unit == "ft"){
-                            $delivery_order_quantity = $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = $dopv->quantity * $product_size->weight * length;
                         }
                         else{
-                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305);
+                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305)*(length/305);
                         }*/
 
                         if ($dopv->unit_id == 1) {
@@ -1633,10 +1706,10 @@ class OrderController extends Controller {
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight * $dopv->length;
                         }
                         elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight/305);
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight/305) * ($dopv->length/305);
                         }
                     }
                     else{
@@ -1652,10 +1725,10 @@ class OrderController extends Controller {
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight * $dopv->length;
                         }
                         elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight/305);
+                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight/305) * ($dopv->length/305);
                         }
                     }
                 }
@@ -1678,6 +1751,7 @@ class OrderController extends Controller {
                         else{
                             $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
                         }*/
+                        
                         if ($opv->unit_id == 1) {
                             $order_quantity = $order_quantity + $opv->quantity;
                         } elseif ($opv->unit_id == 2) {
@@ -1690,10 +1764,10 @@ class OrderController extends Controller {
                             }
                         }
                         elseif($opv->unit_id == 4) {
-                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
+                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight * $opv->length;
                         }
                         elseif($opv->unit_id == 5){
-                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
+                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305) * ($opv->length/305);
                         }
                     }
                     else{
@@ -1706,14 +1780,16 @@ class OrderController extends Controller {
                                 $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
                             } else {
                                 $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                                // dd($order_quantity);                            
                             }
                         }
                         elseif($opv->unit_id == 4) {
-                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
+                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight * $opv->length;
                         }
                         elseif($opv->unit_id == 5){
-                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
+                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305) * ($opv->length/305);
                         }
+                        // echo $delivery_order_quantity."-->".$order_quantity."<--;<br>";
                     }
 
                     /* new */
@@ -1727,9 +1803,9 @@ class OrderController extends Controller {
             }
 
            // $pr_s_c = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
-
             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
+            
         }
         return $allorders;
     }
