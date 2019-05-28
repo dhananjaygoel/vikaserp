@@ -294,9 +294,9 @@ class OrderController extends Controller {
 
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
-        dd($delivery_order);
 
-        $product_size = ProductSubCategory::get()->limit(10);
+        // $product_size = ProductSubCategory::get();
+        // dd($delivery_order);
         
         $pending_orders = $this->checkpending_quantity($allorders);
         $allorders->setPath('orders');
@@ -352,7 +352,7 @@ class OrderController extends Controller {
         // dd($allorders->toArray());
         // dd($delivery_location);            
 
-        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
+        return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_category_id', 'search_dates', 'all_territories'));
     }
 
     /**
