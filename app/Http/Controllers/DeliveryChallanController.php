@@ -1196,7 +1196,7 @@ class DeliveryChallanController extends Controller {
     }
 
 
-    public function print_delivery_challan($id, DropboxStorageRepository $connection) {
+    public function print_delivery_challan($id/*, DropboxStorageRepository $connection*/) {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $sms_flag = 0;
