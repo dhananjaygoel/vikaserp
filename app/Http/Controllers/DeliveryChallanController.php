@@ -921,7 +921,6 @@ class DeliveryChallanController extends Controller {
         $quickbook = App\QuickbookToken::find(2);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
-        dd($accessTokenObj);  
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
@@ -967,7 +966,7 @@ class DeliveryChallanController extends Controller {
         }
         
 
-
+    dd($update_delivery_challan);
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
                 \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
