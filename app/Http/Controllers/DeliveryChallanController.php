@@ -961,6 +961,7 @@ class DeliveryChallanController extends Controller {
             $dataService = $this->getTokenWihtoutGST();
         else
             $dataService = $this->getToken();
+        dd($dataService);
 
 
         if(Auth::user()->role_id != 0){
@@ -1152,7 +1153,6 @@ class DeliveryChallanController extends Controller {
                 ],
             ]);
                 
-dd($theResourceObj);
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {  
