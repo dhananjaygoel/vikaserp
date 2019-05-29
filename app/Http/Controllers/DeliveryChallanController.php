@@ -958,14 +958,14 @@ class DeliveryChallanController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
         {
+            echo "1";exit;
             $dataService = $this->getTokenWihtoutGST();
-            echo "1";
             dd($dataService);
         }
         else
         {
+            echo "2";exit;
             $dataService = $this->getToken();
-            echo "2";
             dd($dataService);
         }
         
