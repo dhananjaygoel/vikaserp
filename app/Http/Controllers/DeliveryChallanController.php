@@ -1114,9 +1114,9 @@ class DeliveryChallanController extends Controller {
             if($update_delivery_challan->discount>0){ 
             $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
             if($del_products->vat_percentage==0)
-                    $discount_id=$loading_item->quickbook_a_item_id;
+                    $discount_id=$discount_item->quickbook_a_item_id;
                 else
-                    $discount_id=$loading_item->quickbook_item_id;              
+                    $discount_id=$discount_item->quickbook_item_id;              
                 $i++;
                  $line[] = [
                         "Id" => $i,
