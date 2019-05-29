@@ -162,6 +162,7 @@ class OrderController extends Controller {
 
 
     public function index(PlaceOrderRequest $request) {
+        ini_set('memory_limit','128M');
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
