@@ -1152,7 +1152,7 @@ class DeliveryChallanController extends Controller {
                 ],
             ]);
                 
-
+dd($theResourceObj);
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {  
