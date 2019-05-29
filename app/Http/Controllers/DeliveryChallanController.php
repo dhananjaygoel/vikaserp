@@ -903,7 +903,7 @@ class DeliveryChallanController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
-        dd(array(
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
@@ -913,8 +913,7 @@ class DeliveryChallanController extends Controller {
             'QBORealmID' => "123146504590899",
             'baseUrl' => "Production"
         ));
-        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure();
-        
+
     }
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
