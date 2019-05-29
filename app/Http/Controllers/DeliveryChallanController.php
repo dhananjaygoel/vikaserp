@@ -960,7 +960,6 @@ class DeliveryChallanController extends Controller {
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
         {
             $dataService = $this->getTokenWihtoutGST();
-            dd($dataService);
         }
         else
         {
