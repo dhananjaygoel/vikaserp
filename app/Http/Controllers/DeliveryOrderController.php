@@ -1236,7 +1236,7 @@ class DeliveryOrderController extends Controller {
      * as well as send the sms to the customer
      */
 
-    public function print_delivery_order($id, DropboxStorageRepository $connection) {
+    public function print_delivery_order($id/*, DropboxStorageRepository $connection*/) {
 
         if (Input::has('empty_truck_weight')) {
             $empty_truck_weight = Input::get('empty_truck_weight');
