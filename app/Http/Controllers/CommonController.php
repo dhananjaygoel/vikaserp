@@ -237,7 +237,7 @@ class CommonController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        //2782, 2671, 3684, 1759
+        // 2782, 2671, 3684, 1759
         // $ProductSubCategory = ProductSubCategory::with('product_category')->where('id',1759)->first();
         $product_category = ProductSubCategory::with('product_category')->where('quickbook_a_item_id','=',NULL)->get();
         foreach ($product_category as $ProductSubCategory) {
@@ -274,7 +274,7 @@ class CommonController extends Controller {
         return redirect('customers')->with('success', 'Customer Succesfully added');
     }   
     public function customer_update(Request $request) {
-        
+        dd($request);
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
