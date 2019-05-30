@@ -20,6 +20,7 @@ use App\CustomerProductDifference;
 use App\Customer;
 use Input;
 use App\States;
+use App\QuickbookToken;
 use App\City;
 use App\Inquiry;
 use App\Order;
@@ -281,5 +282,25 @@ class CommonController extends Controller {
         } //  end foreach
         return redirect('customers')->with('success', 'Delivery Challan Succesfully Update');
     } 
+    public function quickbook_token_update() {
+         QuickbookToken::where('id', 1)->update(array(
+                    'client' =>  "Q0B4zFncEB9WyejnuKSFdpNJvKxPIYnaT4EoXWyciapotvMyPk",                
+                    'secret' =>  "04ZEtCjxboVVVlDec2i6jIQ0za6PokA3I66WPfsw",                
+                    'access_token' =>  "eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..bC2HZNMopNOIhCH8pTo2ZA.itVglq0j_i5CKK-LVzUKyJIYTI1p05tAKt44M5FS4WSBUd_qT3G1wHy-J6TjCIgLVXThphAFTK8MRFEl40LEJLJOIwpel4U0lAmCoUykBHlYQCActH_O51Mf4xX5ZCazKMGfYAzD23-AycM7ZjvUdCGvQUBl05SBf49QzKNtL1WxE-ofvduZDOCXL8-CHdiA8A_h8Ect28BT05LC0p9NE9hKbj3FWDN4bJxXci-E3LuOvNwBXXc2pxQmZ7ToRbQ9l-G8-GYC7WIS6jX2ycyctSG0xPLg_Zmq9YbcrVLrB6nJvNS7DaViUZ45o6YBrioKfVp1D_1bFbvxPW2enRrbiEi4ImMSf-SyCrc8gM0YAc0Hk859KBmkNddrXkFEHmvg6rAx6gp90dYknVy2NdIM1zcaAK6TJuMEvdWFZdkMGajtTreG9YezFjtjZQJKoi-nQdB2CLIMUsY2jEyA1SVMJ4-A_LN8-LaFmHuPDGnV-6oix4DjlH3nEUqYSLPfrxYN4nfNQLZk87K2OMZqxJ2QgZYEYpzqY-Yghk5Ycsj0pCeWAT4BH9u7F7rmXvLewzZBHganvOZbt5qVxP4FN9SLjzn-5lD2C_Na5MuPYKAquzigcncTapecWJ7MLZ8tX6oVnF7uDb6KYGEk8zP7wmX6Ay15-QwJxTRjywix5Xr9oqfy9RUokcOfvyOuRp5tGpGn.GeLoODs_arMKrnNmSZgiPA",                
+                    'refresh_token' =>  "Q011567932481PYMO8ERDHT9H09MXSwDvpX0n97F3Odr7VXiVL"                
+            ));            
+        
+        return redirect('customers')->with('success', 'Quickbook Token Succesfully Update');
+    }
+    public function quickbook_token_update_two() {
+         QuickbookToken::where('id', 2)->update(array(
+                    'client' =>  "Q0GZydihrT71SxVEGVR2KwUPYdzlkAbkoN48r6hFvvPDwBAbla",                
+                    'secret' =>  "zqKUsOgtdL2dGOsijs75NxylxluOaBAm14PwlZDS",                
+                    'access_token' =>  "eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..g30DzZcAJucLmrmJDrDSzw.GeI8vDAfVEV1GHEe4wHuYwnGh9Sq1ZiNTfcsSrv64BZGxqXli8XuFzZMUx_SPMS_ztKWybPu7nmLIZ_Wj8Fb2EVyS1Tg7cK8DIY9I-AcOX2ul8_-qu2UIlnygb15Z5_tKhzyvdGTMwTYNZ8UqVaCjKsPgmL2p2bU87mCxNJRUiHvNPcLzDUetH-Ce_RU_yah_VO2Ab7vsrpYty8FCILf7vcqP-ef2stzX_-8IAtZkc7oSTcKl_RKn2IPWWnhyeNIm5iNSNzluPd87u7N8t_QPLHkVb4MpxxBLdufRk2zBUt3cgPzQ8DYlxyXLavGx8nbh1Cdw0OY9g2WxFVSRGd2x0YIZn_MMl-p_cT6-DSPccIuQ-pDLN7LamU4DjyYAYIgg7YQLHxKgpniEYZehS2cbSoz4cRWrQ6IG35pjbDydbRoLm5e9DWW_A6w61ZjRYVsvlBNwUlGsA8gdVM2nV5tWoEcQOtjmJ8TKbt9CcOEtMJfTPzwqbtPD_z72oKZgJYB-Qvanlnil73Nhz4EvPRz0uhGQG5QeEahY0Ojttc6-dyPmm8cw_IWPHjoidTs_5wZ2iKGBuc-bRh4Vf7ZV3TnGG-4g0IefmpJgaYiI3ecByKbRzuT4Z37FM5vi6EL75_5WnYMlCnJPBSw0ZuFtfEKrrTYou-wL1-gPvn-Yv1pk-nOK6WT_mgknvfzCitVgFQf.hT3Qhw2PcU9tuWJ6AvNc8Q",                
+                    'refresh_token' =>  "Q011567932641rrwwZnueazCUOxWjj7WhjhaRpfxezOQKZAGCn"                
+            ));            
+        
+        return redirect('customers')->with('success', 'Quickbook Token Succesfully Update');
+    }
 
 }
