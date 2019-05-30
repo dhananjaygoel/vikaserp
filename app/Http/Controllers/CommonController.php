@@ -273,7 +273,7 @@ class CommonController extends Controller {
         } //  end foreach
         return redirect('customers')->with('success', 'Customer Succesfully added');
     }   
-    public function customer_update(Request $request) {
+    public function customer_update() {
         // dd($request);
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -289,8 +289,8 @@ class CommonController extends Controller {
         } //  end foreach
         return redirect('customers')->with('success', 'Customer Succesfully Update');
     } 
-    public function product_update(Request $request) {
-        dd($request);
+    public function product_update() {
+        dd("hi");
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
