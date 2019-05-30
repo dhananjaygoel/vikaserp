@@ -157,27 +157,23 @@ class CommonController extends Controller {
                 "DisplayName"=>  $customer->owner_name,
                 "PrimaryPhone"=>  [
                     "FreeFormNumber"=>  $customer->phone_number1
-                ]
-                // "BillAddr"=> [
-                //       "City"=> $customer->city, 
-                //       "Line1"=> $customer->address1
-                //     ], 
+                ]                
             ];
            
 
             if($status == 'yes'){
                 $res_q = $this->quickbook_create_supplier($Qdata);
                 if($res_q['status']){
-                    $customer->quickbook_a_supplier_id = $res_q['message']->Id;
+                    $customer->quickbook_supplier_id = $res_q['message']->Id;
                 }
             } else{
                 $res = $this->quickbook_create_customer($Qdata);
                 if($res['status']){
-                    $customer->quickbook_a_customer_id = $res['message']->Id;
+                    $customer->quickbook_customer_id = $res['message']->Id;
                     if($status == 'yes'){
                         $res_q = $this->quickbook_create_supplier($Qdata);
                         if($res_q['status']){
-                            $customer->quickbook_a_supplier_id = $res_q['message']->Id;
+                            $customer->quickbook_supplier_id = $res_q['message']->Id;
                         }
                     }
                 }
@@ -185,11 +181,11 @@ class CommonController extends Controller {
                     $this->refresh_token();
                     $res = $this->quickbook_create_customer($Qdata);
                     if($res['status']){
-                        $customer->quickbook_a_customer_id = $res['message']->Id;
+                        $customer->quickbook_customer_id = $res['message']->Id;
                         if($status == 'yes'){
                             $res_q = $this->quickbook_create_supplier($Qdata);
                             if($res_q['status']){
-                                $customer->quickbook_a_supplier_id = $res_q['message']->Id;
+                                $customer->quickbook_supplier_id = $res_q['message']->Id;
                             }
                         }
                     }
@@ -264,17 +260,61 @@ class CommonController extends Controller {
         ];
         $res = $this->quickbook_create_item($Qdata);
         if($res['status']){
-            $ProductSubCategory->quickbook_a_item_id = $res['message']->Id;
+            $ProductSubCategory->quickbook_item_id = $res['message']->Id;
         }
         else{
             $this->refresh_token();
             $res = $this->quickbook_create_item($Qdata);
             if($res['status']){
-                $ProductSubCategory->quickbook_a_item_id = $res['message']->Id;
+                $ProductSubCategory->quickbook_item_id = $res['message']->Id;
             }
         }
         $ProductSubCategory->save();
         } //  end foreach
         return redirect('customers')->with('success', 'Customer Succesfully added');
     }   
+    public function customer_update(Request $request) {
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+       $customer_data = Customer::get();       
+        foreach ($customer_data as $customer) {
+                    Customer::where('id', $customer->id)->update(array(
+                    'quickbook_a_customer_id' =>  NULL,
+                    'quickbook_customer_id'   =>  NULL,                  
+                    'quickbook_supplier_id'   =>  NULL,                  
+                    'quickbook_a_supplier_id'   =>  NULL                  
+                ));            
+        } //  end foreach
+        return redirect('customers')->with('success', 'Customer Succesfully Update');
+    } 
+    public function product_update(Request $request) {
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+       $product_category = ProductSubCategory::get();       
+        foreach ($product_category as $ProductSubCategory) {
+                    ProductSubCategory::where('id', $ProductSubCategory->id)->update(array(
+                    'quickbook_item_id' =>  NULL,
+                    'quickbook_a_item_id'   =>  NULL                 
+                ));            
+        } //  end foreach
+        return redirect('customers')->with('success', 'Product Succesfully Update');
+    } 
+    public function delivery_challan_update(Request $request) {
+        
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+       $delivery_challan = DeliveryChallan::get();       
+        foreach ($delivery_challan as $deliverychallan) {
+                    DeliveryChallan::where('id', $deliverychallan->id)->update(array(
+                    'doc_number' =>  NULL                
+                ));            
+        } //  end foreach
+        return redirect('customers')->with('success', 'Delivery Challan Succesfully Update');
+    } 
+
 }

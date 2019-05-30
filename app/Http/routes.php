@@ -19,6 +19,9 @@
 
 Route::get('customer', 'CommonController@index');
 Route::get('product', 'CommonController@product_store');
+Route::get('customer/update', 'CommonController@customer_update');
+Route::get('product/update', 'CommonController@product_update');
+Route::get('dc/update', 'CommonController@delivery_challan_update');
 Route::post('applogin', 'HomeController@applogin');
 Route::post('appuserresetpassword', 'HomeController@appUserResetPassword');
 Route::post('apporderstatus', 'HomeController@appOrderStatus');
