@@ -17,11 +17,13 @@
 
 //INSERT INTO `user_roles` (`id`, `role_id`, `name`, `description`, `created_at`, `updated_at`) VALUES (NULL, '10', 'Bulk Delete User', '', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000');
 
+//start Old Data insert in quickbook Account
 Route::get('customer', 'CommonController@index');
 Route::get('product', 'CommonController@product_store');
 Route::get('customer/update', 'CommonController@customer_update');
 Route::get('product/update', 'CommonController@product_update');
 Route::get('dc/update', 'CommonController@delivery_challan_update');
+//end Old Data insert in quickbook Account
 
 Route::post('applogin', 'HomeController@applogin');
 Route::post('appuserresetpassword', 'HomeController@appUserResetPassword');

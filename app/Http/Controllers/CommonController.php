@@ -62,9 +62,9 @@ class CommonController extends Controller {
         $dataService = $this->getToken();
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         // $dataService->throwExceptionOnError(true);
+        // dd($resultingCustomerObj);
         $customerObj = \QuickBooksOnline\API\Facades\Customer::create($data);
         $resultingCustomerObj = $dataService->Add($customerObj);
-        // dd($resultingCustomerObj);
         $error = $dataService->getLastError();
         if ($error) {
             return ['status'=>false,'message'=>$error->getResponseBody()];
@@ -89,14 +89,14 @@ class CommonController extends Controller {
 
     function getToken(){
        require_once base_path('quickbook/vendor/autoload.php');
-       $quickbook = App\QuickbookToken::find(2);
+       $quickbook = App\QuickbookToken::find(1);
        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "123146504590899",
+            'QBORealmID' => "193514891360859",
             'baseUrl' => "Production"
        ));
     }
@@ -104,7 +104,7 @@ class CommonController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -131,17 +131,10 @@ class CommonController extends Controller {
     /**
      * Store a newly created customer in database.
      */
-    public function index(Request $request) {
-        // StoreCustomer
-        
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
-       $customer_data = Customer::where('quickbook_a_customer_id', '=', NULL)->get();
-       // $customer = Customer::where('id', 773)->where('quickbook_a_customer_id', '=', NULL)->first();
-        foreach ($customer_data as $customer) {
-       // dd($customer);
-        // if(count($customer)!=10){
+    public function index() {        
+       // $customer_data = Customer::where('quickbook_customer_id', '=', NULL)->get();
+       $customer = Customer::where('id', 772)->where('quickbook_customer_id', '=', NULL)->first();
+        // foreach ($customer_data as $customer) {
 
             $users = new User();
             $users->first_name = $customer->owner_name;
@@ -158,8 +151,7 @@ class CommonController extends Controller {
                 "PrimaryPhone"=>  [
                     "FreeFormNumber"=>  $customer->phone_number1
                 ]                
-            ];
-           
+            ];         
 
             if($status == 'yes'){
                 $res_q = $this->quickbook_create_supplier($Qdata);
@@ -193,11 +185,8 @@ class CommonController extends Controller {
             }
 
            $customer->save();
-            // }
-            // else
-            //     break;
-
-        }   //This is end forecah loop
+            
+        // }   //This is end forecah loop
         // if ($customer->save() && $users->save()) {
         if ($customer) {
             $product_category_id = Input::get('product_category_id');
@@ -224,22 +213,10 @@ class CommonController extends Controller {
         }
     }
 
-
-  
-
-   
-    /**
-     * Display the specific Product.
-     */
-    public function product_store(Request $request) {
-        
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
-
-        // 2782, 2671, 3684, 1759
+    public function product_store() {
+       
         // $ProductSubCategory = ProductSubCategory::with('product_category')->where('id',1759)->first();
-        $product_category = ProductSubCategory::with('product_category')->where('quickbook_a_item_id','=',NULL)->get();
+        $product_category = ProductSubCategory::with('product_category')->where('quickbook_item_id','=',NULL)->get();
         foreach ($product_category as $ProductSubCategory) {
             // dd($ProductSubCategory);
         $Qdata = [
@@ -252,10 +229,7 @@ class CommonController extends Controller {
                 "value"=> 3,
                 "name" => "IncomRef" 
             ],
-            "TrackQtyOnHand"=>false,
-            /*"TaxClassificationRef"=>[
-                "value"=>1204
-            ]*/
+            "TrackQtyOnHand"=>false,            
 
         ];
         $res = $this->quickbook_create_item($Qdata);
@@ -274,10 +248,7 @@ class CommonController extends Controller {
         return redirect('customers')->with('success', 'Customer Succesfully added');
     }   
     public function customer_update() {
-        // dd($request);
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
+        
        $customer_data = Customer::get();       
         foreach ($customer_data as $customer) {
                     Customer::where('id', $customer->id)->update(array(
@@ -290,10 +261,7 @@ class CommonController extends Controller {
         return redirect('customers')->with('success', 'Customer Succesfully Update');
     } 
     public function product_update() {
-        dd("hi");
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
+       
        $product_category = ProductSubCategory::get();       
         foreach ($product_category as $ProductSubCategory) {
                     ProductSubCategory::where('id', $ProductSubCategory->id)->update(array(
@@ -303,11 +271,8 @@ class CommonController extends Controller {
         } //  end foreach
         return redirect('customers')->with('success', 'Product Succesfully Update');
     } 
-    public function delivery_challan_update(Request $request) {
+    public function delivery_challan_update() {
         
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
-        }
        $delivery_challan = DeliveryChallan::get();       
         foreach ($delivery_challan as $deliverychallan) {
                     DeliveryChallan::where('id', $deliverychallan->id)->update(array(
