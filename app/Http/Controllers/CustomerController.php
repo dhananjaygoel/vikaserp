@@ -62,7 +62,7 @@ class CustomerController extends Controller {
             'access_token' => 'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..WEZNZ4Z0BxPl20eA7PfyAQ.5xt8_Duz0313SZ7Lt0Ov8GmAw3Fq3RIWJFYqqKrpzPEw9rTcB1UEtOaWHhlPqsAfpJeXGhHI8HD5JC2RsCEm5xe2wYH6ABvA7eW4n_e5fC0K78PnsMI6dENc9OJ1j4ZxgIrPRV_N-YI7eUeboapnnzmbJ1BV131UMlfRPOadWu_oBSElXlbC_iSKozHhksFA0QIEPl1UNveVJclqYGZem28186kaCbNRRHKuNH_w1HSKO_OhTlQusA_n12LqThgx8Xf_oL0rwr2Er67ixeYQU17AGJxoh99TJ3PbnXKN9tv_Xkc5G8PuVip9HOq2kC3z8YSu2rQ2xF26Vg-f5ffqpseIP7QFZxe1WwdLZdl8HCRmXyBdICBATmmrvQlbnb7pLdtBssDQtjlUOsujLDYDFzdvTZO0obk-uXgjGbKjDdUizWlEvhwshFfEcTRyueMADGRO0wcDTLZgkvbcnIRyglNcrWJSRURbO2QJNdOlM4rf2OYr4LdcoQIIziy2UV1lTxw08UjB-o7MdeYx1C1wIyPLW4f0KCv7Vx5fKO2hEcBDUJ50GVxVOwAiGtXgoRHo0j3iPsvzyAVU9GEcwfqhWlu9SPyX2EJ99mdemaor9MP669LUSc0MF67yEVyYZKWf5Y6ccECvx5gTq6SMSViCXuINcW6GANhE_6otJM-pGeP2BmP74_H_qjQGmECugDsT.pFD-KvwXGW93-7aqx8tiRA',
             'refresh_token'=>'Q011565329117rhfOkSbEDbtI6cEqojHbO33pbVtyFDdYyE8SG',
         ]);*/
-dd($request);
+dd("hi");
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
