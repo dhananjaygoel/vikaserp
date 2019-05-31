@@ -273,7 +273,7 @@
                                                   //    $disable = "";
                                                   // }
                                             ?>                                           
-                                            <button class="btn btn-primary truck_load" id="truck_load" data-order_id="{{$delivery->order_id}}" data-final_truck_weight="{{$delivery->final_truck_weight}}" data-product_detail_table="{{$delivery->product_detail_table}}" data-labour_pipe="{{$delivery->labour_pipe}}" data-labour_structure="{{$delivery->labour_structure}}" data-toggle="modal" data-target="#myModal" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></button>
+                                            <button class="btn btn-primary truck_load" id="truck_load" data-order_id="{{$delivery->order_id}}" data-final_truck_weight="{{$delivery->final_truck_weight}}" data-product_detail_table="{{$delivery->product_detail_table}}" data-labour_pipe="{{$delivery->labour_pipe}}" data-labour_structure="{{$delivery->labour_structure}}" data-toggle="modal" data-target="#myModal" title="load" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></button>
                                                
                                             <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
                                                 <span class="fa-stack">

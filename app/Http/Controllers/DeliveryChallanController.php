@@ -1047,7 +1047,7 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
             }
-            // dd($line);
+
 
             if($del_products->vat_percentage==0)
             {
