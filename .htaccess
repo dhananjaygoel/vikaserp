@@ -27,4 +27,4 @@ RewriteCond %{HTTP_HOST} ^vikaserp.in$
 RewriteRule (.*) http://www.vikaserp.in/$1 [R=301,L] 
 
 </IfModule>
-AddHandler application/x-httpd-php56 .php
+#AddHandler application/x-httpd-php54 .php
