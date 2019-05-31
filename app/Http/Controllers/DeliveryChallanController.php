@@ -1019,7 +1019,7 @@ class DeliveryChallanController extends Controller {
                 }
                 $i++;
                 
-                // dd($del_products->order_product_all_details->product_category->product_type->name);
+                dd($del_products->order_product_all_details->product_category->product_type->name);
                 if($del_products->vat_percentage==0)
                 {
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_a_item_id;
