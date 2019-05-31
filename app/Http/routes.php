@@ -20,11 +20,11 @@
 //start Old Data insert in quickbook Account
 Route::get('customer', 'CommonController@index');
 Route::get('product', 'CommonController@product_store');
-Route::get('customer/update', 'CommonController@customer_update');
-Route::get('product/update', 'CommonController@product_update');
-Route::get('dc/update', 'CommonController@delivery_challan_update');
-Route::get('quickbook_token_update', 'CommonController@quickbook_token_update');
-Route::get('quickbook_token_update_two', 'CommonController@quickbook_token_update_two');
+// Route::get('customer/update', 'CommonController@customer_update');
+// Route::get('product/update', 'CommonController@product_update');
+// Route::get('dc/update', 'CommonController@delivery_challan_update');
+// Route::get('quickbook_token_update', 'CommonController@quickbook_token_update');
+// Route::get('quickbook_token_update_two', 'CommonController@quickbook_token_update_two');
 //end Old Data insert in quickbook Account
 
 Route::post('applogin', 'HomeController@applogin');
