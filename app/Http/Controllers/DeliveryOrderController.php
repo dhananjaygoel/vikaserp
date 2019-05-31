@@ -1387,13 +1387,13 @@ class DeliveryOrderController extends Controller {
             }
         }
 // dd(getcwd());
-        Storage::put("/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-        $pdf->save( "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
-        chmod( "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+        // Storage::put("/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        // $pdf->save( "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
+        // chmod( "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
 
-        // Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-        // $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
-        // chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+        Storage::put(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
+        chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
 
         //$connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
