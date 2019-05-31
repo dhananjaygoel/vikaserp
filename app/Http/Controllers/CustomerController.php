@@ -160,10 +160,10 @@ class CustomerController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         $dataService = $this->getToken();
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
-        $dataService->throwExceptionOnError(true);
+        // $dataService->throwExceptionOnError(true);
         $resultingObj  = $dataService->FindById('Customer', $quickbook_id);
-        // dd($resultingObj);
         $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$data);
+        // dd($customerObj);
         $resultingCustomerObj = $dataService->Update($customerObj);
         $error = $dataService->getLastError();
         if ($error) {
@@ -174,11 +174,11 @@ class CustomerController extends Controller {
     }
 
     function quickbook_update_supplier($quickbook_id,$data){
+        // dd($quickbook_id);
         require_once base_path('quickbook/vendor/autoload.php');
         $dataService = $this->getToken();
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         // $dataService->throwExceptionOnError(true);
-        // dd($dataService);
         $resultingObj  = $dataService->FindById('vendor', $quickbook_id);
         $customerObj = Vendor::update($resultingObj,$data);
         $resultingCustomerObj = $dataService->Update($customerObj);
@@ -196,6 +196,7 @@ class CustomerController extends Controller {
             $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
             // $dataService->throwExceptionOnError(true);
             $resultingObj  = $dataService->FindById('Customer', $quickbook_a_id);
+            // dd($customerObj);
             $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$data);
             $resultingCustomerObj = $dataService->Update($customerObj);
             $error = $dataService->getLastError();
@@ -730,12 +731,7 @@ class CustomerController extends Controller {
             }
             if($quickbook_id)
             {     
-                    // $objdata=[
-                      // "MiddleName": "Mark", 
-                      // "SyncToken"=> "0", 
-                      // "Id"=> $quickbook_id, 
-                      // "sparse"=> true
-                    // ];
+                    
                     $Qdata = [
                         // "Id"=> $quickbook_id ,
                         "GivenName"=>  Input::get('tally_name'),
@@ -748,10 +744,10 @@ class CustomerController extends Controller {
                             "BillAddr"=> [
                               "City"=> Input::get('city'), 
                               "Line1"=> Input::get('address1')                  
-                            ], 
+                            ]
                     ];
-                // dd($Qdata);
-                    if(isset($status) && Input::get('status') == 'yes'){
+                // dd(Input::get('status'));
+                    if(Input::get('status') == 'yes'){
                         $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
                         // if($res_q['status']){
                         //     $customer->quickbook_supplier_id = $res_q['message']->Id;
@@ -760,47 +756,59 @@ class CustomerController extends Controller {
                         $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
                         if($res['status']){
                            // $customer->quickbook_customer_id = $res['message']->Id;                   
-                            $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
-                            if($res_q['status']){
-                                // $customer->quickbook_supplier_id = $res_q['message']->Id;
-                            }
+                           // if(Input::get('status') == 'yes')
+                           // {
+                           //      $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
+                           //      // if($res_q['status']){
+                           //      //     $customer->quickbook_supplier_id = $res_q['message']->Id;
+                           //      // }
+                           //  }
                         }
                         else{
                             $this->refresh_token();
                             $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
                             if($res['status']){
-                               // $customer->quickbook_customer_id = $res['message']->Id;                        
-                                $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
-                                if($res_q['status']){
-                                    // $customer->quickbook_supplier_id = $res_q['message']->Id;
-                                }
+                               // $customer->quickbook_customer_id = $res['message']->Id;
+                               // if(Input::get('status') == 'yes')
+                               // {                        
+                               //      $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
+                               //      // if($res_q['status']){
+                               //      //     $customer->quickbook_supplier_id = $res_q['message']->Id;
+                               //      // }
+                               //  }
                             }
                         }
                     }
                     //start all inclusive
-                    if(isset($status) && Input::get('status') == 'yes'){
+                    if(Input::get('status') == 'yes'){
                         $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
-                        // if($res_q['status']){
-                        //     $customer->quickbook_supplier_id = $res_q['message']->Id;
-                        // }
+                        if($res_q['status']){
+                            $customer->quickbook_supplier_id = $res_q['message']->Id;
+                        }
                     } else{
                         $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
                         if($res['status']){
                            // $customer->quickbook_customer_id = $res['message']->Id;                   
-                            $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
-                            if($res_q['status']){
-                                // $customer->quickbook_supplier_id = $res_q['message']->Id;
-                            }
+                            // if(Input::get('status') == 'yes')
+                            // {
+                            //     // $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
+                            //     // if($res_q['status']){
+                            //     //     // $customer->quickbook_supplier_id = $res_q['message']->Id;
+                            //     // }
+                            // }
                         }
                         else{
                             $this->refresh_token_all();
                             $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
                             if($res['status']){
                                // $customer->quickbook_customer_id = $res['message']->Id;                        
-                                $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
-                                if($res_q['status']){
-                                    // $customer->quickbook_supplier_id = $res_q['message']->Id;
-                                }
+                               //  if(Input::get('status') == 'yes')
+                               // {
+                               //      // $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
+                               //      // if($res_q['status']){
+                               //      //     // $customer->quickbook_supplier_id = $res_q['message']->Id;
+                               //      // }
+                               // }
                             }
                         }
                     }
