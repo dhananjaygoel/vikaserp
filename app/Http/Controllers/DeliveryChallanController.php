@@ -1059,6 +1059,7 @@ class DeliveryChallanController extends Controller {
             } 
             // dd($del_products->vat_percentage);
             if($update_delivery_challan->freight>0){
+                // $TaxCodeRef = 26;
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
                 if($del_products->vat_percentage==0)
                     $freight_id=$freight_item->quickbook_a_item_id;
@@ -1079,12 +1080,13 @@ class DeliveryChallanController extends Controller {
                             // "UnitPrice" => $update_delivery_challan->freight,
                             // "Qty" => 1,
                             "TaxCodeRef"=>[
-                                "value" => $TaxCodeRef
-                            ],
+                                "value" => 9
+                            ],                            
                         ]
                     ];
             }
             if($update_delivery_challan->loading_charge>0){
+                // $TaxCodeRef = 26;
                 $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
                 if($del_products->vat_percentage==0)
                     $loading_id=$loading_item->quickbook_a_item_id;
@@ -1105,12 +1107,13 @@ class DeliveryChallanController extends Controller {
                             // "UnitPrice" => $update_delivery_challan->loading_charge,
                             // "Qty" => 1,
                             "TaxCodeRef"=>[
-                                "value" => $TaxCodeRef
+                                "value" => 9
                             ],
                         ]
                     ];
             }
             if($update_delivery_challan->discount>0){ 
+                // $TaxCodeRef = 26;
             $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
             // dd($discount_item);
             if($del_products->vat_percentage==0)
@@ -1132,7 +1135,7 @@ class DeliveryChallanController extends Controller {
                             // "UnitPrice" => floatval(-$update_delivery_challan->discount),
                             // "Qty" => 1,
                             "TaxCodeRef"=>[
-                                "value" => $TaxCodeRef
+                                "value" => 9
                             ],                            
                         ]
                     ];
@@ -1154,6 +1157,7 @@ class DeliveryChallanController extends Controller {
                     // "value"=> $update_delivery_challan->customer->quickbook_customer_id,
                     "value"=> $quickbook_customer_id,
                 ],
+                // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
                 
             $inv = $dataService->add($theResourceObj);
