@@ -1,6 +1,7 @@
 @extends('layouts.master')
 @section('title','Delivery Challan')
 @section('content') 
+
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -10,10 +11,6 @@
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
                 <div class="filter-block">
-
-
-
-
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
                             <?php
@@ -216,7 +213,12 @@
                                         <td class="text-center">{{ (round($challan->actual_quantity, 2)>0)? round($challan->actual_quantity, 2)  :0 }}</td>
                                         <!--<td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>-->
                                         <!--<td class="text-center">{{ (round($challan->vat_percentage, 2)<>'')? round($challan->vat_percentage, 2):0}}</td>-->
-                                        <td class="text-center">{{ ($challan['delivery_order']->vehicle_number)}}</td>
+                                        <td class="text-center">
+                                            @if($challan['delivery_order']->vehicle_number == '')
+                                            @elseif(isset($challan['delivery_order']->vehicle_number) && $challan['delivery_order']->vehicle_number != '')
+                                            {{$challan['delivery_order']->vehicle_number}}
+                                            @endif
+                                        </td>
 
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
@@ -260,12 +262,12 @@
                                             @endif
 
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <!--                                                                                    <a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
-                                                                                                                                    <span class="fa-stack">
-                                                                                                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                                                                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                                                                                                    </span>
-                                                                                                                                </a>-->
+                                                <!--<a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>-->
 
                                             <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                 <span class="fa-stack">

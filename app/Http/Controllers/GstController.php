@@ -60,15 +60,19 @@ class GstController extends Controller {
 	{
         require_once base_path('quickbook/vendor/autoload.php');
 	    //$quickgst = [];
-	    $dataService = $this->getToken();
+        $dataService = $this->getToken();
+       
         $quickgst = $dataService->Query('select * From TaxCode');
         $error = $dataService->getLastError();
+        // echo '<pre>';
+        // print_r($error);
+        // exit;
         if ($error) {
             $this->refresh_token();
             $dataService = $this->getToken();
             $quickgst = $dataService->Query('select * From TaxCode');
         }
-        //dd($quickgst);
+        // dd($quickgst);
 		return view('gst_add',compact('quickgst'));
 	}
 

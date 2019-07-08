@@ -268,7 +268,7 @@ class DeliveryChallanController extends Controller {
 
 
     public function index(Request $request) {
-
+       
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -280,6 +280,8 @@ class DeliveryChallanController extends Controller {
             return Redirect::to('due-payment');
         }
         $data = Input::all();
+        // print_r($data);
+        // exit;
         $search_dates = [];
         $allorders = 0;
         $session_sort_type_order = Session::get('order-sort-type');
@@ -299,29 +301,65 @@ class DeliveryChallanController extends Controller {
         }
 
         if ((isset($qstring_sort_type_order)) && ($qstring_sort_type_order != '')) {
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
-                                    ->where('updated_at', 'like', $date1 . '%')
-                                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
-                                    ->orderBy('updated_at', 'desc')->Paginate(20);
+            if($qstring_sort_type_order == 'completed') {
+                if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+                    $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+                    $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+                    if ($date1 == $date2) {
+                        $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+                                        ->where('updated_at', 'like', $date1 . '%')
+                                        ->where('vat_percentage', '>', '0.00')
+                                        ->where('serial_number', 'like', '%P%')
+                                        ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
+                                        ->orderBy('updated_at', 'desc')->Paginate(20);
+                    } else {
+                        $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+                                        ->where('vat_percentage', '>', '0.00')
+                                        ->where('serial_number', 'like', '%P%')
+                                        ->where('updated_at', '>=', $date1)
+                                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                        ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
+                                        ->orderBy('updated_at', 'desc')->Paginate(20);
+                    }
+                    $search_dates = [
+                        'export_from_date' => $data["export_from_date"],
+                        'export_to_date' => $data["export_to_date"]
+                    ];
                 } else {
                     $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
-                                    ->where('updated_at', '>=', $date1)
-                                    ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
+                    ->where('vat_percentage', '>', '0.00')
+                    ->where('serial_number', 'like', '%P%')
+                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
                 }
-                $search_dates = [
-                    'export_from_date' => $data["export_from_date"],
-                    'export_to_date' => $data["export_to_date"]
-                ];
-            } else {
-                $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
-                                ->orderBy('updated_at', 'desc')->Paginate(20);
             }
+            if($qstring_sort_type_order == 'pending') {
+                if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+                    $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+                    $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+                    if ($date1 == $date2) {
+                        $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+                                        ->where('updated_at', 'like', $date1 . '%')
+                                        ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
+                                        ->orderBy('updated_at', 'desc')->Paginate(20);
+                    } else {
+                        $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+                                        ->where('updated_at', '>=', $date1)
+                                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                        ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
+                                        ->orderBy('updated_at', 'desc')->Paginate(20);
+                    }
+                    $search_dates = [
+                        'export_from_date' => $data["export_from_date"],
+                        'export_to_date' => $data["export_to_date"]
+                    ];
+                } else {
+                    $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
+                    ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
+                                    ->orderBy('updated_at', 'desc')->Paginate(20);
+                }   
+            }
+            
         } else {
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');

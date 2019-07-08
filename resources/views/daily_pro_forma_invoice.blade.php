@@ -222,13 +222,23 @@
                                                     @if( Auth::user()->role_id == 0)
                                                         <td>
                                                             <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_sales_daybook",$challan->id)}}'>
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                    </span>
+                                                                <span class="fa-stack">
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                                </span>
                                                             </a>
+                                                            @if(Auth::user()->role_id == 0)
+                                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
+                                                                <span class="fa-stack">
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </a>
+                                                            @endif
                                                         </td>
                                                     @endif
+
+                                                    
 
                                                 </tr>
                                                 @if( Auth::user()->role_id == 0  )
