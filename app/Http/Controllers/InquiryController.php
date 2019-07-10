@@ -189,6 +189,9 @@ class InquiryController extends Controller {
                 $i++;
             }
         }
+        // print_r($input_data['product']);
+        // exit;
+
 //        if ($i == $j) {
 //            return Redirect::back()->with('flash_message', 'Please insert product details');
 //        }
@@ -237,11 +240,17 @@ class InquiryController extends Controller {
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
+                if(array_key_exists("length",$product_data)){
+                    $length = $product_data['length'];
+                } else {
+                    $length = '';
+                }
                 $inquiry_products = [
                     'inquiry_id' => $inquiry_id,
                     'product_category_id' => $product_data['id'],
-                    'unit_id' => $product_data['units'],
+                    'unit_id' => $product_data['units'],                    
                     'quantity' => $product_data['quantity'],
+                    'length' => $length,
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
@@ -470,6 +479,8 @@ class InquiryController extends Controller {
     public function update($id, InquiryRequest $request) {
 
         $input_data = Input::all();
+        // print_r($input_data['product']);
+        // exit;
         $sms_flag = 0;
         if (Session::has('forms_edit_inquiry')) {
             $session_array = Session::get('forms_edit_inquiry');
@@ -585,11 +596,17 @@ class InquiryController extends Controller {
         InquiryProducts::where('inquiry_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
+                if(array_key_exists("length",$product_data)){
+                    $length = $product_data['length'];
+                } else {
+                    $length = '';
+                }
                 $inquiry_products = [
                     'inquiry_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
+                    'length' => $length,
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
@@ -1298,6 +1315,9 @@ class InquiryController extends Controller {
         if (count($inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
+        // echo '<pre>';
+        // print_r($inquiry);
+        // exit;
         $units = Units::all();
         $delivery_location = DeliveryLocation::all();
         $customers = Customer::all();
@@ -1508,12 +1528,21 @@ class InquiryController extends Controller {
         $order->save();
         $order_id = $order->id;
         $order_products = array();
+        // echo '<pre>';
+        // print_r($input_data['product']);
+        // exit;
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
+                if(array_key_exists("length",$product_data)){
+                    $length = $product_data['length'];
+                } else {
+                    $length = '';
+                }
                 $order_products = [
                     'order_id' => $order_id,
                     'order_type' => 'order',
                     'product_category_id' => $product_data['id'],
+                    'length' => $length,
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],

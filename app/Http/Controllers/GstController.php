@@ -64,15 +64,17 @@ class GstController extends Controller {
        
         $quickgst = $dataService->Query('select * From TaxCode');
         $error = $dataService->getLastError();
-        // echo '<pre>';
-        // print_r($error);
-        // exit;
+        
         if ($error) {
-            $this->refresh_token();
+            $dt = $this->refresh_token();
             $dataService = $this->getToken();
+           
             $quickgst = $dataService->Query('select * From TaxCode');
+            echo '<pre>';
+            print_r($quickgst);
+            exit;
         }
-        // dd($quickgst);
+        
 		return view('gst_add',compact('quickgst'));
 	}
 

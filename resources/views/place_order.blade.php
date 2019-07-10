@@ -1,6 +1,12 @@
 @extends('layouts.master')
 @section('title','Place Order')
 @section('content')
+<?php
+// echo '<pre>';
+// print_r($inquiry['inquiry_products']);
+// exit;
+?>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -228,6 +234,7 @@
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span></td>
                                             <td><span>Unit</span></td>
+                                            <td><span>length</span></td>
                                             <td><span>Quantity</span></td>
                                             <td><span>Price</span></td>
                                             <td class="inquiry_vat_chkbox"><span>GST </span></td>
@@ -250,6 +257,14 @@
                                                         <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}} >{{$unit->unit_name}}</option>
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                            </td>
+
+                                            <td class="col-md-1">
+                                                <div class = "form-group">
+                                                    <div class = "form-group length_list_{{$key}}">
+                                                    <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$key}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" {{$product['length'] == '' ? 'disabled': ''}} value = "{{ (isset($product['length'])) ? $product['length']:''}}">
+                                                </div>
                                                 </div>
                                             </td>
                                             <td class="col-md-1">

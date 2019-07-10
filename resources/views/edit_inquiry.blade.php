@@ -208,6 +208,7 @@
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Length</span></td>
                                             <td><span>Quantity</span></td>
 
                                             <td><span>Price</span></td>
@@ -230,7 +231,6 @@
  <!--<i class="fa fa-search search-icon"></i>-->
                                                             </div>
                                                         </td>
-
                                                         <td class="col-md-2">
                                                             <div class="form-group ">
                                                                 <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
@@ -238,6 +238,13 @@
                                                                     <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
                                                                     @endforeach
                                                                 </select>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-md-1">
+                                                            <div class = "form-group">
+                                                                <div class = "form-group length_list_{{$i}}">
+                                                                <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>" disabled>
+                                                            </div>
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
@@ -290,6 +297,13 @@
                                                             @endif
                                                             @endforeach
                                                         </select>
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <div class = "form-group">
+                                                        <div class = "form-group length_list_{{$key}}">
+                                                        <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" {{$product->length == '' ? 'disabled': ''}} value = "{{$product->length}}">
+                                                    </div>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
