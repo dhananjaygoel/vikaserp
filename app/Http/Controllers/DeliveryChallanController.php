@@ -505,9 +505,9 @@ class DeliveryChallanController extends Controller {
         $idata = Input::all();
 
         if (array_key_exists("task",$idata)) {
-            $data['task'] = $idata['task'];
+            $idata['task'] = $idata['task'];
         } else {
-            $data['task'] = 'del_ch';
+            $idata['task'] = 'del_ch';
         }
         
         if (Auth::user()->hasOldPassword()) {
@@ -529,7 +529,7 @@ class DeliveryChallanController extends Controller {
         $product_type = $this->check_product_type($allorder);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'data', 'units', 'delivery_locations', 'product_type'));
+        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'idata', 'units', 'delivery_locations', 'product_type'));
     }
 
     /**

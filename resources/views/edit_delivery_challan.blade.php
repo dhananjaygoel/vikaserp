@@ -33,7 +33,7 @@
                             <input type="hidden" name="order" value="{{$allorder->order_id}}">
                             <input type="hidden" name="order_id" value="{{$allorder->delivery_order_id}}">
                             <input type="hidden" id="customer_id" name="customer_id" value="{{$allorder->customer_id}}">
-                            <input type="hidden" id="task" name="task" value="{{$data->task}}">
+                            <input type="hidden" id="task" name="task" value="{{$idata->task}}">
                             <input type="hidden" name="existing_customer_id" value="{{$allorder->customer_id}}" id="existing_customer_id">
                             <input type="hidden" id="order_source" value="{{$allorder['delivery_order']->order_source}}">                            
                             <div class="form-group">
