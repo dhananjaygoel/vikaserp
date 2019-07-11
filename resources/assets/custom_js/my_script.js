@@ -738,7 +738,7 @@ function print_challan_do(el) {
 $('.print_delivery_order').click(function () {
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
     var vehicle_number = $('#vehicle_no').val()
-    var customer_type = $(this).data('customer_type');    
+    var customer_type = $(this).data('customer_type');        
 //    console.log(customer_type);
     var flag = true;
     if(customer_type=='supplier'){

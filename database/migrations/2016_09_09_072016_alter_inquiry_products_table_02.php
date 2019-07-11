@@ -23,6 +23,7 @@ class AlterInquiryProductsTable02 extends Migration {
      */
     public function down() {
         Schema::table('inquiry_products', function($table) {
+            DB::statement(DB::raw("ALTER TABLE `inquiry_products` ADD `length` VARCHAR(20) NOT NULL;"));
             $table->dropColumn('app_product_id');
         });
     }

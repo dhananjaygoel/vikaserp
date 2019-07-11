@@ -219,14 +219,13 @@
                                                                 <span class="text-info">No</span>
                                                             @endif
                                                         </td>
-                                                    @if( Auth::user()->role_id == 0)
                                                         <td>
-                                                            <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_sales_daybook",$challan->id)}}'>
-                                                                <span class="fa-stack">
-                                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                                </span>
-                                                            </a>
+                                                        <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
+                                                            <span class="fa-stack">
+                                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                                <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                            </span>
+                                                        </a>
                                                             @if(Auth::user()->role_id == 0)
                                                             <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
                                                                 <span class="fa-stack">
@@ -235,15 +234,60 @@
                                                                 </span>
                                                             </a>
                                                             @endif
-                                                        </td>
-                                                    @endif
+
+                                                            @if(Auth::user()->role_id == 0)
+                                                                <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
+                                                                    <span class="fa-stack">
+                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                        <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                                                                    </span>
+                                                                </a>
+                                                            @else
+                                                                @if($challan->is_print_user > 0)
+                                                                    <span class="table-link normal_cursor" title="Delivery challan">
+                                                                        <span class="fa-stack">
+                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                        <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                @else
+                                                                    <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
+                                                                    <span class="fa-stack">
+                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                        <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+                                                                    </span>
+                                                                    </a>
+                                                                @endif
+                                                            @endif
+                                                            @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                                                <!--<a href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                    <span class="fa-stack">
+                                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                                    </span>
+                                                                </a>-->
+
+                                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
+                                                                <span class="fa-stack">
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </a>
+                                                            <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_sales_daybook",$challan->id)}}'>
+                                                                <span class="fa-stack">
+                                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                                </span>
+                                                            </a>
+                                                            @endif
+                                                    
+
+                                                    </td>
 
                                                     
 
                                                 </tr>
-                                                @if( Auth::user()->role_id == 0  )
-
-                                                @endif
+                                               
                                             @endforeach
                                             </tbody>
                                         </table>
@@ -329,6 +373,40 @@
                                         <button type="button" class="btn btn-default" id="yes" onclick="this.form.submit();">Yes</button>
                                     </div>
                                     {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="print_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                        <h4 class="modal-title" id="myModalLabel"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="_token"value="{{csrf_token()}}">
+                                        <input type="hidden" name="serial_number" value="{{isset($challan['delivery_order']->serial_no)?$challan['delivery_order']->serial_no:''}}">
+                                        <input type="hidden" name="delivery_order_id" value="{{isset($challan['delivery_order']->id) ? $challan['delivery_order']->id:''}}">
+                                        <div class="row print_time">
+                                            <div class="col-md-12"> Print By <br>
+                                                <span class="current_time"></span>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="" id="checksms">
+                                                <span title="SMS would be sent to Party" id="checksms_span" class="checksms smstooltip">Send SMS</span>
+                                            </label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <hr>
+                                        <div >
+                                            <button type="button" class="btn btn-primary form_button_footer print_delivery_challan" id="print_delivery_challan">Generate Challan</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
