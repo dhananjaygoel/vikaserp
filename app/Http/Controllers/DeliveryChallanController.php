@@ -505,7 +505,7 @@ class DeliveryChallanController extends Controller {
         $idata = Input::all();
 
         if (array_key_exists("task",$idata)) {
-        $data['task'] = $idata['task'];
+            $data['task'] = $idata['task'];
         } else {
             $data['task'] = 'del_ch';
         }
@@ -538,6 +538,10 @@ class DeliveryChallanController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
+        $tasked = $input_data['task'];
+        // echo '<pre>';
+        // print_r($tasked);
+        // exit;
         $sms_flag = 0;
         if (!isset($input_data['grand_total']) || $input_data['grand_total'] == '') {
             return Redirect::back()->with('validation_message', 'No Value Updated. Please update something');
@@ -847,8 +851,11 @@ class DeliveryChallanController extends Controller {
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
         DeliveryChallan::where('id',$id)->update(['is_editable'=>1]);
-
-        return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
+        if($tasked == 'del_ch') {
+            return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
+        } else {
+            return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
+        }        
     }
 
     public function calc_actual_qty($dc_id = 0, $input_data = []) {

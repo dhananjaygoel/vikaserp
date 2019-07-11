@@ -630,7 +630,7 @@ class PurchaseChallanController extends Controller {
                     'order_status' => "Completed"
         ));
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
-
+        
         /* inventory code */
         $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_challan')->get();
         foreach ($product_categories as $product_categoriy) {
