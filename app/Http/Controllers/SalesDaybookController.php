@@ -193,7 +193,7 @@ class SalesDaybookController extends Controller {
         }
         $password = Input::get('password');
         if ($password == '') {
-            return Redirect::to('sales_daybook')->with('error', 'Please enter your password');
+            return Redirect::to('daily_pro_forma_invoice')->with('error', 'Please enter your password');
         }
 
         $current_user = User::find(Auth::id());
@@ -201,9 +201,9 @@ class SalesDaybookController extends Controller {
             $challan = DeliveryChallan::find($id);
             $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
             $challan->delete();
-            return Redirect::to('sales_daybook')->with('flash_message', 'Challan is Successfully deleted');
+            return Redirect::to('daily_pro_forma_invoice')->with('flash_message', 'Challan is Successfully deleted');
         } else {
-            return Redirect::to('sales_daybook')->with('error', 'Invalid password');
+            return Redirect::to('daily_pro_forma_invoice')->with('error', 'Invalid password');
         }
     }
 

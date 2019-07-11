@@ -242,7 +242,7 @@
             </div>
             <div class="footer">
                 <div class="remark">Remark:</div>
-                <div class="content">{{ isset($delivery_data->remarks)?$delivery_data->remarks :''}}</div>
+                <div class="content">{{ isset($delivery_data->remarks) ? $delivery_data->remarks : ''}}</div>
             </div>
         </div>
     </body></html>

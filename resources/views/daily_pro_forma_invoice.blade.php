@@ -227,7 +227,7 @@
                                                             </span>
                                                         </a>
                                                             @if(Auth::user()->role_id == 0)
-                                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
+                                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id,'task'=> 'daily_pro'])}}" class="table-link" title="edit">
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>

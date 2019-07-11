@@ -282,9 +282,6 @@ class DeliveryOrderController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id = "") {
-
-
-
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
