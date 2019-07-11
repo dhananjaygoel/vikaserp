@@ -505,9 +505,9 @@ class DeliveryChallanController extends Controller {
         $idata = Input::all();
 
         if (array_key_exists("task",$idata)) {
-            $idata['task'] = $idata['task'];
+        $data['task'] = $idata['task'];
         } else {
-            $idata['task'] = 'del_ch';
+            $data['task'] = 'del_ch';
         }
         
         if (Auth::user()->hasOldPassword()) {
@@ -529,7 +529,7 @@ class DeliveryChallanController extends Controller {
         $product_type = $this->check_product_type($allorder);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'idata', 'units', 'delivery_locations', 'product_type'));
+        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'data','units', 'delivery_locations', 'product_type'));
     }
 
     /**
@@ -847,13 +847,8 @@ class DeliveryChallanController extends Controller {
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
         DeliveryChallan::where('id',$id)->update(['is_editable'=>1]);
-        if($input_data['task'] == 'del_ch') {
-            return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
-        } else {
-            return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
-        }
 
-        
+        return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
     }
 
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
