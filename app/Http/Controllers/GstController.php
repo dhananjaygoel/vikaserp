@@ -33,6 +33,7 @@ class GstController extends Controller {
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
+       
         $quickbook = QuickbookToken::first();
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -40,9 +41,9 @@ class GstController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "123146439616474",
-            'baseUrl' => "Production"
-        ));
+            'QBORealmID' => "4620816365002290300",
+            'baseUrl' => "Development"));
+        
     }
 
 
@@ -61,18 +62,20 @@ class GstController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
 	    //$quickgst = [];
         $dataService = $this->getToken();
+
        
         $quickgst = $dataService->Query('select * From TaxCode');
         $error = $dataService->getLastError();
+        // $CompanyInfo = $dataService->getCompanyInfo();
+        // $firstTenInvoices = $dataService->Query("SELECT * FROM Invoice", 1, 10);
+        // echo '<pre>';
+        // print_r( $quickgst);
+        // exit;
         
         if ($error) {
-            $dt = $this->refresh_token();
-            $dataService = $this->getToken();
-           
-            $quickgst = $dataService->Query('select * From TaxCode');
-            echo '<pre>';
-            print_r($quickgst);
-            exit;
+            $this->refresh_token();
+            $dataService = $this->getToken();           
+            $quickgst = $dataService->Query('select * From TaxCode');            
         }
         
 		return view('gst_add',compact('quickgst'));
