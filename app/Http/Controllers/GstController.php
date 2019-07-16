@@ -32,18 +32,19 @@ class GstController extends Controller {
 	 */
 
     function getToken(){
-        require_once base_path('quickbook/vendor/autoload.php');
-       
+        require_once base_path('quickbook/vendor/autoload.php');        
         $quickbook = QuickbookToken::first();
+        echo '<pre>';
+        print_r($quickbook);
+        exit;
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "4620816365002290300",
+            'QBORealmID' => "4620816365002291260",
             'baseUrl' => "Development"));
-        
     }
 
 
