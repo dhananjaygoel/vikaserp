@@ -34,9 +34,9 @@ class GstController extends Controller {
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');        
         $quickbook = QuickbookToken::first();
-        echo '<pre>';
-        print_r($quickbook);
-        exit;
+        // echo '<pre>';
+        // print_r($quickbook);
+        // exit;
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
