@@ -286,13 +286,15 @@
                                             @else
                                                     🔴 Under Loading
                                             @endif
+                                            @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8   )
                                             <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                        data-final_truck_weight="{{$delivery->final_truck_weight}}" 
                                        data-product_detail_table="{{$delivery->product_detail_table}}" 
                                        data-labour_pipe="{{$delivery->labour_pipe}}" 
                                        data-labour_structure="{{$delivery->labour_structure}}" 
                                        data-toggle="modal" data-target="#myModalassign" 
-                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button> 
+                                       @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -456,10 +458,12 @@
             <div class="modal-body">
                 <p class="err-p text-center" style="font-weight: bold"></p>
                 <input type="hidden"  name="order_id" id="order_id" class="form-control">
-                <div class="form-group">
-                 <?php $dduser = auth()->user();
+                <?php $dduser = auth()->user();
                        $roleid = $dduser->role_id;
-                       if($roleid ==0) {
+                       
+                
+                if($roleid ==0 || $roleid ==8){
+                    if($roleid ==0) {
                           $type = "del_supervisor";
                            $options =array();
                            ?>
@@ -479,8 +483,9 @@
                             @endforeach
                         <?php
                       }
-                            
-                ?>
+                    ?>
+                <div class="form-group">
+               
                 <select class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor" @if($delivery->serial_no == "") disabled @endif> 
                                                         @foreach($options as $optkey =>$user)
                                                               <option value = {{$optkey }}>{{$user}}</option>  
@@ -491,6 +496,7 @@
                  <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
                                                 
                 </div>
+                 <?php } ?>
                 <div class="form-group">
                     <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
 
