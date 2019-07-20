@@ -311,6 +311,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('under_loading_truck', 'OrderController@under_loading_truck');
     Route::post('loaded_truck', 'OrderController@loaded_truck');
     Route::post('loaded_truck_delivery', 'OrderController@loaded_truck_delivery');
+    Route::post('loaded_assign', 'OrderController@loaded_assign');
     Route::post('delivery_order_spervisor', 'OrderController@delivery_order_spervisor');
     Route::post('delivery_order_del_boy', 'OrderController@delivery_order_del_boy');
 
