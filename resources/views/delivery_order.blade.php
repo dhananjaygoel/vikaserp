@@ -485,7 +485,7 @@
                       }
                     ?>
                 <div class="form-group">
-               
+                <?php if(!empty($delivery)){ ?>
                 <select class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor" @if($delivery->serial_no == "") disabled @endif> 
                                                         @foreach($options as $optkey =>$user)
                                                               <option value = {{$optkey }}>{{$user}}</option>  
@@ -496,7 +496,7 @@
                  <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
                                                 
                 </div>
-                 <?php } ?>
+                 <?php } }?>
                 <div class="form-group">
                     <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
 
