@@ -574,6 +574,7 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
+   
      $.ajax({
         url: baseurl + '/get-data',
         success: function (data) {
@@ -581,6 +582,7 @@ function product_autocomplete(id) {
                 },
     });
     var customer_id = $('#existing_customer_id').val();
+    console.log(customer_id);
     if (customer_id == "") {
         customer_id = 0;
     }
@@ -604,6 +606,7 @@ function product_autocomplete(id) {
             var term = ui.item.value;
             var result = $.grep(all_data.product_sub_category, function(e){ return e.alias_name == term; });
              if (result.length > 0) {
+                
                 if (customer_id > 0) {
                     var temp = $.grep(all_data.customer_product_difference, function(e){ return (e.customer_id == customer_id); });
                     var customer = $.grep(temp, function(e){ return (e.product_category_id == result[0].product_category.id); });
@@ -830,6 +833,7 @@ function purchase_order_advise_product_autocomplete(id) {
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
                 success: function (data) {
+                   
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);

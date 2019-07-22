@@ -298,8 +298,9 @@ class DeliveryOrderController extends Controller {
 
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
-
-
+        // echo '<pre>';
+        // print_r($pending_orders);
+        // exit;
         return view('edit_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'pending_orders'));
     }
 
@@ -1426,6 +1427,7 @@ class DeliveryOrderController extends Controller {
             $temp = array();
             $temp['order_id'] = $id;
             $temp['id'] = $products['id'];
+            $temp['quantity'] = $products['quantity'];
             $temp['product_id'] = $products['product_category_id'];
             $temp['total_pending_quantity'] = $p_qty;
             array_push($pending_orders, $temp);

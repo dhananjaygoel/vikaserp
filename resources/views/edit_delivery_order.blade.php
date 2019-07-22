@@ -237,6 +237,11 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
+                                            <div class="form-group pro_order_qnty_{{$i}}">
+                                                    <input disabled id="pro_order_qnty_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
                                                 </div>
@@ -278,7 +283,7 @@
                                                     @endforeach
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="{{$session_data['product'][$i]['remark']}}" type="text">
                                                 </div>
@@ -316,6 +321,10 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
+                                                <div class = "form-group">                                                    
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
                                                 <div class = "form-group">
                                                     <div class = "form-group length_list_{{$key}}">
                                                     <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{$product->length}}">
@@ -331,6 +340,7 @@
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
                                                 </div>
                                             </td>
+                                            
                                             <td class="col-md-2">
                                                 <div class="form-group col-md-6">
                                                     <!--                                                            form for save product value-->
@@ -366,7 +376,7 @@
                                                     @endforeach
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="{{$session_data['product'][$i]['remark']}}" type="text">
                                                 </div>
@@ -454,6 +464,9 @@
 
                                                     </td>
                                                     <td class="col-md-1">
+                                                    <input disabled type="tel" class="form-control" id="pro_order_qnty_{{$key}}" value="{{$product->quantity}}" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping">
+                                                    </td>
+                                                    <td class="col-md-1">
                                                         <!--                                                            form for save product value-->
                                                         <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
                                                         <!--
@@ -462,6 +475,7 @@
                                                         </div>
                                                         -->
                                                     </td>
+                                                    
                                                     <td class="col-md-2">
                                                         <!--                                                            form for save product value-->
                                                         <input type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
@@ -496,7 +510,7 @@
                                                             @endforeach
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-1">
                                                         <div class="form-group">
                                                             <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                         </div>
