@@ -52,6 +52,8 @@ class DeliveryOrderController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        // echo 'sadfjs';
+        // exit;
         $data = Input::all();
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
