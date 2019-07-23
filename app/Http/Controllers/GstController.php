@@ -78,9 +78,9 @@ class GstController extends Controller {
             $dataService = $this->getToken();           
             $quickgst = $dataService->Query('select * From TaxCode');            
         }
-        echo '<pre>';
-        print_r($CompanyInfo);
-       exit;
+        // echo '<pre>';
+        // print_r($quickgst);
+        // exit;
         
 		return view('gst_add',compact('quickgst'));
 	}

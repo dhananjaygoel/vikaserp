@@ -1020,7 +1020,9 @@
     }) !!} --}}
                 fac();
 //  --------------------------------------Dynamic delivery order product name---------------------------------------------           
-            $("#add_product_row_delivery_order").on("click", function () {               
+            $("#add_product_row_delivery_order").on("click", function () {   
+                // alert('1234');
+                // exit;
     var current_row_count = $(".add_product_row").length + 2;
             $.ajax({
             type: "GET",
@@ -2014,6 +2016,13 @@ function getProductDetails() {
                                 $('#add_product_row').trigger('click');                               
                                 var current_url = window.location.href;
                                 var split_url = current_url.split("/");
+                                // alert(split_url[4]);
+                                // alert(split_url[6]);
+                                // return;
+                                if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
+                                    $('#add_product_row_delivery_order').trigger('click');
+                                    
+                                }
                                 if (split_url[3] == 'create_delivery_order') {
                                     $('#add_product_row_delivery_order').trigger('click');
                                 }
