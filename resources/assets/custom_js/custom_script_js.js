@@ -961,6 +961,8 @@ function product_autocomplete_purchase(id) {
                 url: baseurl + '/fetch_products',
                 data: {"term": term},
                 success: function (data) {
+                    // alert('sdlfhskjhdgf');
+                    // return;
                     var obj = jQuery.parseJSON(data);
                     $("#add_product_id_" + id).val(obj.data_array[0].id);
                     $("#product_price_" + id).val(obj.data_array[0].product_price);

@@ -18,7 +18,7 @@ $(document).ready(function () {
     }
     if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
         $('#add_product_row_delivery_order').trigger('click');
-        alert('dslkkg');
+        
     }
     if (split_url[4] == 'orders' && split_url[6] == 'edit') {
         $('#add_product_row').trigger('click');

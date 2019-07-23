@@ -833,7 +833,8 @@ function purchase_order_advise_product_autocomplete(id) {
                 url: baseurl + '/fetch_products',
                 data: {"term": request.term, 'customer_id': customer_id, 'delivery_location': location, 'location_difference': location_difference},
                 success: function (data) {
-                   
+                    alert('sdjkfhjk');
+                    return;
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
                     response(arr1);
