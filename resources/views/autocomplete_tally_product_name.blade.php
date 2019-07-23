@@ -1492,6 +1492,7 @@
     });
 
             $("#add_editadvice_product_row").on("click", function() {
+                
     var current_row_count = $(".add_product_row").length + 1;
     var row_id = $(".add_product_row").length;
  
