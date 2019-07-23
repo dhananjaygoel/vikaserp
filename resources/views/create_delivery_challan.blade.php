@@ -320,30 +320,7 @@
                                     <div id="total_l_d_f"></div>
                                 </div>
                                 <div class="form-group">
-                                    @if($produc_type['pipe'] == 1)
-                                    <label for="loadedby_pipe"><b class="challan">Loaded By (Pipe)</b></label>
-                                    <div class="form-group clearfix">
-                                        <select id="loaded_by_select_pipe" name='loaded_by_pipe[]' class="form-control" multiple="multiple">
-                                            @if(isset($loaders))
-                                            @foreach ($loaders as $loader)
-                                            <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @endif
-                                    @if($produc_type['structure'] == 1)
-                                    <label for="loadedby_structure"><b class="challan">Loaded By (Structure)</b></label>
-                                    <div class="form-group clearfix">
-                                        <select id="loaded_by_select_structure" name='loaded_by_structure[]' class="form-control" multiple="multiple">
-                                            @if(isset($loaders))
-                                            @foreach ($loaders as $loader)
-                                            <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @endif
+                                    
                                     @if($produc_type['profile'] == 1)
                                     <label for="loadedby_profile"><b class="challan">Loaded By (Profile)</b></label>
                                     <div class="form-group clearfix">
@@ -448,10 +425,7 @@
                                     <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
                                     <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
                                 </div>
-                                <div class="form-group">
-                                    <label for="challan_driver_contact"><b class="challan">Driver Contact</b></label>
-                                    <input id="challan_driver_contact" class="form-control" name="challan_driver_contact"  value="{{isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:''}}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="text">
-                                </div>
+                                
                                 <div class="form-group">
                                     <label for="challan_remark"><b class="challan">Remark</b></label>
                                     <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{isset($delivery_data->remarks)?$delivery_data->remarks:''}}</textarea>

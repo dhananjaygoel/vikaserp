@@ -93,6 +93,25 @@ class OrderController extends Controller {
             echo "failed";
         }
     }
+    public function loaded_assign(Request $request){
+        
+        $assigntype = $request->assign_type;
+        if($assigntype =='del_supervisor'){
+            
+            $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+            'del_supervisor'=>$request->del_supervisor,            
+           ]);      
+           echo "success";
+        }
+        if($assigntype =='del_boy'){
+            $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+                'del_boy'=>$request->del_supervisor,            
+            ]);
+            echo "success";
+            
+        }
+        
+    }
     public function loaded_truck_delivery(Request $request){
         $delivery_data = DeliveryOrder::where('order_id',$request->order_id)->first();
         if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_spervisor)) 

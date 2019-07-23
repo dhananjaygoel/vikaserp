@@ -86,6 +86,12 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->where('order_status', 'pending');
         }
+        if (Auth::user()->role_id == 9){
+             $q->where('del_boy', Auth::user()->id);
+        }
+         if (Auth::user()->role_id == 8){
+             $q->where('del_supervisor', Auth::user()->id);
+        }
         $search_dates = [];
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
