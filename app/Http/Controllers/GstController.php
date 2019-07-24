@@ -33,7 +33,7 @@ class GstController extends Controller {
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');        
-        $quickbook = QuickbookToken::first();
+        $quickbook = QuickbookToken::find(1);
         // echo '<pre>';
         // print_r($quickbook);
         // exit;
@@ -50,7 +50,7 @@ class GstController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = QuickbookToken::first();
+        $quickbook = QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();

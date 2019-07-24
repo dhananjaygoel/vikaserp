@@ -955,7 +955,8 @@ class DeliveryChallanController extends Controller {
     function getTokenWihtoutGST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(2);
+        // $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(1);
         // dd($quickbook);  
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -963,45 +964,72 @@ class DeliveryChallanController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            // 'QBORealmID' => "123146439616474",
-            'QBORealmID' => "193514891354844",
+            // 'QBORealmID' => "193514891354844",
+            'QBORealmID' => "4620816365002291260",
             'baseUrl' => "Production"
         ));
     }
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
+
+    // function getToken(){
+    //     require_once base_path('quickbook/vendor/autoload.php');
+    //     // $quickbook = App\QuickbookToken::first();
+    //     $quickbook = App\QuickbookToken::find(1);
+    //     return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+    //         'auth_mode' => 'oauth2',
+    //         'ClientID' => $quickbook->client,
+    //         'ClientSecret' => $quickbook->secret,
+    //         'accessTokenKey' =>  $quickbook->access_token,
+    //         'refreshTokenKey' => $quickbook->refresh_token,
+    //         'QBORealmID' => "193514891360859",
+    //         'baseUrl' => "Production"
+    //     ));
+    // }
+
     function getToken(){
-        require_once base_path('quickbook/vendor/autoload.php');
-        // $quickbook = App\QuickbookToken::first();
+        require_once base_path('quickbook/vendor/autoload.php');        
         $quickbook = App\QuickbookToken::find(1);
+        // echo '<pre>';
+        // print_r($quickbook);
+        // exit;
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "193514891360859",
-            'baseUrl' => "Production"
-        ));
+            'QBORealmID' => "4620816365002291260",
+            'baseUrl' => "Development"));
     }
     
+    // function refresh_token(){
+    //     require_once base_path('quickbook/vendor/autoload.php');
+    //     // $quickbook = App\QuickbookToken::first();
+    //     $quickbook = App\QuickbookToken::find(1); 
+    //     $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+    //     $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+    //     $accessTokenValue = $accessTokenObj->getAccessToken();
+    //     $refreshTokenValue = $accessTokenObj->getRefreshToken();
+    //     App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    // }
+
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(1); 
+        $quickbook = QuickbookToken::first();
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
-        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+        QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
 
     public function generate_invoice($id){
