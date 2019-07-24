@@ -266,14 +266,31 @@ class SyncRestHandler extends RestHandler
      * @param String $requestUri  The URI for this request
      * @param Array $httpHeaders  The headers for the request
      */
-    public function LogAPIResponseToLog($body, $requestUri, $httpHeaders){
-      if(strcasecmp($httpHeaders[CoreConstants::CONTENT_TYPE], CoreConstants::CONTENTTYPE_APPLICATIONXML) == 0 ||
-          strcasecmp($httpHeaders[CoreConstants::CONTENT_TYPE], CoreConstants::CONTENTTYPE_APPLICATIONXML_WITH_CHARSET) == 0){
-             $body = $this->parseStringToDom($body);
-      }
+    // public function LogAPIResponseToLog($body, $requestUri, $httpHeaders){
+    //   if(strcasecmp($httpHeaders[CoreConstants::CONTENT_TYPE], CoreConstants::CONTENTTYPE_APPLICATIONXML) == 0 ||
+    //       strcasecmp($httpHeaders[CoreConstants::CONTENT_TYPE], CoreConstants::CONTENTTYPE_APPLICATIONXML_WITH_CHARSET) == 0){
+    //          $body = $this->parseStringToDom($body);
+    //   }
 
-      $this->RequestLogging->LogPlatformRequests($body, $requestUri, $httpHeaders, false);
-    }
+    //   $this->RequestLogging->LogPlatformRequests($body, $requestUri, $httpHeaders, false);
+    // }
+    public function LogAPIResponseToLog($body, $requestUri, $httpHeaders) {
+        try {    
+          $contentType = strtolower(CoreConstants::CONTENT_TYPE);    
+          if (    
+            strcasecmp($httpHeaders[$contentType], CoreConstants::CONTENTTYPE_APPLICATIONXML) == 0    
+            || strcasecmp($httpHeaders[$contentType], CoreConstants::CONTENTTYPE_APPLICATIONXML_WITH_CHARSET) == 0    
+          ) {    
+            $body = $this->parseStringToDom($body);    
+          }    
+        } catch (\Exception $e) {    
+          $body = "";    
+        }  
+     
+    
+        $this->RequestLogging->LogPlatformRequests($body, $requestUri, $httpHeaders, false);
+    
+      }
 
     /**
      * Log API Request to the Log directory that user specified.
