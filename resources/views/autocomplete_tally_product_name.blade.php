@@ -2017,10 +2017,10 @@ function getProductDetails() {
                                 $('#add_product_row').trigger('click');                               
                                 var current_url = window.location.href;
                                 var split_url = current_url.split("/");
-                                alert(split_url[4]);
-                                alert(split_url[6]);
+                                alert(split_url[3]);
+                                alert(split_url[5]);
                                 return;
-                                if (split_url[4] == 'delivery_order' && split_url[6] == 'edit') {
+                                if (split_url[3] == 'delivery_order' && split_url[5] == 'edit') {
                                     $('#add_product_row_delivery_order').trigger('click');
                                     
                                 }
