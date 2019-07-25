@@ -1254,7 +1254,10 @@ class DeliveryChallanController extends Controller {
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
                 
+            print_r($theResourceObj);
             $inv = $dataService->add($theResourceObj);
+            print_r($inv);
+            exit;
             $error = $dataService->getLastError();
             if ($error) {  
             if($del_products->vat_percentage==0)
