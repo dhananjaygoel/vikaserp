@@ -1054,9 +1054,9 @@ class DeliveryChallanController extends Controller {
             // print_r($dataService);
             // exit;
         }
-        echo '<pre>';
-        print_r($update_delivery_challan);
-        exit;
+        // echo '<pre>';
+        // print_r($update_delivery_challan);
+        // exit;
 
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
