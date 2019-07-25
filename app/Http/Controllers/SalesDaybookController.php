@@ -218,7 +218,7 @@ class SalesDaybookController extends Controller {
             if ($date1 == $date2) {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                         ->where('updated_at', 'like', $date1 . '%')
-//                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
+//                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
                         ->take(200)
@@ -241,6 +241,17 @@ class SalesDaybookController extends Controller {
                     ->take(200)
                     ->get();
         }
+        
+        $VchNo = 0;
+        foreach ($allorders as $key => $value) {
+            $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
+            $sr[$VchNo]['type'] = 'Invoice';
+            $sr[$VchNo]['id'] = $value->id;
+            $customer = Customer::find($value->customer_id);            
+            $sr[$VchNo]['customer'] = $customer;
+            $VchNo++;
+        }
+        
         Excel::create('Sales Daybook', function($excel) use($allorders) {
             $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
                 $sheet->loadView('excelView.sales', array('allorders' => $allorders));
@@ -252,7 +263,7 @@ class SalesDaybookController extends Controller {
           | Old Export Excel code !WARNING - Do not Delete
           | ----------------------------------------------
          */
-        Excel::create('Sales-Daybook', function($excel) use($allorders) {
+        Excel::create('Sales Daybook', function($excel) use($allorders) {
 
             $excel->sheet('Order List', function($sheet) use($allorders) {
                 $sheet->mergeCells('A1:E1');

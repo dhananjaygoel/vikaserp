@@ -1271,17 +1271,17 @@ class DeliveryChallanController extends Controller {
                 }              
                 $inv = $dataService->add($theResourceObj);                
                 $error1 = $dataService->getLastError();
-                echo '<pre>';
-                print_r($theResourceObj);
-                echo '<br>';
-                echo '<br>';
-                echo '<br>';
-                print_r($inv);
-                echo '<br>';
-                echo '<br>';
-                echo '<br>';
-                print_r($error1);
-                exit;
+                // echo '<pre>';
+                // print_r($theResourceObj);
+                // echo '<br>';
+                // echo '<br>';
+                // echo '<br>';
+                // print_r($inv);
+                // echo '<br>';
+                // echo '<br>';
+                // echo '<br>';
+                // print_r($error1);
+                // exit;
                 if($error1){
                     echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
                     echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";

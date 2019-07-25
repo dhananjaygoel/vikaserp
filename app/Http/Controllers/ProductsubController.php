@@ -53,8 +53,6 @@ class ProductsubController extends Controller {
 
     public function index() {
 
-
-
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
