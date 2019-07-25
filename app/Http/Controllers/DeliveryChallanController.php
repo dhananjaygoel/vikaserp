@@ -1092,8 +1092,10 @@ class DeliveryChallanController extends Controller {
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
 
-        }
-        else{
+        } else {
+            echo '<pre>';
+            print_r($update_delivery_challan->delivery_challan_products);
+            exit;
             $line = [];
             $i = 0;
             foreach ($update_delivery_challan->delivery_challan_products as $del_products){
