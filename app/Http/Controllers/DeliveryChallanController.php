@@ -1036,17 +1036,23 @@ class DeliveryChallanController extends Controller {
     public function generate_invoice($id){
 
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
-        echo '<pre>';
-        print_r($update_delivery_challan);
-        exit;
+        
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
         {
             $dataService = $this->getTokenWihtoutGST();
+            echo '<pre>';
+            echo 'wo gst';
+            print_r($dataService);
+            exit;
         }
         else
         {
             $dataService = $this->getToken();
+            echo '<pre>';
+            echo 'gst';
+            print_r($dataService);
+            exit;
         }
         
 
