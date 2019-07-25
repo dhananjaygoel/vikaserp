@@ -1253,9 +1253,12 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-                
+            echo '<pre>';
             print_r($theResourceObj);
             $inv = $dataService->add($theResourceObj);
+            echo '<br>';
+            echo '<br>';
+            echo '<br>';
             print_r($inv);
             exit;
             $error = $dataService->getLastError();
