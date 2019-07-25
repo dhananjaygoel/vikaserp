@@ -1041,21 +1041,22 @@ class DeliveryChallanController extends Controller {
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
         {
             $dataService = $this->getTokenWihtoutGST();
-            echo '<pre>';
-            echo 'wo gst';
-            print_r($dataService);
-            exit;
+            // echo '<pre>';
+            // echo 'wo gst';
+            // print_r($dataService);
+            // exit;
         }
         else
         {
             $dataService = $this->getToken();
-            echo '<pre>';
-            echo 'gst';
-            print_r($dataService);
-            exit;
+            // echo '<pre>';
+            // echo 'gst';
+            // print_r($dataService);
+            // exit;
         }
-        
-
+        echo '<pre>';
+        print_r($update_delivery_challan);
+        exit;
 
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
