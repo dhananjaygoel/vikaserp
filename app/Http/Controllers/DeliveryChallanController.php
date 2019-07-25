@@ -955,8 +955,8 @@ class DeliveryChallanController extends Controller {
     function getTokenWihtoutGST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        // $quickbook = App\QuickbookToken::find(2);
-        $quickbook = App\QuickbookToken::find(1);
+        $quickbook = App\QuickbookToken::find(2);
+        
         // dd($quickbook);  
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -965,14 +965,14 @@ class DeliveryChallanController extends Controller {
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
             // 'QBORealmID' => "193514891354844",
-            'QBORealmID' => "4620816365002291260",
-            'baseUrl' => "Production"
+            'QBORealmID' => "4611809164061438748",
+            'baseUrl' => "Development"
         ));
     }
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(1);
+        $quickbook = App\QuickbookToken::find(2);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
