@@ -133,6 +133,8 @@ class CustomerController extends Controller {
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         $customerObj = \QuickBooksOnline\API\Facades\Customer::create($data);
         $resultingCustomerObj = $dataService->Add($customerObj);
+        print_r($resultingCustomerObj);
+        exit;
         $error = $dataService->getLastError();
         if ($error) {
             return ['status'=>false,'message'=>$error->getResponseBody()];
