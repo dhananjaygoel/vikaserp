@@ -139,9 +139,11 @@
                                         <th>Present Shipping</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
-                                        <!--<th>Delivery Supervisor/ Boy</th>-->
+                                        
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
+                                        @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <th class="text-center">Create Delivery Challan</th>
+                                        @endif
                                         @endif
                                         <th class="text-center col-md-2">Actions</th>
                                         <th>Status</th>
@@ -183,7 +185,7 @@
                                         <td>
                                             {{$delivery->vehicle_number}}
                                         </td>
-                                      <!--> <td>
+                                        <!--<td>
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                             
                                             <div class="col-md-12">
@@ -193,7 +195,7 @@
                                                         <option value="">Delivery Supervisor</option>
                                                         @foreach(\App\User::where('role_id',8)->get() as $user)
                                                             <?php
-                                                              /*  if($user->status == 0){
+                                                               /* if($user->status == 0){
                                                                     $class = "🔘";
                                                                 }
                                                                 elseif($user->status == 1){
@@ -222,7 +224,7 @@
                                                         <option value="" >Delivery Boy</option>
                                                         @foreach(\App\User::where('role_id',9)->get() as $user)
                                                             <?php
-                                                           /* if($user->status == 0){
+                                                          /*  if($user->status == 0){
                                                                 $class = "🔘";
                                                             }
                                                             elseif($user->status == 1){
@@ -243,7 +245,10 @@
                                             </div>
                                             @endif
                                         </td>-->
+
+                                      
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
+                                        @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
                                             @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0)
@@ -263,16 +268,54 @@
                                             @endif
                                         </td>
                                         @endif
+                                        @endif
                                         <td class="text-center actionicons">
+                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8    )
+                                              
+
+                                            <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
+                                            data-role_id ={{Auth::user()->role_id}}
+                                           data-delivery_id="{{$delivery->id}}" 
+                                           data-supervisor_id="{{$delivery->del_supervisor}}" 
+                                           data-delivery_boy="{{$delivery->del_boy}}" 
+                                       data-final_truck_weight="{{$delivery->final_truck_weight}}" 
+                                       data-product_detail_table="{{$delivery->product_detail_table}}" 
+                                       data-labour_pipe="{{$delivery->labour_pipe}}" 
+                                       data-labour_structure="{{$delivery->labour_structure}}" 
+                                       data-toggle="modal" data-target="#myModalassign" 
+                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                      
+                                           @endif
+
                                             <?php
                                                   // $disable = "disabled";
                                                   // if($delivery->order_details['del_boy'] OR $delivery->order_details['del_supervisor'])
                                                   // {
                                                   //    $disable = "";
                                                   // }
-                                            ?>    
-                                          
-                                            
+                                            if(Auth::user()->role_id == 0 && $delivery->final_truck_weight >0){
+                                                $tclass ="trucksuccess";
+                                            }
+                                            else{
+                                                if(Auth::user()->role_id == 9){
+                                                    $tclass ="trucksuccess";
+                                                }
+                                                else{
+                                                     $tclass ="disabled";
+                                                }
+                                               
+                                            }
+                                            ?>  
+                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 9   )                                         
+                                             <a style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" href="{{url('create_load_truck/'.$delivery->id)}}" class="btn btn-primary truck_load <?php echo $tclass; ?>" id="truck_load" title="Load truck"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></a>
+
+                                            <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> -->
+                                              @endif
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -280,14 +323,7 @@
                                                 </span>
                                             </a>
 
-                                          
-                                            <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a> -->
-                                           
+                                            @if($delivery->order_status == 'pending')
                                                 @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2))
 
                                                     @if(Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2)
@@ -310,8 +346,8 @@
                                             @endif
 
 
-                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1  )
+                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1 )
                                                     <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -320,7 +356,7 @@
                                                     </a>
                                                 @endif
 
-                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1  )
                                             <span class="table-link normal_cursor" title="print">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -328,7 +364,7 @@
                                                 </span>
                                             </span>
                                             @endif
-
+                                        
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1   )
 
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModalDeleteDeliveryOrder" title="delete" onclick='delete_delivery_order({{$delivery->id}})'>
@@ -338,14 +374,17 @@
                                                 </span>
                                             </a>
                                             @endif
-                                        </td>
+                                            
+                                       </td>
+                                        
+                                         
+
                                         <td>
                                             @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0)
                                                     🔵 Loaded    
                                             @else
                                                     🔴 Loading
                                             @endif
-                                          
                                         </td>
                                     </tr>
                                     @endforeach
@@ -477,7 +516,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Final Truck Weight </h4>
+                <h4 class="modal-title">Load Truck  </h4>
             </div>
             <div class="modal-body">
                 <p class="err-p text-center" style="font-weight: bold"></p>
@@ -565,4 +604,5 @@
 
     </div>
 </div>
+
 @stop
