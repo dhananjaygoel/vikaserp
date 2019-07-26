@@ -64,7 +64,57 @@ $(document).ready(function () {
 //        jQuery('#add_purchase_advice_product_row')[0].click();
 //    }
 
-
+$(".btn_save_truck").click(function () {
+    
+    var $inputs = $('.dynamic_field :input');
+     $inputs.each(function() {
+    
+        var weight = $(this).val();
+        var textinput = $(this).attr('id');
+        var delboy_id  = textinput.split("truck_weight");
+        var delivery_id = $("#delivery_id").val();
+        var empty_truck_weight = $("#empty_truck_weight").val();
+     
+         /* $.ajax({
+                type: 'POST',
+                url: url + '/truck_load_bydelboy',
+                data: {
+                    weight:weight,
+                    delboy_id:delboy_id,
+                    delivery_id:delivery_id,
+                    empty_truck_weight:empty_truck_weight,
+                },
+                success: function (data) {
+                    console.log("success");
+                }
+       
+    });*/
+});
+ });
+ $(".assign_load").click(function () {
+     
+     var deliverid = $(this).data('delivery_id');
+     var supervisor_id = $(this).data('supervisor_id');
+     var delboy_id = $(this).data('delivery_boy');
+     var roleid = $(this).data('role_id');
+     //console.log(supervisor_id);
+     $(".modal-body #delivery_id").val( deliverid );
+     if(roleid ==0){
+        
+            $(".del_supervisor").val(supervisor_id);
+         
+        //$(".del_supervisor").val(supervisor_id);
+     }
+     else{
+        
+            $(".del_supervisor").val(delboy_id);
+         
+        
+     }
+    // $(".del_supervisor").val(delboy_id);
+    
+    
+});
     window.setTimeout(function () {
         $(".alert-autohide").fadeTo(1500, 0).slideUp(500, function () {
         });

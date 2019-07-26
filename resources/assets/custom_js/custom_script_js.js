@@ -615,6 +615,10 @@ function fetch_average_quantity() {
 //                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
             }
+            var final_var = $("#actual_pieces_" + current_row_count) .val();
+            if(final_var >0){
+                $('.btn_delorderto_delload_truck').removeClass( "disabled" )
+            }
         }
     }
     fetch_actual_quantity();
