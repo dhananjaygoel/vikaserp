@@ -54,30 +54,19 @@
         </tr>
         <?php
         $VchNo = 1;
-        foreach ($allorders as $key => $value) {
-            $next_cnt = count($value['delivery_challan_products']);
-            $grand_vat_amt = 0;
-            $current_number = 1;
-            ?>
-
-            <?php
-            foreach ($value['delivery_challan_products'] as $key1 => $value1) {
-                $order_quantity = 0; 
-                ?>
+        foreach ($allorders as $key => $value) { ?>
                 <tr>
-                    <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-                    <td>{{ 'Invoice' }}</td>
-                    <td>{{ $value1->id }}</td>
-                    <td>{{ $value1->id }}</td>
-                    
+                    <td>{{ $value['date'] }}</td>       
+                    <td>{{ $value['type'] }}</td>       
+                    <td>{{ $value['no'] }}</td>       
+                    <td>{{ $value['customer'] }}</td>       
+                    <td>{{ $value['due_date'] }}</td>                    
+                    <td>{{ $value['balance'] }}</td>       
+                    <td>{{ $value['total_btax'] }}</td>    
+                    <td>{{ $value['tax'] }}</td>    
+                    <td>{{ $value['total'] }}</td>    
+                    <td>{{ $value['status'] }}</td>       
                 </tr>
-    <?php } ?>
-            <tr>
-                <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-                <td>{{ 'Invoice' }}</td>
-            </tr>
-
-
             <?php
             $VchNo++;
         }

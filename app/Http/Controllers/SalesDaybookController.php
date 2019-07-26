@@ -240,21 +240,60 @@ class SalesDaybookController extends Controller {
 //                    ->Paginate(200);   
                     ->take(200)
                     ->get();
-        }
-        
-        $VchNo = 0;
+        }        
+        $VchNo = 0;        
         foreach ($allorders as $key => $value) {
             $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
             $sr[$VchNo]['type'] = 'Invoice';
-            $sr[$VchNo]['id'] = $value->id;
-            $customer = Customer::find($value->customer_id);            
-            $sr[$VchNo]['customer'] = $customer;
+            $sr[$VchNo]['no'] = $value->id;
+            if($value->customer_id != '') {
+                $customer = Customer::find($value->customer_id);
+                if($customer) {
+                    if($customer->tally_name) {
+                        $tally_name = $customer->tally_name;
+                    } else {
+                        $tally_name = 'Anonymous User';
+                    }                    
+                    $total = $value->grand_price;
+                    $total_btax = $value->grand_price;
+                    $balance = $value->grand_price;
+                    $tax = $value->vat_percentage; 
+                    $status = 'Open';
+                    $due_date =  date("d/m/Y", strtotime($value->updated_at));
+                } else {
+                    $tally_name = 'Anonymous User';
+                    $total = '0.00';
+                    $total_btax = '0.00';
+                    $balance = '0.00';
+                    $tax = '0.00';
+                    $status = '';
+                    $due_date =  date("d/m/Y", strtotime($value->updated_at));
+                }                                
+            } else {
+                $tally_name = 'Anonymous User';
+                $total = '0.00';
+                $total_btax = '0.00';
+                $balance = '0.00';
+                $tax = '0.00';
+                $status = '';
+                $due_date =  date("d/m/Y", strtotime($value->updated_at));
+            }
+            
+            $sr[$VchNo]['customer'] = $tally_name;
+            $sr[$VchNo]['due_date'] = $due_date;            
+            $sr[$VchNo]['balance'] = $balance;            
+            $sr[$VchNo]['total_btax'] = $total_btax;
+            $sr[$VchNo]['tax'] = $tax;
+            $sr[$VchNo]['total'] = $total;
+            $sr[$VchNo]['status'] = $status;
             $VchNo++;
         }
-        
-        Excel::create('Sales Daybook', function($excel) use($allorders) {
-            $excel->sheet('Sales-Daybook', function($sheet) use($allorders) {
-                $sheet->loadView('excelView.sales', array('allorders' => $allorders));
+        // echo '<pre>';
+        // print_r($allorders);
+        // exit;
+        Excel::create('Sales Daybook', function($excel) use($sr) {
+            $excel->sheet('Sales-Daybook', function($sheet) use($sr) {
+                $sheet->loadView('excelView.sales', array('allorders' => $sr));
             });
         })->export('xls');
         exit();
