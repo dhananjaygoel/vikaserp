@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Order;
 use App\DeliveryOrder;
 use App\DeliveryLocation;
+use App\LoadTrucks;
+use App\LoadDelboy;
 use App\AllOrderProducts;
 use App\Customer;
 use App\Units;
@@ -45,7 +47,7 @@ class DeliveryOrderController extends Controller {
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
-        $this->middleware('validIP');
+        $this->middleware('auth');
     }
 
     /**
@@ -932,6 +934,94 @@ class DeliveryOrderController extends Controller {
 
         return $actual_qty;
     }
+    /*
+     * save create load truck form details for the challan
+     */
+       public function store_load_truck($id) {
+        $input_data = Input::all();
+         $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
+         $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
+         //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
+         $delivery_order_details = DeliveryOrder::find($id);
+         
+        if ($delivery_order_details->del_boy != ""){
+             foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
+                $variable = 'truck_weight'.$info;
+                 $truck_weight = (Input::has($variable)) ? Input::get($variable) : '0';
+                  $delboy = Auth::id();
+                  $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
+                     ->where('userid', '=', $delboy)
+                     ->first();
+                 if(empty($delivery_truckdata) ){
+                    if($truck_weight !=0){
+                         $loadetrucks[] = [
+                                'deliver_id' => $id,
+                             'empty_truck_weight' =>  $empty_truck_weight,
+                                'final_truck_weight' => $truck_weight,
+                            'userid' => $delboy,
+                       
+                        ];
+                     LoadTrucks::insert($loadetrucks);
+                    }
+                }
+                else{
+                      if($truck_weight !=0){
+                    LoadTrucks:: where('deliver_id', '=', $id)
+                        ->where('userid', '=', $delboy)
+                        ->update(array(
+                         'empty_truck_weight' => $empty_truck_weight,
+                         'final_truck_weight' => $truck_weight,
+                        'userid' => $delboy,
+                    ));
+                  }
+                }
+                
+             }
+         }
+          $update_delivery = DeliveryOrder::where('id',$id)->update([
+                 'empty_truck_weight'=>$empty_truck_weight,            
+              ]); 
+          $products_data = $_POST['product'];
+        foreach($products_data as $pkey =>$product_info){
+            $actual_pieces = $product_info['actual_pieces'];
+            $average_weight = $product_info['average_weight'];
+            $productid =$product_info['order'];
+            if(!empty($actual_pieces)&& !empty($average_weight)){
+                $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                 'actual_pieces'=>$actual_pieces,  
+                 'actual_quantity'=>$average_weight,            
+              ]); 
+            }
+         
+        }
+        
+         
+         
+         $count = count($products_data);
+         $productlist = AllOrderProducts::where('order_id', '=', $id)
+                      ->where('actual_pieces', '>', 0)
+              ->get();
+         $productlistcount = $productlist->count();
+         $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
+        
+         if($productlistcount ==$count){
+             $sum =0;
+              foreach($trucklist as $truck){
+                  
+                  $sum = $sum + $truck->final_truck_weight;
+              }
+              $final_weight = $total_avg + $empty_truck_weight;
+               $update_delivery = DeliveryOrder::where('id',$id)->update([
+                 'final_truck_weight'=>$final_weight,            
+              ]); 
+            
+         }
+         $parameter = Session::get('parameters');
+         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+      }
+
+
 
     /*
      * save create delivery challan form details for the challan

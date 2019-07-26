@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use View;
 use App\Customer;
 use App\Units;
+use App\LoadTrucks;
+use App\LoadDelboy;
 use App\DeliveryLocation;
 use App\Order;
 use App\AllOrderProducts;
@@ -93,24 +95,88 @@ class OrderController extends Controller {
             echo "failed";
         }
     }
-    public function loaded_assign(Request $request){
-        
-        $assigntype = $request->assign_type;
-        if($assigntype =='del_supervisor'){
-            
+   public function loaded_assign(Request $request){
+        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
+                     ->first();
+        $roleid = Auth::user()->role_id;
+        if($roleid ==0){
+          if(is_null($delivery_data->del_supervisor)){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-            'del_supervisor'=>$request->del_supervisor,            
-           ]);      
-           echo "success";
+                 'del_supervisor'=>$request->del_supervisor,            
+              ]);      
+              echo "success";
+          }
         }
-        if($assigntype =='del_boy'){
+        elseif($roleid ==8){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                 'del_boy'=>$request->del_supervisor,            
-            ]);
+              ]);
+              
             echo "success";
+            $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
+                                 ->where('del_boy',$request->del_supervisor)
+                                 ->where('del_supervisor',Auth::id())
+                                 ->first();
+            if(is_null($delivery_boydata)){
+                 $loadDelboy[] = [
+                        'delivery_id' => $request->delivery_id,
+                        'del_boy' => $request->del_supervisor,
+                        'del_supervisor' => Auth::id(),
+                      
+                       
+                    ];
+             LoadDelboy::insert($loadDelboy);
+            }
             
         }
+        else{
+            echo "failed";
+        }
+        /*if(!empty($delivery_data)){
+
+            $assigntype = $request->assign_type;
+            if($assigntype =='del_supervisor'){
+              $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+                 'del_supervisor'=>$request->del_supervisor,            
+              ]);      
+              echo "success";
+           }
+           if($assigntype =='del_boy'){
+              $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+                'del_boy'=>$request->del_supervisor,            
+              ]);
+              echo "success";
+           }
+        }
+        else{
+           echo "failed";
+
+        }*/
         
+        
+    }
+     public function truck_load_bydelboy(Request $request){
+        $delivery_data = LoadTrucks::where('deliver_id',$request->delivery_id)
+        ->where('userid',$request->delboy_id)
+        ->first();
+        if(!is_null($delivery_data->id)){
+            $update = LoadTrucks::where('deliver_id',$request->delivery_id)
+             ->where('userid',$request->delboy_id)
+              ->update([
+                'final_truck_weight' => $request->weight,
+                'empty_truck_weight' => $request->empty_truck_weight,
+            ]);  
+        }
+        else{
+             $loadetrucks[] = [
+                        'deliver_id' => $request->delivery_id,
+                        'empty_truck_weight' =>  $request->empty_truck_weight,
+                        'final_truck_weight' => $request->weight,
+                        'userid' => $request->delboy_id,
+                       
+                    ];
+             LoadTrucks::insert($loadetrucks);
+        }
     }
     public function loaded_truck_delivery(Request $request){
         $delivery_data = DeliveryOrder::where('order_id',$request->order_id)->first();
