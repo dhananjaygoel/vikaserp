@@ -372,6 +372,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('purchase_challan/{id}-delete', 'PurchaseChallanController@destroy');
     Route::resource('purchase_challan', 'PurchaseChallanController');
     Route::get('create_delivery_challan/{id}', 'DeliveryOrderController@create_delivery_challan');
+    Route::get('create_load_truck/{id}', 'DeliveryOrderController@create_load_truck');
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
     Route::resource('sales_daybook', 'SalesDaybookController');
     Route::resource('daily_pro_forma_invoice', 'SalesDaybookController@daily_pro_forma_invoice');

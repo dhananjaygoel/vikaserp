@@ -682,6 +682,34 @@ class DeliveryOrderController extends Controller {
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type'));
     }
+      /*
+     * displey the create Load truck form
+     */
+
+    public function create_load_truck($id = "") {
+
+        if (Auth::user()->role_id == 5 | $id == "") {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
+
+
+        if (count($delivery_data) < 1) {
+            return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
+        }
+        if (empty($delivery_data['customer'])) {
+            return redirect('delivery_order')->with('error', 'Inavalid delivery order- User not present.');
+        }
+        $produc_type = $this->check_product_type($delivery_data);
+        $units = Units::all();
+        $delivery_locations = DeliveryLocation::all();
+        $customers = Customer::all();
+        $labours = Labour::where('type', '<>', 'purchase')->get();
+        $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
+        $truckdetails = LoadTrucks::where('deliver_id', '=', $id)->get();
+        $delboys = LoadDelboy::where('delivery_id', '=', $id)->get();
+        return view('create_load_truck', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','truckdetails','delboys'));
+    }
 
     /*
      * save create delivery challan form details for the challan
