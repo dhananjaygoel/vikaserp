@@ -311,7 +311,7 @@
                                                 @endif
                                             @endif
 
-
+                                            @if($delivery->order_status == 'pending')
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 ||  Auth::user()->role_id == 8 )
                                                 @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1 ||  Auth::user()->role_id == 8)
                                                     <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
