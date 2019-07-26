@@ -139,7 +139,7 @@
                                         <th>Present Shipping</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
-                                        <!--<th>Delivery Supervisor/ Boy</th>-->
+                                        <th>Delivery Supervisor/ Boy</th>
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
                                         @endif
@@ -183,7 +183,7 @@
                                         <td>
                                             {{$delivery->vehicle_number}}
                                         </td>
-                                      <!--> <td>
+                                        <td>
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                             
                                             <div class="col-md-12">
@@ -193,7 +193,7 @@
                                                         <option value="">Delivery Supervisor</option>
                                                         @foreach(\App\User::where('role_id',8)->get() as $user)
                                                             <?php
-                                                              /*  if($user->status == 0){
+                                                                if($user->status == 0){
                                                                     $class = "🔘";
                                                                 }
                                                                 elseif($user->status == 1){
@@ -202,7 +202,7 @@
                                                                 }
                                                                 else{
                                                                     $class = "🔴";
-                                                                }*/
+                                                                }
                                                             ?>
                                                             @if($delivery->del_supervisor == $user->id)
                                                                 <option value="{{$user->id}}" selected > {{$user->first_name.' '.$user->last_name}} </option>
@@ -222,7 +222,7 @@
                                                         <option value="" >Delivery Boy</option>
                                                         @foreach(\App\User::where('role_id',9)->get() as $user)
                                                             <?php
-                                                           /* if($user->status == 0){
+                                                            if($user->status == 0){
                                                                 $class = "🔘";
                                                             }
                                                             elseif($user->status == 1){
@@ -230,7 +230,7 @@
                                                             }
                                                             else{
                                                                 $class = "🔴";
-                                                            }*/
+                                                            }
                                                             ?>                                                                
                                                             @if($delivery->del_boy == $user->id)
                                                                     <option value="{{$user->id}}" selected > {{$user->first_name.' '.$user->last_name}} </option>
@@ -242,7 +242,9 @@
                                                 </div>
                                             </div>
                                             @endif
-                                        </td>-->
+                                        </td>
+
+
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
@@ -263,15 +265,22 @@
                                             @endif
                                         </td>
                                         @endif
-                                        <td class="text-center actionicons">
+                                        <td class="text-center">
                                             <?php
                                                   // $disable = "disabled";
                                                   // if($delivery->order_details['del_boy'] OR $delivery->order_details['del_supervisor'])
                                                   // {
                                                   //    $disable = "";
                                                   // }
-                                            ?>    
-                                          
+                                            ?>                                           
+                                            <button class="btn btn-primary truck_load" id="truck_load" data-order_id="{{$delivery->order_id}}" data-final_truck_weight="{{$delivery->final_truck_weight}}" data-product_detail_table="{{$delivery->product_detail_table}}" data-labour_pipe="{{$delivery->labour_pipe}}" data-labour_structure="{{$delivery->labour_structure}}" data-toggle="modal" data-target="#myModal" title="load" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></button>
+                                               
+                                            <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> -->
                                             
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -280,14 +289,7 @@
                                                 </span>
                                             </a>
 
-                                          
-                                            <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a> -->
-                                           
+                                            @if($delivery->order_status == 'pending')
                                                 @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2))
 
                                                     @if(Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2)
@@ -310,8 +312,8 @@
                                             @endif
 
 
-                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 ||  Auth::user()->role_id == 8 )
+                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1 ||  Auth::user()->role_id == 8)
                                                     <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -320,7 +322,7 @@
                                                     </a>
                                                 @endif
 
-                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1 ||  Auth::user()->role_id == 8 )
                                             <span class="table-link normal_cursor" title="print">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -343,9 +345,8 @@
                                             @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0)
                                                     🔵 Loaded    
                                             @else
-                                                    🔴 Loading
+                                                    🔴 Under Loading
                                             @endif
-                                          
                                         </td>
                                     </tr>
                                     @endforeach
@@ -477,7 +478,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Final Truck Weight </h4>
+                <h4 class="modal-title">Load Truck  </h4>
             </div>
             <div class="modal-body">
                 <p class="err-p text-center" style="font-weight: bold"></p>
@@ -497,72 +498,5 @@
 
     </div>
 </div>
-<div class="modal fade" id="myModalassign" role="dialog">
-    <div class="modal-dialog">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign  </h4>
-            </div>
-            <div class="modal-body">
-                <p class="err-p text-center" style="font-weight: bold"></p>
-                <input type="hidden"  name="order_id" id="order_id" class="form-control">
-                <?php $dduser = auth()->user();
-                       $roleid = $dduser->role_id;
-                       
-                
-                if($roleid ==0 || $roleid ==8){
-                    if($roleid ==0) {
-                          $type = "del_supervisor";
-                           $options =array(''=>'Select Supervisor');
-                           ?>
-                            @foreach(\App\User::where('role_id',8)->get() as $user)<?php 
-                               $options[$user->id] = $user->first_name.' '.$user->last_name;
-                              ?>
-                            @endforeach
-                        <?php
-                      }
-                      if($roleid ==8){
-                           $type = "del_boy";
-                            $options =array(''=>'Select Delivery boy');
-                           ?>
-                            @foreach(\App\User::where('role_id',9)->get() as $user)<?php 
-                               $options[$user->id] = $user->first_name.' '.$user->last_name;
-                              ?>
-                            @endforeach
-                        <?php
-                      }
-                    ?>
-                
-                <div class="form-group">
-                <?php if(!empty($delivery)){ 
-                    
-        
-        ?>
-                <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}" data-supervisor_id="{{$delivery->del_supervisor}}"
-                 data-delivery_boy="{{$delivery->del_boy}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
-                                                        @foreach($options as $optkey =>$user)
-                                                              <option value = {{$optkey }}>{{$user}}</option>  
-                                                        @endforeach
-                   </select>
-                <input type ="hidden" name ="assign_type" id="assign_type" value = "{{$type}}">
-                 <input type ="hidden" name ="delivery_id" id="delivery_id" value ="{{$delivery->id}}">
-                 <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
-                                                
-                </div>
-                <?php }}?>
-                <div class="form-group">
-                    <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
 @stop
