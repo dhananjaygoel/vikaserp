@@ -271,49 +271,7 @@
                                                   //    $disable = "";
                                                   // }
                                             ?>    
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8    )
-                                              <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
-                                            data-role_id ={{Auth::user()->role_id}}
-                                           data-delivery_id="{{$delivery->id}}" 
-                                           data-supervisor_id="{{$delivery->del_supervisor}}" 
-                                           data-delivery_boy="{{$delivery->del_boy}}" 
-                                       data-final_truck_weight="{{$delivery->final_truck_weight}}" 
-                                       data-product_detail_table="{{$delivery->product_detail_table}}" 
-                                       data-labour_pipe="{{$delivery->labour_pipe}}" 
-                                       data-labour_structure="{{$delivery->labour_structure}}" 
-                                       data-toggle="modal" data-target="#myModalassign" 
-                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
-                                      
-                                           @endif                                       
-                                                <?php
-                                                  // $disable = "disabled";
-                                                  // if($delivery->order_details['del_boy'] OR $delivery->order_details['del_supervisor'])
-                                                  // {
-                                                  //    $disable = "";
-                                                  // }
-                                            if(Auth::user()->role_id == 0 && $delivery->final_truck_weight >0){
-                                                $tclass ="trucksuccess";
-                                            }
-                                            else{
-                                                if(Auth::user()->role_id == 9){
-                                                    $tclass ="trucksuccess";
-                                                }
-                                                else{
-                                                     $tclass ="disabled";
-                                                }
-                                               
-                                            }
-                                            ?>  
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 9   )                                         
-                                             <a style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" href="{{url('create_load_truck/'.$delivery->id)}}" class="btn btn-primary truck_load <?php echo $tclass; ?>" id="truck_load" title="Load truck"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></a>
-
-                                            <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a> -->
-                                              @endif
+                                          
                                             
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
