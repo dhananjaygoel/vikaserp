@@ -48,7 +48,7 @@ class DashboardController extends Controller {
             return redirect('change_password');
         }
 
-        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9) || Auth::user()->role_id == 3){
+        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9 || Auth::user()->role_id == 3){
             return Redirect::to('delivery_order');
         }
 
