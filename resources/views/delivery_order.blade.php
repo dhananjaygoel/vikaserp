@@ -139,7 +139,7 @@
                                         <th>Present Shipping</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
-                                        <!--<th>Delivery Supervisor/ Boy</th>-->
+                                      
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <th class="text-center">Create Delivery Challan</th>
                                         @endif
@@ -183,66 +183,7 @@
                                         <td>
                                             {{$delivery->vehicle_number}}
                                         </td>
-                                      <!--> <td>
-                                            @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
-                                            
-                                            <div class="col-md-12">
-                                                <label for="time">Delivery Supervisor</label>
-                                                <div class="input-group">
-                                                    <select class="form-control del_supervisor" name="del_supervisor" onchange="del_super_change(this)" data-order_id="{{$delivery->order_id}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor_" @if($delivery->serial_no == "") disabled @endif>
-                                                        <option value="">Delivery Supervisor</option>
-                                                        @foreach(\App\User::where('role_id',8)->get() as $user)
-                                                            <?php
-                                                              /*  if($user->status == 0){
-                                                                    $class = "🔘";
-                                                                }
-                                                                elseif($user->status == 1){
-                                                                    $class = "🔵";
-
-                                                                }
-                                                                else{
-                                                                    $class = "🔴";
-                                                                }*/
-                                                            ?>
-                                                            @if($delivery->del_supervisor == $user->id)
-                                                                <option value="{{$user->id}}" selected > {{$user->first_name.' '.$user->last_name}} </option>
-                                                            @else
-                                                                <option value="{{$user->id}}" > {{$user->first_name.' '.$user->last_name}} </option>
-                                                            @endif
-                                                                
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <label for="time">Delivery Boy</label>
-                                                <div class="input-group">
-                                                    <select class="form-control del_boy" name="del_boy" onchange="del_boy_change(this)" data-order_id="{{$delivery->order_id}}" data-delivery_id="{{$delivery->id}}" id="del_boy_" @if($delivery->serial_no == "") disabled @endif>
-                                                        <option value="" >Delivery Boy</option>
-                                                        @foreach(\App\User::where('role_id',9)->get() as $user)
-                                                            <?php
-                                                           /* if($user->status == 0){
-                                                                $class = "🔘";
-                                                            }
-                                                            elseif($user->status == 1){
-                                                                $class = "🔵";
-                                                            }
-                                                            else{
-                                                                $class = "🔴";
-                                                            }*/
-                                                            ?>                                                                
-                                                            @if($delivery->del_boy == $user->id)
-                                                                    <option value="{{$user->id}}" selected > {{$user->first_name.' '.$user->last_name}} </option>
-                                                            @else
-                                                                    <option value="{{$user->id}}" > {{$user->first_name.' '.$user->last_name}} </option>
-                                                             @endif
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            @endif
-                                        </td>-->
+                                     
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
