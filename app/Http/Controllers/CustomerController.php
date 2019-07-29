@@ -52,6 +52,7 @@ class CustomerController extends Controller {
         define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
+    // exit;
 
     /**
      * Display a listing of the customer.
