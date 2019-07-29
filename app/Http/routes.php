@@ -271,7 +271,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('city', 'CityController');
     Route::resource('location', 'DeliveryLocationController');
     Route::post('delivery_difference', 'DeliveryLocationController@delivery_difference');
-    //Route::resource('customers', 'CustomerController');
+    Route::resource('customers', 'CustomerController');
     Route::get('get_city', 'CustomerController@get_city');
     Route::resource('set_price', 'CustomerController@set_price');
     Route::resource('update_set_price', 'CustomerController@update_set_price');
