@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLoadTruckTable extends Migration {
+class CreateLoadTruck extends Migration {
 
 	/**
 	 * Run the migrations.
