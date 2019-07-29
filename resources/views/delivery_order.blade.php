@@ -141,7 +141,9 @@
                                         <th>Vehicle Number</th>
                                       
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
+                                        @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <th class="text-center">Create Delivery Challan</th>
+                                        @endif
                                         @endif
                                         <th class="text-center col-md-2">Actions</th>
                                         <th>Status</th>
@@ -185,6 +187,7 @@
                                         </td>
                                      
                                         @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '')
+                                        @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
                                             @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0)
@@ -203,6 +206,7 @@
                                             </span>
                                             @endif
                                         </td>
+                                        @endif
                                         @endif
                                         <td class="text-center actionicons">
                                             <?php
