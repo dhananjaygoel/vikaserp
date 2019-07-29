@@ -972,7 +972,7 @@ class DeliveryOrderController extends Controller {
          //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
          $delivery_order_details = DeliveryOrder::find($id);
          
-        /*if ($delivery_order_details->del_boy != ""){
+        if ($delivery_order_details->del_boy != ""){
              foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
                 $variable = 'truck_weight'.$info;
                  $truck_weight = (Input::has($variable)) ? Input::get($variable) : '0';
@@ -1043,7 +1043,7 @@ class DeliveryOrderController extends Controller {
                  'final_truck_weight'=>$final_weight,            
               ]); 
             
-         }*/
+         }
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
