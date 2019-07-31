@@ -977,6 +977,8 @@ class DeliveryOrderController extends Controller {
                 $variable = 'truck_weight'.$info;
                  $truck_weight = (Input::has($variable)) ? Input::get($variable) : '0';
                   $delboy = Auth::id();
+                  print $delboy;
+                  die();
                   $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
                      ->where('userid', '=', $delboy)
                      ->first();
