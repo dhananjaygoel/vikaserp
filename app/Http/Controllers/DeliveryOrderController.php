@@ -317,10 +317,11 @@ class DeliveryOrderController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
-           print "dfffdfd";
-        die();
+         
 
         $input_data = Input::all();
+        print_R($input_data);
+        die();
         $sms_flag = 0;
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
