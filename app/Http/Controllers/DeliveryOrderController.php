@@ -1032,7 +1032,8 @@ class DeliveryOrderController extends Controller {
               ->get();
          $productlistcount = $productlist->count();
          $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
-         print_R($trucklist);
+         print_R($productlist);
+         print $count;
 
          if($productlistcount ==$count){
             print "hi";
