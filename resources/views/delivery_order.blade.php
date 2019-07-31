@@ -327,7 +327,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0 && $$delivery->location_difference !=0)
+                                            @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0 && $delivery->location_difference !=0)
                                                     🔵 Loaded    
                                             @else
                                                     🔴 Loading
