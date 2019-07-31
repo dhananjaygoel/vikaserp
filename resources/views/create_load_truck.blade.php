@@ -114,7 +114,6 @@
             </div>
                           <?php
               $truckinformation =json_decode($truckdetails);
-              print_r($truckinformation);
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
@@ -163,9 +162,9 @@
                          <input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
                          @else
                           <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
-                          </div>
+                          
                           @endif  
-                         
+                         </div>
                           @endforeach
                         @endif    
                         <hr>
