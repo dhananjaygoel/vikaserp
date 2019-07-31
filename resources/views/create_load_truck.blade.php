@@ -159,7 +159,7 @@
                              }
                             
                          }
-                         print $delivery_data->location_difference;
+                         
              ?>
                         <div class ="row form-group dynamic_field">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
