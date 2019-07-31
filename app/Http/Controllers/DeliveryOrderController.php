@@ -1029,12 +1029,12 @@ class DeliveryOrderController extends Controller {
          $count = count($products_data);
          $productlist = AllOrderProducts::where('order_id', '=', $id)
                       ->where('actual_pieces', '>', 0)
+                      ->where('order_type', '=', 'delivery_order')
               ->get();
          $productlistcount = $productlist->count();
          $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
-         print_R($productlist);
          print $count;
-
+         print $productlistcount;
          if($productlistcount ==$count){
             print "hi";
              $sum =0;
