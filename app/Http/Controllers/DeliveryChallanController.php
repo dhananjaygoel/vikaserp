@@ -308,13 +308,13 @@ class DeliveryChallanController extends Controller {
                     if ($date1 == $date2) {
                         $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                                         ->where('updated_at', 'like', $date1 . '%')
-                                        ->where('vat_percentage', '>', '0.00')
+                                       //  ->where('vat_percentage', '>', '0.00')
                                         ->where('serial_number', 'like', '%P%')
                                         ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                         ->orderBy('updated_at', 'desc')->Paginate(20);
                     } else {
                         $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
-                                        ->where('vat_percentage', '>', '0.00')
+                                      //  ->where('vat_percentage', '>', '0.00')
                                         ->where('serial_number', 'like', '%P%')
                                         ->where('updated_at', '>=', $date1)
                                         ->where('updated_at', '<=', $date2 . ' 23:59:59')
