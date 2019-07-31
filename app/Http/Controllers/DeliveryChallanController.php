@@ -1093,14 +1093,15 @@ class DeliveryChallanController extends Controller {
             }
 
         } else {
-            echo '<pre>';
-            print_r($update_delivery_challan->delivery_challan_products);
-            exit;
+            
             $line = [];
             $i = 0;
             foreach ($update_delivery_challan->delivery_challan_products as $del_products){
                 $TaxCodeRef = 24;
                 $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->product_category->hsn_code)->first();
+                echo '<pre>';
+                print_r($hsn);
+                exit;
                 if($hsn){
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
