@@ -1038,8 +1038,6 @@ class DeliveryOrderController extends Controller {
                   
                   $sum = $sum + $truck->final_truck_weight;
               }
-              print $total_avg;
-              die();
               $final_weight = $total_avg + $empty_truck_weight;
                $update_delivery = DeliveryOrder::where('id',$id)->update([
                  'final_truck_weight'=>$final_weight,            
