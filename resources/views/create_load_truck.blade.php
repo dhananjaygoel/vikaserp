@@ -125,7 +125,6 @@
              // print_r($truckvalue);
                          
                           $delboy = json_decode($delboys);
-                          print_R($delboy);
  
                           $total_avg = 0;
               ?>
@@ -146,6 +145,7 @@
              else{
                $tvalue =0;
              }
+                         print "hello";
                          if($delivery_data->final_truck_weight > 0){
                              $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
                          }
@@ -153,7 +153,7 @@
                              $total_avg = " ";
                          }
              ?>
-                        <div class ="row form-group">
+                        <div class ="row form-group dynamic_field">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
