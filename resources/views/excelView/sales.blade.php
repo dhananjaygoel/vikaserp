@@ -19,7 +19,20 @@
 
 
         <tr>
-            <td class="heading1">Date</td>            
+            <td class="heading1">InvoiceDate</td>
+            <td class="heading1">DueDate</td>
+            <td class="heading1">Terms</td>
+            <td class="heading1">Memo</td>
+            <td class="heading1">Place Of Supply</td>
+            <td class="heading1">Item(Product/Service)</td>
+            <td class="heading1">ItemDescription</td>
+            <td class="heading1">ItemQuantity</td>
+            <td class="heading1">ItemRate</td>
+            <td class="heading1">ItemAmount</td>
+            <td class="heading1">ItemTaxCode</td>
+            <td class="heading1">ItemTaxAmount</td>
+            <td class="heading1">Service Date</td>
+            <!-- <td class="heading1">Date</td>            
             <td class="heading1">Type</td>
             <td class="heading1">No</td>
             <td class="heading1">Customer</td>
@@ -28,7 +41,7 @@
             <td class="heading1">Total before tax</td>
             <td class="heading1">Tax</td>
             <td class="heading1">Total</td>
-            <td class="heading1">Status</td>
+            <td class="heading1">Status</td> -->
 
             <!--<td class="heading1">Code</td>-->
             <!--<td class="heading1">Address1</td>-->

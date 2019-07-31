@@ -262,6 +262,7 @@ class SalesDaybookController extends Controller {
                     $balance = $value->grand_price;
                     $tax = $value->vat_percentage; 
                     $status = 'Open';
+                    $invoice_no = $value->serial_number; 
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
                 } else {
                     $tally_name = 'Anonymous User';
@@ -270,6 +271,7 @@ class SalesDaybookController extends Controller {
                     $balance = '0.00';
                     $tax = '0.00';
                     $status = '';
+                    $invoice_no = '';
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
                 }                                
             } else {
@@ -279,6 +281,7 @@ class SalesDaybookController extends Controller {
                 $balance = '0.00';
                 $tax = '0.00';
                 $status = '';
+                $invoice_no = '';
                 $due_date =  date("d/m/Y", strtotime($value->updated_at));
             }
             
@@ -289,11 +292,13 @@ class SalesDaybookController extends Controller {
             $sr[$VchNo]['tax'] = $tax;
             $sr[$VchNo]['total'] = $total;
             $sr[$VchNo]['status'] = $status;
+            $sr[$VchNo]['invoice_no'] = $invoice_no;
+            
             $VchNo++;
         }
-        // echo '<pre>';
-        // print_r($allorders);
-        // exit;
+        echo '<pre>';
+        print_r($allorders);
+        exit;
         Excel::create('Sales Daybook', function($excel) use($sr) {
             $excel->sheet('Sales-Daybook', function($sheet) use($sr) {
                 $sheet->loadView('excelView.sales', array('allorders' => $sr));
