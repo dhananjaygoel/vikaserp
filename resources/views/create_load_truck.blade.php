@@ -122,7 +122,7 @@
                 }
                 
               }
-              print_r($truckvalue);
+             
                          
                           $delboy = json_decode($delboys);
  
@@ -150,7 +150,9 @@
                              $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
                          }
                          else{
-                             
+                             if(!empty($truckvalue)){
+                               echo array_sum($truckvalue);
+                             }
                              $total_avg = " ";
                          }
              ?>
