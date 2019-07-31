@@ -1099,9 +1099,7 @@ class DeliveryChallanController extends Controller {
             foreach ($update_delivery_challan->delivery_challan_products as $del_products){
                 $TaxCodeRef = 24;
                 $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->product_category->hsn_code)->first();
-                echo '<pre>';
-                print_r($hsn);
-                exit;
+                
                 if($hsn){
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
@@ -1256,7 +1254,9 @@ class DeliveryChallanController extends Controller {
             ]);
             
             $inv = $dataService->add($theResourceObj);
-            
+            echo '<pre>';
+            print_r($inv);
+            exit;
             $error = $dataService->getLastError();
             if ($error) {  
             if($del_products->vat_percentage==0)
