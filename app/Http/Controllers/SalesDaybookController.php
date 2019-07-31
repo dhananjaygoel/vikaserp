@@ -240,7 +240,10 @@ class SalesDaybookController extends Controller {
 //                    ->Paginate(200);   
                     ->take(200)
                     ->get();
-        }        
+        }    
+        echo '<pre>';
+        print_r($allorders) ;
+        exit;
         $VchNo = 0;        
         foreach ($allorders as $key => $value) {
             $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
