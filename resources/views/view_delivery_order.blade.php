@@ -130,6 +130,7 @@
                                 <tbody>
                                     <tr class="headingunderline">
                                         <td><span>Product(Alias)</span></td>
+                                         <td><span>Length</span></td>
                                         <td><span>Present shipping</span></td>
                                         @if(Auth::user()->role_id == 5)
                                         <td><span>Total Order</span></td>
@@ -144,6 +145,7 @@
                                     @if($product->order_type =='delivery_order' && isset($product->present_shipping) && $product->present_shipping > 0 )
                                     <tr>
                                         <td> {{ $product['order_product_details']->alias_name}}</td>
+                                         <td>{{$product->length}}</td>
                                         <td>{{$product->present_shipping}}</td>
                                         @if(Auth::user()->role_id == 5)
                                         <td>
