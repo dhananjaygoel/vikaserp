@@ -145,7 +145,7 @@
              else{
                $tvalue =0;
              }
-                         print "hello";
+                         
                          if($delivery_data->final_truck_weight > 0){
                              $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
                          }
