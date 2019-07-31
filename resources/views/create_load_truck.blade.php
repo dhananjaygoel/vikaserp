@@ -114,6 +114,7 @@
             </div>
                           <?php
               $truckinformation =json_decode($truckdetails);
+              print_r($truckinformation);
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
@@ -167,13 +168,6 @@
                          
                           @endforeach
                         @endif    
-                       
-                         
-                       
-                       
-                        
-                        
-
                         <hr>
                         <div class="form-group underline">Product Details</div>
                         <div class="inquiry_table col-md-12">
