@@ -125,6 +125,7 @@
              // print_r($truckvalue);
                          
                           $delboy = json_decode($delboys);
+                          print_R($delboy);
  
                           $total_avg = 0;
               ?>
