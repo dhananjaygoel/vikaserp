@@ -320,8 +320,7 @@ class DeliveryOrderController extends Controller {
          
 
         $input_data = Input::all();
-        print_R($_POST);
-        die();
+      
         $sms_flag = 0;
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
