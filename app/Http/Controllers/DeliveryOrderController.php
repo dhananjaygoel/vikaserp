@@ -303,8 +303,7 @@ class DeliveryOrderController extends Controller {
         if (count($delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
-
-
+       
 
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
@@ -318,6 +317,8 @@ class DeliveryOrderController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
+           print "dfffdfd";
+        die();
 
         $input_data = Input::all();
         $sms_flag = 0;
