@@ -151,9 +151,13 @@
                          }
                          else{
                              if(!empty($truckvalue)){
-                               echo array_sum($truckvalue);
+                               $array_sum = array_sum($truckvalue);
+                               $total_avg =  $array_sum - $delivery_data->empty_truck_weight;
                              }
-                             $total_avg = " ";
+                             else{
+                                $total_avg = " ";
+                             }
+                            
                          }
              ?>
                         <div class ="row form-group dynamic_field">
