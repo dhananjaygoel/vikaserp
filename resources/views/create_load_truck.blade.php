@@ -104,72 +104,72 @@
                         </div>
                         <hr>
                         <div class="form-group row">
-						   @if($delivery_data->final_truck_weight > 0)
+                           @if($delivery_data->final_truck_weight > 0)
                             <span class="col-md-2">Final Truck Weight(Kg):</span>
                            <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:170px;">
                             @else
-								 <span class="col-md-2">Final Truck Weight(Kg):</span>
+                                 <span class="col-md-2">Final Truck Weight(Kg):</span>
                            <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:170px;">
-						 @endif  
-						</div>
+                         @endif  
+                        </div>
                           <?php
-						  $truckinformation =json_decode($truckdetails);
-						  if(!empty($truckinformation)){
-							  $truckvalue = array();
-							  foreach($truckinformation as $truck_info){
-								  
-								  $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
-							  }
-							  
-						  }
-						 // print_r($truckvalue);
+                          $truckinformation =json_decode($truckdetails);
+                          if(!empty($truckinformation)){
+                              $truckvalue = array();
+                              foreach($truckinformation as $truck_info){
+                                  
+                                  $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
+                              }
+                              
+                          }
+                         // print_r($truckvalue);
                          
                           $delboy = json_decode($delboys);
  
                           $total_avg = 0;
-						  ?>
+                          ?>
 
                            @if ($delivery_data->del_boy != "")
                          
                         @foreach($delboy as $key => $info) 
-					    <?php
+                        <?php
                             if($key ==0){
                                 $label = 1;
                             }
                             else{
                                 $label = $key+1;
                             }
-						 if(!empty($truckvalue[$info->del_boy])){
-							  $tvalue = $truckvalue[$info->del_boy];
-						 }
-						 else{
-							 $tvalue =0;
-						 }
+                         if(!empty($truckvalue[$info->del_boy])){
+                              $tvalue = $truckvalue[$info->del_boy];
+                         }
+                         else{
+                             $tvalue =0;
+                         }
                          if($delivery_data->final_truck_weight > 0){
                              $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
                          }
                          else{
                              $total_avg = " ";
                          }
-						 ?>
-                        <div class="form-group row dynamic_field">
-                        <div class ="truck_willer">
+                         ?>
+                        <div class ="row form-group">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
+                        
                         @if($info->del_boy == Auth::id() )
                         
-						
+                        
                          <input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
                          @else
                           <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
-                          
-                          @endif  
                           </div>
+                          @endif  
+                         
                           @endforeach
                         @endif    
-                      
+                       
                          
                        
-                        </div>
+                       
                         
                         
 
