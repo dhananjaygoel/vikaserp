@@ -977,7 +977,7 @@ class DeliveryOrderController extends Controller {
                 $variable = 'truck_weight'.$info;
                  $truck_weight = (Input::has($variable)) ? Input::get($variable) : '0';
                   $delboy = Auth::id();
-                  
+
                   $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
                      ->where('userid', '=', $delboy)
                      ->first();
@@ -1032,8 +1032,10 @@ class DeliveryOrderController extends Controller {
               ->get();
          $productlistcount = $productlist->count();
          $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
-        
+         print_R($trucklist);
+
          if($productlistcount ==$count){
+            print "hi";
              $sum =0;
               foreach($trucklist as $truck){
                   
@@ -1045,6 +1047,7 @@ class DeliveryOrderController extends Controller {
               ]); 
             
          }
+         die();
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
