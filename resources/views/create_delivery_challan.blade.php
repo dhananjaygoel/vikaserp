@@ -47,7 +47,7 @@
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{isset($delivery_data['customer']->id)?$delivery_data['customer']->id:''}}">
                         <div class="form-group">
-                            <span>Serial Number: </span>{{($delivery_chellan->serial_no != "") ? $delivery_chellan->serial_no : '--'}}
+                            <span>Serial Number: </span>{{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
                         </div>
                         <hr>
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
@@ -275,7 +275,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 no_left_margin">
                                         <label for="Loading"><b class="challan">Loading</b></label>
-                                        <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value ="{{$delivery_chellan->loading_charge}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                                        <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" value ="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                                     </div>
                                     <!--                            <div class="col-md-4">
                                                                     <label for="Loading Vat Percentage"><b class="challan">Loading Vat Percentage</b></label>
@@ -289,7 +289,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 no_left_margin">
                                         <label for="Discount"><b class="challan">Discount</b></label>
-                                        <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value ="{{$delivery_chellan->discount}}" type="tel" onblur="grand_total_challan();" onkeypress=" return numbersOnly(this, event, true, true);">
+                                        <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value ="" type="tel" onblur="grand_total_challan();" onkeypress=" return numbersOnly(this, event, true, true);">
                                     </div>
                                     <!--                            <div class="col-md-4">
                                                                     <label for="Loading_discount_percentage"><b class="challan">Discount Vat Percentage</b></label>
@@ -309,7 +309,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12 no_left_margin">
                                         <label for="Freight"><b class="challan">Freight</b></label>
-                                        <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$delivery_chellan->freight}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                                        <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                                     </div>
                                     <!--                            <div class="col-md-4">
                                                                     <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
@@ -411,7 +411,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="RoundOff"><b class="challan">Round Off</b></label>
-                                    <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="{{$delivery_chellan->round_off}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                                    <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                                 </div>
                                 <div class="form-group" style="display: none">
                                     <label for="Grand_total"><b class="challan">Grand Total : </b>
@@ -433,7 +433,7 @@
                                 
                                 <div class="form-group">
                                     <label for="challan_remark"><b class="challan">Remark</b></label>
-                                    <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{isset($delivery_chellan->remarks)?$delivery_chellan->remarks:''}}</textarea>
+                                    <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{isset($delivery_data->remarks)?$delivery_data->remarks:''}}</textarea>
                                 </div>
                                 <hr>
                                 <div>
