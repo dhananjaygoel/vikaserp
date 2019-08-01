@@ -168,7 +168,7 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1 sfdsf">
-                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]"></div></div>
+                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}}</div></div>
                                                 <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="" type="hidden" >
                                                 <!--                                                <div class="form-group">
                                                                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->present_shipping}}" name="product[{{$key}}][quantity]">
@@ -249,7 +249,7 @@
                                                         </label>-->
                             <label for="total_actual_qty_truck">
                                 <b class="challan">Actual Quantity*</b> 
-                                <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" >  
+                                <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" >  
                             </label>
                             &nbsp;&nbsp;
                             <label for="total_avg_qty">
@@ -269,7 +269,7 @@
                                     <label for="total">
                                         <b class="challan">Total Actual Quantity</b>
                                         <span class="gtotal">
-                                            <input type="text" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
+                                            <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
                                         </span>
                                     </label>
                                 </div>
