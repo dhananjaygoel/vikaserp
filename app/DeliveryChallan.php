@@ -21,8 +21,8 @@ class DeliveryChallan extends Model {
      *
      * @var array
      */
-    //protected $fillable = ['pdf_name','doc_number','order_id', 'delivery_order_id', 'customer_id', 'created_by', 'bill_number', 'loaded_by', 'labours', 'discount', 'freight', 'loading_charge', 'vat_percentage', 'grand_total', 'challan_status', 'remarks'];
-   // protected $dates = ['deleted_at'];
+    protected $fillable = ['pdf_name','doc_number','order_id', 'delivery_order_id', 'customer_id', 'created_by', 'bill_number', 'loaded_by', 'labours', 'discount', 'freight', 'loading_charge', 'vat_percentage', 'grand_total', 'challan_status', 'remarks'];
+    protected $dates = ['deleted_at'];
 
     public function challan_loaded_by() {
         return $this->hasMany('App\DeliveryChallanLoadedBy','delivery_challan_id', 'id')->where('type','sale');
