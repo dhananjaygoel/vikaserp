@@ -47,7 +47,7 @@
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{isset($delivery_data['customer']->id)?$delivery_data['customer']->id:''}}">
                         <div class="form-group">
-                            <span>Serial Number: </span>{{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
+                            <span>Serial Number: </span>{{($delivery_chellan->serial_no != "") ? $delivery_chellan->serial_no : '--'}}
                         </div>
                         <hr>
                         <input type="hidden" name="supplier_id" value="{{ $delivery_data->supplier_id }}"/>
@@ -63,6 +63,7 @@
                             </td>
                             <input type="hidden" name="location_difference" value="{{$delivery_data->location_difference}}" id="location_difference">
                         </div>
+                        
                         @if($delivery_data->discount > 0)
                             <div class="form-group">
                                 <span>Discount/Premium : </span>
