@@ -683,7 +683,8 @@ class DeliveryOrderController extends Controller {
         $customers = Customer::all();
         $labours = Labour::where('type', '<>', 'purchase')->get();
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
-        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type'));
+        $delivery_chellan = DeliveryChallan::where('id', '=', $id)->first();
+        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','delivery_chellan'));
     }
       /*
      * displey the create Load truck form
