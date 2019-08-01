@@ -677,8 +677,6 @@ class DeliveryOrderController extends Controller {
         if (empty($delivery_data['customer'])) {
             return redirect('delivery_order')->with('error', 'Inavalid delivery order- User not present.');
         }
-        print "hi";
-        DeliveryChallan::where('id', '>=', 0)->update(['deleted_at' => null]);
         $produc_type = $this->check_product_type($delivery_data);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
@@ -687,7 +685,6 @@ class DeliveryOrderController extends Controller {
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         $delivery_chellan = DeliveryChallan::where('id', '=', $id)->first();
         print_r($delivery_chellan);
-        die();
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','delivery_chellan'));
     }
       /*
