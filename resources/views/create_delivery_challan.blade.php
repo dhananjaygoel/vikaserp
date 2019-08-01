@@ -254,13 +254,14 @@
                             &nbsp;&nbsp;
                             <label for="total_avg_qty">
                                 <b class="challan">Total Avg Quantity*</b>
-                                <input type="text" value ={{$actualsum }}class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly">
+                                <input type="text" value ="{{$actualsum}}"class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly">
                                 <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
                                 </div>
                                 <div class="form-group">    
                                     <label for="total">
                                         <b class="challan">Total</b>
                                         <span class="gtotal">
+                                         
                                             <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
                                         </span>
                                     </label>
