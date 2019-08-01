@@ -421,12 +421,7 @@
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-1">
-                                                        <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
-                                                            <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return numbersOnly(this,event,true,true);" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
-                                                        </div>
-
-                                                          <?php $type_id = $product['relations']['product_sub_category']['relations']['product_category']['attributes']['product_type_id'];
+                                                        <?php $type_id = $product['relations']['product_sub_category']['relations']['product_category']['attributes']['product_type_id'];
                                                         if($type_id !=3){
                                                             $length_class ="disabled";
                                                         }
@@ -436,6 +431,12 @@
                                                  
                                                         
                                                          ?>
+                                                    <td class="col-md-1">
+                                                        <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
+                                                            <input <?php echo $length_class; ?> onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return numbersOnly(this,event,true,true);" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
+                                                        </div>
+
+                                                      
                                                         <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
                                                             <select <?php echo $length_class; ?> class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
                                                                 <?php for ($n = 50; $n <= 15000; $n++) { ?>
