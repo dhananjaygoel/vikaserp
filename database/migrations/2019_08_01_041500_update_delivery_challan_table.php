@@ -13,8 +13,8 @@ class UpdateDeliveryChallanTable extends Migration {
 	public function up()
 	{
         Schema::table('delivery_challan', function($table) {
-            //$table->integer('is_editable')->default(0);
-             $table->string('deleted_at')->nullable()
+            
+             $table->string('deleted_at')->nullable();
         });
 	}
 
