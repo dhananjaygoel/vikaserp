@@ -677,6 +677,8 @@ class DeliveryOrderController extends Controller {
         if (empty($delivery_data['customer'])) {
             return redirect('delivery_order')->with('error', 'Inavalid delivery order- User not present.');
         }
+        print "hi";
+        die();
         $produc_type = $this->check_product_type($delivery_data);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
