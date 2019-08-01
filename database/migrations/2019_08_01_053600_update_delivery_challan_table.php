@@ -11,14 +11,16 @@ class UpdateDeliveryChallanTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::query("update delivery_challan set deleted_at = null");
+        Schema::table('delivery_challan', function(Blueprint $table) {
+            $table->timestamp('deleted_at')->nullable();
+        });
     }
 
      public function down()
     {
-        /*Schema::table('delivery_challan',function(Blueprint $table){
+        Schema::table('delivery_challan',function(Blueprint $table){
           $table->dropColumn('deleted_at');
-        });*/
+        });
     }
 
 }
