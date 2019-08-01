@@ -18,7 +18,7 @@ class UpdateDeliveryChallanTable extends Migration {
 
      public function down()
     {
-        Schema::table('delivery_challan',function($table){
+        Schema::table('delivery_challan',function(Blueprint $table){
           $table->dropColumn('deleted_at');
         });
     }
