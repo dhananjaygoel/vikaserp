@@ -514,7 +514,12 @@
                       if($roleid ==8){
                            $type = "del_boy";
                             $options =array(''=>'Select Delivery boy');
+                            $array = \App\User::where('role_id',9)
+                                       ->orderBy('id')
+                                       ->get();
+                           print_r($array);
                            ?>
+
                             @foreach(\App\User::where('role_id',9)->get() as $user)<?php 
                                $options[$user->id] = $user->first_name.' '.$user->last_name;
                               ?>
