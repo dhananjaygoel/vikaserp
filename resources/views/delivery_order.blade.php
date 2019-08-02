@@ -515,8 +515,8 @@
                            $type = "del_boy";
                             $options =array(''=>'Select Delivery boy');
                            ?>
-                            @foreach(\App\User::where('role_id',9)->orderBy('id','DESC')->get() as $user)<?php 
-                               $options[$user->id] = $user->first_name.' '.$us->r->last_name;
+                            @foreach(\App\User::where('role_id',9)->get() as $user)<?php 
+                               $options[$user->id] = $user->first_name.' '.$user->last_name;
                               ?>
                             @endforeach
                         <?php
