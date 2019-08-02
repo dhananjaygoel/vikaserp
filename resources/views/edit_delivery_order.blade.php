@@ -421,12 +421,24 @@
                                                             </select>
                                                         </div>
                                                     </td>
+                                                        <?php $type_id = $product['relations']['product_sub_category']['relations']['product_category']['attributes']['product_type_id'];
+                                                        if($type_id !=3){
+                                                            $length_class ="disabled";
+                                                        }
+                                                        else{
+                                                            $length_class ="";
+                                                        }
+                                                 
+                                                        
+                                                         ?>
                                                     <td class="col-md-1">
                                                         <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
-                                                            <input onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return numbersOnly(this,event,true,true);" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
+                                                            <input <?php echo $length_class; ?> onblur="change_quantity2({{$key}});" id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{ $product->quantity}}" onkeypress=" return numbersOnly(this,event,true,true);" type="text" type="text" @if($counter==0) tabindex="4" class="ui-dform-text" @endif>                                                    <?php $counter++; ?>
                                                         </div>
+
+                                                      
                                                         <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
-                                                            <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
+                                                            <select <?php echo $length_class; ?> class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
                                                                 <?php for ($n = 50; $n <= 15000; $n++) { ?>
                                                                 <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
                                                                 <?php
@@ -436,7 +448,7 @@
                                                             </select>
                                                         </div>
                                                         <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
-                                                            <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
+                                                            <select <?php echo $length_class; ?> class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                                 <?php
@@ -447,7 +459,7 @@
                                                         </div>
 
                                                         <div class = "form-group ff_list_{{$key}}" {{($product->unit_id=='4')?'':'style=display:none'}}>
-                                                            <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
+                                                            <select <?php echo $length_class; ?> class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                                 <?php
@@ -458,7 +470,7 @@
                                                         </div>
 
                                                         <div class = "form-group mm_list_{{$key}}" {{($product->unit_id=='5')?'':'style=display:none'}}>
-                                                            <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
+                                                            <select <?php echo $length_class; ?> class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                                 <?php

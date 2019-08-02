@@ -428,6 +428,7 @@ class DeliveryOrderController extends Controller {
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
+                    'length' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -441,6 +442,7 @@ class DeliveryOrderController extends Controller {
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['present_shipping'],
+                    'length' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -681,7 +683,9 @@ class DeliveryOrderController extends Controller {
         $customers = Customer::all();
         $labours = Labour::where('type', '<>', 'purchase')->get();
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
-        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type'));
+        $delivery_chellan = DeliveryChallan::where('id', '=', $id)->first();
+        print_r($delivery_chellan);
+        return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','delivery_chellan'));
     }
       /*
      * displey the create Load truck form
