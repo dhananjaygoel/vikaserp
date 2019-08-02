@@ -34,32 +34,54 @@ class GstController extends Controller {
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');        
         $quickbook = QuickbookToken::find(1);
+
+        // without gst
+        $config = array(
+            'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
+            'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+            'client_id' => 'ABjYq9i6AXSyor0iOfoeX2NZzQudBqFBnPS7rxoyccu5JOPDPd',
+            'client_secret' => 'LHJbhUy8iSmAuRN3E6tysMQmwQK7LuG48mLqTihs',
+            'oauth_scope' => 'com.intuit.quickbooks.accounting',
+            'oauth_redirect_uri' => 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl',
+        );
+
+        // with gst
         // $config = array(
-        //     'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
-        //     'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
-        //     'client_id' => 'ABXjJvbUmVtj7MWvwK6F3cYiy9nny059BM8y956BwQm1tvGZvG',
-        //     'client_secret' => 'CSekegRyhHzuLBzB5Pf63Q2aWxNrKufizx9WoNIh',
-        //     'oauth_scope' => 'com.intuit.quickbooks.accounting',
-        //     'oauth_redirect_uri' => 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl',
-        // );
+        //         'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
+        //         'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+        //         'client_id' => 'ABoIBAIbfSTIWlk33WVrUrHExZZYGohkVdsTsOylDuQeSGAqfO',
+        //         'client_secret' => 'RYYM8gPpTIRmF3HIjTM1MQOCsJ8Hld0D22Uv6iub',
+        //         'oauth_scope' => 'com.intuit.quickbooks.accounting',
+        //         'oauth_redirect_uri' => 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl',
+        //     );
         // $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
         //     'auth_mode' => 'oauth2',
         //     'ClientID' => $config['client_id'],
         //     'ClientSecret' =>  $config['client_secret'],
         //     'RedirectURI' => $config['oauth_redirect_uri'],
         //     'scope' => $config['oauth_scope'],
-        //     'baseUrl' => "development"
+        //     'baseUrl' => "production"
         // ));
     
         // $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-        // $accessTokenObj = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken("AB11564034959a5YygMNl307qlCPvAgpWB4OCu2Xbd1d4AUtZC", "4611809164061438748");
+        // $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+
+        // without gst
+        // $accessTokenObj = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken("AB11564734804jpXqkxC7OwfIpXZ0m4O24b6BXfAd38yGBUrgx", "9130346686571536");
         // $accessTokenValue = $accessTokenObj->getAccessToken();
         // $refreshTokenValue = $accessTokenObj->getRefreshToken();
-        // // $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+
+        // with gst
+        // $accessTokenObj = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken("AB11564734043Np6ZBfvYQAxqCc0kmISUM3Fq9VMcoyrPMSYkF", "9130346686579506");
+        // $accessTokenValue = $accessTokenObj->getAccessToken();
+        // $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        
     
     
-        // // echo '<pre>';
+        // echo '<pre>';
+        // print_r($authUrl);
         // print_r($accessTokenValue);
+        // echo '<br>';
         // echo '<br>';
         // print_r($refreshTokenValue);
         // exit;
@@ -69,8 +91,8 @@ class GstController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "4620816365002291260",
-            'baseUrl' => "Development"));
+            'QBORealmID' => "9130346686579506",
+            'baseUrl' => "production"));
         // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
         //         'auth_mode' => 'oauth2',
         //         'ClientID' => $quickbook->client,
