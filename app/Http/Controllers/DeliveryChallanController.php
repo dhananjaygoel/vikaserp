@@ -956,18 +956,28 @@ class DeliveryChallanController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
-        
-        // dd($quickbook);  
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            // 'QBORealmID' => "193514891354844",
-            'QBORealmID' => "4611809164061438748",
-            'baseUrl' => "Development"
+            'QBORealmID' => "9130346686571536",
+            'baseUrl' => "Production",
+            'minorVersion'=>34
         ));
+        
+        // dd($quickbook);  
+        // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+        //     'auth_mode' => 'oauth2',
+        //     'ClientID' => $quickbook->client,
+        //     'ClientSecret' => $quickbook->secret,
+        //     'accessTokenKey' =>  $quickbook->access_token,
+        //     'refreshTokenKey' => $quickbook->refresh_token,
+        //     // 'QBORealmID' => "193514891354844",
+        //     'QBORealmID' => "4611809164061438748",
+        //     'baseUrl' => "Development"
+        // ));
     }
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -1001,14 +1011,24 @@ class DeliveryChallanController extends Controller {
         // echo '<pre>';
         // print_r($quickbook);
         // exit;
+        // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+        //     'auth_mode' => 'oauth2',
+        //     'ClientID' => $quickbook->client,
+        //     'ClientSecret' => $quickbook->secret,
+        //     'accessTokenKey' =>  $quickbook->access_token,
+        //     'refreshTokenKey' => $quickbook->refresh_token,
+        //     'QBORealmID' => "4620816365002291260",
+        //     'baseUrl' => "Development"));
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "4620816365002291260",
-            'baseUrl' => "Development"));
+            'QBORealmID' => "9130346686579506",
+            'baseUrl' => "Production",
+            'minorVersion'=>34
+        ));
     }
     
     // function refresh_token(){
