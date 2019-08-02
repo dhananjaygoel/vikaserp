@@ -134,12 +134,15 @@
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-                                        <?php $key = 1; $actualsum =0; ?>
+                                        <?php $key = 1; $actualsum =0; $actualtotal =0;
+                                        ?>
                                         @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <?php
                                          $actual_quantity = $product->actual_pieces * $product->actual_quantity;              
                                          $actualsum =  $actualsum + $actual_quantity;
+                                         $total_dc = $product->actual_quantity * $product->price;   
+                                         $actualtotal =  $actualtotal + $total_dc;
                                         ?>
                                         <tr id="add_row_{{$key}}" class="add_product_row" {{($product->present_shipping==0)?'style = display:none':''}}>
                                             <td class="col-md-2">
@@ -169,7 +172,7 @@
                                             </td>
                                             <td class="col-md-1 sfdsf">
                                                 <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}}</div></div>
-                                                <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="" type="hidden" >
+                                                <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="{{$actual_quantity}}" type="hidden" >
                                                 <!--                                                <div class="form-group">
                                                                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->present_shipping}}" name="product[{{$key}}][quantity]">
                                                                                                     @if($product->present_shipping >=0)
@@ -262,7 +265,7 @@
                                         <b class="challan">Total</b>
                                         <span class="gtotal">
                                          
-                                            <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
+                                            <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly" value = {{$actualtotal}}>
                                         </span>
                                     </label>
                                     &nbsp;&nbsp;
