@@ -504,8 +504,11 @@
                     if($roleid ==0) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
+                           $array = \App\User::where('role_id',8)
+                                       ->orderBy('id', 'DESC')
+                                       ->get();
                            ?>
-                            @foreach(\App\User::where('role_id',8)->get() as $user)<?php 
+                            @foreach($array as $user)<?php 
                                $options[$user->id] = $user->first_name.' '.$user->last_name;
                               ?>
                             @endforeach
@@ -514,8 +517,13 @@
                       if($roleid ==8){
                            $type = "del_boy";
                             $options =array(''=>'Select Delivery boy');
+                            $array = \App\User::where('role_id',9)
+                                       ->orderBy('id', 'DESC')
+                                       ->get();
+                         
                            ?>
-                            @foreach(\App\User::where('role_id',9)->get() as $user)<?php 
+
+                            @foreach($array as $user)<?php 
                                $options[$user->id] = $user->first_name.' '.$user->last_name;
                               ?>
                             @endforeach

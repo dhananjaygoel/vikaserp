@@ -122,7 +122,7 @@
                 }
                 
               }
-             
+             // print_r($truckvalue);
                          
                           $delboy = json_decode($delboys);
  
@@ -145,23 +145,14 @@
              else{
                $tvalue =0;
              }
-                         
                          if($delivery_data->final_truck_weight > 0){
                              $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
                          }
                          else{
-                             if(!empty($truckvalue)){
-                               $array_sum = array_sum($truckvalue);
-                               $total_avg =  $array_sum - $delivery_data->empty_truck_weight;
-                             }
-                             else{
-                                $total_avg = " ";
-                             }
-                            
+                             $total_avg = " ";
                          }
-                         
              ?>
-                        <div class ="row form-group dynamic_field">
+                        <div class ="row form-group">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
@@ -170,11 +161,18 @@
                          <input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
                          @else
                           <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
-                          
+                          </div>
                           @endif  
-                         </div>
+                         
                           @endforeach
                         @endif    
+                       
+                         
+                       
+                       
+                        
+                        
+
                         <hr>
                         <div class="form-group underline">Product Details</div>
                         <div class="inquiry_table col-md-12">
@@ -193,21 +191,34 @@
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-                                        <?php $key = 1; 
-                                         
-                                        ?>
-                                        @foreach($delivery_data['delivery_product'] as $product)
+                                       <?php $key = 1;  ?>
+                                       @if(!$truck_load_prodcut_id->isEmpty())<?php 
+                                        $truck_product_id = $truck_load_prodcut_id['0']['attributes']['product_id'];
+                                        $truck_procudcts = unserialize($truck_product_id);
+                                        $explodetruck_prodcuts = explode(',',$truck_procudcts); ?>
+                                        @else
+                                              <?php $explodetruck_prodcuts = array(); ?>
+                                        @endif
+
+                                            @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <?php
-                                           if($product->actual_pieces >0){
-                                               $class = 'readonly="readonly"';
-                                           }
-                                           else{
-                                                $class = '';
-                                           }
+                                         if(in_array($product->product_category_id,$explodetruck_prodcuts)){
+                                              $class = '';
+                                          }
+                                          else{
+                                             if($product->actual_pieces >0){
+                                                 $class = 'readonly="readonly"';
+                                             }
+                                             else{
+                                                 $class = '';
+                                             }
+                                          }
+                                           
                                            $actual_quantity = $product->actual_pieces * $product->actual_quantity;
+                                          
                                         ?>
-                                        <tr id="add_row_{{$key}}" class="add_product_row" {{($product->present_shipping==0)?'style = display:none':''}}>
+                                        <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     {{ $product['order_product_details']->alias_name}}
