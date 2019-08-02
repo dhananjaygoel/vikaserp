@@ -515,7 +515,7 @@
                            $type = "del_boy";
                             $options =array(''=>'Select Delivery boy');
                             $array = \App\User::where('role_id',9)
-                                       ->orderBy('id')
+                                       ->orderBy('id', 'DESC')
                                        ->get();
                            print_r($array);
                            ?>
