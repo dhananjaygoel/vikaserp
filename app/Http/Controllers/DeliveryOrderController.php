@@ -713,7 +713,9 @@ class DeliveryOrderController extends Controller {
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         $truckdetails = LoadTrucks::where('deliver_id', '=', $id)->get();
         $delboys = LoadDelboy::where('delivery_id', '=', $id)->get();
-        return view('create_load_truck', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','truckdetails','delboys'));
+        $truck_load_prodcut_id = LoadTrucks::where('deliver_id', '=', $id)
+                         ->where('userid', '=', Auth::id())->get();
+        return view('create_load_truck', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','truckdetails','delboys','truck_load_prodcut_id'));
     }
 
     /*
@@ -971,7 +973,30 @@ class DeliveryOrderController extends Controller {
      * save create load truck form details for the challan
      */
        public function store_load_truck($id) {
-        $input_data = Input::all();
+         $input_data = Input::all();
+        $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
+        $truck_product_ids = "";
+        if(!empty($inputprodut)){
+            $productids = array();
+            foreach($inputprodut as $truckprod){
+                if($truckprod['actual_pieces'] >0){
+                    $productids[] = $truckprod['id'];
+                }
+            }
+            if(!empty($productids)){
+                $truck_product_ids = implode(',',$productids);
+
+            }
+            else{
+                $truck_product_ids = "";
+            }
+        }
+        if(!empty($truck_product_ids)){
+            $serialize = serialize($truck_product_ids);
+        }
+        else{
+            $serialize = "";
+        }
          $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
          $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
          //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
@@ -982,29 +1007,85 @@ class DeliveryOrderController extends Controller {
                 $variable = 'truck_weight'.$info;
                  $truck_weight = (Input::has($variable)) ? Input::get($variable) : '0';
                   $delboy = Auth::id();
-
                   $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
                      ->where('userid', '=', $delboy)
                      ->first();
                  if(empty($delivery_truckdata) ){
                     if($truck_weight !=0){
-                         $loadetrucks[] = [
+                         $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
+                         if(empty($delivery_anothertruckdata)){
+                             $loadetrucks[] = [
                                 'deliver_id' => $id,
                              'empty_truck_weight' =>  $empty_truck_weight,
                                 'final_truck_weight' => $truck_weight,
+                                'product_id'  =>$serialize,
                             'userid' => $delboy,
                        
-                        ];
-                     LoadTrucks::insert($loadetrucks);
+                           ];
+                          LoadTrucks::insert($loadetrucks);
+                         }
+                         else{
+                                $delivery_productdata = LoadTrucks::where('deliver_id',$id)->first();
+                                $truck_procudcts = unserialize($delivery_productdata->product_id);
+                                $explodetruck_prodcuts = explode(',',$truck_procudcts);
+                                $secproductids = array();
+                                foreach($inputprodut as $truckprod){
+                                    $product_id = $truckprod['id'];
+                                    $actual_pieces = $truckprod['actual_pieces'];
+                                    if($actual_pieces >0){
+                                        if(!(in_array($product_id,$explodetruck_prodcuts))){
+                                            $secproductids[] = $product_id;
+                                         }
+                                    }
+                                }
+                                if(!empty($secproductids)){
+                                    $truck_secproduct_ids = implode(',',$secproductids);
+                                    $serialize = serialize($truck_secproduct_ids);
+                                }
+                                else{
+                                        $serialize = "";
+                                } 
+                                $loadetrucks[] = [
+                                      'deliver_id' => $id,
+                                      'empty_truck_weight' =>  $empty_truck_weight,
+                                      'final_truck_weight' => $truck_weight,
+                                      'product_id'  =>$serialize,
+                                      'userid' => $delboy,
+                       
+                                ];
+                                LoadTrucks::insert($loadetrucks);
+                         }
                     }
+                      
                 }
                 else{
                       if($truck_weight !=0){
+                         $delivery_productdata = LoadTrucks::where('deliver_id',$id)
+                                       ->where('userid', '=', $delboy)
+                                      ->first();
+                         $truck_procudcts = unserialize($delivery_productdata->product_id);
+                         $explodetruck_prodcuts = explode(',',$truck_procudcts);
+                         $secproductids = array();
+                         foreach($inputprodut as $truckprod){
+                            $product_id = $truckprod['id'];
+                            if(in_array($product_id,$explodetruck_prodcuts)){
+                                 $secproductids[] = $product_id;
+                            }
+                            
+                         }
+                         if(!empty($secproductids)){
+                            $truck_secproduct_ids = implode(',',$secproductids);
+                            $serialize = serialize($truck_secproduct_ids);
+                         }
+                        else{
+                                $serialize = "";
+                         } 
                     LoadTrucks:: where('deliver_id', '=', $id)
                         ->where('userid', '=', $delboy)
                         ->update(array(
                          'empty_truck_weight' => $empty_truck_weight,
                          'final_truck_weight' => $truck_weight,
+                         'product_id'  =>$serialize,
                         'userid' => $delboy,
                     ));
                   }

@@ -196,17 +196,35 @@
                                         <?php $key = 1; 
                                          
                                         ?>
-                                        @foreach($delivery_data['delivery_product'] as $product)
+                                           @if(!$truck_load_prodcut_id->isEmpty())<?php 
+                                        $truck_product_id = $truck_load_prodcut_id['0']['attributes']['product_id'];
+                                        $truck_procudcts = unserialize($truck_product_id);
+                                        $explodetruck_prodcuts = explode(',',$truck_procudcts); ?>
+                                        @else
+                                              <?php $explodetruck_prodcuts = array(); ?>
+                                        @endif
+
+                                            @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <?php
-                                           if($product->actual_pieces >0){
-                                               $class = 'readonly="readonly"';
-                                           }
-                                           else{
-                                                $class = '';
-                                           }
+                                         if(in_array($product->product_category_id,$explodetruck_prodcuts)){
+                                              $class = '';
+                                          }
+                                          else{
+                                             if($product->actual_pieces >0){
+                                                 $class = 'readonly="readonly"';
+                                             }
+                                             else{
+                                                 $class = '';
+                                             }
+                                          }
+                                           
                                            $actual_quantity = $product->actual_pieces * $product->actual_quantity;
+                                          
                                         ?>
+                                        @foreach($delivery_data['delivery_product'] as $product)
+                                        @if($product->order_type =='delivery_order')
+                                        
                                         <tr id="add_row_{{$key}}" class="add_product_row" {{($product->present_shipping==0)?'style = display:none':''}}>
                                             <td class="col-md-2">
                                                 <div class="form-group searchproduct">
