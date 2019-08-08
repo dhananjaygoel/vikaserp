@@ -347,7 +347,8 @@ class InquiryController extends Controller {
      * Display the specified resource.
      */
     public function show($id, InquiryRequest $request) {
-
+        // echo $id;
+        // exit;
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -428,6 +429,9 @@ class InquiryController extends Controller {
             $flash_message = "Message sent successfully";
             return redirect('inquiry')->with('flash_success_message', 'Message sent successfully');
         }
+        // echo '<pre>';
+        // print_r($inquiry);
+        // exit;
 
         $is_approval = $request->input();
 
@@ -486,7 +490,8 @@ class InquiryController extends Controller {
             $session_array = Session::get('forms_edit_inquiry');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message_error', 'This inquiry is already updated. Please refresh the page');
+                    // return Redirect::back()->with('flash_message_error', 'This inquiry is already updated. Please refresh the page');
+                    return Redirect::back()->with('flash_message', 'Inquiry updated successfully');
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_inquiry', $session_array);

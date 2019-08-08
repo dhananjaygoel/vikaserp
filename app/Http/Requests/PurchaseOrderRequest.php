@@ -12,7 +12,7 @@ class PurchaseOrderRequest extends Request {
      * @return bool
      */
     public function authorize() {
-        return true;
+        return TRUE;
     }
 
     /**

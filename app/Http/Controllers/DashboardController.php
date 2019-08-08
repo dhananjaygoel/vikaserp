@@ -43,7 +43,8 @@ class DashboardController extends Controller {
      */
 
     public function index() {
-        
+        // print_r(Auth::user()->role_id);
+        // exit;
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
