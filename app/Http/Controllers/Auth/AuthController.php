@@ -29,6 +29,8 @@ class AuthController extends Controller {
 	 */
 	public function __construct(Guard $auth, Registrar $registrar)
 	{
+		// print_r($registrar);
+		// exit;
 		$this->auth = $auth;
 		$this->registrar = $registrar;
                 $this->middleware('preventBackHistory');

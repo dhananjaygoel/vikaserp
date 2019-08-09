@@ -27,6 +27,8 @@
             } else {
                 $ip_array = array($ipaddress);
             }
+            // print_r($ip_array);
+            // exit;
             ?>
             @if(Auth::check() && !Auth::user()->hasOldPassword())
             <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
@@ -36,6 +38,7 @@
                     $name_array = explode('/', $full_name);
                     $count = count($name_array);
                     $page_name = $name_array[$count - 1];
+
                     ?>
 
                     @if(Auth::user())
@@ -265,7 +268,7 @@
                         <ul class="submenu">
                             @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                             <li class="{{ (Request::is('*purchase_orders*') ? 'active' : '') }}">
-                                <a href="{{url("purchase_orders")}}">
+                                <a href="{{url('purchase_orders')}}">
                                     Purchase Order
                                 </a>
                             </li>

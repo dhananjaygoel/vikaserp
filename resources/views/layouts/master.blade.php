@@ -5,6 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="_token" content="<?php echo csrf_token(); ?>" id="csrf_token" />
+        <?php
+        // echo 'slkhfkj';
+        // exit;
+        ?>
         <base id="baseurl" name="{{url()}}">
         <title>@yield('title')</title>
         @yield('meta')
@@ -387,8 +391,11 @@
 
         <?php
         $currentRoute = Route::getCurrentRoute();
+        
         if ($currentRoute) {
             $path = $currentRoute->getPath();
+            // print_r($path);
+            // exit;
             if ($path == "inquiry/create" ||
                     $path == "inquiry/{inquiry}/edit" ||
                     $path == "orders/create" ||

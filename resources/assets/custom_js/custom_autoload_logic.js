@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var current_url = window.location.href;
+  
     var split_url = current_url.split("/");
     if (split_url[3] == 'delivery_order' && split_url[5] == 'edit') {
         $('#add_product_row_delivery_order').trigger('click');

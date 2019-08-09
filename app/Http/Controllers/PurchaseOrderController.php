@@ -153,8 +153,11 @@ class PurchaseOrderController extends Controller {
      */
 
     public function index(PurchaseOrderRequest $request) {
-        echo 'sdkhfjksd';
-        exit;
+        // echo '<pre>';
+        // print_r(Auth::user()->role_id);
+        // exit;
+        // echo 'sdkhfjksd';
+        // exit;
         $data = Input::all();
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');

@@ -45,6 +45,8 @@ class PurchaseAdviseController extends Controller {
      * Display a listing of the Purchase Advices.
      */
     public function index(StorePurchaseAdvise $request) {
+        // echo 'hfdkjhdf';
+        // exit;
         $data = Input::all();
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');

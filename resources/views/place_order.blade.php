@@ -273,7 +273,7 @@
                                                 </div>
                                                 <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
                                                     <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
-<?php for ($n = 50; $n <= 15000; $n++) { ?>
+                                                        <?php for ($n = 50; $n <= 15000; $n++) { ?>
                                                             <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
                                                             <?php
                                                             $n = $n + 49;
@@ -283,10 +283,10 @@
                                                 </div>
                                                 <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
                                                     <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
-<?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                             <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                             <?php
-//                                                            ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                          //  ($z == 1) ? $z = $z + 3 : $z = $z + 4;
                                                         }
                                                         ?>                                                 
                                                     </select>
@@ -294,19 +294,23 @@
 
                                                 <div class = "form-group ff_list_{{$key}}" {{($product->unit_id==4)?'':'style=display:none'}}>
                                                     <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
-                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                        <option value = "{{$z}}">{{$z}}</option>
-                                                        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                        } ?>
+                                                    <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                        <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                        <?php
+                                                        // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </div>
 
                                                 <div class = "form-group mm_list_{{$key}}" {{($product->unit_id==5)?'':'style=display:none'}}>
                                                     <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
-                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
-                                                        <option value = "{{$z}}">{{$z}}</option>
-                                                        <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                        } ?>
+                                                    <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                        <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                        <?php
+                                                        // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </div>
 
