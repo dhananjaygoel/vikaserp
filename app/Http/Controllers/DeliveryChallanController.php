@@ -1201,7 +1201,7 @@ class DeliveryChallanController extends Controller {
                 "Line" => $line,
                 "CustomerRef"=> [
                     // "value"=> $update_delivery_challan->customer->quickbook_customer_id,
-                    "value"=> $quickbook_customer_id,
+                    "value"=> 776,
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
