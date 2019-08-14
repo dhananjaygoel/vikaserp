@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateDeliveryChallanNew extends Migration {
+class UpdateDeliveryChallanTableNew extends Migration {
 
 	/**
 	 * Run the migrations.
