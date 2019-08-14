@@ -1102,6 +1102,7 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
+                            "name" => "Services", 
                             "value" => 57
                         ],
                         "UnitPrice" => $del_products->price,
