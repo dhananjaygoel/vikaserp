@@ -1102,7 +1102,7 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "value" => $quickbook_item_id
+                            "value" => 57
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
