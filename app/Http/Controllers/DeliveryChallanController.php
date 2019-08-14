@@ -1101,9 +1101,9 @@ class DeliveryChallanController extends Controller {
                 else{
                     $this->refresh_token();
                     $dataService = $this->getToken();
-                    print_r($dataService);
+                   
                 }
-                die();
+               
                 $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
@@ -1293,7 +1293,10 @@ class DeliveryChallanController extends Controller {
                     $this->refresh_token();
                     $dataService = $this->getToken();
 
-                }              
+                }
+                print "gfggfgffg";
+                print_R($theResourceObj)     ;
+                die();   
                 $inv = $dataService->add($theResourceObj);    
                 // echo '<pre>';
                 // print_r($inv);
