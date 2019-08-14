@@ -1112,6 +1112,7 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
             }
+            print_R($line);
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1128,7 +1129,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-          $inv = $dataService->add($theResourceObj);
+         /* $inv = $dataService->add($theResourceObj);
            $error = $dataService->getLastError();
             if ($error) {  
             if($del_products->vat_percentage==0)
@@ -1179,7 +1180,7 @@ class DeliveryChallanController extends Controller {
            // $invoice = $dataService->Query("select * from Invoice where id = '".$doc_num."' ");
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
-            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));*/
         }
     }
 
