@@ -1111,7 +1111,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ]
                 ];
-            }print_r($update_delivery_challan->customer);
+            }
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1120,6 +1120,130 @@ class DeliveryChallanController extends Controller {
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
             } 
+            if($update_delivery_challan->freight>0){
+                // $TaxCodeRef = 26;
+                $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
+                if($del_products->vat_percentage==0)
+                    $freight_id=$freight_item->quickbook_a_item_id;
+                else
+                    $freight_id=$freight_item->quickbook_item_id;
+                $i++;
+                 $line[] = [
+                        "Amount" => $update_delivery_challan->freight,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Frieght Charges", 
+                                "value" => $freight_id
+                            ],
+                            // "UnitPrice" => $update_delivery_challan->freight,
+                            // "Qty" => 1,
+                            "TaxCodeRef"=>[
+                                "value" => 9
+                            ],                            
+                        ]
+                    ];
+            }
+            if($update_delivery_challan->loading_charge>0){
+                // $TaxCodeRef = 26;
+                $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
+                if($del_products->vat_percentage==0)
+                    $loading_id=$loading_item->quickbook_a_item_id;
+                else
+                    $loading_id=$loading_item->quickbook_item_id;
+                $i++;
+                 $line[] = [
+                        "Id" => $i,
+                        "LineNum" => $i,
+                        // "Description" => "Loading Charges",
+                        "Amount" => $update_delivery_challan->loading_charge,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Loading Charges", 
+                                "value" => $loading_id
+                            ],
+                            // "UnitPrice" => $update_delivery_challan->loading_charge,
+                            // "Qty" => 1,
+                            "TaxCodeRef"=>[
+                                "value" => 9
+                            ],
+                        ]
+                    ];
+            }
+            if($update_delivery_challan->discount>0){ 
+                // $TaxCodeRef = 26;
+            $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
+            // dd($discount_item);
+            if($del_products->vat_percentage==0)
+                    $discount_a_id=$discount_item->quickbook_a_item_id;
+                else
+                    $discount_a_id=$discount_item->quickbook_item_id;              
+                $i++;
+                 $line[] = [
+                        "Amount" => floatval(-$update_delivery_challan->discount),
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Discounts", 
+                                "value" => $discount_a_id
+                            ],
+                            // "UnitPrice" => floatval(-$update_delivery_challan->discount),
+                            // "Qty" => 1,
+                            "TaxCodeRef"=>[
+                                "value" => 9
+                            ],                            
+                        ]
+                    ];
+            
+            }
+            $theResourceObj = Invoice::create([
+                "Line" => $line,
+                "CustomerRef"=> [
+                    // "value"=> $update_delivery_challan->customer->quickbook_customer_id,
+                    "value"=> $quickbook_customer_id,
+                ],
+                // 'GlobalTaxCalculationEnum'=>'NotApplicable'
+            ]);
+            $inv = $dataService->add($theResourceObj);
+          
+            $error = $dataService->getLastError();
+            if ($error) {  
+            if($del_products->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST(); 
+                    // $inv = $dataService->add($theResourceObj);                   
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+
+                }              
+                $inv = $dataService->add($theResourceObj);
+                $error1 = $dataService->getLastError();
+                if($error1){
+                    echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
+                    echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
+                    echo "The Response message is: " . $error->getResponseBody() . "\n";
+                    die;
+                }
+                else{
+                    $doc_num =  $inv->Id;
+                }
+            }
+            else{
+                 $doc_num =  $inv->Id;
+            }
+             DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
+            if(Auth::user()->role_id != 0){
+                DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
+            }
+
+           // $invoice = $dataService->Query("select * from Invoice where id = '".$doc_num."' ");
+            $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
+            $pdfNAme = explode('invoice/',$pdf)[1];
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
 
         }
     }
