@@ -1066,7 +1066,7 @@ class DeliveryChallanController extends Controller {
             // print_r($dataService);
             // exit;
             print "hi";
-            die();
+        
         }
         else
         {
@@ -1074,8 +1074,10 @@ class DeliveryChallanController extends Controller {
             // echo '<pre>';
             // echo 'gst';
             // print_r($dataService);
+            print "dfggdg";
             // exit;
         }
+            die();
         // echo '<pre>';
         // print_r($update_delivery_challan);
         // exit;
