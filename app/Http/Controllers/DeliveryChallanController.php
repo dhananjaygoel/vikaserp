@@ -1073,7 +1073,7 @@ class DeliveryChallanController extends Controller {
             }
         }
         print "hello";
-        print_R($update_delivery_challan);
+        print_R($update_delivery_challan->doc_number);
         if($update_delivery_challan->doc_number){
             print "success";
         }
