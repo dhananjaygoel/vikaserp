@@ -1090,8 +1090,14 @@ class DeliveryChallanController extends Controller {
                     }
                 }
                 $i++;
-                print $del_products->vat_percentage;
-                print_R($del_products);
+                if($del_products->vat_percentage==0){
+                    $quickbook_item_id=$del_products->order_product_all_details->quickbook_a_item_id;
+                }
+                else{
+                    $quickbook_item_id=$del_products->order_product_all_details->quickbook_item_id;
+                }
+                print $quickbook_item_id;
+                
             }
         }
     }
