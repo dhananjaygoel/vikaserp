@@ -11,6 +11,7 @@ use QuickBooksOnline\API\Data\IPPTaxCode;
 use QuickBooksOnline\API\Facades\Invoice;
 use View;
 use App\DeliveryChallan;
+use App\DeliveryChallanLoadedBy;
 use App\Order;
 use App\AllOrderProducts;
 use App\DeliveryOrder;
@@ -1055,6 +1056,7 @@ class DeliveryChallanController extends Controller {
 
     public function generate_invoice($id){
         
+        $load_bies = DeliveryChallanLoadedBy::find($id);
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         $ss = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id)->toSql();
         
@@ -1074,7 +1076,7 @@ class DeliveryChallanController extends Controller {
             }
         }
         print "hello";
-        print_r($ss);
+        print_r($load_bies);
         print_r($update_delivery_challan->doc_number);
         if($update_delivery_challan->doc_number){
             print "success";
