@@ -13,7 +13,7 @@ class UpdateDeliveryChallanTableNew extends Migration {
 	public function up()
 	{
         Schema::table('delivery_challan', function($table) {
-            $table->dateTime('deleted_at')->nullable();
+            $table->dateTime('deleted_at')->nullable()->change();
         });
 	}
 
