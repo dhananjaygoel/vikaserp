@@ -1074,7 +1074,9 @@ class DeliveryChallanController extends Controller {
 
         }
         else{
-            print "fff";
+            foreach ($update_delivery_challan->delivery_challan_products as $del_products){
+                print_R($del_products);
+            }
         }
     }
 
