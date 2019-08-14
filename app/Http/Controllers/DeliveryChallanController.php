@@ -1070,7 +1070,12 @@ class DeliveryChallanController extends Controller {
                 return redirect('delivery_challan?status_filter=completed');
             }
         }
-        print $update_delivery_challan->doc_number;
+        if($update_delivery_challan->doc_number){
+
+        }
+        else{
+            print "fff";
+        }
     }
 
 
