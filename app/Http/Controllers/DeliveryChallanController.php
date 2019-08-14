@@ -1065,7 +1065,7 @@ class DeliveryChallanController extends Controller {
             // echo 'wo gst';
             // print_r($dataService);
             // exit;
-            print "hi";
+           
         
         }
         else
@@ -1073,11 +1073,11 @@ class DeliveryChallanController extends Controller {
             $dataService = $this->getToken();
             // echo '<pre>';
             // echo 'gst';
-             print_r($dataService);
-            print "dfggdg";
+             
+            
             // exit;
         }
-            die();
+           
         // echo '<pre>';
         // print_r($update_delivery_challan);
         // exit;
@@ -1101,7 +1101,9 @@ class DeliveryChallanController extends Controller {
                 else{
                     $this->refresh_token();
                     $dataService = $this->getToken();
+                    print_r($dataService);
                 }
+                die();
                 $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
