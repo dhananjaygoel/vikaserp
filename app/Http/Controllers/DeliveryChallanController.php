@@ -1065,6 +1065,8 @@ class DeliveryChallanController extends Controller {
             // echo 'wo gst';
             // print_r($dataService);
             // exit;
+            print "hi";
+            die();
         }
         else
         {
