@@ -1054,8 +1054,9 @@ class DeliveryChallanController extends Controller {
     }
 
     public function generate_invoice($id){
-        print $id;
+        
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
+        $ss = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id)->toSql();
         
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
@@ -1073,7 +1074,8 @@ class DeliveryChallanController extends Controller {
             }
         }
         print "hello";
-        print_R($update_delivery_challan->doc_number);
+        print_r($ss);
+        print_r($update_delivery_challan->doc_number);
         if($update_delivery_challan->doc_number){
             print "success";
         }
