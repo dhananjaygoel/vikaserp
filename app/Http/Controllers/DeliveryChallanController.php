@@ -1058,6 +1058,7 @@ class DeliveryChallanController extends Controller {
         
         $load_bies = DeliveryChallanLoadedBy::find($id);
         $deliverychallanid = $load_bies['delivery_challan_id'];
+        print $deliverychallanid;
         $update_delivery_challan = DeliveryChallan::find($deliverychallanid);
         
         print_r($update_delivery_challan);
