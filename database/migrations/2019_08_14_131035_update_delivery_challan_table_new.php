@@ -24,7 +24,9 @@ class UpdateDeliveryChallanTableNew extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::table('delivery_challan',function($table){
+          $table->dropColumn('deleted_at');
+        });
 	}
 
 }
