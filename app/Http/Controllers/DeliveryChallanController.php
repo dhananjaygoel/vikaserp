@@ -1058,7 +1058,7 @@ class DeliveryChallanController extends Controller {
         
         $load_bies = DeliveryChallanLoadedBy::find($id);
         $deliverychallanid = $load_bies['delivery_challan_id'];
-        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($deliverychallanid);
+        $update_delivery_challan = DeliveryChallan::find($deliverychallanid);
         
         print_r($update_delivery_challan);
         print "hello";
