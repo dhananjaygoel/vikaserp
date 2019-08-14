@@ -1096,7 +1096,22 @@ class DeliveryChallanController extends Controller {
                 else{
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_item_id;
                 }
-                print $quickbook_item_id;
+                   $line[] = [
+                    "Description" => $del_products->order_product_all_details->product_category->product_type->name,
+                    "Amount" => $del_products->quantity * $del_products->price,
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "ItemRef" => [
+                            "value" => $quickbook_item_id
+                        ],
+                        "UnitPrice" => $del_products->price,
+                        "Qty" => $del_products->quantity,
+                        "TaxCodeRef" => [
+                            "value" => $TaxCodeRef
+                        ]
+                    ]
+                ];
+                print $update_delivery_challan->discount;
                 
             }
         }
