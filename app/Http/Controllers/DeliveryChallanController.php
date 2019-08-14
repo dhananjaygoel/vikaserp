@@ -1153,8 +1153,7 @@ class DeliveryChallanController extends Controller {
                     $loading_id=$loading_item->quickbook_item_id;
                 $i++;
                  $line[] = [
-                        "Id" => $i,
-                        "LineNum" => $i,
+                       
                         // "Description" => "Loading Charges",
                         "Amount" => $update_delivery_challan->loading_charge,
                         "DetailType" => "SalesItemLineDetail",
