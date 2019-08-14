@@ -1078,9 +1078,20 @@ class DeliveryChallanController extends Controller {
             $i = 0;
             foreach ($update_delivery_challan->delivery_challan_products as $del_products){
                 $TaxCodeRef = 24;
-                
                 $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->hsn_code)->first();
-                print_r($hsn);
+                if($hsn){
+                    $gst = App\Gst::where('gst',$hsn->gst)->first();
+                    if($gst){
+                        if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
+                            if($del_products->vat_percentage > 0){
+                                $TaxCodeRef = $gst->quick_gst_id;
+                            }
+                        }
+                    }
+                }
+                $i++;
+                print $del_products->vat_percentage;
+                print_R($del_products);
             }
         }
     }
