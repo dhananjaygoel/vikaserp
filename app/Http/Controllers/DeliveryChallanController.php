@@ -1184,7 +1184,7 @@ class DeliveryChallanController extends Controller {
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
-                    "value"=> 5,
+                    "value"=> 1,
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
