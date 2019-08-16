@@ -1188,10 +1188,44 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-            print_r($theResourceObj); print "<br/>";
-            print "<br/>";
-           echo json_encode($line);
+            $inv = $dataService->add($theResourceObj);
+            $error = $dataService->getLastError();
+            if ($error) {  
+                if($del_products->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST(); 
+                    // $inv = $dataService->add($theResourceObj);                   
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+                }
+               
+                $inv = $dataService->add($theResourceObj);  
+                $error1 = $dataService->getLastError();
+                if($error1){
+                    echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
+                    echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
+                    echo "The Response message is: " . $error->getResponseBody() . "\n";
+                    die;
+                }
+                else{
+                    $doc_num =  $inv->Id;
+                }
+            }
+            else {
+                $doc_num =  $inv->Id;
+            }
+            
         }
+         DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
+            if(Auth::user()->role_id != 0){
+                DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
+            }
+            $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
+            $pdfNAme = explode('invoice/',$pdf)[1];
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
     }
 
 
