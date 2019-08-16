@@ -1181,7 +1181,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-             print_R($line);print "<br/>";
+            print "<br/>";
            echo json_encode($line);
         }
     }
