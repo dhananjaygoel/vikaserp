@@ -254,10 +254,9 @@ class SalesDaybookController extends Controller {
                 $customer = Customer::find($value->customer_id);
                 $deliver_location = $customer->delivery_location_id;
                 if($deliver_location){
-                    $city = City::find($deliver_location);
-                    print_r($city);
-                    die();
-                    $city_name = $city->city_name;
+                   // $city = City::find($deliver_location);
+                   
+                    $city_name = "Place of supply";
                 }
                 else{
                     $city_name = "";
