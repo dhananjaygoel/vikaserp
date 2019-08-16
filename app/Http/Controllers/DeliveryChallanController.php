@@ -1069,7 +1069,34 @@ class DeliveryChallanController extends Controller {
             }
         }
         if($update_delivery_challan->doc_number){
-             print "if";
+            $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
+            $error = $dataService->getLastError();
+            if ($error) {
+                if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST();                    
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+                   
+                }
+               
+                $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
+                $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            }
+            else{
+                $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+            }
+            $pdfNAme = explode('invoice/',$pdf)[1];
+
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+
+            if(Auth::user()->role_id != 0){
+                DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
+            }
+
         }
         else{
             
@@ -1217,15 +1244,16 @@ class DeliveryChallanController extends Controller {
             else {
                 $doc_num =  $inv->Id;
             }
-            
-        }
-         DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
+            DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
             if(Auth::user()->role_id != 0){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+            
+        }
+         
     }
 
 
