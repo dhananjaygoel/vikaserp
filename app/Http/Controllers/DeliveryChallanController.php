@@ -1139,8 +1139,29 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            
-             print_R($line);print "<br/>";
+            if($update_delivery_challan->loading_charge>0){
+                // $TaxCodeRef = 26;
+                $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
+                if($del_products->vat_percentage==0)
+                    $loading_id=$loading_item->quickbook_a_item_id;
+                else
+                    $loading_id=$loading_item->quickbook_item_id;
+                
+                 $line[] = [
+                        "Amount" => $update_delivery_challan->loading_charge,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Loading Charges", 
+                                "value" => $loading_id
+                            ],
+                            "TaxCodeRef"=>[
+                                "value" => 9
+                            ],
+                        ]
+                    ];
+            }
+             print "<br/>";
            echo json_encode($line);
         }
     }
