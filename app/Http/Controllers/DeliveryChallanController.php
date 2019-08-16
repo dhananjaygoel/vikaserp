@@ -1054,8 +1054,26 @@ class DeliveryChallanController extends Controller {
     }
 
     public function generate_invoice($id){
-       print "hi";
-        
+       $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
+        require_once base_path('quickbook/vendor/autoload.php');
+        if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
+            $dataService = $this->getTokenWihtoutGST();
+        }
+        else{
+            $dataService = $this->getToken();
+        }
+        if(Auth::user()->role_id != 0){
+            if($update_delivery_challan->is_print_user != 0){
+                \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
+                return redirect('delivery_challan?status_filter=completed');
+            }
+        }
+        if($update_delivery_challan->doc_number){
+             print "if";
+        }
+        else{
+             print "else";
+        }
     }
 
 
