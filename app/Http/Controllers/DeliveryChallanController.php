@@ -1101,8 +1101,8 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "name" => "Services", 
-                            "value" => 57
+                            "name" => "40 Blue", 
+                            "value" => 7
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
@@ -1112,7 +1112,8 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
-             print_R($line);
+             print_R($line);print "<br/>";
+           echo json_encode($line);
         }
     }
 
