@@ -1120,7 +1120,9 @@ class DeliveryChallanController extends Controller {
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
             }
-
+            if($update_delivery_challan->freight>0){
+                print "ggg";
+            }
             
              print_R($line);print "<br/>";
            echo json_encode($line);
