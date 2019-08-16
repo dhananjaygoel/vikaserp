@@ -73,8 +73,10 @@
                 <tr>
                     <td>{{ $value['invoice_no'] }}</td>    
                     <td>{{ $value['customer'] }}</td>    
-                    <td>{{ $value['date'] }}</td>       
-                    <td>{{ $value['type'] }}</td>       
+                    <td>{{ $value['date'] }}</td>     
+                    <td>{{ $value['date'] }}</td>  
+                    <td>Net 30</td>
+                    <td>Memo</td>       
                     <td>{{ $value['no'] }}</td>       
                     <td>{{ $value['placeof_supply'] }}</td>       
                     <td>{{ $value['due_date'] }}</td>                    
