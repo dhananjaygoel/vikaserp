@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use App\User;
 use App\DeliveryLocation;
+use App\City;
 use App\Customer;
 use Hash;
 use App\AllOrderProducts;
@@ -251,6 +252,14 @@ class SalesDaybookController extends Controller {
             $sr[$VchNo]['no'] = $value->id;
             if($value->customer_id != '') {
                 $customer = Customer::find($value->customer_id);
+                $deliver_location = $customer->delivery_location_id;
+                if($deliver_location){
+                    $city = City::find($deliver_location);
+                    $city_name = $city->city_name;
+                }
+                else{
+                    $city_name = "";
+                }
                 if($customer) {
                     if($customer->tally_name) {
                         $tally_name = $customer->tally_name;
@@ -262,8 +271,9 @@ class SalesDaybookController extends Controller {
                     $balance = $value->grand_price;
                     $tax = $value->vat_percentage; 
                     $status = 'Open';
-                    $invoice_no = $value->serial_number; 
+                    $invoice_no = $value->doc_number; 
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
+                    $placeof_supply = $city_name;
                 } else {
                     $tally_name = 'Anonymous User';
                     $total = '0.00';
@@ -273,6 +283,7 @@ class SalesDaybookController extends Controller {
                     $status = '';
                     $invoice_no = '';
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
+                    $placeof_supply = $city_name;
                 }                                
             } else {
                 $tally_name = 'Anonymous User';
@@ -283,6 +294,7 @@ class SalesDaybookController extends Controller {
                 $status = '';
                 $invoice_no = '';
                 $due_date =  date("d/m/Y", strtotime($value->updated_at));
+                $placeof_supply = $city_name;
             }
             
             $sr[$VchNo]['customer'] = $tally_name;
@@ -293,6 +305,7 @@ class SalesDaybookController extends Controller {
             $sr[$VchNo]['total'] = $total;
             $sr[$VchNo]['status'] = $status;
             $sr[$VchNo]['invoice_no'] = $invoice_no;
+            $sr[$VchNo]['placeof_supply'] = $placeof_supply;
             
             $VchNo++;
         }

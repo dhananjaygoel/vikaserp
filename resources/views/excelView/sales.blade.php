@@ -19,6 +19,8 @@
 
 
         <tr>
+            <td class="heading1"> InvoiceNo</td>
+            <td class="heading1"> Customer</td>
             <td class="heading1">InvoiceDate</td>
             <td class="heading1">DueDate</td>
             <td class="heading1">Terms</td>
@@ -69,10 +71,12 @@
         $VchNo = 1;
         foreach ($allorders as $key => $value) { ?>
                 <tr>
+                    <td>{{ $value['invoice_no'] }}</td>    
+                    <td>{{ $value['customer'] }}</td>    
                     <td>{{ $value['date'] }}</td>       
                     <td>{{ $value['type'] }}</td>       
                     <td>{{ $value['no'] }}</td>       
-                    <td>{{ $value['customer'] }}</td>       
+                    <td>{{ $value['placeof_supply'] }}</td>       
                     <td>{{ $value['due_date'] }}</td>                    
                     <td>{{ $value['balance'] }}</td>       
                     <td>{{ $value['total_btax'] }}</td>    
