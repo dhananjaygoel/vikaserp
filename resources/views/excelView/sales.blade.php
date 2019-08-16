@@ -76,15 +76,16 @@
                     <td>{{ $value['date'] }}</td>     
                     <td>{{ $value['date'] }}</td>  
                     <td>Net 30</td>
-                    <td>Memo</td>       
-                    <td>{{ $value['no'] }}</td>       
-                    <td>{{ $value['placeof_supply'] }}</td>       
+                    <td>Memo</td>    
+                    <td>{{ $value['placeof_supply'] }}</td>      
+                    <td>{{ $value['no'] }}</td>  
                     <td>{{ $value['due_date'] }}</td>                    
                     <td>{{ $value['balance'] }}</td>       
                     <td>{{ $value['total_btax'] }}</td>    
                     <td>{{ $value['tax'] }}</td>    
                     <td>{{ $value['total'] }}</td>    
                     <td>{{ $value['status'] }}</td>       
+                    <td>{{ $value['due_date'] }}</td>   
                 </tr>
             <?php
             $VchNo++;
