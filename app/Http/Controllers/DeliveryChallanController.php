@@ -1072,7 +1072,7 @@ class DeliveryChallanController extends Controller {
              print "if";
         }
         else{
-             print "else";
+            
              $line = [];
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as $del_products){
