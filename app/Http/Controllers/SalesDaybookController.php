@@ -296,9 +296,9 @@ class SalesDaybookController extends Controller {
             
             $VchNo++;
         }
-        echo '<pre>';
-        print_r($allorders);
-        exit;
+        //echo '<pre>';
+       // print_r($allorders);
+       // exit;
         Excel::create('Sales Daybook', function($excel) use($sr) {
             $excel->sheet('Sales-Daybook', function($sheet) use($sr) {
                 $sheet->loadView('excelView.sales', array('allorders' => $sr));
