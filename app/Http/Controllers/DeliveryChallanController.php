@@ -1121,7 +1121,23 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
             }
             if($update_delivery_challan->freight>0){
-                print "ggg";
+                if($del_products->vat_percentage==0)
+                    $freight_id=$freight_item->quickbook_a_item_id;
+                else
+                    $freight_id=$freight_item->quickbook_item_id;
+               $line[] = [
+                        "Amount" => $update_delivery_challan->freight,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Frieght Charges", 
+                                "value" => $freight_id
+                            ],
+                            "TaxCodeRef"=>[
+                                "value" => 9
+                            ],                            
+                        ]
+                    ];
             }
             
              print_R($line);print "<br/>";
