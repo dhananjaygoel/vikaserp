@@ -1161,7 +1161,27 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-             print "<br/>";
+             if($update_delivery_challan->discount>0){ 
+                 $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
+                 if($del_products->vat_percentage==0)
+                    $discount_a_id=$discount_item->quickbook_a_item_id;
+                 else
+                    $discount_a_id=$discount_item->quickbook_item_id; 
+                 $line[] = [
+                        "Amount" => floatval($update_delivery_challan->discount),
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => "Discounts", 
+                                "value" => $discount_a_id
+                            ],
+                            "TaxCodeRef"=>[
+                                "value" => 9
+                            ],                            
+                        ]
+                    ];
+            }
+             print_R($line);print "<br/>";
            echo json_encode($line);
         }
     }
