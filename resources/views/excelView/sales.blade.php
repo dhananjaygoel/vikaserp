@@ -82,9 +82,9 @@
                     <td>{{ $value['producttitle'] }}</td>                    
                     <td>{{ $value['balance'] }}</td>       
                     <td>{{ $value['total_btax'] }}</td>    
-                    <td>{{ $value['tax'] }}</td>    
+                    <td>{{ $value['total'] }}</td>    
                     <td>  </td>    
-                    <td>{{ $value['total'] }}</td>       
+                    <td>{{ $value['tax'] }}</td>       
                     <td>{{ $value['due_date'] }}</td>   
                 </tr>
             <?php
