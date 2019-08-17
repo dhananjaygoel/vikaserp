@@ -60,6 +60,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id <> 5) {
+            echo "hi";
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 if ($data['inquiry_filter'] == 'Approval') {
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
