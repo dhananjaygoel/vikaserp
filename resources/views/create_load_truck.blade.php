@@ -133,7 +133,7 @@
                          
                         @foreach($delboy as $key => $info) 
               <?php
-              print_R($info->customer->owner_name);
+              //print_R($info->customer->owner_name);
                             if($key ==0){
                                 $label = "1";
                             }
@@ -153,7 +153,7 @@
                              $total_avg = " ";
                          }
               $owner_name =$info->customer->owner_name;
-              $label ="loaded by ".$owner_name;
+              $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
