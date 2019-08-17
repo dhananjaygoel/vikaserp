@@ -92,18 +92,18 @@ class InquiryController extends Controller {
 
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
-                               // ->where('customer_id', '=', $cust->id)
+                                ->where('customer_id', '=', $cust->id)
                                 ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                                 ->orderBy('created_at', 'desc')->Paginate(20);
             } else {
                 $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
                         ->where('inquiry_status', 'pending')
-                       // ->where('customer_id', '=', $cust->id)
+                        ->where('customer_id', '=', $cust->id)
                         ->orderBy('created_at', 'desc')
                         ->Paginate(20);
             }
         }
-
+        print $inquiries->toSql();
 //        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
 //                ->where('is_approved', '=', 'no')
 //                ->where('inquiry_status', '=', 'pending')
