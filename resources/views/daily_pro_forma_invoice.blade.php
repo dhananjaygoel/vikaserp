@@ -186,9 +186,9 @@
                                                     </td>
                                                     <td>
                                                         <?php
-                                                        print_r($challan['delivery_challan_products']);
+                                                     
                                                         foreach ($challan["delivery_challan_products"] as $products) {
-                                                            print_r($products['order_product_details']->alias_name;
+                                                            print_r($products['order_product_details']->alias_name);
                                                         }
                                                         $total_qunatity = 0;
                                                         //                                                foreach ($challan["delivery_challan_products"] as $products) {
