@@ -15,7 +15,9 @@ class LoadDelboy extends Model {
     protected $table = 'truckdelbys';
 
     
-   
+       public function customer() {
+        return $this->hasOne('App\Customer', 'id', 'customer_id');
+    }
     
  
 
