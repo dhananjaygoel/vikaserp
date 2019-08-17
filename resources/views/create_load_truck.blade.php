@@ -187,13 +187,14 @@
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Average Weight</span></td>
                                             <td><span>Average Quantity</span></td>
+                                            <td><span></span></td>
                                             <td><span>Actual Quantity</span></td>    
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td><span>GST</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>
-                                            <td><span></span></td>
+                                            
                                         </tr>
                                        <?php $key = 1;  ?>
                                        @if(!$truck_load_prodcut_id->isEmpty())<?php 
@@ -246,7 +247,8 @@
                                               
                                                 <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}}</div></div>
                                                 </div>
-                                            </td>
+                                            </td> 
+                                            <td><button type="submit" class="btn btn-primary form_button_footer btn_save_truck">Save</button></td>
 
                                             <td class="col-md-1 sfdsf">
                                                 <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]"></div></div>
@@ -281,7 +283,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
-                                            <td><button type="submit" class="btn btn-primary form_button_footer btn_save_truck">Save</button></td>
+
                                         </tr>
                                         <?php $key++; ?>
                                         @endif
