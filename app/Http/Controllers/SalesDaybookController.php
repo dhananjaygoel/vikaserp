@@ -256,7 +256,7 @@ class SalesDaybookController extends Controller {
                 if($deliver_location){
                    // $city = City::find($deliver_location);
                    
-                    $city_name = $value['delivery_challan_products'][0]->['order_product_details']->alias_name;//"Place of supply";
+                    $city_name = $value['delivery_challan_products'][0]['order_product_details']->alias_name;//"Place of supply";
                 }
                 else{
                     $city_name = "";
