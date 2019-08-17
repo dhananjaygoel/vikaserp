@@ -1238,11 +1238,11 @@ class DeliveryChallanController extends Controller {
                     die;
                 }
                 else{
-                    $doc_num =  $inv->Id;
+                    $doc_num =  $inv->DocNumber;
                 }
             }
             else {
-                $doc_num =  $inv->Id;
+                $doc_num =  $inv->DocNumber;
             }
             print "hhhh";print '<br/>';
             print $id;print '<br/>';
