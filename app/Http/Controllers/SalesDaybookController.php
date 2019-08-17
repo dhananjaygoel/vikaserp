@@ -247,7 +247,6 @@ class SalesDaybookController extends Controller {
        // exit;
         $VchNo = 0;        
         foreach ($allorders as $key => $value) {
-           
             $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
             $sr[$VchNo]['type'] = 'Invoice';
             $sr[$VchNo]['no'] = $value->id;
@@ -257,7 +256,7 @@ class SalesDaybookController extends Controller {
                 if($deliver_location){
                    // $city = City::find($deliver_location);
                    
-                    $city_name = "Place of supply";
+                    $city_name = $value['delivery_challan_products'][0]->['order_product_details']->alias_name;//"Place of supply";
                 }
                 else{
                     $city_name = "";
