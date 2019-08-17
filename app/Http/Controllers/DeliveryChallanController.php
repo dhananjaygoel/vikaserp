@@ -1246,6 +1246,7 @@ class DeliveryChallanController extends Controller {
             }
             print "hhhh";print '<br/>';
             print $id;print '<br/>';
+            print_r($inv);
             print $doc_num;
             die();
             /*DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
