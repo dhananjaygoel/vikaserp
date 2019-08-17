@@ -243,7 +243,7 @@ class PurchaseDaybookController extends Controller {
 
 
     public function expert_purchase_estimate() {
-        $v = "P";
+        $v = "A";
         set_time_limit(0);
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"]) ) {
