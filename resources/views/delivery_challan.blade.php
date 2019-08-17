@@ -200,7 +200,7 @@
 
 
                                     @elseif($challan->challan_status == 'completed')
-                                    <?php print_r($challan->doc_number); ?>
+
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-center">{{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}</td>
@@ -220,7 +220,7 @@
                                             {{$challan['delivery_order']->vehicle_number}}
                                             @endif
                                         </td>
-
+                                      <td><?php print_r($challan->doc_number); ?></td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
