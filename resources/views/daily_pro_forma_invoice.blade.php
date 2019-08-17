@@ -110,7 +110,11 @@
                                             $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                             ?>
                                             @foreach($allorders as $challan)
-                                                <?php $lb_arr = []; $lbr_arr=[];?>
+
+                                                <?php $lb_arr = []; $lbr_arr=[];
+                                                      print_r($challan);
+
+                                                ?>
                                                 <tr class="add_product_row">
                                                     @if( Auth::user()->role_id == 0 )
                                                         <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
