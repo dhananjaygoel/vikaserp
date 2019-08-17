@@ -59,7 +59,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        if (Auth::user()->role_id <> 5) {
+        /*if (Auth::user()->role_id <> 5) {
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 if ($data['inquiry_filter'] == 'Approval') {
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
@@ -77,7 +77,7 @@ class InquiryController extends Controller {
                         ->where('is_approved', '=', 'yes')
                         ->Paginate(20);
             }
-        }
+        }*/
         if (Auth::user()->role_id == 5) {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
