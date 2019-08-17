@@ -200,7 +200,7 @@
 
 
                                     @elseif($challan->challan_status == 'completed')
-                                    <?php print_r($challan); ?>
+                                    <?php print_r($challan->doc_number); ?>
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
                                         <td class="text-center">{{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}</td>
