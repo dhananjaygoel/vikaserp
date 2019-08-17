@@ -79,7 +79,7 @@
                     <td>Memo</td>    
                     <td>{{ $value['placeof_supply'] }}</td>      
                     <td>{{ $value['no'] }}</td>  
-                    <td>{{ $value['due_date'] }}</td>                    
+                    <td>{{ $value['no'] }}</td>                    
                     <td>{{ $value['balance'] }}</td>       
                     <td>{{ $value['total_btax'] }}</td>    
                     <td>{{ $value['tax'] }}</td>    
