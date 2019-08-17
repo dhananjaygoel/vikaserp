@@ -152,6 +152,7 @@
                          else{
                              $total_avg = " ";
                          }
+              $label ="kkjkk";
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
