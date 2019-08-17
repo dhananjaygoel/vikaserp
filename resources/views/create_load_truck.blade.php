@@ -152,7 +152,8 @@
                          else{
                              $total_avg = " ";
                          }
-              $label ="kkjkk";
+              $owner_name =$info->customer->owner_name;
+              $label ="loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
