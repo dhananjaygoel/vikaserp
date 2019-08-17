@@ -77,7 +77,7 @@ class InquiryController extends Controller {
                         ->where('is_approved', '=', 'yes')
                         ->Paginate(20);
             }
-        }*/
+        }
         if (Auth::user()->role_id == 5) {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
@@ -102,7 +102,24 @@ class InquiryController extends Controller {
                         ->orderBy('created_at', 'desc')
                         ->Paginate(20);
             }
-        }
+        }*/
+         if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+                if ($data['inquiry_filter'] == 'Approval') {
+                    $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
+                            ->where('is_approved', '=', 'no')
+                            ->where('inquiry_status', '=', 'pending')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(20);
+                } else {
+                    $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
+                }
+            } else {
+                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
+                        ->where('inquiry_status', 'pending')
+                        ->orderBy('created_at', 'desc')
+                        ->where('is_approved', '=', 'yes')
+                        ->Paginate(20);
+            }
 
 //        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
 //                ->where('is_approved', '=', 'no')
