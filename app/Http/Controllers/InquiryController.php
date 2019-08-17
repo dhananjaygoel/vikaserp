@@ -60,18 +60,21 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id <> 5) {
-            echo "hi";
+           
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
+                print "lkkk"
                 if ($data['inquiry_filter'] == 'Approval') {
+                    print "approve";
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
                             ->where('is_approved', '=', 'no')
                             ->where('inquiry_status', '=', 'pending')
                             ->orderBy('created_at', 'desc')
                             ->paginate(20);
-                } else {
+                } else {print "notapprove";
                     $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
                 }
             } else {
+                print "elde";
                 $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
