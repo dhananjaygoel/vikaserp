@@ -32,6 +32,7 @@ class PurchaseDaybookController extends Controller {
 
     public function index() {
         $data = Input::all();
+        $v = "P";
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -45,14 +46,14 @@ class PurchaseDaybookController extends Controller {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
                         ->where('updated_at', 'like', $date1 . '%')
-                        ->where('serial_number','LIKE','%P%')
+                         ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
                         ->where('updated_at', '>=', $date1)
-                        ->where('serial_number','LIKE','%P%')
+                       ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                         ->where('updated_at', '<=', $date2.' 23:59:59')                        
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
@@ -60,7 +61,7 @@ class PurchaseDaybookController extends Controller {
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                                                 ->where('order_status', 'completed')
-                                                ->where('serial_number','LIKE','%P%')
+                                                ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                                                 ->orderBy('updated_at', 'desc')
                                                 ->Paginate(20);
         }        
