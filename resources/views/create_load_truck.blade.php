@@ -133,13 +133,13 @@
                          
                         @foreach($delboy as $key => $info) 
               <?php
-              print_R($info->customer->owner_name);
-                            if($key ==0){
-                                $label = 1;
-                            }
-                            else{
-                                $label = $key+1;
-                            }
+              //print_R($info->customer->owner_name);
+                            //if($key ==0){
+                            //    $label = 1;
+                           // }
+                            //else{
+                                $label = "loaded by ".$info->customer->owner_name//$key+1;
+                           // }
              if(!empty($truckvalue[$info->del_boy])){
                 $tvalue = $truckvalue[$info->del_boy];
              }
