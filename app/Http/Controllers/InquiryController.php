@@ -62,7 +62,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id <> 5) {
            
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                print "lkkk"
+                print "lkkk";
                 if ($data['inquiry_filter'] == 'Approval') {
                     print "approve";
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
