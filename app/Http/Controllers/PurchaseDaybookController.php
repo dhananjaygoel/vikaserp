@@ -45,14 +45,14 @@ class PurchaseDaybookController extends Controller {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
                         ->where('updated_at', 'like', $date1 . '%')
-                        ->where('serial_number','LIKE','%A%')
+                        ->where('serial_number','LIKE','%P%')
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
                         ->where('updated_at', '>=', $date1)
-                        ->where('serial_number','LIKE','%A%')
+                        ->where('serial_number','LIKE','%P%')
                         ->where('updated_at', '<=', $date2.' 23:59:59')                        
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
@@ -84,7 +84,7 @@ class PurchaseDaybookController extends Controller {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
-                $v = "P";
+                $v = "A";
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
                     ->where('updated_at', 'like', $date1 . '%')
@@ -92,7 +92,7 @@ class PurchaseDaybookController extends Controller {
                     ->orderBy('updated_at', 'desc')
                     ->Paginate(20);
             } else {
-                $v = "P";
+                $v = "A";
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                     ->where('order_status', 'completed')
                     ->where('updated_at', '>=', $date1)
@@ -102,7 +102,7 @@ class PurchaseDaybookController extends Controller {
                     ->Paginate(20);
             }
         } else {
-            $v = "P";
+            $v = "A";
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                 ->where('order_status', 'completed')
                 ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
