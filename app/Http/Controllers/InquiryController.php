@@ -103,7 +103,7 @@ class InquiryController extends Controller {
                         ->Paginate(20);
             }
         }
-        print $inquiries->toSql();
+       
 //        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
 //                ->where('is_approved', '=', 'no')
 //                ->where('inquiry_status', '=', 'pending')
