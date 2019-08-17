@@ -1244,13 +1244,17 @@ class DeliveryChallanController extends Controller {
             else {
                 $doc_num =  $inv->Id;
             }
-            DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
+            print "hhhh";print '<br/>';
+            print $id;print '<br/>';
+            print $doc_num;
+            die();
+            /*DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
             if(Auth::user()->role_id != 0){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
-            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));*/
             
         }
          
