@@ -220,7 +220,7 @@
                                             {{$challan['delivery_order']->vehicle_number}}
                                             @endif
                                         </td>
-                                      <td><?php print_r($challan->doc_number); ?></td>
+                                      
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
