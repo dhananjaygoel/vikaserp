@@ -187,9 +187,9 @@
                                                     <td>
                                                         <?php
                                                      
-                                                        foreach ($challan["delivery_challan_products"] as $products) {
+                                                        /*foreach ($challan["delivery_challan_products"] as $products) {
                                                             print_r($products['order_product_details']->alias_name);
-                                                        }
+                                                        }*/
                                                         $total_qunatity = 0;
                                                         //                                                foreach ($challan["delivery_challan_products"] as $products) {
                                                         //                                                    if ($products['unit']->id == 1) {
