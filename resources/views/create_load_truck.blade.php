@@ -133,7 +133,7 @@
                          
                         @foreach($delboy as $key => $info) 
               <?php
-              print_R($delivery_data);
+              print_R($info->del_boy);
                             if($key ==0){
                                 $label = 1;
                             }
