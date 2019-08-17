@@ -501,8 +501,21 @@
                        $roleid = $dduser->role_id;
                        
                 
-                if($roleid ==0 || $roleid ==8){
+                if($roleid ==0 || $roleid ==8 || $roleid ==2){
                     if($roleid ==0) {
+                          $type = "del_supervisor";
+                           $options =array(''=>'Select Supervisor');
+                           $array = \App\User::where('role_id',8)
+                                       ->orderBy('id', 'DESC')
+                                       ->get();
+                           ?>
+                            @foreach($array as $user)<?php 
+                               $options[$user->id] = $user->first_name.' '.$user->last_name;
+                              ?>
+                            @endforeach
+                        <?php
+                      }
+                      if($roleid ==2) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
                            $array = \App\User::where('role_id',8)
