@@ -216,7 +216,7 @@
                                                   //    $disable = "";
                                                   // }
                                             ?>    
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8    )
+                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8   || Auth::user()->role_id ==2  )
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                             data-role_id ={{Auth::user()->role_id}}
                                            data-delivery_id="{{$delivery->id}}" 
