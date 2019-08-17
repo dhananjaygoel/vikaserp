@@ -80,8 +80,7 @@ class InquiryController extends Controller {
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
                         ->where('is_approved', '=', 'yes')
-                        ->Paginate(20)->toSql();
-              print $inquiries;
+                        ->Paginate(20);
             }
         }
         if (Auth::user()->role_id == 5) {
