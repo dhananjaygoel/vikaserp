@@ -186,7 +186,7 @@
                                                     </td>
                                                     <td>
                                                         <?php
-                                                        print_r($challan['delivery_challan_products']->unit);
+                                                        print_r($challan['delivery_challan_products']['unit']);
                                                         $total_qunatity = 0;
                                                         //                                                foreach ($challan["delivery_challan_products"] as $products) {
                                                         //                                                    if ($products['unit']->id == 1) {
