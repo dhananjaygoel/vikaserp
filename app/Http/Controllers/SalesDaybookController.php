@@ -256,7 +256,7 @@ class SalesDaybookController extends Controller {
                 if($deliver_location){
                    // $city = City::find($deliver_location);
                    
-                    $city_name = $value['delivery_challan_products'][0]['order_product_details']->alias_name;//"Place of supply";
+                    $city_name = "Place of supply";
                 }
                 else{
                     $city_name = "";
@@ -268,13 +268,15 @@ class SalesDaybookController extends Controller {
                         $tally_name = 'Anonymous User';
                     }                    
                     $total = $value->grand_price;
-                    $total_btax = $value->grand_price;
-                    $balance = $value->grand_price;
+                    $total_btax = $value['delivery_challan_products'][0]->price;
+                    $balance = $value['delivery_challan_products'][0]->quantity;
                     $tax = $value->vat_percentage; 
                     $status = 'Open';
                     $invoice_no = $value->doc_number; 
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
                     $placeof_supply = $city_name;
+                    $producttitle = $value['delivery_challan_products'][0]['order_product_details']->alias_name;
+
                 } else {
                     $tally_name = 'Anonymous User';
                     $total = '0.00';
@@ -285,6 +287,7 @@ class SalesDaybookController extends Controller {
                     $invoice_no = '';
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
                     $placeof_supply = $city_name;
+                    $producttitle = $value['delivery_challan_products'][0]['order_product_details']->alias_name;
                 }                                
             } else {
                 $tally_name = 'Anonymous User';
@@ -296,6 +299,7 @@ class SalesDaybookController extends Controller {
                 $invoice_no = '';
                 $due_date =  date("d/m/Y", strtotime($value->updated_at));
                 $placeof_supply = $city_name;
+                $producttitle = $value['delivery_challan_products'][0]['order_product_details']->alias_name;
             }
             
             $sr[$VchNo]['customer'] = $tally_name;
@@ -307,6 +311,7 @@ class SalesDaybookController extends Controller {
             $sr[$VchNo]['status'] = $status;
             $sr[$VchNo]['invoice_no'] = $invoice_no;
             $sr[$VchNo]['placeof_supply'] = $placeof_supply;
+            $sr[$VchNo]['producttitle'] = $producttitle;
             
             $VchNo++;
         }
