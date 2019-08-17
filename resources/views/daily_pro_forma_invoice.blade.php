@@ -112,7 +112,7 @@
                                             @foreach($allorders as $challan)
 
                                                 <?php $lb_arr = []; $lbr_arr=[];
-                                                      print_r($challan);
+                                                    
 
                                                 ?>
                                                 <tr class="add_product_row">
@@ -186,6 +186,7 @@
                                                     </td>
                                                     <td>
                                                         <?php
+                                                        print_r($challan['delivery_challan_products']->unit);
                                                         $total_qunatity = 0;
                                                         //                                                foreach ($challan["delivery_challan_products"] as $products) {
                                                         //                                                    if ($products['unit']->id == 1) {
