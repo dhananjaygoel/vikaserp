@@ -193,6 +193,7 @@
                                             <td><span>GST</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Amount</span></td>
+                                            <td><span></span></td>
                                         </tr>
                                        <?php $key = 1;  ?>
                                        @if(!$truck_load_prodcut_id->isEmpty())<?php 
@@ -280,6 +281,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
+                                            <td>ccccc</td>
                                         </tr>
                                         <?php $key++; ?>
                                         @endif
