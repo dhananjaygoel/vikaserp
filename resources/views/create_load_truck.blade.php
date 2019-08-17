@@ -133,6 +133,7 @@
                          
                         @foreach($delboy as $key => $info) 
               <?php
+              print_R($info);
                             if($key ==0){
                                 $label = 1;
                             }
