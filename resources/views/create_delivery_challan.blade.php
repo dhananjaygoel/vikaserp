@@ -328,84 +328,17 @@
                                     <label for="Total"><b class="challan">Total</b></label>
                                     <div id="total_l_d_f"></div>
                                 </div>
-                                <div class="form-group">
-                                    
-                                    @if($produc_type['profile'] == 1)
-                                    <label for="loadedby_profile"><b class="challan">Loaded By (Profile)</b></label>
-                                    <div class="form-group clearfix">
-                                        <select id="loaded_by_select_profile" name='loaded_by_profile[]' class="form-control" multiple="multiple">
-                                            @if(isset($loaders))
-                                            @foreach ($loaders as $loader)
-                                            <option value="{{$loader->id}}">{{$loader->first_name}} {{$loader->last_name}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @endif
+                              
 <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby" value="" type="text">-->
-                                </div>
-                                <div class="form-group">
-                                     @if($produc_type['pipe'] == 1)
-                                    <label for="labour_pipe"><b class="challan">Labour (Pipe)</b></label>
-                                    <div class="form-group clearfix">
-                                        <select id="labour_select_pipe" name="labour_pipe[]" class="form-control" multiple="multiple">
-                                            @if(isset($labours))
-                                            @foreach ($labours as $labour)
-                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @endif
-                                    @if($produc_type['structure'] == 1)
-                                    <label for="labour_structure"><b class="challan">Labour (Structure)</b></label>
-                                    <div class="form-group clearfix">
-                                        <select id="labour_select_structure" name="labour_structure[]" class="form-control" multiple="multiple">
-                                            @if(isset($labours))
-                                            @foreach ($labours as $labour)
-                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @endif
-                                    @if($produc_type['profile'] == 1)
-                                    <label for="labour_profile"><b class="challan">Labour (Profile)</b></label>
-                                    <div class="form-group clearfix">
-                                        <select id="labour_select_profile" name="labour_profile[]" class="form-control" multiple="multiple">
-                                            @if(isset($labours))
-                                            @foreach ($labours as $labour)
-                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @endif
-<!--<input id="labour" class="form-control" placeholder="Labour" name="labour" value="" type="tel">-->
-                                </div>
+                               
+                              
                                 
                                 <!--                                                <div class="form-group">
                                                                                     <label for="vatp"><b class="challan">VAT Value : </b>
                                                                                         <span id="vat_val"></span>
                                                                                     </label>
                                                                                 </div>-->
-                                @if($delivery_data->vat_percentage==0)
-                                <!--                        <div class="form-group">
-                                                            <label for="Plusvat"><b class="challan">Plus VAT : </b> No</label>
-                                                        </div>-->
-                                @else
-                                <!--                        <div class="form-group">
-                                                            <label for="vatp"><b class="challan">VAT Percentage : </b>
-                                                                {{$delivery_data->vat_percentage}}
-                                                                <input type="hidden" name="vat_percentage" id="vat_percentage" value="{{$delivery_data->vat_percentage}}" readonly="readonly">
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="vatp"><b class="challan">VAT Value : </b>
-                                                                <span id="vat_val"></span>
-                                                            </label>
-                                                        </div>-->
-                                @endif
+                           
                                 <div class="form-group" style="display: none">
                                     <label for="vatp"><b class="challan">Total : </b>
                                         <span class="gtotal">
