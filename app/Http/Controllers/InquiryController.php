@@ -59,7 +59,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
-        /*if (Auth::user()->role_id <> 5) {
+        if (Auth::user()->role_id <> 5) {
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 if ($data['inquiry_filter'] == 'Approval') {
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
@@ -92,35 +92,17 @@ class InquiryController extends Controller {
 
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
                 $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])
-                                ->where('customer_id', '=', $cust->id)
+                               // ->where('customer_id', '=', $cust->id)
                                 ->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details')
                                 ->orderBy('created_at', 'desc')->Paginate(20);
             } else {
                 $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit')
                         ->where('inquiry_status', 'pending')
-                        ->where('customer_id', '=', $cust->id)
+                       // ->where('customer_id', '=', $cust->id)
                         ->orderBy('created_at', 'desc')
                         ->Paginate(20);
             }
-        }*/
-         if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-            print "ist if";print '<br/>';
-                if ($data['inquiry_filter'] == 'Approval') {print "2nd if";print '<br/>';
-                    $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
-                            ->where('is_approved', '=', 'no')
-                            ->where('inquiry_status', '=', 'pending')
-                            ->orderBy('created_at', 'desc')
-                            ->paginate(20);
-                } else {print "ifelse";print '<br/>';
-                    $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
-                }
-            } else {print "else";print '<br/>';
-                $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
-                        ->where('inquiry_status', 'pending')
-                        ->orderBy('created_at', 'desc')
-                        ->where('is_approved', '=', 'yes')
-                        ->Paginate(20);
-            }
+        }
 
 //        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
 //                ->where('is_approved', '=', 'no')
