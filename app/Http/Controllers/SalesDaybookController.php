@@ -247,8 +247,7 @@ class SalesDaybookController extends Controller {
        // exit;
         $VchNo = 0;        
         foreach ($allorders as $key => $value) {
-            print_R($value);
-            die();
+            print_R($value[''])
             $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
             $sr[$VchNo]['type'] = 'Invoice';
             $sr[$VchNo]['no'] = $value->id;
