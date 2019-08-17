@@ -281,7 +281,7 @@
                                             <td class="col-md-2">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
-                                            <td>ccccc</td>
+                                            <td><button type="submit" class="btn btn-primary form_button_footer btn_save_truck">Save</button></td>
                                         </tr>
                                         <?php $key++; ?>
                                         @endif
@@ -322,7 +322,7 @@
                                 
                                 <hr>
                                 <div>
-                                    <button type="submit" class="btn btn-primary form_button_footer btn_save_truck">Save</button>
+                                    
                                     @if ($delivery_data->final_truck_weight == "0")
                                     <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delload_truck disabled">Submit</button>
                                     @else
