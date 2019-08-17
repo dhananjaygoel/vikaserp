@@ -104,16 +104,17 @@ class InquiryController extends Controller {
             }
         }*/
          if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                if ($data['inquiry_filter'] == 'Approval') {
+            print "ist if";print '<br/>';
+                if ($data['inquiry_filter'] == 'Approval') {print "2nd if";print '<br/>';
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
                             ->where('is_approved', '=', 'no')
                             ->where('inquiry_status', '=', 'pending')
                             ->orderBy('created_at', 'desc')
                             ->paginate(20);
-                } else {
+                } else {print "ifelse";print '<br/>';
                     $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
                 }
-            } else {
+            } else {print "else";print '<br/>';
                 $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
