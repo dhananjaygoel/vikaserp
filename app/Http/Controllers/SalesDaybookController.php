@@ -270,7 +270,8 @@ class SalesDaybookController extends Controller {
                     $total = $total_btax * $balance; //$value->grand_price;
                     $total_btax = $value['delivery_challan_products'][0]->price;
                     $balance = $value['delivery_challan_products'][0]->quantity;
-                    $tax = $value->vat_percentage; 
+                    $percent = 12 * $total ;
+                    $tax = $percent /100 ://$value->vat_percentage; 
                     $status = 'Open';
                     $invoice_no = $value->doc_number; 
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
