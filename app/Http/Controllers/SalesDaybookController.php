@@ -267,7 +267,7 @@ class SalesDaybookController extends Controller {
                     } else {
                         $tally_name = 'Anonymous User';
                     }                    
-                    $total = $value->grand_price;
+                    $total = $total_btax * $balance; //$value->grand_price;
                     $total_btax = $value['delivery_challan_products'][0]->price;
                     $balance = $value['delivery_challan_products'][0]->quantity;
                     $tax = $value->vat_percentage; 
