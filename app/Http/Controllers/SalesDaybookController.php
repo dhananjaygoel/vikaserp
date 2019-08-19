@@ -267,10 +267,12 @@ class SalesDaybookController extends Controller {
                     } else {
                         $tally_name = 'Anonymous User';
                     }                    
-                    $total = $value->grand_price;
+                    
                     $total_btax = $value['delivery_challan_products'][0]->price;
                     $balance = $value['delivery_challan_products'][0]->quantity;
-                    $tax = $value->vat_percentage; 
+                    $total = $total_btax * $balance ;//$value->grand_price;
+                    $percent = $total *12;
+                    $tax = $percent/100;// $value->vat_percentage; 
                     $status = 'Open';
                     $invoice_no = $value->doc_number; 
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));

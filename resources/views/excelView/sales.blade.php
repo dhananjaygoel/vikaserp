@@ -83,7 +83,7 @@
                     <td>{{ $value['balance'] }}</td>       
                     <td>{{ $value['total_btax'] }}</td>    
                     <td>{{ $value['total'] }}</td>    
-                    <td>  </td>    
+                    <td> 12.0% GST </td>    
                     <td>{{ $value['tax'] }}</td>       
                     <td>{{ $value['due_date'] }}</td>   
                 </tr>
