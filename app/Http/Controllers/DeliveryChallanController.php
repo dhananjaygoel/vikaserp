@@ -1148,6 +1148,7 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
             }
             if($update_delivery_challan->freight>0){
+                $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
                 if($del_products->vat_percentage==0)
                     $freight_id=$freight_item->quickbook_a_item_id;
                 else
