@@ -22,7 +22,7 @@
         foreach ($allcustomers as $value) {
             ?>
             <tr>
-                <td>{{$value->owner_name}}</td>
+                <td>{{$value->tally_name}}</td>
                 <td>{{$value->company_name}}</td>
                 <td>Retail Trade</td>
                 <td>{{$value->email}}</td>
