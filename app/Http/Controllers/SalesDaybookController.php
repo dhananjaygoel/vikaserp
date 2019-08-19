@@ -322,7 +322,7 @@ class SalesDaybookController extends Controller {
             $excel->sheet('Daily Proforma Invoice', function($sheet) use($sr) {
                 $sheet->loadView('excelView.sales', array('allorders' => $sr));
             });
-        })->export('xls');
+        })->export('csv');
         exit();
         /*
           | ----------------------------------------------
@@ -447,7 +447,7 @@ class SalesDaybookController extends Controller {
 
                 $sheet->setAutoSize(true);
             });
-        })->export('xls');
+        })->export('csv');
         exit();
     }
 
