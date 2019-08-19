@@ -318,7 +318,7 @@ class SalesDaybookController extends Controller {
         //echo '<pre>';
        // print_r($allorders);
        // exit;
-        Excel::create('Sales Daybook', function($excel) use($sr) {
+        Excel::create('Daily Proforma Invoice', function($excel) use($sr) {
             $excel->sheet('Daily Proforma Invoice', function($sheet) use($sr) {
                 $sheet->loadView('excelView.sales', array('allorders' => $sr));
             });
@@ -329,7 +329,7 @@ class SalesDaybookController extends Controller {
           | Old Export Excel code !WARNING - Do not Delete
           | ----------------------------------------------
          */
-        Excel::create('Sales Daybook', function($excel) use($allorders) {
+        Excel::create('Daily Proforma Invoice', function($excel) use($allorders) {
 
             $excel->sheet('Order List', function($sheet) use($allorders) {
                 $sheet->mergeCells('A1:E1');
