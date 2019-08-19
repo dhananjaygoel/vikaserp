@@ -1158,8 +1158,10 @@ class DeliveryChallanController extends Controller {
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "name" => "Frieght Charges", 
-                                "value" => $freight_id
+                               // "name" => "Frieght Charges", 
+                               // "value" => $freight_id
+                                "name" => "Services", 
+                                 "value" => 1
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
