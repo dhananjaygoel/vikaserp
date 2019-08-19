@@ -15,6 +15,7 @@
             <td class="heading1">PIN Code</td>
             <td class="heading1">Country</td>
             <td class="heading1">Date</td>
+            <td class="heading1">GST Registration Type</td>
             <td class="heading1">GSTIN</td>
         </tr>
         <?php
@@ -25,7 +26,7 @@
                 <td>{{$value->tally_name}}</td>
                 <td>{{$value->company_name}}</td>
                 <td>Retail Trade</td>
-                <td>{{$value->email}}</td>
+                <td>{{isset($value->email)?$value->email:'hi@alphalogicinc.com'}}</td>
                 <td>{{$value->phone_number1}}</td>
                 <td>{{$value->phone_number2}}</td>
                 <td>{{$value->address1}}</td>
@@ -34,6 +35,7 @@
                 <td>{{$value->zip}}</td>
                 <td>India</td>
                 <td>{{$value->created_at}}</td>
+                <td>Consumer</td>
                 <td>{{$value->gstin_number}}</td>
             </tr>
             <?php
