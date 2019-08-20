@@ -955,7 +955,7 @@ class DeliveryChallanController extends Controller {
     function getTokenWihtoutGST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(3);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -982,7 +982,7 @@ class DeliveryChallanController extends Controller {
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1252,7 +1252,7 @@ class DeliveryChallanController extends Controller {
             //print_R($line);
             $customer_details = $dataService->Query("select * from Customer");
             print $tally_name;
-            print_R($dataService);
+            print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
                 "Line" => $line,
