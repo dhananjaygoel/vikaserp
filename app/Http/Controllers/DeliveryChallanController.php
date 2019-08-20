@@ -1069,9 +1069,10 @@ class DeliveryChallanController extends Controller {
             }
         }
         if($update_delivery_challan->doc_number){
-            print $update_delivery_challan->doc_number;
-            die();
+           
             $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
+             print_r($invoice);
+            die();
             $error = $dataService->getLastError();
             if ($error) {
                 if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
