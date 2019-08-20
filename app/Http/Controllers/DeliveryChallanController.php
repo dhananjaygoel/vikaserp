@@ -1252,7 +1252,7 @@ class DeliveryChallanController extends Controller {
             //print_R($line);
             $customer_details = $dataService->Query("select * from Customer");
             print $tally_name;
-            print_R($customer_details);
+            print_R(count($customer_details));
            /*
             $theResourceObj = Invoice::create([
                 "Line" => $line,
