@@ -1156,18 +1156,20 @@ class DeliveryChallanController extends Controller {
             }
             if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
-                print_r($freight_item);
+                
                 if($del_products->vat_percentage==0)
                     $freight_id=$freight_item->quickbook_a_item_id;
+                    $frieghtname = $freight_item->alias_name;
                 else
                     $freight_id=$freight_item->quickbook_item_id;
+                    $frieghtname = $freight_item->alias_name;
                $line[] = [
                         "Amount" => $update_delivery_challan->freight,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "name" => "Frieght Charges", 
-                                "value" => $freight_id
+                                
+                                "value" => $frieghtname
                                // "name" => "Services", 
                                //  "value" => 1
                             ],
@@ -1182,16 +1184,17 @@ class DeliveryChallanController extends Controller {
                 $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
                 if($del_products->vat_percentage==0)
                     $loading_id=$loading_item->quickbook_a_item_id;
+                    $loadingname = $loading_item->alias_name;
                 else
                     $loading_id=$loading_item->quickbook_item_id;
+                     $loadingname = $loading_item->alias_name;
                 
                  $line[] = [
                         "Amount" => $update_delivery_challan->loading_charge,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "name" => "Loading Charges", 
-                                "value" => $loading_id
+                                "value" => $loadingname
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
@@ -1203,15 +1206,17 @@ class DeliveryChallanController extends Controller {
                  $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
                  if($del_products->vat_percentage==0)
                     $discount_a_id=$discount_item->quickbook_a_item_id;
+                    $discountname = $discount_item->alias_name;
                  else
                     $discount_a_id=$discount_item->quickbook_item_id; 
+                    $discountname = $discount_item->alias_name;
                  $line[] = [
                         "Amount" => floatval($update_delivery_challan->discount),
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "name" => "Discounts", 
-                                "value" => $discount_a_id
+                                
+                                "value" => $discountname
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
