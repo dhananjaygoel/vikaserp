@@ -1080,6 +1080,22 @@ class DeliveryChallanController extends Controller {
         }
         else{
          //   $dataService = $this->getToken();
+              $clientid = "ABpdVkDFhsmsp1KNFoDuYhgAATppzXoDlw9FFa7nE2PG9hmQZv";
+           $secret ="3lnaubZB1MIo69RmH6geLezsPJM9aD99I8HsahXK";
+           $ref ="AB11566305648FEb3O8ohX98ZPnlaTw3hRkVUN0STEcc7Ij7HG";
+           $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+           $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($ref);
+           $accessTokenValue = $accessTokenObj->getAccessToken();
+           $refreshTokenValue = $accessTokenObj->getRefreshToken();
+           $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+                        'auth_mode' => 'oauth2',
+                        'ClientID' => "Q0fXL014zAv3wzmlhwXMEHTrKepfAshCRjztEu58ZokzCD5T7D",
+                        'ClientSecret' => "stfnZfuSZUDay6cJSWtvQ9HkWiKFbcI9YuBTET5P",
+                        'accessTokenKey' =>$accessTokenValue,
+                        'refreshTokenKey' => $refreshTokenValue,
+                        'QBORealmID' => "9130346851577266",
+                        'baseUrl' => "Production"
+           ));
         }
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
