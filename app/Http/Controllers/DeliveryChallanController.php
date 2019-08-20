@@ -953,7 +953,6 @@ class DeliveryChallanController extends Controller {
     }
 
     function getTokenWihtoutGST(){
-        print "jkjk";
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
@@ -980,8 +979,7 @@ class DeliveryChallanController extends Controller {
         //     'baseUrl' => "Development"
         // ));
     }
-    function refresh_token_Wihtout_GST(){        print "refesh";
-
+    function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
@@ -1008,7 +1006,6 @@ class DeliveryChallanController extends Controller {
     // }
 
     function getToken(){
-        print "hello";
         require_once base_path('quickbook/vendor/autoload.php');        
         $quickbook = App\QuickbookToken::find(1);
         // echo '<pre>';
@@ -1045,12 +1042,13 @@ class DeliveryChallanController extends Controller {
     //     App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     // }
 
-    function refresh_token(){        print "dddd";
-
+    function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
-        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $clientid = 'ABpdVkDFhsmsp1KNFoDuYhgAATppzXoDlw9FFa7nE2PG9hmQZv';
+        $secret = '3lnaubZB1MIo69RmH6geLezsPJM9aD99I8HsahXK';
+        $oauth2LoginHelper = new OAuth2LoginHelper($clientid,$secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
