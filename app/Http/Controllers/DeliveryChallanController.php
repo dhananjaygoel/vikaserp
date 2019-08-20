@@ -953,6 +953,7 @@ class DeliveryChallanController extends Controller {
     }
 
     function getTokenWihtoutGST(){
+        print "jkjk";
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
@@ -979,7 +980,8 @@ class DeliveryChallanController extends Controller {
         //     'baseUrl' => "Development"
         // ));
     }
-    function refresh_token_Wihtout_GST(){
+    function refresh_token_Wihtout_GST(){        print "refesh";
+
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(2);
