@@ -1090,9 +1090,22 @@ class DeliveryChallanController extends Controller {
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             else{
-                print_r($invoice);print_R($update_delivery_challan->doc_number);
-                print "gggg";
+               
+                 if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST();                    
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+                   
+                }
+                $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
+                 print_r($invoice);print_R($update_delivery_challan->doc_number);
+               
                 die();
+
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
