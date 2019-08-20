@@ -1133,8 +1133,7 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "name" => "Services", 
-                            "value" => 1
+                            "value" => $quickbook_item_id
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
@@ -1163,10 +1162,10 @@ class DeliveryChallanController extends Controller {
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                               // "name" => "Frieght Charges", 
-                               // "value" => $freight_id
-                                "name" => "Services", 
-                                 "value" => 1
+                                "name" => "Frieght Charges", 
+                                "value" => $freight_id
+                               // "name" => "Services", 
+                               //  "value" => 1
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
