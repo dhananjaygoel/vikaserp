@@ -1046,8 +1046,6 @@ class DeliveryChallanController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
-        $clientid = 'ABpdVkDFhsmsp1KNFoDuYhgAATppzXoDlw9FFa7nE2PG9hmQZv';
-        $secret = '3lnaubZB1MIo69RmH6geLezsPJM9aD99I8HsahXK';
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1059,10 +1057,10 @@ class DeliveryChallanController extends Controller {
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
-            $dataService = $this->getTokenWihtoutGST();
+           // $dataService = $this->getTokenWihtoutGST();
         }
         else{
-            $dataService = $this->getToken();
+         //   $dataService = $this->getToken();
         }
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
@@ -1252,7 +1250,7 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
             //print_R($line);
-            $customer_details = $dataService->Query("select * from Account");
+            $customer_details = $dataService->Query("select * from Customer");
             print "hi";
             print_R($customer_details);
            /*
