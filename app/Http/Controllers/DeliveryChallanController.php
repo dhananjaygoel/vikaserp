@@ -1090,7 +1090,7 @@ class DeliveryChallanController extends Controller {
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             else{
-                print_r($invoice);
+                print_r($invoice);print_R($update_delivery_challan->doc_number);
                 print "gggg";
                 die();
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
