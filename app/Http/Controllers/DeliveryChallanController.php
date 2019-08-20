@@ -955,7 +955,7 @@ class DeliveryChallanController extends Controller {
     function getTokenWihtoutGST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(2);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -982,7 +982,7 @@ class DeliveryChallanController extends Controller {
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(2);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1057,12 +1057,9 @@ class DeliveryChallanController extends Controller {
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
-             $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();
         }
         else{
-            {
-            $this->refresh_token();
             $dataService = $this->getToken();
         }
         if(Auth::user()->role_id != 0){
@@ -1254,8 +1251,8 @@ class DeliveryChallanController extends Controller {
             } 
             //print_R($line);
             $customer_details = $dataService->Query("select * from Customer");
-            print $tally_name;
-            print_R(count($customer_details));
+            print "hi";
+            print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
                 "Line" => $line,
