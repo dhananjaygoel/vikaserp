@@ -1241,7 +1241,8 @@ class DeliveryChallanController extends Controller {
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;     
-                $tally_name = $update_delivery_challan->customer->tally_name;              
+                $tally_name = $update_delivery_challan->customer->tally_name;    
+                          
             }
             else
             {
@@ -1249,8 +1250,7 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
             print_R($line);
-            print $tally_name;
-            print $quickbook_customer_id;
+            $customer_details = $dataService->Query("select * from Customer where DisplayName = '".$tally_name."' "); print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
                 "Line" => $line,
