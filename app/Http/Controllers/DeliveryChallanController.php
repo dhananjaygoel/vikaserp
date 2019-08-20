@@ -1250,7 +1250,7 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
             //print_R($line);
-            $customer_details = $dataService->Query("select * from Customer");
+            $customer_details = $dataService->Query("select * from Account");
             print "hi";
             print_R($customer_details);
            /*
