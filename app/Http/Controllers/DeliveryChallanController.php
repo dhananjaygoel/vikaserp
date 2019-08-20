@@ -1136,7 +1136,7 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "value" => $productname
+                            "name" => $productname
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
@@ -1172,7 +1172,7 @@ class DeliveryChallanController extends Controller {
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
                                 
-                                "value" => $frieghtname
+                                "name" => $frieghtname
                                // "name" => "Services", 
                                //  "value" => 1
                             ],
@@ -1200,7 +1200,7 @@ class DeliveryChallanController extends Controller {
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "value" => $loadingname
+                                "name" => $loadingname
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
@@ -1226,7 +1226,7 @@ class DeliveryChallanController extends Controller {
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
                                 
-                                "value" => $discountname
+                                "name" => $discountname
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
@@ -1248,7 +1248,7 @@ class DeliveryChallanController extends Controller {
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
-                    "value"=> $tally_name,
+                    "name"=> $tally_name,
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
