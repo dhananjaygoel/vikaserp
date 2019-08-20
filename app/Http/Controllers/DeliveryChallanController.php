@@ -1248,7 +1248,10 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
-           
+            print_R($line);
+            print $tally_name;
+            print $quickbook_customer_id;
+           /*
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
@@ -1293,7 +1296,7 @@ class DeliveryChallanController extends Controller {
             }
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
-            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));*/
             
             
         }
