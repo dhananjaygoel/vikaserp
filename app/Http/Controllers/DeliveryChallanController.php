@@ -1071,8 +1071,7 @@ class DeliveryChallanController extends Controller {
         if($update_delivery_challan->doc_number){
            
             $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
-             print_r($invoice);
-            die();
+            
             $error = $dataService->getLastError();
             if ($error) {
                 if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
@@ -1087,6 +1086,8 @@ class DeliveryChallanController extends Controller {
                 }
                
                 $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
+                 print_r($invoice);
+            die();
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             else{
