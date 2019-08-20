@@ -281,12 +281,12 @@
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>
+                                            </a><?php print_r($challan->doc_number);?>
                                             @endif
 
                                         </td>
                                     </tr>
-
+                                    
                                     @endif
                                     @endforeach
                                 <div class="modal fade" id="delete_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
