@@ -1091,6 +1091,8 @@ class DeliveryChallanController extends Controller {
             }
             else{
                 print $update_delivery_challan->doc_number;
+                DeliveryChallan::where('id',$id)->update(['doc_number'=>"NULL"]);
+                die();
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
