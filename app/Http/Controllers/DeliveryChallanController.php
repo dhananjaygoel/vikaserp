@@ -1048,7 +1048,7 @@ class DeliveryChallanController extends Controller {
         $quickbook = App\QuickbookToken::find(1);
         $clientid = 'ABpdVkDFhsmsp1KNFoDuYhgAATppzXoDlw9FFa7nE2PG9hmQZv';
         $secret = '3lnaubZB1MIo69RmH6geLezsPJM9aD99I8HsahXK';
-        $oauth2LoginHelper = new OAuth2LoginHelper($clientid,$secret);
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
@@ -1253,7 +1253,7 @@ class DeliveryChallanController extends Controller {
             } 
             //print_R($line);
             $customer_details = $dataService->Query("select * from Account");
-            print "hikk";
+            print "hi";
             print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
