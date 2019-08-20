@@ -1236,18 +1236,19 @@ class DeliveryChallanController extends Controller {
             }
             if($del_products->vat_percentage==0)
             {
-                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
+                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;     
+                $tally_name = $update_delivery_challan->customer->tally_name;              
             }
             else
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
+                $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
-            print_R($update_delivery_challan->customer);
-            die();
-            /*$theResourceObj = Invoice::create([
+           
+            $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
-                    "value"=> 1002,
+                    "value"=> $tally_name,
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
@@ -1288,7 +1289,7 @@ class DeliveryChallanController extends Controller {
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
-            */
+            
             
         }
          
