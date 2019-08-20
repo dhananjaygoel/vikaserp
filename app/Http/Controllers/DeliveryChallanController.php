@@ -1086,8 +1086,7 @@ class DeliveryChallanController extends Controller {
                 }
                
                 $invoice = $dataService->Query("select * from Invoice where id = '".$update_delivery_challan->doc_number."' ");
-                 print_r($invoice);
-            die();
+               
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             else{
