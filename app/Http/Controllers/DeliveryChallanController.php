@@ -1123,18 +1123,20 @@ class DeliveryChallanController extends Controller {
                 $i++;
                 if($del_products->vat_percentage==0){
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_a_item_id;
+                    $productname = $del_products->order_product_all_details->alias_name;
                 }
                 else{
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_item_id;
+                    $productname = $del_products->order_product_all_details->alias_name;
                 }
-                print_r($del_products);
+                
                    $line[] = [
                     "Description" => $del_products->order_product_all_details->product_category->product_type->name,
                     "Amount" => $del_products->quantity * $del_products->price,
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "value" => $quickbook_item_id
+                            "value" => $productname
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
@@ -1154,6 +1156,7 @@ class DeliveryChallanController extends Controller {
             }
             if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
+                print_r($freight_item);
                 if($del_products->vat_percentage==0)
                     $freight_id=$freight_item->quickbook_a_item_id;
                 else
