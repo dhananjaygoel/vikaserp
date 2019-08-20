@@ -1068,7 +1068,7 @@ class DeliveryChallanController extends Controller {
                 return redirect('delivery_challan?status_filter=completed');
             }
         }
-        if($update_delivery_challan->doc_number){
+        if($update_delivery_challan->doc_number!=NULL){
            
             $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
             
