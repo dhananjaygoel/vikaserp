@@ -1068,7 +1068,7 @@ class DeliveryChallanController extends Controller {
                 return redirect('delivery_challan?status_filter=completed');
             }
         }
-        if($update_delivery_challan->doc_number!=NULL){
+        if($update_delivery_challan->doc_number){
            
             $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
             
@@ -1091,6 +1091,8 @@ class DeliveryChallanController extends Controller {
             }
             else{
                 print_R($invoice); print $update_delivery_challan->doc_number;
+                                DeliveryChallan::where('id',$id)->update(['doc_number'=>""]);print "ggg";
+
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
