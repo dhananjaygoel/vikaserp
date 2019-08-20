@@ -1252,8 +1252,8 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
             //print_R($line);
-            $customer_details = $dataService->Query("select * from Customer");
-            print "hi";
+            $customer_details = $dataService->Query("select * from Account");
+            print "hikk";
             print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
