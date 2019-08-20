@@ -1060,7 +1060,7 @@ class DeliveryChallanController extends Controller {
            // $dataService = $this->getTokenWihtoutGST();
            $clientid = "ABB6G2Da7EJLem4XfeXEn6vgdisRSVijSzdWNRKExRHVwssNVH";
            $secret ="dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay";
-           $ref ="AB11566305343ejgfmrtui8BwSsjWD3VzIsyrN3ZCNXbOfUdxC";
+           $ref ="AB11575032078ceaXx16hPHTvini38g2d1hmzmYozqjd3d533z";
            $oauth2LoginHelper = new OAuth2LoginHelper($clientid,$secret);
            $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($ref);
            $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1287,7 +1287,7 @@ class DeliveryChallanController extends Controller {
             //print_R($line);
             $customer_details = $dataService->Query("select * from Customer");
             print "his";
-            print_R($dataService);
+            print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
                 "Line" => $line,
