@@ -286,6 +286,7 @@
 
                                         </td>
                                     </tr>
+                                    <?php print_r($challan);?>
                                     @endif
                                     @endforeach
                                 <div class="modal fade" id="delete_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
