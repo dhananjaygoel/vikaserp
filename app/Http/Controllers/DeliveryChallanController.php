@@ -1216,7 +1216,9 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            $theResourceObj = Invoice::create([
+            print_R($line);
+            die();
+            /*$theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
                     "value"=> 1002,
@@ -1260,6 +1262,7 @@ class DeliveryChallanController extends Controller {
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
+            */
             
         }
          
