@@ -1136,7 +1136,8 @@ class DeliveryChallanController extends Controller {
                     "DetailType" => "SalesItemLineDetail",
                     "SalesItemLineDetail" => [
                         "ItemRef" => [
-                            "name" => $productname
+                            "name" => $productname,
+                            "value" => $quickbook_item_id
                         ],
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
@@ -1172,7 +1173,8 @@ class DeliveryChallanController extends Controller {
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
                                 
-                                "name" => $frieghtname
+                                "name" => $frieghtname,
+                                "value" => $freight_id
                                // "name" => "Services", 
                                //  "value" => 1
                             ],
@@ -1200,7 +1202,8 @@ class DeliveryChallanController extends Controller {
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "name" => $loadingname
+                                "name" => $loadingname,
+                                "value" => $loading_id
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
@@ -1226,7 +1229,8 @@ class DeliveryChallanController extends Controller {
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
                                 
-                                "name" => $discountname
+                                "name" => $discountname,
+                                 "value" => $discount_a_id
                             ],
                             "TaxCodeRef"=>[
                                 "value" => 9
@@ -1249,6 +1253,7 @@ class DeliveryChallanController extends Controller {
                 "Line" => $line,
                 "CustomerRef"=> [
                     "name"=> $tally_name,
+                    "value" => $quickbook_customer_id
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
