@@ -1008,6 +1008,7 @@ class DeliveryChallanController extends Controller {
     // }
 
     function getToken(){
+        print "hello";
         require_once base_path('quickbook/vendor/autoload.php');        
         $quickbook = App\QuickbookToken::find(1);
         // echo '<pre>';
@@ -1044,7 +1045,8 @@ class DeliveryChallanController extends Controller {
     //     App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     // }
 
-    function refresh_token(){
+    function refresh_token(){        print "dddd";
+
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
