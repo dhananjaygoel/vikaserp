@@ -1113,7 +1113,7 @@ class DeliveryChallanController extends Controller {
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
                             if($del_products->vat_percentage > 0){
-                                $TaxCodeRef = $gst->quick_gst_id;
+                                $TaxCodeRef = $gst->quick_gstid;
                             }
                         }
                     }
