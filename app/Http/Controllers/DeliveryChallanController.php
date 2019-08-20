@@ -1058,6 +1058,25 @@ class DeliveryChallanController extends Controller {
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
            // $dataService = $this->getTokenWihtoutGST();
+           $clientid = "ABB6G2Da7EJLem4XfeXEn6vgdisRSVijSzdWNRKExRHVwssNVH";
+           $secret ="dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay"
+           $ref ="AB11566305343ejgfmrtui8BwSsjWD3VzIsyrN3ZCNXbOfUdxC"
+           $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+           $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($ref);
+           $accessTokenValue = $accessTokenObj->getAccessToken();
+           $refreshTokenValue = $accessTokenObj->getRefreshToken();
+           $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+                        'auth_mode' => 'oauth2',
+                        'ClientID' => "Q0fXL014zAv3wzmlhwXMEHTrKepfAshCRjztEu58ZokzCD5T7D",
+                        'ClientSecret' => "stfnZfuSZUDay6cJSWtvQ9HkWiKFbcI9YuBTET5P",
+                        'accessTokenKey' =>$accessTokenValue,
+                        'refreshTokenKey' => $refreshTokenValue,
+                        'QBORealmID' => "9130346851582276",
+                        'baseUrl' => "Production"
+           ));
+
+
+
         }
         else{
          //   $dataService = $this->getToken();
