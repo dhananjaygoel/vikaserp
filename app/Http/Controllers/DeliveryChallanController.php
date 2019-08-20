@@ -1157,12 +1157,15 @@ class DeliveryChallanController extends Controller {
             if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
                 
-                if($del_products->vat_percentage==0)
-                    $freight_id=$freight_item->quickbook_a_item_id;
-                    $frieghtname = $freight_item->alias_name;
-                else
+                if($del_products->vat_percentage==0){
+                      $freight_id=$freight_item->quickbook_a_item_id;
+                      $frieghtname = $freight_item->alias_name;
+                }
+                else{
                     $freight_id=$freight_item->quickbook_item_id;
                     $frieghtname = $freight_item->alias_name;
+                }
+                    
                $line[] = [
                         "Amount" => $update_delivery_challan->freight,
                         "DetailType" => "SalesItemLineDetail",
