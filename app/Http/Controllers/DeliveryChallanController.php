@@ -1059,8 +1059,8 @@ class DeliveryChallanController extends Controller {
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
            // $dataService = $this->getTokenWihtoutGST();
            $clientid = "ABB6G2Da7EJLem4XfeXEn6vgdisRSVijSzdWNRKExRHVwssNVH";
-           $secret ="dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay"
-           $ref ="AB11566305343ejgfmrtui8BwSsjWD3VzIsyrN3ZCNXbOfUdxC"
+           $secret ="dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay";
+           $ref ="AB11566305343ejgfmrtui8BwSsjWD3VzIsyrN3ZCNXbOfUdxC";
            $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
            $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($ref);
            $accessTokenValue = $accessTokenObj->getAccessToken();
