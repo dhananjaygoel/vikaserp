@@ -282,7 +282,6 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <?php print_r($challan->doc_number);?>
                                             @endif
 
                                         </td>
