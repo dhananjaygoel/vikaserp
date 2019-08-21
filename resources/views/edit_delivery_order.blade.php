@@ -250,6 +250,10 @@
                                                 <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="
                                                 <?php if (isset($session_data['product'][$i]['present_shipping'])) { ?>{{$session_data['product'][$i]['present_shipping']}}<?php } ?>" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
                                             </td>
+                                             <td class="col-md-2">
+                                                <!--                                                            form for save product value-->
+                                                <input type="tel" class="form-control" id="product_price_{{$i}}" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" name="product[{{$i}}][price]" placeholder="Price">
+                                            </td>
                                           </tr>
                                         <?php } else {
                                         ?>
