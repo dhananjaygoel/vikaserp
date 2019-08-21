@@ -20,7 +20,7 @@
                             <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                 <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
                                 <!--<option <?php if (Input::get('inquiry_filter') == 'Approval') echo 'selected=""'; ?> value="Approval">Pending Approval</option>-->
-                                <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+                                <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="completed">Completed</option>
                             </select>
                         </form>
                     </div>
@@ -32,7 +32,7 @@
                 </a>
                 @endif
                 @if(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Completed')
-                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Completed'])}}" class="btn btn-primary pull-right">
+                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'completed'])}}" class="btn btn-primary pull-right">
                     Export
                 </a>
                 @endif
@@ -69,7 +69,7 @@
                                 <form method="GET" action="{{url('inquiry')}}">
                                     <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                         <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
-                                        <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+                                        <option <?php if (Input::get('inquiry_filter') == 'completed') echo 'selected=""'; ?> value="Completed">Completed</option>
                                     </select>
                                 </form>
                             </div>
