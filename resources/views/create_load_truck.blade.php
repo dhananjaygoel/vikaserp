@@ -117,7 +117,7 @@
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
-                  print_R($truck_info);
+                  
                   $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
                 }
                 
@@ -156,7 +156,7 @@
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
-                        <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
+                        <span class="col-md-2"> Truck Weight(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
@@ -170,7 +170,7 @@
                           @endforeach
                         @endif    
                        
-                         
+                         <span class="col-md-2">{{$label}}</span>
                        
                        
                         
