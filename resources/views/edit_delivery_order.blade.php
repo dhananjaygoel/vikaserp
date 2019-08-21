@@ -227,6 +227,23 @@
                                                     </select>
                                                 </div>
                                             </td>
+                                             <td class="col-md-1"> 
+                                                <div class = "form-group">
+                                                    <div class = "form-group length_list_{{$i}}">
+                                                    <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>">
+                                                </div>
+                                                </div>
+                                            </td>
+                                             <td class="col-md-1">
+                                            <div class="form-group pro_order_qnty_{{$i}}">
+                                                    <input disabled id="pro_order_qnty_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
+                                                </div>
+                                            </td>
                                           </tr>
                                         <?php } else {
                                         ?>
