@@ -336,14 +336,14 @@
                                             <td class="col-md-1">
                                                 <div class = "form-group">
                                                     <div class = "form-group length_list_{{$i}}">
-                                                    <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "mkkk">
+                                                  <!--  <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "mkkk">-->
                                                 </div>
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group col-md-6">
                                                     <!--                                                            form for save product value-->
-                                                    <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="<?php if (isset($session_data['product'][$i]['present_shipping'])) { ?>{{$session_data['product'][$i]['present_shipping']}}<?php } ?>" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
+                                                    <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="<?php if (isset($session_data['product'][$i]['present_shipping'])) { ?>{{$session_data['product'][$i]['present_shipping']}} <?php } ?>" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
                                                 </div>
                                                 <div class="form-group col-md-6 difference_form">
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
