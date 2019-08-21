@@ -156,18 +156,18 @@
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
-                        <span class="col-md-2"> Truck Weight(Kg):</span>
+                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
                        
                          <span class="col-md-1"><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
-                         </span><span class="col-md-4">{{$label}}</span>
+                         </span><span class="col-md-4" style="padding-top:8px;">{{$label}}</span>
                           </div>
                          @else
                          <span class="col-md-1"> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" > 
                           
-                        </span><span class="col-md-4">  {{$label}}</span></div>
+                        </span><span class="col-md-4" style="padding-top:8px;">  {{$label}}</span></div>
                           
                           
                           @endif  
