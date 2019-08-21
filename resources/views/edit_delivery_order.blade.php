@@ -245,6 +245,11 @@
                                                     <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" type="text" tabindex="4" >
                                                 </div>
                                             </td>
+                                            <td class="col-md-1">
+                                                <!--                                                            form for save product value-->
+                                                <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="
+                                                <?php if (isset($session_data['product'][$i]['present_shipping'])) { ?>{{$session_data['product'][$i]['present_shipping']}}<?php } ?>" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
+                                            </td>
                                           </tr>
                                         <?php } else {
                                         ?>
