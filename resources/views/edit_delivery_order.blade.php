@@ -372,9 +372,9 @@
                                                 </div>
                                             </td>
                                          </tr>
-                                          <?php }
-                                           }}} Session::put('input_data', '');
-                                           } else{
+                                          <?php 
+                                           }}} Session::put('input_data', '');}
+                                            else{
                                                echo "gg";
                                            }
 
