@@ -189,10 +189,10 @@
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Length</span></td>
                                             <td><span>Quantity</span></td>
-                                            <td><span>Pending Quantity</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
                                             <td class="inquiry_vat_chkbox"><span>GST</span></td>
+                                            <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
@@ -466,11 +466,11 @@
 
                                                     </td>
                                                     <td class="col-md-1">
-                                                    <input disabled type="tel" class="form-control" id="pro_order_qnty_{{$key}}" value="{{$product->quantity}}" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping">
+                                                    <input disabled type="tel" class="form-control <?php echo $length_class; ?>" id="pro_order_qnty_{{$key}}" value="{{$product->quantity}}" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping">
                                                     </td>
                                                     <td class="col-md-1">
                                                         <!--                                                            form for save product value-->
-                                                        <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
+                                                        <input type="tel" class="form-control <?php echo $length_class; ?>" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
                                                       
                                                     </td>
                                                     
