@@ -466,17 +466,17 @@
 
                                                     </td>
                                                     <td class="col-md-1">
-                                                    <input disabled type="tel" class="form-control <?php echo $length_class; ?>" id="pro_order_qnty_{{$key}}" value="{{$product->quantity}}" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping">
+                                                    <input disabled type="tel" class="form-control" id="pro_order_qnty_{{$key}}" value="{{$product->quantity}}" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping">
                                                     </td>
                                                     <td class="col-md-1">
                                                         <!--                                                            form for save product value-->
-                                                        <input type="tel" class="form-control <?php echo $length_class; ?>" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
+                                                        <input <?php echo $length_class; ?> type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
                                                       
                                                     </td>
                                                     
                                                     <td class="col-md-2">
                                                         <!--                                                            form for save product value-->
-                                                        <input type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                        <input <?php echo $length_class; ?> type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
                                                         
                                                     </td>
                                                     <td class="col-md-2">
