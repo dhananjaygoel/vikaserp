@@ -318,7 +318,7 @@
                                             <td class="col-md-1">
                                                 <div class = "form-group">
                                                     <div class = "form-group length_list_{{$i}}">
-                                                    <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{$product->length}}">
+                                                    <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = ""<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>">
                                                 </div>
                                                 </div>
                                             </td>
