@@ -20,7 +20,7 @@
                             <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                 <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
                                 <!--<option <?php if (Input::get('inquiry_filter') == 'Approval') echo 'selected=""'; ?> value="Approval">Pending Approval</option>-->
-                                <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="completed">Completed</option>
+                                <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
                             </select>
                         </form>
                     </div>
@@ -32,7 +32,7 @@
                 </a>
                 @endif
                 @if(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Completed')
-                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'completed'])}}" class="btn btn-primary pull-right">
+                <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Completed'])}}" class="btn btn-primary pull-right">
                     Export
                 </a>
                 @endif
@@ -69,7 +69,7 @@
                                 <form method="GET" action="{{url('inquiry')}}">
                                     <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                         <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
-                                        <option <?php if (Input::get('inquiry_filter') == 'completed') echo 'selected=""'; ?> value="Completed">Completed</option>
+                                        <option <?php if (Input::get('inquiry_filter') == 'Completed') echo 'selected=""'; ?> value="Completed">Completed</option>
                                     </select>
                                 </form>
                             </div>
@@ -124,13 +124,75 @@
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
                                     @foreach($inquiries as $inquiry)
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
-                                     <td class="text-center">{{$i++}}</td>
-                                      <td class="text-center">{{$inquiry['customer_id']}} </td>
-                                      <td class="text-center">{{$inquiry['id']}}</td>
-                                       <td class="text-center">{{$inquiry['id']}}</td>
-                                        <td class="text-center">{{$inquiry['id']}}</td>
-                                         <td class="text-center">
-                                         @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
+                                        <td class="text-center">{{$i++}}</td>
+                                        <td class="text-center">
+                                            {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
+                                        </td>
+
+                                        <?php $qty = 0; ?>
+                                        @foreach($inquiry['inquiry_products'] as $prod)
+                                        @if($prod['unit']->unit_name == 'KG')
+                                        <?php
+                                        $qty += $prod->quantity;
+                                        ?>
+                                        @endif
+
+                                        @if($prod['unit']->unit_name == 'Pieces')
+                                        <?php
+                                        $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                        ?>
+                                        @endif
+
+                                        @if($prod['unit']->unit_name == 'Meter')
+                                        <?php
+                                        $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
+                                        ?>
+                                        @endif
+
+                                            @if($prod['unit']->unit_name == 'ft')
+                                                <?php
+                                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                                ?>
+                                            @endif
+
+                                            @if($prod['unit']->unit_name == 'mt')
+                                                <?php
+                                                $qty += $prod->quantity * ($prod['inquiry_product_details']->weight / 305);
+                                                ?>
+                                            @endif
+                                        @endforeach
+
+                                        <td class="text-center">{{ round($qty, 2) }}</td>
+                                        <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
+                                        @if($inquiry['delivery_location']['area_name'] !="")
+                                        <td class="text-center">{{$inquiry['delivery_location']['area_name']}}</td>
+                                        @elseif($inquiry['delivery_location']['area_name'] =="")
+                                        <td class="text-center">{{$inquiry['other_location']}}</td>
+                                        @endif
+                                        @if($inquiry->inquiry_status != 'completed')
+                                         @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
+                                        <td class="text-center">
+                                           
+                                            @if($inquiry->is_approved=='no')
+                                            <a href="javascript:void(0)" class="table-link" title="Need Admin Approval">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @else
+                                            <a title="Place Order" href="{{ url('place_order/'. $inquiry['id']) }}" class="table-link">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> 
+                                            @endif
+                                           
+                                        </td>
+                                         @endif
+                                        @endif
+                                        <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
 <!--                                                <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -166,11 +228,10 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @endif 
-                                            @endif 
+                                            @endif                                                                                   @endif 
                                         </td>
                                     </tr>
-                                    
+
                                     @endforeach
                                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
