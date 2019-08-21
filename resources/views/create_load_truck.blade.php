@@ -168,18 +168,11 @@
                           
                           {{$label}}
                           
-                          </div>
+                          
                           @endif  
                          
                           @endforeach
-                        @endif    
-                       
-                        
-                       
-                       
-                        
-                        
-
+                        @endif  </div>
                         <hr>
                         <div class="form-group underline">Product Details</div>
                         <div class="inquiry_table col-md-12">
