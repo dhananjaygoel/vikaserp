@@ -216,7 +216,17 @@
                                                 </div>
                                                 <input type="hidden" name="prod_id" value="{{$i}}">
                                             </td>
-
+                                           <td class="col-md-1">
+                                                <div class="form-group ">
+                                                    <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                        @foreach($units as $unit)
+                                                            @if($session_data['product'][$i]['units'] == $unit->id)
+                                                                <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
                                           </tr>
                                         <?php } else {
                                         ?>
