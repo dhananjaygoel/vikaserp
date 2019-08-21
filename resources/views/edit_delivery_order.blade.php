@@ -278,7 +278,7 @@
                                                 </div>
                                             </td>
                                           </tr>
-                                        <?php } }}} Session::put('input_data', '');
+                                        <?php } }}Session::put('input_data', '');
                                         else {
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
