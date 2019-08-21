@@ -121,7 +121,7 @@ class InquiryController extends Controller {
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
 
-        $inquiries->setPath('inquiry');
+        //$inquiries->setPath('inquiry');
 
 
        // dd($inquiries->toArray());
