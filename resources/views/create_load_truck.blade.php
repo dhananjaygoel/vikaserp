@@ -117,7 +117,7 @@
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
-                  
+                  print_R($truck_info);
                   $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
                 }
                 
