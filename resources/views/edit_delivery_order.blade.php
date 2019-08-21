@@ -254,6 +254,21 @@
                                                 <!--                                                            form for save product value-->
                                                 <input type="tel" class="form-control" id="product_price_{{$i}}" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" name="product[{{$i}}][price]" placeholder="Price">
                                             </td>
+                                            <td class="col-md-2">
+                                                <!--                                                            form for save product value-->
+                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="GST Percentage">
+                                               
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    @foreach($pending_orders as $porder)
+                                                        @if($porder['product_id'] == $session_data['product'][$i]['product_category_id'] && $porder['id']== $session_data['product'][$i]['id'])
+                                                            <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$i}}">
+                                                            <div id="pending_qunatity_{{$i}}"><span class="text-center">{{$porder['total_pending_quantity']}}</span></div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </td>
                                           </tr>
                                         <?php } else {
                                         ?>
