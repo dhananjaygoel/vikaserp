@@ -132,7 +132,7 @@
                                           $tally_name = $inquiry["customer"]->tally_name;
                                       }
                                       else{
-                                           $tally_name = $inquiry["customer"]->owner_name
+                                           $tally_name = $inquiry["customer"]->owner_name;
                                       }
                                       echo $tally_name;
                                       ?>
