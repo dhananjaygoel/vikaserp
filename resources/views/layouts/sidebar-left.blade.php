@@ -192,16 +192,16 @@
                             @if(Auth::user()->role_id == 5)
                             <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                 <a href="{{url('orders')}}" >
-                                    Orderddzx
+                                    Order
                                 </a>
                             </li>
 
                             @endif
                             @if(Auth::user()->role_id == 9 ||  Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 )
-                                @if(Auth::user()->role_id != 8 && Auth::user()->role_id != 9)
+                                @if(Auth::user()->role_id != 8 && Auth::user()->role_id != 9 || Auth::user()->role_id != 2)
                                 <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                     <a href="{{url('orders')}}" >
-                                        Orderdd
+                                        Order
                                     </a>
                                 </li>
                                 @endif
