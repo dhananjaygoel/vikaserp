@@ -393,7 +393,15 @@
                                                         </div>
                                                         <input type="hidden" name="prod_id" value="{{$key}}">
                                                     </td>
-
+                                                    <td class="col-md-1">
+                                                        <div class="form-group ">
+                                                            <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
+                                                                @foreach($units as $unit)
+                                                                    <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}}>{{$unit->unit_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </td>
                                                </tr>
                                              @endif
                                         @endforeach
