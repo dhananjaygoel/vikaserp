@@ -195,6 +195,25 @@
                                             <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
+                                        <?php
+                                        $session_data = Session::get('input_data');
+                                        if (isset($session_data['product'])) {
+                                        $total_products_added = sizeof($session_data['product']);
+                                        $a = sizeof($delivery_data['delivery_product']);
+                                        for ($i = 0; $i <= $total_products_added + 1; $i++) {
+                                        if (isset($session_data['product'][$i]['name'])) {
+                                        if ($i <= $a) {
+                                        ?>
+                                        <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
+                                        <td>xxxx</td>
+
+                                          </tr>
+                                        <?php } else {
+                                        ?>
+                                        <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
+                                         <td>xxxx</td><td>xxxx</td>
+                                         </tr>
+
                                           </tbody>
                                     </table>
                                     <table>
