@@ -684,7 +684,6 @@ class DeliveryOrderController extends Controller {
         $labours = Labour::where('type', '<>', 'purchase')->get();
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         $delivery_chellan = DeliveryChallan::where('id', '=', $id)->first();
-        print_r($delivery_chellan);
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','delivery_chellan'));
     }
       /*
