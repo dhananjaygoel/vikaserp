@@ -341,7 +341,27 @@
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
                                                 </div>
                                             </td>
-                                            
+                                             <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <?php $j = 1; ?>
+                                                    @foreach($pending_orders as $porder)
+                                                        @if($porder['product_id'] == $session_data['product'][$i]['product_category_id'] && $porder['id']== $session_data['product'][$i]['id'])
+                                                            <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$i}}">
+                                                            <div id="pending_qunatity_{{$i}}"><span class="text-center">{{ $porder['total_pending_quantity'] > 0 ?$porder['total_pending_quantity']:0}}</span>
+                                                            </div>
+                                                        @elseif($j==1)
+                                                            <input type="hidden" value="0" id="pending_qunatity_value_{{$i}}">
+                                                            <div id="pending_qunatity_{{$i}}"><span class="text-center">0</span></div>
+                                                            <?php $j++; ?>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>" type="text">
+                                                </div>
+                                            </td>
                                          </tr>
                                           <?php }}}}?>
                                           </tbody>
