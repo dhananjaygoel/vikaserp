@@ -463,6 +463,43 @@
 
 
                                                     </td>
+                                                    <td class="col-md-1">
+                                                    <input disabled type="tel" class="form-control" id="pro_order_qnty_{{$key}}" value="{{$product->quantity}}" name="product[{{$key}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping">
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <!--                                                            form for save product value-->
+                                                        <input type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
+                                                      
+                                                    </td>
+                                                    
+                                                    <td class="col-md-2">
+                                                        <!--                                                            form for save product value-->
+                                                        <input type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                        
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group inquiry_vat_chkbox">
+
+                                                            <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+
+                                                        </div>
+                                                    </td>
+                                                     <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            @foreach($pending_orders as $porder)
+                                                                @if($porder['product_id'] == $product->product_category_id && $porder['id']== $product->id)
+                                                                    <input type="hidden" value="{{$porder['total_pending_quantity']}}" id="pending_qunatity_value_{{$key}}">
+                                                                    <div id="pending_qunatity_{{$key}}"><span class="text-center">{{$porder['total_pending_quantity'] > 0 ? $porder['total_pending_quantity']:0}}</span>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <div class="form-group">
+                                                            <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
+                                                        </div>
+                                                    </td>
                                                </tr>
                                              @endif
                                         @endforeach
