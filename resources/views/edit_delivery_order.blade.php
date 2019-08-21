@@ -205,7 +205,17 @@
                                         if ($i <= $a) {
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
-                                        <td>xxxx</td>
+                                        <td class="col-md-2">
+                                                <div class="form-group searchproduct">
+                                                    <input value="{{$session_data['product'][$i]['name']}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
+                                                    <input type="hidden" name="product[{{$i}}][product_category_id]" id="add_product_id_{{$i}}" value="{{$session_data['product'][$i]['product_category_id']}}">
+                                                    <input type="hidden" name="product[{{$i}}][id]" id="add_product_id_{{$i}}" value="{{$session_data['product'][$i]['id']}}">
+                                                    <input type="hidden" name="product[{{$i}}][order]" value="{{ $session_data['product'][$i]['order']}}">
+                                                    <!--                                                    <i class="fa fa-search search-icon"></i>-->
+                                                    {{$session_data['product'][$i]['name']}}
+                                                </div>
+                                                <input type="hidden" name="prod_id" value="{{$i}}">
+                                            </td>
 
                                           </tr>
                                         <?php } else {
