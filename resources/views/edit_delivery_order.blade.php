@@ -375,10 +375,31 @@
                                           <?php 
                                            }}} Session::put('input_data', '');}
                                             else{
-                                               echo "gg";
-                                           }
+                                             ?>
 
-                                          ?>
+                                              <?php $counter = 0; ?>
+                                        @foreach($delivery_data['delivery_product'] as $key=>$product)
+                                            @if($product->order_type =='delivery_order')
+
+                                                <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}" {{($product->present_shipping==0)?'style = display:none':''}}>
+                                                    <td class="col-md-2">
+                                                        <div class="form-group searchproduct">
+                                                            <input value="{{ $product['order_product_details']->alias_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
+                                                            <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
+                                                            <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
+                                                            <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
+                                                            <!--                                                    <i class="fa fa-search search-icon"></i>-->
+                                                            {{ $product['order_product_details']->alias_name}}
+                                                        </div>
+                                                        <input type="hidden" name="prod_id" value="{{$key}}">
+                                                    </td>
+
+                                               </tr>
+                                             @endif
+                                        @endforeach
+                                        <?php } ?>
+
+                                          
                                           </tbody>
                                     </table>
                                     <table>
