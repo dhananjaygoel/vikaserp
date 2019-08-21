@@ -319,8 +319,10 @@
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                         @foreach($units as $unit)
+                                                           @if(isset($session_data['product'][$i]['units']))
                                                             @if($session_data['product'][$i]['units'] == $unit->id)
                                                                 <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                            @endif
                                                             @endif
                                                         @endforeach
                                                     </select>
