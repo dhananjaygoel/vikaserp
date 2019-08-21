@@ -1002,23 +1002,23 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
         if ($('#name').val() == "") {
             $('#name').addClass('error_validation');
             status_form = 1;
-        }
-        if ($('#add_order_location').val() == '0') {
+        }else{$('#name').removeClass('error_validation');}
+        if ($('#add_order_location').val() == "") {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
-        }
-        if ($('#contact_person').val() == '') {
+        }else{$('#add_order_location').removeClass('error_validation');}
+        if ($('#contact_person').val() == "") {
             $('#contact_person').addClass('error_validation');
             status_form = 1;
-        }
-        if ($('#mobile_number').val() == '') {
+        }else{$('#contact_person').removeClass('error_validation');}
+        if ($('#mobile_number').val() == "") {
             $('#mobile_number').addClass('error_validation');
             status_form = 1;
         }
         if ($('#period').val() == '') {
             $('#period').addClass('error_validation');
             status_form = 1;
-        }
+        }else{$('#period').removeClass('error_validation');}
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function () {
             CheckBoxArray.push($(this).val());
@@ -1033,44 +1033,66 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
 
 
         });
-        if (CheckBoxArray.length == 0)
-        {
-            $('#vat_percentage').removeClass('error_validation');
-            status_form = 0;
-        }
+        // if (CheckBoxArray.length == 0)
+        // {
+        //     $('#vat_percentage').removeClass('error_validation');
+        //     status_form = 0;
+        // }
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "" | $("#quantity_" + i).val() == "0" | $("#quantity_" + i).val() == 0)) {
-                if ($("#quantity_" + i).val() == "" | $("#quantity_" + i).val() == "0" | $("#quantity_" + i).val() == 0) {
-
-                    j++;
-                }
+            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+                j++;
             } else {
-
-                if ($("#add_product_id_" + i).val() == "") {
-                    if (i != tot_products) {
-                        $('#add_product_name_' + i).addClass('error_validation');
-                        status_form = 1;
-
-                    }
+                if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
+                    $('#add_product_name_' + i).addClass('error_validation');
+                    $('#product_all_' + i).addClass('error_validation');
+                    status_form = 1;
+                } else {
+                    $('#product_all_' + i).removeClass('error_validation');
                 }
-//                if ($('#existing_customer_name').val() == "") {
-//                    if (i != tot_products) {
-//                        $('#add_product_name_' + i).addClass('error_validation');
-//                        status_form = 1;
-//                    }
-//                }
-                if ($("#quantity_" + i).val() == "" | $("#quantity_" + i).val() == "0" | $("#quantity_" + i).val() == 0) {
-                    if (i != tot_products) {
-                        $('#quantity_' + i).addClass('error_validation');
-                        status_form = 1;
-
-                    }
+                if ($("#quantity_" + i).val() == "") {
+                    $('#quantity_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($("#quantity_" + i).val() == 0) {
+                    $('#quantity_' + i).addClass('error_validation');
+                    status_form = 1;
                 }
             }
         }
+
+//         for (i = 1; i <= tot_products; i++) {
+
+//             if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "" | $("#quantity_" + i).val() == "0" | $("#quantity_" + i).val() == 0)) {
+//                 if ($("#quantity_" + i).val() == "" | $("#quantity_" + i).val() == "0" | $("#quantity_" + i).val() == 0) {
+
+//                     j++;
+//                 }
+//             } else {
+
+//                 if ($("#add_product_id_" + i).val() == "") {
+//                     if (i != tot_products) {
+//                         $('#add_product_name_' + i).addClass('error_validation');
+//                         status_form = 1;
+
+//                     }
+//                 }
+// //                if ($('#existing_customer_name').val() == "") {
+// //                    if (i != tot_products) {
+// //                        $('#add_product_name_' + i).addClass('error_validation');
+// //                        status_form = 1;
+// //                    }
+// //                }
+//                 if ($("#quantity_" + i).val() == "" | $("#quantity_" + i).val() == "0" | $("#quantity_" + i).val() == 0) {
+//                     if (i != tot_products) {
+//                         $('#quantity_' + i).addClass('error_validation');
+//                         status_form = 1;
+
+//                     }
+//                 }
+//             }
+//         }
 
         if ($("#add_order_location").val() == "other") {
 
@@ -1102,27 +1124,6 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
             }
             status_form = 1;
         }
-        if ($("#add_order_location").val() == "other") {
-
-            if ($("#location_difference").val() == "") {
-                $('#location_difference').addClass('error_validation');
-                status_form = 1;
-            } else {
-                $('#location_difference').removeClass('error_validation');
-                if (status_form != 1)
-                    status_form = 0;
-            }
-
-            if ($("#location").val() == "") {
-                $('#location').addClass('error_validation');
-                status_form = 1;
-            } else {
-                $('#location').removeClass('error_validation');
-                if (status_form != 1)
-                    status_form = 0;
-            }
-        }
-
 
         if (status_form == 1) {
             $('#flash_error').css('display','none');
@@ -1149,7 +1150,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
         } else {
             $('.uploader').removeClass('error_validation');
         }
-        if ($('#add_order_location').val() == '0') {
+        if ($('#add_order_location').val() == '') {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
         }
@@ -2738,6 +2739,7 @@ $('body').delegate(".pendingorder", "click", function () {
     var url = $('#base_url').val();
     var sortfield = $('#pending_order_sortfield').val();
     var sortfieldby = $('#pending_order_sortfieldby').val();
+    console.log(sortfieldby);
     if (sortfieldby == "") {
         $('#redirect_url_for_sorting').attr("href", url + "/pending_delivery_order?filteron=" + column_name + "&filterby=asc");
     } else {
