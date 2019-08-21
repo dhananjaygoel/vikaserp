@@ -180,8 +180,81 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="inquiry_table col-md-12">
+                                <div class="table-responsive">
+                                <table id="add_product_table_delivery_order" class="table table-hover">
+                                        <tbody>
+                                        <tr class="headingunderline">
+                                            <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
+                                            <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Length</span></td>
+                                            <td><span>Quantity</span></td>
+                                            <td><span>Present Shipping</span></td>
+                                            <td><span>Price</span><span class="mandatory">*</span></td>
+                                            <td class="inquiry_vat_chkbox"><span>GST</span></td>
+                                            <td><span>Pending Quantity</span></td>
+                                            <td><span>Remark</span></td>
+                                        </tr>
+                                          </tbody>
+                                    </table>
+                                    <table>
+                                        <tbody>
+                                        <tr class="row5">
+                                            <td>
+                                                <div class="add_button1">
+                                                    <div class="form-group pull-left">
+                                                        <label for="addmore"></label>
+                                                        <a class="table-link" title="add more" id="add_product_row_delivery_order">
+                                                            <span class="fa-stack more_button" ><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-plus fa-stack-1x fa-inverse"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                             </div>
                             </div>
+                             <div class="clearfix"></div>
+
+                            <div class="form-group">
+                                <label for="vehicle_name">Vehicle Number</label>
+                                <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="driver_contact">Driver Contact</label>
+                                <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="tel">
+                            </div>
+                            <div class="clearfix"></div>
+
+
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <label for="inquiry_remark">Remark</label>
+                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
+                            </div>
+                            <div>
+                                <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
+                            </div>
+                            <hr>
+                            <div>
+                                <button type="submit" class="btn btn-primary form_button_footer btn_edit_delivery_order">Submit</button>
+                                <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
+                            </div>
+                            <div class="clearfix"></div>
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 @stop
