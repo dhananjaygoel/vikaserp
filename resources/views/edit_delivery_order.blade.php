@@ -375,7 +375,7 @@
                                           <?php }
                                            }}} Session::put('input_data', '');
                                            } else{
-                                               gg
+                                               echo "gg";
                                            }
 
                                           ?>
