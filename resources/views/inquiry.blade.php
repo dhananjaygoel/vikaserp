@@ -126,17 +126,50 @@
 
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                      <td class="text-center">{{$i++}}</td>
-                                      <td class="text-center">
-                                      <?php
-                                      if(isset($inquiry["customer"]->tally_name)){
-                                          $tally_name = $inquiry["customer"]->tally_name;
-                                      }
-                                      else{
-                                           $tally_name = $inquiry["customer"]->owner_name;
-                                      }
-                                      echo $tally_name;
-                                      ?>
-                                      </td>
+                                      <td class="text-center">{{$inquiry['customer_id']}}</td>
+                                      <td class="text-center">{{$inquiry['id']}}</td>
+                                       <td class="text-center">{{$inquiry['id']}}</td>
+                                        <td class="text-center">{{$inquiry['id']}}</td>
+                                         <td class="text-center">
+                                         @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
+                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
+<!--                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>-->
+                                            </a>
+                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id'],'way' => 'approval']) }}">Approve</a>                                   
+                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="reject_inquiry_row({{$inquiry['id']}})">Reject</a>  
+                                            
+                                            @else
+                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="table-link">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @if($inquiry->inquiry_status != 'completed')
+                                             @if( Auth::user()->role_id <> 2 && Auth::user()->role_id <> 3)
+                                            <a title="Edit" href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}" class="table-link">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>                                            
+                                            @endif
+                                            @endif
+
+
+                                            @if( Auth::user()->role_id == 0 )
+                                            <a href="#" class="table-link danger" title="delete" data-toggle="modal" data-target="#delete_inquiry" onclick="delete_inquiry_row({{$inquiry['id']}})">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @endif 
+                                            @endif 
+                                        </td>
                                     </tr>
                                     
                                     @endforeach
