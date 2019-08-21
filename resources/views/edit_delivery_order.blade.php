@@ -409,7 +409,9 @@
                                                         else{
                                                             $length_class ="";
                                                         }
-                                                 
+                                                        if(Auth::user()->role_id == 3 ){
+                                                            $length_class ="disabled";
+                                                        }
                                                         
                                                          ?>
                                                 <td class="col-md-1">
