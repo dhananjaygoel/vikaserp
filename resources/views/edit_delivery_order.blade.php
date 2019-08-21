@@ -269,6 +269,12 @@
                                                     @endforeach
                                                 </div>
                                             </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$i}}][remark]" 
+                                                    value="<?php if (isset($session_data['product'][$i]['remark'])) { ?>{{$session_data['product'][$i]['remark']}}<?php } ?>" type="text">
+                                                </div>
+                                            </td>
                                           </tr>
                                         <?php } else {
                                         ?>
