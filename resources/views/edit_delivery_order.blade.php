@@ -412,6 +412,9 @@
                                                         if(Auth::user()->role_id == 3 ){
                                                             $length_class ="disabled";
                                                         }
+                                                        else{
+                                                             $length_class ="";
+                                                        }
                                                         
                                                          ?>
                                                 <td class="col-md-1">
