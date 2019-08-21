@@ -1,3 +1,4 @@
+
 @extends('layouts.master')
 @section('title','Edit Delivery Order')
 @section('content')
@@ -244,12 +245,12 @@
                                             </td>
                                             <td class="col-md-1">
                                             <div class="form-group pro_order_qnty_{{$i}}">
-                                                    <input disabled id="pro_order_qnty_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="vbbv" type="text" tabindex="4" >
+                                                    <input disabled id="pro_order_qnty_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="hhh" type="text" tabindex="4" >
+                                                    <input onblur="change_quantity2({{$i}});" id="quantity_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$session_data['product'][$i]['quantity']}}" type="text" tabindex="4" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -319,10 +320,8 @@
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                         @foreach($units as $unit)
-                                                           @if(isset($session_data['product'][$i]['units']))
                                                             @if($session_data['product'][$i]['units'] == $unit->id)
                                                                 <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                            @endif
                                                             @endif
                                                         @endforeach
                                                     </select>
@@ -334,8 +333,8 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class = "form-group">
-                                                    <div class = "form-group length_list_{{$i}}">
-                                                    <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "kkk">
+                                                    <div class = "form-group length_list_{{$key}}">
+                                                    <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{$product->length}}">
                                                 </div>
                                                 </div>
                                             </td>
