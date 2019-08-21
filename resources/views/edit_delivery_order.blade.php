@@ -298,6 +298,30 @@
                                                 
                                                 </div>
                                             </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group ">
+                                                    <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                        @foreach($units as $unit)
+                                                           @if(isset($session_data['product'][$i]['units']))
+                                                            @if($session_data['product'][$i]['units'] == $unit->id)
+                                                                <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                            @endif
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class = "form-group">                                                    
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class = "form-group">
+                                                    <div class = "form-group length_list_{{$key}}">
+                                                    <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{$product->length}}">
+                                                </div>
+                                                </div>
+                                            </td>
                                          </tr>
                                           <?php }}}}?>
                                           </tbody>
