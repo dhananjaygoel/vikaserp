@@ -213,7 +213,7 @@
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
                                          <td>xxxx</td><td>xxxx</td>
                                          </tr>
-
+                                          <?php }}}}?>
                                           </tbody>
                                     </table>
                                     <table>
