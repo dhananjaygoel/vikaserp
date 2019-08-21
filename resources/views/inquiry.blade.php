@@ -121,12 +121,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
+                                    <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; $j =1;?>
                                     @foreach($inquiries as $inquiry)
+
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
+                                     <td class="text-center">{{$j}}</td>
                                        <td>{{$inquiry['id']}} </td>
                                     </tr>
-
+                                    <?php $j++;?>
                                     @endforeach
                                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
