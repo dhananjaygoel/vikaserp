@@ -322,6 +322,26 @@
                                                 </div>
                                                 </div>
                                             </td>
+                                             <td class="col-md-1">
+                                                <div class="form-group col-md-6">
+                                                    <!--                                                            form for save product value-->
+                                                    <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="<?php if (isset($session_data['product'][$i]['present_shipping'])) { ?>{{$session_data['product'][$i]['present_shipping']}}<?php } ?>" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
+                                                </div>
+                                                <div class="form-group col-md-6 difference_form">
+                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                </div>
+                                            </td>
+                                             <td class="col-md-2">
+                                                <div class="form-group col-md-6">
+                                                    <!--                                                            form for save product value-->
+                                                    <input type="tel" class="form-control" id="product_price_{{$i}}" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" name="product[{{$i}}][price]" placeholder="Price">
+
+                                                </div>
+                                                <div class="form-group col-md-6 difference_form">
+                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                </div>
+                                            </td>
+                                            
                                          </tr>
                                           <?php }}}}?>
                                           </tbody>
