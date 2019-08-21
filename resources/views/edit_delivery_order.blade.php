@@ -245,7 +245,7 @@
                                             </td>
                                             <td class="col-md-1">
                                             <div class="form-group pro_order_qnty_{{$i}}">
-                                                    <input disabled id="pro_order_qnty_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" type="text" tabindex="4" >
+                                                    <input disabled id="pro_order_qnty_{{$i}}" class="form-control focus_on_enter" placeholder="Qnty" name="product[{{$i}}][quantity]" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" type="text" tabindex="4" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
