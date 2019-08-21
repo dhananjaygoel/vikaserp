@@ -73,7 +73,8 @@ class InquiryController extends Controller {
                 } else {
                    
                     //$inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
-                    $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->orderBy('created_at', 'desc');
+                    $filter = "completed";
+                    $inquiries = Inquiry::where('inquiry_status', '=', $filter)->orderBy('created_at', 'desc');
                 }
             } else {
              
