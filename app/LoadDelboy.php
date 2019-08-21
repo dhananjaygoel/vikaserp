@@ -19,6 +19,8 @@ class LoadDelboy extends Model {
         return $this->hasOne('App\Customer', 'id', 'del_boy');
     }
     
- 
+   public function users() {
+        return $this->hasOne('App\User', 'id', 'del_boy');
+    }
 
 }
