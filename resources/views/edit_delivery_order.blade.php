@@ -189,10 +189,10 @@
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Length</span></td>
                                             <td><span>Quantity</span></td>
+                                            <td><span>Pending Quantity</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
                                             <td class="inquiry_vat_chkbox"><span>GST</span></td>
-                                            <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
