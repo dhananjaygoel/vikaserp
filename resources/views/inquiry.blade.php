@@ -126,7 +126,17 @@
 
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                      <td class="text-center">{{$i++}}</td>
-                                       <td>{{$inquiry['id']}} </td>
+                                      <td class="text-center">
+                                      <?php
+                                      if(isset($inquiry["customer"]->tally_name)){
+                                          $tally_name = $inquiry["customer"]->tally_name;
+                                      }
+                                      else{
+                                           $tally_name = $inquiry["customer"]->owner_name
+                                      }
+                                      echo $tally_name;
+                                      ?>
+                                      </td>
                                     </tr>
                                     
                                     @endforeach
