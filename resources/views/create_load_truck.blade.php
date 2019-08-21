@@ -152,7 +152,7 @@
                          else{
                              $total_avg = " ";
                          }
-              $owner_name =$info->customer->owner_name;
+              $owner_name =$info->users->first_name .' '.$info->users->last_name;
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
