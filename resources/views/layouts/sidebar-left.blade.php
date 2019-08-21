@@ -202,7 +202,7 @@
                                 @if(Auth::user()->role_id != 2)
                                 <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                     <a href="{{url('orders')}}" >
-                                        Orderd
+                                        Order
                                     </a>
                                 </li>
                                 @endif

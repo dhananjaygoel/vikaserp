@@ -117,7 +117,7 @@
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
-                  print_R($truck_info);
+                  
                   $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
                 }
                 
@@ -152,25 +152,29 @@
                          else{
                              $total_avg = " ";
                          }
-              $owner_name =$info->customer->owner_name;
+              $owner_name =$info->users->first_name .' '.$info->users->last_name;
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
-                        <span class="col-md-2"> Truck Weight{{$label}}(Kg):</span>
+                        <span class="col-md-2"> Truck Weight(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
-            
-                         <input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
+                       
+                         <input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" > {{$label}}
+                          
                          @else
-                          <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
+                          <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" > 
+                          
+                          {{$label}}
+                          
                           </div>
                           @endif  
                          
                           @endforeach
                         @endif    
                        
-                         
+                        
                        
                        
                         

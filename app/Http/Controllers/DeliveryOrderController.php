@@ -684,7 +684,6 @@ class DeliveryOrderController extends Controller {
         $labours = Labour::where('type', '<>', 'purchase')->get();
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         $delivery_chellan = DeliveryChallan::where('id', '=', $id)->first();
-        print_r($delivery_chellan);
         return view('create_delivery_challan', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','delivery_chellan'));
     }
       /*
@@ -712,7 +711,7 @@ class DeliveryOrderController extends Controller {
         $labours = Labour::where('type', '<>', 'purchase')->get();
         $loaders = LoadedBy::where('type', '<>', 'purchase')->get();
         $truckdetails = LoadTrucks::where('deliver_id', '=', $id)->get();
-        $delboys = LoadDelboy::with('customer')->where('delivery_id', '=', $id)->get();
+        $delboys = LoadDelboy::with('users')->where('delivery_id', '=', $id)->get();
         $truck_load_prodcut_id = LoadTrucks::where('deliver_id', '=', $id)
                          ->where('userid', '=', Auth::id())->get();
         return view('create_load_truck', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders', 'produc_type','truckdetails','delboys','truck_load_prodcut_id'));

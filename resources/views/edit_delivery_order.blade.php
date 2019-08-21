@@ -403,18 +403,13 @@
                                                         </div>
                                                     </td>
                                                      <?php $type_id = $product['relations']['product_sub_category']['relations']['product_category']['attributes']['product_type_id'];
-                                                        if($type_id !=3){
+                                                        if($type_id !=3 && Auth::user()->role_id!=3){
                                                             $length_class ="disabled";
                                                         }
                                                         else{
                                                             $length_class ="";
                                                         }
-                                                        if(Auth::user()->role_id == 3 ){
-                                                            $length_class ="disabled";
-                                                        }
-                                                        else{
-                                                             $length_class ="";
-                                                        }
+                                                       
                                                         
                                                          ?>
                                                 <td class="col-md-1">
