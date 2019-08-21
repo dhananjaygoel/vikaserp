@@ -845,7 +845,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 5 )
+                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 5 )
 
                                             @if($order->order_status == 'pending')
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
