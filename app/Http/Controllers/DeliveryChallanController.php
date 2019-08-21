@@ -1057,45 +1057,10 @@ class DeliveryChallanController extends Controller {
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
-           // $dataService = $this->getTokenWihtoutGST();
-           $clientid = "ABB6G2Da7EJLem4XfeXEn6vgdisRSVijSzdWNRKExRHVwssNVH";
-           $secret ="dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay";
-           $ref ="AB11575032078ceaXx16hPHTvini38g2d1hmzmYozqjd3d533z";
-           $oauth2LoginHelper = new OAuth2LoginHelper($clientid,$secret);
-           $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($ref);
-           $accessTokenValue = $accessTokenObj->getAccessToken();
-           $refreshTokenValue = $accessTokenObj->getRefreshToken();
-           $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-                        'auth_mode' => 'oauth2',
-                        'ClientID' => "Q0fXL014zAv3wzmlhwXMEHTrKepfAshCRjztEu58ZokzCD5T7D",
-                        'ClientSecret' => "stfnZfuSZUDay6cJSWtvQ9HkWiKFbcI9YuBTET5P",
-                        'accessTokenKey' =>$accessTokenValue,
-                        'refreshTokenKey' => $refreshTokenValue,
-                        'QBORealmID' => "9130346851582276",
-                        'baseUrl' => "Production"
-           ));
-
-
-
+            $dataService = $this->getTokenWihtoutGST();
         }
         else{
-         //   $dataService = $this->getToken();
-              $clientid = "ABpdVkDFhsmsp1KNFoDuYhgAATppzXoDlw9FFa7nE2PG9hmQZv";
-           $secret ="3lnaubZB1MIo69RmH6geLezsPJM9aD99I8HsahXK";
-           $ref ="AB115750319279KiMMqa2rzR8Me7Y3Frp7fH2nSPM2UO9VZ82O";
-           $oauth2LoginHelper = new OAuth2LoginHelper($clientid,$secret);
-           $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($ref);
-           $accessTokenValue = $accessTokenObj->getAccessToken();
-           $refreshTokenValue = $accessTokenObj->getRefreshToken();
-           $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-                        'auth_mode' => 'oauth2',
-                        'ClientID' => "Q0fXL014zAv3wzmlhwXMEHTrKepfAshCRjztEu58ZokzCD5T7D",
-                        'ClientSecret' => "stfnZfuSZUDay6cJSWtvQ9HkWiKFbcI9YuBTET5P",
-                        'accessTokenKey' =>$accessTokenValue,
-                        'refreshTokenKey' => $refreshTokenValue,
-                        'QBORealmID' => "9130346851577266",
-                        'baseUrl' => "Production"
-           ));
+            $dataService = $this->getToken();
         }
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
@@ -1286,7 +1251,7 @@ class DeliveryChallanController extends Controller {
             } 
             //print_R($line);
             $customer_details = $dataService->Query("select * from Customer");
-            print "his";
+            print "hi";
             print_R($customer_details);
            /*
             $theResourceObj = Invoice::create([
