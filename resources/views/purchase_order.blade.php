@@ -21,14 +21,17 @@
                 }
                 ?>
                 
-                
+               
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Purchase Orders</span></li>
                 </ol>
-                <h1 class="pull-left">Purchase Orders</h1>
-                <div class="search_form_wrapper orders_search_wrapper">
-                    <form class="search_form" method="GET" action="{{URL::action('PurchaseOrderController@index')}}">
+                <div class="col-lg-6">
+                    <h1 class="pull-left">Purchase Orders</h1>
+                </div>
+                <div class="col-lg-6">
+               
+                <form class="search_form" method="GET" action="{{URL::action('PurchaseOrderController@index')}}">
                         <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                         if (Input::get('export_from_date') != "") {
                             echo "value='" . Input::get('export_from_date') . "'";
@@ -50,6 +53,7 @@
                         @endif
                         <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                     </form>
+
                     <form class="pull-left" method="POST" action="{{URL::action('PurchaseOrderController@exportPurchaseOrderBasedOnStatus')}}">
                         <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="export_from_date" id="export_from_date" <?php
@@ -73,7 +77,10 @@
                         @endif
                         <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right">
                     </form>
-                </div>
+            </div>
+                <!-- <div class="search_form_wrapper orders_search_wrapper">
+                   
+                </div> -->
 
                 <div class="filter-block">                   
                     <div class="pull-right top-page-ui">
