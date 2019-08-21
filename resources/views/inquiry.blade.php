@@ -123,10 +123,9 @@
                                 <tbody>
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
                                     @foreach($inquiries as $inquiry)
-
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                      <td class="text-center">{{$i++}}</td>
-                                      <td class="text-center"><?php print_r($inquiry['customer']->tally_name);?>{{$inquiry['customer_id']}} </td>
+                                      <td class="text-center">{{$inquiry['customer_id']}} </td>
                                       <td class="text-center">{{$inquiry['id']}}</td>
                                        <td class="text-center">{{$inquiry['id']}}</td>
                                         <td class="text-center">{{$inquiry['id']}}</td>
