@@ -278,9 +278,7 @@
                                                 </div>
                                             </td>
                                           </tr>
-                                        <?php } }}Session::put('input_data', '');
-                                          }
-                                        else {
+                                        <?php } else {
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
                                          <td class="col-md-2">
@@ -343,6 +341,15 @@
                                                     <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
                                                 </div>
                                             </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group col-md-6">
+                                                    <!--                                                            form for save product value-->
+                                                    <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="GST Percentage">
+                                                </div>
+                                                <div class="form-group col-md-6 difference_form">
+                                                    <!--<input class="btn btn-primary" type="button" class="form-control" value="save" >-->
+                                                </div>
+                                            </td>
                                              <td class="col-md-1">
                                                 <div class="form-group">
                                                     <?php $j = 1; ?>
@@ -366,7 +373,10 @@
                                             </td>
                                          </tr>
                                           <?php }
-
+                                           }}} Session::put('input_data', '');
+                                           } else{
+                                               gg
+                                           }
 
                                           ?>
                                           </tbody>
