@@ -531,7 +531,7 @@
                 
                 <div class="form-group">
                 <?php if(!empty($delivery)){ 
-                      print_R($delivery);
+                      print_R($delivery->del_supervisor);
         ?>
                 <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}"
                 data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
