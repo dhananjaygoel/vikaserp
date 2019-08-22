@@ -129,6 +129,7 @@
                                           <td class="text-center">{{$i++}}</td>
                                            <td class="text-center">{{$i++}}</td> 
                                            <td class="text-center">{{$i++}}</td>
+                                           <td class="text-center">{{$i++}}</td>
                                         <td class="text-center"> @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
 <!--                                                <span class="fa-stack">
