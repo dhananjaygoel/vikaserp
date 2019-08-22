@@ -110,7 +110,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th class="text-center">Tally Name</th>
-                                       <!-->  <th class="text-center">Product Name</th>-->
+                                       
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
