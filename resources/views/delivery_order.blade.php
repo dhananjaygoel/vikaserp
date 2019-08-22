@@ -541,7 +541,7 @@
                  <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
                                                 
                 </div>
-                <?php }}?>
+                <?php }?>
                 <div class="form-group">
                     <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
 
