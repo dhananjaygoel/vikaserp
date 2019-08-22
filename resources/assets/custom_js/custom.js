@@ -93,6 +93,8 @@ $(".btn_save_truck").click(function () {
  });
   $(".assign_order").click(function () {
 	  var deliverid = $(this).data('delivery_id');
+	   var supervisor_id = $(this).data('supervisor_id');
+	    $(".del_supervisor").val(supervisor_id);
 	  $(".modal-body #delivery_id").val( deliverid );
   });
  $(".assign_load").click(function () {
