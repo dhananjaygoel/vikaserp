@@ -208,7 +208,7 @@ class CommonController extends Controller {
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
             /* end code */
-            return redirect('customers')->with('success', 'Customer Succesfully added');
+            return redirect('customers')->with('success', 'Customer Successfully added');
         } else {
             return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
         }
@@ -246,7 +246,7 @@ class CommonController extends Controller {
         }
         $ProductSubCategory->save();
         } //  end foreach
-        return redirect('customers')->with('success', 'Customer Succesfully added');
+        return redirect('customers')->with('success', 'Customer Successfully added');
     }   
     public function customer_update() {
         
