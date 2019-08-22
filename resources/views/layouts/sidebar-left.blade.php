@@ -213,7 +213,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 )
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 4 )
 
                             <li class="{{ (Request::is('*delivery_challan*') ? 'active' : '') }}">
                                 <a href="{{url('delivery_challan')}}">
@@ -222,7 +222,7 @@
                             </li>
 
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 3)
+                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 )
                             <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
                                 <a href="{{url('pending_delivery_order')}}">
                                     Pending Delivery Order Report
