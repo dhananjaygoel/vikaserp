@@ -156,7 +156,7 @@
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
-                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight(Kg):</span>
+                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$label}}(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
