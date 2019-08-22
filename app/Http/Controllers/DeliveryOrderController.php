@@ -1135,7 +1135,8 @@ class DeliveryOrderController extends Controller {
          
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+         return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+         //return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
       }
 
 
