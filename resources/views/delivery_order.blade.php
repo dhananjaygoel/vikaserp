@@ -233,7 +233,10 @@
                                            
                                            
                                            @if(Auth::user()->role_id == 2 )      
-                                            <button class="btn btn-primary assign_order" id="assign_order"  data-toggle="modal" data-target="#myModalsupassign"title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" ><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                            <button class="btn btn-primary assign_order" id="assign_order"  data-order_id="{{$delivery->order_id}}" 
+                                            data-role_id ="{{Auth::user()->role_id}}"
+                                           data-delivery_id="{{$delivery->id}}" 
+                                           data-toggle="modal" data-target="#myModalsupassign"title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" ><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
                                            @endif                              
                                                 <?php
 
@@ -530,8 +533,8 @@
                 <?php if(!empty($delivery)){ 
         
         ?>
-                <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}" data-supervisor_id="{{$delivery->del_supervisor}}"
-                 data-delivery_boy="{{$delivery->del_boy}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
+                <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}"
+                data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
                                                         @foreach($options as $optkey =>$user)
                                                               <option value = {{$optkey }}>{{$user}}</option>  
                                                         @endforeach

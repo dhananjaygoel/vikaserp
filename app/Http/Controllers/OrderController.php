@@ -95,6 +95,19 @@ class OrderController extends Controller {
             echo "failed";
         }
     }
+     public function order_assign(Request $request){
+        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
+                     ->first();
+        if(is_null($delivery_data->del_supervisor)){
+            $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+                 'del_supervisor'=>$request->del_supervisor,            
+              ]);      
+              echo "success";
+          }
+          else{
+               echo "failed";
+          }
+     }
    public function loaded_assign(Request $request){
         $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
                      ->first();

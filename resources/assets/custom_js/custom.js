@@ -3250,6 +3250,50 @@ function loaded_truck(order_id) {
 
     }
 }
+function order_assign(){
+    var delivery_id = $("#delivery_id").val();
+    var del_supervisor =$("#del_supervisor").val(); 
+    var token = $('#_token').val();
+    if(del_supervisor){
+        
+         $.ajax({
+                type: 'POST',
+                url: url + '/order_assign',
+                data: {
+                    delivery_id:delivery_id,
+                    del_supervisor:del_supervisor,
+                    _token: token
+                },
+                success: function (data) {
+                    // alert(data);
+                    
+                    if(data=='success'){
+                        $("#final-submit").prop('disabled',false);
+                        $(".err-p").removeClass('text-danger').addClass('text-success').html('Order assigned.');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
+                        window.location.reload();
+                    }
+                    else{
+                        // $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Already Assigned');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
+                    }
+                }
+            });
+    }
+    else{
+            $(".err-p").removeClass('text-success').addClass('text-danger').html('Please Select anyone');
+            setTimeout(function(){
+                $(".err-p").html('');
+            }, 5000);
+    }
+}
+
+
 function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();
