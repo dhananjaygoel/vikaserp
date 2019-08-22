@@ -125,12 +125,74 @@
                                     @foreach($inquiries as $inquiry)
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
-                                         <td class="text-center">{{$inquiry->customer_id}}</td>
-                                          <td class="text-center">{{$inquiry->id}}</td>
-                                           <td class="text-center">{{$inquiry->id}}</td> 
-                                           <td class="text-center">{{$inquiry->delivery_location_id}}</td>
-                                          
-                                        <td class="text-center"> @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
+                                        <td class="text-center">
+                                            {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
+                                        </td>
+
+                                        <?php $qty = 0; ?>
+                                        @foreach($inquiry['inquiry_products'] as $prod)
+                                        @if($prod['unit']->unit_name == 'KG')
+                                        <?php
+                                        $qty += $prod->quantity;
+                                        ?>
+                                        @endif
+
+                                        @if($prod['unit']->unit_name == 'Pieces')
+                                        <?php
+                                        $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                        ?>
+                                        @endif
+
+                                        @if($prod['unit']->unit_name == 'Meter')
+                                        <?php
+                                        $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
+                                        ?>
+                                        @endif
+
+                                            @if($prod['unit']->unit_name == 'ft')
+                                                <?php
+                                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                                ?>
+                                            @endif
+
+                                            @if($prod['unit']->unit_name == 'mt')
+                                                <?php
+                                                $qty += $prod->quantity * ($prod['inquiry_product_details']->weight / 305);
+                                                ?>
+                                            @endif
+                                        @endforeach
+
+                                        <td class="text-center">{{ round($qty, 2) }}</td>
+                                        <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
+                                        @if($inquiry['delivery_location']['area_name'] !="")
+                                        <td class="text-center">{{$inquiry['delivery_location']['area_name']}}</td>
+                                        @elseif($inquiry['delivery_location']['area_name'] =="")
+                                        <td class="text-center">{{$inquiry['other_location']}}</td>
+                                        @endif
+                                        @if($inquiry->inquiry_status != 'completed')
+                                         @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
+                                        <td class="text-center">
+                                           
+                                            @if($inquiry->is_approved=='no')
+                                            <a href="javascript:void(0)" class="table-link" title="Need Admin Approval">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            @else
+                                            <a title="Place Order" href="{{ url('place_order/'. $inquiry['id']) }}" class="table-link">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a> 
+                                            @endif
+                                           
+                                        </td>
+                                         @endif
+                                        @endif
+                                        <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
 <!--                                                <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -166,8 +228,7 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @endif
-                                            @endif 
+                                            @endif                                                                                   @endif 
                                         </td>
                                     </tr>
 
