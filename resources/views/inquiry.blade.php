@@ -128,8 +128,8 @@
                                          <td class="text-center">{{$inquiry->customer_id}}</td>
                                           <td class="text-center">{{$inquiry->id}}</td>
                                            <td class="text-center">{{$inquiry->id}}</td> 
-                                           <td class="text-center">{{$inquiry->id}}</td>
                                            <td class="text-center">{{$inquiry->delivery_location_id}}</td>
+                                          
                                         <td class="text-center"> @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
                                             <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
 <!--                                                <span class="fa-stack">
