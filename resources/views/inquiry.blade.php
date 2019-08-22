@@ -110,7 +110,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th class="text-center">Tally Name</th>
-                                         <th class="text-center">Product Name</th>
+                                       <!-->  <th class="text-center">Product Name</th>-->
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
@@ -129,7 +129,7 @@
                                         <td class="text-center">
                                             {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
                                         </td>
-                                        <td><?php print_R($inquiry['product_sub_category']);?></td>
+                                       
                                         <?php $qty = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
                                         @if($prod['unit']->unit_name == 'KG')
