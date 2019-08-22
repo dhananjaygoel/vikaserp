@@ -297,7 +297,7 @@
                                                         </a>
                                                     @endif
 
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0   || Auth::user()->role_id == 8  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4)
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4)
                                                 <span class="table-link normal_cursor" title="edit" >
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
