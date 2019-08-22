@@ -513,7 +513,7 @@
                 <?php $dduser = auth()->user();
                        $roleid = $dduser->role_id;
                 
-                      if($roleid ==2) {
+                      if($roleid ==2 || $roleid ==0) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
                            $array = \App\User::where('role_id',8)
@@ -535,6 +535,7 @@
         ?>
                 <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}"
                 data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
+                                                        
                                                         @foreach($options as $optkey =>$user)
                                                               <?php if($optkey ==$delivery->del_supervisor){
                                                                            $class ='selected="selected"';
