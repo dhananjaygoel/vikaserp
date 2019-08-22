@@ -91,6 +91,10 @@ $(".btn_save_truck").click(function () {
     });*/
 });
  });
+  $(".assign_order").click(function () {
+	  var deliverid = $(this).data('delivery_id');
+	  $(".modal-body #delivery_id").val( deliverid );
+  });
  $(".assign_load").click(function () {
      
      var deliverid = $(this).data('delivery_id');
@@ -3251,8 +3255,7 @@ function loaded_truck(order_id) {
     }
 }
 function order_assign(){
-    var delivery_id = $(this).attr('data-delivery_id');
-    console.log(delivery_id);
+    var delivery_id = $("#delivery_id").val();
     var del_supervisor =$("#del_supervisor").val(); 
     var token = $('#_token').val();
     if(del_supervisor){
