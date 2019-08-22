@@ -547,7 +547,7 @@
                                                         @endforeach
                                                         @endif
                    </select>
-                <input type ="hidden" name ="assign_type" id="assign_type" value = "{{$type}}">
+                
                  <input type ="hidden" name ="delivery_id" id="delivery_id" value ="{{$delivery->id}}">
                  <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
                                                 
