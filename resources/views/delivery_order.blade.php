@@ -216,7 +216,7 @@
                                                   //    $disable = "";
                                                   // }
                                             ?>    
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8   || Auth::user()->role_id ==2  )
+                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8   )
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                             data-role_id ={{Auth::user()->role_id}}
                                            data-delivery_id="{{$delivery->id}}" 
@@ -229,8 +229,17 @@
                                        data-toggle="modal" data-target="#myModalassign" 
                                        title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
                                       
-                                           @endif                                       
+                                           @endif   
+                                           
+                                           
+                                           @if(Auth::user()->role_id == 2 )      
+                                            <button class="btn btn-primary assign_order" id="assign_order"  data-order_id="{{$delivery->order_id}}" 
+                                            data-role_id ="{{Auth::user()->role_id}}"
+                                           data-delivery_id="{{$delivery->id}}" 
+                                           data-toggle="modal" data-target="#myModalsupassign"title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" ><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                           @endif                              
                                                 <?php
+
                                                   // $disable = "disabled";
                                                   // if($delivery->order_details['del_boy'] OR $delivery->order_details['del_supervisor'])
                                                   // {
@@ -486,6 +495,77 @@
 
     </div>
 </div>
+
+
+
+<div class="modal fade" id="myModalsupassign" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Assign  </h4>
+            </div>
+            <div class="modal-body">
+                <p class="err-p text-center" style="font-weight: bold"></p>
+                <input type="hidden"  name="order_id" id="order_id" class="form-control">
+                <?php $dduser = auth()->user();
+                       $roleid = $dduser->role_id;
+                
+                      if($roleid ==2 || $roleid ==0) {
+                          $type = "del_supervisor";
+                           $options =array(''=>'Select Supervisor');
+                           $array = \App\User::where('role_id',8)
+                                       ->orderBy('id', 'DESC')
+                                       ->get();
+                           ?>
+                            @foreach($array as $user)<?php 
+                               $options[$user->id] = $user->first_name.' '.$user->last_name;
+                              ?>
+                            @endforeach
+                        <?php
+                      }
+                      
+                    ?>
+                
+                <div class="form-group">
+                <?php if(!empty($delivery)){ 
+                      
+        ?>
+                <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}"
+                data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
+                                                        @if($roleid ==2 || $roleid ==0) {
+                                                        @foreach($options as $optkey =>$user)
+                                                              <?php if($optkey ==$delivery->del_supervisor){
+                                                                           $class ='selected="selected"';
+                                                                  }
+                                                                  else{
+                                                                      $class ="";
+                                                                  }?>
+                                                              <option {{ $class }} value = {{$optkey }}>{{$user}}</option>  
+                                                        @endforeach
+                                                        @endif
+                   </select>
+                
+                 <input type ="hidden" name ="delivery_id" id="delivery_id" value ="{{$delivery->id}}">
+                 <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
+                                                
+                </div>
+                <?php }?>
+                <div class="form-group">
+                    <input type="button" value="Save" id="submit_2" onclick="order_assign()" class="btn btn-sm btn-primary">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 <div class="modal fade" id="myModalassign" role="dialog">
     <div class="modal-dialog">
 
