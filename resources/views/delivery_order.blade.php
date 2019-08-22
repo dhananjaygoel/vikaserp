@@ -531,12 +531,18 @@
                 
                 <div class="form-group">
                 <?php if(!empty($delivery)){ 
-                      print_R($delivery->del_supervisor);
+                      
         ?>
                 <select  class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"  data-role_id="{{$roleid}}"
                 data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
                                                         @foreach($options as $optkey =>$user)
-                                                              <option value = {{$optkey }}>{{$user}}</option>  
+                                                              <?php if($optkey ==$delivery->del_supervisor){
+                                                                           $class ='selected="selected"';
+                                                                  }
+                                                                  else{
+                                                                      $class ="";
+                                                                  }?>
+                                                              <option {{ $class }} value = {{$optkey }}>{{$user}}</option>  
                                                         @endforeach
                    </select>
                 <input type ="hidden" name ="assign_type" id="assign_type" value = "{{$type}}">
