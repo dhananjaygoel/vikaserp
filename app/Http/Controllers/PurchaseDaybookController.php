@@ -159,6 +159,18 @@ class PurchaseDaybookController extends Controller {
         }
     }
 
+    public function destroy_estimate($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        if (Hash::check(Input::get('password'), Auth::user()->password)) {
+            $delete_purchase_challan = PurchaseChallan::find($id)->delete();
+            return redirect('purchase_estimate')->with('success', 'purchase day book details successfully deleted.');
+        } else {
+            return redirect('purchase_estimate')->with('error', 'Please enter a correct password');
+        }
+    }
+
     /*
      * Export/download purchase day book data into excel file
      *

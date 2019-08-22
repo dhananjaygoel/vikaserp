@@ -75,7 +75,7 @@
 
                                 @if(sizeof($purchase_daybook) != 0)
                                     <div class="table-responsive">
-                                        <form action="{{url('delete_all_daybook')}}" method="POST">
+                                        <form action="{{url('delete_all_daybook_estimate')}}" method="POST">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                             <table id="table-example" class="table table-hover">
                                                 <thead>
@@ -198,7 +198,7 @@
                                                         </td>
                                                         @if(Auth::user()->role_id == 0)
                                                             <td>
-                                                                <a href="#" class="table-link danger delete-purchase-order-daybook" data-toggle="modal" data-target="#delete-purchase-order-daybook" data-url='{{url('purchase_order_daybook',$daybook->id)}}'>
+                                                                <a href="#" class="table-link danger delete-purchase-order-daybook" data-toggle="modal" data-el="Abhay" data-target="#delete-purchase-order-daybook" data-url='{{url('purchase_order_daybook_estimate',$daybook->id)}}'>
                                                                     <span class="fa-stack">
                                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
