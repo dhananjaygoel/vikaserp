@@ -135,10 +135,10 @@
               <?php
               //print_R($info->customer->owner_name);
                             if($key ==0){
-                                $label = "1";
+                                $labelkey = "1";
                             }
                             else{
-                                $label = $key+1;
+                                $labelkey = $key+1;
                             }
              if(!empty($truckvalue[$info->del_boy])){
                 $tvalue = $truckvalue[$info->del_boy];
@@ -156,7 +156,7 @@
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
-                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$label}}(Kg):</span>
+                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
