@@ -3252,7 +3252,7 @@ function loaded_truck(order_id) {
 }
 function order_assign(){
     var delivery_id = $(this).attr('data-delivery_id');
-    consol.log(delivery_id);
+    console.log(delivery_id);
     var del_supervisor =$("#del_supervisor").val(); 
     var token = $('#_token').val();
     if(del_supervisor){
