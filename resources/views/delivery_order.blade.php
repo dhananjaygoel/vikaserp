@@ -546,7 +546,7 @@
                 </div>
                 <?php }?>
                 <div class="form-group">
-                    <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
+                    <input type="button" value="Save" id="submit_2" onclick="order_assign()" class="btn btn-sm btn-primary">
 
                 </div>
 
