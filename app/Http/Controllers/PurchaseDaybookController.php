@@ -142,6 +142,29 @@ class PurchaseDaybookController extends Controller {
         }
     }
 
+     public function delete_all_daybook_estimate() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        $id = Input::all();
+
+        if (Hash::check(Input::get('delete_all_password'), Auth::user()->password)) {
+            if (isset($id['daybook'])) {
+                foreach ($id['daybook'] as $key) {
+
+                    PurchaseChallan::find($key)->delete();
+                }
+
+                return redirect('purchase_estimate')->with('success', 'purchase estimate details successfully deleted.');
+            } else {
+                return redirect('purchase_estimate')->with('error', 'Please select at least on record to delete');
+            }
+        } else {
+
+            return redirect('purchase_estimate')->with('error', 'Please enter a correct password');
+        }
+    }
+
     /*
      * Delete particular purchase day book
      *
@@ -165,7 +188,7 @@ class PurchaseDaybookController extends Controller {
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();
-            return redirect('purchase_estimate')->with('success', 'purchase day book details successfully deleted.');
+            return redirect('purchase_estimate')->with('success', 'purchase estimate details successfully deleted.');
         } else {
             return redirect('purchase_estimate')->with('error', 'Please enter a correct password');
         }
