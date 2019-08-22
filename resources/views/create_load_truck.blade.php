@@ -94,7 +94,7 @@
                             @if(isset($delivery_data->empty_truck_weight))
                             @if($delivery_data->empty_truck_weight > 0)
                             
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight"onkeypress=" return numbersOnly(this, event, false, false);">
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight"onkeypress=" return numbersOnly(this, event, false, false);"style="width: 10.33%;" maxlength="10" >
                             @else
                             <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
                             @endif
