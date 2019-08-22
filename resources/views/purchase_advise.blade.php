@@ -68,9 +68,9 @@
                                  @elseif(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                                 <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
                                 @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='in_process')
-                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                <input type="hidden" name="purchaseaAdviseFilter" value="In_process">
                                 @else
-                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                <input type="hidden" name="purchaseaAdviseFilter" value="In_process">
                                 @endif
                                 <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                             </form>
@@ -91,9 +91,9 @@
                                 @elseif(isset($qstring_sort_type_order) && $qstring_sort_type_order =='delivered' )
                                 <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
                                 @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='in_process')
-                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                <input type="hidden" name="purchaseaAdviseFilter" value="In_process">
                                 @else
-                                <input type="hidden" name="purchaseaAdviseFilter" value="Inprocess">
+                                <input type="hidden" name="purchaseaAdviseFilter" value="In_process">
                                 @endif
                                 <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
                             </form>
