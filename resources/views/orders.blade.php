@@ -360,7 +360,7 @@
                                         <td class="text">{{Other}}</td>
 
                                         @endif
-                                        <?php print_R($order["relations"]['all_order_products'][0]['relations']); ?>
+                                        <?php print_R($order["relations"]['all_order_products'][0]['relations']['product_sub_category']->alias_name); ?>
                                        
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
