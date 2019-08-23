@@ -110,10 +110,11 @@
                                     <tr>
                                         <th>#</th>
                                         <th class="text-center">Tally Name</th>
-                                       
+                                        <th class="text-center">ALIAS NAME  </th>
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
+                                       
                                         @if((Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == ''))
                                         <th class="text-center">Place Order</th>
 
@@ -135,39 +136,44 @@
                                             {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
                                         </td>
                                        
-                                        <?php $qty = 0; ?>
+                                        <?php $qty = 0; $alias = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
                                         @if($prod['unit']->unit_name == 'KG')
                                         <?php
                                         $qty += $prod->quantity;
+                                        $alias = $prod['inquiry_product_details']->alias_name;
                                         ?>
                                         @endif
 
                                         @if($prod['unit']->unit_name == 'Pieces')
                                         <?php
                                         $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                         $alias = $prod['inquiry_product_details']->alias_name;
                                         ?>
                                         @endif
 
                                         @if($prod['unit']->unit_name == 'Meter')
                                         <?php
                                         $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
+                                         $alias = $prod['inquiry_product_details']->alias_name;
                                         ?>
                                         @endif
 
                                             @if($prod['unit']->unit_name == 'ft')
                                                 <?php
                                                 $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                                 $alias = $prod['inquiry_product_details']->alias_name;
                                                 ?>
                                             @endif
 
                                             @if($prod['unit']->unit_name == 'mt')
                                                 <?php
                                                 $qty += $prod->quantity * ($prod['inquiry_product_details']->weight / 305);
+                                                 $alias = $prod['inquiry_product_details']->alias_name;
                                                 ?>
                                             @endif
                                         @endforeach
-
+                                        <td class="text-center">{{ alias }}</td>
                                         <td class="text-center">{{ round($qty, 2) }}</td>
                                         <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
                                         @if($inquiry['delivery_location']['area_name'] !="")
