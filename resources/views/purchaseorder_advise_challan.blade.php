@@ -44,6 +44,7 @@
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                     <input type="hidden" name="purchase_advice_id" value="{{$purchase_advise->id}}"/>
+                   
                     <input type="hidden" name="purchase_order_id" value="{{$purchase_advise->purchase_order_id}}"/>
                     <input type="hidden" name="delivery_location_id" value="{{$purchase_advise->delivery_location_id}}"/>
 
@@ -104,6 +105,7 @@
                                 <tr id="add_row_{{$key}}" class="add_product_row">
                             <input type="hidden" name="product[{{$key}}][purchase_advice_id]" value="{{$purchase_advise->id}}"/>
                             <input type="hidden" name="product[{{$key}}][id]" value="{{$products->id}}"/>
+                             <input type="hidden" name="product[{{$key}}][actual_pieces]" value="{{$products->actual_pieces}}"/>   
                             <input type="hidden" name="product[{{$key}}][order_type]" value="purchase_advice"/>
                             <td>
                                 <div class="form-group">
