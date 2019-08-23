@@ -128,7 +128,7 @@
 
                                 
                                     @foreach($inquiries as $inquiry)
-                                    <?php print_r($inquiry['inquiry_products'][0]['inquiry_product_details']);?>
+                                    <?php print_r($inquiry['inquiry_products']['inquiry_product_details']);?>
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
