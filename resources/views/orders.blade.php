@@ -267,7 +267,6 @@
                                         @endif
                                         <th>#</th>
                                         <th>Tally Name</th>
-                                        <th>Alias Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
