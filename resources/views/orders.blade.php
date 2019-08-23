@@ -267,6 +267,7 @@
                                         @endif
                                         <th>#</th>
                                         <th>Tally Name</th>
+                                        <th>Alias Name</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
@@ -283,7 +284,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tally Name</th>
+                                        <th>Tally Name</th><th>Alias Name</th>
                                         <th>Mobile</th>
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
@@ -297,7 +298,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tally Name</th>
+                                        <th>Tally Name</th><th>Alias Name</th>
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
@@ -313,7 +314,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tally Name</th>
+                                        <th>Tally Name</th><th>Alias Name</th>
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>
@@ -358,6 +359,8 @@
                                         <td class="text">{{Other}}</td>
 
                                         @endif
+                                        <?php print_R($order); ?>
+                                        <td>hh</td>
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
                                         @if( Auth::user()->role_id <> 5)
