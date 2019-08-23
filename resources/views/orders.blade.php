@@ -344,6 +344,7 @@
                                             {{"Anonymous User"}}
                                             @endif
                                         </td>
+                                         <td>hh</td>
                                         <td>
                                             @if(isset($order["customer"]))
                                             {{$order['customer']['phone_number1']}}
@@ -359,8 +360,8 @@
                                         <td class="text">{{Other}}</td>
 
                                         @endif
-                                        <?php print_R($order["allorders"]); ?>
-                                        <td>hh</td>
+                                        <?php print_R($order["relations:protected"]); ?>
+                                       
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
                                         @if( Auth::user()->role_id <> 5)
