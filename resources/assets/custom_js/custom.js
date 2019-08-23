@@ -559,7 +559,10 @@ function update_price(product_id) {
         url: url + '/update_price',
         data: {price: price, product_id: product_id, _token: token},
     }).done(function (data) {
-        $('.alert-success1').show();
+            $('.alert-success1').show();
+        setTimeout(function(){ 
+            $('.alert-success1').hide();
+        }, 2000);
     });
 }
 
