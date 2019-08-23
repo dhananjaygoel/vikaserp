@@ -247,7 +247,7 @@
                                                 </div>
                                             </td> 
                                             <td>
-                                                <input type="button" value="Save" id="btn_save_truck" onclick="loaded_truck_delboy()" class="btn btn-sm btn-primary">
+                                                <input type="submit" value="Save" id="btn_save_truck"  class="btn btn-sm btn-primary">
                                             </td>
 
                                             <td class="col-md-1 sfdsf">
