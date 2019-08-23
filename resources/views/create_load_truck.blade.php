@@ -93,8 +93,8 @@
                             <span class="col-md-2">Empty Truck Weight(Kg):</span> 
                             @if(isset($delivery_data->empty_truck_weight))
                             @if($delivery_data->empty_truck_weight > 0)
-                            {{ $delivery_data->empty_truck_weight}}
-                            <input type="hidden" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight">
+                            
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight"onkeypress=" return numbersOnly(this, event, false, false);"style="width: 10.33%;" maxlength="10" >
                             @else
                             <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
                             @endif
@@ -135,10 +135,10 @@
               <?php
               //print_R($info->customer->owner_name);
                             if($key ==0){
-                                $label = "1";
+                                $labelkey = "1";
                             }
                             else{
-                                $label = $key+1;
+                                $labelkey = $key+1;
                             }
              if(!empty($truckvalue[$info->del_boy])){
                 $tvalue = $truckvalue[$info->del_boy];
@@ -156,7 +156,7 @@
               $label =" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
-                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight(Kg):</span>
+                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
