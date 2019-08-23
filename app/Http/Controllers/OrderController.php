@@ -112,7 +112,7 @@ class OrderController extends Controller {
         $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
                      ->first();
         $roleid = Auth::user()->role_id;
-        if($roleid ==0){
+        if($roleid ==0 || $role_id == 3){
           if(is_null($delivery_data->del_supervisor)){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                  'del_supervisor'=>$request->del_supervisor,            

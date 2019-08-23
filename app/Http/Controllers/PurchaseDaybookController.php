@@ -363,13 +363,27 @@ class PurchaseDaybookController extends Controller {
      */
 
     public function print_purchase_daybook() {
-
+        $v= 'P';
+        $title='Purchase Daybook';
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
+                 ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-        return view('print_purchase_order_daybook', compact('purchase_daybook'));
+        return view('print_purchase_order_daybook', compact('purchase_daybook','title'));
+    }
+
+    public function print_purchase_estimate() {
+        $v= 'A';
+         $title='Purchase Estimate';
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
+                ->where('order_status', 'completed')
+                 ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+        return view('print_purchase_order_daybook', compact('purchase_daybook','title'));
     }
 
 }

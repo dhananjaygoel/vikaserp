@@ -103,11 +103,11 @@ $(".btn_save_truck").click(function () {
      var supervisor_id = $(this).data('supervisor_id');
      var delboy_id = $(this).data('delivery_boy');
      var roleid = $(this).data('role_id');
-     console.log(supervisor_id);
+     
      $(".modal-body #delivery_id").val( deliverid );
      if(roleid ==0){
         
-            $(".del_supervisor").val(supervisor_id);
+           $(".del_supervisor").val(supervisor_id);
          
         //$(".del_supervisor").val(supervisor_id);
      }
@@ -3303,8 +3303,8 @@ function order_assign(){
 function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();
-    var del_supervisor =$("#del_supervisor").val(); 
-    console.log(del_supervisor);
+    var del_supervisor =$(".modal-body #del_supervisor").val(); 
+  
     var token = $('#_token').val();
     if(del_supervisor){
         

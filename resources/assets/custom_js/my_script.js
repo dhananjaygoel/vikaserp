@@ -1042,6 +1042,24 @@ $('.print_purchase_daybook').click(function () {
         }
     });
 });
+
+$('.print_purchase_estimate').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    $.ajax({
+        type: "GET",
+        url: base_url + '/print_purchase_estimate',
+        success: function (data) {
+            var printWindow = window.open('', '');
+            printWindow.document.write(data);
+            printWindow.print();
+            printWindow.close();
+            printWindow.onunload = function () {
+                location.reload();
+            };
+            location.reload();
+        }
+    });
+});
 /*
  | RESTRICT REDIRECT ON HALF FILLED FORM STARTS
  */

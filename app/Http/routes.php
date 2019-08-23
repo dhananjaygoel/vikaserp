@@ -339,6 +339,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('delete_all_daybook_estimate', 'PurchaseDaybookController@delete_all_daybook_estimate');
     Route::post('export_purchasedaybook', 'PurchaseDaybookController@expert_purchase_daybook');
     Route::get('print_purchase_daybook', 'PurchaseDaybookController@print_purchase_daybook');
+    Route::get('print_purchase_estimate', 'PurchaseDaybookController@print_purchase_estimate');
+
     Route::get('change_password', 'PasswordController@getPassword');
     Route::post('change_password', 'PasswordController@postPassword');
     Route::post('inquiry/delete', 'InquiryController@destroy');
