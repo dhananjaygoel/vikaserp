@@ -360,7 +360,7 @@
                                         <td class="text">{{Other}}</td>
 
                                         @endif
-                                        <?php print_R($order["relations:protected"]); ?>
+                                        <?php print_R($order["relations"]); ?>
                                        
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
