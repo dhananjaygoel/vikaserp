@@ -109,7 +109,7 @@ class OrderController extends Controller {
           }
      }
    public function loaded_assign(Request $request){
-        /*$delivery_data = DeliveryOrder::where('id',$request->delivery_id)
+        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
                      ->first();
         $roleid = Auth::user()->role_id;
         if($roleid ==0 || $role_id == 2){
@@ -119,7 +119,11 @@ class OrderController extends Controller {
               ]);      
               echo "success";
           }
+          else{
+               echo "failed";
+          }
         }
+        /*
         elseif($roleid ==8){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                 'del_boy'=>$request->del_supervisor,            
@@ -147,7 +151,13 @@ class OrderController extends Controller {
         }
         
         */
-        echo "success";
+
+
+
+
+
+
+        
         
         
     }
