@@ -344,7 +344,7 @@
                                             {{"Anonymous User"}}
                                             @endif
                                         </td>
-                                         <td><?php echo $order["relations"]['all_order_products'][0]['relations']['product_sub_category']->alias_name; ?></td>
+                                         <td><?php echo $order["relations"]['all_order_products'][1]['relations']['product_sub_category']->alias_name; ?></td>
                                         <td>
                                             @if(isset($order["customer"]))
                                             {{$order['customer']['phone_number1']}}
