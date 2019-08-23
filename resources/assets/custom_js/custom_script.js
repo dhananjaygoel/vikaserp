@@ -533,9 +533,9 @@ function save_price_inquiry_view(id, inq_id) {
             url: baseurl + '/store_price',
             data: {id: id, _token: _token, updated_price: updated_price}
         }).done(function () {
-            var html_svbtn = '<span type="button" class="btn btn-default normal_cursor" >Save</span>';
-            $("#save_btn_" + id).html(html_svbtn);
-            $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
+            // var html_svbtn = '<span type="button" class="btn btn-default normal_cursor" >Save</span>';
+            // $("#save_btn_" + id).html(html_svbtn);
+            // $("#save_price_inquiry_view_" + id).removeClass('btn-primary');
             var price_val = '' + updated_price;
             $("#price_" + id).html(price_val);
             $("#save_price_inquiry_view_" + id).addClass('btn-default');
