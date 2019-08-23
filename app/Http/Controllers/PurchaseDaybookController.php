@@ -208,14 +208,14 @@ class PurchaseDaybookController extends Controller {
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('serial_number','LIKE','%P%')
+                        ->where('serial_number','LIKE','%P')
                         ->where('updated_at', 'like', $date1 . '%')
                         ->orderBy('updated_at', 'desc')
                         ->get();
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('serial_number','LIKE','%P%')
+                        ->where('serial_number','LIKE','%P')
                         ->where('updated_at', '>=', $date1)
                         ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->orderBy('updated_at', 'desc')
