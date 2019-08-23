@@ -14,7 +14,7 @@
                         <div class="pull-right col-md-8">
                             @if(sizeof($purchase_daybook) > 0)
                                 <div class="col-md-1 pull-right">
-                                    <a class="btn btn-primary form_button_footer print_purchase_daybook" > Print </a>
+                                    <a class="btn btn-primary form_button_footer print_purchase_estimate" > Print </a>
                                 </div>
                             @endif
                             <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">

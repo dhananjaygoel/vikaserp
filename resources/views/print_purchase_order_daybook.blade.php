@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Purchase-Daybook</title>
+        <title><?php echo $title; ?></title>
         <meta charset="windows-1252">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -74,7 +74,7 @@
         </style>
         <div class="invoice">
             <div class="title">
-                Purchase Daybook
+                <?php echo $title; ?> 
             </div>
             <div class="divTable">
                 <div class="headRow">
