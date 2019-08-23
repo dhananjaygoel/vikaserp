@@ -215,10 +215,10 @@
                                                   // {
                                                   //    $disable = "";
                                                   // }
-                                                  echo Auth::user()->role_id;
+                                                  
                                             ?>  
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')  
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8  ||Auth::user()->role_id == 3 )
+                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8  ||Auth::user()->role_id == 2 )
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                             data-role_id ="{{Auth::user()->role_id}}"
                                            data-delivery_id="{{$delivery->id}}" 
@@ -517,7 +517,7 @@
                        
                 
                 if($roleid ==0 || $roleid ==8 || $roleid ==2){
-                    if($roleid ==0 || $roleid ==3) {
+                    if($roleid ==0 || $roleid ==2) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
                            $array = \App\User::where('role_id',8)
