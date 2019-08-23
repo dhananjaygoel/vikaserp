@@ -103,7 +103,7 @@ $(".btn_save_truck").click(function () {
      var supervisor_id = $(this).data('supervisor_id');
      var delboy_id = $(this).data('delivery_boy');
      var roleid = $(this).data('role_id');
-     //console.log(supervisor_id);
+     console.log(supervisor_id);
      $(".modal-body #delivery_id").val( deliverid );
      if(roleid ==0){
         
