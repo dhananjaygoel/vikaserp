@@ -3198,7 +3198,16 @@ function loaded_truck_delboy(){
     console.log("clicked");
     var datastring = $(".load_truck_data").serialize();
     console.log(datastring);
-    
+     $.ajax({
+                type: 'POST',
+                url: url + '/loaded_truck_delboy',
+                data: {
+                    data: datastring
+                },
+                success: function (data) {
+                    
+                }
+     });
 }
 
 function loaded_truck(order_id) {
