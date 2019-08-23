@@ -3202,11 +3202,16 @@ function loaded_truck_delboy(){
                 type: 'POST',
                 url: url + '/loaded_truck_delboy',
                 data: {
-                    data: datastring
+                    data: datastring,
+                     _token: token
                 },
                 success: function (data) {
-                    
+                    $(".err-p").removeClass('text-danger').addClass('text-success').html('Final truck weight updated successful');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
                 }
+               
      });
 }
 
