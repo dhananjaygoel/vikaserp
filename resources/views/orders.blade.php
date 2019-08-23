@@ -344,7 +344,7 @@
                                             {{"Anonymous User"}}
                                             @endif
                                         </td>
-                                         <td>hh</td>
+                                         <td><?php echo $order["relations"]['all_order_products'][0]['relations']['product_sub_category']->alias_name; ?></td>
                                         <td>
                                             @if(isset($order["customer"]))
                                             {{$order['customer']['phone_number1']}}
@@ -360,7 +360,7 @@
                                         <td class="text">{{Other}}</td>
 
                                         @endif
-                                        <?php print_R($order["relations"]['all_order_products'][0]['relations']['product_sub_category']->alias_name); ?>
+                                        
                                        
                                         <td>{{ round($order->total_quantity, 2) }}</td>
                                         <td>{{ round($order->pending_quantity, 2) }}</td>                                        
