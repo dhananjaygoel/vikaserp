@@ -123,7 +123,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; 
-                                     print_r($inquiries['inquiry_products.inquiry_product_details']);
+                                     print_r($inquiries);
                                      ?>
 
                                 
