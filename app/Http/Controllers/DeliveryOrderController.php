@@ -1136,7 +1136,7 @@ class DeliveryOrderController extends Controller {
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          $action = Input::get('action');
-         if($acttion ==''){
+         if($action ==''){
              print "submit";
          }
          else{
