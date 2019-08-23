@@ -215,7 +215,8 @@
                                                   // {
                                                   //    $disable = "";
                                                   // }
-                                            ?>    
+                                            ?>  
+                                            @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')  
                                              @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8   )
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                             data-role_id ="{{Auth::user()->role_id}}"
@@ -230,7 +231,7 @@
                                        title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
                                       
                                            @endif   
-                                           
+                                          @endif 
                                            
                                                                        
                                                 <?php
@@ -253,6 +254,7 @@
                                                
                                             }
                                             ?>  
+                                            @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered') 
                                              @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 9   )                                         
                                              <a style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" href="{{url('create_load_truck/'.$delivery->id)}}" class="btn btn-primary truck_load <?php echo $tclass; ?>" id="truck_load" title="Load truck"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></a>
 
@@ -263,7 +265,7 @@
                                                 </span>
                                             </a> -->
                                               @endif
-                                            
+                                            @endif
                                             <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
