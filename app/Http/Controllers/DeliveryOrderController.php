@@ -100,10 +100,11 @@ class DeliveryOrderController extends Controller {
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
 
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-            echo $date1;
+           
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
-                $q->where('updated_at', 'like', $date1 . '%');
+                //$q->where('updated_at', 'like', $date1 . '%');
+                 $q->where('updated_at', '>=', $date1);
             } else {
                 $q->where('updated_at', '>=', $date1);
                 $q->where('updated_at', '<=', $date2 . ' 23:59:59');
