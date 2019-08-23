@@ -123,11 +123,12 @@
                                 </thead>
                                 <tbody>
                                     <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; 
-                                     print_r($inquiries);
+                                     
                                      ?>
 
                                 
                                     @foreach($inquiries as $inquiry)
+                                    <?php print_r($inquiry['inquiry_products']);?>
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
