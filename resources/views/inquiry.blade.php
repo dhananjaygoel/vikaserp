@@ -138,6 +138,7 @@
                                        
                                         <?php $qty = 0; $alias = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
+                                        <?php  $alias = $prod['inquiry_product_details']->alias_name;?>
                                         @if($prod['unit']->unit_name == 'KG')
                                         <?php
                                         $qty += $prod->quantity;

@@ -166,7 +166,9 @@ class InquiryController extends Controller {
             $session_array = Session::get('forms_inquiry');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message', 'This inquiry is already saved. Please refresh the page');
+                    //return Redirect::back()->with('flash_message', 'This inquiry is already saved. Please refresh the page');
+                    return redirect('inquiry' . $parameters)->with('flash_success_message', ' Inquiry added.');
+
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_inquiry', $session_array);
