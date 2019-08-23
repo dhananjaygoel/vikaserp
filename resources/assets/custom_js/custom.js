@@ -3330,7 +3330,7 @@ function loaded_assign(){
                     }
                     else{
                         // $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
-                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Please select delivery supervisor or delivery boy');
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Already Assigned');
                         setTimeout(function(){
                             $(".err-p").html('');
                         }, 5000);
