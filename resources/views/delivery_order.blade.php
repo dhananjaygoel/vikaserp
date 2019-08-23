@@ -218,7 +218,7 @@
                                             ?>    
                                              @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8   )
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
-                                            data-role_id ={{Auth::user()->role_id}}
+                                            data-role_id ="{{Auth::user()->role_id}}"
                                            data-delivery_id="{{$delivery->id}}" 
                                            data-supervisor_id="{{$delivery->del_supervisor}}" 
                                            data-delivery_boy="{{$delivery->del_boy}}" 
