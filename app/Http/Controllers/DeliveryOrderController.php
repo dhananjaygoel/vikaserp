@@ -968,13 +968,6 @@ class DeliveryOrderController extends Controller {
 
         return $actual_qty;
     }
-   function loaded_truck_delboy(Request $request){
-    print '<pre>';
-    print_r($request); print '</pre>';
-    echo "success";
-    //die();
-       
-   }
 
     /*
      * save create load truck form details for the challan
@@ -1140,11 +1133,20 @@ class DeliveryOrderController extends Controller {
               ]); 
             
          }
-         
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+         switch ($request->input('action')) {
+             case 'Submit':
+                 return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+            break;
+
+        case 'Save':
+            return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+            break;
+        }
+       
         // return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
-         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+         
       }
 
 

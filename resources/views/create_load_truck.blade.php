@@ -247,7 +247,7 @@
                                                 </div>
                                             </td> 
                                             <td>
-                                                <input type="submit" value="Save" id="btn_save_truck"  class="btn btn-sm btn-primary">
+                                                <button type="submit" name="action" value="Save" id="btn_save_truck"  class="btn btn-sm btn-primary">Save</button>
                                             </td>
 
                                             <td class="col-md-1 sfdsf">
@@ -327,7 +327,7 @@
                                     
                                     
                                    
-                                    <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
+                                    <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
                                   
                                     <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
