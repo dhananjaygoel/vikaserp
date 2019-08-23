@@ -323,11 +323,10 @@
                                 <hr>
                                 <div>
                                     
-                                    @if ($delivery_data->final_truck_weight == "0")
-                                    <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delload_truck disabled">Submit</button>
-                                    @else
+                                    
+                                   
                                     <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
-                                    @endif
+                                  
                                     <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
                                 <div class="clearfix"></div>
