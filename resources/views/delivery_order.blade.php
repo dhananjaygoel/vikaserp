@@ -215,6 +215,7 @@
                                                   // {
                                                   //    $disable = "";
                                                   // }
+                                                  echo Auth::user()->role_id;
                                             ?>  
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')  
                                              @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8  ||Auth::user()->role_id == 3 )
