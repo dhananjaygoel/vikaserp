@@ -969,7 +969,10 @@ class DeliveryOrderController extends Controller {
         return $actual_qty;
     }
    function loaded_truck_delboy(Request $request){
-      echo "success";
+    print '<pre>';
+    print_r($request); print '</pre>';
+    echo "success";
+    //die();
        
    }
 
