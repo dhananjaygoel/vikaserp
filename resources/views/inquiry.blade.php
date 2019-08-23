@@ -128,7 +128,7 @@
 
                                 
                                     @foreach($inquiries as $inquiry)
-                                    <?php print_r($inquiry['inquiry_products']['items:protected'] );?>
+                                    <?php print_r($inquiry['inquiry_products']);?>
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
