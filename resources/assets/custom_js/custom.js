@@ -3197,26 +3197,7 @@ function under_loading_truck(order_id) {
 
     }
 }
-function loaded_truck_delboy(){
-    console.log("clicked");
-    var datastring = $(".load_truck_data").serialize();
-    console.log(datastring);
-     $.ajax({
-                type: 'POST',
-                url: url + '/loaded_truck_delboy',
-                data: {
-                    data: datastring,
-                     _token: token
-                },
-                success: function (data) {
-                    $(".err-p").removeClass('text-danger').addClass('text-success').html('Final truck weight updated successful');
-                        setTimeout(function(){
-                            $(".err-p").html('');
-                        }, 5000);
-                }
-               
-     });
-}
+
 
 function loaded_truck(order_id) {
 
