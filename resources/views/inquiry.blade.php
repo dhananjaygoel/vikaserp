@@ -173,7 +173,7 @@
                                                 ?>
                                             @endif
                                         @endforeach
-                                        <td class="text-center">{{ alias }}</td>
+                                        <td class="text-center">{{ $alias }}</td>
                                         <td class="text-center">{{ round($qty, 2) }}</td>
                                         <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
                                         @if($inquiry['delivery_location']['area_name'] !="")
