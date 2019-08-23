@@ -345,6 +345,7 @@ class PurchaseChallanController extends Controller {
                 $order_products[] = [
                     'purchase_order_id' => $challan_id,
                     'order_type' => 'purchase_challan',
+                    'actual_pieces' => $product_data['actual_pieces'],
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['unit_id'],
                     'quantity' => $product_data['quantity'],
@@ -360,6 +361,7 @@ class PurchaseChallanController extends Controller {
                 $order_products[] = [
                     'purchase_order_id' => $challan_id,
                     'order_type' => 'purchase_challan',
+                    'actual_pieces' => $product_data['actual_pieces'],
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['unit_id'],
                     'quantity' => $product_data['quantity'],
