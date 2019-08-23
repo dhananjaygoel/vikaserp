@@ -128,8 +128,7 @@
 
                                 
                                     @foreach($inquiries as $inquiry)
-                                   <?php $product_details = $inquiry['inquiry_products']->getRelation('inquiry_product_details'); ?>
-                                    <?php print_r($product_details);?>
+                                  
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
