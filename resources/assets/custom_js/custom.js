@@ -1948,14 +1948,17 @@ $('body').delegate(".btn_puradvice_to_purchallan", "click", function () {
         $('#freight').addClass('error_validation');
         status_form = 1;
     }
-    if ($('#loadedby').val() == "") {
-        $('#loadedby').addClass('error_validation');
+    if ($('#loaded_by_select_pipe').length ) {
+    if ($('#loaded_by_select_pipe').val() == null) {
+        $('.loaded_by_select_pipe .multiselect').addClass('error_validation');
         status_form = 1;
-    }
-    if ($('#labour').val() == "") {
-        $('#labour').addClass('error_validation');
+    }}
+
+    if ($('#labour_select_pipe').length ) {
+    if ($('#labour_select_pipe').val() == null) {
+        $('.labour_select_pipe .multiselect').addClass('error_validation');
         status_form = 1;
-    }
+    }}
     if (status_form == 1) {
         $('html, body').animate({
             scrollTop: $('.breadcrumb').offset().top
