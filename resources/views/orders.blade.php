@@ -329,7 +329,7 @@
 
 
 
-                                    @foreach($allorders as $order)                              
+                                    @foreach($allorders as  $key =>$order)                              
                                     @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes' &&  Input::get('territory_filter') == '')
 
                                     <tr id="order_row_{{$order->id}}">
@@ -344,7 +344,7 @@
                                             {{"Anonymous User"}}
                                             @endif
                                         </td>
-                                         <td><?php echo $order["relations"]['all_order_products'][1]['relations']['product_sub_category']->alias_name; ?></td>
+                                         <td><?php echo $order["relations"]['all_order_products'][$key]['relations']['product_sub_category']->alias_name; ?></td>
                                         <td>
                                             @if(isset($order["customer"]))
                                             {{$order['customer']['phone_number1']}}
