@@ -3197,7 +3197,7 @@ function under_loading_truck(order_id) {
 function loaded_truck_delboy(){
     console.log("clicked");
     var datastring = $(".load_truck_data").serialize();
-    console.log("datastring");
+    console.log(datastring);
     
 }
 
