@@ -38,11 +38,11 @@ class Inquiry extends Model {
     }
 
     public function product_category() {
-        return $this->hasOne('App\ProductCategory', 'id', 'product_category_id');
+        return $this->hasOne('App\ProductCategory', 'id', 'product_type_id');
     }
 
     public function product_sub_category() {
-        return $this->hasOne('App\ProductSubCategory', 'product_type_id', 'id');
+        return $this->hasOne('App\ProductSubCategory', 'product_category_id', 'id');
     }
 
     public function delivery_location() {

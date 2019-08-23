@@ -968,6 +968,7 @@ class DeliveryOrderController extends Controller {
 
         return $actual_qty;
     }
+
     /*
      * save create load truck form details for the challan
      */
@@ -1132,11 +1133,19 @@ class DeliveryOrderController extends Controller {
               ]); 
             
          }
-         
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-         return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
-         //return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+         $action = Input::get('action');
+         if($action ==''){
+             return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+         }
+         else{
+             return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+         }
+         
+         
+        
+         
       }
 
 

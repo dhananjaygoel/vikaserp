@@ -42,7 +42,7 @@
                         @endif
                         <div class="form-group">Date : {{date('d F, Y')}}</div>
                         <hr>
-                        {!!Form::open(array('data-button'=>'btn_delorderto_deltruck','method'=>'POST','url'=>url('create_load_truck/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
+                        {!!Form::open(array('data-button'=>'btn_delorderto_deltruck','method'=>'POST','url'=>url('create_load_truck/'.$delivery_data['id']),'class'=>'load_truck_data','id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                         <input type="hidden" name="delivery_id" id ="delivery_id" value="{{$delivery_data->id}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
@@ -246,7 +246,9 @@
                                                 <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}}</div></div>
                                                 </div>
                                             </td> 
-                                            <td><button type="submit" class="btn btn-primary form_button_footer btn_save_truck">Save</button></td>
+                                            <td>
+                                                <button type="submit" name="action" value="Save" id="btn_save_truck"  class="btn btn-sm btn-primary">Save</button>
+                                            </td>
 
                                             <td class="col-md-1 sfdsf">
                                                 <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]"></div></div>
@@ -323,11 +325,10 @@
                                 <hr>
                                 <div>
                                     
-                                    @if ($delivery_data->final_truck_weight == "0")
-                                    <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delload_truck disabled">Submit</button>
-                                    @else
-                                    <button type="submit" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
-                                    @endif
+                                    
+                                   
+                                    <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
+                                  
                                     <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
                                 <div class="clearfix"></div>
