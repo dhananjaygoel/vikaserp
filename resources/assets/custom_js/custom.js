@@ -107,7 +107,7 @@ $(".btn_save_truck").click(function () {
      $(".modal-body #delivery_id").val( deliverid );
      if(roleid ==0){
         
-           // $(".del_supervisor").val(supervisor_id);
+           $(".del_supervisor").val(supervisor_id);
          
         //$(".del_supervisor").val(supervisor_id);
      }
@@ -3304,7 +3304,7 @@ function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();
     var del_supervisor =$(".modal-body #del_supervisor").val(); 
-   console.log(del_supervisor);
+  
     var token = $('#_token').val();
     if(del_supervisor){
         
