@@ -122,7 +122,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; ?>
+                                    <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; 
+                                     <?php print_r($inquiries);?>
+
+                                    ?>
                                     @foreach($inquiries as $inquiry)
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
