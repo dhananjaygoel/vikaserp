@@ -145,26 +145,8 @@ class OrderController extends Controller {
         else{
             echo "failed";
         }
-        /*if(!empty($delivery_data)){
-
-            $assigntype = $request->assign_type;
-            if($assigntype =='del_supervisor'){
-              $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                 'del_supervisor'=>$request->del_supervisor,            
-              ]);      
-              echo "success";
-           }
-           if($assigntype =='del_boy'){
-              $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                'del_boy'=>$request->del_supervisor,            
-              ]);
-              echo "success";
-           }
-        }
-        else{
-           echo "failed";
-
-        }*/
+        
+        
         
         
     }
