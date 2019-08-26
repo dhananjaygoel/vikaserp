@@ -333,10 +333,12 @@ class BulkDeleteController extends Controller {
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     $result_data[$key][0] = date("F jS, Y", strtotime($temp->created_at));
-                    if ($temp['customer']->tally_name != '')
+                   if (@$temp['customer']->tally_name != '')
                         $result_data[$key][1] = $temp['customer']->tally_name;
-                    else
+                    elseif(@$temp['customer']->owner_name != '')
                         $result_data[$key][1] = $temp['customer']->owner_name;
+                    else
+                        $result_data[$key][1] ='Anonymous customer';
                     if ($temp->delivery_location_id != 0) {
                         foreach ($delivery_locations as $location) {
                             if ($location->id == $temp->delivery_location_id) {
@@ -384,10 +386,12 @@ class BulkDeleteController extends Controller {
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     $result_data[$key][0] = date("F jS, Y", strtotime($temp->created_at));
-                    if ($temp['customer']->tally_name != '')
+                    if (@$temp['customer']->tally_name != '')
                         $result_data[$key][1] = $temp['customer']->tally_name;
-                    else
+                    elseif(@$temp['customer']->owner_name != '')
                         $result_data[$key][1] = $temp['customer']->owner_name;
+                    else
+                        $result_data[$key][1] ='Anonymous customer';
                     if ($temp->delivery_location_id != 0) {
                         foreach ($delivery_locations as $location) {
                             if ($location->id == $temp->delivery_location_id) {
