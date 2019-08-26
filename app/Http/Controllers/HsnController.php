@@ -98,7 +98,7 @@ class HsnController extends Controller {
         }
 
         $this->validate($request, [
-            'hsn_code' => 'required|unique:hsn,hsn_code',
+            'hsn_code' => 'required|unique:hsn,hsn_code'. ($id ? ",$id" : ''),
             'gst' => 'required',
             'hsn_desc' => 'required'
         ]);
