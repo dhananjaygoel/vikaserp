@@ -33,14 +33,14 @@ class GstController extends Controller {
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');        
-        $quickbook = QuickbookToken::find(1);
+        $quickbook = QuickbookToken::find(3);
 
         // without gst
         $config = array(
             'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
             'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
-            'client_id' => 'ABjYq9i6AXSyor0iOfoeX2NZzQudBqFBnPS7rxoyccu5JOPDPd',
-            'client_secret' => 'LHJbhUy8iSmAuRN3E6tysMQmwQK7LuG48mLqTihs',
+            'client_id' => 'ABB6G2Da7EJLem4XfeXEn6vgdisRSVijSzdWNRKExRHVwssNVH',
+            'client_secret' => 'dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay',
             'oauth_scope' => 'com.intuit.quickbooks.accounting',
             'oauth_redirect_uri' => 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl',
         );
@@ -91,7 +91,7 @@ class GstController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346686579506",
+            'QBORealmID' => "9130346851582276",
             'baseUrl' => "production"));
         // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
         //         'auth_mode' => 'oauth2',
@@ -106,7 +106,7 @@ class GstController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = QuickbookToken::find(1);
+        $quickbook = QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
