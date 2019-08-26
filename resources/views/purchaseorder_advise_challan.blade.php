@@ -223,7 +223,7 @@
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
     <!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
-                            <div class="form-group clearfix">
+                            <div class="form-group clearfix loaded_by_select_pipe">
                                 <select id="loaded_by_select_pipe" name='unloaded_by[]' class="form-control" multiple="multiple">
                                     @if(isset($loaders))
                                     @foreach ($loaders as $loader)
@@ -236,7 +236,7 @@
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
     <!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">-->
-                            <div class="form-group clearfix">
+                            <div class="form-group clearfix labour_select_pipe">
                                 <select id="labour_select_pipe" name="labour[]" class="form-control" multiple="multiple">
                                     @if(isset($labours))
                                     @foreach ($labours as $labour)

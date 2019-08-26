@@ -60,10 +60,10 @@ class PurchaseDaybookController extends Controller {
             }
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
-                                                ->where('order_status', 'completed')
-                                                ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
-                                                ->orderBy('updated_at', 'desc')
-                                                ->Paginate(20);
+                        ->where('order_status', 'completed')
+                        ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                        ->orderBy('updated_at', 'desc')
+                        ->Paginate(20);
         }        
         $purchase_daybook->setPath('purchase_order_daybook');        
         return view('purchase_order_daybook', compact('purchase_daybook'));
@@ -200,6 +200,7 @@ class PurchaseDaybookController extends Controller {
      */
 
     public function expert_purchase_daybook() {
+        $v = "P";
         set_time_limit(0);
         $data = Input::all();
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"]) ) {
@@ -208,14 +209,14 @@ class PurchaseDaybookController extends Controller {
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('serial_number','LIKE','%P%')
+                        ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                         ->where('updated_at', 'like', $date1 . '%')
                         ->orderBy('updated_at', 'desc')
                         ->get();
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                         ->where('order_status', 'completed')
-                        ->where('serial_number','LIKE','%P%')
+                        ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                         ->where('updated_at', '>=', $date1)
                         ->where('updated_at', '<=', $date2.' 23:59:59')
                         ->orderBy('updated_at', 'desc')
@@ -224,7 +225,7 @@ class PurchaseDaybookController extends Controller {
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                     ->where('order_status', 'completed')
-                    ->where('serial_number','LIKE','%P%')
+                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                     ->orderBy('updated_at', 'desc')
                     ->get();
         }
