@@ -310,23 +310,32 @@
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                                 @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                                @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0 && $delivery->location_difference !=0)
                                                     <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                                     </a>
-                                                @endif
-
-                                            @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                            <span class="table-link normal_cursor" title="print">
+                                                @else
+                                                <a href="#" class="table-link disabled" title="print" data-toggle="modal" data-target="" id="{{$delivery->id}}" style="opacity: 0.65;cursor: auto;">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </span>
-                                            @endif
+                                                    </a>
+                                                @endif
+                                                @endif
 
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                                    <span class="table-link normal_cursor" title="print">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                    </span>
+                                            @endif
+                                            
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1   )
 
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#myModalDeleteDeliveryOrder" title="delete" onclick='delete_delivery_order({{$delivery->id}})'>

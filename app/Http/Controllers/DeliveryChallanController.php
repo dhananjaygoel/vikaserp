@@ -955,14 +955,14 @@ class DeliveryChallanController extends Controller {
     function getTokenWihtoutGST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(4);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346686571536",
+            'QBORealmID' => "9130346851582276",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -982,7 +982,7 @@ class DeliveryChallanController extends Controller {
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(4);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1007,7 +1007,7 @@ class DeliveryChallanController extends Controller {
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');        
-        $quickbook = App\QuickbookToken::find(1);
+        $quickbook = App\QuickbookToken::find(3);
         // echo '<pre>';
         // print_r($quickbook);
         // exit;
@@ -1025,7 +1025,7 @@ class DeliveryChallanController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346686579506",
+            'QBORealmID' => "9130346851582276",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1045,7 +1045,7 @@ class DeliveryChallanController extends Controller {
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(1);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1057,11 +1057,14 @@ class DeliveryChallanController extends Controller {
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
+            
             $dataService = $this->getTokenWihtoutGST();
         }
         else{
+
             $dataService = $this->getToken();
         }
+        
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
                 \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
@@ -1107,7 +1110,7 @@ class DeliveryChallanController extends Controller {
             
              $line = [];
              $i = 0;
-             foreach ($update_delivery_challan->delivery_challan_products as $del_products){
+             foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 24;
                 $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->hsn_code)->first();
                 if($hsn){
@@ -1129,7 +1132,20 @@ class DeliveryChallanController extends Controller {
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_item_id;
                     $productname = $del_products->order_product_all_details->alias_name;
                 }
+                $productname = ltrim($productname);
                 
+                 $item_query = "select * from Item where Name ='".$productname."'";
+                $item_details = $dataService->Query($item_query);
+                if(!empty($item_details)){
+                    $quickbook_item_id = $item_details[0]->Id;
+                }
+                else{
+                   $quickbook_item_id =$quickbook_item_id;
+                }
+                //print $item_details[0]->Id; 
+               
+
+               
                    $line[] = [
                     "Description" => $del_products->order_product_all_details->product_category->product_type->name,
                     "Amount" => $del_products->quantity * $del_products->price,
@@ -1147,6 +1163,7 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
+             //die();
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1250,10 +1267,19 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
             //print_R($line);
-            $customer_details = $dataService->Query("select * from Customer");
-            print "hi";
-            print_R($customer_details);
-           /*
+            $tally_name = rtrim($tally_name);
+            $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
+             //echo $custom_query;
+            $customer_details = $dataService->Query($custom_query);
+             if(!empty($customer_details)){
+                    $quickbook_customer_id = $customer_details[0]->Id;
+                }
+                else{
+                   $quickbook_customer_id =$quickbook_customer_id;
+                }
+            
+           // $quickbook_customer_id = $customer_details[0]->Id;
+          // print_R($customer_details);
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef"=> [
@@ -1298,7 +1324,7 @@ class DeliveryChallanController extends Controller {
             }
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
-            return redirect()->away(asset('upload/invoice/'.$pdfNAme));*/
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
             
             
         }
