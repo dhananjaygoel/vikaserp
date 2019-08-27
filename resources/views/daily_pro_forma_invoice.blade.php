@@ -75,7 +75,7 @@
                                     </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <form action="{{url('delete_multiple_challan')}}" method="POST">
+                                    <form action="{{url('delete_multiple_challan_daily_proforma')}}" method="POST">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                         <table id="add_product_table_delivery_challan" class="table table-hover">
                                             <thead>

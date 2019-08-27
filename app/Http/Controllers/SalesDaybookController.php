@@ -148,7 +148,41 @@ class SalesDaybookController extends Controller {
      * Delete multiple selected challan
      */
 
-    public function delete_multiple_challan() {
+    public function delete_multiple_challan_sales_daybook() {
+
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+
+        $input_data = Input::all();
+
+        $password = Input::get('password');
+        if ($password == '') {
+            return Redirect::to('sales_daybook')->with('error', 'Please enter your password');
+        }
+
+        $current_user = User::find(Auth::id());
+
+        if (Hash::check($password, $current_user->password)) {
+
+            if (isset($input_data['challan_id'])) {
+                foreach ($input_data['challan_id'] as $product_data) {
+                    if ($product_data['checkbox'] != "") {
+                        $id = $product_data['checkbox'];
+                        $challan = DeliveryChallan::find($id);
+                        $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
+                        $challan->delete();
+                    }
+                }
+                return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
+            } else {
+                return Redirect::to('sales_daybook')->with('error', 'Please select at least on record to delete');
+            }
+        } else {
+            return Redirect::to('sales_daybook')->with('error', 'Invalid password');
+        }
+    }
+    public function delete_multiple_challan_daily_proforma() {
 
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -174,12 +208,12 @@ class SalesDaybookController extends Controller {
                         $challan->delete();
                     }
                 }
-                return Redirect::to('sales_daybook')->with('flash_message', 'Selected Challans are Successfully deleted');
+                return Redirect::to('daily_pro_forma_invoice')->with('flash_message', 'Selected Challans are Successfully deleted');
             } else {
-                return Redirect::to('sales_daybook')->with('error', 'Please select at least on record to delete');
+                return Redirect::to('daily_pro_forma_invoice')->with('error', 'Please select at least on record to delete');
             }
         } else {
-            return Redirect::to('sales_daybook')->with('error', 'Invalid password');
+            return Redirect::to('daily_pro_forma_invoice')->with('error', 'Invalid password');
         }
     }
 
