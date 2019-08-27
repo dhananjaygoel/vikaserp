@@ -14,7 +14,7 @@
                         <div class="pull-right top-page-ui col-md-8">
                             @if(sizeof($allorders) > 0)
                                 <div class="pull-right col-md-1">
-                                    <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a>
+                                    <a class="btn btn-primary form_button_footer print_daily_proforma" >Print</a>
                                 </div>
                             @endif
                             <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">

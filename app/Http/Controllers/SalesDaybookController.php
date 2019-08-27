@@ -805,11 +805,13 @@ class SalesDaybookController extends Controller {
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('serial_number', 'like', '%P%')
                                 ->where('updated_at', 'like', $date1 . '%')
                                 ->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                                 ->orderBy('updated_at', 'desc')->get();
             } else {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('serial_number', 'like', '%P%')
                                 ->where('updated_at', '>=', $date1)
                                 ->where('updated_at', '<=', $date2 . ' 23:59:59')
                                 ->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
@@ -820,10 +822,44 @@ class SalesDaybookController extends Controller {
                 'export_to_date' => $data["export_to_date"]
             ];
         } else {
-            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')->orderBy('updated_at', 'desc')->get();
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->where('serial_number', 'like', '%P%')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')->orderBy('updated_at', 'desc')->get();
         }
 
         return view('print_sales_order_daybook', compact('allorders'));
+    }
+
+    public function print_daily_proforma() {
+        set_time_limit(0);
+        $data = Input::all();
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('serial_number', 'like', '%A%')
+                                ->where('updated_at', 'like', $date1 . '%')
+                                ->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
+                                ->orderBy('updated_at', 'desc')->get();
+            } else {
+                $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                                ->where('serial_number', 'like', '%A%')
+                                ->where('updated_at', '>=', $date1)
+                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                ->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
+                                ->orderBy('updated_at', 'desc')->get();
+            }
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
+        } else {
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')->where('serial_number', 'like', '%A%')->with('customer', 'delivery_challan_products', 'delivery_order.location', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')->orderBy('updated_at', 'desc')->get();
+        }
+
+        return view('print_daily_proforma', compact('allorders'));
     }
 
     public function recover() {
