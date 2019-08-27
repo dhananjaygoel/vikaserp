@@ -69,7 +69,15 @@
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
-                            <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" onkeypress=" return numbersOnly(this, event, false, false);" value="@if(isset($prod_sub_cat['hsn_code'])){{ $prod_sub_cat['hsn_code'] }}@endif" type="text">
+                             <select class="form-control" name="hsn_code" id="hsn_code">
+                             <option disabled="" selected="" value="">--Select Hsn code--</option>
+                                @foreach($hsn_code as $hsn)
+                                
+                                <option <?php if ($prod_sub_cat->hsn_code == $hsn->hsn_code) echo 'selected="selected"'; ?>id="hsn_code{{$hsn->hsn_code}}" value ={{$hsn->hsn_code}}> {{$hsn->hsn_code}}</option>
+                                @endforeach
+                               </option>
+                               </select>
+                           <!--> <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" onkeypress=" return numbersOnly(this, event, false, false);" value="@if(isset($prod_sub_cat['hsn_code'])){{ $prod_sub_cat['hsn_code'] }}@endif" type="text">-->
                         </div>
                         <div class="form-group">
                             <label for="size">Product Size<span class="mandatory">*</span></label>
