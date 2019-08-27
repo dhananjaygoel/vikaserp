@@ -18,7 +18,7 @@
                                 </div>
                             @endif
                             <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">
-                                <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@index')}}">
+                                <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@daily_pro_forma_invoice')}}">
                                     <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                                         if (Input::get('export_from_date') != "") {
                                             echo "value='" . Input::get('export_from_date') . "'";
@@ -341,7 +341,7 @@
                                     <div class="clearfix"></div>
                                     @if($allorders->lastPage() > 1)
                                         <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('sales_daybook')}}" id="filter_search">
+                                <form class="form-inline" method="GET" action="{{url('daily_pro_forma_invoice')}}" id="filter_search">
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
