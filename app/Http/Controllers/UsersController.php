@@ -169,12 +169,19 @@ class UsersController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
+        $this->validate($request, [ 
+            'email' => 'required|email|unique:users,email'. ($id ? ",$id" : ''),
+            'mobile_number' => 'integer|digits_between:10,15|required|unique:users,mobile_number'. ($id ? ",$id" : '')
+        ]);
+       
         $user_data = array(
             'role_id' => Input::get('user_type'),
             'first_name' => Input::get('first_name'),
             'last_name' => Input::get('last_name'),
             'phone_number' => Input::get('telephone_number'),
-            'role_id' => Input::get('user_type')
+            'role_id' => Input::get('user_type'),
+            'email' => Input::get('email'),
+            'mobile_number' => Input::get('mobile_number')
         );
 
         if (Input::has('password')) {
@@ -191,28 +198,7 @@ class UsersController extends Controller {
             }
         }
 
-        $email_count = User::where('id', '!=', $id)
-                ->where('email', '=', Input::get('email'))
-                ->count();
-
-        if ($email_count > 0) {
-            return Redirect::back()->withInput()->with('email', 'Email address already taken.');
-        } else {
-            $user_data['email'] = Input::get('email');
-        }
-
-        $mobile_count = User::where('id', '!=', $id)
-                ->where('mobile_number', '=', Input::get('mobile_number'))
-                ->count();
-
-        if ($mobile_count > 0) {
-            return Redirect::back()->withInput()->with('email', 'Mobile number already taken.');
-        } else {
-            $user_data['mobile_number'] = Input::get('mobile_number');
-        }
-
-        $user = User::where('id', $id)
-                ->update($user_data);
+        $user = User::where('id', $id)->update($user_data);
         if ($user) {
             return redirect('users')->with('success', 'User details successfully updated.');
         } else {

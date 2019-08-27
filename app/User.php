@@ -48,11 +48,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static $updateuser_rules = array(
         'first_name' => 'required|min:2|max:100',
         'last_name' => 'required|min:2|max:100',
+        'email' => 'required|email|unique:users',
         'telephone_number' => 'integer|digits_between:8,15',
         'user_type' => 'required'
     );
     public static $update_password = array(
-        'password' => 'required|min:8|max:20|confirmed ',
+        'password' => 'required|min:6|max:20|confirmed ',
         'password_confirmation' => 'required'
     );
 
