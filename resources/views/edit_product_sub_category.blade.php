@@ -77,7 +77,7 @@
                                 @endforeach
                                </option>
                                </select>
-                           <!--> <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" onkeypress=" return numbersOnly(this, event, false, false);" value="@if(isset($prod_sub_cat['hsn_code'])){{ $prod_sub_cat['hsn_code'] }}@endif" type="text">-->
+                           <!-- <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" onkeypress=" return numbersOnly(this, event, false, false);" value="@if(isset($prod_sub_cat['hsn_code'])){{ $prod_sub_cat['hsn_code'] }}@endif" type="text">-->
                         </div>
                         <div class="form-group">
                             <label for="size">Product Size<span class="mandatory">*</span></label>
