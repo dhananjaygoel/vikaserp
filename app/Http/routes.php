@@ -398,6 +398,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+    Route::post('export_daily_proforma', 'SalesDaybookController@export_daily_proforma');
     Route::get('print_customers_details', 'CustomerController@print_customer_details');
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
     Route::get('pass_journal_entry', 'CustomerController@pass_journal_entry');
