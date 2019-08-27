@@ -158,7 +158,7 @@ class SalesDaybookController extends Controller {
 
         $password = Input::get('password');
         if ($password == '') {
-            return Redirect::to('sales_daybook')->with('error', 'Please enter your password');
+            return Redirect::to('daily_pro_forma_invoice')->with('error', 'Please enter your password');
         }
 
         $current_user = User::find(Auth::id());
@@ -187,7 +187,7 @@ class SalesDaybookController extends Controller {
      * Delete Challan of particular id
      */
 
-    public function delete_challan($id) {
+    public function delete_challan_sales_daybook($id) {
 
         if (Auth::user()->role_id != 0) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -205,6 +205,26 @@ class SalesDaybookController extends Controller {
             return Redirect::to('sales_daybook')->with('flash_message', 'Challan is Successfully deleted');
         } else {
             return Redirect::to('sales_daybook')->with('error', 'Invalid password');
+        }
+    }
+    public function delete_challan_daily_proforma($id) {
+
+        if (Auth::user()->role_id != 0) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        $password = Input::get('password');
+        if ($password == '') {
+            return Redirect::to('daily_pro_forma_invoice')->with('error', 'Please enter your password');
+        }
+
+        $current_user = User::find(Auth::id());
+        if (Hash::check($password, $current_user->password)) {
+            $challan = DeliveryChallan::find($id);
+            $delete_old_order_products = AllOrderProducts::where('order_id', '=', $id)->where('order_type', '=', 'delivery_challan')->delete();
+            $challan->delete();
+            return Redirect::to('daily_pro_forma_invoice')->with('flash_message', 'Challan is Successfully deleted');
+        } else {
+            return Redirect::to('daily_pro_forma_invoice')->with('error', 'Invalid password');
         }
     }
 
