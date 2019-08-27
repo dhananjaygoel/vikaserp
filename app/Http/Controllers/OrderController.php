@@ -880,7 +880,7 @@ class OrderController extends Controller {
         $j = count($input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
-               // $i++;
+                $i++;
             }
         }
         if ($i == $j) {
