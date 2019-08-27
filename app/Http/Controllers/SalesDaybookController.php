@@ -272,7 +272,15 @@ class SalesDaybookController extends Controller {
                     $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
                     if ($date1 == $date2) {
                         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                        ->where('updated_at', 'like', $date1 . '%')
+                        ->where('serial_number', 'like', '%A%')
+                        ->with('customer', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_order.location', 'user', 'order_details', 'order_details.createdby', 'delivery_order', 'delivery_order.user', 'challan_loaded_by', 'challan_labours')
+                        ->orderBy('updated_at', 'desc')->Paginate(20);
+
+
+                        $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                                 ->where('updated_at', 'like', $date1 . '%')
+                                ->where('serial_number', 'like', '%A%')
         //                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                                 ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                                 ->orderBy('updated_at', 'desc')
@@ -282,6 +290,7 @@ class SalesDaybookController extends Controller {
                         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                                 ->where('updated_at', '>=', $date1)
                                 ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                ->where('serial_number', 'like', '%A%')
         //                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                                 ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                                 ->orderBy('updated_at', 'desc')
@@ -291,6 +300,7 @@ class SalesDaybookController extends Controller {
                 } else {
                     $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
+                            ->where('serial_number', 'like', '%A%')
                             ->orderBy('updated_at', 'desc')
         //                    ->Paginate(200);   
                             ->take(200)
@@ -518,6 +528,7 @@ class SalesDaybookController extends Controller {
             if ($date1 == $date2) {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                         ->where('updated_at', 'like', $date1 . '%')
+                        ->where('serial_number', 'like', '%P%')
 //                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
@@ -527,6 +538,7 @@ class SalesDaybookController extends Controller {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                         ->where('updated_at', '>=', $date1)
                         ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                        ->where('serial_number', 'like', '%P%')
 //                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
@@ -536,6 +548,7 @@ class SalesDaybookController extends Controller {
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                     ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
+                    ->where('serial_number', 'like', '%P%')
                     ->orderBy('updated_at', 'desc')
 //                    ->Paginate(200);   
                     ->take(200)
