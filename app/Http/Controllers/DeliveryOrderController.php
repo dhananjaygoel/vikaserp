@@ -431,11 +431,11 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    'quantity' => $product_data['quantity'],
-                    'length' => $product_data['quantity'],
-                    'present_shipping' => $product_data['present_shipping'],
-                    'price' => $product_data['price'],
-                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    // 'quantity' => $product_data['quantity'],
+                    // 'length' => $product_data['quantity'],
+                    // 'present_shipping' => $product_data['present_shipping'],
+                    // 'price' => $product_data['price'],
+                    // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
@@ -445,11 +445,11 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    'quantity' => $product_data['present_shipping'],
-                    'length' => $product_data['quantity'],
-                    'present_shipping' => $product_data['present_shipping'],
-                    'price' => $product_data['price'],
-                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    // 'quantity' => $product_data['present_shipping'],
+                    // 'length' => $product_data['quantity'],
+                    // 'present_shipping' => $product_data['present_shipping'],
+                    // 'price' => $product_data['price'],
+                    // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
