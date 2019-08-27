@@ -341,7 +341,7 @@
                                     <div class="clearfix"></div>
                                     @if($allorders->lastPage() > 1)
                                         <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('sales_daybook')}}" id="filter_search">
+                                <form class="form-inline" method="GET" action="{{url('daily_pro_forma_invoice')}}" id="filter_search">
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
