@@ -386,8 +386,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('daily_pro_forma_invoice', 'SalesDaybookController@daily_pro_forma_invoice');
     Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan_sales_daybook');
     Route::post('delete_daily_proforma/{id}', 'SalesDaybookController@delete_challan_daily_proforma');
-    Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan_sales_daybook');
-    Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan_daily_proforma');
+    Route::post('delete_multiple_challan_sales_daybook', 'SalesDaybookController@delete_multiple_challan_sales_daybook');
+    Route::post('delete_multiple_challan_daily_proforma', 'SalesDaybookController@delete_multiple_challan_daily_proforma');
     Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
     Route::get('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
     Route::get('print_inventory_report/{id}', 'InventoryController@print_inventory_report');
