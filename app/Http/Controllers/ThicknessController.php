@@ -41,21 +41,25 @@ class ThicknessController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		$thick = $request->input('thickness');
+		$diff = $request->input('difference');
+        // $this->validate($request, [
+        //     'thickness' => 'required|integer|unique:thickness,thickness'. ($thick ? ",$thick" : ''),
+        //     'difference' => 'required|integer',($diff ? ",$diff" : ''),
+		// ]);
+		if(Thickness::where('thickness','=',$thick)->where('diffrence','=',$diff)->count() > 0)
+		{ 
+			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
+		}
+		else
+		{
+			$thickness = new Thickness();
+			$thickness->thickness = $request->thickness;
+			$thickness->diffrence = $request->difference;
+			$thickness->save();
 
-
-        $this->validate($request, [
-            'thickness' => 'required|integer|unique:thickness,thickness',
-            'difference' => 'required|integer',
-        ]);
-
-        $thickness = new Thickness();
-        $thickness->thickness = $request->thickness;
-        $thickness->diffrence = $request->difference;
-        $thickness->save();
-
-
-        return redirect('thickness')->with('flash_success_message', 'Thickness successfully added.');
-
+			return redirect('thickness')->with('flash_success_message', 'Thickness successfully added.');
+		}
 	}
 
 	/**
@@ -95,18 +99,27 @@ class ThicknessController extends Controller {
 	{
         if (Auth::user()->role_id != 0) {
             return Redirect::to('thickness')->with('error', 'You do not have permission.');
-        }
-        $this->validate($request, [
-            'thickness' => 'required|integer|unique:thickness,thickness',
-            'difference' => 'required|integer',
-        ]);
+		}
+		$thick = $request->input('thickness');
+		$diff = $request->input('difference');
+        // $this->validate($request, [
+        //     'thickness' => 'required|integer|unique:thickness,thickness',
+        //     'difference' => 'required|integer',
+        // ]);
+		if(Thickness::where('thickness',$thick)->where('diffrence',$diff)->count() == 0)
+		{
+       		Thickness::where('id',$id)->update([
+            	'thickness' => $request->thickness,
+            	'diffrence' => $request->difference
+        	]);
 
-        Thickness::where('id',$id)->update([
-            'thickness' => $request->thickness,
-            'diffrence' => $request->difference
-        ]);
+			return redirect('thickness')->with('flash_success_message', 'Thickness updated successfully');
 
-        return redirect('thickness')->with('flash_success_message', 'Thickness updated successfully');
+		}
+		else 
+		{
+			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
+		}
 	}
 
 	/**

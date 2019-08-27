@@ -12,6 +12,7 @@ use App\User;
 use Auth;
 use App\ProductCategory;
 use App\ProductType;
+use App\Hsn;
 use App\ProductSubCategory;
 use App\Http\Requests\ProductSubCategoryRequest;
 use Input;
@@ -125,7 +126,8 @@ class ProductsubController extends Controller {
         }
         $product_type = ProductType::all();
         $units = Units::first();
-        return view('add_product_sub_category', compact('product_type', 'units'));
+        $hsn_code = Hsn::all();
+        return view('add_product_sub_category', compact('product_type','hsn_code', 'units'));
     }
 
     /*
@@ -301,7 +303,7 @@ class ProductsubController extends Controller {
         $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
 
 
-        $Qdata = [
+      /*  $Qdata = [
             "Name" => $request->input('alias_name'),
             "Active" => true,
             "FullyQualifiedName" => $request->input('alias_name'),
@@ -312,9 +314,7 @@ class ProductsubController extends Controller {
                 "name" => "IncomRef"
             ],
             "TrackQtyOnHand"=>false,
-            /*"TaxClassificationRef"=>[
-                "value"=>1204
-            ]*/
+           
 
         ];
         $res = $this->quickbook_create_item($Qdata);
@@ -344,7 +344,7 @@ class ProductsubController extends Controller {
         }
 
         //dd($res);
-
+        */
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->hsn_code = $request->input('hsn_code');
@@ -469,8 +469,9 @@ class ProductsubController extends Controller {
         }
         $product_type = ProductType::all();
         $prod_category = ProductCategory::all();
+        $hsn_code = Hsn::all();
         $units = Units::first();
-        return view('edit_product_sub_category', compact('product_type', 'prod_sub_cat', 'prod_category', 'units'));
+        return view('edit_product_sub_category', compact('product_type','hsn_code', 'prod_sub_cat', 'prod_category', 'units'));
     }
 
     /*
@@ -505,7 +506,7 @@ class ProductsubController extends Controller {
                 $pro_sub_cat['alias_name'] = Input::get('alias_name');
             }
             $pcat = ProductCategory::where('id',$data['sub_product_name'])->first();
-                $Qdata = [
+              /*  $Qdata = [
                 "Name" => Input::get('alias_name'),
                 // "Active" => true,
                 "sparse"=> false, 
@@ -562,7 +563,7 @@ class ProductsubController extends Controller {
                         // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
                     }
                 }
-            }
+            }*/
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------

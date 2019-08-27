@@ -951,6 +951,29 @@ $('.print_sales_order_daybook').click(function () {
         }
     });
 });
+$('.print_daily_proforma').click(function () {
+    var base_url = $('#baseurl').attr('name');
+    var export_from_date = $('#export_from_date').val();
+    var export_to_date = $('#export_to_date').val();
+    var _token = $('#_token').val();
+    $.ajax({
+        type: "POST",
+        data: {export_from_date: export_from_date, export_to_date: export_to_date, _token: _token},
+        url: base_url + '/print_daily_proforma',
+        success: function (data) {
+            var printWindow = window.open('', '');
+            if (printWindow) {
+                printWindow.document.write(data);
+                printWindow.print();
+                printWindow.close();
+                printWindow.onunload = function () {
+                    location.reload();
+                };
+                location.reload();
+            }
+        }
+    });
+});
 function print_purchase_challan(purchase_challan_id) {
     $('#purchase_challan_id').val(purchase_challan_id);
 }

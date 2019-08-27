@@ -384,9 +384,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
     Route::resource('sales_daybook', 'SalesDaybookController');
     Route::resource('daily_pro_forma_invoice', 'SalesDaybookController@daily_pro_forma_invoice');
-    Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan');
-    Route::post('delete_multiple_challan', 'SalesDaybookController@delete_multiple_challan');
-    Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
+    Route::post('daily_pro_forma_invoice', 'SalesDaybookController@daily_pro_forma_invoice');
+    Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan_sales_daybook');
+    Route::post('delete_daily_proforma/{id}', 'SalesDaybookController@delete_challan_daily_proforma');
+    Route::post('delete_multiple_challan_sales_daybook', 'SalesDaybookController@delete_multiple_challan_sales_daybook');
+    Route::post('delete_multiple_challan_daily_proforma', 'SalesDaybookController@delete_multiple_challan_daily_proforma');
+    Route::post('sales_daybook_date', 'SalesDaybookController@challan_date_sales_daybook');
+    Route::post('daily_proforma_date', 'SalesDaybookController@challan_date_daily_proforma');
     Route::get('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
     Route::get('print_inventory_report/{id}', 'InventoryController@print_inventory_report');
     Route::get('print_inventory_price_list/{id}', 'InventoryController@print_inventory_price_list');
@@ -396,6 +400,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
+    Route::post('export_daily_proforma', 'SalesDaybookController@export_daily_proforma');
     Route::get('print_customers_details', 'CustomerController@print_customer_details');
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
     Route::get('pass_journal_entry', 'CustomerController@pass_journal_entry');
@@ -403,6 +408,7 @@ Route::group(['middleware' => ['auth']], function() {
 //  Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
+    Route::any('print_daily_proforma', 'SalesDaybookController@print_daily_proforma');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
     Route::get('fetch_product_price', 'DeliveryOrderController@product_price');
     Route::post('upload_excel', 'WelcomeController@upload_excel');

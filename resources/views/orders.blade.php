@@ -283,7 +283,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tally Name</th><th>Alias Name</th>
+                                        <th>Tally Name</th>
                                         <th>Mobile</th>
                                         <th>Delivery Location</th>
                                         <th>Total Quantity</th>
@@ -297,7 +297,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tally Name</th><th>Alias Name</th>
+                                        <th>Tally Name</th>
                                         <th>Total Quantity</th>
                                         <th>Mobile </th>
                                         <th>Delivery Location</th>

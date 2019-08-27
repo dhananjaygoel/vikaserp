@@ -14,11 +14,11 @@
                         <div class="pull-right top-page-ui col-md-8">
                             @if(sizeof($allorders) > 0)
                                 <div class="pull-right col-md-1">
-                                    <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a>
+                                    <a class="btn btn-primary form_button_footer print_daily_proforma" >Print</a>
                                 </div>
                             @endif
                             <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">
-                                <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@index')}}">
+                                <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@daily_pro_forma_invoice')}}">
                                     <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                                         if (Input::get('export_from_date') != "") {
                                             echo "value='" . Input::get('export_from_date') . "'";
@@ -31,7 +31,7 @@
                                         ?>>
                                     <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                                 </form>
-                                <form class="pull-left" method="POST" action="{{URL::action('SalesDaybookController@export_sales_daybook')}}">
+                                <form class="pull-left" method="POST" action="{{URL::action('SalesDaybookController@export_daily_proforma')}}">
                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                     <input type="hidden" name="export_from_date" id="export_from_date" <?php
                                         if (Input::get('export_to_date') != "") {
@@ -75,7 +75,7 @@
                                     </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <form action="{{url('delete_multiple_challan')}}" method="POST">
+                                    <form action="{{url('delete_multiple_challan_daily_proforma')}}" method="POST">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                                         <table id="add_product_table_delivery_challan" class="table table-hover">
                                             <thead>
@@ -281,7 +281,7 @@
                                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-                                                            <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_sales_daybook",$challan->id)}}'>
+                                                            <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_daily_proforma",$challan->id)}}'>
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -341,7 +341,7 @@
                                     <div class="clearfix"></div>
                                     @if($allorders->lastPage() > 1)
                                         <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('sales_daybook')}}" id="filter_search">
+                                <form class="form-inline" method="GET" action="{{url('daily_pro_forma_invoice')}}" id="filter_search">
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
