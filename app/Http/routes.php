@@ -384,11 +384,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('create_delivery_challan/{id}', 'DeliveryOrderController@store_delivery_challan');
     Route::resource('sales_daybook', 'SalesDaybookController');
     Route::resource('daily_pro_forma_invoice', 'SalesDaybookController@daily_pro_forma_invoice');
+    Route::post('daily_pro_forma_invoice', 'SalesDaybookController@daily_pro_forma_invoice');
     Route::post('delete_sales_daybook/{id}', 'SalesDaybookController@delete_challan_sales_daybook');
     Route::post('delete_daily_proforma/{id}', 'SalesDaybookController@delete_challan_daily_proforma');
     Route::post('delete_multiple_challan_sales_daybook', 'SalesDaybookController@delete_multiple_challan_sales_daybook');
     Route::post('delete_multiple_challan_daily_proforma', 'SalesDaybookController@delete_multiple_challan_daily_proforma');
-    Route::post('sales_daybook_date', 'SalesDaybookController@challan_date');
+    Route::post('sales_daybook_date', 'SalesDaybookController@challan_date_sales_daybook');
+    Route::post('daily_proforma_date', 'SalesDaybookController@challan_date_daily_proforma');
     Route::get('print_purchase_challan/{id}', 'PurchaseChallanController@print_purchase_challan');
     Route::get('print_inventory_report/{id}', 'InventoryController@print_inventory_report');
     Route::get('print_inventory_price_list/{id}', 'InventoryController@print_inventory_price_list');

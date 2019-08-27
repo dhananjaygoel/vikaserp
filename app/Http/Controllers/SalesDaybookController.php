@@ -73,7 +73,7 @@ class SalesDaybookController extends Controller {
     }
 
 
-    function daily_pro_forma_invoice(){
+    public function daily_pro_forma_invoice(){
         $data = Input::all();
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
@@ -110,7 +110,7 @@ class SalesDaybookController extends Controller {
         }
         $supplier = Customer::all();
         $challan_date = array('challan_date' => Input::get('challan_date'));
-        //$allorders->setPath('sales_daybook');
+        $allorders->setPath('daily_pro_forma_invoice');
         return view('daily_pro_forma_invoice', compact('allorders', 'challan_date', 'supplier', 'search_dates'));
     }
 
@@ -119,7 +119,7 @@ class SalesDaybookController extends Controller {
      * All records of selected date
      */
 
-    public function challan_date() {
+    public function challan_date_sales_daybook() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -138,6 +138,30 @@ class SalesDaybookController extends Controller {
             $challan_date = $input_data['challan_date'];
             $allorders->setPath('sales_daybook_date');
             return view('sales_daybook', compact('allorders', 'challan_date'));
+        } else {
+            $error_msg = $validator->messages();
+            return Redirect::back()->withInput()->withErrors($validator);
+        }
+    }
+    public function challan_date_daily_proforma() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        }
+        $input_data = Input::all();
+        $validator = Validator::make($input_data, DeliveryChallan::$challan_date_rules);
+        if ($validator->passes()) {
+            $date = $input_data['challan_date'];
+            $y = date("Y", strtotime($date));
+            $m = date("m", strtotime($date));
+            $d = date("d", strtotime($date));
+            $challan_date = \Carbon\Carbon::create($y, $m, $d, 0, 0, 0);
+
+            $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
+                            ->whereRaw('DATE(created_at) = ?', [$challan_date])
+                            ->with('customer', 'all_order_products', 'delivery_order')->orderBy('created_at', 'desc')->Paginate(20);
+            $challan_date = $input_data['challan_date'];
+            $allorders->setPath('daily_proforma_date');
+            return view('daily_pro_forma_invoice', compact('allorders', 'challan_date'));
         } else {
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);
