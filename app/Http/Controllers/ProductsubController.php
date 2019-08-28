@@ -202,23 +202,15 @@ class ProductsubController extends Controller {
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(1);
-        // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-        //     'auth_mode' => 'oauth2',
-        //     'ClientID' => $quickbook->client,
-        //     'ClientSecret' => $quickbook->secret,
-        //     'accessTokenKey' =>  $quickbook->access_token,
-        //     'refreshTokenKey' => $quickbook->refresh_token,
-        //     'QBORealmID' => "4620816365002291260",
-        //     'baseUrl' => "Development"));
-        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(3);
+        
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346686579506",
+            'QBORealmID' => "9130346851582276",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -227,7 +219,7 @@ class ProductsubController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(1);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -250,31 +242,22 @@ class ProductsubController extends Controller {
     }
     function getTokenAll(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(2);
-        // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-        //     'auth_mode' => 'oauth2',
-        //     'ClientID' => $quickbook->client,
-        //     'ClientSecret' => $quickbook->secret,
-        //     'accessTokenKey' =>  $quickbook->access_token,
-        //     'refreshTokenKey' => $quickbook->refresh_token,
-        //     // 'QBORealmID' => "193514891354844",
-        //     'QBORealmID' => "4611809164061438748",
-        //     'baseUrl' => "Development"
-        // ));
+        $quickbook = App\QuickbookToken::find(4);
+      
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346686571536",
+            'QBORealmID' => "9130346851582276",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
     }
     function refresh_token_all(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(2);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -303,7 +286,7 @@ class ProductsubController extends Controller {
         $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
 
 
-      /*  $Qdata = [
+       $Qdata = [
             "Name" => $request->input('alias_name'),
             "Active" => true,
             "FullyQualifiedName" => $request->input('alias_name'),
@@ -344,7 +327,7 @@ class ProductsubController extends Controller {
         }
 
         //dd($res);
-        */
+       
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->hsn_code = $request->input('hsn_code');
@@ -506,7 +489,7 @@ class ProductsubController extends Controller {
                 $pro_sub_cat['alias_name'] = Input::get('alias_name');
             }
             $pcat = ProductCategory::where('id',$data['sub_product_name'])->first();
-              /*  $Qdata = [
+                $Qdata = [
                 "Name" => Input::get('alias_name'),
                 // "Active" => true,
                 "sparse"=> false, 
@@ -563,7 +546,7 @@ class ProductsubController extends Controller {
                         // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
                     }
                 }
-            }*/
+            }
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------
