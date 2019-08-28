@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Session;
                     <li class="active"><span>Bulk Delete</span></li>
                 </ol>
                 <div class="clearfix">
-                    <h1 class="pull-left"></h1>
+                    <h1 class="pull-left">Bulk Delete</h1>
                 </div>
             </div>
         </div>
