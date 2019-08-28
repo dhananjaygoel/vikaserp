@@ -906,8 +906,8 @@ class BulkDeleteController extends Controller {
                 break;
 //----------------------------------------------------            
         }
-
-        if (($module != '') && (count($delete_seletected_module) > 0)) {
+        $msg = '';
+        if (($module != '') && (count($delete_seletected_module) > 0) || $is_delete_all == 'yes') {
             $msg = $module . " - Selected details removed successfully.";
         } else {
             $msg = '';
