@@ -216,7 +216,7 @@
                         </div>
                         <hr>
                         @endif
-                        @if($product_type['structure'] == 1)
+                        <!-- @if($product_type['structure'] == 1)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Structure): </b></label> <?php
                             if (isset($allorder['challan_loaded_by'])) {
@@ -247,8 +247,8 @@
                             ?>
                         </div>
                         <hr>
-                        @endif
-                        @if($product_type['pipe'] == 1)
+                        @endif -->
+                        <!-- @if($product_type['pipe'] == 1)
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour (Pipe): </b></label>
 
@@ -289,8 +289,8 @@
 
                         </div>
                         <hr>
-                        @endif
-                        @if($product_type['profile'] == 1)
+                        @endif -->
+                        <!-- @if($product_type['profile'] == 1)
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour (Profile): </b></label>
 
@@ -310,7 +310,7 @@
 
                         </div>
                         <hr>
-                        @endif                        
+                        @endif                         -->
 
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">GST Percentage: </b> 
