@@ -26,7 +26,7 @@
                 <td>{{$value->tally_name}}</td>
                 <td>{{$value->company_name}}</td>
                 <td>Retail Trade</td>
-                <td>{{isset($value->email && $value->email!='')?$value->email:'hi@alphalogicinc.com'}}</td>
+                <td>{{(isset($value->email)&& $value->email!='')?$value->email:'hi@alphalogicinc.com'}}</td>
                 <td>{{$value->phone_number1}}</td>
                 <td>{{$value->phone_number2}}</td>
                 <td>{{$value->address1}}</td>
