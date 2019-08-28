@@ -11,6 +11,7 @@
                     <li class="active"><span>Delivery Challan</span></li>
                 </ol>
                 <div class="filter-block">
+                <h1 class="pull-left">Delivery Challan</h1>
                     <form action="{{url('delivery_challan')}}" method="GET">
                         <div class=" pull-right col-md-3">
                             <?php

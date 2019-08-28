@@ -93,8 +93,8 @@
                                             <th>Truck Number</th>
                                             <th>Fullfilled By</th>
                                             <th>Order By </th>
-                                            <th>Loaded By </th>
-                                            <th>Labors </th>
+                                            <!-- <th>Loaded By </th>
+                                            <th>Labors </th> -->
                                             <th>Actual Quantity</th>
                                             <th>Amount</th>
                                             <th>Bill Number</th>
@@ -156,7 +156,7 @@
                                                 @endif
                                             </td>
                                             
-                                            <td>
+                                            <!-- <td>
                                                 @if(isset($challan['challan_loaded_by']))
                                                 @foreach($challan['challan_loaded_by'] as $load)
                                                     <?php
@@ -179,7 +179,7 @@
                                                 @endforeach
                                                 @endif
                                                 {{count($lbr_arr)}}                                                
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <?php
                                                 $total_qunatity = 0;

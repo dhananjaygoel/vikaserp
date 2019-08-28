@@ -16,7 +16,7 @@
                                             <i class="fa fa-plus-circle fa-lg"></i> Create Delivery order Independently
                                         </a>-->
                     <!--<div class="form-group pull-right">-->
-
+                    <h1 class="pull-left">Delivery Orders</h1>
                     <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
                         <div class=" pull-right col-md-3">
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">

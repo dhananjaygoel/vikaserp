@@ -229,8 +229,13 @@
             <br>
             <?php
             $cust_id = $allorder->customer_id;
-            $state = \App\Customer::where('id',$cust_id)->first()->state;
-            $local_state = App\States::where('id',$state)->first()->local_state;
+            $order_id = $allorder->order_id;
+            // $state = \App\Customer::where('id',$cust_id)->first()->state;
+            // $local_state = App\States::where('id',$state)->first()->local_state;
+            $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
+            $state = \App\DeliveryLocation::where('id',$loc_id->delivery_location_id)->first();
+            $local = \App\States::where('id',$state->state_id)->first();
+            $local_state = $local->local_state;
             ?>
             <div class="divTable">
                 <div class="headRow">
@@ -241,7 +246,7 @@
                     <div class="divCell2">Pcs</div>
                     <div class="divCell2">Qty</div>
                     @if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0)
-                        @if($local_state)
+                        @if($local_state == 1)
                             <div  class="divCell2">SGST</div>
                             <div  class="divCell2">CGST</div>
                         @else
@@ -286,7 +291,7 @@
                         if($product_cat->hsn_code){
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                             $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
-                            if($local_state){
+                            if($local_state == 1){
                                 $sgst = $gst_det->sgst;
                                 $cgst = $gst_det->cgst;
                             }
@@ -300,7 +305,7 @@
                     }
                     ?>
                     @if(isset($prod->vat_percentage) && $prod->vat_percentage!='')
-                        @if($local_state)
+                        @if($local_state == 1)
                             <div class="divCell2">{{$sgst}}</div>
                             <div class="divCell2">{{$cgst}}</div>
                         @else
@@ -466,7 +471,7 @@ $loading_vat = $allorder->loading_vat_percentage;
                             {{ round($with_total, 2) }}
                             &nbsp;
                         </div>
-                        <div class="label">&nbsp; Total GST = @if($local_state)
+                        <div class="label">&nbsp; Total GST = @if($local_state == 1)
                                 SGST + CGST
                             @else
                                 IGST

@@ -10,6 +10,7 @@
                     <li class="active"><span>Product Size</span></li>
                 </ol>
                 <div class="clearfix">
+                <h1 class="pull-left">Product Size</h1>
                     <div class=" row col-md-12 pull-right top-page-ui">
                         <div class="filter-block col-md-12 productsub_filter pull-right">
                             <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
