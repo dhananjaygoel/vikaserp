@@ -234,14 +234,14 @@
                                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                             </span>
                                                         </a>
-                                                            @if(Auth::user()->role_id == 0)
+                                                            <!-- @if(Auth::user()->role_id == 0)
                                                             <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id,'task'=> 'daily_pro'])}}" class="table-link" title="edit">
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-                                                            @endif
+                                                            @endif -->
 
                                                             @if(Auth::user()->role_id == 0)
                                                                 <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
