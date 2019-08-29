@@ -336,7 +336,7 @@
                                 <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
-                            @if($product_type['pipe'] == 1)
+                            <!-- @if($product_type['pipe'] == 1)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Pipe):</b></label>                                
                                 <?php
@@ -365,10 +365,10 @@
                                         @endif
                                     </select>
                                 </div>
-                            <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">-->
+                            //<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">--
                             </div>
-                            @endif
-                            @if($product_type['structure'] == 1)
+                            @endif -->
+                            <!-- @if($product_type['structure'] == 1)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Structure):</b></label>
 
@@ -398,7 +398,7 @@
                                     </select>
                                 </div>
                             </div>
-                            @endif
+                            @endif -->
                             <!-- @if($product_type['profile'] == 1)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Profile):</b></label>
