@@ -184,8 +184,6 @@ class InquiryController extends Controller {
         );
         $validator = Validator::make($input_data, $rules);
         if ($validator->fails()) {
-            Session::forget('product');
-            Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator)->withInput();
         }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
@@ -198,12 +196,7 @@ class InquiryController extends Controller {
                 $i++;
             }
         }
-        // print_r($input_data['product']);
-        // exit;
-
-//        if ($i == $j) {
-//            return Redirect::back()->with('flash_message', 'Please insert product details');
-//        }
+        
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -211,9 +204,6 @@ class InquiryController extends Controller {
                 $customers_info = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_inquiry_location']);
                 $customer_id = $customers_info->id;
             } else {
-                $error_msg = $validator->messages();
-                Session::forget('product');
-                Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         } elseif ($input_data['customer_status'] == "existing_customer") {
@@ -221,9 +211,7 @@ class InquiryController extends Controller {
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_name'];
             } else {
-                $error_msg = $validator->messages();
-                Session::forget('product');
-                Session::put('input_data', $input_data);
+               
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
@@ -1385,8 +1373,15 @@ class InquiryController extends Controller {
             return Redirect::back()->with('flash_message', 'Please insert product details');
         }
         if ($input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            if ($validator->passes()) {
+            $cust_id=$input_data['pending_user_id'];
+            $validator =$this->validate($request, [
+                'customer_name' => 'required|min:2|max:100',
+                'contact_person' => 'required|min:2|max:100',
+                'mobile_number'=>'numeric|digits:10|required|unique:customers,phone_number1'.($cust_id?",$cust_id":''),
+                'credit_period' => 'integer|required', 
+            ]);
+            // $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            // if ($validator->passes()) {
                 if ($input_data['pending_user_id'] > 0) {
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
@@ -1406,10 +1401,10 @@ class InquiryController extends Controller {
                     $customers->save();
                     $customer_id = $customers->id;
                 }
-            } else {
-                $error_msg = $validator->messages();
-                return Redirect::back()->withInput()->withErrors($validator);
-            }
+            // } else {
+            //     $error_msg = $validator->messages();
+            //     return Redirect::back()->withInput()->withErrors($validator);
+            // }
         } elseif ($input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, Customer::$existing_customer_inquiry_rules);
             if ($validator->passes()) {
