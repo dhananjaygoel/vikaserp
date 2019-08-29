@@ -1109,7 +1109,7 @@ class DeliveryChallanController extends Controller {
 
         }
         else{
-            
+          
              $line = [];
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
@@ -1168,13 +1168,19 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
+            
             if($del_products->vat_percentage==0)
             {
-                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
+                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
+                print "hi";
+                print_r($update_delivery_challan);
+                die();
+                $tally_name = $update_delivery_challan->customer->tally_name;                      
             }
             else
-            {
+            {   
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
+                $tally_name = $update_delivery_challan->customer->tally_name;   
             }
            /* if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
@@ -1259,7 +1265,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }*/
-            if($del_products->vat_percentage==0)
+           /* if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;     
                 $tally_name = $update_delivery_challan->customer->tally_name;    
@@ -1269,9 +1275,11 @@ class DeliveryChallanController extends Controller {
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
-            } 
-            //print_R($line);
+            } */
+            print $tally_name ;
+            die();
             $tally_name = rtrim($tally_name);
+
             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
