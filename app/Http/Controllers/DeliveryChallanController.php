@@ -24,6 +24,7 @@ use Config;
 use App\Units;
 use App\DeliveryLocation;
 use App\Customer;
+use App\Hsn;
 use App\ProductSubCategory;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -953,6 +954,7 @@ class DeliveryChallanController extends Controller {
     }
 
     function getTokenWihtoutGST(){
+
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(4);
@@ -962,7 +964,7 @@ class DeliveryChallanController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851582276",
+            'QBORealmID' => "9130346851577266",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1112,8 +1114,11 @@ class DeliveryChallanController extends Controller {
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 24;
-                $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->hsn_code)->first();
+                $hsncode = $del_products->order_product_all_details->hsn_code;
+                $hsn = Hsn::where('hsn_code',$hsncode)->first();
+                
                 if($hsn){
+                   
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
@@ -1163,7 +1168,6 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
-             //die();
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1288,6 +1292,8 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
+            
+            
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {  
@@ -1326,6 +1332,7 @@ class DeliveryChallanController extends Controller {
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
             
+
             
         }
          
