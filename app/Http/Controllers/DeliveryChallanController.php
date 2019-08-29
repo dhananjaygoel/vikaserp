@@ -1074,8 +1074,7 @@ class DeliveryChallanController extends Controller {
             }
         }
         if($update_delivery_challan->doc_number){
-           print "dddddd";
-            die();
+           
             $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
             
             $error = $dataService->getLastError();
@@ -1169,6 +1168,8 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
+             print_R($line);
+             die();
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1271,7 +1272,7 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
-            print $tally_name;
+          
             $tally_name = rtrim($tally_name);
             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
