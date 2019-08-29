@@ -115,7 +115,7 @@
                                 <input id="zip" class="form-control" placeholder="Zip" name="zip" value="{{$customer->zip}}" type="tel" onkeypress=" return numbersOnly(this,event,false,false);" maxlength="6">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email">Email<span class="mandatory">*</span></label>
                                 <input id="email" class="form-control" placeholder="Email" name="email" value="{{$customer->email}}" type="email">
                             </div>
                             <div class="form-group">
