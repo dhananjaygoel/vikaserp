@@ -132,7 +132,9 @@
                                   
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
-                                        
+                                        <td class="text-center">
+                                            {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
+                                        </td>
                                        
                                         <?php $qty = 0; $alias = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
@@ -172,7 +174,7 @@
                                                 ?>
                                             @endif
                                         @endforeach
-                                        <td class="text-center">{{ $alias }}</td>
+                                       
                                         <td class="text-center">{{ round($qty, 2) }}</td>
                                         <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
                                         @if($inquiry['delivery_location']['area_name'] !="")
