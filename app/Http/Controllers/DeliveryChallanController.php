@@ -1114,6 +1114,7 @@ class DeliveryChallanController extends Controller {
                 $TaxCodeRef = 24;
                 $hsn = App\Hsn::where('hsn_code',$del_products->order_product_all_details->hsn_code)->first();
                 if($hsn){
+                    print_R($hsn);
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
