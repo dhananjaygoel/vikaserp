@@ -1168,8 +1168,7 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
-             print_R($line);
-             die();
+            
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
@@ -1274,6 +1273,8 @@ class DeliveryChallanController extends Controller {
             } 
           
             $tally_name = rtrim($tally_name);
+            print $tally_name ;
+            die();
             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
