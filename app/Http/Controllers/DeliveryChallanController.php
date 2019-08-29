@@ -1288,6 +1288,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
+            print_R($line);
             print "hi";
             die();
             /*
