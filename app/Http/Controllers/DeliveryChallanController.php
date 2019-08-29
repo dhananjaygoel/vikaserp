@@ -24,6 +24,7 @@ use Config;
 use App\Units;
 use App\DeliveryLocation;
 use App\Customer;
+use App\Hsn;
 use App\ProductSubCategory;
 use Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -1112,7 +1113,9 @@ class DeliveryChallanController extends Controller {
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 24;
-                $hsn = App\Hsn::where('hsn_code','=',$del_products->order_product_all_details->hsn_code)->first();
+                $hsncode = $del_products->order_product_all_details->hsn_code;
+                $hsn = Hsn::where('hsn_code',$hsncode)->first();
+                print $del_products->order_product_all_details->hsn_code;
                 print_R($hsn);
                 if($hsn){
                     print_R($hsn);
