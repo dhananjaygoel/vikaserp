@@ -1171,11 +1171,14 @@ class DeliveryChallanController extends Controller {
             
             if($del_products->vat_percentage==0)
             {
-                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;                   
+                print "dfdff";
+                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
+                $tally_name = $update_delivery_challan->customer->tally_name;                      
             }
             else
-            {
+            {   print "dffffddffdfd";
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
+                $tally_name = $update_delivery_challan->customer->tally_name;   
             }
            /* if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
