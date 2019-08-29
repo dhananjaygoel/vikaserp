@@ -200,7 +200,7 @@
                             <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount); ?>
                         </div>                        
                         <hr>
-                        @if($product_type['pipe'] == 1)
+                        <!-- @if($product_type['pipe'] == 1)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Pipe): </b></label> <?php
                             if (isset($allorder['challan_loaded_by'])) {
@@ -215,7 +215,7 @@
                             ?>
                         </div>
                         <hr>
-                        @endif
+                        @endif -->
                         <!-- @if($product_type['structure'] == 1)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Structure): </b></label> <?php
