@@ -109,16 +109,20 @@ class OrderController extends Controller {
           }
      }
    public function loaded_assign(Request $request){
-        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
-                     ->first();
+        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
+        
+        $del_supervisor = $request->del_supervisor;
+
         $roleid = Auth::user()->role_id;
-        if($roleid ==0 || $roleid == 2){
-          if(is_null($delivery_data->del_supervisor)){
+        if($roleid == 0 || $roleid == 2){
+          if(($delivery_data->del_supervisor =='') || ($delivery_data->del_supervisor != $del_supervisor)){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                  'del_supervisor'=>$request->del_supervisor,            
               ]);      
               echo "success";
-          }
+          } else{
+            echo "failed";
+       }
        
         }
         
