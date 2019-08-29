@@ -257,7 +257,7 @@
                                 <?php
                                 $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                 ?>
-                                @if(Input::get('order_filter') == 'pending' | Input::get('order_status') == 'pending' | (Input::get('order_status') == '' && Input::get('order_filter') == '' && Input::get('territory_filter') == '') && $qstring_sort_type_order<>'completed')
+                                @if(Input::get('order_filter') != 'approval' && Input::get('order_filter') == 'pending' || Input::get('order_status') == 'pending' || (Input::get('order_status') == '' && Input::get('order_filter') == '') && $qstring_sort_type_order<>'completed')
                                 <thead>
                                     <tr>
                                         @if(Input::has('flag') && Input::get('flag') == 'true')
@@ -293,7 +293,7 @@
                                 </thead>
                                 <tbody>
                                     @endif
-                                    @if((Input::get('order_filter') == 'completed' | Input::get('order_status') == 'completed') || Input::get('territory_filter') != '' || $qstring_sort_type_order == 'completed')
+                                    @if((Input::get('order_filter') == 'completed' || Input::get('order_status') == 'completed') || $qstring_sort_type_order == 'completed')
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -329,7 +329,7 @@
 
 
                                     @foreach($allorders as  $key =>$order)                              
-                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes' &&  Input::get('territory_filter') == '')
+                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='yes')
 
                                     <tr id="order_row_{{$order->id}}">
                                         <td>
@@ -419,7 +419,7 @@
                                     @endforeach
 
                                     @foreach($allorders as $order)  
-                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='no' && Input::get('territory_filter') == '')
+                                    @if(isset($order->order_status) && $order->order_status == 'pending' && $order->is_approved =='no')
                                     @if($k==1)                                   
 
                                     @endif
@@ -488,7 +488,7 @@
 
 
                                     @foreach($allorders as $order)
-                                    @if((isset($order->order_status) && $order->order_status == 'completed') || (Input::get('territory_filter') != ''))
+                                    @if((isset($order->order_status) && $order->order_status == 'completed'))
 
                                     <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
                                         <td>{{isset($k)?$k++:''}}</td>                                    
