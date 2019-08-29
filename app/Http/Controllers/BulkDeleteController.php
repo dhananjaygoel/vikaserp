@@ -207,7 +207,7 @@ class BulkDeleteController extends Controller {
 
                 if (isset($is_delete_all) && !empty($is_delete_all) && $is_delete_all == 'yes') {
                     $result_temp = Order::where('order_status','pending')                                
-                                ->where('created_at', '<=', $newdate)->delete();
+                                ->where('created_at','like', $newdate.'%')->delete();
                 }else if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
 //                        Order::find($delete_module)->delete();
