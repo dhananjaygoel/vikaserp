@@ -336,7 +336,7 @@
                                 <label for="Total"><b class="challan">Total </b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
-                            @if($product_type['pipe'] == 1)
+                            <!-- @if($product_type['pipe'] == 1)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Pipe):</b></label>                                
                                 <?php
@@ -365,10 +365,10 @@
                                         @endif
                                     </select>
                                 </div>
-                            <!--<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">-->
+                            //<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">--
                             </div>
-                            @endif
-                            @if($product_type['structure'] == 1)
+                            @endif -->
+                            <!-- @if($product_type['structure'] == 1)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Structure):</b></label>
 
@@ -398,8 +398,8 @@
                                     </select>
                                 </div>
                             </div>
-                            @endif
-                            @if($product_type['profile'] == 1)
+                            @endif -->
+                            <!-- @if($product_type['profile'] == 1)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Profile):</b></label>
 
@@ -429,8 +429,8 @@
                                     </select>
                                 </div>
                             </div>
-                            @endif
-                            @if($product_type['pipe'] == 1)
+                            @endif -->
+                            <!-- @if($product_type['pipe'] == 1)
                             <div class="form-group">
                                 <label for="labours"><b class="challan">Labours (Pipe):</b></label>
                                 <?php
@@ -462,8 +462,8 @@
                                 </div>
 
                             </div>
-                            @endif
-                            @if($product_type['structure'] == 1)
+                            @endif -->
+                            <!-- @if($product_type['structure'] == 1)
                             <div class="form-group">
                                 <label for="labours"><b class="challan">Labours (Structure):</b></label>                               
                                 <?php
@@ -495,8 +495,8 @@
                                 </div>
 
                             </div>
-                            @endif
-                            @if($product_type['profile'] == 1)
+                            @endif -->
+                            <!-- @if($product_type['profile'] == 1)
                             <div class="form-group">
                                 <label for="labours"><b class="challan">Labours (Profile):</b></label>                               
                                 <?php
@@ -528,7 +528,7 @@
                                 </div>
 
                             </div>
-                            @endif
+                            @endif -->
                             <div class="form-group">
                                 <label for="roundoff"><b class="challan">Round Off</b></label>
                                 <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
