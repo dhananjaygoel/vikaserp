@@ -1114,7 +1114,7 @@ class DeliveryChallanController extends Controller {
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 24;
                 $hsncode = $del_products->order_product_all_details->hsn_code;
-                $hsn = Hsn::where('hsn_code',$hsncode)->get();
+                $hsn = Hsn::where('hsn_code',$hsncode)->first();
                 print $del_products->order_product_all_details->hsn_code;
                 print_R($hsn);
                 if($hsn){
