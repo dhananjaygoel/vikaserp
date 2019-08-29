@@ -103,12 +103,12 @@ class DeliveryOrderController extends Controller {
            
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
-                $q->where('updated_at', 'like', $date1 . '%');
+                $q->where('created_at', 'like', $date1 . '%');
 
                  // $q->where('updated_at', '<=', $date1);
             } else {
-                $q->where('updated_at', '>=', $date1);
-                $q->where('updated_at', '<=', $date2 . ' 23:59:59');
+                $q->where('created_at', '>=', $date1);
+                $q->where('created_at', '<=', $date2 . ' 23:59:59');
             }
             $search_dates = [
                 'export_from_date' => $data["export_from_date"],
