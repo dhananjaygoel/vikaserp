@@ -954,7 +954,7 @@ class DeliveryChallanController extends Controller {
     }
 
     function getTokenWihtoutGST(){
-        print "gfgg";
+
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(4);
@@ -964,7 +964,7 @@ class DeliveryChallanController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851582276",
+            'QBORealmID' => "9130346851577266",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1292,7 +1292,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-            print $tally_name;
+            
             
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
