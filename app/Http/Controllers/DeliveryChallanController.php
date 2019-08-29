@@ -1291,7 +1291,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-            
+            print $tally_name;
             
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
