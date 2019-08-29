@@ -1171,12 +1171,14 @@ class DeliveryChallanController extends Controller {
             
             if($del_products->vat_percentage==0)
             {
-                print "dfdff";
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
+                print "hi";
+                print_r($update_delivery_challan);
+                die();
                 $tally_name = $update_delivery_challan->customer->tally_name;                      
             }
             else
-            {   print "dffffddffdfd";
+            {   
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;   
             }
@@ -1263,7 +1265,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }*/
-            if($del_products->vat_percentage==0)
+           /* if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;     
                 $tally_name = $update_delivery_challan->customer->tally_name;    
@@ -1273,7 +1275,7 @@ class DeliveryChallanController extends Controller {
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
-            } 
+            } */
             print $tally_name ;
             die();
             $tally_name = rtrim($tally_name);
