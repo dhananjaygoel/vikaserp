@@ -94,7 +94,7 @@ class InventoryController extends Controller {
 
 //        $this->updateOpeningStock();
         
-
+        $virtual_stock_qty = array();
         $query = Inventory::query();
         if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
 
@@ -127,9 +127,9 @@ class InventoryController extends Controller {
                 ->orderBy('product_sub_category.alias_name', 'ASC')
                 ->paginate(50);
         $inventory_newlist->setPath('inventory');
+
         if (count($inventory_newlist)) {
 
-            $virtual_stock_qty = array();
             foreach ($inventory_newlist as $product_categoriy) {
                 $product_category_ids[] = $product_categoriy->product_sub_category_id;
                 $virtual_qty = ($product_categoriy->physical_closing_qty + $product_categoriy->pending_purchase_order_qty + $product_categoriy->pending_purchase_advise_qty) - ($product_categoriy->pending_sales_order_qty + $product_categoriy->pending_delivery_order_qty);
