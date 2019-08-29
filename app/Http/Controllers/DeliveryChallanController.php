@@ -954,6 +954,7 @@ class DeliveryChallanController extends Controller {
     }
 
     function getTokenWihtoutGST(){
+        print "gfgg";
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(4);
