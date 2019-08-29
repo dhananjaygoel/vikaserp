@@ -1074,7 +1074,8 @@ class DeliveryChallanController extends Controller {
             }
         }
         if($update_delivery_challan->doc_number){
-           
+           print "dddddd"
+            die();
             $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
             
             $error = $dataService->getLastError();
@@ -1109,7 +1110,8 @@ class DeliveryChallanController extends Controller {
 
         }
         else{
-            
+            print "hhh"
+            die();
              $line = [];
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
@@ -1270,7 +1272,7 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
-            print_R($tally_name);
+           
             $tally_name = rtrim($tally_name);
             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
