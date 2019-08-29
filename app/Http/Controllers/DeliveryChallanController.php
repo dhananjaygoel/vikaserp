@@ -1115,10 +1115,9 @@ class DeliveryChallanController extends Controller {
                 $TaxCodeRef = 24;
                 $hsncode = $del_products->order_product_all_details->hsn_code;
                 $hsn = Hsn::where('hsn_code',$hsncode)->first();
-                print $del_products->order_product_all_details->hsn_code;
-                print_R($hsn);
+                
                 if($hsn){
-                    print_R($hsn);
+                   
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
@@ -1293,9 +1292,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-            print_R($line);
-            print "hi";
-            die();
+            
             /*
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
