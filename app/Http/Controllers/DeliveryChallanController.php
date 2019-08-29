@@ -1074,7 +1074,7 @@ class DeliveryChallanController extends Controller {
             }
         }
         if($update_delivery_challan->doc_number){
-           print "dddddd"
+           print "dddddd";
             die();
             $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
             
