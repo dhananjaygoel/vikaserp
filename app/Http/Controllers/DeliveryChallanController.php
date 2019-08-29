@@ -1270,7 +1270,7 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } 
-            //print_R($line);
+            print_R($tally_name);
             $tally_name = rtrim($tally_name);
             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
