@@ -167,6 +167,8 @@ class InquiryController extends Controller {
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     //return Redirect::back()->with('flash_message', 'This inquiry is already saved. Please refresh the page');
+                     $parameter = Session::get('parameters');
+                      $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
                     return redirect('inquiry' . $parameters)->with('flash_success_message', ' Inquiry details successfully added.');
 
                 } else {
