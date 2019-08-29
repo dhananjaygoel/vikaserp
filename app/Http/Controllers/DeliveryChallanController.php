@@ -1292,7 +1292,7 @@ class DeliveryChallanController extends Controller {
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
             
-            /*
+            
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {  
@@ -1330,7 +1330,7 @@ class DeliveryChallanController extends Controller {
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
-            */
+            
 
             
         }
