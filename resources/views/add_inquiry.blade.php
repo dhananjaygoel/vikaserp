@@ -316,7 +316,7 @@
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_inquiry">Submit</button>
                                 <!--<input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">-->
-                                <a href="{{URL::to('inquiry')}}" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url()}}/inquiry" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>
