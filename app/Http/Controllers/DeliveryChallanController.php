@@ -1143,9 +1143,9 @@ class DeliveryChallanController extends Controller {
                 if(!empty($item_details)){
                     $quickbook_item_id = $item_details[0]->Id;
                 }
-                else{
+                /*else{
                    $quickbook_item_id =$quickbook_item_id;
-                }
+                }*/
                 //print $item_details[0]->Id; 
                
 
