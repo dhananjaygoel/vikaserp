@@ -109,16 +109,20 @@ class OrderController extends Controller {
           }
      }
    public function loaded_assign(Request $request){
-        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)
-                     ->first();
+        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
+        
+        $del_supervisor = $request->del_supervisor;
+
         $roleid = Auth::user()->role_id;
-        if($roleid ==0 || $roleid == 2){
-          if(is_null($delivery_data->del_supervisor)){
+        if($roleid == 0 || $roleid == 2){
+          if(($delivery_data->del_supervisor =='') || ($delivery_data->del_supervisor != $del_supervisor)){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                  'del_supervisor'=>$request->del_supervisor,            
               ]);      
               echo "success";
-          }
+          } else{
+            echo "failed";
+       }
        
         }
         
@@ -503,8 +507,8 @@ class OrderController extends Controller {
             $session_array = Session::get('forms_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    //return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
-                     return redirect('orders')->with('flash_message', 'Order details successfully added.');
+                    return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                    //  return redirect('orders')->with('flash_message', 'Order details successfully added.');
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_order', $session_array);
