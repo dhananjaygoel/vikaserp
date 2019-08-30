@@ -55,7 +55,6 @@ class InquiryController extends Controller {
         }
 
         $data = Input::all();
-
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -747,6 +746,9 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
+
+        $inquiry_filter=Input::get('inquiry_sort_type')!=""?Input::get('inquiry_sort_type'):"";
+        
         if (Input::has('inquiry_id') && Input::has('password') && (Hash::check(Input::get('password'), Auth::user()->password))) {
             $sms_flag = 0;
 
@@ -813,7 +815,8 @@ class InquiryController extends Controller {
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
             return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry deleted successfully.');
         } else {
-            return redirect('inquiry')->with('flash_message', 'Please enter valid password.');
+            return redirect()->action('InquiryController@index',['inquiry_filter' => $inquiry_filter])->with('flash_message', 'Please enter correct password.');
+            //return redirect('inquiry')->with('flash_message', 'Please enter valid password.');
         }
     }
 

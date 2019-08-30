@@ -257,6 +257,7 @@ class OrderController extends Controller {
     public function index(PlaceOrderRequest $request) {
         ini_set('memory_limit','128M');
 
+        // $data['order_filter']=Input::get();
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -1207,7 +1208,7 @@ class OrderController extends Controller {
      * Functioanlity: Delete individual order details
      */
     public function destroy($id) {
-
+        
         $inputData = Input::get('formData');
         $flag = 0;
         $sms_flag = 0;
@@ -1351,7 +1352,11 @@ class OrderController extends Controller {
             return array('message' => 'success');
         } else {
             if ($flag == 1) {
-                return Redirect::to('orders')->with('error', 'Please enter correct password.');
+                // echo "<pre>";
+                // print_r(Input::all());die;
+                // ->route('orders', ['order_sort_type' = $formFields['order_sort_type'])
+        return redirect()->action('OrderController@index',['order_filter' => $formFields['order_sort_type']])->with('error', 'Please enter correct password.');
+                // return Redirect::to('orders')->with('error', 'Please enter correct password.');
             }
             return array('message' => 'failed');
         }
