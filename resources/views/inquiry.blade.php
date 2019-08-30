@@ -275,6 +275,8 @@
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                                                     <input class="form-control" name="inquiry_id" id="inquiry_id" type="hidden"/>
                                                     <input class="form-control" name="way" id="way" type="hidden"/>
+                                                    <input type="hidden" name="inquiry_sort_type" value="{{(Input::get('inquiry_filter')!="")?Input::get('inquiry_filter'):""}}"/>
+                                                    
                                                     <div class="delete">
                                                         <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                         <div class="pwd">
