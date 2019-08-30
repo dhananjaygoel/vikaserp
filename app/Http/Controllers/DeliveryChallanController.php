@@ -1167,8 +1167,7 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
-              print_R($line);
-              die();
+            
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
