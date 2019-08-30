@@ -150,7 +150,7 @@ $(".btn_save_truck").click(function () {
         }
 
         if (prod == 2) {
-            $('.thick12').css('display', 'none');
+            $('.thick12').css('display', 'block');
         }
 
         if (prod == 3) {
