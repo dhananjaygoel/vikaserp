@@ -277,6 +277,16 @@ class CustomerController extends Controller {
         } else {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
+        $dataService1 = $this->getToken();
+        $dataService1->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $customerObj1 = \QuickBooksOnline\API\Facades\Customer::create($data);
+        $resultingCustomerObj1 = $dataService1dataService1->Add($customerObj1);
+        $error1 = $dataService1->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error1->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj1];
+        }
     }
 
     function quickbook_create_a_supplier($data){
@@ -290,6 +300,16 @@ class CustomerController extends Controller {
             return ['status'=>false,'message'=>$error->getResponseBody()];
         } else {
             return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+         $dataService1 = $this->getToken();
+        $dataService1->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $customerObj1 = \QuickBooksOnline\API\Facades\Customer::create($data);
+        $resultingCustomerObj1 = $dataService1dataService1->Add($customerObj1);
+        $error1 = $dataService1->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error1->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj1];
         }
     } 
     function getTokenAll(){
