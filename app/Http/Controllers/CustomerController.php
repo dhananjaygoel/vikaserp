@@ -385,7 +385,8 @@ class CustomerController extends Controller {
             ],
         ];
         $res_q = $this->quickbook_create_supplier($Qdata);
-
+        print "hello";
+        die();
             if($res_q['status']){
                 print_R($res_q);
                 die();
