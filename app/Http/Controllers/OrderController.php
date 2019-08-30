@@ -500,8 +500,7 @@ class OrderController extends Controller {
      * Functioanlity: Save order details
      */
     public function store(PlaceOrderRequest $request) {
-       print "hi";
-       die();
+    
         $input_data = Input::all();
         $sms_flag = 0;
         if (Session::has('forms_order')) {
@@ -622,6 +621,7 @@ class OrderController extends Controller {
             $order->delivery_location_id = $input_data['add_order_location'];
             $order->location_difference = $input_data['location_difference'];
         }
+        print_R($order);
         $order->save();
                     // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
         $order_id = $order->id;
