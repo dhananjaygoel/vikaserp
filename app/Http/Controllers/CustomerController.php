@@ -384,23 +384,9 @@ class CustomerController extends Controller {
                 "FreeFormNumber"=>  Input::get('phone_number1')
             ],
         ];
-        $res_q = $this->quickbook_create_supplier($Qdata);
-        if($res_q['status']){
-              
-                $customer->quickbook_supplier_id = $res_q['message']->Id;
-         }
-         $this->refresh_token();
-         $res_q = $this->quickbook_create_a_supplier($Qdata);
-         print "dffdfd";
-         print_R($res_q);
-         die();
-         if($res_q['status']){
-                
-                $customer->quickbook_a_supplier_id = $res_q['message']->Id;
-            }
-         $this->refresh_token_all();
+        
 
-       /* if(isset($status) && Input::get('status') == 'yes'){
+       if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
                 $customer->quickbook_supplier_id = $res_q['message']->Id;
@@ -452,14 +438,6 @@ class CustomerController extends Controller {
                 }
             }
         }
-          */
-            
-
-
-
-
-
-
         if (Input::has('status')) {
             $customer->is_supplier = Input::get('status');
         }
