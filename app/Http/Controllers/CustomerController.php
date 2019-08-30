@@ -277,16 +277,6 @@ class CustomerController extends Controller {
         } else {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
-        $dataService1 = $this->getToken();
-        $dataService1->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
-        $customerObj1 = \QuickBooksOnline\API\Facades\Customer::create($data);
-        $resultingCustomerObj1 = $dataService1dataService1->Add($customerObj1);
-        $error1 = $dataService1->getLastError();
-        if ($error) {
-            return ['status'=>false,'message'=>$error1->getResponseBody()];
-        } else {
-            return ['status'=>true,'message'=>$resultingCustomerObj1];
-        }
     }
 
     function quickbook_create_a_supplier($data){
@@ -300,16 +290,6 @@ class CustomerController extends Controller {
             return ['status'=>false,'message'=>$error->getResponseBody()];
         } else {
             return ['status'=>true,'message'=>$resultingCustomerObj];
-        }
-         $dataService1 = $this->getToken();
-        $dataService1->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
-        $customerObj1 = \QuickBooksOnline\API\Facades\Customer::create($data);
-        $resultingCustomerObj1 = $dataService1dataService1->Add($customerObj1);
-        $error1 = $dataService1->getLastError();
-        if ($error) {
-            return ['status'=>false,'message'=>$error1->getResponseBody()];
-        } else {
-            return ['status'=>true,'message'=>$resultingCustomerObj1];
         }
     } 
     function getTokenAll(){
@@ -404,27 +384,38 @@ class CustomerController extends Controller {
                 "FreeFormNumber"=>  Input::get('phone_number1')
             ],
         ];
-
-        if(isset($status) && Input::get('status') == 'yes'){
-            $res_q = $this->quickbook_create_a_supplier($Qdata);
+        $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
-                $customer->quickbook_supplier_id = $res_q['message']->Id; 
+                $customer->quickbook_supplier_id = $res_q['message']->Id;
+            }
+            $this->refresh_token();
+
+         $res_q = $this->quickbook_create_a_supplier($Qdata);
+         if($res_q['status']){
+                $customer->quickbook_a_supplier_id = $res_q['message']->Id;
+            }
+         $this->refresh_token_all();
+
+       /* if(isset($status) && Input::get('status') == 'yes'){
+            $res_q = $this->quickbook_create_supplier($Qdata);
+            if($res_q['status']){
+                $customer->quickbook_supplier_id = $res_q['message']->Id;
             }
         } else{
-            $res = $this->quickbook_create_a_customer($Qdata);
+            $res = $this->quickbook_create_customer($Qdata);
             if($res['status']){
                 $customer->quickbook_customer_id = $res['message']->Id;
-                $res_q = $this->quickbook_create_a_supplier($Qdata);
+                $res_q = $this->quickbook_create_supplier($Qdata);
                 if($res_q['status']){
                     $customer->quickbook_supplier_id = $res_q['message']->Id;
                 }
             }
             else{
                 $this->refresh_token();
-                $res = $this->quickbook_create_a_customer($Qdata);
+                $res = $this->quickbook_create_customer($Qdata);
                 if($res['status']){
                     $customer->quickbook_customer_id = $res['message']->Id;
-                    $res_q = $this->quickbook_create_a_supplier($Qdata);
+                    $res_q = $this->quickbook_create_supplier($Qdata);
                     if($res_q['status']){
                         $customer->quickbook_supplier_id = $res_q['message']->Id;
                     }
@@ -457,8 +448,8 @@ class CustomerController extends Controller {
                 }
             }
         }
-
-
+          */
+            
 
 
 
