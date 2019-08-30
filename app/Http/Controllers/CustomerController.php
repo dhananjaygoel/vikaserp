@@ -231,7 +231,7 @@ class CustomerController extends Controller {
 
     function getToken(){
        require_once base_path('quickbook/vendor/autoload.php');
-       $quickbook = App\QuickbookToken::find(3);
+       $quickbook = App\QuickbookToken::find(4);
        
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -255,7 +255,7 @@ class CustomerController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(4);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -294,7 +294,7 @@ class CustomerController extends Controller {
     } 
     function getTokenAll(){
        require_once base_path('quickbook/vendor/autoload.php');
-       $quickbook = App\QuickbookToken::find(4);
+       $quickbook = App\QuickbookToken::find(3);
        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -319,7 +319,7 @@ class CustomerController extends Controller {
 
     function refresh_token_all(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
