@@ -57,7 +57,7 @@
                                             {{ '--' }}
                                             @endif
                                         </td>
-                                        <td>{{$delivery['customer']->tally_name}}</td>
+                                        <td>{{isset($delivery['customer']->tally_name)?$delivery['customer']->tally_name:''}}</td>
                                         <td>{{ $delivery->vehicle_number }}</td>
                                         <td>{{ $delivery['user']->first_name}} </td>
                                         <td>{{$delivery->remarks}}</td>
