@@ -363,7 +363,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('order/{id}-delete', 'OrderController@destroy');
     Route::any('order/{id}-track', 'OrderController@track');
     Route::resource('orders', 'OrderController');
-    Route::post('orders', 'OrderController@index');
+    // Route::post('orders', 'OrderController@index');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
     Route::get('fetch_order_size', 'ProductsubController@fetch_order_size');
     Route::resource('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
