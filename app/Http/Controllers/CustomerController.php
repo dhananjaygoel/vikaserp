@@ -385,18 +385,17 @@ class CustomerController extends Controller {
             ],
         ];
         $res_q = $this->quickbook_create_supplier($Qdata);
-        print_r($res_q);
-        print "hello";
-        die();
-            if($res_q['status']){
-                print_R($res_q);
-                die();
+        if($res_q['status']){
+              
                 $customer->quickbook_supplier_id = $res_q['message']->Id;
-            }
-            $this->refresh_token();
-
+         }
+         $this->refresh_token();
          $res_q = $this->quickbook_create_a_supplier($Qdata);
+         print "dffdfd";
+         print_R($res_q);
+         die();
          if($res_q['status']){
+                
                 $customer->quickbook_a_supplier_id = $res_q['message']->Id;
             }
          $this->refresh_token_all();
