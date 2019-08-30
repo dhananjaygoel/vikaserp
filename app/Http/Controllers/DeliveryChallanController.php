@@ -1143,9 +1143,9 @@ class DeliveryChallanController extends Controller {
                 if(!empty($item_details)){
                     $quickbook_item_id = $item_details[0]->Id;
                 }
-                /*else{
+                else{
                    $quickbook_item_id =$quickbook_item_id;
-                }*/
+                }
                 //print $item_details[0]->Id; 
                
 
@@ -1167,8 +1167,7 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
-            print_r($line);
-            die();
+            
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
