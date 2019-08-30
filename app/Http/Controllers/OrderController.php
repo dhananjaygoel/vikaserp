@@ -1352,8 +1352,8 @@ class OrderController extends Controller {
             return array('message' => 'success');
         } else {
             if ($flag == 1) {
-        // return redirect()->action('OrderController@index',['order_filter' => $formFields['order_sort_type']])->with('error', 'Please enter correct password.');
-                return Redirect::to('orders')->with('error', 'Please enter correct password.');
+        return redirect()->action('OrderController@index',['order_filter' => $formFields['order_sort_type']])->with('error', 'Please enter correct password.');
+                // return Redirect::to('orders')->with('error', 'Please enter correct password.');
             }
             return array('message' => 'failed');
         }

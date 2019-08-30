@@ -1138,7 +1138,7 @@ class DeliveryChallanController extends Controller {
                 }
                 $productname = ltrim($productname);
                 
-                 $item_query = "select * from Item where Name ='".$productname."'";
+                $item_query = "select * from Item where Name ='".$productname."'";
                 $item_details = $dataService->Query($item_query);
                 if(!empty($item_details)){
                     $quickbook_item_id = $item_details[0]->Id;
@@ -1167,7 +1167,8 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
              }
-            
+            print_r($line);
+            die();
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
@@ -1272,7 +1273,7 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } */
-            
+           
             $tally_name = rtrim($tally_name);
 
             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
