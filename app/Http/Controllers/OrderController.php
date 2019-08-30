@@ -500,7 +500,8 @@ class OrderController extends Controller {
      * Functioanlity: Save order details
      */
     public function store(PlaceOrderRequest $request) {
-
+       print "hi";
+       die();
         $input_data = Input::all();
         $sms_flag = 0;
         if (Session::has('forms_order')) {
