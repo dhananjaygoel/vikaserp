@@ -1590,14 +1590,14 @@ class OrderController extends Controller {
         $order_details = Order::find($input_data['order_id']);
         if (!empty($order_details)) {
             if ($order_details->order_status == 'completed') {
-                return Redirect::back()->with('flash_message', 'This delivry order is already saved. Please refresh the page');
+                return Redirect::back()->with('flash_message', 'This delivery order is already saved. Please refresh the page');
             }
         }
         if (Session::has('forms_delivery_order')) {
             $session_array = Session::get('forms_delivery_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message', 'This delivry order is already saved. Please refresh the page');
+                    return Redirect::back()->with('flash_message', 'This delivery order is already saved. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_delivery_order', $session_array);
