@@ -419,7 +419,7 @@ class CustomerController extends Controller {
             ],
         ];
         $inclusivecustomerid ="";
-        $$gstcustomerid = "";
+        $gstcustomerid = "";
         $dataService = $this->getTokenWihtoutGST();
         $newCustomerObj = Vendor::create($Qdata);
         $newcus = $dataService->add($newCustomerObj);
