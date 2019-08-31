@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreCustomer;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 use QuickBooksOnline\API\Facades\Vendor;
-use QuickBooksOnline\API\Facades\Customer;
 use View;
 use Hash;
 use Auth;
@@ -420,7 +419,7 @@ class CustomerController extends Controller {
             ],$this->refresh_token_Wihtout_GST();
         ];
         $dataService = $this->getTokenWihtoutGST();
-        $newCustomerObj = Customer::create($data);
+        $newCustomerObj = Vendor::create($data);
         $newcus = $dataService->add($newCustomerObj);
         $error = $dataService->getLastError();
         if ($error) { 
