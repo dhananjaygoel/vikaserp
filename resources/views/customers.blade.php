@@ -127,7 +127,7 @@
                                                 </span>
                                             </a>
                                             @endif
-                                            <?php echo $c->quickbook_a_customer_id; echo $c->quickbook_customer_id;?>
+                                           
                                         </td>
                                     </tr>
                                 <div class="modal fade" id="myModal{{$c->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
