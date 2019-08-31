@@ -442,10 +442,9 @@ class CustomerController extends Controller {
         else{
             $gstcustomerid =  $newcustoinclusive->Id;
         }
-        print $gstcustomerid;
-        print '<br/>';
-        print $inclusivecustomerid;
-        die();
+        $customer->quickbook_a_customer_id  = $gstcustomerid;
+        $customer->quickbook_customer_id  = $inclusivecustomerid;
+
        /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
