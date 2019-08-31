@@ -1136,9 +1136,7 @@ class DeliveryChallanController extends Controller {
                     $quickbook_item_id=$del_products->order_product_all_details->quickbook_item_id;
                     $productname = $del_products->order_product_all_details->alias_name;
                 }
-                $productname = $productname;
-                
-                $item_query = "select * from Item where Name ='".$productname."'";
+                echo $item_query = "select * from Item where Name ='".$productname."'";
                 $item_details = $dataService->Query($item_query);
                 print_R($item_details);
                 if(!empty($item_details)){
