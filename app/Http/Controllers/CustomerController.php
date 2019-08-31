@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreCustomer;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 use QuickBooksOnline\API\Facades\Vendor;
+use QuickBooksOnline\API\Facades\Customer;
 use View;
 use Hash;
 use Auth;
@@ -278,6 +279,33 @@ class CustomerController extends Controller {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
     }
+    function getTokenWihtoutGST(){
+
+        require_once base_path('quickbook/vendor/autoload.php');
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(3);
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "9130346851582276",
+            'baseUrl' => "Production",
+            'minorVersion'=>34
+        )); 
+
+    }
+    function refresh_token_Wihtout_GST(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(3);
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
 
     function quickbook_create_a_supplier($data){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -383,10 +411,38 @@ class CustomerController extends Controller {
             "PrimaryPhone"=>  [
                 "FreeFormNumber"=>  Input::get('phone_number1')
             ],
+            "BillAddr"=>[
+                  "Country"=> "India",
+                  "CountrySubDivisionCode"=> Input::get('state'),
+                  "City"=> Input::get('city');, 
+                  "PostalCode"=> Input::get('zip'), 
+                  "Line1" => Input::get('address1'), 
+            ],$this->refresh_token_Wihtout_GST();
         ];
-        
-
-       if(isset($status) && Input::get('status') == 'yes'){
+        $dataService = $this->getTokenWihtoutGST();
+        $newCustomerObj = Customer::create($data);
+        $newcus = $dataService->add($newCustomerObj);
+        $error = $dataService->getLastError();
+        if ($error) { 
+            $this->refresh_token_Wihtout_GST();
+            $dataService = $this->getTokenWihtoutGST();  
+        }
+        else{
+            $inclusivecustomerid =  $newcus->Id;
+        }
+        $nextdataservice = $this->getToken();
+        $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+        $error1 = $nextdataservice->getLastError();
+        if ($error1) { 
+            $this->refresh_token();
+            $dataService = $this->getToken();  
+        }
+        else{
+            $inclusivecustomerid =  $newcustoinclusive->Id;
+        }
+        print $inclusivecustomerid;
+        die();
+       /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
                 $customer->quickbook_supplier_id = $res_q['message']->Id;
@@ -437,7 +493,7 @@ class CustomerController extends Controller {
                     }
                 }
             }
-        }
+        }*/
         if (Input::has('status')) {
             $customer->is_supplier = Input::get('status');
         }
