@@ -1314,6 +1314,16 @@ class DeliveryChallanController extends Controller {
                 $inv = $dataService->add($theResourceObj);  
                 $error1 = $dataService->getLastError();
                 if($error1){
+                    if($del_products->vat_percentage==0)
+                {
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST(); 
+                    // $inv = $dataService->add($theResourceObj);                   
+                }
+                else{
+                    $this->refresh_token();
+                    $dataService = $this->getToken();
+                }
                     echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
                     echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
                     echo "The Response message is: " . $error->getResponseBody() . "\n";
