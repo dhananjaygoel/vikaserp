@@ -1273,9 +1273,8 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;      
             } */
            
-            $tally_name = rtrim($tally_name);
 
-            $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
+           echo  $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
             print_R($customer_details);
