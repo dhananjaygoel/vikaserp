@@ -416,7 +416,7 @@ class CustomerController extends Controller {
                   "City"=> Input::get('city'), 
                   "PostalCode"=> Input::get('zip'), 
                   "Line1" => Input::get('address1'), 
-            ],$this->refresh_token_Wihtout_GST();
+            ],
         ];
         $dataService = $this->getTokenWihtoutGST();
         $newCustomerObj = Vendor::create($data);
