@@ -1140,6 +1140,7 @@ class DeliveryChallanController extends Controller {
                 
                 $item_query = "select * from Item where Name ='".$productname."'";
                 $item_details = $dataService->Query($item_query);
+                print_R($item_details);
                 if(!empty($item_details)){
                     $quickbook_item_id = $item_details[0]->Id;
                 }
@@ -1274,11 +1275,10 @@ class DeliveryChallanController extends Controller {
             } */
            
 
-           echo  $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
+             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
-            print_R($customer_details);
-            print_R($line);
+           
              if(!empty($customer_details)){
                     $quickbook_customer_id = $customer_details[0]->Id;
                 }
