@@ -418,6 +418,7 @@ class CustomerController extends Controller {
                   "Line1" => Input::get('address1'), 
             ],
         ];
+        $inclusivecustomerid ="";
         $dataService = $this->getTokenWihtoutGST();
         $newCustomerObj = Vendor::create($Qdata);
         $newcus = $dataService->add($newCustomerObj);
