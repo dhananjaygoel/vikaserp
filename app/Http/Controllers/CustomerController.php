@@ -419,10 +419,12 @@ class CustomerController extends Controller {
             ],
         ];
         $inclusivecustomerid ="";
+        $$gstcustomerid = "";
         $dataService = $this->getTokenWihtoutGST();
         $newCustomerObj = Vendor::create($Qdata);
         $newcus = $dataService->add($newCustomerObj);
         $error = $dataService->getLastError();
+        print $error;
         if ($error) { 
             $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();  
@@ -438,8 +440,10 @@ class CustomerController extends Controller {
             $dataService = $this->getToken();  
         }
         else{
-            $inclusivecustomerid =  $newcustoinclusive->Id;
+            $gstcustomerid =  $newcustoinclusive->Id;
         }
+        print $gstcustomerid;
+        print '<br/>';
         print $inclusivecustomerid;
         die();
        /*if(isset($status) && Input::get('status') == 'yes'){
