@@ -127,6 +127,7 @@
                                                 </span>
                                             </a>
                                             @endif
+                                            <?php echo "hello";?>
                                         </td>
                                     </tr>
                                 <div class="modal fade" id="myModal{{$c->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
