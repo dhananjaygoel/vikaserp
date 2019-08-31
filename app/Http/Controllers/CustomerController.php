@@ -410,10 +410,10 @@ class CustomerController extends Controller {
             "PrimaryPhone"=>  [
                 "FreeFormNumber"=>  Input::get('phone_number1')
             ],
-            "BillAddr"=>[
+            "BillAddr"=> [
                   "Country"=> "India",
                   "CountrySubDivisionCode"=> Input::get('state'),
-                  "City"=> Input::get('city');, 
+                  "City"=> Input::get('city'), 
                   "PostalCode"=> Input::get('zip'), 
                   "Line1" => Input::get('address1'), 
             ],$this->refresh_token_Wihtout_GST();
