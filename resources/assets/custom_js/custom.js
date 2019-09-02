@@ -174,8 +174,18 @@ $(".btn_save_truck").click(function () {
                     
                 }
                 $('#select_product_categroy').html(str);
-                console.log(prod[0].id);
-               console.log("DFDFFD");
+                var subid = prod[0].id;
+
+               
+  
+        $.ajax({
+            type: 'get',
+            url: url + '/get_hsn_code',
+            data: {id: subid, _token: token},
+            success: function (data) {
+                $('#hsn_code').val(data);
+            }
+        });
             }
         });
 
