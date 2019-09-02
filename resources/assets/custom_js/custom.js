@@ -171,13 +171,14 @@ $(".btn_save_truck").click(function () {
                 var str2 = '<option value=""> --select-- </option>';
                 for (var key in prod) {
                     str += '<option value="' + prod[key].id + '"> ' + prod[key].product_category_name + ' </option>';
-                    console.log(prod[key].id);
+                    
                 }
-                
                 $('#select_product_categroy').html(str);
-               
+                console.log(prod[0].id);
+               console.log("DFDFFD");
             }
         });
+
        
     });
   
