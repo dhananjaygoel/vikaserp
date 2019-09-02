@@ -177,6 +177,7 @@ $(".btn_save_truck").click(function () {
             }
         });
        var subid =  $("#select_product_categroy").val();
+       console.log(subid);
         var url = $('#baseurl2').val();
         var token = $('#_token').val();
         $.ajax({
