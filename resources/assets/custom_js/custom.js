@@ -178,17 +178,6 @@ $(".btn_save_truck").click(function () {
         });
        var subid =  $("#select_product_categroy").val();
        console.log(subid);
-        var url = $('#baseurl2').val();
-        var token = $('#_token').val();
-        $.ajax({
-            type: 'get',
-            url: url + '/get_hsn_code',
-            data: {id: subid, _token: token},
-            success: function (data) {
-                $('#hsn_code').val(data);
-            }
-        });
-
     });
 
     $("#select_product_categroy").on('change',function () {
