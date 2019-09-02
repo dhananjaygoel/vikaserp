@@ -174,10 +174,11 @@ $(".btn_save_truck").click(function () {
                 }
 
                 $('#select_product_categroy').html(str);
+                var subid =  $("#select_product_categroy").val();
+                console.log(subid);
             }
         });
-       var subid =  $("#select_product_categroy").val();
-       console.log(subid);
+       
     });
 
     $("#select_product_categroy").on('change',function () {
