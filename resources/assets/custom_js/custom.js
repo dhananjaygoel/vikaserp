@@ -171,19 +171,16 @@ $(".btn_save_truck").click(function () {
                 var str2 = '<option value=""> --select-- </option>';
                 for (var key in prod) {
                     str += '<option value="' + prod[key].id + '"> ' + prod[key].product_category_name + ' </option>';
+                    console.log(prod[key].id);
                 }
-
+                
                 $('#select_product_categroy').html(str);
                
             }
         });
        
     });
-    $( "#select_product_categroy" ).load( "/get_product_category", function() {
-         var subid =  $("#select_product_categroy").val();
-                console.log(subid);
-                console.log("hhhh");
-    });
+  
 
     $("#select_product_categroy").on('change',function () {
         var id = this.value;
