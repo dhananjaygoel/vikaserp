@@ -175,7 +175,7 @@ $(".btn_save_truck").click(function () {
                 }
                 $('#select_product_categroy').html(str);
                 var subid = prod[0].id;
-                console.log(subid);
+                //console.log(subid);
                
           
         $.ajax({
