@@ -339,7 +339,7 @@ class ProductsubController extends Controller {
         $newItemObj = Item::create($Qdata);
         $newitem = $dataService->add($newItemObj);
         $error = $dataService->getLastError();
-        print $error;
+        
         if ($error) { 
             $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();  
