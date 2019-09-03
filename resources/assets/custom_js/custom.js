@@ -171,12 +171,27 @@ $(".btn_save_truck").click(function () {
                 var str2 = '<option value=""> --select-- </option>';
                 for (var key in prod) {
                     str += '<option value="' + prod[key].id + '"> ' + prod[key].product_category_name + ' </option>';
+                    
                 }
-
                 $('#select_product_categroy').html(str);
+                var subid = prod[0].id;
+                //console.log(subid);
+               
+          
+        $.ajax({
+            type: 'get',
+            url: url + '/get_hsn_code',
+            data: {id: subid, _token: token},
+            success: function (data) {
+                $('#hsn_code').val(data);
             }
         });
+            }
+        });
+
+       
     });
+  
 
     $("#select_product_categroy").on('change',function () {
         var id = this.value;
