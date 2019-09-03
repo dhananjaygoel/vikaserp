@@ -315,7 +315,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('order_assign', 'OrderController@order_assign');
     Route::post('delivery_order_spervisor', 'OrderController@delivery_order_spervisor');
     Route::post('delivery_order_del_boy', 'OrderController@delivery_order_del_boy');
-
+    Route::get('export_Order_Based_On_Status', 'OrderController@exportOrderBasedOnStatus1');
     Route::get('get_product_type', 'ProductsubController@get_product_type');
     Route::resource('inventory', 'InventoryController');
     Route::get('fillinventorylist', 'InventoryController@fillInventoryList');
