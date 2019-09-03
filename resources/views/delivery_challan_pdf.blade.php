@@ -251,6 +251,7 @@
                         $state = \App\DeliveryLocation::where('id',$loc_id->delivery_location_id)->first();
                         $local = \App\States::where('id',$state->state_id)->first();
                         $local_state = $local->local_state;
+                        $final_vat_amount = 0;
                         ?>
                         @foreach($allorder['delivery_challan_products'] as $prod)
                         @if($prod->order_type == 'delivery_challan')
@@ -288,15 +289,14 @@
 
                             <td><?php echo $rate = $prod->price; ?></td>
                             <td>
-                                <?php $total_price += $rate * $prod->actual_quantity; ?>
+                                <?php $total_price = $rate * $prod->actual_quantity; ?>
                                 {{ ($rate * $prod->actual_quantity) }}
                             </td>
                         </tr>
                 <?php
                         $total_vat_amount = ($total_price * $allorder->vat_percentage) / 100;
 
-                        $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
-
+                        $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
                         ?>
                         @endif
                         @endforeach

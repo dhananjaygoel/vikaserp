@@ -269,6 +269,7 @@
 
 
                 ?>
+                <?php $final_vat_amount = 0; ?>
                 @foreach($allorder['delivery_challan_products'] as $prod)
                 @if($prod->order_type == 'delivery_challan')
                 <div class="divRow">
@@ -317,7 +318,7 @@
 
                     <div class="divCell2"><?php echo $rate = $prod->price; ?></div>
                     <div class="divCell">
-                        <?php $total_price += $rate * $prod->actual_quantity; ?>
+                        <?php $total_price = $rate * $prod->actual_quantity; ?>
                         {{ ($rate * $prod->actual_quantity) }}
                     </div>
                 </div>
@@ -326,8 +327,7 @@
 
                 $total_vat_amount = ($total_price * $total_pr) / 100;
 
-
-                $final_vat_amount = ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
 
                 ?>
                 @endif
