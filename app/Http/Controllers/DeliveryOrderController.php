@@ -330,7 +330,11 @@ class DeliveryOrderController extends Controller {
             $session_array = Session::get('forms_edit_delivery_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
+                    //return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
+                      $parameter = Session::get('parameters');
+                     $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+                    return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
+
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_delivery_order', $session_array);
