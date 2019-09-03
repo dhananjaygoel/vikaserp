@@ -1235,7 +1235,7 @@ class DeliveryOrderController extends Controller {
             }
 
             if (isset($product['actual_quantity']) && isset($product['price'])) {                
-                if (isset($product_type_id)) {
+                if (isset($product_type_id) && $product_type_id==3) {
 
 
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
