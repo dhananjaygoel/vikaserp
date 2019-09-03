@@ -202,7 +202,6 @@
                                         $a = sizeof($delivery_data['delivery_product']);
                                         for ($i = 0; $i <= $total_products_added + 1; $i++) {
                                         if (isset($session_data['product'][$i]['name'])) {
-                                        if (isset($session_data['product'][$i]['present_shipping'])) {
 
                                         if ($i <= $a) {
                                         ?>
@@ -280,7 +279,7 @@
                                                 </div>
                                             </td>
                                           </tr>
-                                        <?php }}} else {
+                                        <?php }} else {
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
                                          <td class="col-md-2">
