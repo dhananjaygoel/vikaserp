@@ -203,6 +203,13 @@
                                         for ($i = 0; $i <= $total_products_added + 1; $i++) {
                                         if (isset($session_data['product'][$i]['name'])) {
                                         if ($i <= $a) {
+                                        if (isset($session_data['product'][$i]['present_shipping'])){
+                                            $session_data['product'][$i]['present_shipping'] =
+                                            $session_data['product'][$i]['present_shipping'];
+                                        }
+                                        else{
+                                            $session_data['product'][$i]['present_shipping'] = 0;
+                                        }
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
                                         <td class="col-md-2">
