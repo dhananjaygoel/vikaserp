@@ -428,8 +428,10 @@ class DeliveryOrderController extends Controller {
             'discount' => $input_data['discount'],
         ));
         $order_products = array();
+        print_R($$input_data);
+        die();
         foreach ($input_data['product'] as $product_data) {
-            print_R($product_data);
+           // print_R($product_data);
             if ($product_data['order'] != '' || $product_data['id'] != '') {
                 
                 $order_products = [
@@ -447,7 +449,7 @@ class DeliveryOrderController extends Controller {
                
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
-               print_R($product_data);
+              // print_R($product_data);
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
