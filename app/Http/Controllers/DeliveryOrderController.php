@@ -435,7 +435,7 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    'order'=>33176,
+                    
                     // 'quantity' => $product_data['quantity'],
                     // 'length' => $product_data['quantity'],
                     // 'present_shipping' => $product_data['present_shipping'],
@@ -450,7 +450,7 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                     'order'=>33176,
+                    
                     // 'quantity' => $product_data['present_shipping'],
                     // 'length' => $product_data['quantity'],
                     // 'present_shipping' => $product_data['present_shipping'],
