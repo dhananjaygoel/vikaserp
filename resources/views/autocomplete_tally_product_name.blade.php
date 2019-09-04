@@ -1031,9 +1031,14 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+            // for (var key in arr1) {
+    html = "<option value=1 id = 'unit_"+current_row_count+"_0'>--Select--</option>"
+            +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+            +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+            +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+            +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+            +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+    // }
     $("#units_" + current_row_count).html(html);
     });
     
@@ -1148,9 +1153,14 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+            // for (var key in arr1) {
+    html = "<option value=1 id = 'unit_"+current_row_count+"_0'>--Select--</option>"
+            +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+            +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+            +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+            +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+            +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+    // }
     $("#units_" + current_row_count).html(html);
     });
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
@@ -1708,16 +1718,27 @@ $.widget("custom.combobox1", {
 
             this._on(this.input, {
                 autocompleteselect: function (event, ui) {
+                    alert('hi');
         //         	var i = $('#units_' + id).val();
     				// alert(i);
         //            console.log(ui);
                    if(ui.item.type_id == 3)
                    {
-                   		$('#length_'+id).attr('disabled', false);
+                           $('#length_'+id).attr('disabled', false);
+                           $('#unit_'+id+'_1').hide();
+                           $('#unit_'+id+'_2').hide();
+                           $('#unit_'+id+'_3').hide();
+                           $('#unit_'+id+'_4').show();
+                           $('#unit_'+id+'_5').show();
                    }
                    else
                    {
-                   		$('#length_'+id).attr('disabled', true);
+                           $('#length_'+id).attr('disabled', true);
+                           $('#unit_'+id+'_1').show();
+                           $('#unit_'+id+'_2').show();
+                           $('#unit_'+id+'_3').show();
+                           $('#unit_'+id+'_4').hide();
+                           $('#unit_'+id+'_5').hide();
                    }
                     if(ui.item.product_price == ""){
                         var term = '';
@@ -1957,13 +1978,24 @@ function getProductDetails() {
             this._on(this.input, {
                 autocompleteselect: function (event, ui) {
                    // console.log(ui);
+                   
                    if(ui.item.type_id == 3)
-                   {
-                   		$('#length_'+id).attr('disabled', false);
+                   {alert('hi2 if');
+                           $('#length_'+id).attr('disabled', false);
+                           $('#unit_'+id+'_1').hide();
+                           $('#unit_'+id+'_2').hide();
+                           $('#unit_'+id+'_3').hide();
+                           $('#unit_'+id+'_4').show();
+                           $('#unit_'+id+'_5').show();
                    }
                    else
-                   {
-                   		$('#length_'+id).attr('disabled', true);
+                   {alert('hi2 else');
+                           $('#length_'+id).attr('disabled', true);
+                           $('#unit_'+id+'_1').show();
+                           $('#unit_'+id+'_2').show();
+                           $('#unit_'+id+'_3').show();
+                           $('#unit_'+id+'_4').hide();
+                           $('#unit_'+id+'_5').hide();
                    }
                     if(ui.item.product_price == ""){
                         var term = '';
