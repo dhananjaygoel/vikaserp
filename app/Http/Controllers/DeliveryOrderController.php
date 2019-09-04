@@ -1250,8 +1250,12 @@ class DeliveryOrderController extends Controller {
                         $ss =Customer::where('id',$cust_id)->first();
                         print_r($ss);
                         $state = Customer::where('id',$cust_id)->first()->state;
-                               print $state;
-                        $local_state = App\States::where('id',$state)->first()->local_state;
+                        if(!empty($state)){
+                            $local_state = App\States::where('id',$state)->first()->local_state;
+                        }
+                        else{
+                            $local_state ="";
+                        }
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
 
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
