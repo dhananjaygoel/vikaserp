@@ -465,6 +465,8 @@ class DeliveryOrderController extends Controller {
             }
             
         }
+        print_R($order_products);
+        die();
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
