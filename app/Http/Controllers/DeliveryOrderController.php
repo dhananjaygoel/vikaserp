@@ -435,6 +435,7 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
+                    
                     // 'quantity' => $product_data['quantity'],
                     // 'length' => $product_data['quantity'],
                     // 'present_shipping' => $product_data['present_shipping'],
@@ -449,6 +450,7 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
+                    
                     // 'quantity' => $product_data['present_shipping'],
                     // 'length' => $product_data['quantity'],
                     // 'present_shipping' => $product_data['present_shipping'],
@@ -1235,19 +1237,23 @@ class DeliveryOrderController extends Controller {
             }
 
             if (isset($product['actual_quantity']) && isset($product['price'])) {                
-                if (isset($product_type_id) && $product_type_id==3) {
+                if (isset($product_type_id)) {
 
 
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
 //                  $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
-                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'
-                    && $product_type_id ==3){
+                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
 
                         //dd($product);
                         //die;
                         $cust_id = $delivery_order_details->customer_id;
                         $state = Customer::where('id',$cust_id)->first()->state;
-                        $local_state = App\States::where('id',$state)->first()->local_state;
+                        if(!empty($state)){
+                            $local_state = App\States::where('id',$state)->first()->local_state;
+                        }
+                        else{
+                            $local_state = "";
+                        }
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
 
