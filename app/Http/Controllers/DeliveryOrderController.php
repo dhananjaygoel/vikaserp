@@ -430,6 +430,7 @@ class DeliveryOrderController extends Controller {
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['order'] != '' || $product_data['id'] != '') {
+                print "ffff";
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
@@ -445,6 +446,7 @@ class DeliveryOrderController extends Controller {
                
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
+                print "Ff";
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
@@ -465,7 +467,6 @@ class DeliveryOrderController extends Controller {
             }
             
         }
-        print_R($order_products);
         die();
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
