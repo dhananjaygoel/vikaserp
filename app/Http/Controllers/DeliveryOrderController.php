@@ -460,7 +460,7 @@ class DeliveryOrderController extends Controller {
                     'remarks' => $product_data['remark'],
                 ];
                 print_R($order_products);
-                $add_order_products = AllOrderProducts::create($order_products);
+                $add_order_products = AllOrderProducts::insert($order_products);
             }
             /* check for vat/gst items */
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
