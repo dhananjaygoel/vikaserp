@@ -429,6 +429,7 @@ class DeliveryOrderController extends Controller {
         ));
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
+            print_R($product_data);
             if ($product_data['order'] != '' || $product_data['id'] != '') {
                 
                 $order_products = [
