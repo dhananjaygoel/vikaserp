@@ -428,7 +428,7 @@ class DeliveryOrderController extends Controller {
             'discount' => $input_data['discount'],
         ));
         $order_products = array();
-        print_R($$input_data);
+        print_R($input_data);
         die();
         foreach ($input_data['product'] as $product_data) {
            // print_R($product_data);
