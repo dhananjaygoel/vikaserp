@@ -1249,6 +1249,8 @@ class DeliveryOrderController extends Controller {
                         $state = Customer::where('id',$cust_id)->first()->state;
                         $local_state = App\States::where('id',$state)->first()->local_state;
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
+                        print "heelo";
+                        die();
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
 
                         if($product_cat->hsn_code){
