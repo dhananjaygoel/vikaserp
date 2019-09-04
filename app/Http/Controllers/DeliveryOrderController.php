@@ -1246,9 +1246,9 @@ class DeliveryOrderController extends Controller {
                         //dd($product);
                         //die;
                         $cust_id = $delivery_order_details->customer_id;
-                        print $cust_id;
+                       
                         $ss =Customer::where('id',$cust_id)->first();
-                        print_r($ss);
+                        
                         $state = Customer::where('id',$cust_id)->first()->state;
                         if(!empty($state)){
                             $local_state = App\States::where('id',$state)->first()->local_state;
