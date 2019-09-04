@@ -429,6 +429,8 @@ class DeliveryOrderController extends Controller {
         ));
         $order_products = array();
         print_R($input_data);
+        print '<br/>';
+        print_r($_POST);
         die();
         foreach ($input_data['product'] as $product_data) {
            // print_R($product_data);
