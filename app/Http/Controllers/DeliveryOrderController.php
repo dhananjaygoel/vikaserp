@@ -330,10 +330,10 @@ class DeliveryOrderController extends Controller {
             $session_array = Session::get('forms_edit_delivery_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
-                      /*$parameter = Session::get('parameters');
+                    /*return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');*/
+                      $parameter = Session::get('parameters');
                      $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-                    return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');*/
+                    return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
 
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -442,6 +442,8 @@ class DeliveryOrderController extends Controller {
                     // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
+                print_R($order_products);
+                die();
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
                 $order_products = [
