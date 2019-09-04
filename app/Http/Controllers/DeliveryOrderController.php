@@ -1240,7 +1240,8 @@ class DeliveryOrderController extends Controller {
 
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
 //                  $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
-                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
+                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'
+                    && $product_type_id ==3){
 
                         //dd($product);
                         //die;
