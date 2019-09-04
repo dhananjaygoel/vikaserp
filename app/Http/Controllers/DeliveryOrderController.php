@@ -330,10 +330,10 @@ class DeliveryOrderController extends Controller {
             $session_array = Session::get('forms_edit_delivery_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    //return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
-                      $parameter = Session::get('parameters');
+                    return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
+                     /* $parameter = Session::get('parameters');
                      $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-                    return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
+                    return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');*/
 
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -428,42 +428,52 @@ class DeliveryOrderController extends Controller {
             'discount' => $input_data['discount'],
         ));
         $order_products = array();
+        print_R($input_data);
+        die();
         foreach ($input_data['product'] as $product_data) {
+           // print_R($product_data);
             if ($product_data['order'] != '' || $product_data['id'] != '') {
+                
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    // 'quantity' => $product_data['quantity'],
-                    // 'length' => $product_data['quantity'],
-                    // 'present_shipping' => $product_data['present_shipping'],
-                    // 'price' => $product_data['price'],
-                    // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    'quantity' => $product_data['quantity'],
+                     'length' => $product_data['quantity'],
+                     'present_shipping' => $product_data['present_shipping'],
+                     'price' => $product_data['price'],
+                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
+               
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
+              // print_R($product_data);
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    // 'quantity' => $product_data['present_shipping'],
-                    // 'length' => $product_data['quantity'],
-                    // 'present_shipping' => $product_data['present_shipping'],
-                    // 'price' => $product_data['price'],
-                    // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                     'quantity' => $product_data['present_shipping'],
+                     'length' => $product_data['quantity'],
+                     'present_shipping' => $product_data['present_shipping'],
+                    'price' => $product_data['price'],
+                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
+
                 $add_order_products = AllOrderProducts::create($order_products);
+                
+
             }
             /* check for vat/gst items */
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
                 $sms_flag = 1;
             }
-            /**/
+            
         }
+     
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
@@ -1240,14 +1250,24 @@ class DeliveryOrderController extends Controller {
 
                     $total_actual_quantity_profile = $total_actual_quantity_profile + $product['actual_quantity'];
 //                  $total_profile_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
-                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'){
+                    if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes'
+                    && $product_type_id ==3){
 
                         //dd($product);
                         //die;
                         $cust_id = $delivery_order_details->customer_id;
+                       
+                        $ss =Customer::where('id',$cust_id)->first();
+                        
                         $state = Customer::where('id',$cust_id)->first()->state;
-                        $local_state = App\States::where('id',$state)->first()->local_state;
+                        if(!empty($state)){
+                            $local_state = App\States::where('id',$state)->first()->local_state;
+                        }
+                        else{
+                            $local_state ="";
+                        }
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
+
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
 
                         if($product_cat->hsn_code){
