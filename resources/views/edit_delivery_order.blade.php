@@ -31,6 +31,7 @@
                             <div class="form-group">Date : {{date('d F, Y')}}</div>
                             {!!Form::open(array('data-button'=>'btn_edit_delivery_order','method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if($delivery_data->order_source == 'supplier')
                                 <div class="form-group">

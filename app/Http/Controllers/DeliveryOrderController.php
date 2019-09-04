@@ -330,7 +330,7 @@ class DeliveryOrderController extends Controller {
             $session_array = Session::get('forms_edit_delivery_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    //return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
+                    /*return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');*/
                       $parameter = Session::get('parameters');
                      $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
                     return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
@@ -429,18 +429,19 @@ class DeliveryOrderController extends Controller {
         ));
         $order_products = array();
         foreach ($input_data['product'] as $product_data) {
+            $order_id = $input_data['order_id'];
             if ($product_data['order'] != '' || $product_data['id'] != '') {
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    
-                    // 'quantity' => $product_data['quantity'],
-                    // 'length' => $product_data['quantity'],
-                    // 'present_shipping' => $product_data['present_shipping'],
-                    // 'price' => $product_data['price'],
-                    // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                   'from'=> $order_id,
+                     'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                     'length' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                     'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
+                     'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
+                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
@@ -450,12 +451,12 @@ class DeliveryOrderController extends Controller {
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => $product_data['units'],
-                    
-                    // 'quantity' => $product_data['present_shipping'],
-                    // 'length' => $product_data['quantity'],
-                    // 'present_shipping' => $product_data['present_shipping'],
-                    // 'price' => $product_data['price'],
-                    // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                   'from'=> $order_id,
+                    'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                     'length' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                     'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
+                     'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
+                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
