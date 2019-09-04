@@ -445,7 +445,7 @@ class DeliveryOrderController extends Controller {
                
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
-                $order_products1 = [
+                $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
                     'product_category_id' => $product_data['product_category_id'],
@@ -457,15 +457,13 @@ class DeliveryOrderController extends Controller {
                     // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
-                 print_R($order_products1);
-                die();
-                $add_order_products = AllOrderProducts::create($order_products1);
+                $add_order_products = AllOrderProducts::create($order_products);
             }
             /* check for vat/gst items */
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
                 $sms_flag = 1;
             }
-            /**/
+            
         }
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
