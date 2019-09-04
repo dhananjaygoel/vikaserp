@@ -459,8 +459,10 @@ class DeliveryOrderController extends Controller {
                     // 'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
-                print_R($order_products);
-                $add_order_products = AllOrderProducts::insert($order_products);
+
+                $add_order_products = AllOrderProducts::create($order_products);
+                print_R($add_order_products);
+
             }
             /* check for vat/gst items */
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
@@ -468,6 +470,7 @@ class DeliveryOrderController extends Controller {
             }
             
         }
+        print "DSdssd";
         die();
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
