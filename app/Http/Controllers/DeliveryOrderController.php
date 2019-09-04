@@ -446,7 +446,7 @@ class DeliveryOrderController extends Controller {
                
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
             } else if ($product_data['name'] != "" && $product_data['order'] == '') {
-               
+               print_R($product_data);
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
