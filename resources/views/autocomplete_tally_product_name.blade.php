@@ -1980,7 +1980,7 @@ function getProductDetails() {
                    // console.log(ui);
                    
                    if(ui.item.type_id == 3)
-                //    {alert('hi2 if');
+                   {
                            $('#length_'+id).attr('disabled', false);
                            $('#unit_'+id+'_1').hide();
                            $('#unit_'+id+'_2').hide();
@@ -1989,7 +1989,7 @@ function getProductDetails() {
                            $('#unit_'+id+'_5').show();
                    }
                    else
-                //    {alert('hi2 else');
+                   {
                            $('#length_'+id).attr('disabled', true);
                            $('#unit_'+id+'_1').show();
                            $('#unit_'+id+'_2').show();
