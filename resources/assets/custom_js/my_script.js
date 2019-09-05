@@ -323,6 +323,10 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
     }else{
          $('#price').removeClass('error_validation');
     }
+    if ($('.unit').val() == "") {
+        $('.unit').addClass('error_validation');
+        status_form = 1;
+    }else{$('.unit').removeClass('error_validation');}
 
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
         if ($('#name').val() == "") {
