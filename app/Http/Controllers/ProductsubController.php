@@ -28,7 +28,7 @@ use QuickBooksOnline\API\Facades\Item;
 use QuickBooksOnline\API\Core\ServiceContext;
 use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\PlatformService\PlatformService;
-use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer
+use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
 class ProductsubController extends Controller {
 
     public function __construct() {
