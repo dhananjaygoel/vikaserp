@@ -423,6 +423,7 @@ class CustomerController extends Controller {
         $dataService = $this->getTokenWihtoutGST();
         $newCustomerObj = Vendor::create($Qdata);
         $newcus = $dataService->add($newCustomerObj);
+        print_R($newcus);;
         $error = $dataService->getLastError();
         print $error;
         die();
