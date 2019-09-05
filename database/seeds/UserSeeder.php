@@ -9,8 +9,9 @@ class UserSeeder extends Seeder {
        $subcategories = App\ProductSubCategory::all();
        foreach ($subcategories as $subcat) {
         $hsn = App\ProductCategory::where('id', $subcat->product_category_id)->get()->first();
-        print_r($hsn->hsn_code);
-        die();
+         DB::table('product_sub_category')->where('product_category_id', $subcat->product_category_id)->update([
+                'hsn_code' => $hsn->hsn_code,
+            ]);
        }
 
     }
