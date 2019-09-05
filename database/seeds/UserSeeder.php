@@ -12,11 +12,11 @@ class UserSeeder extends Seeder {
          DB::table('product_sub_category')->where('product_category_id', $subcat->product_category_id)->update([
                 'hsn_code' => $hsn->hsn_code,
             ]);*/
-             DB::table('quickbook_token')->where('id', 3)->update([
-               'client' => 'ABB6G2Da7EJLem4XfeXEn6vgdisRSVijSzdWNRKExRHVwssNVH',
-                'secret' => 'dUOLrdPi7J0hNzndtc7uUEconleZa9BeuoknEFay',
-                'access_token' => 'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..mmU0boY3SXIL4msPklHB7A.9ZaHLBgAVku1cyjwhQ83SNKfUTN0Opr4gbnSFyNrXL0zoYCz5ZJKLrwzpuKpx01uQJYt8wpJUFrRHyfzULkZCcYWuTfpvYXW1wy_6drJS6_g9ay0l1pHn8Qdsnc4bsktVd-Q_k66ANnYqdjGDd5YlEcGV9o4zA68uTkc8CGCCb6geJxx_6-mdWSXkRuH_S6XGk4RfcqCaRbPz-FMVUQFqbZdNWS7-bXipONzSslkaSXZZwGr2ywlYNqyX05_Ly9yoA5Rkw2TLW6c3eHX6vYCqKAhwOqnAeUaRlD0nldr1Xm0fZ6_z2ZAg_AIG6XdtmfafmwUhQQpzNDQF1469NLCUn2jCVgInn7oL-TT3SBMnQZVgEuwos2_lHf1YSkOv3Ofu2MFJJofZ0E2BhCnzTED7PkEBdlC0Q5ys3oiLjMZKYXrOgtQhbWLNYu904Na1qKlclQf8vazK6um4RTtw90Pzw8UhsJA8O3Z-xUqI_cmxKln6xtW4H_5E3Gb16kUwIgM2ygBl_H67SRi1X1rYmc_ve_2reTR4UNV_2rzS88iE3_UmbrBZTF3ADutfJEP38JrMVOXgGFKvPHxKvNXy6zhq1-k7hzmjr73W5PVdOW1FLuP9Djx1dkcjGu9mnJkoWzdJ5ALcAlmfEED4c39P8f8eVHLXbAxv4baKx0nOcr2M1kL96YATEZU94_SzPG0qnapG9NxnAOcKxXYd20WkThh9j8pqaXVN3vhDh9yhgLg1pQ.wqtSret8Jsh_LWfNpzX7jw',
-                'refresh_token' => 'AB11576409560TS6p25yWjyjV73FSzdBqB4gaGXj4uci1dYru7'
+             DB::table('quickbook_token')->where('id', 4)->update([
+               'client' => 'ABpdVkDFhsmsp1KNFoDuYhgAATppzXoDlw9FFa7nE2PG9hmQZv',
+                'secret' => '3lnaubZB1MIo69RmH6geLezsPJM9aD99I8HsahXK',
+                'access_token' => 'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..i-oNJXc3VFt-3oPWVcWgOQ.kQgABF0cnhe7ZC6B3BbEfYIco33gcwMofBYlx70-ppi09QK24i4OEeqltc6WvNDKf9__NInhOC13J2HF85Q3PXvGztkRjdoa-t8gV7FD2j2kbv24Z2Un2FXye1PkYY4brWBmypcyS5oi1lUP7c1DCZu1nr_NAPJ05mFWbvpdzxJj9-pJrmwHuFJbgXUWjNeUKhDB4E1PiihxYf5kLONlVZ_J0VvoNnNRKyb5r-RO6GGp5wj4vbS5EPEMmfCzCynE2NVFrb5TjMdX7nBTk2FMuYQZeA146gXoaJVqJI-weK16gsGOr7zntn-11vn7DRxttRsREjYVKr2Jk5ive3kSukioc2kVTodRj08KgOlzjh9e3mRkCzsGT8Dy8HJGrmp2wQquh03T-Ah8OihBhRWayGVx3Xkp8Wxe8Q5Bk6pMv12k9nKARbvM6NYNXF6JIFMb3fpjPiqD-kwHUfykqHDcR1S3QauGt0M-zBAkBTt331Bmh_e8jAtKCXOGjy_k4QjeV9OuL7VowQhKOozkA8xlfsJ-BE_H9xLsZWJFHBbn_HZxViBLBkgO9eg8fKPo4fZr5nD9o5y7R8qPRAcmcwEbvx0JcFB9vi-hHcunff3k30YYZsiqhl0B4yzOiS13HjUoaa9kJEjB5FoU7wbxor4w94czCtPjYVftKtb185q_wHikls2JyipmE0LCvtVEHsxCUbVC3jdOMmJf3TtIWc-ygZav5dFsJ8hBvSxndOsDhSY.2SgY2wzDgKRsJWhYaKAfRA',
+                'refresh_token' => 'AB11576409863t9pNqU3xQhqsozUrD3m4WefjSHrTpzGnUBZ1K'
             ]);
        }
 
