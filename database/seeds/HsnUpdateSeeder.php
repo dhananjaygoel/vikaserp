@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class HsnUpdateSeeder extends Seeder {
+class HsnUpdateSeeder  extends Seeder {
 	  public function run() {
         DB::table('users')->truncate();
         DB::table('users')->insert(
