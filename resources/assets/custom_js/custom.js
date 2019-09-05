@@ -2030,7 +2030,11 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
             $('#present_shipping' + j).removeClass('error_validation');
         }
     }
-
+    
+    if ($('.units_dropdown').val() == "") {
+        $('.units_dropdown').addClass('error_validation');
+        status_form = 1;
+    }else{$('.units_dropdown').removeClass('error_validation');}
 
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');

@@ -116,6 +116,7 @@
                                             <tr class="headingunderline">
                                                 <td class="col-md-3"><span> Product Name(Alias)</span></td>
                                                 <td class="col-md-1"><span>Unit</span></td>
+                                                <td class="col-md-1"><span>Length</span></td>
                                                 <td class="col-md-1"><span>Actual Pieces</span></td>
                                                 <td class="col-md-1"><span>Pending Order</span</td>
                                                 <td class="col-md-2"><span>Present Shipping</span></td>
@@ -136,7 +137,12 @@
                                                     {{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}
                                                     <input type="hidden" name="product[{{$key}}][units]" value="{{$product_data['unit']->id}}">
                                                 </td>
-
+                                                <td class="col-md-1">
+                                                <div class="form-group">
+                                                    {{$product_data->length}}
+                                                    <input id="length_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][length]" value="{{$product_data->length}}" type="hidden" >
+                                                </div>
+                                                </td>
                                                 <td class="col-md-1">
                                                     <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" value="" placeholder="actual pieces" onkeypress=" return numbersOnly(this,event,true,false);" id="actual_pieces{{$key}}">
 

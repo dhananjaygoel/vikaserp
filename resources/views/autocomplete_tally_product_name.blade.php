@@ -1446,9 +1446,16 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+    //         for (var key in arr1) {
+    // html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+    // }
+    html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+            +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+            +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+            +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+            +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+            +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+            
     $("#units_" + current_row_count).html(html);
     });
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
@@ -1464,6 +1471,11 @@
             '<div class="form-group">' +
             '<select class="form-control units_dropdown" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
+            '</div>' +
+            '</td>' +
+            '<td class="col-md-1" >' +
+            '<div class="form-group length_list_' + current_row_count + '">' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
