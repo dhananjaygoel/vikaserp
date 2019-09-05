@@ -614,7 +614,7 @@ class ProductsubController extends Controller {
             $gstitemid = "";
             $dataService = $this->getTokenWihtoutGST();
             print $productname=Input::get('alias_name');
-            print $item_query = "select * from Item where Name ='".$productname."'";
+            print $item_query = "select * from Item where Name ='NS'";
             $item_details = $dataService->Query($item_query);
             print_R($item_details);
             die();
