@@ -6,22 +6,54 @@ use Illuminate\Support\Facades\DB;
 class UserSeeder extends Seeder {
 
     public function run() {
-        DB::table('users')->truncate();
-        DB::table('users')->insert(
+       DB::table('user_roles')->truncate();
+        DB::table('user_roles')->insert(
                 array(
-                    //Super Admin
                     array(
-                        'id' => '13',
-                        'first_name' => 'Super',
-                        'last_name' => 'Admin',
-                        'phone_number' => '1234567890',
-                        'mobile_number' => '9898989890',
-                        'email' => 'sadmin@admin.com',
-                        
-                        'password' => '$2y$10$wraJ4uNWGMrftZnjpQcnuu.ar8OQQGntL2Hgol/eFT4Vp6V34Oaay',
-                        'role_id' => '0'
+                        'id' => '1',
+                        'role_id' => '0',
+                        'name' => 'Super Admin'
                     ),
-                    
+                    array(
+                        'id' => '2',
+                        'role_id' => '0',
+                        'name' => 'Admin'
+                    ),
+                    array(
+                        'id' => '3',
+                        'role_id' => '2',
+                        'name' => 'Sales Staff'
+                    ),
+                    array(
+                        'id' => '4',
+                        'role_id' => '3',
+                        'name' => 'Delivery Staff'
+                    ),
+                    array(
+                        'id' => '5',
+                        'role_id' => '4',
+                        'name' => 'Account User'
+                    ),
+                    array(
+                        'id' => '8',
+                        'role_id' => '7',
+                        'name' => 'Security User'
+                    ),
+                     array(
+                        'id' => '9',
+                        'role_id' => '8',
+                        'name' => 'Delivery Supervisor'
+                    ),
+                      array(
+                        'id' => '10',
+                        'role_id' => '9',
+                        'name' => 'Delivery Boy'
+                    ),
+                    array(
+                        'id' => '11',
+                        'role_id' => '10',
+                        'name' => 'Bulk Delete User'
+                    ),
         ));
     }
 
