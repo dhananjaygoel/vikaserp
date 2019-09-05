@@ -612,14 +612,14 @@ class ProductsubController extends Controller {
                         // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
                     }
                 }
-            }*/
+            }
             $inclusiveitemid ="";
             $gstitemid = "";
             $updatedataService = $this->getTokenWihtoutGST();
             $productname = Input::get('alias_name');
-            $updateitem_query_details = "select * from Item where Name ='NS'";
+            $updateitem_query_details = "select * from Item";
             $updateitem_details = $updatedataService->Query($updateitem_query_details);
-            print_R($item_details);
+            print_R($updateitem_details);
             die();
             //$resultingObj  = $dataService->F$item_details[0]->Id;indById('Item', $quickbook_item_id);
             //$newItemObj = Item::update($Qdata);
@@ -644,6 +644,7 @@ class ProductsubController extends Controller {
             }
             $ProductSubCategory->quickbook_a_item_id = $gstitemid;
             $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;
+            */
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------
