@@ -238,7 +238,7 @@
                                                             <option value=3 id = 'unit_{{$key}}_3' {{($product->unit_id == 3)?'selected':''}}>Meter</option>
                                                         <?php } elseif($product->unit_id == 4 || $product->unit_id == 5) { ?>
                                                             <option value=4 id = 'unit_{{$key}}_4' {{($product->unit_id == 4)?'selected':''}}>ft</option>
-                                                            <option value=5 id = 'unit_{{$key}}_5' {{($product->unit_id == 1)?'selected':''}}>mm</option>
+                                                            <option value=5 id = 'unit_{{$key}}_5' {{($product->unit_id == 5)?'selected':''}}>mm</option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
