@@ -162,9 +162,7 @@
                                         </td>
                                         @endif
                                         <td>
-                                            @foreach($units as $unit)
-                                            {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
-                                            @endforeach
+                                        {{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}
                                         </td>
                                         <td>{{$product->price}}</td>
                                         <td>
