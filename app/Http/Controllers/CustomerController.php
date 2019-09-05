@@ -418,13 +418,12 @@ class CustomerController extends Controller {
                   "Line1" => Input::get('address1'), 
             ],
         ];
-        $inclusivecustomerid ="";
+       /* $inclusivecustomerid ="";
         $gstcustomerid = "";
         $dataService = $this->getTokenWihtoutGST();
         $newCustomerObj = Vendor::create($Qdata);
         $newcus = $dataService->add($newCustomerObj);
         $error = $dataService->getLastError();
-        print $error;
         if ($error) { 
             $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();  
@@ -444,7 +443,7 @@ class CustomerController extends Controller {
         }
         $customer->quickbook_a_customer_id  = $gstcustomerid;
         $customer->quickbook_customer_id  = $inclusivecustomerid;
-
+        */
        /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
