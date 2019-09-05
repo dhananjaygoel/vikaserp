@@ -2030,7 +2030,7 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
             $('#present_shipping' + j).removeClass('error_validation');
         }
     }
-    
+
     if ($('.units_dropdown').val() == "") {
         $('.units_dropdown').addClass('error_validation');
         status_form = 1;
@@ -2224,6 +2224,11 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
                 $('#present_shipping_' + i).addClass('error_validation');
                 status_form = 1;
             }
+            
+            if ($('.unit').val() == "") {
+                $('.unit').addClass('error_validation');
+                status_form = 1;
+            }else{$('.unit').removeClass('error_validation');}
 
             if ($("#quantity_" + i).val() == "") {
                 $('#quantity_' + i).addClass('error_validation');
