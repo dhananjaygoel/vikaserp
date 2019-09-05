@@ -112,7 +112,7 @@
                                         <tr>
                                             <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
-                                            <td>{{$product_data['unit']->unit_name}}</td>
+                                            <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
                                             <td>{{$product_data->price}}</td>
                                             <td>{{$product_data->remarks}}</td>
                                         </tr>
