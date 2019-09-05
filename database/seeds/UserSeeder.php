@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\DB;
 class UserSeeder extends Seeder {
 
     public function run() {
-       $categories = App\ProductCategory::all();
-       foreach ($categories as $cat) {
-        print_r($cat->id);
+       $subcategories = App\ProductSubCategory::all();
+       foreach ($subcategories as $subcat) {
+        $hsn = App\ProductCategory::where('id', $subcat->product_category_id)->get()->first();
+        print $hsn;
+        die();
        }
 
     }
