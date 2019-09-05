@@ -443,14 +443,6 @@ class CustomerController extends Controller {
         }
         $customer->quickbook_a_customer_id  = $gstcustomerid;
         $customer->quickbook_customer_id  = $inclusivecustomerid;
-
-         echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
-        echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
-         echo "The Response message is: " . $error->getResponseBody() . "\n";
-         echo "The Status code is: " . $error1->getHttpStatusCode() . "\n";
-        echo "The Helper message is: " . $error1->getOAuthHelperError() . "\n";
-         echo "The Response message is: " . $error1->getResponseBody() . "\n";
-                    die;
         
        /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
