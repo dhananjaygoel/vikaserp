@@ -154,6 +154,7 @@
                                     <tr class="headingunderline">
                                         <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                         <td><span>Unit</span><span class="mandatory">*</span></td>
+                                        <td><span>Length</span></td>
                                         <td><span>Quantity</span></td>
 
                                         <td><span>Price</span></td>
@@ -178,16 +179,22 @@
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                @foreach($units as $unit)
-                                                                    @if($unit->unit_name == 'ft' OR $unit->unit_name == 'mt')
-                                                                    @else
-                                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                                    @endif
-                                                                @endforeach
+                                                                    <option value=0 id = 'unit_{{$i}}_0'>--Select--</option>
+                                                                    <option value=1 id = 'unit_{{$i}}_1'>KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
+                                                                    <option value=4 id = 'unit_{{$i}}_4'>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5'>mm</option>
                                                             </select>
                                                         </div>
                                                     </td>
-
+                                                    <td class="col-md-1">
+                                                            <div class = "form-group">
+                                                                <div class = "form-group length_list_{{$i}}">
+                                                                <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>">
+                                                            </div>
+                                                            </div>
+                                                    </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
                                                             <input id="quantity_{{$i}}" class="form-control" placeholder="Qnty" name="product[{{$i}}][quantity]" type="tel" value="<?php if (isset($session_data['product'][$i]['quantity'])) { ?>{{$session_data['product'][$i]['quantity']}}<?php } ?>" onkeypress=" return numbersOnly(this, event, true, false);">
@@ -212,6 +219,7 @@
                                     } else {
                                         ?>
                                         @foreach($purchase_order['purchase_products'] as $key=>$product)
+                                        <?php dd($product);?>
                                         @if($product->order_type == 'purchase_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
@@ -225,19 +233,24 @@
                                             <td class="col-md-2">
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
-                                                        @foreach($units as $unit)
-                                                            @if($unit->id == 4 OR $unit->id == 5)
-                                                            @else
-                                                                @if($product->unit_id == $unit->id)
-                                                                    <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                                @else
-                                                                    <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                                @endif
-                                                            @endif
-
-                                                        @endforeach
+                                                    <?php if($product->unit_id == 1 || $product->unit_id == 2 || $product->unit_id == 3) { ?>
+                                                            <option value=1 id = 'unit_{{$key}}_1' {{($product->unit_id == 1)?'selected':''}}>KG</option>
+                                                            <option value=2 id = 'unit_{{$key}}_2' {{($product->unit_id == 2)?'selected':''}}>Pieces</option>
+                                                            <option value=3 id = 'unit_{{$key}}_3' {{($product->unit_id == 3)?'selected':''}}>Meter</option>
+                                                        <?php } elseif($product->unit_id == 4 || $product->unit_id == 5) { ?>
+                                                            <option value=4 id = 'unit_{{$key}}_4' {{($product->unit_id == 4)?'selected':''}}>ft</option>
+                                                            <option value=5 id = 'unit_{{$key}}_5' {{($product->unit_id == 1)?'selected':''}}>mm</option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                    <div class = "form-group">
+                                                        <div class = "form-group length_list_{{$key}}">
+                                                            <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" 
+                                                                   value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?>>
+                                                    </div>
+                                                    </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}}>
@@ -261,6 +274,27 @@
 //                                                            ($z == 1) ? $z = $z + 3 : $z = $z + 4;
                                                         }
                                                         ?>                                                 
+                                                    </select>
+                                                </div>
+                                                <div class = "form-group ff_list_{{$key}}" {{($product->unit_id=='4')?'':'style=display:none'}}>
+                                                        <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
+                                                            <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                            <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                            <?php
+                                                            // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+
+                                                <div class = "form-group mm_list_{{$key}}" {{($product->unit_id=='5')?'':'style=display:none'}}>
+                                                    <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
+                                                        <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                        <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
+                                                        <?php
+                                                        // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </div>
                                             </td>
