@@ -619,7 +619,7 @@ class ProductsubController extends Controller {
             $productname = Input::get('alias_name');
             $updateitem_query_details = "select * from Item where Name ='NS'";
             $updateitem_details = $updatedataService->Query($updateitem_query_details);
-            print_R($item_details);
+            print_R($updateitem_details);
             die();
             //$resultingObj  = $dataService->F$item_details[0]->Id;indById('Item', $quickbook_item_id);
             //$newItemObj = Item::update($Qdata);
