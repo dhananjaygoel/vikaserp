@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('UnitsSeeder');
         $this->call('QuickbookToken');
         $this->call('ProductSubCategorySeeder');
+        $this->call("HsnUpdateSeeder");
+
     }
 
 }
