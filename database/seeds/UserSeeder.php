@@ -11,11 +11,11 @@ class UserSeeder extends Seeder {
                 array(
                     //Super Admin
                     array(
-                        'id' => '1',
+                        'id' => '10',
                         'first_name' => 'Super',
                         'last_name' => 'Admin',
                         'phone_number' => '1234567890',
-                        'mobile_number' => '9898989890',
+                        'mobile_number' => '9645768852',
                         'email' => 'sadmin@admin.com',
                         // 'password' => '$2y$10$vkxXDsOalnfS.ANuYhDIkunjjtZGzvVD497Tvl0/vCnBAMKxkcaYC',
                         'password' => '$2y$10$jpxgWw.w0OgC6yT2/DIycOO/VeeNfxus6FFiZuiglNcPAtirgDTOm',
