@@ -615,11 +615,10 @@ class ProductsubController extends Controller {
             }*/
             $inclusiveitemid ="";
             $gstitemid = "";
-            $dataService = $this->getTokenWihtoutGST();
-            print_R($dataService);
-            print $productname=Input::get('alias_name');
-            print $item_query = "select * from Item where Name ='NS'";
-            $item_details = $dataService->Query($item_query);
+            $updatedataService = $this->getTokenWihtoutGST();
+            $productname = Input::get('alias_name');
+            $updateitem_query_details = "select * from Item where Name ='NS'";
+            $updateitem_details = $updatedataService->Query($updateitem_query_details);
             print_R($item_details);
             die();
             //$resultingObj  = $dataService->F$item_details[0]->Id;indById('Item', $quickbook_item_id);
