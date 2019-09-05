@@ -60,7 +60,7 @@ class ProductsubController extends Controller {
         if (Auth::user()->role_id == 5 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-        $product_size_list = ProductSubCategory::with('product_category', 'product_unit')->get();
+        $product_size_list = ProductSubCategory::with('product_category', 'product_unit')->take(5)->get();
         print_r($product_size_list);
         $product_type = ProductType::all();
         $units = Units::all();
