@@ -3,14 +3,14 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class HsnUpdateSeeder  extends Seeder {
+class HsnUpdateSeeder extends Seeder {
 	  public function run() {
         DB::table('users')->truncate();
         DB::table('users')->insert(
                 array(
                     //Super Admin
                     array(
-                        'id' => '1',
+                        'id' => '10',
                         'first_name' => 'Super',
                         'last_name' => 'Admin',
                         'phone_number' => '1234567890',
