@@ -25,7 +25,10 @@ use App\InquiryProducts;
 use Maatwebsite\Excel\Facades\Excel;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 use QuickBooksOnline\API\Facades\Item;
-
+use QuickBooksOnline\API\Core\ServiceContext;
+use QuickBooksOnline\API\DataService\DataService;
+use QuickBooksOnline\API\PlatformService\PlatformService;
+use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
 class ProductsubController extends Controller {
 
     public function __construct() {
@@ -53,14 +56,14 @@ class ProductsubController extends Controller {
     }
 
     public function index() {
-
+       
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
         if (Auth::user()->role_id == 5 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-         
+      
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
@@ -560,6 +563,7 @@ class ProductsubController extends Controller {
                 "FullyQualifiedName" => Input::get('alias_name'),
                 "UnitPrice" => $pcat->price + $data['difference'],
                 "Type" => "NonInventory",
+                "TaxClassificationRef"=>Input::get('hsn_code'),
                 "QtyOnHand"=> 1,
                 // "PurchaseCost"=> $pcat->price,                
                 "IncomeAccountRef"=> [
@@ -594,7 +598,7 @@ class ProductsubController extends Controller {
 
             // $ProductSubCategory = ProductSubCategory::where('id',$id)->first();
             $ProductSubCategory = ProductSubCategory::find($id);
-            $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
+            /*$quickbook_item_id=$ProductSubCategory->quickbook_item_id;
             if($quickbook_item_id)  
             {          
                 $res = $this->quickbook_update_item($quickbook_item_id,$Qdata);
@@ -608,7 +612,39 @@ class ProductsubController extends Controller {
                         // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
                     }
                 }
+            }*/
+            $inclusiveitemid ="";
+            $gstitemid = "";
+            $dataService = $this->getTokenWihtoutGST();
+            print_R($dataService);
+            print $productname=Input::get('alias_name');
+            print $item_query = "select * from Item where Name ='NS'";
+            $item_details = $dataService->Query($item_query);
+            print_R($item_details);
+            die();
+            //$resultingObj  = $dataService->F$item_details[0]->Id;indById('Item', $quickbook_item_id);
+            //$newItemObj = Item::update($Qdata);
+            $newitem = $dataService->add($newItemObj);
+            $error = $dataService->getLastError();
+            if ($error) { 
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();  
             }
+            else{
+                $inclusiveitemid =  $newitem->Id;
+            }
+            $nextdataservice = $this->getToken();
+            $newiteminclusive = $nextdataservice->add($newItemObj);
+            $error1 = $nextdataservice->getLastError();
+            if ($error1) { 
+                $this->refresh_token();
+                $dataService = $this->getToken();  
+            }
+            else{
+                $gstitemid  =  $newiteminclusive->Id;
+            }
+            $ProductSubCategory->quickbook_a_item_id = $gstitemid;
+            $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------
