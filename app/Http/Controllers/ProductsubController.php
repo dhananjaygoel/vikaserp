@@ -53,14 +53,15 @@ class ProductsubController extends Controller {
     }
 
     public function index() {
-
+       
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
         if (Auth::user()->role_id == 5 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-         
+        $product_size_list = ProductSubCategory::with('product_category', 'product_unit')->get();
+        print_r($product_size_list);
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
