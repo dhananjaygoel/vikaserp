@@ -238,7 +238,7 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
+                                                            <select class="form-control unit" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
                                                                     <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
                                                                     <option value=1 id = 'unit_{{$i}}_1'>KG</option>
                                                                     <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
