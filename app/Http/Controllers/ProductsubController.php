@@ -612,7 +612,7 @@ class ProductsubController extends Controller {
                         // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
                     }
                 }
-            }*/
+            }
             $inclusiveitemid ="";
             $gstitemid = "";
             $updatedataService = $this->getTokenWihtoutGST();
@@ -644,6 +644,7 @@ class ProductsubController extends Controller {
             }
             $ProductSubCategory->quickbook_a_item_id = $gstitemid;
             $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;
+            */
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------
