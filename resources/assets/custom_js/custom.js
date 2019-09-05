@@ -2224,12 +2224,13 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
                 $('#present_shipping_' + i).addClass('error_validation');
                 status_form = 1;
             }
-            
+            if($('.custom-combobox-input').val() != "") {
             if ($('.unit').val() == "") {
                 $('.unit').addClass('error_validation');
                 status_form = 1;
             }else{$('.unit').removeClass('error_validation');}
-
+            
+        }
             if ($("#quantity_" + i).val() == "") {
                 $('#quantity_' + i).addClass('error_validation');
                 status_form = 1;
