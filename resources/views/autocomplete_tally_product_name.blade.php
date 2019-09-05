@@ -1032,7 +1032,7 @@
             var arr1 = main_array['units'];
             var html = '';
             // for (var key in arr1) {
-    html = "<option value=1 id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+    html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
             +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
             +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
             +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
@@ -1154,7 +1154,7 @@
             var arr1 = main_array['units'];
             var html = '';
             // for (var key in arr1) {
-    html = "<option value=1 id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+    html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
             +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
             +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
             +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
@@ -1572,7 +1572,7 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            html = "<option value=1 id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+            html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
                     +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
                     +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
                     +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
