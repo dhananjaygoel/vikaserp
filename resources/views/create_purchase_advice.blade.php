@@ -133,7 +133,7 @@
                                                 </td>
 
                                                 <td class="col-md-1">
-                                                    {{$product_data['unit']->unit_name}}
+                                                    {{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}
                                                     <input type="hidden" name="product[{{$key}}][units]" value="{{$product_data['unit']->id}}">
                                                 </td>
 
