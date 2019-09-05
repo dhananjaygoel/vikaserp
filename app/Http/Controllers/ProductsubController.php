@@ -613,7 +613,7 @@ class ProductsubController extends Controller {
             $inclusiveitemid ="";
             $gstitemid = "";
             $dataService = $this->getTokenWihtoutGST();
-            $productname=Input::get('alias_name');
+            print $productname=Input::get('alias_name');
             $item_query = "select * from Item where Name ='".$productname."'";
             $item_details = $dataService->Query($item_query);
             print $quickbook_item_id =$item_details[0]->Id;
