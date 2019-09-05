@@ -219,7 +219,6 @@
                                     } else {
                                         ?>
                                         @foreach($purchase_order['purchase_products'] as $key=>$product)
-                                        <?php dd($product);?>
                                         @if($product->order_type == 'purchase_order')
                                         <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                             <td class="col-md-3">
