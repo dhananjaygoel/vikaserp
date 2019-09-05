@@ -25,7 +25,10 @@ use App\InquiryProducts;
 use Maatwebsite\Excel\Facades\Excel;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 use QuickBooksOnline\API\Facades\Item;
-
+use QuickBooksOnline\API\Core\ServiceContext;
+use QuickBooksOnline\API\DataService\DataService;
+use QuickBooksOnline\API\PlatformService\PlatformService;
+use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer
 class ProductsubController extends Controller {
 
     public function __construct() {
