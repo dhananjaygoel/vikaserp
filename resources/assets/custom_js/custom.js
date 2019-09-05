@@ -1031,6 +1031,11 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
             $('#add_order_location').addClass('error_validation');
             status_form = 1;
         }else{$('#add_order_location').removeClass('error_validation');}
+        if ($('.unit').val() == "") {
+            $('.unit').addClass('error_validation');
+            status_form = 1;
+        }else{$('.unit').removeClass('error_validation');}
+
         if ($('#contact_person').val() == "") {
             $('#contact_person').addClass('error_validation');
             status_form = 1;
@@ -1255,7 +1260,12 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     status_form = 0;
             }
         }
-
+        if ($('.unit').val() == "") {
+            $('.unit').addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('.unit').removeClass('error_validation');
+        }
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
