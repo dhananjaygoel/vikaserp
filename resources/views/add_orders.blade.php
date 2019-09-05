@@ -236,8 +236,8 @@
 
                                                     <td class="col-md-2" id='test1'>
                                                         <div class = "form-group ">
-                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}">
-                                                                    <option value=0 id = 'unit_{{$i}}_0'>--Select--</option>
+                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}" required>
+                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
                                                                     <option value=1 id = 'unit_{{$i}}_1'>KG</option>
                                                                     <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
                                                                     <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
@@ -250,7 +250,7 @@
                                                     <td class="col-md-1">
                                                         <div class = "form-group">
                                                             <div class = "form-group length_list_{{$i}}">
-                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:''}}" disabled>
+                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:'0'}}" disabled>
                                                         </div>
                                                         </div>
                                                     </td>
