@@ -178,7 +178,7 @@
 
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                            <select class="form-control unit" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                                     <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
                                                                     <option value=1 id = 'unit_{{$i}}_1'>KG</option>
                                                                     <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
@@ -232,7 +232,7 @@
 
                                             <td class="col-md-2">
                                                 <div class="form-group ">
-                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
+                                                    <select class="form-control unit" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
                                                     <?php if($product->unit_id == 1 || $product->unit_id == 2 || $product->unit_id == 3) { ?>
                                                             <option value=1 id = 'unit_{{$key}}_1' {{($product->unit_id == 1)?'selected':''}}>KG</option>
                                                             <option value=2 id = 'unit_{{$key}}_2' {{($product->unit_id == 2)?'selected':''}}>Pieces</option>

@@ -1597,7 +1597,7 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group ">' +
-            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
+            '<select class="form-control unit" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '</select>' +
             '</div>' +
             '</td>' +
