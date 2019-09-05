@@ -560,6 +560,7 @@ class ProductsubController extends Controller {
                 "FullyQualifiedName" => Input::get('alias_name'),
                 "UnitPrice" => $pcat->price + $data['difference'],
                 "Type" => "NonInventory",
+                "TaxClassificationRef"=>Input::get('hsn_code'),
                 "QtyOnHand"=> 1,
                 // "PurchaseCost"=> $pcat->price,                
                 "IncomeAccountRef"=> [
@@ -594,7 +595,7 @@ class ProductsubController extends Controller {
 
             // $ProductSubCategory = ProductSubCategory::where('id',$id)->first();
             $ProductSubCategory = ProductSubCategory::find($id);
-            $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
+            /*$quickbook_item_id=$ProductSubCategory->quickbook_item_id;
             if($quickbook_item_id)  
             {          
                 $res = $this->quickbook_update_item($quickbook_item_id,$Qdata);
@@ -608,7 +609,32 @@ class ProductsubController extends Controller {
                         // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
                     }
                 }
+            }*/
+            $inclusiveitemid ="";
+            $gstitemid = "";
+            $dataService = $this->getTokenWihtoutGST();
+            $newItemObj = Item::update($Qdata);
+            $newitem = $dataService->add($newItemObj);
+            $error = $dataService->getLastError();
+            if ($error) { 
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();  
             }
+            else{
+                $inclusiveitemid =  $newitem->Id;
+            }
+            $nextdataservice = $this->getToken();
+            $newiteminclusive = $nextdataservice->add($newItemObj);
+            $error1 = $nextdataservice->getLastError();
+            if ($error1) { 
+                $this->refresh_token();
+                $dataService = $this->getToken();  
+            }
+            else{
+                $gstitemid  =  $newiteminclusive->Id;
+            }
+            $ProductSubCategory->quickbook_a_item_id = $gstitemid;
+            $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
             /*
              * ------------------- -------------------------
