@@ -402,7 +402,7 @@ class CustomerController extends Controller {
         }
 
         $status = Input::get('status');
-        $Qdata = [
+        /*$Qdata = [
             "GivenName"=>  Input::get('tally_name'),
             "FullyQualifiedName"=> Input::get('tally_name'),
             "CompanyName"=>  Input::get('company_name'),
@@ -442,7 +442,7 @@ class CustomerController extends Controller {
             $gstcustomerid =  $newcustoinclusive->Id;
         }
         $customer->quickbook_a_customer_id  = $gstcustomerid;
-        $customer->quickbook_customer_id  = $inclusivecustomerid;
+        $customer->quickbook_customer_id  = $inclusivecustomerid;*/
         
        /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
