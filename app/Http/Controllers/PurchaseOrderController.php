@@ -541,7 +541,7 @@ class PurchaseOrderController extends Controller {
         }
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->find($id);
         $units = Units::all();
-        // dd($units);
+        dd($units);
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
