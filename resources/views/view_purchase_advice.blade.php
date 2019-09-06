@@ -122,7 +122,7 @@
                                     <tr>
                                         <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                         <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
-                                        <td>{{$product_data->length}}</td>
+                                        <td>{{isset($product_data->length)?$product_data->length:''}}</td>
                                         <td>{{$product_data->actual_pieces}}</td>
                                         <td>{{$product_data->present_shipping}}</td>
                                         <td>{{$product_data->price}}</td>
