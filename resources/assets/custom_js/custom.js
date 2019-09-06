@@ -3089,6 +3089,8 @@ function unitType(parameters) {
     id = id[id.length - 1];
 
     var i = $('#units_' + id).val();
+    console.log(id);
+    console.log(i);
 
     if (i == "1")
     {
