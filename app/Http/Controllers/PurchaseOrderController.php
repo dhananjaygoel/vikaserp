@@ -540,8 +540,8 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->find($id);
-        $prod = PurchaseProducts::all();
-        dd($prod);
+        // $prod = PurchaseProducts::all();
+        // dd($prod);
         if (count($purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
