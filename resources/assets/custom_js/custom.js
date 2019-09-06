@@ -1088,6 +1088,10 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#units_' + i).val() == "") {
+                    $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
 
@@ -1224,6 +1228,10 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#units_' + i).val() == "") {
+                    $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
 
@@ -1260,12 +1268,12 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     status_form = 0;
             }
         }
-        if ($('.unit').val() == "") {
-            $('.unit').addClass('error_validation');
-            status_form = 1;
-        } else {
-            $('.unit').removeClass('error_validation');
-        }
+        // if ($('.unit').val() == "") {
+        //     $('.unit').addClass('error_validation');
+        //     status_form = 1;
+        // } else {
+        //     $('.unit').removeClass('error_validation');
+        // }
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -2031,10 +2039,12 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
         }
     }
 
+    if($('.custom-combobox-input').val() != "") {
     if ($('.units_dropdown').val() == "") {
         $('.units_dropdown').addClass('error_validation');
         status_form = 1;
     }else{$('.units_dropdown').removeClass('error_validation');}
+    }
 
     if ($("#vehicle_number").val() == "") {
         $("#vehicle_number").addClass('error_validation');
@@ -3089,15 +3099,6 @@ function unitType(parameters) {
     id = id[id.length - 1];
 
     var i = $('#units_' + id).val();
-   
-    if (i == "0"){
-        $('.kg_list_' + id).show();
-        $('.pieces_list_' + id).hide();
-        $('.meter_list_' + id).hide();
-        $('.ff_list_' + id).hide();
-        $('.mm_list_' + id).hide();
-        $('#quantity_' + id).val($('#kg_list_' + id).val());
-    }
 
     if (i == "1")
     {
