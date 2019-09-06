@@ -68,9 +68,7 @@
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{$product->quantity}}</td>
             <td>
-                @foreach($units as $unit)
-                {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
-                @endforeach
+            {{isset($product->unit_id)?$product->unit_id:''}}
             </td>
             <td>{{$product->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
@@ -95,15 +93,7 @@
             <td></td>
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
-            <td>
-                @if(isset($product->unit_id))
-                @foreach($units as $unit)
-                {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
-                @endforeach
-                @else
-                {{''}}
-                @endif
-            </td>
+            <td>{{isset($product->unit_id)?$product->unit_id:''}}</td>
             <td>{{$product->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
