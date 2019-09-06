@@ -81,7 +81,8 @@
         </tr>
         <?php $count = 0; ?>
         @foreach($order['all_order_products'] as $product)
-        @if($count!=0 && $product->order_type =='order')
+        <?php dd($product->order_type); ?>
+        @if($count!=0 && isset($product->order_type) && $product->order_type =='order')
         <tr>
             <td></td>
             <td></td>
