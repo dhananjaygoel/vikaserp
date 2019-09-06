@@ -213,6 +213,7 @@
                                         }
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
+                                        <?php print_r($session_data['product'][$i]);?>
                                         <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     <input value="{{$session_data['product'][$i]['name']}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
@@ -225,7 +226,7 @@
                                                 <input type="hidden" name="prod_id" value="{{$i}}">
                                             </td>
                                            <td class="col-md-1">
-                                              <?php print_R($units);?>
+                                              
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
                                                       
