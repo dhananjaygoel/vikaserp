@@ -169,7 +169,7 @@ class GstController extends Controller {
         $thickness->sgst = $request->sgst;
         $thickness->cgst = $request->cgst;
         $thickness->igst = $request->igst;
-        $thickness->quick_gst_id = $request->quick_gst_id;
+        //$thickness->quick_gst_id = $request->quick_gst_id;
         $thickness->save();
 
 
