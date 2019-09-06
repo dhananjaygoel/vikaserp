@@ -3,40 +3,52 @@
     {!! HTML::style('/resources/assets/css/custom_style/excel-export-table.css') !!}
     <table>
         <tr>
-            <td class="heading1">Name</td>
-            <td class="heading1">Company</td>
-            <td class="heading1">Customer Type</td>
-            <td class="heading1">Email</td>
-            <td class="heading1">Phone</td>
-            <td class="heading1">Mobile</td>
-            <td class="heading1">Street</td>
-            <td class="heading1">City</td>
-            <td class="heading1">State</td>
-            <td class="heading1">PIN Code</td>
-            <td class="heading1">Country</td>
-            <td class="heading1">Date</td>
-            <td class="heading1">GST Registration Type</td>
-            <td class="heading1">GSTIN</td>
+            <td class="heading1">owner_name</td>
+            <td class="heading1">company_name</td>
+            <td class="heading1">contact_person</td>
+            <td class="heading1">address1</td>
+            <td class="heading1">address2</td>
+            <td class="heading1">state_name</td>
+            <td class="heading1">city_name</td>
+            <td class="heading1">zip</td>
+            <td class="heading1">email</td>
+            <td class="heading1">tally_name</td>
+            <td class="heading1">phone_number_1</td>
+            <td class="heading1">phone_number_2</td>
+            <td class="heading1">excise_number</td>
+            <td class="heading1">delivery_location</td>
+            <td class="heading1">user_name</td>
+            <td class="heading1">password</td>
+            <td class="heading1">credit_period</td>
+            <td class="heading1">relationship_manager</td>
         </tr>
         <?php
         ini_set('max_execution_time', 720);
+//         echo "<pre>";
+//            print_r($allcustomers);die;
         foreach ($allcustomers as $value) {
+           
             ?>
             <tr>
-                <td>{{$value->tally_name}}</td>
+                <td>{{$value->owner_name}}</td>
                 <td>{{$value->company_name}}</td>
-                <td>Retail Trade</td>
-                <td>{{(isset($value->email)&& $value->email!='')?$value->email:'hi@alphalogicinc.com'}}</td>
+                <td>{{$value->contact_person}}</td>
+                <td>{{$value->address1}}</td>
+                <td>{{$value->address2}}</td>
+                <td>{{(isset($value->states) && $value->states->state_name!='')?$value->states->state_name:''}}</td>
+                <td>{{(isset($value->getcity) && $value->getcity->city_name!='')?$value->getcity->city_name:''}}</td>
+                <td>{{$value->zip}}</td>
+                <td>{{$value->email}}</td>
+                <td>{{$value->tally_name}}</td>
                 <td>{{$value->phone_number1}}</td>
                 <td>{{$value->phone_number2}}</td>
-                <td>{{$value->address1}}</td>
-                <td>{{(isset($value->getcity) && $value->getcity->city_name!='')?$value->getcity->city_name:''}}</td>
-                <td>{{(isset($value->states) && $value->states->state_name!='')?$value->states->state_name:''}}</td>
-                <td>{{$value->zip}}</td>
-                <td>India</td>
-                <td>{{$value->created_at}}</td>
-                <td>Consumer</td>
-                <td>{{$value->gstin_number}}</td>
+                <td>{{$value->excise_number}}</td>
+                <td>{{(isset($value->deliverylocation) && $value->deliverylocation->area_name!='')?$value->deliverylocation->area_name:''}}</td>
+                <td>{{$value->username}}</td>
+                <td>-</td>
+                <td>{{$value->credit_period}}</td>
+                <td>{{(isset($value->manager) && $value->manager->first_name!='' && $value->manager->last_name!='')?$value->manager->last_name:''}}</td>
+
             </tr>
             <?php
         }
