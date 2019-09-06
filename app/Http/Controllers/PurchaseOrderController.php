@@ -473,10 +473,6 @@ class PurchaseOrderController extends Controller {
                 PurchaseProducts::create($purchase_order_products);
             }
         }
-        
-        $test = PurchaseProducts::where('purchase_order_id', '=', $purchase_order_id)->get();
-        dd($test);
-
 
         /* inventory code */
         $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $purchase_order_id)->where('order_type', 'purchase_order')->get();
