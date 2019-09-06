@@ -197,7 +197,7 @@
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
-                                        print_R($delivery_data['delivery_product']);
+                                        
                                         $session_data = Session::get('input_data');
                                         if (isset($session_data['product'])) {
                                         $total_products_added = sizeof($session_data['product']);
