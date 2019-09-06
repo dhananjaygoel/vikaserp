@@ -81,7 +81,6 @@
         </tr>
         <?php $count = 0; ?>
         @foreach($order['all_order_products'] as $product)
-        @if(isset($product->order_type))
         @if($count!=0 && $product->order_type =='order')
         <tr>
             <td></td>
@@ -103,7 +102,6 @@
             <td></td>
             <td></td>
         </tr>
-        @endif
         @endif
         <?php $count++; ?>
         @endforeach
