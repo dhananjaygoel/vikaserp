@@ -196,7 +196,7 @@ class GstController extends Controller {
 	public function edit($id)
 	{
 
-        require_once base_path('quickbook/vendor/autoload.php');
+        /*require_once base_path('quickbook/vendor/autoload.php');
         //$quickgst = [];
         $dataService = $this->getToken();
         $quickgst = $dataService->Query('select * From TaxCode');
@@ -205,13 +205,13 @@ class GstController extends Controller {
             $this->refresh_token();
             $dataService = $this->getToken();
             $quickgst = $dataService->Query('select * From TaxCode');
-        }
+        }*/
 
         if (Auth::user()->role_id != 0) {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
         $gst = Gst::find($id);
-        return view('gst_edit', compact('gst','quickgst'));
+        return view('gst_edit', compact('gst'));
 	}
 
 	/**
