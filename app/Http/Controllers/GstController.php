@@ -226,7 +226,7 @@ class GstController extends Controller {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
-            'gst' => 'required|numeric|between:0,99.99',
+            'gst' => 'required|numeric|between:0,99.99|unique:gst,gst',
             'sgst' => 'required|numeric|between:0,99.99',
             'cgst' => 'required|numeric|between:0,99.99',
             'igst' => 'required|numeric|between:0,99.99',
