@@ -195,7 +195,7 @@
                                             <td class="inquiry_vat_chkbox"><span>GST</span></td>
                                             <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
-                                        </tr>
+                                        </tr>gggggggggggggggggggggggggggggggggggvhghghgh
                                         <?php
                                         $session_data = Session::get('input_data');
                                         if (isset($session_data['product'])) {
