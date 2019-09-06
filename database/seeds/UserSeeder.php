@@ -35,12 +35,12 @@ class UserSeeder extends Seeder {
                 array(
                     //Super Admin
                     array(
-                        'id' => '25',
+                        'id' => '39',
                         'first_name' => 'Saranya',
                         'last_name' => 'Admin',
-                        'phone_number' => '1234567890',
-                        'mobile_number' => '9898989890',
-                        'email' => 'sadmin@admin.com',
+                        'phone_number' => '9898989815',
+                        'mobile_number' => '9898989815',
+                        'email' => 'abhi@vikaserp.in',
                         // 'password' => '$2y$10$vkxXDsOalnfS.ANuYhDIkunjjtZGzvVD497Tvl0/vCnBAMKxkcaYC',
                         'password' => '$2y$10$wraJ4uNWGMrftZnjpQcnuu.ar8OQQGntL2Hgol/eFT4Vp6V34Oaay',
                         'role_id' => '0'
