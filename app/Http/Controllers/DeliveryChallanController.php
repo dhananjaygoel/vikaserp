@@ -475,8 +475,28 @@ class DeliveryChallanController extends Controller {
         }
         $product_type = $this->check_product_type($allorder);
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        $page_title="View Delivery Challan";
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title'));
+    }
+    public function show_daily_pro($id) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
 
-        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers'));
+        $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
+
+        if (count($allorder) < 1) {
+            return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
+        }
+
+        $order_product = Order::with('all_order_products')->find($allorder->order_id);
+        if (count($order_product) < 1) {
+            $order_product = 0;
+        }
+        $product_type = $this->check_product_type($allorder);
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        $page_title="Daily Pro Forma Invoice";
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title'));
     }
 
     public function check_product_type($delivery_data) {

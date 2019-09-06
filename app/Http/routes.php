@@ -374,6 +374,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('create_delivery_order/{id}', 'OrderController@store_delivery_order');
     Route::get('pending_order_report', 'PendingOrderReportController@index');
     Route::post('delivery_challan/{id}-delete', 'DeliveryChallanController@destroy');
+    Route::get('delivery_challan_invoice/{id}', 'DeliveryChallanController@show_daily_pro');
     Route::resource('delivery_challan', 'DeliveryChallanController');
     Route::post('manual_complete', 'PurchaseOrderController@manual_complete');
     Route::get('purchase_order_report', 'PurchaseOrderController@purchase_order_report');
