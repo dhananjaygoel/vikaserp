@@ -156,7 +156,7 @@ class GstController extends Controller {
         //     'quick_gst_id'=>'required'
         // ]);
          $this->validate($request, [
-            'gst' => 'required|numeric|between:0,99.99|unique:gst,gst',
+            'gst' => 'required|numeric|between:0,99.99',
             'sgst' => 'required|numeric|between:0,99.99',
             'cgst' => 'required|numeric|between:0,99.99',
             'igst' => 'required|numeric|between:0,99.99',
