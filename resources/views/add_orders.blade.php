@@ -234,19 +234,23 @@
                                                         </div>
                                                     </td>
 
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-2" id='test1'>
                                                         <div class = "form-group ">
-                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}">
-                                                                @foreach($units as $unit)
-                                                                    <option value = "{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                                @endforeach
+                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}" required>
+                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                                    <option value=1 id = 'unit_{{$i}}_1'>KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
+                                                                    <option value=4 id = 'unit_{{$i}}_4'>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5'>mm</option>
                                                             </select>
                                                         </div>
                                                     </td>
+                                                    
                                                     <td class="col-md-1">
                                                         <div class = "form-group">
                                                             <div class = "form-group length_list_{{$i}}">
-                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:''}}" disabled>
+                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:'0'}}" disabled>
                                                         </div>
                                                         </div>
                                                     </td>

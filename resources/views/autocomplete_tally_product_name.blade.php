@@ -1031,9 +1031,14 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+            // for (var key in arr1) {
+    html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+            +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+            +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+            +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+            +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+            +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+    // }
     $("#units_" + current_row_count).html(html);
     });
     
@@ -1148,9 +1153,14 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+            // for (var key in arr1) {
+    html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+            +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+            +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+            +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+            +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+            +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+    // }
     $("#units_" + current_row_count).html(html);
     });
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
@@ -1162,7 +1172,7 @@
             '</div>' +
             '</td>' +
             '<td class="col-md-2">' +
-            '<div class="form-group ">' +
+            '<div class="form-group ">' +  
             '<select class="form-control unit" onchange="unitType(this);" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
             '</div>' +
@@ -1436,9 +1446,16 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-    html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-    }
+    //         for (var key in arr1) {
+    // html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+    // }
+    html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+            +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+            +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+            +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+            +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+            +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+            
     $("#units_" + current_row_count).html(html);
     });
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
@@ -1454,6 +1471,11 @@
             '<div class="form-group">' +
             '<select class="form-control units_dropdown" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
+            '</div>' +
+            '</td>' +
+            '<td class="col-md-1" >' +
+            '<div class="form-group length_list_' + current_row_count + '">' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
@@ -1562,17 +1584,19 @@
     var main_array = JSON.parse(data);
             var arr1 = main_array['units'];
             var html = '';
-            for (var key in arr1) {
-                    if(arr1[key].id == 4 || arr1[key].id == 5){
-
-                    }
-                    else{
-                        html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
-                    }
-
-
-
-            }
+            html = "<option value='' id = 'unit_"+current_row_count+"_0' selected='selected'>--Select--</option>"
+                    +"<option value=1 id = 'unit_"+current_row_count+"_1'>KG</option>"
+                    +"<option value=2 id = 'unit_"+current_row_count+"_2'>Pieces</option>"
+                    +"<option value=3 id = 'unit_"+current_row_count+"_3'>Meter</option>"
+                    +"<option value=4 id = 'unit_"+current_row_count+"_4'>ft</option>"
+                    +"<option value=5 id = 'unit_"+current_row_count+"_5'>mm</option>";
+            // for (var key in arr1) {
+            //         if(arr1[key].id == 4 || arr1[key].id == 5){
+            //         }
+            //         else{
+            //             html += '<option value="' + arr1[key].id + '">' + arr1[key].unit_name + '</option>';
+            //         }
+            // }
     $("#units_" + current_row_count).html(html);
     });
             var html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
@@ -1585,8 +1609,13 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group ">' +
-            '<select class="form-control" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
+            '<select class="form-control unit" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '" onchange="unitType(this);">' +
             '</select>' +
+            '</div>' +
+            '</td>' +
+            '<td class="col-md-1" >' +
+            '<div class="form-group length_list_' + current_row_count + '">' +
+            '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
@@ -1603,6 +1632,16 @@
             '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
             '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+
             qtyPieces+
+            '</select>'+
+            '</div>'+
+            '<div class = "form-group ff_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control ff_list " name = "ff_list" id = "ff_list_' + current_row_count + '" onchange="setQty(this);">'+
+            qtyPieces +
+            '</select>'+
+            '</div>'+
+            '<div class = "form-group mm_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control mm_list " name = "mm_list" id = "mm_list_' + current_row_count + '" onchange="setQty(this);">'+
+            qtyPieces +
             '</select>'+
             '</div>'+
             '</td>' +
@@ -1708,16 +1747,27 @@ $.widget("custom.combobox1", {
 
             this._on(this.input, {
                 autocompleteselect: function (event, ui) {
+                    // alert('hi');
         //         	var i = $('#units_' + id).val();
     				// alert(i);
         //            console.log(ui);
                    if(ui.item.type_id == 3)
                    {
-                   		$('#length_'+id).attr('disabled', false);
+                           $('#length_'+id).attr('disabled', false);
+                           $('#unit_'+id+'_1').hide();
+                           $('#unit_'+id+'_2').hide();
+                           $('#unit_'+id+'_3').hide();
+                           $('#unit_'+id+'_4').show();
+                           $('#unit_'+id+'_5').show();
                    }
                    else
                    {
-                   		$('#length_'+id).attr('disabled', true);
+                           $('#length_'+id).attr('disabled', true);
+                           $('#unit_'+id+'_1').show();
+                           $('#unit_'+id+'_2').show();
+                           $('#unit_'+id+'_3').show();
+                           $('#unit_'+id+'_4').hide();
+                           $('#unit_'+id+'_5').hide();
                    }
                     if(ui.item.product_price == ""){
                         var term = '';
@@ -1957,13 +2007,24 @@ function getProductDetails() {
             this._on(this.input, {
                 autocompleteselect: function (event, ui) {
                    // console.log(ui);
+                   
                    if(ui.item.type_id == 3)
                    {
-                   		$('#length_'+id).attr('disabled', false);
+                           $('#length_'+id).attr('disabled', false);
+                           $('#unit_'+id+'_1').hide();
+                           $('#unit_'+id+'_2').hide();
+                           $('#unit_'+id+'_3').hide();
+                           $('#unit_'+id+'_4').show();
+                           $('#unit_'+id+'_5').show();
                    }
                    else
                    {
-                   		$('#length_'+id).attr('disabled', true);
+                           $('#length_'+id).attr('disabled', true);
+                           $('#unit_'+id+'_1').show();
+                           $('#unit_'+id+'_2').show();
+                           $('#unit_'+id+'_3').show();
+                           $('#unit_'+id+'_4').hide();
+                           $('#unit_'+id+'_5').hide();
                    }
                     if(ui.item.product_price == ""){
                         var term = '';

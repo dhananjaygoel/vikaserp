@@ -282,9 +282,12 @@
                                                         <td class="col-md-2">
                                                             <div class="form-group ">
                                                                 <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                    @foreach($units as $unit)
-                                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                                    @endforeach
+                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                                    <option value=1 id = 'unit_{{$i}}_1'>KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
+                                                                    <option value=4 id = 'unit_{{$i}}_4'>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5'>mm</option>
                                                                 </select>
                                                             </div>
                                                         </td>
@@ -336,13 +339,14 @@
                                                 <td class="col-md-2">
                                                     <div class="form-group ">
                                                         <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);" >
-                                                            @foreach($units as $unit)
-                                                            @if($product->unit_id == $unit->id)
-                                                            <option value="{{$unit->id}}" selected>{{$unit->unit_name}}</option>
-                                                            @else
-                                                            <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                            @endif
-                                                            @endforeach
+                                                        <?php if($product->unit_id == 1 || $product->unit_id == 2 || $product->unit_id == 3) { ?>
+                                                            <option value=1 id = 'unit_{{$key}}_1' {{($product->unit_id == 1)?'selected':''}}>KG</option>
+                                                            <option value=2 id = 'unit_{{$key}}_2' {{($product->unit_id == 2)?'selected':''}}>Pieces</option>
+                                                            <option value=3 id = 'unit_{{$key}}_3' {{($product->unit_id == 3)?'selected':''}}>Meter</option>
+                                                        <?php } elseif($product->unit_id == 4 || $product->unit_id == 5) { ?>
+                                                            <option value=4 id = 'unit_{{$key}}_4' {{($product->unit_id == 4)?'selected':''}}>ft</option>
+                                                            <option value=5 id = 'unit_{{$key}}_5' {{($product->unit_id == 5)?'selected':''}}>mm</option>
+                                                        <?php } ?>
                                                         </select>
                                                     </div>
                                                 </td>

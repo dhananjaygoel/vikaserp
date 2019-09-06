@@ -323,6 +323,10 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
     }else{
          $('#price').removeClass('error_validation');
     }
+    if ($('.unit').val() == "") {
+        $('.unit').addClass('error_validation');
+        status_form = 1;
+    }else{$('.unit').removeClass('error_validation');}
 
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
         if ($('#name').val() == "") {
@@ -333,6 +337,10 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             $('#purchase_other_location').addClass('error_validation');
             status_form = 1;
         }
+        if ($('.unit').val() == "") {
+            $('.unit').addClass('error_validation');
+            status_form = 1;
+        }else{$('.unit').removeClass('error_validation');}
         if ($('#mobile_number').val() == '') {
             $('#mobile_number').addClass('error_validation');
             status_form = 1;
@@ -472,7 +480,10 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
                     status_form = 0;
             }
         }
-
+        if ($('.unit').val() == "") {
+            $('.unit').addClass('error_validation');
+            status_form = 1;
+        }else{$('.unit').removeClass('error_validation');}
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top

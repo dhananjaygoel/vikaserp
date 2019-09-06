@@ -102,6 +102,7 @@
                                         <tr class="headingunderline">
                                             <td><span> Product(Alias) </span></td>
                                             <td><span> Qty</span></td>
+                                            <td><span>Length</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
                                             <td class="widthtable"><span>Remark</span></td>
@@ -110,9 +111,11 @@
                                         @foreach($purchase_orders['purchase_products'] as $product_data)
                                         @if($product_data->order_type == 'purchase_order')
                                         <tr>
+                                       
                                             <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
-                                            <td>{{$product_data['unit']->unit_name}}</td>
+                                            <td>{{$product_data->length}}</td>
+                                            <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
                                             <td>{{$product_data->price}}</td>
                                             <td>{{$product_data->remarks}}</td>
                                         </tr>

@@ -402,7 +402,7 @@ class CustomerController extends Controller {
         }
 
         $status = Input::get('status');
-        $Qdata = [
+        /*$Qdata = [
             "GivenName"=>  Input::get('tally_name'),
             "FullyQualifiedName"=> Input::get('tally_name'),
             "CompanyName"=>  Input::get('company_name'),
@@ -424,7 +424,6 @@ class CustomerController extends Controller {
         $newCustomerObj = Vendor::create($Qdata);
         $newcus = $dataService->add($newCustomerObj);
         $error = $dataService->getLastError();
-        print $error;
         if ($error) { 
             $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();  
@@ -443,8 +442,8 @@ class CustomerController extends Controller {
             $gstcustomerid =  $newcustoinclusive->Id;
         }
         $customer->quickbook_a_customer_id  = $gstcustomerid;
-        $customer->quickbook_customer_id  = $inclusivecustomerid;
-
+        $customer->quickbook_customer_id  = $inclusivecustomerid;*/
+        
        /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){

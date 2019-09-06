@@ -31,6 +31,7 @@
                             <div class="form-group">Date : {{date('d F, Y')}}</div>
                             {!!Form::open(array('data-button'=>'btn_edit_delivery_order','method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             @if($delivery_data->order_source == 'supplier')
                                 <div class="form-group">
@@ -196,6 +197,7 @@
                                             <td><span>Remark</span></td>
                                         </tr>
                                         <?php
+                                        
                                         $session_data = Session::get('input_data');
                                         if (isset($session_data['product'])) {
                                         $total_products_added = sizeof($session_data['product']);
@@ -212,6 +214,7 @@
                                         }
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
+                                        
                                         <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     <input value="{{$session_data['product'][$i]['name']}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
@@ -224,8 +227,10 @@
                                                 <input type="hidden" name="prod_id" value="{{$i}}">
                                             </td>
                                            <td class="col-md-1">
+                                              
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                      
                                                         @foreach($units as $unit)
                                                            @if(isset($session_data['product'][$i]['units']))
                                                             @if($session_data['product'][$i]['units'] == $unit->id)
@@ -308,13 +313,13 @@
                                             <td class="col-md-1">
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                        @foreach($units as $unit)
-                                                           @if(isset($session_data['product'][$i]['units']))
-                                                            @if($session_data['product'][$i]['units'] == $unit->id)
-                                                                <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
-                                                            @endif
-                                                            @endif
-                                                        @endforeach
+                                                        <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                        <option value=1 id = 'unit_{{$i}}_1'>KG</option>
+                                                        <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
+                                                        <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
+                                                        <option value=4 id = 'unit_{{$i}}_4'>ft</option>
+                                                        <option value=5 id = 'unit_{{$i}}_5'>mm</option>
+                                                        
                                                     </select>
                                                 </div>
                                             </td>
@@ -403,9 +408,14 @@
                                                     <td class="col-md-1">
                                                         <div class="form-group ">
                                                             <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
-                                                                @foreach($units as $unit)
-                                                                    <option value="{{$unit->id}}" {{($product->unit_id == $unit->id)?'selected':''}}>{{$unit->unit_name}}</option>
-                                                                @endforeach
+                                                            <?php if($product->unit_id == 1 || $product->unit_id == 2 || $product->unit_id == 3) { ?>
+                                                                <option value=1 id = 'unit_{{$key}}_1' {{($product->unit_id == 1)?'selected':''}}>KG</option>
+                                                                <option value=2 id = 'unit_{{$key}}_2' {{($product->unit_id == 2)?'selected':''}}>Pieces</option>
+                                                                <option value=3 id = 'unit_{{$key}}_3' {{($product->unit_id == 3)?'selected':''}}>Meter</option>
+                                                            <?php } elseif($product->unit_id == 4 || $product->unit_id == 5) { ?>
+                                                                <option value=4 id = 'unit_{{$key}}_4' {{($product->unit_id == 4)?'selected':''}}>ft</option>
+                                                                <option value=5 id = 'unit_{{$key}}_5' {{($product->unit_id == 5)?'selected':''}}>mm</option>
+                                                            <?php } ?>
                                                             </select>
                                                         </div>
                                                     </td>

@@ -111,6 +111,7 @@
                                     <tr class="headingunderline">
                                         <td><span>Product</span></td>
                                         <td><span>Unit</span></td>
+                                        <td><span>Length</span></td>
                                         <td><span>Actual Pieces</span></td>
                                         <td class="col-md-2" ><span>Present Shipping</span></td>
                                         <td><span>Price</span></td>
@@ -120,7 +121,8 @@
                                     @if($product_data->order_type == 'purchase_advice' && $product_data->actual_pieces > '0')
                                     <tr>
                                         <td>{{$product_data['purchase_product_details']->alias_name}}</td>
-                                        <td>{{$product_data['unit']->unit_name}}</td>
+                                        <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
+                                        <td>{{$product_data->length}}</td>
                                         <td>{{$product_data->actual_pieces}}</td>
                                         <td>{{$product_data->present_shipping}}</td>
                                         <td>{{$product_data->price}}</td>

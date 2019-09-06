@@ -214,6 +214,7 @@ use Illuminate\Support\Facades\Session;
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
+                                                <td><span>Length</span></td>
                                                 <td><span>Quantity</span></td>
 
                                                 <td><span>Price</span></td>
@@ -237,14 +238,21 @@ use Illuminate\Support\Facades\Session;
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
-                                                                @foreach($units as $unit)
-                                                                    @if($unit->id == 4 OR $unit->id == 5)
-                                                                    @else
-                                                                        <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                                    @endif
-                                                                @endforeach
+                                                            <select class="form-control unit" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
+                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                                    <option value=1 id = 'unit_{{$i}}_1'>KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
+                                                                    <option value=4 id = 'unit_{{$i}}_4'>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5'>mm</option>
                                                             </select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-1">
+                                                        <div class = "form-group">
+                                                            <div class = "form-group length_list_{{$i}}">
+                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:''}}" disabled>
+                                                        </div>
                                                         </div>
                                                     </td>
                                                     <td class="col-md-1">
@@ -266,6 +274,23 @@ use Illuminate\Support\Facades\Session;
                                                                     <option value = "{{$z}}">{{$z}}</option>
         <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4; 
         } ?>                                                 
+                                                            </select>
+                                                        </div>
+                                                        <div class = "form-group ff_list_{{$i}}" style="display:none">
+                                                            <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$i}}" onchange="setQty(this);">
+                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                <option value = "{{$z}}">{{$z}}</option>
+                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                                } ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class = "form-group mm_list_{{$i}}" style="display:none">
+                                                            <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$i}}" onchange="setQty(this);">
+                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                <option value = "{{$z}}">{{$z}}</option>
+                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
+                                                                } ?>
                                                             </select>
                                                         </div>
                                                     </td>

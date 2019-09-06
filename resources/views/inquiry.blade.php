@@ -139,6 +139,7 @@
                                         <?php $qty = 0; $alias = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
                                         <?php  $alias = $prod['inquiry_product_details']->alias_name;?>
+                                        @if(isset($prod['unit']->unit_name))
                                         @if($prod['unit']->unit_name == 'KG')
                                         <?php
                                         $qty += $prod->quantity;
@@ -167,12 +168,13 @@
                                                 ?>
                                             @endif
 
-                                            @if($prod['unit']->unit_name == 'mt')
+                                            @if($prod['unit']->unit_name == 'mm')
                                                 <?php
                                                 $qty += $prod->quantity * ($prod['inquiry_product_details']->weight / 305);
                                                  $alias = $prod['inquiry_product_details']->alias_name;
                                                 ?>
                                             @endif
+                                        @endif
                                         @endforeach
                                        
                                         <td class="text-center">{{ round($qty, 2) }}</td>

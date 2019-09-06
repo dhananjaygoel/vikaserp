@@ -54,14 +54,14 @@
                                     <input id="igst" class="form-control" placeholder="IGST" name="igst" value="{{Input::old('igst')}}" type="text">
                                 </div>
 
-                                <div class="form-group">
+                               <!-- <div class="form-group">
                                     <label for="igst">QuickBook GST Type<span class="mandatory">*</span></label>
                                     <select class="form-control" name="quick_gst_id" required>
                                         @foreach($quickgst as $gstq)
                                             <option value="{{$gstq->Id}}">{{$gstq->Name}}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div>-->
 
 
                                 <hr/>

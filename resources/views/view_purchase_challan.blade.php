@@ -113,6 +113,9 @@
                                         <td  class="widthtable">
                                             <span>Unit</span>
                                         </td>
+                                        <td  class="widthtable">
+                                            <span>Length</span>
+                                        </td>
                                         <td class="widthtable">
                                             <span>Present Shipping</span>
                                         </td>
@@ -136,6 +139,7 @@
                                         <td> {{isset($product_data['purchase_product_details']->alias_name)?$product_data['purchase_product_details']->alias_name:''}} </td>
                                         <td> {{isset($product_data->quantity)?$product_data->quantity:'0'}}</td>
                                         <td> {{$product_data['unit']->unit_name}} </td>
+                                        <td> {{$product_data->length}} </td>
                                         <td> {{$product_data->present_shipping}}</td>
                                         <td> {{$product_data->price}}</td>
                                         <td>

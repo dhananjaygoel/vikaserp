@@ -99,7 +99,7 @@
                                         <tr>
                                             <td>{{isset($product_data['inquiry_product_details'])?$product_data['inquiry_product_details']->alias_name: ''}}</td>
                                             <td>{{$product_data->quantity}}</td>
-                                            <td>{{$product_data['unit']->unit_name}}</td>
+                                            <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
                                             <td>{{$product_data->length}}</td>
                                             <td><div id='price_{{$product_data->id}}'>{{$product_data->price}}</div></td>
                                             <td>

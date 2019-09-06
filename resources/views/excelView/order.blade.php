@@ -63,19 +63,17 @@
             <td>{{$order->other_location}}</td>
             <td>{{$order->location_difference}}</td>
             @endif
-            <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0] : ''; ?>
-            @if(isset($product) && $product!='' && $product->order_type =='order')
+            <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0]['order_product_details'] : ''; ?>
+            <!-- @if(isset($product) && $product!='' && $product->order_type =='order')
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{$product->quantity}}</td>
             <td>
-                @foreach($units as $unit)
-                {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
-                @endforeach
+            {{isset($product->unit_id)?$product->unit_id:''}}
             </td>
             <td>{{$product->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
-            @endif
+            @endif -->
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
             <td>{{$order->remarks}}</td>
             <td>{{$order->createdby->first_name." ".$order->createdby->last_name}}</td>
@@ -83,7 +81,8 @@
         </tr>
         <?php $count = 0; ?>
         @foreach($order['all_order_products'] as $product)
-        @if($count!=0 && isset($product->order_type) &&  $product->order_type =='order')
+        
+        <?php if($count!=0 && isset($product->order_type) && $product->order_type =='order') {?>
         <tr>
             <td></td>
             <td></td>
@@ -95,15 +94,7 @@
             <td></td>
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
-            <td>
-                @if(isset($product->unit_id))
-                @foreach($units as $unit)
-                {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
-                @endforeach
-                @else
-                {{''}}
-                @endif
-            </td>
+            <td>{{isset($product->unit_id)?$product->unit_id:''}}</td>
             <td>{{$product->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
@@ -112,7 +103,7 @@
             <td></td>
             <td></td>
         </tr>
-        @endif
+        <?php } ?>
         <?php $count++; ?>
         @endforeach
         <?php $counter++; ?>

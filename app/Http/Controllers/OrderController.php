@@ -1666,7 +1666,7 @@ class OrderController extends Controller {
                         'order_type' => 'delivery_order',
                         'from' => $id,
                         'product_category_id' => $product_data['id'],
-                        'unit_id' => $product_data['units'],
+                        'unit_id' => isset($product_data['units'])? $product_data['units'] : '',
                         'length' => isset($product_data['length']) ? $product_data['length'] :'NULL',
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
@@ -1943,7 +1943,7 @@ class OrderController extends Controller {
         } elseif ($data['order_status'] == 'approval') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $is_approved = 'no';
-            $order_status = 'pending';
+            $order_status = 'approval';
             $excel_sheet_name = 'Approval';
             $excel_name = 'Order-Pending-Approval' . date('dmyhis');
         } elseif ($data['order_status'] == 'cancelled') {

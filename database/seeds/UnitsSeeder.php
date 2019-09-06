@@ -20,6 +20,14 @@ class UnitsSeeder extends Seeder {
                     array(
                         'id' => '3',
                         'unit_name' => 'Meter'
+                    ),
+                    array(
+                        'id' => '4',
+                        'unit_name' => 'ft'
+                    ),
+                    array(
+                        'id' => '5',
+                        'unit_name' => 'mm'
                     )
         ));               
     }

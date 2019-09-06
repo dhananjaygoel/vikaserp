@@ -89,6 +89,8 @@
                                         <td>{{$c->tally_name}}</td>
                                         <td>{{isset($c->email)?(!empty($c->email)?$c->email:'NA'):'NA'}}</td>
                                         <td>{{$c->phone_number1}}</td>
+                                        <td style="display:none;">{{$c->quickbook_a_customer_id}}</td>
+                                        <td style="display:none;">{{$c->quickbook_customer_id}}</td>
                                         <td>
                                             @foreach($city as $town)
                                             @if($town->id == $c->city)
