@@ -457,8 +457,11 @@ class PurchaseOrderController extends Controller {
         }
         $purchase_order_products = array();
         // dd($input_data);
+        $val = 11380;
+        $test = PurchaseProducts::where('purchase_order_id', '=', $val)->get();
+        dd($test);
         foreach ($input_data['product'] as $product_data) {
-            dd($product_data['length']);
+            // dd($product_data['length']);
             if ($product_data['name'] != "") {
                 $purchase_order_products = [
                     'purchase_order_id' => $purchase_order_id,
