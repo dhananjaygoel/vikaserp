@@ -160,7 +160,7 @@ class GstController extends Controller {
             'sgst' => 'required|numeric|between:0,99.99',
             'cgst' => 'required|numeric|between:0,99.99',
             'igst' => 'required|numeric|between:0,99.99',
-            'quick_gst_id'=>'required'
+            //'quick_gst_id'=>'required'
         ]);
 
 
