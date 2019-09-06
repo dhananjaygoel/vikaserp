@@ -225,8 +225,10 @@
                                                 <input type="hidden" name="prod_id" value="{{$i}}">
                                             </td>
                                            <td class="col-md-1">
+                                              <?php print_R($units);?>
                                                 <div class="form-group ">
                                                     <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
+                                                      
                                                         @foreach($units as $unit)
                                                            @if(isset($session_data['product'][$i]['units']))
                                                             @if($session_data['product'][$i]['units'] == $unit->id)
