@@ -63,8 +63,8 @@
             <td>{{$order->other_location}}</td>
             <td>{{$order->location_difference}}</td>
             @endif
-            <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0] : ''; ?>
-            @if(isset($product) && $product!='' && $product->order_type =='order')
+            <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0]['order_product_details'] : ''; ?>
+            <!-- @if(isset($product) && $product!='' && $product->order_type =='order')
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{$product->quantity}}</td>
             <td>
@@ -73,7 +73,7 @@
             <td>{{$product->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
-            @endif
+            @endif -->
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
             <td>{{$order->remarks}}</td>
             <td>{{$order->createdby->first_name." ".$order->createdby->last_name}}</td>
