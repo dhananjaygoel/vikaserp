@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Delivery Challan Details')
+@section('title',$page_title)
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -7,7 +7,7 @@
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('delivery_challan')}}">Delivery Challan</a></li>
-                    <li class="active"><span>View Delivery Challan</span></li>
+                    <li class="active"><span>{{$page_title}}</span></li>
                 </ol>
                 <div class="clearfix"></div>
             </div>
