@@ -321,7 +321,7 @@ class ProductsubController extends Controller {
         $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
 
 
-       $Qdata = [
+       /*$Qdata = [
             "Name" => $request->input('alias_name'),
             "Active" => true,
             "FullyQualifiedName" => $request->input('alias_name'),
@@ -361,7 +361,7 @@ class ProductsubController extends Controller {
             $gstitemid  =  $newiteminclusive->Id;
         }
         $ProductSubCategory->quickbook_a_item_id = $gstitemid;
-        $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;
+        $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;*/
 
         
 
