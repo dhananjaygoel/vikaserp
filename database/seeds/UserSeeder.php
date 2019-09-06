@@ -35,7 +35,7 @@ class UserSeeder extends Seeder {
                 array(
                     //Super Admin
                     array(
-                        'id' => '20',
+                        'id' => '25',
                         'first_name' => 'Saranya',
                         'last_name' => 'Admin',
                         'phone_number' => '1234567890',
