@@ -121,7 +121,7 @@
                                     <div class="clearfix"></div>
                                     @if($thickness->lastPage() > 1)
                                         <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('states')}}" id="filter_search">
+                                <form class="form-inline" method="GET" action="{{url('thickness')}}" id="filter_search">
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
