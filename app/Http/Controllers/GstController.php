@@ -116,7 +116,7 @@ class GstController extends Controller {
 
 	public function create()
 	{
-        require_once base_path('quickbook/vendor/autoload.php');
+       /* require_once base_path('quickbook/vendor/autoload.php');
 	    //$quickgst = [];
         $dataService = $this->getToken();
 
@@ -137,8 +137,8 @@ class GstController extends Controller {
         // echo '<pre>';
         // print_r($quickgst);
         // exit;
-        
-		return view('gst_add',compact('quickgst'));
+        */
+		return view('gst_add');
 	}
 
 	/**
@@ -160,7 +160,7 @@ class GstController extends Controller {
             'sgst' => 'required|numeric|between:0,99.99',
             'cgst' => 'required|numeric|between:0,99.99',
             'igst' => 'required|numeric|between:0,99.99',
-            //'quick_gst_id'=>'required'
+           // 'quick_gst_id'=>'required'
         ]);
 
 
@@ -230,7 +230,7 @@ class GstController extends Controller {
             'sgst' => 'required|numeric|between:0,99.99',
             'cgst' => 'required|numeric|between:0,99.99',
             'igst' => 'required|numeric|between:0,99.99',
-            'quick_gst_id'=>'required'
+            //'quick_gst_id'=>'required'
         ]);
 
         Gst::where('id',$id)->update([
@@ -238,7 +238,7 @@ class GstController extends Controller {
             'sgst' => $request->sgst,
             'cgst' => $request->cgst,
             'igst' => $request->igst,
-            'quick_gst_id'=>$request->quick_gst_id
+            //'quick_gst_id'=>$request->quick_gst_id
         ]);
 
         return redirect('gst')->with('flash_success_message', 'Gst updated successfully');
