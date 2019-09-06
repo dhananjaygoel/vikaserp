@@ -456,6 +456,7 @@ class PurchaseOrderController extends Controller {
             ]);
         }
         $purchase_order_products = array();
+        dd($input_data);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 $purchase_order_products = [
@@ -463,6 +464,7 @@ class PurchaseOrderController extends Controller {
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
+                    'length' => $product_data['length'],
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
                 ];
