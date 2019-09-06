@@ -3089,8 +3089,15 @@ function unitType(parameters) {
     id = id[id.length - 1];
 
     var i = $('#units_' + id).val();
-    console.log(id);
-    console.log(i);
+   
+    if (i == "0"){
+        $('.kg_list_' + id).show();
+        $('.pieces_list_' + id).hide();
+        $('.meter_list_' + id).hide();
+        $('.ff_list_' + id).hide();
+        $('.mm_list_' + id).hide();
+        $('#quantity_' + id).val($('#kg_list_' + id).val());
+    }
 
     if (i == "1")
     {
