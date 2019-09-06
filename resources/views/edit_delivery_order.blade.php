@@ -195,8 +195,9 @@
                                             <td class="inquiry_vat_chkbox"><span>GST</span></td>
                                             <td><span>Pending Quantity</span></td>
                                             <td><span>Remark</span></td>
-                                        </tr>gggggggggggggggggggggggggggggggggggvhghghgh
+                                        </tr>
                                         <?php
+                                        print_R($delivery_data['delivery_product']);
                                         $session_data = Session::get('input_data');
                                         if (isset($session_data['product'])) {
                                         $total_products_added = sizeof($session_data['product']);
@@ -213,7 +214,7 @@
                                         }
                                         ?>
                                         <tr id="add_row_{{$i}}" class="add_product_row" data-row-id="{{$i}}" {{($session_data['product'][$i]['present_shipping']==0)?'style = display:none':''}}>
-                                        <?php print_r($session_data['product'][$i]);?>
+                                        
                                         <td class="col-md-2">
                                                 <div class="form-group searchproduct">
                                                     <input value="{{$session_data['product'][$i]['name']}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$i}}][name]" id="add_product_name_{{$i}}" onfocus="product_autocomplete({{$i}});">
