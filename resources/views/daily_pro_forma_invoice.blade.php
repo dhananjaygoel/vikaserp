@@ -134,11 +134,11 @@
                                                     <td>
                                                         @if(isset($challan["customer"]->tally_name) && $challan["customer"]->tally_name != "")
                                                             {{$challan["customer"]->tally_name}}
-                                                        @else
-                                                            @if(isset($challan["customer"]->owner_name))
-                                                                {{"Advance Sales"}}
-                                                            @endif
-                                                        @endif
+                                                         @elseif(isset($challan['customer']->owner_name))
+                                                               {{ $challan['customer']->owner_name}}
+                                                         @else
+                                                                   Anonymous User
+                                                         @endif
                                                     </td>
 
                                                     <td>
