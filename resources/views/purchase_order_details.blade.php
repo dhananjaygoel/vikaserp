@@ -109,12 +109,13 @@
                                         </tr>
                                         <?php $total = 0; ?>
                                         @foreach($purchase_orders['purchase_products'] as $product_data)
+                                        <?php print($product_data->length); ?>
                                         @if($product_data->order_type == 'purchase_order')
                                         <tr>
                                        
                                             <td>{{$product_data['purchase_product_details']->alias_name}}</td>
                                             <td>{{$product_data->quantity}}</td>
-                                            <td>{{$product_data->length}}</td>
+                                            <td>{{isset($product_data->length)?$product_data->length:'0'}}</td>
                                             <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
                                             <td>{{$product_data->price}}</td>
                                             <td>{{$product_data->remarks}}</td>
