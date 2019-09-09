@@ -158,7 +158,7 @@ class BulkDeleteController extends Controller {
                 /*
                  * Delete selected inquiries end.
                  */
-                 $q = Inquiry::query()->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details');
+                 $q = Inquiry::query()->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details','inquiry_products.unit');
                     if(isset($newdate))
                     $q->where('created_at', 'like', $newdate.'%');
                     $q->where('inquiry_status', 'pending');
