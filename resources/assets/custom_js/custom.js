@@ -2799,7 +2799,7 @@ $('body').delegate("#existing_supplier_name", "blur", function () {
         $(this).css('border-color', '#e7ebee');
     }
 });
-$('body').delegate(".each_product_qty", "blur", function () {alert("hey");
+$('body').delegate(".each_product_qty", "blur", function () {
     var cur_product_id = $(this).attr("data-productid");
     if ($('#add_product_name_' + cur_product_id).val() != "") {
         if ($('#quantity_' + cur_product_id).val() == "") {
