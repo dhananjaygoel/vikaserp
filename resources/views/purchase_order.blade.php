@@ -183,10 +183,10 @@
                                         <td>{{isset($purchase_order['delivery_location'])?$purchase_order['delivery_location']['area_name']: $purchase_order->other_location}}</td>
                                         <td>{{isset($purchase_order['user']->first_name)?$purchase_order['user']->first_name:'N/A'}}</td>
                                         <td>
-                                            {{round($purchase_order->total_quantity, 2)}}
+                                            {{isset($purchase_order->total_quantity)?round($purchase_order->total_quantity, 2):''}}
                                         </td>
                                         <td>
-                                            {{round($purchase_order->pending_quantity, 2)}}
+                                            {{isset($purchase_order->pending_quantity)?round($purchase_order->pending_quantity, 2):''}}
                                         </td>
 
                                         @if(Input::get('order_filter') == 'pending'  || Input::get('order_filter') == '')
