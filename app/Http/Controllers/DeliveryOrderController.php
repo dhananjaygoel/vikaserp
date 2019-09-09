@@ -187,8 +187,8 @@ class DeliveryOrderController extends Controller {
             return Redirect::back()->withInput()->with('validation_message', 'Please enter at least one product details');
         }
         if ($input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            if ($validator->passes()) {
+           // $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            //if ($validator->passes()) {
                 $customers = new Customer();
                 $customers->owner_name = $input_data['customer_name'];
                 $customers->contact_person = $input_data['contact_person'];
@@ -197,14 +197,15 @@ class DeliveryOrderController extends Controller {
                 $customers->customer_status = 'pending';
                 $customers->save();
                 $customer_id = $customers->id;
-            } else {
-                $error_msg = $validator->messages();
-                Session::forget('product');
-                Session::put('input_data', $input_data);
+            //} else {
+                //$error_msg = $validator->messages();
+              //  Session::forget('product');
+                //Session::put('input_data', $input_data);
 //                return Redirect::back()->withErrors($validator)->withInput()->with('flash_data', $input_data);
-                return Redirect::back()->withErrors($validator)->withInput();
-            }
-        } elseif ($input_data['customer_status'] == "exist_customer") {
+                //return Redirect::back()->withErrors($validator)->withInput();
+                return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
+            
+        } if ($input_data['customer_status'] == "exist_customer") {
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
