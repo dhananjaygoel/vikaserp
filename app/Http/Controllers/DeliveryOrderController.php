@@ -205,7 +205,7 @@ class DeliveryOrderController extends Controller {
                 //return Redirect::back()->withErrors($validator)->withInput();
                 return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
             
-        } elseif ($input_data['customer_status'] == "exist_customer") {
+        } if ($input_data['customer_status'] == "exist_customer") {
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
             if ($validator->passes()) {
                 $customer_id = $input_data['autocomplete_customer_id'];
