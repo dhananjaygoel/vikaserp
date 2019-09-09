@@ -97,7 +97,7 @@ class BulkDeleteController extends Controller {
                 /*
                  * Delete selected inquiries end.
                  */
-                $q = Inquiry::query()->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details');
+                $q = Inquiry::query()->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details','inquiry_products.unit');
                     if(isset($newdate))
                     $q->where('created_at', 'like', $newdate.'%');
                     $q->where('inquiry_status', 'completed');
@@ -106,12 +106,13 @@ class BulkDeleteController extends Controller {
                 foreach ($result_temp as $key => $temp) {
                     $tr_id[$key] = $temp->id;
                     $qty = 0;
+                    
                     foreach ($temp['inquiry_products'] as $prod) {
-                        if ($prod['unit']->unit_name == 'KG') {
+                        if (@$prod['unit']->unit_name == 'KG') {
                             $qty += $prod->quantity;
-                        } elseif ($prod['unit']->unit_name == 'Pieces') {
+                        } elseif (@$prod['unit']->unit_name == 'Pieces') {
                             $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
-                        } elseif ($prod['unit']->unit_name == 'Meter') {
+                        } elseif (@$prod['unit']->unit_name == 'Meter') {
                             $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
                         }
                     }
@@ -167,11 +168,11 @@ class BulkDeleteController extends Controller {
                     $tr_id[$key] = $temp->id;
                     $qty = 0;
                     foreach ($temp['inquiry_products'] as $prod) {
-                        if ($prod['unit']->unit_name == 'KG') {
+                        if (@$prod['unit']->unit_name == 'KG') {
                             $qty += $prod->quantity;
-                        } elseif ($prod['unit']->unit_name == 'Pieces') {
+                        } elseif (@$prod['unit']->unit_name == 'Pieces') {
                             $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
-                        } elseif ($prod['unit']->unit_name == 'Meter') {
+                        } elseif (@$prod['unit']->unit_name == 'Meter') {
                             $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
                         }
                     }
