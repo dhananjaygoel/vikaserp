@@ -454,6 +454,7 @@
                             @if($delivery_data->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('delivery_order')}}" id="filter_search">
+                                    <input type="hidden" name="order_status" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
