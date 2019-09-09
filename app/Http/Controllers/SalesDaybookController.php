@@ -356,7 +356,7 @@ class SalesDaybookController extends Controller {
                             elseif(isset($customer->owner_name)){
                                 $tally_name = $customer->owner_name;
                             }
-                            @else{
+                            else{
                                 $tally_name ='Anonymous User';
                             }
                             $total_btax = $value['delivery_challan_products'][0]->price;
