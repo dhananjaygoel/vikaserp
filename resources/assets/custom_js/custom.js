@@ -686,6 +686,10 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#units_' + i).val() == "") {
+                    $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if (j == tot_products) {
@@ -772,6 +776,10 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                 }
                 if ($("#quantity_" + i).val() == "") {
                     $('#quantity_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#units_' + i).val() == "") {
+                    $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -897,6 +905,10 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#units_' + i).val() == "") {
+                    $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if (j == tot_products) {
@@ -966,6 +978,10 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
                 }
                 if ($("#quantity_" + i).val() == "") {
                     $('#quantity_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#units_' + i).val() == "") {
+                    $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
