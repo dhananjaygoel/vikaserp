@@ -598,12 +598,14 @@ class InquiryController extends Controller {
         $inquiry_products = array();
         InquiryProducts::where('inquiry_id', '=', $id)->delete();
         foreach ($input_data['product'] as $product_data) {
+            dd($input_data['product']);
             if ($product_data['name'] != "") {
                 if(array_key_exists("length",$product_data)){
                     $length = $product_data['length'];
                 } else {
                     $length = '';
                 }
+                
                 $inquiry_products = [
                     'inquiry_id' => $id,
                     'product_category_id' => $product_data['id'],
