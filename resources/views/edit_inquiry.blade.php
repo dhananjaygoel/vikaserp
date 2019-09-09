@@ -217,8 +217,10 @@
                                         </tr>
                                         <?php
                                         $session_data = Session::get('input_data');
+                                        // dd($session_data);
                                         if (isset($session_data['product'])) {
                                             $total_products_added = sizeof($session_data['product']);
+                                            // dd($total_products_added);
                                             for ($i = 0; $i <= $total_products_added; $i++) {
                                                 if (isset($session_data['product'][$i]['name'])) {
                                                     ?>
@@ -246,7 +248,8 @@
                                                         <td class="col-md-1">
                                                             <div class = "form-group">
                                                                 <div class = "form-group length_list_{{$i}}">
-                                                                <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>" disabled>
+                                                                    <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" 
+                                                                        value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?>>
                                                             </div>
                                                             </div>
                                                         </td>
