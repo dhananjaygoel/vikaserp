@@ -44,10 +44,7 @@ class BulkDeleteController extends Controller {
     }
 
     public function show_result() {
-        $q=Unit::Inquiry::query()->get();
-        echo "<pre>";
-        print_r($q);
-        die;
+
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 10 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
