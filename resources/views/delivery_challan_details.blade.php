@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('delivery_challan')}}">Delivery Challan</a></li>
-                    <li class="active"><span>{{$page_title}}</span></li>
+                    <li><a href="{{url($url)}}">{{$page_title}}</a></li>
+                    <li class="active"><span>View {{$page_title}}</span></li>
                 </ol>
                 <div class="clearfix"></div>
             </div>
