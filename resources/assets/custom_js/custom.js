@@ -690,6 +690,10 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if (j == tot_products) {
@@ -780,6 +784,10 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -909,6 +917,10 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if (j == tot_products) {
@@ -982,6 +994,10 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -1106,6 +1122,10 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -1248,6 +1268,10 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
 
@@ -1371,6 +1395,10 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if ($("#add_order_location").val() == "other") {
@@ -1464,6 +1492,10 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
 //        if (j == tot_products) {
@@ -1552,6 +1584,10 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -1661,6 +1697,10 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -1767,6 +1807,10 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if (j == tot_products) {
@@ -1853,6 +1897,10 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -2371,6 +2419,10 @@ $('body').delegate(".btn_inquiry_to_order, .btn_inquiry_to_order_sms", "click", 
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
                 }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
             }
         }
         if (j == tot_products) {
@@ -2459,6 +2511,10 @@ $('body').delegate(".btn_inquiry_to_order, .btn_inquiry_to_order_sms", "click", 
                 }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                    $('#length_' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -2743,7 +2799,7 @@ $('body').delegate("#existing_supplier_name", "blur", function () {
         $(this).css('border-color', '#e7ebee');
     }
 });
-$('body').delegate(".each_product_qty", "blur", function () {
+$('body').delegate(".each_product_qty", "blur", function () {alert("hey");
     var cur_product_id = $(this).attr("data-productid");
     if ($('#add_product_name_' + cur_product_id).val() != "") {
         if ($('#quantity_' + cur_product_id).val() == "") {
