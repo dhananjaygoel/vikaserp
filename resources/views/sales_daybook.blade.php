@@ -132,7 +132,7 @@
                                                 {{$challan["customer"]->tally_name}}
                                                 @else
                                                 @if(isset($challan["customer"]->owner_name))
-                                                {{"Advance Sales"}}
+                                                {{"Anonymous User"}}
                                                 @endif
                                                 @endif
                                             </td>
