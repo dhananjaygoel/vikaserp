@@ -204,7 +204,17 @@
 
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
-                                        <td class="text-center">{{ (isset($challan['customer']->tally_name) && $challan['customer']->tally_name != "") ? $challan['customer']->tally_name : 'Anonymous User' }}</td>
+                                        <td class="text-center">
+                                             @if(isset($challan['customer']->tally_name) && $challan['customer']->tally_name!="")
+                                                {{ $challan['customer']->tally_name}}
+                                            @elseif(isset($challan['customer']->owner_name))
+                                                {{ $challan['customer']->owner_name}}
+                                            @else
+                                                Anonymous User
+                                            @endif
+
+
+                                        </td>
                                         <td class="text-center">
                                             @if($challan->serial_number == '')
                                             @elseif(isset($challan->serial_number) && $challan->serial_number != '')

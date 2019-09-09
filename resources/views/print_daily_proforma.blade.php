@@ -71,7 +71,15 @@
                 <tr>
                     <td>{{$i++ }}</td>
                     <td>{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</td>
-                    <td>{{ isset($obj['customer']->tally_name)?(($obj['customer']->tally_name != '') ? $obj['customer']->tally_name : 'Anonymous User'):'' }}</td>
+                    <td>
+                          @if($obj->customer->tally_name != "" && $obj->customer->owner_name != "")
+                {{ $obj->customer->owner_name }}-{{$obj->customer->tally_name}}
+                @else 
+                {{ $obj->customer->owner_name }}
+                @endif
+
+
+                    </td>
                     <td>{{ isset($obj['delivery_order']['location']) ? $obj['delivery_order']['location']->area_name : '' }}</td>
                     <td>{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }}</td>
                     <td>{{ isset($obj->grand_price) ? round($obj->grand_price, 2) : '' }}</td>

@@ -348,7 +348,7 @@ class DeliveryOrderController extends Controller {
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            if ($validator->passes()) {
+            //if ($validator->passes()) {
                 if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
@@ -368,12 +368,13 @@ class DeliveryOrderController extends Controller {
                     $customers->save();
                     $customer_id = $customers->id;
                 }
-            } else {
+            //}
+             /*else {
                 $error_msg = $validator->messages();
                 Session::forget('product');
                 Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
-            }
+            }*/
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
             if ($validator->passes()) {
@@ -438,7 +439,7 @@ class DeliveryOrderController extends Controller {
                     'unit_id' => isset($product_data['units'])? $product_data['units'] :'1' ,
                    'from'=> $order_id,
                      'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
-                     'length' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                     'length' => isset($product_data['length'])? $product_data['length']:0,
                      'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
                      'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
                      'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
@@ -453,7 +454,7 @@ class DeliveryOrderController extends Controller {
                     'unit_id' => isset($product_data['units'])? $product_data['units'] :'1',
                    'from'=> $order_id,
                     'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
-                     'length' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                     'length' => isset($product_data['length'])? $product_data['length']:0,
                      'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
                      'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
                      'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,

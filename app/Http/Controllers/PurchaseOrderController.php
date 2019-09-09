@@ -761,6 +761,7 @@ class PurchaseOrderController extends Controller {
                     'purchase_order_id' => $id,
                     'product_category_id' => $product_data['id'],
                     'unit_id' => $product_data['units'],
+                    'length' => isset($product_data['length'])? $product_data['length']:0,
                     'quantity' => $product_data['quantity'],
                     'price' => $product_data['price'],
                     'remarks' => $product_data['remark'],
