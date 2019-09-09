@@ -139,7 +139,7 @@
                                         <td> {{isset($product_data['purchase_product_details']->alias_name)?$product_data['purchase_product_details']->alias_name:''}} </td>
                                         <td> {{isset($product_data->quantity)?$product_data->quantity:'0'}}</td>
                                         <td> {{$product_data['unit']->unit_name}} </td>
-                                        <td> {{$product_data->length}} </td>
+                                        <td> {{isset($product_data->length)?$product_data->length:'0'}} </td>
                                         <td> {{$product_data->present_shipping}}</td>
                                         <td> {{$product_data->price}}</td>
                                         <td>

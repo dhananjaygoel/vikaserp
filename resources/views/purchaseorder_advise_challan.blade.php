@@ -94,6 +94,7 @@
                                 <tr>
                                     <td class="col-md-2"><span>Product Name(Alias)<span class="mandatory">*</span> </span></td>
                                     <td class="col-md-1"><span>Unit</span><span class="mandatory">*</span></td>
+                                    <td class="col-md-1"><span>Length</span></td>
                                     <td class="col-md-2"><span>Actual Quantity</span></td>
 
                                     <td class="col-md-2 text-center"><span>Present Shipping</span></td>
@@ -117,6 +118,12 @@
                                 <div class="form-group">
                                     {{$products['unit']->unit_name}}
                                     <input id="unit_id{{$key}}" name="product[{{$key}}][unit_id]" value="{{$products['unit']->id}}" type="hidden">
+                                </div>
+                            </td>
+                            <td class="col-md-1">
+                                <div class="form-group">
+                                    {{$products->length}}
+                                    <input id="length_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][length]" value="{{$products->length}}" type="hidden" >
                                 </div>
                             </td>
                             <td>

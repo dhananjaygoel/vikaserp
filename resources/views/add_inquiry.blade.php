@@ -180,10 +180,13 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
-                                                                @foreach($units as $unit)
-                                                                <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                                @endforeach
+                                                            <select class="form-control unit" name="product[{{$i}}][units]" id="units_{{$i}}" onchange="unitType(this);">
+                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                                    <option value=1 id = 'unit_{{$i}}_1'>KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
+                                                                    <option value=4 id = 'unit_{{$i}}_4'>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5'>mm</option>
                                                             </select>
                                                         </div>
                                                     </td>

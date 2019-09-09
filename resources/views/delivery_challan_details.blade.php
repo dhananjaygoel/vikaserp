@@ -104,6 +104,7 @@
                                         <td class="col-md-1"><span>Actual Quantity</span></td>
                                         <td class="col-md-1"><span>Actual Pieces</span></td>
                                         <td class="col-md-1"><span>Unit</span></td>
+                                        <td class="col-md-1"><span>Length</span></td>
                                         <td class="col-md-2"><span>Present Shipping</span></td>
                                         @if(Auth::user()->role_id == 5)
                                         <td class="col-md-2"><span>Total Order</span></td>
@@ -127,6 +128,9 @@
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group ">{{$product->unit->unit_name}}</div>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <div class="form-group ">{{$product->length}}</div>
                                         </td>
                                         <td class="col-md-2">
                                             <div class="form-group">{{$product->present_shipping}}</div>
