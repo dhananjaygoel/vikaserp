@@ -348,9 +348,10 @@ class DeliveryOrderController extends Controller {
         }
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            if ($validator->passes()) {
-                if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
+            //$validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
+            /*if ($validator->passes()) {
+                */
+             if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
                         'contact_person' => $input_data['contact_person'],
@@ -368,7 +369,7 @@ class DeliveryOrderController extends Controller {
                     $customers->customer_status = 'pending';
                     $customers->save();
                     $customer_id = $customers->id;
-                }
+                }   
             } else {
                 $error_msg = $validator->messages();
                 Session::forget('product');
