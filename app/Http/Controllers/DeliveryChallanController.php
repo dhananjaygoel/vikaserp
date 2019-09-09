@@ -475,8 +475,9 @@ class DeliveryChallanController extends Controller {
         }
         $product_type = $this->check_product_type($allorder);
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        $page_title="View Delivery Challan";
-        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title'));
+        $page_title=" Delivery Challan";
+        $url="delivery_challan";
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title','url'));
     }
     public function show_daily_pro($id) {
         if (Auth::user()->hasOldPassword()) {
@@ -495,8 +496,9 @@ class DeliveryChallanController extends Controller {
         }
         $product_type = $this->check_product_type($allorder);
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        $page_title="Daily Pro Forma Invoice";
-        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title'));
+        $page_title=" Daily Pro Forma Invoice";
+        $url="daily_pro_forma_invoice";
+        return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title','url'));
     }
 
     public function check_product_type($delivery_data) {
