@@ -127,7 +127,7 @@
                     <div class="divCell2 center">{{ $i++ }}</div>
                     <div class="divCell">{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</div>
                     <!--<div class="divCell">xxx</div>-->
-                    <div class="divCell">{{ ( $obj['supplier']->tally_name != '') ? $obj['supplier']->tally_name : 'Advance Sales' }}</div>
+                    <div class="divCell">{{ ( $obj['supplier']->tally_name != '') ? $obj['supplier']->tally_name : 'Anonymous User' }}</div>
                     <div class="divCell">
                         <?php
                         if ($obj->delivery_location_id == 0) {
