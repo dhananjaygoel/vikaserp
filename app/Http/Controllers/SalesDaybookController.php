@@ -349,13 +349,16 @@ class SalesDaybookController extends Controller {
                         else{
                             $city_name = "";
                         }
-                        if($customer) {
-                            if($customer->tally_name) {
+                        if($customer) {       
+                            if(isset($customer->tally_name) && $customer->tally_name != ""){
                                 $tally_name = $customer->tally_name;
-                            } else {
-                                $tally_name = 'Anonymous User';
-                            }                    
-                            
+                            }
+                            elseif(isset($customer->owner_name)){
+                                $tally_name = $customer->owner_name;
+                            }
+                            @else{
+                                $tally_name ='Anonymous User';
+                            }
                             $total_btax = $value['delivery_challan_products'][0]->price;
                             $balance = $value['delivery_challan_products'][0]->quantity;
                             $total = $total_btax * $balance; //$value->grand_price;
