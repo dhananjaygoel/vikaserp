@@ -53,7 +53,7 @@
             <td>{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
             <td>{{$VchNo}}</td>
             <td>Purchase</td>
-            <td>{{ ($value['supplier']->tally_name != "") ? $value['supplier']->tally_name : 'Advance Sales' }}</td>
+            <td>{{ ($value['supplier']->tally_name != "") ? $value['supplier']->tally_name : 'Anonymous User' }}</td>
             <td>Purchase Account</td>
             <td>{{ isset($value1['purchase_product_details']->alias_name) ? $value1['purchase_product_details']->alias_name : '' }}</td>
              <td>{{ isset($value1['purchase_product_details']->product_category->product_category_name) ? $value1['purchase_product_details']->product_category->product_category_name : '' }}</td>
