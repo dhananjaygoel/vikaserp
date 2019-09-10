@@ -119,11 +119,8 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
-                                                <div class = "form-group">
-                                                    <div class = "form-group length_list_{{$key}}">
-                                                        <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" 
-                                                            value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?>>
-                                                    </div>
+                                                <div class="form-group ">
+                                                    {{$product->length}}
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
