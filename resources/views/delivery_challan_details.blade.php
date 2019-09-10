@@ -316,7 +316,7 @@
                         <hr>
                         @endif                         -->
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="driver_contact"><b class="challan">GST Percentage: </b> 
                                @if($allorder->vat_percentage != "" || $allorder->vat_percentage != 0)
                                 {{$allorder->vat_percentage}} %
@@ -325,7 +325,7 @@
                                @endif
                             </label>
                         </div>
-                        <hr>
+                        <hr> -->
                         
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">GST: </b> No</label>
