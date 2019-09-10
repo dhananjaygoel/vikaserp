@@ -187,7 +187,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     {{$product->length}}
-                                                    <input id="length_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][length]" value="{{$product->length}}" type="hidden" >
+                                                    <input id="length_{{$key}}" class="form-control" placeholder="length" name="product[{{$key}}][length]" value="{{$product->length}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
@@ -205,7 +205,7 @@
 
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     {{$product->price}}
                                                     <input type="hidden" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
@@ -219,7 +219,7 @@
                                                         </div>
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input type="hidden" value="0" id="pending_qunatity_value_{{$key}}">
                                                     <div id="pending_qunatity_{{$key}}"><span class="text-center">0</span>
@@ -228,8 +228,8 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    {{$product->remarks}}
-                                                    <input id="remark"  class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="hidden" readonly="readonly">
+                                                    <!-- {{$product->remarks}} -->
+                                                    <input id="remark"  class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="" >
                                                 </div>
                                             </td>
                                         </tr>

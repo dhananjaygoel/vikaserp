@@ -489,12 +489,12 @@
                                                       
                                                     </td>
                                                     
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-1">
                                                         <!--                                                            form for save product value-->
                                                         <input  type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
                                                         
                                                     </td>
-                                                    <td class="col-md-2">
+                                                    <td class="col-md-1">
                                                         <div class="form-group inquiry_vat_chkbox">
 
                                                             <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
@@ -512,7 +512,7 @@
                                                             @endforeach
                                                         </div>
                                                     </td>
-                                                    <td class="col-md-1">
+                                                    <td class="col-md-2">
                                                         <div class="form-group">
                                                             <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                         </div>
