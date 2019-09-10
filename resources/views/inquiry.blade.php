@@ -309,6 +309,8 @@
                             @if($inquiries->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('inquiry')}}" id="filter_search">
+                                    <input type="hidden" name="inquiry_sort_type" value="{{(Input::get('inquiry_filter')!="")?Input::get('inquiry_filter'):""}}"/>
+
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
