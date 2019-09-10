@@ -679,8 +679,8 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                      $('#product_all_' + i).addClass('error_validation');
                     status_form = 1;
                 }else{
-                    $('#product_all_' + i).removeClass('error_validation');
-                     status_form = 0;
+                    // $('#product_all_' + i).removeClass('error_validation');
+                    //  status_form = 0;
                 }
                 if ($("#quantity_" + i).val() == "") {
                     $('#quantity_' + i).addClass('error_validation');
@@ -689,19 +689,28 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
-                }
+                }else{$('#units_' + i).removeClass('error_validation');}
                 if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
                     $('#length_' + i).addClass('error_validation');
                     status_form = 1;
-                }
+                }else{$('#length_' + i).removeClass('error_validation');}
             }
         }
         if (j == tot_products) {
             if ($("#add_product_id_1").val() == "") {
                 $('#add_product_name_1').addClass('error_validation');
+                $('#product_all_1').addClass('error_validation');
+            }else{
+                $('#product_all_1').removeClass('error_validation');
             }
             if ($("#quantity_1").val() == "") {
                 $('#quantity_1').addClass('error_validation');
+            }
+            if ($('#units_1').val() == "") {
+                $('#units_1').addClass('error_validation');
+            }
+            if ($('#length_1').val() == "" && $('#length_' + i).is(':enabled')) {
+                $('#length_1').addClass('error_validation');
             }
             status_form = 1;
         }
@@ -785,11 +794,11 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
-                }
+                }else{$('#units_' + i).removeClass('error_validation');}
                 if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
                     $('#length_' + i).addClass('error_validation');
                     status_form = 1;
-                }
+                }else{$('#length_' + i).removeClass('error_validation');}
             }
         }
         if (j == tot_products) {
