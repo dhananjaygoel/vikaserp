@@ -1943,7 +1943,7 @@ class OrderController extends Controller {
         } elseif ($data['order_status'] == 'approval') {
 //                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
             $is_approved = 'no';
-            $order_status = 'approval';
+            $order_status = 'pending';
             $excel_sheet_name = 'Approval';
             $excel_name = 'Order-Pending-Approval' . date('dmyhis');
         } elseif ($data['order_status'] == 'cancelled') {
@@ -1959,7 +1959,7 @@ class OrderController extends Controller {
             if (Auth::user()->role_id <> 5) {
                 if ($date1 == $date2) {
                     $order_objects = Order::where('order_status', $order_status)
-                            ->where('is_approved', '=', $is_approved)
+                            ->where('is_approved',$is_approved)
                             ->where('updated_at', 'like', $date1 . '%')
                             ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                             ->orderBy('created_at', 'desc')
