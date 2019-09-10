@@ -476,7 +476,6 @@
 
 
                                                 </td>
-                                                    
                                                     <td class="col-md-1">
                                                         <!--                                                            form for save product value-->
                                                         <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
