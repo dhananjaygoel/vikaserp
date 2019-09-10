@@ -94,6 +94,8 @@
                                             <tr class="headingunderline">
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
+                                                <td><span>Length</span></td>
+                                                <td><span>Quantity</span></td>
                                                 <td><span>Actual Pieces</span></td>
                                                 <td><span>Pending Order</span></td>
                                                 <td><span>Present Shipping</span></td>
@@ -117,6 +119,19 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
+                                                <div class = "form-group">
+                                                    <div class = "form-group length_list_{{$key}}">
+                                                        <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" 
+                                                            value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?>>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group ">
+                                                    {{$product->quantity}}
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input type="tel" class="form-control" value="{{$product->actual_pieces}}" name="product[{{$key}}][actual_pieces]" onkeypress=" return numbersOnly(this,event,true,false);" id="actual_pieces{{$key}}">
                                                 </div>
@@ -127,7 +142,7 @@
                                                     <input type="tel" class="form-control" readonly="" value="{{ $pending_quantity}}" id="pending_order_{{$key}}" name="pending_order_{{$key}}"/>
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <div class="form-group">
                                                     <input type="tel" class="form-control" value="{{$product->present_shipping}}" id='present_shipping{{$key}}' onblur="calutate_pending_order(<?php echo $product->quantity . ',' . $key; ?>)"  name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,false);">
                                                 </div>

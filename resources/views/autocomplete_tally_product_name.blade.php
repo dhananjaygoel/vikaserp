@@ -1176,7 +1176,7 @@
             '<select class="form-control unit" onchange="unitType(this);" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
             '</div>' +
-            '</td>' +
+            '</td>' + 
             '<td class="col-md-1" >' +
             '<div class="form-group length_list_' + current_row_count + '">' +
             '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
@@ -1469,7 +1469,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<select class="form-control units_dropdown" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
+            '<select class="form-control units_dropdown" onchange="unitType(this);" name="product[' + current_row_count + '][units]" id="units_' + current_row_count + '">' +
             '</select>' +
             '</div>' +
             '</td>' +
@@ -1479,8 +1479,39 @@
             '</div>' +
             '</td>' +
             '<td class="col-md-1">' +
+            '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
+            '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
+            '</div>' +
+            '<div class = "form-group kg_list_' + current_row_count + '" >'+
+            ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+            <?php for ($n = 50; $n <= 15000; $n++) { ?>
+            '<option value = "'+{{$n}} +'">'+{{$n}} +'</option>'+
+            <?php $n = $n + 49; } ?>
+            ' </select>'+
+            '</div>'+
+            '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+            '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+           
+            qtyPieces + 
+            '</select>'+
+            '</div>'+
+
+
+
+                '<div class = "form-group ff_list_' + current_row_count + '" style="display:none">'+
+                '<select class = "form-control ff_list " name = "ff_list" id = "ff_list_' + current_row_count + '" onchange="setQty(this);">'+
+                qtyPieces +
+                '</select>'+
+                '</div>'+
+                '<div class = "form-group mm_list_' + current_row_count + '" style="display:none">'+
+                '<select class = "form-control mm_list " name = "mm_list" id = "mm_list_' + current_row_count + '" onchange="setQty(this);">'+
+                qtyPieces +
+                '</select>'+
+                '</div>'+
+                    
+            '</td>' +
+            '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input type="text" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+            '<input type="tel" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
             '</div>' +
             '</td>' +
             '<td>' +
@@ -1490,7 +1521,7 @@
             '</td>' +
             '<td class="col-md-2">' +
             '<div class="form-group" style="width:100%;">' +
-            '<input type="text" class="form-control pshipping" placeholder="Present Shipping" onblur="calutate_pending_order(0,' + current_row_count + ')" id="present_shipping' + current_row_count + '" name="product[' + current_row_count + '][present_shipping]">' +
+            '<input type="text" class="form-control" placeholder="Present Shipping" onblur="calutate_pending_order(0,' + current_row_count + ')" id="present_shipping' + current_row_count + '" name="product[' + current_row_count + '][present_shipping]">' +
             '</div><div class="clearfix"></div>' +
             '</td>' +
             '<td class="col-md-1">' +

@@ -451,6 +451,7 @@ class PurchaseAdviseController extends Controller {
                         'order_type' => 'purchase_advice',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
+                        'length' => isset($product_data['length']) ? $product_data['length'] : 0,
                         'actual_pieces' => $product_data['actual_pieces'],
                         'quantity' => $product_data['present_shipping'],
                         'present_shipping' => $product_data['present_shipping'],
