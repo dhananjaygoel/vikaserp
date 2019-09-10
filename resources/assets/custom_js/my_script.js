@@ -669,6 +669,18 @@ $('body').delegate(".btn_edit_purchase_advice", "click", function () {
                 $('#product_price_' + i).addClass('error_validation');
                 status_form = 1;
             }
+            if ($("#quantity_" + i).val() == "") {
+                $('#quantity_' + i).addClass('error_validation');
+                status_form = 1;
+            }
+            if ($('#units_' + i).val() == "") {
+                $('#units_' + i).addClass('error_validation');
+                status_form = 1;
+            }
+            if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                $('#length_' + i).addClass('error_validation');
+                status_form = 1;
+            }
         }
     }
 
