@@ -244,23 +244,55 @@ class GstController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('gst')->with('error', 'You do not have permission.');
         }
-        $this->validate($request, [
-            'gst' => 'required|numeric|between:0,99.99|unique:gst,gst',
-            'sgst' => 'required|numeric|between:0,99.99',
-            'cgst' => 'required|numeric|between:0,99.99',
-            'igst' => 'required|numeric|between:0,99.99',
-            //'quick_gst_id'=>'required'
-        ]);
 
-        Gst::where('id',$id)->update([
-            'gst' => $request->gst,
-            'sgst' => $request->sgst,
-            'cgst' => $request->cgst,
-            'igst' => $request->igst,
-            //'quick_gst_id'=>$request->quick_gst_id
-        ]);
+        $str_gst = $request->input('gst');
+		$str_igst = $request->input('igst');
+        
+        if(Gst::where('gst','=',$str_gst)->where('igst','=',$str_igst)->where('deleted_at',NULL)->count() == 0){
+            $this->validate($request, [
+                'gst' => 'required|numeric|between:0,99.99',
+                'sgst' => 'required|numeric|between:0,99.99',
+                'cgst' => 'required|numeric|between:0,99.99',
+                'igst' => 'required|numeric|between:0,99.99',
+            ]);
 
-        return redirect('gst')->with('flash_success_message', 'Gst updated successfully');
+                Gst::where('id',$id)->update([
+                'gst' => $request->gst,
+                'sgst' => $request->sgst,
+                'cgst' => $request->cgst,
+                'igst' => $request->igst,
+                //'quick_gst_id'=>$request->quick_gst_id
+            ]);
+
+            return redirect('gst')->with('flash_success_message', 'Gst updated successfully');
+
+        } else {
+            
+            $this->validate($request, [
+                'gst' => 'required|numeric|between:0,99.99|unique:gst,gst',
+                'sgst' => 'required|numeric|between:0,99.99',
+                'cgst' => 'required|numeric|between:0,99.99',
+                'igst' => 'required|numeric|between:0,99.99',
+            ]);
+        }
+
+        // $this->validate($request, [
+        //     'gst' => 'required|numeric|between:0,99.99|unique:gst,gst',
+        //     'sgst' => 'required|numeric|between:0,99.99',
+        //     'cgst' => 'required|numeric|between:0,99.99',
+        //     'igst' => 'required|numeric|between:0,99.99',
+        //     //'quick_gst_id'=>'required'
+        // ]);
+
+        // Gst::where('id',$id)->update([
+        //     'gst' => $request->gst,
+        //     'sgst' => $request->sgst,
+        //     'cgst' => $request->cgst,
+        //     'igst' => $request->igst,
+        //     //'quick_gst_id'=>$request->quick_gst_id
+        // ]);
+
+        // return redirect('gst')->with('flash_success_message', 'Gst updated successfully');
 	}
 
 	/**
