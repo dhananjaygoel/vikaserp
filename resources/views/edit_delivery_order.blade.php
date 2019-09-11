@@ -260,18 +260,19 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
-                                                <!--                                                            form for save product value-->
+                                                <div class="form-group">
                                                 <input type="tel" class="form-control" id="present_shipping_{{$i}}" value="
                                                 <?php if (isset($session_data['product'][$i]['present_shipping'])) { ?>{{$session_data['product'][$i]['present_shipping']}}<?php } ?>" name="product[{{$i}}][present_shipping]" placeholder="Present Shipping" onblur="change_quantity2({{$i}});">
-                                            </td>
+                                                </div> </td>
                                              <td class="col-md-2">
-                                                <!--                                                            form for save product value-->
+                                                <div class="form-group">
                                                 <input type="tel" class="form-control" id="product_price_{{$i}}" value="<?php if (isset($session_data['product'][$i]['price'])) { ?>{{$session_data['product'][$i]['price']}}<?php } ?>" name="product[{{$i}}][price]" placeholder="Price">
-                                            </td>
+                                                <div>
+                                                </td>
                                             <td class="col-md-2">
-                                                <!--                                                            form for save product value-->
-                                                <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="GST Percentage">
-                                               
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="vat_percentage_{{$i}}" value="{{isset($session_data['product'][$i]['vat_percentage'])?$session_data['product'][$i]['vat_percentage']:''}}" name="product[{{$i}}][vat_percentage]" placeholder="GST Percentage">
+                                                </div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
@@ -477,14 +478,15 @@
 
                                                 </td>
                                                     <td class="col-md-1">
-                                                        <!--                                                            form for save product value-->
-                                                        <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">
-                                                      
+                                                        <div class="form-group">
+                                                              <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">                                                            
+                                                        </div>                                                        
                                                     </td>
                                                     
                                                     <td class="col-md-1">
-                                                        <!--                                                            form for save product value-->
-                                                        <input  type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                        <div class="form-group">
+                                                            <input  type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                        </div>
                                                         
                                                     </td>
                                                     <td class="col-md-1">
