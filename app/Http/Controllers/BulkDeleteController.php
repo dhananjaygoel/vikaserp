@@ -443,6 +443,7 @@ class BulkDeleteController extends Controller {
 
                 if (isset($is_delete_all) && !empty($is_delete_all) && $is_delete_all == 'yes') {
                     $result_temp = DeliveryChallan::where('challan_status','completed')
+                                ->where('serial_number','like','%P')
                                 ->where('created_at', 'like', $newdate.'%')->delete();
                 }else if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
@@ -461,6 +462,7 @@ class BulkDeleteController extends Controller {
                     if(isset($newdate))
                     $q->where('created_at', 'like', $newdate.'%');
                     $q->where('challan_status', 'completed');
+                    $q->where('serial_number','like','%P');
                     $result_temp =$q->orderBy('created_at', 'desc')->paginate(50);
 
                 $present_shipping = 0;
@@ -497,7 +499,7 @@ class BulkDeleteController extends Controller {
                 if (isset($is_delete_all) && !empty($is_delete_all) && $is_delete_all == 'yes') {
                     $result_temp = DeliveryChallan::where('challan_status','completed')
                                 ->where('created_at', 'like', $newdate.'%')
-                                ->where('serial_number','like','%P')->delete();
+                                ->where('serial_number','like','%A')->delete();
                 }else if (isset($delete_seletected_module) && !empty($delete_seletected_module)) {
                     foreach ($delete_seletected_module as $delete_module) {
                         $delete = DeliveryChallan::where('id', $delete_module)->first();
@@ -512,7 +514,7 @@ class BulkDeleteController extends Controller {
                 $q = DeliveryChallan::query()->with('customer', 'delivery_challan_products', 'delivery_order');
                     if(isset($newdate))
                     $q->where('created_at', 'like', $newdate.'%');
-                    $q->where('serial_number','like','%P');
+                    $q->where('serial_number','like','%A');
                     $q->where('challan_status','completed');
                     $result_temp =$q->orderBy('created_at', 'desc')->paginate(50);
 
