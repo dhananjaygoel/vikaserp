@@ -1028,10 +1028,10 @@ class DeliveryOrderController extends Controller {
                          if(empty($delivery_anothertruckdata)){
                              $loadetrucks[] = [
                                 'deliver_id' => $id,
-                             'empty_truck_weight' =>  $empty_truck_weight,
+                                'empty_truck_weight' =>  $empty_truck_weight,
                                 'final_truck_weight' => $truck_weight,
                                 'product_id'  =>$serialize,
-                            'userid' => $delboy,
+                                'userid' => $delboy,
                        
                            ];
                           LoadTrucks::insert($loadetrucks);
