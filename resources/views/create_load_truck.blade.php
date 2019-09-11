@@ -161,13 +161,13 @@
                         @if($info->del_boy == Auth::id() )
                         
                        
-                         <span class="col-md-1"><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
-                         </span><span class="col-md-4" style="padding-top:8px;">{{$label}}</span>
+                         <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
+                         </span><span style="padding-top:8px;">{{$label}}</span>
                           </div>
                          @else
-                         <span class="col-md-1"> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" > 
+                         <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" > 
                           
-                        </span><span class="col-md-4" style="padding-top:8px;">  {{$label}}</span></div>
+                        </span><span style="padding-top:8px;">  {{$label}}</span></div>
                           
                           
                           @endif  
