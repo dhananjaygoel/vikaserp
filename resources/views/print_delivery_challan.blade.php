@@ -57,17 +57,20 @@
                 <?php
                     $is_allincludive = 0;
                     foreach($allorder['delivery_challan_products'] as $prod){
+                        print($prod->vat_percentage);exit;
                         if(isset($prod->vat_percentage) && $prod->vat_percentage>0){
                             $is_allincludive = 1;
                         }
                     }
+                    if($is_allincludive == 1) {
                 ?>
-                @if($is_allincludive)
+                <!-- @if($is_allincludive) -->
                 <tr>
                     <th>Empty Truck Weight: {{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}</th>
                     <th>Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</th>
                 </tr>
-                @endif
+                    <?php } ?> 
+                    <!-- @endif -->
             </thead>
         </table>
 
