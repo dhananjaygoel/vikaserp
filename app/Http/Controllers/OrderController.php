@@ -2000,6 +2000,7 @@ class OrderController extends Controller {
             if (Auth::user()->role_id <> 5) {
 
                 $order_objects = Order::where('order_status', $order_status)
+                        ->where('is_approved', '=', $is_approved)
                         ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
                         ->orderBy('created_at', 'desc')
                         ->get();
