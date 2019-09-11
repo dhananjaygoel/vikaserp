@@ -18,6 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
+                        <!-- {!! Form::open(array('method'=>'post','url'=>url('create_purchase_advice',$purchase_orders->id)))!!} -->
                         <form data-button="" id="onenter_prevent" method="POST" action="{{URL::action('PurchaseAdviseController@store_advise')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
@@ -117,6 +118,7 @@
                                                 <td class="col-md-3"><span> Product Name(Alias)</span></td>
                                                 <td class="col-md-1"><span>Unit</span></td>
                                                 <td class="col-md-1"><span>Length</span></td>
+                                                <td class="col-md-1"><span>Quantity</span></td>
                                                 <td class="col-md-1"><span>Actual Pieces</span></td>
                                                 <td class="col-md-1"><span>Pending Order</span</td>
                                                 <td class="col-md-2"><span>Present Shipping</span></td>
@@ -127,7 +129,7 @@
                                             @foreach($purchase_orders['purchase_products'] as $product_data)
                                             @if($product_data->order_type == 'purchase_order' && $product_data->pending_quantity > 0)
                                             <tr id="add_row_{{++$key}}" class="add_product_row">
-                                                <td>
+                                                <td class="test">
                                                     {{$product_data['purchase_product_details']->alias_name}}
                                                     <input type="hidden" name="product[{{$key}}][id]" value="{{$product_data['purchase_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][key]" value="{{$product_data->id}}">
@@ -144,6 +146,11 @@
                                                 </div>
                                                 </td>
                                                 <td class="col-md-1">
+                                                    <div class="form-group ">
+                                                        {{$product_data->quantity}}
+                                                    </div>
+                                                </td>
+                                                <td class="col-md-1">
                                                     <input type="tel" class="form-control" name="product[{{$key}}][actual_pieces]" value="" placeholder="actual pieces" onkeypress=" return numbersOnly(this,event,true,false);" id="actual_pieces{{$key}}">
 
                                                 </td>
@@ -152,8 +159,8 @@
                                                     <input class="form-control" type="tel" name="pending_order" id="pending_order_{{$key}}" readonly="" value="{{$product_data->pending_quantity}}"/>
                                                     <input class="form-control" type="hidden" name="pending_order_org" id="pending_order_org{{$key}}" value="{{$product_data->pending_quantity}}"/>
                                                 </td>
-                                                <td>
-                                                    <div class="form-group pshipping">
+                                                <td class="col-md-2">
+                                                    <div class="form-group">
                                                         @if($product_data->present_shipping != 0)
                                                         <input id="{{"present_shipping".$key}}" class="form-control" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" onblur="calutate_pending_order(<?php echo $product_data->pending_quantity . ',' . $key; ?>)" value="{{$product_data->present_shipping}}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         @else
@@ -162,7 +169,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">{{$product_data->price}}</td>
-                                                <td>
+                                                <td class="col-md-2">
                                                     {{$product_data->remarks}}
 
                                                     <input type="hidden" name="product[{{$key}}][remark]" value="{{$product_data->remarks}}">
@@ -255,7 +262,7 @@
                             <!--<button title="SMS would be sent to Relationship Manager" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                             <hr>
                             <div>
-                                <button  type="button" class="btn btn-primary btn_purorder_to_puradvice" id="sendSMSEditPurchaseOrder" >Submit</button>
+                                <button  type="button" class="btn btn-primary btn_purorder_to_puradvice" id="" >Submit</button>
                                 <!--<input type="submit" class="btn btn-primary btn_purorder_to_puradvice" value="Submit">-->
                                 <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                             </div>
