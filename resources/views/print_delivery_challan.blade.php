@@ -150,7 +150,7 @@
                             $igst = 0;
                         }
                         ?>
-                        @if(isset($prod->vat_percentage) && $prod->vat_percentage!='')
+                        @if(isset($prod->vat_percentage) && $prod->vat_percentage>0)
                             @if($local_state == 1)
                                 <td>{{$sgst}}</td>
                                 <td>{{$cgst}}</td>
@@ -221,11 +221,18 @@
                                     {{ round($with_total, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="lable">Total GST = @if($local_state == 1)
-                                        SGST + CGST
+                                    <td class="lable">
+                                    Total GST
+                                    @if(isset($prod->vat_percentage) && $prod->vat_percentage>0)
+                                        @if($local_state == 1)
+                                            = SGST + CGST
+                                        @else
+                                            = IGST
+                                        @endif
                                     @else
-                                        IGST
-                                    @endif</td>
+                                            
+                                    @endif
+                                    </td>
                                     <td class="total-count">
                                     <?php
                                         $vat = $final_vat_amount;
