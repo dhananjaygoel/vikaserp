@@ -1071,6 +1071,12 @@ class PurchaseOrderController extends Controller {
                         if ($prod->unit_id == 3) {
                             $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity / $product_size->standard_length ) * $product_size->weight;
                         }
+                        if ($prod->unit_id == 4) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * $product_size->weight * $prod->length;
+                        }
+                        if ($prod->unit_id == 5) {
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * ($product_size->weight/305) * ($prod->length/305);
+                        }
                     }
                 }
             }
@@ -1081,39 +1087,75 @@ class PurchaseOrderController extends Controller {
                     $product_size = $popv['product_sub_category'];
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
-                        if($product_size->length_unit == "ft"){
-                            $purchase_order_quantity = $product_size->weight * $product_size->standard_length;
+                    //     if($product_size->length_unit == "ft"){
+                    //         $purchase_order_quantity = $product_size->weight * $product_size->standard_length;
+                    //     }
+                    //     else{
+                    //         $purchase_order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                    //     }
+                    // }
+                    // else{
+                        if ($popv->unit_id == 1) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                         }
-                        else{
-                            $purchase_order_quantity = ($product_size->weight/305) * $product_size->standard_length;
+                        elseif ($popv->unit_id == 2) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight;
+                        }
+                        elseif ($popv->unit_id == 3) {
+                            if ($product_size->standard_length) {
+                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity / $product_size->standard_length ) * $product_size->weight;
+                            } else {
+                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                            }
+                        }
+                        elseif ($popv->unit_id == 4) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
+                        }
+                        if ($popv->unit_id == 5) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
                         }
                     }
                     else{
                         if ($popv->unit_id == 1) {
                             $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                        } elseif ($popv->unit_id == 2) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight;
+                        } elseif ($popv->unit_id == 3) {
+                            if ($product_size->standard_length) {
+                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity / $product_size->standard_length ) * $product_size->weight;
+                            } else {
+                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                            }
                         }
-                        if ($popv->unit_id == 2) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                        elseif($popv->unit_id == 4) {
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
                         }
-                        if ($popv->unit_id == 3) {
-                            $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        elseif($popv->unit_id == 5){
+                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
                         }
                     }
+
+
                     //$product_size = ProductSubCategory::find($popv->product_category_id);
                 }
             }
 
-            if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
-                $purchase_orders[$key]['pending_quantity'] = 0;
-            } else {
-                $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
-            }
-            
-            if( $purchase_orders[$key]['pending_quantity'] == 0){                
-               $purchase_orders[$key]['order_status'] = 'completed';                 
-               PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
-            }
+
+            $purchase_orders[$key]['pending_quantity'] = ($purchase_order_advise_quantity >= $purchase_order_quantity) ? 0 : ($purchase_order_quantity - $purchase_order_advise_quantity);
             $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
+
+
+            // if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
+            //     $purchase_orders[$key]['pending_quantity'] = 0;
+            // } else {
+            //     $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+            // }
+            
+            // if( $purchase_orders[$key]['pending_quantity'] == 0){                
+            //    $purchase_orders[$key]['order_status'] = 'completed';                 
+            //    PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
+            // }
+            // $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;
         }
         return $purchase_orders;
     }
