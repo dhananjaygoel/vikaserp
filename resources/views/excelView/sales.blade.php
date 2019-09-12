@@ -31,8 +31,8 @@
             <td class="heading1">ItemQuantity</td>
             <td class="heading1">ItemRate</td>
             <td class="heading1">ItemAmount</td>
-            <td class="heading1">ItemTaxCode</td>
-            <td class="heading1">ItemTaxAmount</td>
+            <!-- <td class="heading1">ItemTaxCode</td> -->
+            <!-- <td class="heading1">ItemTaxAmount</td> -->
             <td class="heading1">Service Date</td>
             <!-- <td class="heading1">Date</td>            
             <td class="heading1">Type</td>
@@ -83,8 +83,8 @@
                     <td>{{ $value['balance'] }}</td>       
                     <td>{{ $value['total_btax'] }}</td>    
                     <td>{{ $value['total'] }}</td>    
-                    <td> 12.0% GST </td>    
-                    <td>{{ $value['tax'] }}</td>       
+                    <!-- <td> 12.0% GST </td>     -->
+                    <!-- <td>{{ $value['tax'] }}</td>        -->
                     <td>{{ $value['due_date'] }}</td>   
                 </tr>
             <?php
