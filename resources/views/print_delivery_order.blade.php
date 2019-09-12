@@ -202,20 +202,19 @@
                     <div class="divCell">{{ $product->present_shipping }}</div>
 
                     <div class="divCell">
-                        @if($product->vat_percentage >= 0)
-                            @if($delivery_data->customer->states)
                                 <?php
+                                $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
+                                $local_state = \App\States::where('id',$state)->first()->local_state;
                                 $hsn_code = $product->product_sub_category->product_category->hsn_code;
                                 $is_gst = false;
                                 if($hsn_code){
                                     $is_gst = true;
                                     $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
                                     $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
-
                                 }
                                 ?>
                                 @if($is_gst)
-                                    @if($delivery_data->customer->states->local_state == 1)
+                                    @if($local_state)
                                         {{$gst_det->sgst + $gst_det->cgst}} %
                                     @else
                                         {{$gst_det->igst}} %
@@ -223,13 +222,6 @@
                                 @else
                                     @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                                 @endif
-                            @else
-                                @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
-                            @endif
-                        @else
-                            @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
-                        @endif
-
                     </div>
                 </div>
                 @endif
