@@ -1125,10 +1125,6 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
-                if ($("#quantity_" + i).val() == 0) {
-                    $('#quantity_' + i).addClass('error_validation');
-                    status_form = 1;
-                }
                 if ($('#units_' + i).val() == "") {
                     $('#units_' + i).addClass('error_validation');
                     status_form = 1;
@@ -1266,10 +1262,6 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
                     $('#product_all_' + i).removeClass('error_validation');
                 }
                 if ($("#quantity_" + i).val() == "") {
-                    $('#quantity_' + i).addClass('error_validation');
-                    status_form = 1;
-                }
-                if ($("#quantity_" + i).val() == 0) {
                     $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
@@ -1563,7 +1555,19 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
             status_form = 1;
             console.log('#name' + status_form);
         }
-
+       
+        if ($('#contact_person').val() == '') {
+            $('#contact_person').addClass('error_validation');
+            status_form = 1;
+        }
+        if ($('#mobile_number').val() == '') {
+            $('#mobile_number').addClass('error_validation');
+            status_form = 1;
+        }
+        if ($('#period').val() == '') {
+            $('#period').addClass('error_validation');
+            status_form = 1;
+        }
 
         if ($('#add_order_location').val() == '0') {
             $('#add_order_location').addClass('error_validation');
@@ -2063,12 +2067,21 @@ $('body').delegate(".btn_puradvice_to_purchallan", "click", function () {
                     $('#shipping_' + i).addClass('error_validation');
                     status_form = 1;
                 }
-                if ($("#actual_quantity_" + i).val() == "") {
-                    $('#actual_quantity_' + i).addClass('error_validation');
+                if ($("#quantity_" + i).val() == "") {
+                    $('#quantity_' + i).addClass('error_validation');
                     status_form = 1;
                 }
                 if ($("#product_price_" + i).val() == "") {
                     $('#product_price_' + i).addClass('error_validation');
+                    status_form = 1;
+                }
+                if ($('.units_dropdown').val() == "") {
+                    $('.units_dropdown').addClass('error_validation');
+                    status_form = 1;
+                }else{$('.units_dropdown').removeClass('error_validation');
+                }
+                if ($('#actual_pieces' + i).val() == "") {
+                    $('#actual_pieces' + i).addClass('error_validation');
                     status_form = 1;
                 }
             }
@@ -2104,13 +2117,42 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var j = 0;
     var present_shippein_zero_count = 0;
     var actual_pieces_count = 0;
+    for (i = 0; i <= tot_products; i++) {
+        
+        if (($("#add_product_id_" + i).val() == "") && ($("#product_price_" + i).val() == "")) {
+            j++;
+        } else {
+            if ($("#add_product_id_" + i).val() == "" || $('#add_purchase_product_name_' + i).val() == "") {
+                $('#add_purchase_product_name_' + i).addClass('error_validation');
+                status_form = 1;
+            } 
+            // else {
+            //     if ($("#add_purchase_product_name_" + i).val() == "") {
+            //         $('#add_purchase_product_name_' + i).addClass('error_validation');
+            //         status_form = 1;
+            //     }
+            // }
+            if ($("#quantity_" + i).val() == "") {
+                $('#quantity_' + i).addClass('error_validation');
+                status_form = 1;
+            }else{$('#quantity_' + i).removeClass('error_validation');}
+            if ($('#units_' + i).val() == "") {
+                $('#units_' + i).addClass('error_validation');
+                status_form = 1;
+            }else{$('#units_' + i).removeClass('error_validation');}
+            if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                $('#length_' + i).addClass('error_validation');
+                status_form = 1;
+            }else{$('#length_' + i).removeClass('error_validation');}
+        }
+    }
     for (var i = 0; i <= tot_products - 1; i++) {
-        if ($("#actual_pieces" + i).val() == 0 | $("#actual_pieces" + i).val() == "") {
+        if ($("#actual_pieces" + i).val() == 0 || $("#actual_pieces" + i).val() == "") {
             actual_pieces_count++;
         }
     }
     if ((tot_products - 1) == actual_pieces_count) {
-        for (var j = 1; j <= tot_products - 1; j++) {
+        for (var j = 0; j <= tot_products - 1; j++) {
             $('#actual_pieces' + j).addClass('error_validation');
         }
         status_form = 1;
@@ -2126,7 +2168,7 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
         }
     }
     if ((tot_products - 1) == present_shippein_zero_count) {
-        for (var j = 1; j <= tot_products - 1; j++) {
+        for (var j = 0; j <= tot_products - 1; j++) {
             $('#present_shipping' + j).addClass('error_validation');
         }
         status_form = 1;

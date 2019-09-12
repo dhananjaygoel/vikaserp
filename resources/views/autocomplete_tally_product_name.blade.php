@@ -1507,7 +1507,7 @@
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group">' +
-            '<input type="tel" class="form-control" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]">' +
+            '<input type="tel" class="form-control" value="" placeholder="actual pieces" id="actual_pieces' + current_row_count + '" name="product[' + current_row_count + '][actual_pieces]" onkeypress=" return numbersOnly(this,event,true,false);">' +
             '</div>' +
             '</td>' +
             '<td>' +
