@@ -11,16 +11,13 @@
             <td class="heading1">Credit Period(Days)</td>
             <td class="heading1">Delivery Location</td>
             <td class="heading1">Delivery Freight</td>
-
             <td class="heading1">Product(Alias)</td>
             <td class="heading1">Quantity</td>
             <td class="heading1">Unit</td>
             <td class="heading1">Price</td>
             <td class="heading1">GST Percentage</td>
             <td class="heading1">Remark</td>
-
             <td class="heading1">Expected Delivery Date</td>
-            <td class="heading1">Remark</td>
             <td class="heading1">Order By</td>
             <td class="heading1">Order Time/Date</td>
         </tr>
@@ -41,10 +38,7 @@
             </td>
             @foreach($customers as $customer)
             @if(isset($order->customer_id) && $customer->id == $order->customer_id)
-            <td>
-                {{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}
-            </td>
-
+            <td>{{($customer->owner_name != "" && $customer->tally_name != "" )?$customer->owner_name."-".$customer->tally_name : $customer->owner_name}}</td>
             <td>{{$customer->contact_person}}</td>
             <td>{{$customer->phone_number1}}</td>
             @if($customer->credit_period != "" || $customer->credit_period>0)
@@ -64,18 +58,13 @@
             <td>{{$order->location_difference}}</td>
             @endif
             <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0]['order_product_details'] : ''; ?>
-            <!-- @if(isset($product) && $product!='' && $product->order_type =='order')
-            <td>{{$product['order_product_details']->alias_name}}</td>
-            <td>{{$product->quantity}}</td>
-            <td>
-            {{isset($product->unit_id)?$product->unit_id:''}}
-            </td>
-            <td>{{$product->price}}</td>
+            <td>{{$product->alias_name}}</td>
+            <td>{{$order['all_order_products'][0]->quantity}}</td>
+           <td>{{(isset($order['all_order_products'][0]->unit) && $order['all_order_products'][0]->unit->unit_name!='')?$order['all_order_products'][0]->unit->unit_name:''}}</td>
+            <td>{{$order['all_order_products'][0]->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
-            <td>{{$product->remarks}}</td>
-            @endif -->
+            <td>{{$order['all_order_products'][0]->remarks}}</td>           
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
-            <td>{{$order->remarks}}</td>
             <td>{{$order->createdby->first_name." ".$order->createdby->last_name}}</td>
             <td>{{$order->updated_at}}</td>
         </tr>
@@ -94,7 +83,7 @@
             <td></td>
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
-            <td>{{isset($product->unit_id)?$product->unit_id:''}}</td>
+           <td>{{(isset($product->unit) && $product->unit->unit_name!='')?$product->unit->unit_name:''}}</td>
             <td>{{$product->price}}</td>
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>

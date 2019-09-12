@@ -202,7 +202,7 @@
                     <div class="divCell">{{ $product->present_shipping }}</div>
 
                     <div class="divCell">
-                        @if($product->vat_percentage > 0)
+                        @if($product->vat_percentage >= 0)
                             @if($delivery_data->customer->states)
                                 <?php
                                 $hsn_code = $product->product_sub_category->product_category->hsn_code;
