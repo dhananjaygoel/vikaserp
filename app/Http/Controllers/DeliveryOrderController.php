@@ -330,10 +330,10 @@ class DeliveryOrderController extends Controller {
             $session_array = Session::get('forms_edit_delivery_order');
             if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    /*return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');*/
-                      $parameter = Session::get('parameters');
-                     $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-                    return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
+                    return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
+                    //   $parameter = Session::get('parameters');
+                    //  $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+                    // return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
 
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -347,8 +347,8 @@ class DeliveryOrderController extends Controller {
         }
         $customer_id = 0;
         if (isset($input_data['customer_status']) && $input_data['customer_status'] == "new_customer") {
-            $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            //if ($validator->passes()) {
+            $validator = Validator::make($input_data, Customer::$new_customer_edit_inquiry_rules);
+            if ($validator->passes()) {
                 if (isset($input_data['pending_user_id']) && $input_data['pending_user_id'] > 0) {
                     $pending_cust = array(
                         'owner_name' => $input_data['customer_name'],
@@ -368,13 +368,13 @@ class DeliveryOrderController extends Controller {
                     $customers->save();
                     $customer_id = $customers->id;
                 }
-            //}
-             /*else {
+            }
+             else {
                 $error_msg = $validator->messages();
                 Session::forget('product');
                 Session::put('input_data', $input_data);
                 return Redirect::back()->withInput()->withErrors($validator);
-            }*/
+            }
         } elseif (isset($input_data['customer_status']) && $input_data['customer_status'] == "existing_customer") {
             $validator = Validator::make($input_data, array('autocomplete_customer_id' => 'required'));
             if ($validator->passes()) {
