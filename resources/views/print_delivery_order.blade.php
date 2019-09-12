@@ -203,6 +203,7 @@
 
                     <div class="divCell">
                                 <?php
+                               if($product->vat_percentage > 0){
                                 $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
                                 $local_state = \App\States::where('id',$state)->first()->local_state;
                                 $hsn_code = $product->product_sub_category->product_category->hsn_code;
@@ -222,6 +223,10 @@
                                 @else
                                     @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                                 @endif
+                               <?php }else{ ?>
+                                   @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                               <?php } ?>
+
                     </div>
                 </div>
                 @endif
