@@ -226,10 +226,10 @@
                     <div class="form-group">
                         <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
                     </div>
-                    <!-- @if(isset($purchase_advise['purchase_order']) && $purchase_advise['purchase_order'][0]->order_for == 0)
+                    @if(isset($purchase_advise['purchase_order']) && $purchase_advise['purchase_order'][0]->order_for == 0)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
-    <!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">--
+    <!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
                             <div class="form-group clearfix loaded_by_select_pipe">
                                 <select id="loaded_by_select_pipe" name='unloaded_by[]' class="form-control" multiple="multiple">
                                     @if(isset($loaders))
@@ -242,7 +242,7 @@
                         </div>
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour </b><span class="mandatory">*</span></label>
-    <!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">--
+    <!--                        <input id="labour" class="form-control" placeholder="Labour" name="labour" value="11" type="hidden">-->
                             <div class="form-group clearfix labour_select_pipe">
                                 <select id="labour_select_pipe" name="labour[]" class="form-control" multiple="multiple">
                                     @if(isset($labours))
@@ -256,7 +256,7 @@
                     @else
                         <input type="hidden" class="form-control"  name="unloaded_by[]" value="0" >
                         <input type="hidden" class="form-control"  name="labour[]" value="0" >
-                    @endif -->
+                    @endif
                     @if($purchase_advise->vat_percentage==0 || $purchase_advise->vat_percentage== '')
                     <div class="form-group">
                         <label for="Plusvat"><b class="challan">Plus GST</b> : No </label>
