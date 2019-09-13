@@ -693,7 +693,7 @@ class BulkDeleteController extends Controller {
                     } else {
                         $result_data[$key][2] = $temp->other_location;
                     }
-                    $result_data[$key][3] = $temp['user']->first_name;
+                    $result_data[$key][3] = isset($temp['user']->first_name)?$temp['user']->first_name:'';
                     $result_data[$key][4] = round($temp->total_quantity, 2);
                     $result_data[$key][5] = round($temp->pending_quantity, 2);
                 }
