@@ -13,7 +13,8 @@ class UpdateProductSubCategoryTable extends Migration {
 	public function up()
 	{
         Schema::table('product_sub_category', function (Blueprint $table) {
-            $table->string( 'length_unit', 10 )->nullable();
+			$table->string( 'length_unit', 10 )->nullable();
+			$table->integer('quickbook_item_id')->nullable();
         });
 	}
 

@@ -11,7 +11,7 @@ class ProductTypeSeeder extends Seeder {
                 array(
                     array('id' => '1','name' =>'Pipe' ),
                     array('id' => '2','name' =>'Structure'),
-                    array('id' => '3','name' =>'Profile')
+                    array('id' => '3','name' =>'Sheets')
                 ));
     }
 }

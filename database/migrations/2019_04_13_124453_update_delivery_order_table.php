@@ -13,6 +13,7 @@ class UpdateDeliveryOrderTable extends Migration {
 	public function up()
 	{
         Schema::table('delivery_order', function($table) {
+			$table->integer('is_editable')->default(0);
             $table->integer('del_supervisor')->nullable();
             $table->integer('del_boy')->nullable();
             $table->string('party_name',50)->nullable();

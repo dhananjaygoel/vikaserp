@@ -39,6 +39,22 @@ class UserRolesSeeder extends Seeder {
                         'role_id' => '7',
                         'name' => 'Security User'
                     ),
+                    array(
+                        'id' => '9',
+                        'role_id' => '8',
+                        'name' => 'Delivery Supervisor'
+                    ),
+                    array(
+                        'id' => '10',
+                        'role_id' => '9',
+                        'name' => 'Delivery Boy'
+                    ),
+                    array(
+                        'id' => '11',
+                        'role_id' => '10',
+                        'name' => 'Bulk Delete User'
+                    ),
+
         ));
         
         DB::table('debited_tos')->truncate();

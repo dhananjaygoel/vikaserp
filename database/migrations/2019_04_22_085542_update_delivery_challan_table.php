@@ -14,7 +14,8 @@ class UpdateDeliveryChallanTable extends Migration {
 	{
         Schema::table('delivery_challan', function($table) {
             $table->string('doc_number')->nullable();
-            $table->string('pdf_name')->nullable();
+			$table->string('pdf_name')->nullable();
+			$table->integer('is_editable')->default(0);
         });
 	}
 
