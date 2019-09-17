@@ -1111,7 +1111,7 @@ class PurchaseOrderController extends Controller {
                         elseif ($popv->unit_id == 4) {
                             $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
                         }
-                        if ($popv->unit_id == 5) {
+                        elseif ($popv->unit_id == 5) {
                             $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
                         }
                     }

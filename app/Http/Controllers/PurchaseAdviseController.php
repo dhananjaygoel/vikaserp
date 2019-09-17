@@ -931,6 +931,7 @@ class PurchaseAdviseController extends Controller {
                     foreach ($del_order['purchase_products'] as $popk => $popv) {
                         $product_size = $popv['product_sub_category'];
                         //$product_size = ProductSubCategory::find($popv->product_category_id);
+
                         if ($popv->unit_id == 1) {
                             $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
                         }
@@ -984,6 +985,12 @@ class PurchaseAdviseController extends Controller {
                     if ($poapv->unit_id == 3) {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
+                    if ($poapv->unit_id == 4) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight * $poapv->length;
+                    }
+                    if ($poapv->unit_id == 5) {
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * ($product_size->weight/305) * ($poapv->length/305);
+                    }
                 }
             }
 
@@ -999,6 +1006,12 @@ class PurchaseAdviseController extends Controller {
                     }
                     if ($popv->unit_id == 3) {
                         $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                    }
+                    if ($popv->unit_id == 4) {
+                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
+                    }
+                    if ($popv->unit_id == 5) {
+                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
                     }
                 }
             }
