@@ -133,6 +133,7 @@
                                             <td><span>Rate</span></td>
                                             <td><span>GST</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Length</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
                                         <?php $key = 1; $actualsum =0; $actualtotal =0;
@@ -207,6 +208,11 @@
                                                     <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
                                                     @endif
                                                     @endforeach
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">{{ $product->length}}
+                                                    <input id="poduct_length_{{$key}}" class="form-control text-center" placeholder="Length" name="product[{{$key}}][length]" value="{{ $product->length}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
