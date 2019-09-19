@@ -191,6 +191,7 @@
                                             <td><span>Rate</span></td>
                                             @if(Auth::user()->role_id ==0)<td><span>GST</span></td> @endif  
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            <td><span>Length</span></td>
                                             <td><span>Amount</span></td>
                                             
                                         </tr>
@@ -281,6 +282,10 @@
                                                     @endif
                                                     @endforeach
                                                 </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <div class="form-group">{{$product->length}}
+                                                <input type="hidden" class="form-control" id="product_length_{{$key}}" value="{{$product->length}}" name="product[{{$key}}][length]"></div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
