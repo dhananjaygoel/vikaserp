@@ -186,8 +186,8 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    {{$product->length}}
-                                                    <input id="length_{{$key}}" class="form-control" placeholder="length" name="product[{{$key}}][length]" value="{{$product->length}}" type="hidden" >
+                                                    {{$product->length?$product->length:0}}
+                                                    <input id="length_{{$key}}" class="form-control" placeholder="length" name="product[{{$key}}][length]" value="{{$product->length?$product->length:0}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
