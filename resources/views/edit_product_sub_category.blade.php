@@ -83,7 +83,8 @@
                             <label for="size">Product Size<span class="mandatory">*</span></label>
                             <input id="size" class="form-control" placeholder="Product Size" name="size" value="{{$prod_sub_cat->size}}" type="text">
                         </div>                        
-                        <div class="thick12" style="@if(isset($prod_type->id) && $prod_type->id==2) display: none; @else  @endif">   
+                        <div class="thick12" style="<?php 
+                        if(isset($prod_type->id) && $prod_type->id==2) echo 'display:none'; ?>">   
                             <div class="form-group ">
                                 <label for="thickness">Product Thickness</label>
                                 <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
@@ -109,8 +110,13 @@
                             <div class="form-group" id="length_u" {{($prod_sub_cat['product_category']->product_type_id == 3)?'':'hidden'}}>
                                 <label for="">Length Unit<span class="mandatory">*</span></label>
                                 <br/>
+                                <?php if(isset($prod_sub_cat->length_unit)){ ?>
                                 <input type="radio"  class="length_unit" name="length_unit" value="ft" {{(isset($prod_sub_cat->length_unit) && $prod_sub_cat->length_unit=="ft")?'checked':''}}> ft
                                 <input type="radio" class="length_unit" name="length_unit"  value="mm" {{(isset($prod_sub_cat->length_unit) && $prod_sub_cat->length_unit=="mm")?'checked':''}}> mm
+                                <?php }else{ ?>
+                                <input type="radio"  class="length_unit" name="length_unit" value="ft" checked> ft
+                                <input type="radio" class="length_unit" name="length_unit"  value="mm"> mm
+                                <?php } ?>
                             </div>
 
 
