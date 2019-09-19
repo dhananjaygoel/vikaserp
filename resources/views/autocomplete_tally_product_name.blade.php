@@ -1788,6 +1788,7 @@ $.widget("custom.combobox1", {
                           if($('#unit_'+id+'_4').length == 0){
                               $("#units_"+id).append($('<option>', {selected: true, value: 4,text: 'ft',id: 'unit_'+id+'_4'}));
                               $("#units_"+id).append($('<option>', { value: 5,text: 'mm',id: 'unit_'+id+'_5'}));
+                              $('#units_'+id).trigger('change');   
                           }
                    }
                    else
@@ -1803,6 +1804,7 @@ $.widget("custom.combobox1", {
                               $("#units_"+id).append($('<option>', {selected: true, value: 1,text: 'KG',id: 'unit_'+id+'_1'}));
                               $("#units_"+id).append($('<option>', { value: 2,text: 'Pieces',id: 'unit_'+id+'_2'}));
                               $("#units_"+id).append($('<option>', { value: 3,text: 'Meter',id: 'unit_'+id+'_3'}));
+                              $('#units_'+id).trigger('change');   
                           }
                    }
                     if(ui.item.product_price == ""){

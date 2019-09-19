@@ -136,13 +136,13 @@
                                                 </td>
 
                                                 <td class="col-md-1">
-                                                    {{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}
-                                                    <input type="hidden" name="product[{{$key}}][units]" value="{{$product_data['unit']->id}}">
+                                                    {{isset($product_data['unit']->unit_name)?@$product_data['unit']->unit_name:''}}
+                                                    <input type="hidden" name="product[{{$key}}][units]" value="{{@$product_data['unit']->id}}">
                                                 </td>
                                                 <td class="col-md-1">
                                                 <div class="form-group">
-                                                    {{$product_data->length}}
-                                                    <input id="length_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][length]" value="{{$product_data->length}}" type="hidden" >
+                                                    {{$product_data->length?$product_data->length:0}}
+                                                    <input id="length_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][length]" value="{{$product_data->length?$product_data->length:'0'}}" type="hidden" >
                                                 </div>
                                                 </td>
                                                 <td class="col-md-1">
