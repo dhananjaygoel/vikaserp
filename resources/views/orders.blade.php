@@ -24,7 +24,7 @@
 
                 <ol class="breadcrumb pull-left">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
-                    <li class="active"><span>Orders</span></li>
+                    <li class="active"><span>Orders test1</span></li>
                 </ol>
                 <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">                        
                     <div class="col-lg-4">
