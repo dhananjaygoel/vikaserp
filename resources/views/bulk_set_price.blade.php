@@ -169,7 +169,7 @@
                         <span class="clearfix"></span>
                         @if($customer->lastPage() > 1)
                         <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                            <form class="form-inline" method="GET" action="{{url('customers')}}" id="filter_search">
+                            <form class="form-inline" method="GET" action="{{url('bulk_set_price')}}" id="filter_search">
                                 <div class="form-group">
                                     <label for="exampleInputName2"><b>Go To</b></label>
                                     &nbsp;
