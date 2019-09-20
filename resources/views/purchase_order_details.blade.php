@@ -109,7 +109,6 @@
                                         </tr>
                                         <?php $total = 0; ?>
                                         @foreach($purchase_orders['purchase_products'] as $product_data)
-                                        <?php print($product_data->length); ?>
                                         @if($product_data->order_type == 'purchase_order')
                                         <tr>
                                        
