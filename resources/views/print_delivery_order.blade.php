@@ -35,7 +35,7 @@
                     <th class="title-name" colspan="3">Delivery Order</th>
                 </tr>
                 <tr>
-                    <th>deliveri-order Number: {{isset($delivery_data->serial_no)?$delivery_data->serial_no:'' }}</th>
+                    <th>DO Number: {{isset($delivery_data->serial_no)?$delivery_data->serial_no:'' }}</th>
                     <th>Date: {{date('F d, Y')}}</th>
                     <th>Time: <?php
                         echo '<script type="text/javascript">
