@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
-                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="{{old('mobile_number')}}" type="tel">
+                                    <input id="mobile_number" class="form-control" placeholder="Mobile Number" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="{{old('mobile_number')}}" type="tel" pattern="[0-9]{10}">
                                 </div>
                                 <div class="form-group">
                                     <label for="period">Credit Period(Days)<span class="mandatory">*</span></label>
@@ -237,12 +237,21 @@
                                                     <td class="col-md-2" id='test1'>
                                                         <div class = "form-group ">
                                                             <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}" required>
-                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                                    <option value='' id = 'unit_{{$i}}_0' <?php if (!isset($session_data['product'][$i]['units'])) { ?>selected="selected"<?php } ?>>--Select--</option>
+                                                                     <?php if (isset($session_data['product'][$i]['units']) and (($session_data['product'][$i]['units']==1) or ($session_data['product'][$i]['units']==2) or ($session_data['product'][$i]['units']==3))) { ?>
+                                                                    <option value=1 id = 'unit_{{$i}}_1' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==1)) { ?> selected="selected"<?php } ?> >KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==2)) { ?> selected="selected"<?php } ?> >Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==3)) { ?> selected="selected"<?php } ?> >Meter</option>
+                                                                     <?php } elseif (isset($session_data['product'][$i]['units']) and (($session_data['product'][$i]['units']==4) or ($session_data['product'][$i]['units']==5))) { ?>
+                                                                    <option value=4 id = 'unit_{{$i}}_4' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==4)) { ?> selected="selected"<?php } ?>>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==5)) { ?> selected="selected"<?php } ?>>mm</option>
+                                                                     <?php }else{ ?>
                                                                     <option value=1 id = 'unit_{{$i}}_1'>KG</option>
                                                                     <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
                                                                     <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
                                                                     <option value=4 id = 'unit_{{$i}}_4'>ft</option>
                                                                     <option value=5 id = 'unit_{{$i}}_5'>mm</option>
+                                                                     <?php } ?>
                                                             </select>
                                                         </div>
                                                     </td>
@@ -250,17 +259,58 @@
                                                     <td class="col-md-1">
                                                         <div class = "form-group">
                                                             <div class = "form-group length_list_{{$i}}">
-                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:'0'}}" disabled>
+                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:'0'}}" <?php if (isset($session_data['product'][$i]['length']) and ($session_data['product'][$i]['length'] > 0)) { ?> enable <?php }else{ ?>disabled <?php } ?>>
                                                         </div>
                                                         </div>
                                                     </td>
 
                                                     <td class="col-md-1">
+                                                         <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']!=3)) { ?>
+                                                         <div class = "form-group meter_list_{{$i}}" style="display:none">
+                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['quantity'])) ? $session_data['product'][$i]['quantity']:'50'}}">
+                                                        </div>
+                                                         <?php } if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==1)) { ?>
+                                                        <div class = "form-group kg_list_{{$i}}" >
+                                                            <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$i}}" onchange="setQty(this);">
+                                                                <?php for ($n = 50; $n <= 15000; $n++) { ?>
+                                                                    <option value = "{{$n}}" <?php if($session_data['product'][$i]['quantity']== $n)  echo "selected='selected'"; ?>>{{$n}}</option>
+                                                                    <?php $n = $n + 49;
+                                                                 } ?>                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <?php }elseif (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==2)) { ?>
+                                                                <div class = "form-group pieces_list_{{$i}}" >
+                                                            <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$i}}" onchange="setQty(this);">
+                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                    <option value = "{{$z}}" <?php if($session_data['product'][$i]['quantity']== $z)  echo "selected='selected'"; ?>>{{$z}}</option>
+                                                                    <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                        <?php }elseif (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==3)) { ?>
+                                                                 <div class = "form-group meter_list_{{$i}}" >
+                                                            <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['quantity'])) ? $session_data['product'][$i]['quantity']:'50'}}">
+                                                        </div>
+                                                        <?php }elseif (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==4)) { ?>
+                                                                 <div class = "form-group ff_list_{{$i}}">
+                                                            <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$i}}" onchange="setQty(this);">
+                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                <option value = "{{$z}}" <?php if($session_data['product'][$i]['quantity']== $z)  echo "selected='selected'"; ?> >{{$z}}</option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                        <?php }elseif (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==5)) { ?>
+                                                                 <div class = "form-group mm_list_{{$i}}">
+                                                            <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$i}}" onchange="setQty(this);">
+                                                                <?php for ($z = 1; $z <= 1000; $z++) { ?>
+                                                                <option value = "{{$z}}" <?php if($session_data['product'][$i]['quantity']== $z) echo "selected='selected'"; ?>>{{$z}}</option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+                                                         <?php   }else{ ?>
                                                         <div class = "form-group meter_list_{{$i}}" style="display:none">
                                                             <input id = "quantity_{{$i}}" class = "form-control each_product_qty" data-productid="{{$i}}" placeholder = "Qnty" name = "product[{{$i}}][quantity]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['quantity'])) ? $session_data['product'][$i]['quantity']:'50'}}">
                                                         </div>
-
-                                                        <div class = "form-group kg_list_{{$i}}" >
+                                                         <div class = "form-group kg_list_{{$i}}" >
                                                             <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$i}}" onchange="setQty(this);">
                                                                 <?php for ($n = 50; $n <= 15000; $n++) { ?>
                                                                     <option value = "{{$n}}">{{$n}}</option>
@@ -269,13 +319,11 @@
                                                                 ?>
                                                             </select>
                                                         </div>
-
                                                         <div class = "form-group pieces_list_{{$i}}" style="display:none">
                                                             <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$i}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                     <option value = "{{$z}}">{{$z}}</option>
-                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                                } ?>
+                                                                    <?php } ?>
                                                             </select>
                                                         </div>
 
@@ -283,8 +331,7 @@
                                                             <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$i}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option value = "{{$z}}">{{$z}}</option>
-                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                                } ?>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
 
@@ -292,11 +339,10 @@
                                                             <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$i}}" onchange="setQty(this);">
                                                                 <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option value = "{{$z}}">{{$z}}</option>
-                                                                <?php // ($z == 1) ? $z = $z + 3 : $z = $z + 4;
-                                                                } ?>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
-
+                                                         <?php } ?>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <div class = "form-group">
