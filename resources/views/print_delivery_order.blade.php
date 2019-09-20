@@ -1,4 +1,4 @@
-<!deliveri-orderCTYPE html>
+<!DOCTYPE html>
 <html>
     <body>
         <style>
@@ -10,26 +10,26 @@
             table thead tr th.title-name {text-align:center;}
             table th, table td {padding: 0px; text-align: center; border-left: 1px solid #ccc; border-right: 1px solid #ccc;}
 
-            .deliveri-order-details th, .deliveri-order-details td {padding: 10px;}
-            .deliveri-order-details thead tr {border: 1px solid #ccc;}
-            .deliveri-order-details thead tr th {border-left: none; border-right: none; border-bottom: none !important;}
+            .delivery-order-details th, .delivery-order-details td {padding: 10px;}
+            .delivery-order-details thead tr {border: 1px solid #ccc;}
+            .delivery-order-details thead tr th {border-left: none; border-right: none; border-bottom: none !important;}
 
-            .deliveri-order-data {border: none !important;}
-            .deliveri-order-data th, .deliveri-order-data td {padding: 10px;}
-            .deliveri-order-data thead tr:first-child {border-top: none;}
-            .deliveri-order-data thead tr, .deliveri-order-data tbody tr {border: 1px solid #ccc;}
-            .deliveri-order-data tr td {text-align: left;}
-            .deliveri-order-data tr td.index {width: 25px;}
-            .deliveri-order-data tr td.product-size {width: 90px;}
+            .delivery-order-data {border: none !important;}
+            .delivery-order-data th, .delivery-order-data td {padding: 10px;}
+            .delivery-order-data thead tr:first-child {border-top: none;}
+            .delivery-order-data thead tr, .delivery-order-data tbody tr {border: 1px solid #ccc;}
+            .delivery-order-data tr td {text-align: left;}
+            .delivery-order-data tr td.index {width: 25px;}
+            .delivery-order-data tr td.product-size {width: 90px;}
 
-            .deliveri-order-total tbody tr td {text-align: left; border: none;}
-            .deliveri-order-total th, .deliveri-order-total td {padding: 10px;}
-            .deliveri-order-total thead tr {border: 1px solid #ccc; border-top: none; border-bottom: none;}
-            .deliveri-order-total thead tr:last-child {border-bottom: 1px solid #ccc;}
+            .delivery-order-total tbody tr td {text-align: left; border: none;}
+            .delivery-order-total th, .delivery-order-total td {padding: 10px;}
+            .delivery-order-total thead tr {border: 1px solid #ccc; border-top: none; border-bottom: none;}
+            .delivery-order-total thead tr:last-child {border-bottom: 1px solid #ccc;}
 
         </style>
 
-        <table class="deliveri-order-details">
+        <table class="delivery-order-details">
             <thead>
                 <tr>
                     <th class="title-name" colspan="3">Delivery Order</th>
@@ -41,7 +41,7 @@
                         echo '<script type="text/javascript">
                             var x = new Date()
                             var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
-                            deliveri-ordercument.write(current_time)
+                            document.write(current_time)
                             </script>';
                         ?>
                     </th>
@@ -66,7 +66,7 @@
             </thead>
         </table>
 
-        <table class="deliveri-order-data">
+        <table class="delivery-order-data">
             <thead>
                 <tr>
                     <td>Sr.</td>
@@ -126,7 +126,7 @@
                 @endif
             </tbody>
         </table>
-        <table class="deliveri-order-total">
+        <table class="delivery-order-total">
             <thead>
                 <tr>
                     <th colspan="3">Total Quantity: {{ isset($delivery_data->total_quantity)?$delivery_data->total_quantity :''}} (Ton)</th>
