@@ -109,16 +109,16 @@
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="{{$order['customer']->owner_name}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="name">Contact Person</label>
+                                <label for="name">Contact Person <span class="mandatory">*</span></label>
                                 <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="{{$order['customer']->contact_person}}" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="mobile_number">Phone Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="{{$order['customer']->phone_number1}}" type="tel">
+                                <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
+                                <input id="mobile_number" class="form-control" placeholder="Phone Number " onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="{{$order['customer']->phone_number1}}" type="tel" pattern="[0-9]{10}">
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period(Days)</label>
+                                <label for="period">Credit Period(Days)  <span class="mandatory">*</span></label>
                                 <input id="period" class="form-control" placeholder="Credit Period" name="credit_period" onkeypress=" return numbersOnly(this, event, false, false);" value="{{$order['customer']->credit_period}}" type="tel">
                             </div>
                         </div>
@@ -172,16 +172,16 @@
                                 <input id="name" class="form-control" placeholder="Name" name="customer_name" value="" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="name">Contact Person</label>
+                                <label for="name">Contact Person <span class="mandatory">*</span></label>
                                 <input id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person" value="" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="mobile_number">Mobile Number </label>
-                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="" type="tel">
+                                <label for="mobile_number">Mobile Number <span class="mandatory">*</span></label>
+                                <input id="mobile_number" class="form-control" placeholder="Mobile Number " onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" name="mobile_number" value="" type="tel" pattern="[0-9]{10}">
                             </div>
 
                             <div class="form-group">
-                                <label for="period">Credit Period(Days)</label>
+                                <label for="period">Credit Period(Days) <span class="mandatory">*</span></label>
                                 <input id="period" onkeypress=" return numbersOnly(this, event, false, false);"  class="form-control" placeholder="Credit Period" name="credit_period" value="" type="tel">
                             </div>
                         </div>
@@ -282,19 +282,28 @@
                                                         <td class="col-md-2">
                                                             <div class="form-group ">
                                                                 <select class="form-control" name="product[{{$i}}][units]" id="units_{{$i}}">
-                                                                    <option value='' id = 'unit_{{$i}}_0' selected="selected">--Select--</option>
+                                                                    <option value='' id = 'unit_{{$i}}_0' <?php if (!isset($session_data['product'][$i]['units'])) { ?>selected="selected"<?php } ?>>--Select--</option>
+                                                                     <?php if (isset($session_data['product'][$i]['units']) and (($session_data['product'][$i]['units']==1) or ($session_data['product'][$i]['units']==2) or ($session_data['product'][$i]['units']==3))) { ?>
+                                                                    <option value=1 id = 'unit_{{$i}}_1' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==1)) { ?> selected="selected"<?php } ?> >KG</option>
+                                                                    <option value=2 id = 'unit_{{$i}}_2' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==2)) { ?> selected="selected"<?php } ?> >Pieces</option>
+                                                                    <option value=3 id = 'unit_{{$i}}_3' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==3)) { ?> selected="selected"<?php } ?> >Meter</option>
+                                                                     <?php } elseif (isset($session_data['product'][$i]['units']) and (($session_data['product'][$i]['units']==4) or ($session_data['product'][$i]['units']==5))) { ?>
+                                                                    <option value=4 id = 'unit_{{$i}}_4' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==4)) { ?> selected="selected"<?php } ?>>ft</option>
+                                                                    <option value=5 id = 'unit_{{$i}}_5' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==5)) { ?> selected="selected"<?php } ?>>mm</option>
+                                                                     <?php }else{ ?>
                                                                     <option value=1 id = 'unit_{{$i}}_1'>KG</option>
                                                                     <option value=2 id = 'unit_{{$i}}_2'>Pieces</option>
                                                                     <option value=3 id = 'unit_{{$i}}_3'>Meter</option>
                                                                     <option value=4 id = 'unit_{{$i}}_4'>ft</option>
                                                                     <option value=5 id = 'unit_{{$i}}_5'>mm</option>
+                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
                                                         </td>
                                                         <td class="col-md-1">
                                                             <div class = "form-group">
                                                                 <div class = "form-group length_list_{{$i}}">
-                                                                <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "<?php if (isset($session_data['product'][$i]['length'])) { ?>{{$session_data['product'][$i]['length']}}<?php } ?>">
+                                                                <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:'0'}}" <?php if (isset($session_data['product'][$i]['length']) and ($session_data['product'][$i]['length'] > 0)) { ?> enable <?php }else{ ?>disabled <?php } ?>>
                                                             </div>
                                                             </div>
                                                         </td>
