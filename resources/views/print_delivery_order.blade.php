@@ -1,245 +1,141 @@
-<!DOCTYPE html>
-<html><head>
-        <title>Delivery Order</title>
-        <meta charset="windows-1252">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    </head><body>
+<!deliveri-orderCTYPE html>
+<html>
+    <body>
         <style>
-            body{
-                font-size: 10px;
-                font-family: Arial !important;
-                font-weight: bold !important;
-                /*font-family: monospace !important;*/
-            }
-            .divTable{
-                display:table;
-                width:100%;
-                background-color:#fff;
-                border-top: 1px solid #ccc;
-                border-bottom: 1px solid #ccc;
-            }
-            .divRow{
-                width:auto;
-                clear:both;
-                border-top: 1px solid #ccc;
-            }
-            .divCell{
-                float:left;
-                display:table-column;
-                width:10%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-            }
-            .divCell:last-child{
-                float:left;
-                display:table-column;
-                width:auto;
-                padding: 5px;
-                border-right: none;
-            }
-            .divCell2{
-                float:left;
-                display:table-column;
-                width:4.2%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-            }
-            .divCell3{
-                float:left;
-                display:table-column;
-                width:30%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-            }
-            /*            .divCell:last-child
-                        {
-                            border: none;
-                        }*/
-            .divRow:last-child{
-                border-top: none;
-                border-bottom: 1px solid #ccc;
-            }
-            .headRow{
-                display:table-row;
-            }
-            .footer{
-                width: 100%;
-                float: left;
-            }
-            .remark{
-                width: 8%;
-                float: left;
-                padding: 20px 5px ;
-            }
-            .content{
-                width: 88%;
-                float: left;
-                padding-top: 20px;
-            }
-            .invoice{
-                width:70%;
-                margin-left: 15%;
-                border: 1px solid #ccc;
-                float: left;
-                padding: 0px;
-                overflow: hidden;
-            }
-            .del{
-                width: 100%;
-                float: left;
-                padding: 10px 0px 10px 5px;
-            }
-            .trk-mobile{
-                width: 100%;
-                float: left;
-                padding: 10px 0px 10px 5px;
-                border-bottom: 1px solid #ccc;
-            }
-            .trk-no{
-                width: 50%;
-                float: left;
-            }
-            .mob-no{
-                width: 50%;
-                float: left;
-            }
-            .name{
-                width: 100%;
-                padding: 10px 0px 10px 5px;
-                float: left;
-                position: relative;
-                border-bottom: 1px solid #ccc;
-            }
-            .delivery-details{
-                width: 100%;
-                padding: 10px 0px 10px 5px;
-                float: left;
-                border-bottom: 1px solid #ccc;
-            }
-            .do-no{
-                width: 33%;
-                float: left;
-                position: relative;
-            }
-            .date{
-                width: 33%;
-                float: left;
-                position: relative;
-            }
-            .time{
-                width: 33%;
-                float: left;
-                position: relative;
-            }
-            .title{
-                width: 100%;
-                text-align: center;
-                border-bottom: 1px solid #ccc;
-                padding: 10px 0px 10px 5px;
-                font-weight: 600;
-            }
-        </style>
-        <div class="invoice">
-            <div class="title">Delivery Order</div>
-            <div class="delivery-details">
-                <div class="do-no">DO Number: {{isset($delivery_data->serial_no)?$delivery_data->serial_no:'' }}</div>
-                <div class="date">Date: {{ date('F d, Y')}}</div>
-                <div class="time">
-                    <!--Time: {{ date("h:i:sa") }}-->
-                    Time: <?php
-                    echo '<script type="text/javascript">
-                        var x = new Date()
-                        var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
-                        document.write(current_time)
-                        </script>';
-                    ?>
-                </div>
-            </div>
-            <div class="name">
-                Name: 
-                @if(isset($delivery_data['customer']->tally_name) && $delivery_data['customer']->tally_name != "")
-                                            {{$delivery_data['customer']->tally_name}}
-                                            @else
-                                            {{isset($delivery_data['customer']->owner_name)?$delivery_data['customer']->owner_name:'N/A'}}
+            body {font-size: 10px; font-family: Arial !important; font-weight: bold !important;}
 
-                                            @endif
-            </div>
-            <div class="trk-mobile">
-                <div class="trk-no">Vehicle No: {{ isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number :''}}</div>
-                <div class="mob-no">Driver Mob: {{ isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'' }}</div>
-                @if($customer_type!="supplier")<div class="empty-truck-weight">Empty Truck Weight: {{ isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0' }} Kg</div>@endif
-            </div>
-            <div class="del">
-                Delivery @: {{(isset($delivery_data->delivery_location_id) && $delivery_data->delivery_location_id!=0) ? $delivery_data['location']->area_name : (isset($delivery_data->other_location)?$delivery_data->other_location:'') }}
-            </div>
-            <div class="divTable">
-                <div class="headRow">
-                    <div class="divCell2">Sr.</div>
-                    <div class="divCell">Size</div>
-                    <div class="divCell">Qty</div>
-                    <div class="divCell">Unit</div>
-                    <div class="divCell">Pcs</div>
-                    <div class="divCell">Present Shipping</div>
-                    <div class="divCell">GST</div>
-                </div>
+            table {width: 100%; margin:0; padding:0; border-collapse: collapse; border-spacing: 0;}
+            table tr {padding: 0px;}
+            table thead tr th {text-align:left;}
+            table thead tr th.title-name {text-align:center;}
+            table th, table td {padding: 0px; text-align: center; border-left: 1px solid #ccc; border-right: 1px solid #ccc;}
+
+            .deliveri-order-details th, .deliveri-order-details td {padding: 10px;}
+            .deliveri-order-details thead tr {border: 1px solid #ccc;}
+            .deliveri-order-details thead tr th {border-left: none; border-right: none; border-bottom: none !important;}
+
+            .deliveri-order-data {border: none !important;}
+            .deliveri-order-data th, .deliveri-order-data td {padding: 10px;}
+            .deliveri-order-data thead tr:first-child {border-top: none;}
+            .deliveri-order-data thead tr, .deliveri-order-data tbody tr {border: 1px solid #ccc;}
+            .deliveri-order-data tr td {text-align: left;}
+            .deliveri-order-data tr td.index {width: 25px;}
+            .deliveri-order-data tr td.product-size {width: 90px;}
+
+            .deliveri-order-total tbody tr td {text-align: left; border: none;}
+            .deliveri-order-total th, .deliveri-order-total td {padding: 10px;}
+            .deliveri-order-total thead tr {border: 1px solid #ccc; border-top: none; border-bottom: none;}
+            .deliveri-order-total thead tr:last-child {border-bottom: 1px solid #ccc;}
+
+        </style>
+
+        <table class="deliveri-order-details">
+            <thead>
+                <tr>
+                    <th class="title-name" colspan="3">Delivery Order</th>
+                </tr>
+                <tr>
+                    <th>deliveri-order Number: {{isset($delivery_data->serial_no)?$delivery_data->serial_no:'' }}</th>
+                    <th>Date: {{date('F d, Y')}}</th>
+                    <th>Time: <?php
+                        echo '<script type="text/javascript">
+                            var x = new Date()
+                            var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
+                            deliveri-ordercument.write(current_time)
+                            </script>';
+                        ?>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Vehicle No: {{ isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number :'' }}</th>
+                    <th>Driver Mob: {{ isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'' }}</th>
+                    @if($customer_type!="supplier")
+                    <th>Empty Truck Weight: {{ isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0' }} Kg</th>
+                    @endif
+                </tr>
+                <tr>
+                    <th colspan="1">Name: 
+                        @if(isset($delivery_data['customer']->tally_name) && $delivery_data['customer']->tally_name != "")
+                            {{$delivery_data['customer']->tally_name}}
+                        @else
+                            {{isset($delivery_data['customer']->owner_name)?$delivery_data['customer']->owner_name:'N/A'}}
+                        @endif 
+                    </th>
+                    <th colspan="2">Delivery @: {{(isset($delivery_data->delivery_location_id) && $delivery_data->delivery_location_id!=0) ? $delivery_data['location']->area_name : (isset($delivery_data->other_location)?$delivery_data->other_location:'') }}</th>
+                </tr>
+            </thead>
+        </table>
+
+        <table class="deliveri-order-data">
+            <thead>
+                <tr>
+                    <td>Sr.</td>
+                    <td>Size</td>
+                    <td>Qty</td>
+                    <td>Unit</td>
+                    <td>Pcs</td>
+                    <td>Present Shipping</td>
+                    <td>GST</td>
+                </tr>
+            </thead>
+            <tbody>
                 <?php $i = 1; ?>
                 @if($delivery_data['delivery_product'])
                 @foreach($delivery_data['delivery_product'] as $product)
                 @if(isset($product['order_type']) && $product['order_type'] == 'delivery_order')
-                <div class="divRow">
-                    <div class="divCell2">{{ $i++ }}</div>
-                    <div class="divCell">{{ $product['order_product_details']->alias_name }}</div>
-                    <div class="divCell">{{ $product->quantity }}</div>
-                    <div class="divCell">
-                        @foreach($units as $u)
+                <tr>
+                    <td>{{ $i++ }}</td>
+                    <td>{{ $product['order_product_details']->alias_name }}</td>
+                    <td>{{ $product->quantity }}</td>
+                    <td>@foreach($units as $u)
                         @if($product->unit_id == $u->id)
                         {{$u->unit_name}}
                         @endif
                         @endforeach
-                    </div>
-                    <div class="divCell">{{ $product->actual_pieces }}</div>
-                    <div class="divCell">{{ $product->present_shipping }}</div>
-
-                    <div class="divCell">
-                                <?php
-                               if($product->vat_percentage > 0){
-                                $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
-                                $local_state = \App\States::where('id',$state)->first()->local_state;
-                                $hsn_code = $product->product_sub_category->product_category->hsn_code;
-                                $is_gst = false;
-                                if($hsn_code){
-                                    $is_gst = true;
-                                    $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
-                                    $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
-                                }
-                                ?>
-                                @if($is_gst)
-                                    @if($local_state)
-                                        {{$gst_det->sgst + $gst_det->cgst}} %
-                                    @else
-                                        {{$gst_det->igst}} %
-                                    @endif
+                    </td>
+                    <td>{{ $product->actual_pieces }}</td>
+                    <td>{{ $product->present_shipping }}</td>
+                    <td><?php
+                            if($product->vat_percentage > 0){
+                            $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
+                            $local_state = \App\States::where('id',$state)->first()->local_state;
+                            $hsn_code = $product->product_sub_category->product_category->hsn_code;
+                            $is_gst = false;
+                            if($hsn_code){
+                                $is_gst = true;
+                                $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
+                                $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                            }
+                            ?>
+                            @if($is_gst)
+                                @if($local_state)
+                                    {{$gst_det->sgst + $gst_det->cgst}} %
                                 @else
-                                    @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                                    {{$gst_det->igst}} %
                                 @endif
-                               <?php }else{ ?>
-                                   @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
-                               <?php } ?>
-
-                    </div>
-                </div>
+                            @else
+                                @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                            @endif
+                            <?php }else{ ?>
+                                @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                            <?php } ?>
+                    </td>
+                </tr>
                 @endif
                 @endforeach
                 @endif
-            </div>
-            <div class="footer">
-                <div class="remark">Total Quantity:</div>               
-                <div class="content">{{ isset($delivery_data->total_quantity)?$delivery_data->total_quantity :''}} (Ton)</div>
-            </div>
-            <div class="footer">
-                <div class="remark">Remark:</div>
-                <div class="content">{{ isset($delivery_data->remarks) ? $delivery_data->remarks : ''}}</div>
-            </div>
-        </div>
-    </body></html>
+            </tbody>
+        </table>
+        <table class="deliveri-order-total">
+            <thead>
+                <tr>
+                    <th colspan="3">Total Quantity: {{ isset($delivery_data->total_quantity)?$delivery_data->total_quantity :''}} (Ton)</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Remark: {{ isset($delivery_data->remarks) ? $delivery_data->remarks : ''}}</th>
+                </tr>
+            </thead>
+        </table>
+        
+    </body>
+</html>
