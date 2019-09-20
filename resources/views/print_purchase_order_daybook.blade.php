@@ -7,153 +7,75 @@
     </head>
     <body>
         <style>
-            body{
-                font-size: 8px;
-                font-family: Arial !important;
-                font-weight: bold !important;
-            }
-            .divTable{
-                display:table;
-                width:100%;
-                background-color:#fff;
-                border-top: 1px solid #ccc;
-                border-bottom: 1px solid #ccc;
-            }
-            .divRow{
+            body {font-size: 10px; font-family: Arial !important; font-weight: bold !important;}
 
-                width:auto;
-                clear:both;
-                border-top: 1px solid #ccc;
-            }
-            .divCell{
-                float:left;
-                display:table-column;
-                width:7%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-                font-size: 8px;
-            }
-            .divCell2{
-                float:left;
-                display:table-column;
-                width:5%;
-                padding: 5px;
-                border-right: 1px solid #ccc;
-                font-size: 8px;
-            }
-            .divCell:last-child{
-                border: none;
-            }
-            .divRow:last-child{
-                border-top: none;
-                border-bottom:  1px solid #ccc;
-            }
-            .headRow{
-                display:table-row;
-                text-align: center;
-            }
-
-
-            .invoice{
-                width:100%;
-                border: 1px solid #ccc;
-                float: left;
-                padding: 0px;
-                overflow: hidden;
-            }
-            .title{
-                width: 100%;
-                text-align: center;
-                border-bottom: 1px solid #ccc;
-                padding: 10px 0px 10px 5px;
-                font-weight: 600;
-            }
-            .center{
-                text-align: center;
-            }
+            table {width: 100%; margin:0; padding:0; border-collapse: collapse; border-spacing: 0;}
+            table thead tr th {text-align:center;}
+            table thead tr th.title-name {text-align:center;}
+            table th, table td {text-align: center; border: 1px solid #ccc;}
+            
+            .sales-daybook-details th, .sales-daybook-data th, .sales-daybook-details td, .sales-daybook-data td {padding: 10px;}
+            .sales-daybook-data thead tr {border: 1px solid #ccc;}
+            .sales-daybook-data tbody tr td {border-bottom: 1px solid #ccc;}
         </style>
-        <div class="invoice">
-            <div class="title">
-                <?php echo $title; ?> 
-            </div>
-            <div class="divTable">
-                <div class="headRow">
-                    <div  class="divCell2">#</div>
-                    <div  class="divCell">Challan sr. No</div>
-                    <!--<div  class="divCell">Do. No</div>-->
-                    <div  class="divCell">Tally Name</div>
-                    <div  class="divCell">Del Loc</div>
-                    <div  class="divCell">Qty</div>
-                    <div  class="divCell">Amount</div>
-                    <div  class="divCell">Bill No.</div>
-                    <div  class="divCell">Truck No</div>
-                    <div  class="divCell">Loaded By</div>
-                    <div  class="divCell">Labour</div>
-                    <div  class="divCell">Remarks</div>
-                </div>
+        
+        <table class="sales-daybook-details">
+            <thead>
+                <tr>
+                    <th class="title-name" colspan="2">Vikas Associate Order Automation System</th>
+                </tr>
+                <tr>
+                    <th class="title-name" colspan="2"><?php echo $title; ?>({{ date('F d, Y')}})</th>
+                </tr>
+            </thead>
+        </table>
 
-                <?php
+        <table class="sales-daybook-data">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Challan No</th>
+                    <th>Tally Name</th>
+                    <th>Del Loc</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                    <th>Bill No.</th>
+                    <th>Truck No.</th>
+                    <th>Loaded By</th>
+                    <th>Labour</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <?php
                 $i = 1;
                 $total_qunatity = 0;
-                ?>
-                @foreach ($purchase_daybook as $obj)
-                <?php
+            ?>
+            @foreach($purchase_daybook as $obj)
+            <?php
                 $qty = 0;
                 $amount = 0;
-                ?>
-                @foreach ($obj['all_purchase_products'] as $total_qty)
-                <?php
-                if ($total_qty->unit_id == 1) {
-                    $total_qunatity += $total_qty->present_shipping;
-                }
-                if ($total_qty->unit_id == 2) {
-                    $total_qunatity += ($total_qty->present_shipping * $total_qty['purchase_product_details']->weight);
-                }
-                if ($total_qty->unit_id == 3) {
-                    $wight;
-                    if(isset($total_qty['product_category']['product_sub_category']->weight)){
-                       $wight =$total_qty['product_category']['product_sub_category']->weight;
-                    }else if(isset($total_qty['purchase_product_details']->weight)){
-                       $wight =$total_qty['purchase_product_details']->weight;
-                    }else{
-                       $wight = 1; 
-                    }
-                    
-                    $total_qunatity += ($total_qty->present_shipping / $total_qty['purchase_product_details']->standard_length) * $wight;
-                }
-                ?>
-                @endforeach
-                <div class="divRow">
-                    <div class="divCell2 center">{{ $i++ }}</div>
-                    <div class="divCell">{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</div>
-                    <!--<div class="divCell">xxx</div>-->
-                    <div class="divCell">
-                       @if($obj['supplier']->tally_name != "" && $obj['supplier']->owner_name != "")
-                {{ $obj['supplier']->owner_name }}-{{$obj['supplier']->tally_name}}
-                @else 
-                {{ $obj['supplier']->owner_name }}
-                @endif
-
-                    </div>
-                    <div class="divCell">
-                        <?php
-                        if ($obj->delivery_location_id == 0) {
-                            echo $obj['purchase_advice']->other_location;
-                        } else {
-                            echo $obj['delivery_location']->area_name;
-                        }
-                        ?>
-                    </div>
-                    <div class="divCell">{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</div>
-                    <div class="divCell">{{ isset($obj->grand_total) ? $obj->grand_total : '' }}</div>
-                    <div class="divCell">{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</div>
-                    <div class="divCell">{{ isset($obj->vehicle_number) ? $obj->vehicle_number : '' }}</div>
-                    <div class="divCell">{{ isset($obj->unloaded_by) ? $obj->unloaded_by : '' }}</div>
-                    <div class="divCell">{{ isset($obj->labours) ? $obj->labours : '' }}</div>
-                    <div class="divCell">{{ isset($obj->remarks) ? $obj->remarks : '' }}</div>
-                </div>
-                @endforeach
-            </div>
-        </div>
+            ?>
+            <tbody>
+                <tr>
+                    <td>{{ $i++ }}</td>
+                    <td>{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</td>
+                    <td> @if($obj['supplier']->tally_name != "" && $obj['supplier']->owner_name != "")
+                            {{ $obj['supplier']->owner_name }}-{{$obj['supplier']->tally_name}}
+                        @else 
+                            {{ $obj['supplier']->owner_name }}
+                        @endif
+                    </td>
+                    <td>{{ ($obj->delivery_location_id == 0) ? $obj['purchase_advice']->other_location : $obj['delivery_location']->area_name }}
+                    <td>{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</td>
+                    <td>{{ isset($obj->grand_total) ? $obj->grand_total : '' }}</td>
+                    <td>{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</td>
+                    <td>{{ isset($obj->vehicle_number) ? $obj->vehicle_number : '' }}</td>
+                    <td>{{ isset($obj->unloaded_by) ? $obj->unloaded_by : '' }}</td>
+                    <td>{{ isset($obj->labours) ? $obj->labours : '' }}</td>
+                    <td>{{ isset($obj->remarks) ? $obj->remarks : '' }}</td>
+                </tr>
+            </tbody>
+            @endforeach
+        </table>
     </body>
 </html>

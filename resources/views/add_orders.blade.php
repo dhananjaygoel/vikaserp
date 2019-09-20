@@ -259,7 +259,7 @@
                                                     <td class="col-md-1">
                                                         <div class = "form-group">
                                                             <div class = "form-group length_list_{{$i}}">
-                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:'0'}}" <?php if (isset($session_data['product'][$i]['length']) and ($session_data['product'][$i]['length'] > 0)) { ?> enable <?php }else{ ?>disabled <?php } ?>>
+                                                            <input id = "length_{{$i}}" class = "form-control each_length_qnty" data-productid="{{$i}}"  name = "product[{{$i}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" value = "{{ (isset($session_data['product'][$i]['length'])) ? $session_data['product'][$i]['length']:''}}" <?php if (isset($session_data['product'][$i]['length']) and ($session_data['product'][$i]['length'] > 0)) { ?> enable <?php }else{ ?>disabled <?php } ?>>
                                                         </div>
                                                         </div>
                                                     </td>
