@@ -2353,43 +2353,106 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     var j = 0;
     var present_shippein_zero_count = 0;
 
-    for (var i = 0; i <= tot_products + 1; i++) {
+    for (i = 0; i <= tot_products; i++) {
         if ($("#present_shipping_" + i).val() == 0) {
             present_shippein_zero_count++;
         }
         if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
             j++;
         } else {
-            if ($("#add_product_id_" + i).val() == "") {
+            if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
                 $('#add_product_name_' + i).addClass('error_validation');
                 status_form = 1;
-            } else {
-                if ($('#add_product_name_' + i).val() == "") {
-                    $('#add_product_name_' + i).addClass('error_validation');
-                    status_form = 1;
-                }
             }
-            if ($("#present_shipping_" + i).val() == "") {
-                $('#present_shipping_' + i).addClass('error_validation');
-                status_form = 1;
-            }
-            if($('.custom-combobox-input').val() != "") {
-            if ($('.unit').val() == "") {
-                $('.unit').addClass('error_validation');
-                status_form = 1;
-            }else{$('.unit').removeClass('error_validation');}
-            
-        }
             if ($("#quantity_" + i).val() == "") {
                 $('#quantity_' + i).addClass('error_validation');
                 status_form = 1;
-            }
+            }else{$('#quantity_' + i ).removeClass('error_validation');}
+
             if ($("#quantity_" + i).val() == 0) {
                 $('#quantity_' + i).addClass('error_validation');
                 status_form = 1;
             }
+            
+            if ($('#units_' + i).val() == "") {
+                $('#units_' + i).addClass('error_validation');
+                status_form = 1;
+            }else{$('#units_' + i).removeClass('error_validation');}
+            
+            if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+                $('#length_' + i).addClass('error_validation');
+                status_form = 1;
+            }else{$('#length_' + i).removeClass('error_validation');}
+
+            if ($("#present_shipping_" + i).val() == "") {
+                $('#present_shipping_' + i).addClass('error_validation');
+                status_form = 1;
+            }else{$('#present_shipping_' + i).removeClass('error_validation');}
         }
     }
+    if (j == tot_products) {
+        if ($("#add_product_id_0").val() == "" || $('#add_product_name_0').val() == "") {
+            $('#add_product_name_0').addClass('error_validation');
+        }
+        if ($("#quantity_0").val() == "") {
+            $('#quantity_0').addClass('error_validation');
+        }
+        status_form = 1;
+    }
+    // for (var i = 0; i <= tot_products + 1; i++) {
+    //     if ($("#present_shipping_" + i).val() == 0) {
+    //         present_shippein_zero_count++;
+    //     }
+    //     if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+    //         j++;
+    //     } else {
+    //         if ($("#add_product_id_" + i).val() == "") {
+    //             $('#add_product_name_' + i).addClass('error_validation');
+    //             status_form = 1;
+    //         } 
+    //         if ($("#add_product_id_" + i).val() != "") {
+    //             if ($('#add_product_name_' + i).val() == "") {
+    //                 $('#add_product_name_' + i).addClass('error_validation');
+    //                 status_form = 1;
+    //             }
+    //             if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
+    //                 $('#length_' + i).addClass('error_validation');
+    //                 status_form = 1;
+    //             }
+    //             if ($("#quantity_" + i).val() == "") {
+    //                 $('#quantity_' + i).addClass('error_validation');
+    //                 status_form = 1;
+    //             }
+    //             if ($('#units_' + i).val() == "") {
+    //                 $('#units_' + i).addClass('error_validation');
+    //                 status_form = 1;
+    //             }else{$('.unit').removeClass('error_validation');}
+    //         }
+    //         if ($("#present_shipping_" + i).val() == "") {
+    //             $('#present_shipping_' + i).addClass('error_validation');
+    //             status_form = 1;
+    //         }
+    //         if($('.custom-combobox-input').val() != "") {
+    //             if ($('.unit').val() == "") {
+    //                 $('.unit').addClass('error_validation');
+    //                 status_form = 1;
+    //             }else{$('.unit').removeClass('error_validation');}
+            
+    //         }
+    //         if ($("#quantity_" + i).val() == "") {
+    //             $('#quantity_' + i).addClass('error_validation');
+    //             status_form = 1;
+    //         }
+    //         if ($("#quantity_" + i).val() == 0) {
+    //             $('#quantity_' + i).addClass('error_validation');
+    //             status_form = 1;
+    //         }
+    //         if ($("#length" + i).val() == '') {
+    //             $('#length' + i).addClass('error_validation');
+    //             status_form = 1;
+    //         }
+    //     }
+    // }
     if (tot_products == present_shippein_zero_count) {
         for (var j = 0; j <= tot_products; j++) {
             $('#present_shipping_' + j).addClass('error_validation');
