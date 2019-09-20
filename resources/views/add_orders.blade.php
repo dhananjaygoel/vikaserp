@@ -236,7 +236,7 @@
 
                                                     <td class="col-md-2" id='test1'>
                                                         <div class = "form-group ">
-                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}" required>
+                                                            <select class = "form-control unit" onchange="unitType(this);" name = "product[{{$i}}][units]" id = "units_{{$i}}">
                                                                     <option value='' id = 'unit_{{$i}}_0' <?php if (!isset($session_data['product'][$i]['units'])) { ?>selected="selected"<?php } ?>>--Select--</option>
                                                                      <?php if (isset($session_data['product'][$i]['units']) and (($session_data['product'][$i]['units']==1) or ($session_data['product'][$i]['units']==2) or ($session_data['product'][$i]['units']==3))) { ?>
                                                                     <option value=1 id = 'unit_{{$i}}_1' <?php if (isset($session_data['product'][$i]['units']) and ($session_data['product'][$i]['units']==1)) { ?> selected="selected"<?php } ?> >KG</option>
