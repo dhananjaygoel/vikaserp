@@ -1015,6 +1015,7 @@ class InquiryController extends Controller {
     public function fetch_products() {
         $term = Input::get();
         $term = Input::get('term');
+        $product_id = Input::get('product_id');
         $discount_type = strtolower(Input::get('discount_type'));
         $discount_unit = strtolower(Input::get('discount_unit'));
         $discount = Input::get('discount');
@@ -1025,6 +1026,10 @@ class InquiryController extends Controller {
         }
         $customer_id = Input::get('customer_id');
         if ($term != '' && strpos($term, '#') === false) {
+           if(isset($product_id)){
+                $products = ProductSubCategory::with('product_category.product_type')
+                            ->where('id',$product_id)->orderBy('alias_name')->get();
+           }else{
             $products = ProductSubCategory::with('product_category.product_type')
                             ->where('alias_name', 'like', '%' . Input::get('term') . '%')
                             ->orWhereHas('product_category', function($query) {
@@ -1034,6 +1039,7 @@ class InquiryController extends Controller {
                             //     $query->where('name', 'like', '%' . Input::get('term') . '%');
                             // })
                             ->orderBy('alias_name')->get();
+           }
             if (count($products) > 0) {                
                 foreach ($products as $product) {
                     $cust = 0;                    
