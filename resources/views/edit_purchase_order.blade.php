@@ -431,7 +431,7 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">GST Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="" onkeypress=" return onlyPercentage(event);" type="tel"></td>
+                                        <td><input id="price" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="" onkeypress=" return onlyPercentage(event);" type="tel"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -452,7 +452,7 @@
                                 <tbody>
                                     <tr class="cdtable">
                                         <td class="cdfirst">GST Percentage:</td>
-                                        <td><input id="vat_percentage" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="text" onkeypress=" return onlyPercentage(event);"></td>
+                                        <td><input id="price" class="form-control" placeholder="GST Percentage" name="vat_percentage" value="{{$purchase_order->vat_percentage}}" type="text" onkeypress=" return onlyPercentage(event);"></td>
                                     </tr>
                                 </tbody>
                             </table>
