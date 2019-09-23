@@ -159,6 +159,14 @@ $('.form_button_footer').click(function () {
 $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "click", function () {
 
     var status_form = 0;
+     if ($('input[name=vat_status]:checked').val() == "exclude_vat") {
+        if ($('#price').val() == "" | $('#price').val() == "0" | $('#price').val() == 0 ) {
+            $('#price').addClass('error_validation');
+            status_form = 1;
+        }
+    }else{
+         $('#price').removeClass('error_validation');
+    }
     if ($('input[name=supplier_status]:checked').val() == 'new_supplier') {
         if ($('#name').val() == "") {
             $('#name').addClass('error_validation');
@@ -211,7 +219,6 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
             }
         }
         if ($("#purchase_other_location").val() == "-1") {
-            console.log("hii");
             if ($("#location_difference").val() == "") {
                 $('#location_difference').addClass('error_validation');
                 status_form = 1;
@@ -288,7 +295,6 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
         }
 
         if ($("#purchase_other_location").val() == "-1") {
-            console.log("hii");
             if ($("#location_difference").val() == "") {
                 $('#location_difference').addClass('error_validation');
                 status_form = 1;
@@ -327,7 +333,7 @@ $('body').delegate("#sendSMSEditPurchaseOrder , .btn_edit_purchase_order", "clic
 
 $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", function () {
     var status_form = 0;
-    console.log($('input[name=vat_status]:checked').val());
+//    console.log($('input[name=vat_status]:checked').val());
 
     if ($('#datepickerDate').val() == "") {
         $('#datepickerDate').addClass('error_validation');
@@ -405,7 +411,6 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             status_form = 1;
         }
         if ($("#purchase_other_location").val() == "-1") {
-            console.log("hii");
             if ($("#location_difference").val() == "") {
                 $('#location_difference').addClass('error_validation');
                 status_form = 1;
@@ -497,7 +502,6 @@ $('body').delegate("#sendSMSPurchaseOrder, .btn_add_purchase_order", "click", fu
             status_form = 1;
         }
         if ($("#purchase_other_location").val() == "-1") {
-            console.log("hii");
             if ($("#location_difference").val() == "") {
                 $('#location_difference').addClass('error_validation');
                 status_form = 1;
