@@ -161,7 +161,6 @@ class InquiryController extends Controller {
     public function store(InquiryRequest $request) {
 
         $input_data = Input::all();     
-        dd($input_data);   
         $sms_flag = 0;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
