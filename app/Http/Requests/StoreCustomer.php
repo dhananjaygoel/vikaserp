@@ -28,7 +28,7 @@ class StoreCustomer extends Request {
 			'state' => 'required',
 			'tally_name' => 'required|max:100',
 			'phone_number1' => 'required|numeric|digits_between:10,15',
-            'email' => 'required|email',
+            // 'email' => 'required|email',
             'delivery_location' => 'required',
             'password' => 'min:6|max:100',
             'confirm_password' => 'min:6|max:100|same:password',
