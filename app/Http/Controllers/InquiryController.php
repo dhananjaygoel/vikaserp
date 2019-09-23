@@ -151,7 +151,8 @@ class InquiryController extends Controller {
         }
 
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-        return view('add_inquiry', compact('units', 'inquiry', 'delivery_locations'));
+        $customers = Customer::orderBy('tally_name', 'ASC')->get();
+        return view('add_inquiry', compact('customers', 'units', 'inquiry', 'delivery_locations'));
     }
 
     /**
@@ -159,7 +160,8 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
 
-        $input_data = Input::all();        
+        $input_data = Input::all();     
+        dd($input_data);   
         $sms_flag = 0;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
@@ -1029,9 +1031,9 @@ class InquiryController extends Controller {
                             ->orWhereHas('product_category', function($query) {
                                 $query->where('product_category_name', 'like', '%' . Input::get('term') . '%');
                             })
-                            ->orWhereHas('product_category.product_type', function($query) {
-                                $query->where('name', 'like', '%' . Input::get('term') . '%');
-                            })
+                            // ->orWhereHas('product_category.product_type', function($query) {
+                            //     $query->where('name', 'like', '%' . Input::get('term') . '%');
+                            // })
                             ->orderBy('alias_name')->get();
             if (count($products) > 0) {                
                 foreach ($products as $product) {
