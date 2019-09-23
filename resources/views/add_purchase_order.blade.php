@@ -223,7 +223,7 @@ use Illuminate\Support\Facades\Session;
                                             <?php
                                             $session_data = Session::get('input_data');
                                             if (isset($session_data['product'])) {
-                                               echo $total_products_added = sizeof($session_data['product']);
+                                              $total_products_added = sizeof($session_data['product']);
                                             }
                                             $j = (isset($total_products_added) && ($total_products_added > 1)) ? $total_products_added : 1;
                                             for ($i = 1; $i <= $j; $i++) {
