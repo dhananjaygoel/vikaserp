@@ -100,7 +100,7 @@
                                         <th>Truck Number</th>
                                         <th>Deliverd To</th>
                                         <th>Order By </th>
-                                        <th>Loaded By </th>
+                                        <th>Unloaded By </th>
                                         <th>Labours </th>
                                         <th>Actual Quantity</th>
                                         <th>Amount </th>

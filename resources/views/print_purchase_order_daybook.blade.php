@@ -41,21 +41,22 @@
                     <th>Amount</th>
                     <th>Bill No.</th>
                     <th>Truck No.</th>
-                    <th>Loaded By</th>
+                    <th>Unloaded By</th>
                     <th>Labour</th>
                     <th>Remarks</th>
                 </tr>
             </thead>
             <?php
                 $i = 1;
-                $total_qunatity = 0;
             ?>
+            <tbody>
             @foreach($purchase_daybook as $obj)
             <?php
                 $qty = 0;
                 $amount = 0;
-            ?>
-            <tbody>
+                $lb_arr = [];
+                $lbr_arr = [];
+            ?>                                                    
                 <tr>
                     <td>{{ $i++ }}</td>
                     <td>{{ isset($obj->serial_number) ? $obj->serial_number : '' }}</td>
@@ -70,12 +71,32 @@
                     <td>{{ isset($obj->grand_total) ? $obj->grand_total : '' }}</td>
                     <td>{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</td>
                     <td>{{ isset($obj->vehicle_number) ? $obj->vehicle_number : '' }}</td>
-                    <td>{{ isset($obj->unloaded_by) ? $obj->unloaded_by : '' }}</td>
-                    <td>{{ isset($obj->labours) ? $obj->labours : '' }}</td>
+                    <td>@if(isset($obj['challan_loaded_by']))
+                            @foreach($obj['challan_loaded_by'] as $load)
+                                <?php 
+                                    if(!in_array($load->loaded_by_id,$lb_arr) && ($load->loaded_by_id!=0)){
+                                        array_push($lb_arr, $load->loaded_by_id);
+                                    } 
+                                ?>                                                    
+                            @endforeach
+                        @endif
+                        {{count($lb_arr)}}
+                    </td>
+                    <td> @if(isset($obj['challan_labours']))
+                            @foreach($obj['challan_labours'] as $labour)                                                    
+                                <?php 
+                                    if(!in_array($labour->labours_id,$lbr_arr) && ($labour->labours_id!=0)){
+                                        array_push($lbr_arr, $labour->labours_id);
+                                    } 
+                                ?>                                                    
+                            @endforeach
+                        @endif
+                        {{count($lbr_arr)}}
+                    </td>
                     <td>{{ isset($obj->remarks) ? $obj->remarks : '' }}</td>
                 </tr>
-            </tbody>
             @endforeach
+            </tbody>
         </table>
     </body>
 </html>

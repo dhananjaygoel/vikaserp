@@ -366,7 +366,7 @@ class PurchaseDaybookController extends Controller {
     public function print_purchase_daybook() {
         $v= 'P';
         $title='Purchase Daybook';
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
                  ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                 ->orderBy('created_at', 'desc')
@@ -378,7 +378,7 @@ class PurchaseDaybookController extends Controller {
     public function print_purchase_estimate() {
         $v= 'A';
          $title='Purchase Estimate';
-        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'all_purchase_products.purchase_product_details', 'delivery_location')
+        $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'challan_loaded_by','challan_labours', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
                  ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
                 ->orderBy('created_at', 'desc')
