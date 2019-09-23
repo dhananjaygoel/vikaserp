@@ -261,10 +261,10 @@ $(document).ready(function () {
         $(".tabindex4").attr("tabindex", 0);
     });
     $("#optionsRadios4").click(function () {
-        $(".supplier").show();
+//        $(".supplier").show();// commented becouse of Purchase order all inclusiove or GST selected then it's moves supplier or existing dropbox in edit purchase order
     });
     $("#optionsRadios3").click(function () {
-        $(".supplier").hide();
+//        $(".supplier").hide();// commented becouse of Purchase order all inclusiove or GST selected then it's moves supplier or existing dropbox in edit purchase order by Navnath
     });
     $("#optionsRadios6").click(function () {
         $(".plusvat").show();

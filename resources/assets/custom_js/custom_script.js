@@ -94,6 +94,7 @@ $(document).ready(function () {
         $(".plusvat").show();
     });
     $("#inclusive_of_vat").click(function () {
+        $("#price").val('');
         $(".plusvat").hide();
     });
     /*
