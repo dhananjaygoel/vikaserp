@@ -61,7 +61,7 @@
                                 <input  checked="" value="new_supplier" id="new_supplier" name="supplier_status" type="radio">
                                 <label for="new_supplier">New Supplier</label>
                             </div>
-                            <div class="supplier customer_select" style="display:none">
+                            <div class="supplier customer_select_order" style="display:none">
                                 <div class="col-md-12">
                                     <div class="form-group searchproduct">
 <!--                                        <input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name">-->
@@ -94,7 +94,7 @@
                             <input   value="new_supplier" id="new_supplier" name="supplier_status" type="radio">
                             <label for="new_supplier">New Supplier</label>
                         </div>
-                        <div class="supplier customer_select">
+                        <div class="supplier customer_select_order">
                             <div class="col-md-12">
                                 <div class="form-group searchproduct">
                                     <!--<input class="form-control" placeholder="Enter Supplier Name " type="text" name="existing_supplier_name" id="existing_supplier_name" value="{{$purchase_order['customer']->owner_name}}{{'-'.$purchase_order['customer']->tally_name}}">-->
@@ -416,7 +416,7 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    @if($purchase_order->vat_percentage == 0)
+                    @if($purchase_order->vat_percentage == 0 || $purchase_order->vat_percentage == null)
                     <div class="form-group">
                         <div class="radio">
                             <input checked="" value="include_vat" id="optionsRadios3" name="vat_status" type="radio">

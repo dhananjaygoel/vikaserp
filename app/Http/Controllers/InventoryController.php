@@ -850,23 +850,18 @@ class InventoryController extends Controller {
         echo "Inventory product listing updated successfully";
     }
 
-    public function inventoryReport() {
+    public function inventoryReport() { //index
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-
         if (count($product_cat) > 0) {
             $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
-//        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-
             $size_array = [];
             $thickness_array = [];
             $report_arr = [];
             $final_arr = [];
             $product_id = $product_last[0]->id;
-            //dd($product_id);
             $product_type = $product_last[0]->product_type_id;
             if ($product_type == 1 || $product_type == 3) {
                 $product_column = "Size";
@@ -949,79 +944,82 @@ class InventoryController extends Controller {
                         ->with('product_id', $product_id);
     }
 
-    public function getInventoryReport(Request $request) {
+    public function getInventoryReport(Request $request) { // Autocomplate
         $product_id = $request->input('product_id');
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
-        $size_array = [];
-        $thickness_array = [];
-        $report_arr = [];
-        $final_arr = [];
-        $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1 || $product_type == 3) {
-            $product_column = "Size";
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->thickness, $thickness_array)) {
-                    array_push($thickness_array, $sub_cat->thickness);
+            $size_array = [];
+            $thickness_array = [];
+            $report_arr = [];
+            $final_arr = [];
+            $product_id = $product_last[0]->id;
+            $product_type = $product_last[0]->product_type_id;
+            if ($product_type == 1 || $product_type == 3) {
+                $product_column = "Size";
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    if (!in_array($sub_cat->thickness, $thickness_array)) {
+                        array_push($thickness_array, $sub_cat->thickness);
+                    }
                 }
-            }
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->size, $size_array)) {
-                    array_push($size_array, $sub_cat->size);
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    if (!in_array($sub_cat->size, $size_array)) {
+                        array_push($size_array, $sub_cat->size);
+                    }
                 }
-            }
-            foreach ($size_array as $size) {
-                foreach ($thickness_array as $thickness) {
-                    foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                        if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
-                            $inventory = $sub_cat['product_inventory'];
-                            $total_qnty = 0;
-                            if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                            } else {
-                                $total_qnty = "-";
+                foreach ($size_array as $size) {
+                    foreach ($thickness_array as $thickness) {
+                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
+                                $inventory = $sub_cat['product_inventory'];
+                                $total_qnty = 0;
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                                $report_arr[$size][$thickness] = $total_qnty;
                             }
-                            $report_arr[$size][$thickness] = $total_qnty;
                         }
                     }
                 }
             }
-        }
-        if ($product_type == 2) {
-            $product_column = "Product Alias";
-            array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->alias_name, $size_array)) {
-                    array_push($size_array, $sub_cat->alias_name);
-                }
-            }
-            foreach ($thickness_array as $thickness) {
+            if ($product_type == 2) {
+                $product_column = "Product Alias";
+                array_push($thickness_array, "NA");
                 foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $inventory = $sub_cat['product_inventory'];
-                    $total_qnty = 0;
-                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                    } else {
-                        $total_qnty = "-";
+                    if (!in_array($sub_cat->alias_name, $size_array)) {
+                        array_push($size_array, $sub_cat->alias_name);
                     }
-                    $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
+                }
+                foreach ($size_array as $size) {
+                    foreach ($thickness_array as $thickness) {
+                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
+                                $inventory = $sub_cat['product_inventory'];
+                                $total_qnty = 0;
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                                $report_arr[$size][$thickness] = $total_qnty;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-        foreach ($size_array as $size) {
-            foreach ($thickness_array as $thickness) {
-                if (isset($report_arr[$size][$thickness])) {
-//                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-                    $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
-                } else {
-                    $final_arr[$size][$thickness] = "-";
+            foreach ($size_array as $size) {
+                foreach ($thickness_array as $thickness) {
+                    if (isset($report_arr[$size][$thickness])) {
+//                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
+                    } else {
+                        $final_arr[$size][$thickness] = "-";
+                    }
                 }
             }
-        }
-        sort($thickness_array);
-        $report_arr = $final_arr;
+            sort($thickness_array);
+            $report_arr = $final_arr;
         $html = view('_inventory_report')->with('product_cat', $product_cat)
                 ->with('product_last', $product_last)
                 ->with('thickness_array', $thickness_array)
@@ -1297,78 +1295,82 @@ class InventoryController extends Controller {
         })->export('xls');
     }
 
-    public function exportInventoryReport(Request $request) {
+    public function exportInventoryReport(Request $request) { //Export 
         $product_id = $request->input('product_id');
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
-        $size_array = [];
-        $thickness_array = [];
-        $report_arr = [];
-        $final_arr = [];
-        $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1 || $product_type == 3) {
-            $product_column = "Size";
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->thickness, $thickness_array)) {
-                    array_push($thickness_array, $sub_cat->thickness);
+                   $size_array = [];
+            $thickness_array = [];
+            $report_arr = [];
+            $final_arr = [];
+            $product_id = $product_last[0]->id;
+            $product_type = $product_last[0]->product_type_id;
+            if ($product_type == 1 || $product_type == 3) {
+                $product_column = "Size";
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    if (!in_array($sub_cat->thickness, $thickness_array)) {
+                        array_push($thickness_array, $sub_cat->thickness);
+                    }
                 }
-            }
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->size, $size_array)) {
-                    array_push($size_array, $sub_cat->size);
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    if (!in_array($sub_cat->size, $size_array)) {
+                        array_push($size_array, $sub_cat->size);
+                    }
                 }
-            }
-            foreach ($size_array as $size) {
-                foreach ($thickness_array as $thickness) {
-                    foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                        if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
-                            $inventory = $sub_cat['product_inventory'];
-                            $total_qnty = 0;
-                            if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                            } else {
-                                $total_qnty = "-";
+                foreach ($size_array as $size) {
+                    foreach ($thickness_array as $thickness) {
+                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
+                                $inventory = $sub_cat['product_inventory'];
+                                $total_qnty = 0;
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                                $report_arr[$size][$thickness] = $total_qnty;
                             }
-                            $report_arr[$size][$thickness] = $total_qnty;
                         }
                     }
                 }
             }
-        }
-        if ($product_type == 2) {
-            $product_column = "Product Alias";
-            array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->alias_name, $size_array)) {
-                    array_push($size_array, $sub_cat->alias_name);
-                }
-            }
-            foreach ($thickness_array as $thickness) {
+            if ($product_type == 2) {
+                $product_column = "Product Alias";
+                array_push($thickness_array, "NA");
                 foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $inventory = $sub_cat['product_inventory'];
-                    $total_qnty = 0;
-                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                    } else {
-                        $total_qnty = "-";
+                    if (!in_array($sub_cat->alias_name, $size_array)) {
+                        array_push($size_array, $sub_cat->alias_name);
                     }
-                    $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
+                }
+                foreach ($size_array as $size) {
+                    foreach ($thickness_array as $thickness) {
+                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
+                                $inventory = $sub_cat['product_inventory'];
+                                $total_qnty = 0;
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                                $report_arr[$size][$thickness] = $total_qnty;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-        foreach ($size_array as $size) {
-            foreach ($thickness_array as $thickness) {
-                if (isset($report_arr[$size][$thickness])) {
-                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-                } else {
-                    $final_arr[$size][$thickness] = "-";
+            foreach ($size_array as $size) {
+                foreach ($thickness_array as $thickness) {
+                    if (isset($report_arr[$size][$thickness])) {
+//                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
+                    } else {
+                        $final_arr[$size][$thickness] = "-";
+                    }
                 }
             }
-        }
-
-        $report_arr = $final_arr;
+            sort($thickness_array);
+            $report_arr = $final_arr;
         Excel::create('Inventory Report', function($excel) use($product_last, $thickness_array, $report_arr, $product_column) {
             $excel->sheet('Inventory Report', function($sheet) use($product_last, $thickness_array, $report_arr, $product_column) {
                 $sheet->loadView('excelView.inventory_report', array('product_last' => $product_last, 'thickness_array' => $thickness_array, 'report_arr' => $report_arr, 'product_column' => $product_column));
@@ -1379,73 +1381,78 @@ class InventoryController extends Controller {
     public function print_inventory_report($id, DropboxStorageRepository $connection) {
         $product_id = $id;
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
-        $size_array = [];
-        $thickness_array = [];
-        $report_arr = [];
-        $final_arr = [];
-        $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1 || $product_type == 3) {
-            $product_column = "Size";
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->thickness, $thickness_array)) {
-                    array_push($thickness_array, $sub_cat->thickness);
+         $size_array = [];
+            $thickness_array = [];
+            $report_arr = [];
+            $final_arr = [];
+            $product_id = $product_last[0]->id;
+            $product_type = $product_last[0]->product_type_id;
+            if ($product_type == 1 || $product_type == 3) {
+                $product_column = "Size";
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    if (!in_array($sub_cat->thickness, $thickness_array)) {
+                        array_push($thickness_array, $sub_cat->thickness);
+                    }
                 }
-            }
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->size, $size_array)) {
-                    array_push($size_array, $sub_cat->size);
+                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                    if (!in_array($sub_cat->size, $size_array)) {
+                        array_push($size_array, $sub_cat->size);
+                    }
                 }
-            }
-            foreach ($size_array as $size) {
-                foreach ($thickness_array as $thickness) {
-                    foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                        if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
-                            $inventory = $sub_cat['product_inventory'];
-                            $total_qnty = 0;
-                            if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                            } else {
-                                $total_qnty = "-";
+                foreach ($size_array as $size) {
+                    foreach ($thickness_array as $thickness) {
+                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
+                                $inventory = $sub_cat['product_inventory'];
+                                $total_qnty = 0;
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                                $report_arr[$size][$thickness] = $total_qnty;
                             }
-                            $report_arr[$size][$thickness] = $total_qnty;
                         }
                     }
                 }
             }
-        }
-        if ($product_type == 2) {
-            $product_column = "Product Alias";
-            array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->alias_name, $size_array)) {
-                    array_push($size_array, $sub_cat->alias_name);
-                }
-            }
-            foreach ($thickness_array as $thickness) {
+            if ($product_type == 2) {
+                $product_column = "Product Alias";
+                array_push($thickness_array, "NA");
                 foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $inventory = $sub_cat['product_inventory'];
-                    $total_qnty = 0;
-                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                    } else {
-                        $total_qnty = "-";
+                    if (!in_array($sub_cat->alias_name, $size_array)) {
+                        array_push($size_array, $sub_cat->alias_name);
                     }
-                    $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
+                }
+                foreach ($size_array as $size) {
+                    foreach ($thickness_array as $thickness) {
+                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
+                                $inventory = $sub_cat['product_inventory'];
+                                $total_qnty = 0;
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                                $report_arr[$size][$thickness] = $total_qnty;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-        foreach ($size_array as $size) {
-            foreach ($thickness_array as $thickness) {
-                if (isset($report_arr[$size][$thickness])) {
-                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-                } else {
-                    $final_arr[$size][$thickness] = "-";
+            foreach ($size_array as $size) {
+                foreach ($thickness_array as $thickness) {
+                    if (isset($report_arr[$size][$thickness])) {
+//                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
+                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
+                    } else {
+                        $final_arr[$size][$thickness] = "-";
+                    }
                 }
             }
-        }
-
-        $report_arr = $final_arr;
+            sort($thickness_array);
+            $report_arr = $final_arr;
 
         return view('print_inventory_report')->with('product_last', $product_last)
                         ->with('thickness_array', $thickness_array)
