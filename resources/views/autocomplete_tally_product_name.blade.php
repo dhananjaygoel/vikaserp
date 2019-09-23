@@ -2097,12 +2097,13 @@ function getProductDetails() {
                     var discount_type = $('#discount_type').val();
                     var discount_unit = $('#discount_unit').val();
                     var discount = $('#discount_amount').val();
+                    var product_id=ui.item.id;
                     if(discount==""){
                         discount = 0;
                     }
                     $.ajax({
                             url: baseurl + '/fetch_products',
-                            data: {"term": term,'location_difference':location_difference,'discount_type':discount_type,'discount_unit':discount_unit,'discount':discount},
+                            data: {"term": term,"product_id":product_id,'location_difference':location_difference,'discount_type':discount_type,'discount_unit':discount_unit,'discount':discount},
                             cache: true,
                             success: function (data) { 
                                 var obj = jQuery.parseJSON(data);
