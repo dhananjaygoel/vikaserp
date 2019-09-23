@@ -110,7 +110,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input id="email" class="form-control" placeholder="Email" name="email" value="{{$customer->email}}" type="email">
+                                <input id="email" class="form-control" placeholder="Email" name="email" value="{{$customer->email}}" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="tally_name">Tally Name<span class="mandatory">*</span></label>
