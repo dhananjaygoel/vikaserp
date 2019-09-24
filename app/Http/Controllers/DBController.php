@@ -19,6 +19,7 @@ use App\DeliveryLocation;
 use App\Hsn;
 use App\Thickness;
 use App\States;
+use App\Gst;
 use App\InquiryProducts;
 use DB;
 use Config;
@@ -69,7 +70,29 @@ class DBController extends Controller {
                     }
                 }
             });
-            return redirect('process')->with('success', 'HSN excel rows successfully inserted.');
+            return redirect('process')->with('success', 'HSN excel file successfully uploaded.');
+      } else {
+            return redirect('process')->with('error', 'Please select file to upload');
+        }
+     }
+     public function storeGST(){
+      if (Input::hasFile('excel_file')) {
+          $input = Input::file('excel_file');
+          $filename = $input->getRealPath();
+          Excel::load($filename, function($reader) {
+                $results = $reader->all();
+                foreach ($results as $excel) {
+                    $gst = new Gst();
+                    if(Gst::where('gst',$excel->gst)->where('igst',$excel->igst)->where('deleted_at',NULL)->count() == 0){
+                    $gst->gst = $excel->gst;
+                    $gst->sgst = $excel->sgst;
+                    $gst->cgst = $excel->cgst;
+                    $gst->igst = $excel->igst;
+                    $gst->save();
+                    }
+                }
+            });
+            return redirect('process')->with('success', 'GST excel file successfully uploaded.');
       } else {
             return redirect('process')->with('error', 'Please select file to upload');
         }
