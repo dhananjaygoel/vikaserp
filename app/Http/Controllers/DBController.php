@@ -17,6 +17,8 @@ use Input;
 use App\Units;
 use App\DeliveryLocation;
 use App\Hsn;
+use App\Thickness;
+use App\States;
 use App\InquiryProducts;
 use DB;
 use Config;
@@ -73,4 +75,58 @@ class DBController extends Controller {
         }
      }
     //put your code here
+    
+     public function storethickness(){
+      if (Input::hasFile('excel_file')) {
+          $input = Input::file('excel_file');
+          $filename = $input->getRealPath();
+          Excel::load($filename, function($reader) {
+            ini_set('max_execution_time', 720);
+                $results = $reader->all();
+                foreach ($results as $excel) {
+                    // echo '<pre>';
+                    // print_r($excel);
+                    $thickness = new Thickness();
+                    $thickness_result = Thickness::where('thickness', $excel->thickness)->pluck('id');
+                    // print_r($thickness_result);
+                    if(!$thickness_result>0){
+                        $thickness->thickness = $excel->thickness;
+                        $thickness->diffrence = $excel->difference;
+                        $thickness->save();
+                    }
+                }
+            });
+            return redirect('process')->with('success', 'Excel rows for Thickness successfully inserted.');
+      } else {
+            return redirect('process')->with('error', 'Please select file to upload');
+        }
+     }
+
+     public function storestate(){
+      if (Input::hasFile('excel_file')) {
+          $input = Input::file('excel_file');
+          $filename = $input->getRealPath();
+          Excel::load($filename, function($reader) {
+            ini_set('max_execution_time', 720);
+                $results = $reader->all();
+                DB::table('state')->truncate();
+                foreach ($results as $excel) {
+                    $state = new States();
+                    $state_result = States::where('state_name', $excel->state_name)->pluck('id');
+                    // print_r($thickness_result);
+                    if(!$state_result>0){
+                        $state->state_name = $excel->state_name;
+                        $state->local_state = $excel->local_state;
+                        $state->save();
+                    }
+                }
+            });
+            return redirect('process')->with('success', 'Excel rows for States successfully inserted.');
+      } else {
+            return redirect('process')->with('error', 'Please select file to upload');
+        }
+     }
+   
+
+
 }

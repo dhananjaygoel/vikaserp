@@ -51,7 +51,7 @@
                         <h2> &nbsp; Upload Thikness Sheet</h2>
                     </header>
                     <div class="main-box-body clearfix panel-body">
-                        <form action="{{URL::action('DBController@store')}}" method="post" role="form" enctype="multipart/form-data">
+                        <form action="{{URL::action('DBController@storethickness')}}" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputFile">File input</label>
                                 <input type="file" id="exampleInputFile" name="excel_file">
@@ -70,7 +70,7 @@
                         <h2> &nbsp; Upload GST Sheet</h2>
                     </header>
                     <div class="main-box-body clearfix panel-body">
-                        <form action="{{URL::action('DBController@store')}}" method="post" role="form" enctype="multipart/form-data">
+                        <form action="{{URL::action('DBController@storeGST')}}" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputFile">File input</label>
                                 <input type="file" id="exampleInputFile" name="excel_file">
@@ -87,7 +87,7 @@
                         <h2> &nbsp; Upload State Sheet</h2>
                     </header>
                     <div class="main-box-body clearfix panel-body">
-                        <form action="{{URL::action('DBController@store')}}" method="post" role="form" enctype="multipart/form-data">
+                        <form action="{{URL::action('DBController@storestate')}}" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputFile">File input</label>
                                 <input type="file" id="exampleInputFile" name="excel_file">
