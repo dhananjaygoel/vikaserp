@@ -79,9 +79,9 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'production_db',
-			'username'  => 'root',
-			'password'  => 'root123',
+			'database'  => 'vikasags_vikasdb',
+			'username'  => 'vikasags_vikuser',
+			'password'  => 'CFpNH.#JblZe',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
