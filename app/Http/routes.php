@@ -493,7 +493,9 @@ Route::post('export-purchase-challan', 'PurchaseChallanController@exportPurchase
 Route::get('export-inquiry/{inquiry_status}', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 
-    Route::resource('process', 'DBController');
+Route::resource('process', 'DBController@index');
+Route::post('process/hsn', 'DBController@store');
+Route::post('process/gst', 'DBController@storeGST');
 
 Route::get('reponse/dropbox/callback', function() {
     echo "Comes";
