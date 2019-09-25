@@ -2215,9 +2215,9 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var order_source = $('#order_source').val();
     var empty_truck_weight = parseInt($('#empty_truck_weight').val());
     var final_truck_weight = parseInt($('#final_truck_weight').val());
-    var final_truck_weight = parseInt($('#final_truck_weight').val());
     var total_actual_qty_truck = parseInt($('#total_actual_qty_truck').val());
     var total_avg_qty = parseInt($('#total_avg_qty').val());
+    var total_weight=total_avg_qty+empty_truck_weight;
 
     if(order_source != "supplier"){
         if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
@@ -2245,26 +2245,26 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
 //            $('#final_truck_weight').addClass('error_validation');
 //        }
 //    }
-
-    if(total_avg_qty > total_actual_qty_truck){
-        var total_avg_qty_percent = total_avg_qty*10/100;
-        var discount_price1 = total_avg_qty + total_avg_qty_percent;
-        var discount_price2 = total_avg_qty - total_avg_qty_percent;
-
-        if(total_actual_qty_truck>discount_price1 || total_actual_qty_truck<discount_price2){
-            status_form = 1;
-            $('#final_truck_weight').addClass('error_validation');
-        }
-    }else if(total_avg_qty < total_actual_qty_truck){
-        var total_actual_qty_truck_percent = total_actual_qty_truck*10/100;
-        var discount_price1 = total_actual_qty_truck + total_actual_qty_truck_percent;
-        var discount_price2 = total_actual_qty_truck - total_actual_qty_truck_percent;
-
-        if(total_avg_qty>discount_price1 || total_avg_qty<discount_price2){
-            status_form = 1;
-            $('#final_truck_weight').addClass('error_validation');
-        }
-    }
+/* Comming Due to No sens of this code by Navnath*/
+//    if(total_avg_qty > total_actual_qty_truck){
+//        var total_avg_qty_percent = total_avg_qty*10/100;
+//        var discount_price1 = total_avg_qty + total_avg_qty_percent;
+//        var discount_price2 = total_avg_qty - total_avg_qty_percent;
+//
+//        if(total_actual_qty_truck>discount_price1 || total_actual_qty_truck<discount_price2){
+//            status_form = 1;
+//            $('#final_truck_weight').addClass('error_validation');
+//        }
+//    }else if(total_avg_qty < total_actual_qty_truck){
+//        var total_actual_qty_truck_percent = total_actual_qty_truck*10/100;
+//        var discount_price1 = total_actual_qty_truck + total_actual_qty_truck_percent;
+//        var discount_price2 = total_actual_qty_truck - total_actual_qty_truck_percent;
+//
+//        if(total_avg_qty>discount_price1 || total_avg_qty<discount_price2){
+//            status_form = 1;
+//            $('#final_truck_weight').addClass('error_validation');
+//        }
+//    }
 
 
     for (i = 1; i <= tot_products; i++) {
