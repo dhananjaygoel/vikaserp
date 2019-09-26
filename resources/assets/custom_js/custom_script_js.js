@@ -582,7 +582,6 @@ function fetch_average_quantity_temp() {
 }
 
 function fetch_average_quantity() {
-
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
     for (var i = 0; i <= current_row_count + 1; i++) {
@@ -634,7 +633,6 @@ function fetch_average_quantity() {
 function fetch_actual_quantity() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
-
     Total_Avg_qty = parseFloat($("#total_avg_qty").val());
     Total_Actual_qty = parseFloat($("#total_actual_qty_truck").val());
     Total_Actual_qty_calc = 0;

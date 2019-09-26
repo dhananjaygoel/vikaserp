@@ -2217,7 +2217,6 @@ $('body').delegate(".btn_delorderto_delchallan", "click", function () {
     var final_truck_weight = parseInt($('#final_truck_weight').val());
     var total_actual_qty_truck = parseInt($('#total_actual_qty_truck').val());
     var total_avg_qty = parseInt($('#total_avg_qty').val());
-    var total_weight=total_avg_qty+empty_truck_weight;
 
     if(order_source != "supplier"){
         if (empty_truck_weight == "" | empty_truck_weight == 0 | empty_truck_weight == "0") {
