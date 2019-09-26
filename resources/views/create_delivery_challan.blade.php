@@ -111,7 +111,7 @@
                             <input type="text" name="final_truck_weight" value="{{ $delivery_data->final_truck_weight}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
                             <input type="hidden" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight">
                             @else
-                            <input type="text" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" >
+                            <input type="text" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
                             @endif
                             @else
                             <input type="text" name="final_truck_weight" value="" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
