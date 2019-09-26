@@ -61,7 +61,7 @@
             <td>{{$product->alias_name}}</td>
             <!--<td>{{$order['all_order_products'][0]->quantity}}</td>-->
            <td>{{(isset($order['all_order_products'][0]->quantity))?$order['all_order_products'][0]->quantity:''}}</td>
-           <td>{{(isset($order['all_order_products'][0]->unit) && $order['all_order_products'][0]->unit->unit_name!='')?$order['all_order_products'][0]->unit->unit_name:''}}</td>
+           <td>{{(isset($order['all_order_products'][0]->unit) && isset($order['all_order_products'][0]->unit->unit_name))?$order['all_order_products'][0]->unit->unit_name:''}}</td>
            <td>{{(isset($order['all_order_products'][0]->price))?$order['all_order_products'][0]->price:''}}</td>
            <td>{{(isset($order->vat_percentage))?$order->vat_percentage:''}}</td>
            <td>{{(isset($order['all_order_products'][0]->remarks))?$order['all_order_products'][0]->remarks:''}}</td>
