@@ -190,7 +190,7 @@
                                         @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
-                                            @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0 || $delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0 && $delivery->vehicle_no != null && $delivery->vehicle_no != 0)
+                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -310,7 +310,7 @@
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                                 @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0 || $delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0 && $delivery->vehicle_no != null && $delivery->vehicle_no != 0)
+                                                @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
                                                     <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -347,7 +347,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0 || $delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0 && $delivery->vehicle_no != null && $delivery->vehicle_no != 0)
+                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
                                                     🔵 Loaded    
                                             @else
                                                     🔴 Loading
