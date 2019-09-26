@@ -85,16 +85,16 @@
                 @if(isset($product['order_type']) && $product['order_type'] == 'delivery_order')
                 <tr>
                     <td>{{ $i++ }}</td>
-                    <td>{{ $product['order_product_details']->alias_name }}</td>
-                    <td>{{ $product->quantity }}</td>
+                    <td>{{ isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:'' }}</td>
+                    <td>{{ isset($product->quantity)?$product->quantity:'' }}</td>
                     <td>@foreach($units as $u)
                         @if($product->unit_id == $u->id)
-                        {{$u->unit_name}}
+                        {{isset($u->unit_name)?$u->unit_name:'' }}
                         @endif
                         @endforeach
                     </td>
-                    <td>{{ $product->actual_pieces }}</td>
-                    <td>{{ $product->present_shipping }}</td>
+                    <td>{{ isset($product->actual_pieces)?$product->actual_pieces:'' }}</td>
+                    <td>{{ isset($product->present_shipping)?$product->present_shipping:'' }}</td>
                     <td><?php
                             if($product->vat_percentage > 0){
                             $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
