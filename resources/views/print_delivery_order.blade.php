@@ -99,7 +99,9 @@
                             if($product->vat_percentage > 0){
                             $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
                             $local_state = \App\States::where('id',$state)->first()->local_state;
-                            $hsn_code = $product->product_sub_category->product_category->hsn_code;
+                            $productsub = \App\ProductSubCategory::where('id',$product['product_category_id'])->first();
+                            $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
+                            $hsn_code = $product_cat->hsn_code;
                             $is_gst = false;
                             if($hsn_code){
                                 $is_gst = true;
