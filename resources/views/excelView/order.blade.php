@@ -89,7 +89,8 @@
             <td>{{$product['order_product_details']->alias_name}}</td>
             <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
            <td>{{(isset($product->unit) && $product->unit->unit_name!='')?$product->unit->unit_name:''}}</td>
-            <td>{{$product->price}}</td>
+           <td>{{(isset($product->price))?$product->price:''}}</td>
+            <!--<td>{{$product->price}}</td>-->
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             <td></td>
