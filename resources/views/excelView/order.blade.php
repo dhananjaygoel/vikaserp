@@ -61,7 +61,8 @@
             <td>{{$product->alias_name}}</td>
             <td>{{$order['all_order_products'][0]->quantity}}</td>
            <td>{{(isset($order['all_order_products'][0]->unit) && $order['all_order_products'][0]->unit->unit_name!='')?$order['all_order_products'][0]->unit->unit_name:''}}</td>
-            <td>{{$order['all_order_products'][0]->price}}</td>
+           <td>{{(isset($order['all_order_products'][0]->price))?$order['all_order_products'][0]->price:''}}</td>
+            <!--<td>{{$order['all_order_products'][0]->price}}</td>-->
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
             <td>{{$order['all_order_products'][0]->remarks}}</td>           
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
