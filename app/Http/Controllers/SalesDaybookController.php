@@ -308,7 +308,7 @@ class SalesDaybookController extends Controller {
         //                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                                 ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                                 ->orderBy('updated_at', 'desc')
-                                ->take(200)
+                                // ->take(200)
                                 ->get();
                     } else {
                         $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
@@ -318,7 +318,7 @@ class SalesDaybookController extends Controller {
         //                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                                 ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                                 ->orderBy('updated_at', 'desc')
-                                ->take(200)
+                                // ->take(200)
                                 ->get();
                     }
                 } else {
@@ -327,7 +327,7 @@ class SalesDaybookController extends Controller {
                             ->where('serial_number', 'like', '%A%')
                             ->orderBy('updated_at', 'desc')
         //                    ->Paginate(200);   
-                            ->take(200)
+                            // ->take(200)
                             ->get();
                 }    
                // echo '<pre>';
@@ -559,7 +559,7 @@ class SalesDaybookController extends Controller {
 //                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
-                        ->take(200)
+                        // ->take(200)
                         ->get();
             } else {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
@@ -569,7 +569,7 @@ class SalesDaybookController extends Controller {
 //                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
-                        ->take(200)
+                        // ->take(200)
                         ->get();
             }
         } else {
@@ -578,7 +578,7 @@ class SalesDaybookController extends Controller {
                     ->where('serial_number', 'like', '%P%')
                     ->orderBy('updated_at', 'desc')
 //                    ->Paginate(200);   
-                    ->take(200)
+                    // ->take(200)
                     ->get();
         }    
        // echo '<pre>';
