@@ -2030,6 +2030,7 @@ class DeliveryChallanController extends Controller {
     public function exportDeliveryChallanBasedOnStatus() {
         $data = Input::all();
         set_time_limit(0);
+        ini_set('max_execution_time', 1000);
         if ($data['delivery_order_status'] == 'pending') {
             $delivery_order_status = 'pending';
             $excel_sheet_name = 'Pending';
