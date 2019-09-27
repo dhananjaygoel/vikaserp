@@ -1297,7 +1297,7 @@ class DeliveryOrderController extends Controller {
                     }else{
 
                         $product_price = $product['price'] * $product['actual_quantity'];
-                        $total_profile_price = $total_profile_price + $product_price;
+//                        $total_profile_price = $total_profile_price + $product_price;
 
                         $total_without_vat_items ++;
                         $without_vat_product[$counter_without_vat++] = $product;
