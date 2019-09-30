@@ -1072,10 +1072,10 @@ class PurchaseOrderController extends Controller {
                             $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity / $product_size->standard_length ) * $product_size->weight;
                         }
                         if ($prod->unit_id == 4) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * $product_size->weight * $prod->length;
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity * $product_size->weight * $prod->length);
                         }
                         if ($prod->unit_id == 5) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * ($product_size->weight/305) * ($prod->length/305);
+                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity * $product_size->weight * ($prod->length/305));
                         }
                     }
                 }
@@ -1109,10 +1109,10 @@ class PurchaseOrderController extends Controller {
                             }
                         }
                         elseif ($popv->unit_id == 4) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
                         }
                         elseif ($popv->unit_id == 5) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
                         }
                     }
                     else{
@@ -1128,10 +1128,10 @@ class PurchaseOrderController extends Controller {
                             }
                         }
                         elseif($popv->unit_id == 4) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
                         }
                         elseif($popv->unit_id == 5){
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
                         }
                     }
 

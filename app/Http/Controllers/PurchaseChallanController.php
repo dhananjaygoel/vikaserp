@@ -425,10 +425,10 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                     }
                     if ($product_data['unit']->id == 4) {
-                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight * $product_data->length;
+                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
                     }
                     if ($product_data['unit']->id == 5) {
-                        $total_quantity = $total_quantity + $product_data->quantity * ($product->weight/305) * ($product_data->length/305);
+                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
                     }
                 }
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
@@ -467,10 +467,10 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                     }
                     if ($product_data['unit']->id == 4) {
-                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight * $product_data->length;
+                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
                     }
                     if ($product_data['unit']->id == 5) {
-                        $total_quantity = $total_quantity + $product_data->quantity * ($product->weight/305) * ($product_data->length/305);
+                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
                     }
                 }
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
@@ -687,10 +687,10 @@ class PurchaseChallanController extends Controller {
                             $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                         }
                         if ($product_data['unit']->id == 4) {
-                            $total_quantity = $total_quantity + $product_data->quantity * $product->weight * $product_data->length;
+                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
                         }
                         if ($product_data['unit']->id == 5) {
-                            $total_quantity = $total_quantity + $product_data->quantity * ($product->weight/305) * ($product_data->length/305);
+                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
                         }
                     }
                     $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
@@ -730,10 +730,10 @@ class PurchaseChallanController extends Controller {
                             $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
                         }
                         if ($product_data['unit']->id == 4) {
-                            $total_quantity = $total_quantity + $product_data->quantity * $product->weight * $product_data->length;
+                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
                         }
                         if ($product_data['unit']->id == 5) {
-                            $total_quantity = $total_quantity + $product_data->quantity * ($product->weight/305) * ($product_data->length/305);
+                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
                         }
                     }
                     $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number

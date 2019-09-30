@@ -942,10 +942,10 @@ class PurchaseAdviseController extends Controller {
                             $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                         }
                         if ($popv->unit_id == 4) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
                         }
                         if ($popv->unit_id == 5) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
+                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
                         }
                     }
                 }
@@ -986,10 +986,10 @@ class PurchaseAdviseController extends Controller {
                         $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
                     }
                     if ($poapv->unit_id == 4) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight * $poapv->length;
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity * $product_size->weight * $poapv->length);
                     }
                     if ($poapv->unit_id == 5) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * ($product_size->weight/305) * ($poapv->length/305);
+                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity * $product_size->weight * ($poapv->length/305));
                     }
                 }
             }
@@ -1008,10 +1008,10 @@ class PurchaseAdviseController extends Controller {
                         $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
                     }
                     if ($popv->unit_id == 4) {
-                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight * $popv->length;
+                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
                     }
                     if ($popv->unit_id == 5) {
-                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * ($product_size->weight/305) * ($popv->length/305);
+                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
                     }
                 }
             }

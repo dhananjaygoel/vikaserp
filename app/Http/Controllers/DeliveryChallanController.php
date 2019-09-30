@@ -426,10 +426,10 @@ class DeliveryChallanController extends Controller {
                             $total_quantity = $total_quantity + ($product_data->actual_quantity / $product_size->standard_length ) * $product_size->weight;
                         }
                         if ($product_data->unit_id == 4) {
-                            $total_quantity = $total_quantity + $product_data->actual_quantity * $product_size->weight  * $product_data->length;
+                            $total_quantity = $total_quantity + ($product_data->actual_quantity * $product_size->weight  * $product_data->length);
                         }
                         if ($product_data->unit_id == 5) {
-                            $total_quantity = $total_quantity + $product_data->actual_quantity * ($product_size->weight/305) * ($product_data->length/305);
+                            $total_quantity = $total_quantity + ($product_data->actual_quantity * $product_size->weight * ($product_data->length/305));
                         }
                     } else {
                         $result['send_message'] = "Error";

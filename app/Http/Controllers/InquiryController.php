@@ -289,10 +289,10 @@ class InquiryController extends Controller {
                         }
 
                         if ($product_data['units'] == 4) {
-                            $total_quantity = $total_quantity + $product_data['quantity'] * $product_size->weight;
+                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product_size->weight * $product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = $total_quantity + $product_data['quantity'] * ($product_size->weight / 305);
+                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product_size->weight * ($product_data['length'] / 305));
                         }
                     }
                 }
@@ -1504,10 +1504,10 @@ class InquiryController extends Controller {
                             $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
                         }
                         if ($product_data['units'] == 4) {
-                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * $product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * ($product->weight/305);
+                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * ($product_data['length'] / 305));
                         }
                     }
                 }
