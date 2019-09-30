@@ -163,14 +163,14 @@
 
                                             @if($prod['unit']->unit_name == 'ft')
                                                 <?php
-                                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight;
+                                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight * $prod->length;
                                                  $alias = $prod['inquiry_product_details']->alias_name;
                                                 ?>
                                             @endif
 
                                             @if($prod['unit']->unit_name == 'mm')
                                                 <?php
-                                                $qty += $prod->quantity * ($prod['inquiry_product_details']->weight / 305);
+                                                $qty += $prod->quantity * $prod['inquiry_product_details']->weight * ($prod->length / 305);
                                                  $alias = $prod['inquiry_product_details']->alias_name;
                                                 ?>
                                             @endif
