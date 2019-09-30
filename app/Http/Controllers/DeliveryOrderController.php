@@ -1829,7 +1829,7 @@ class DeliveryOrderController extends Controller {
                                 }
                             } elseif ($popv->unit_id == 4) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight * $popv->length);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
@@ -1865,8 +1865,7 @@ class DeliveryOrderController extends Controller {
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
                                 $delivery_order_quantity = $delivery_order_quantity + (($product_size->weight/305 ) * $popv->quantity);
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + (( $product_size->weight / 305 ) *  $popv->present_shipping);
-
+                                $delivery_order_present_shipping = $delivery_order_present_shipping * (( $product_size->weight / 305 ) *  $popv->length/305);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
