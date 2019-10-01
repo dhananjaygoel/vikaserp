@@ -171,23 +171,11 @@ class DBController extends Controller {
             ini_set('max_execution_time', 720);
                 $results = $reader->all();
                 foreach ($results as $excel) {
-                   DB::table('temp_tb')->insert([
-                        'alias_name' =>trim($excel->alias_name),
-                        'thickness' => trim($excel->thickness),
-                        'difference' => trim($excel->difference)
-                    ]);
-//                   $users = DB::table('users')
-//            ->join('contacts', 'users.id', '=', 'contacts.user_id')
-//            ->join('orders', 'users.id', '=', 'orders.user_id')
-//            ->select('users.*', 'contacts.phone', 'orders.price')
-//            ->get();
-//                    ProductSubCategory::where('alias_name',trim($excel->alias_name))->update([
-//                        'thickness'=>$excel->thickness,
-//                        'difference'=>$excel->difference ]);
-
-                    }
+                  ProductSubCategory::where('alias_name',$excel->alias_name)->update([
+                        'thickness'=>$excel->thickness,
+                        'difference'=>$excel->difference ]); 
+                }
             });
-//            die;
             return redirect('process')->with('success', 'Thickness and Difference successfully update.');
       } else {
             return redirect('process')->with('error', 'Please select file to upload');
