@@ -157,7 +157,7 @@
                                                     $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight * $pc->length);
                                                 }
                                                 if ($pc->unit_id == 5) {
-                                                    $total_qty += (($pc->quantity * ($pc['purchase_product_details']->weight/305) * ($pc->length)/305));
+                                                    $total_qty += (($pc->quantity * ($pc['purchase_product_details']->weight) * ($pc->length)/305));
                                                 }
                                             }
                                             echo round($total_qty, 2);
