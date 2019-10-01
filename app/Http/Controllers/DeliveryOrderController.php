@@ -1853,7 +1853,7 @@ class DeliveryOrderController extends Controller {
                                         else
                                             $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
                                     }
-                                    $pending_order_temp = ($remaining * $product_size->weight * $popv->length);
+                                    $pending_order_temp = (($remaining/$product_size->standard_length) * $product_size->weight * $popv->length);
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
