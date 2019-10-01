@@ -149,6 +149,50 @@ class DBController extends Controller {
             return redirect('process')->with('error', 'Please select file to upload');
         }
      }
+     
+      function update(){
+          $hsnresults = App\Hsn::orderBy('hsn_code', 'asc')->get();
+          foreach ($hsnresults as $hsnresult) {
+             App\ProductCategory::where('hsn_code',$hsnresult->hsn_code)->update(['gst'=>$hsnresult->gst,'hsn_desc' =>$hsnresult->hsn_desc ]);
+          }
+          
+         $results = App\ProductCategory::select('id','hsn_code')->orderBy('product_category_name', 'asc')->get();
+          foreach ($results as $result) {
+             ProductSubCategory::where('product_category_id',$result->id)->update(['hsn_code'=>$result->hsn_code ]);
+          }
+          return redirect('process')->with('success', 'HSN successfully updated.');
+     }
+     
+     function updatethickness(){
+           if (Input::hasFile('excel_file')) {
+          $input = Input::file('excel_file');
+          $filename = $input->getRealPath();
+          Excel::load($filename, function($reader) {
+            ini_set('max_execution_time', 720);
+                $results = $reader->all();
+                foreach ($results as $excel) {
+                   DB::table('temp_tb')->insert([
+                        'alias_name' =>trim($excel->alias_name),
+                        'thickness' => trim($excel->thickness),
+                        'difference' => trim($excel->difference)
+                    ]);
+//                   $users = DB::table('users')
+//            ->join('contacts', 'users.id', '=', 'contacts.user_id')
+//            ->join('orders', 'users.id', '=', 'orders.user_id')
+//            ->select('users.*', 'contacts.phone', 'orders.price')
+//            ->get();
+//                    ProductSubCategory::where('alias_name',trim($excel->alias_name))->update([
+//                        'thickness'=>$excel->thickness,
+//                        'difference'=>$excel->difference ]);
+
+                    }
+            });
+//            die;
+            return redirect('process')->with('success', 'Thickness and Difference successfully update.');
+      } else {
+            return redirect('process')->with('error', 'Please select file to upload');
+        }
+     }
    
 
 
