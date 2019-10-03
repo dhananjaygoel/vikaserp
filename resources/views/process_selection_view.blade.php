@@ -1,12 +1,12 @@
 @extends('layouts.master')
-@section('title','DB Process')
+@section('title','Internal DB Process')
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-6">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('process')}}">Process</a></li>
+                    <li><a href="{{url('process')}}">Internal Process</a></li>
                     <!--<li class="active"><span>Select Process</span></li>-->
                 </ol>
                 <div class="clearfix">

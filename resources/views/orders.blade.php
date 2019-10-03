@@ -561,15 +561,7 @@
                                     <tr id="order_row_{{$order->id}}">
                                         <td>{{$k++}}</td>
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
-                                        <td><?php
-//                                            $total_quantity = 0;
-//                                            foreach ($order['all_order_products'] as $key => $product) {
-//                                                $total_quantity = $total_quantity + $product['quantity'];
-//                                            }
-//                                            echo $total_quantity;
-                                            ?>
-                                            {{ round($order['total_quantity'], 2) }}
-                                        </td>
+                                        <td>{{ round($order['total_quantity'], 2) }}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
                                         @if($order['delivery_location']['area_name'] !="")
                                         <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
@@ -919,9 +911,7 @@
 
                             <span class="pull-right">
                                 <?php
-//                               
                                 echo $allorders->appends(Input::except('page'))->render();
-//                                echo $allorders->render();
                                 ?>
                             </span>
                             <div class="clearfix"></div>
