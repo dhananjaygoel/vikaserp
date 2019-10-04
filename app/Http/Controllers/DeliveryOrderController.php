@@ -1036,7 +1036,7 @@ class DeliveryOrderController extends Controller {
                                 'userid' => $delboy,
                        
                            ];
-                          LoadTrucks::insert($loadetrucks);
+                        //   LoadTrucks::insert($loadetrucks);
                          }
                          else{
                                 $delivery_productdata = LoadTrucks::where('deliver_id',$id)->first();
@@ -1067,7 +1067,7 @@ class DeliveryOrderController extends Controller {
                                       'userid' => $delboy,
                        
                                 ];
-                                LoadTrucks::insert($loadetrucks);
+                                // LoadTrucks::insert($loadetrucks);
                          }
                     }
                       
@@ -1153,9 +1153,12 @@ class DeliveryOrderController extends Controller {
          if($action ==''){
              return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
          }
-         else{
-             return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+         elseif($action == 'Save'){
+             return Redirect::back()->with('validation_message', 'Product loaded.');
          }
+         else{
+            return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+        }
          
          
         
