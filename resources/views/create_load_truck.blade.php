@@ -184,8 +184,8 @@
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Average Weight</span></td>
-                                            <td><span>Average Quantity</span></td>
                                             <td><span></span></td>
+                                            <td><span>Average Quantity</span></td>
                                             <td><span>Actual Quantity</span></td>    
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
@@ -244,14 +244,15 @@
                                                     <input id="average_weight_{{$key}}" <?php print isset($class) ? $class :''; ?>  class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{$product->actual_quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity();" maxlength="10" onclick="clear_actual_qty();">
                                                 </div>
                                             </td>
+                                            <td>
+                                                <button type="submit" name="action" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary" style="position: relative;top: -5px;">Save</button>
+                                            </td>
                                             <td class="col-md-1">
                                               
                                                 <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}}</div></div>
                                                 </div>
                                             </td> 
-                                            <td>
-                                                <button type="submit" name="action" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary">Save</button>
-                                            </td>
+                                            
 
                                             <td class="col-md-1 sfdsf">
                                                 <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]"></div></div>
