@@ -192,7 +192,7 @@
                                             @if(Auth::user()->role_id ==0)<td><span>GST</span></td> @endif  
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Length</span></td>
-                                            <td><span>Amount</span></td>
+                                            @if(Auth::user()->role_id ==0)<td><span>Amount</span></td>@endif 
                                             
                                         </tr>
                                        <?php $key = 1;  ?>
@@ -213,9 +213,11 @@
                                           else{
                                              if($product->actual_pieces >0){
                                                  $class = 'readonly="readonly"';
+                                                 $class1 = 'disabled';
                                              }
                                              else{
                                                  $class = '';
+                                                 $class1 = '';
                                              }
                                           }
                                            
@@ -248,7 +250,7 @@
                                                 </div>
                                             </td> 
                                             <td>
-                                                <button type="submit" name="action" value="Save" id="btn_save_truck"  class="btn btn-sm btn-primary">Save</button>
+                                                <button type="submit" name="action" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary">Save</button>
                                             </td>
 
                                             <td class="col-md-1 sfdsf">
@@ -287,10 +289,11 @@
                                                 <div class="form-group">{{$product->length}}
                                                 <input type="hidden" class="form-control" id="product_length_{{$key}}" value="{{$product->length}}" name="product[{{$key}}][length]"></div>
                                             </td>
+                                            @if(Auth::user()->role_id ==0)
                                             <td class="col-md-2">
                                                 <div class="form-group"><div id="amount_{{$key}}"></div></div>
                                             </td>
-
+                                            @endif
                                         </tr>
                                         <?php $key++; ?>
                                         @endif
