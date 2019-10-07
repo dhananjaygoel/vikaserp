@@ -219,6 +219,7 @@
                                             ?>  
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')  
                                              @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8  ||Auth::user()->role_id == 2 )
+                                             <?php $data_supervisor_id = $delivery->del_supervisor; ?>
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                             data-role_id ="{{Auth::user()->role_id}}"
                                            data-delivery_id="{{$delivery->id}}" 
@@ -229,7 +230,7 @@
                                        data-labour_pipe="{{$delivery->labour_pipe}}" 
                                        data-labour_structure="{{$delivery->labour_structure}}" 
                                        data-toggle="modal" data-target="#myModalassign" 
-                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
                                       
                                            @endif   
                                           @endif 
