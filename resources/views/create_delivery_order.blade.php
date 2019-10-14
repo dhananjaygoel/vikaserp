@@ -327,7 +327,7 @@
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder" id="final-submit">Submit</button>
-                            <a href="{{url('orders')}}" class="btn btn-default form_button_footer" style="background: #292929">Back</a>
+                            <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
                         </form>
