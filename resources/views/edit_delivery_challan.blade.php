@@ -47,12 +47,12 @@
                             <div class="form-group row">
                                 <label class="col-md-2"><b>Empty Truck Weight(Kg):</b></label> 
 
-                                <input type="text" name="empty_truck_weight" value="{{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);">
+                                <input type="text" name="empty_truck_weight" value="{{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);">
                             </div>
                             <hr>
                             <div class="form-group row">
                                 <label class="col-md-2"><b>Final Truck Weight(Kg):</b></label>                                 
-                                <input type="text" name="final_truck_weight" value="{{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, false, false);" onblur="truck_weight(this)">
+                                <input type="text" name="final_truck_weight" value="{{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onblur="truck_weight(this)">
                             </div>
                             <hr>
                             <div class="form-group row">
