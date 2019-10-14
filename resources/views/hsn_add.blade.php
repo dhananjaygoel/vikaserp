@@ -35,7 +35,7 @@
                                 @endif
                                 <div class="form-group">
                                     <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
-                                    <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ old('hsn_code') }}" type="text">
+                                    <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ old('hsn_code') }}" type="number">
                                 </div>
 
                                 <div class="form-group">
