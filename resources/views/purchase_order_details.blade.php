@@ -149,7 +149,7 @@
                                             <td><span>Purchase Order By: </span>{{$purchase_orders->user->first_name." ".$purchase_orders->user->last_name}}</td>
                                         </tr>
                                         <tr>
-                                            <td><span>Purchase order Time/Date : </span>{{$purchase_orders->updated_at}}</td>
+                                            <td><span>Purchase order Time/Date : </span>{{isset($purchase_orders->updated_at)?$purchase_orders->updated_at:''}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
