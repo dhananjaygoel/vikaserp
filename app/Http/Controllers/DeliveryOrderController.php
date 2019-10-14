@@ -1036,7 +1036,7 @@ class DeliveryOrderController extends Controller {
                                 'userid' => $delboy,
                        
                            ];
-                        //   LoadTrucks::insert($loadetrucks);
+                          LoadTrucks::insert($loadetrucks);
                          }
                          else{
                                 $delivery_productdata = LoadTrucks::where('deliver_id',$id)->first();
