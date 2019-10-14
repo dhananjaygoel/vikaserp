@@ -45,7 +45,7 @@
                                         <thead>
                                         <tr>
                                             <th>HSN</th>
-                                            <th>HsnDescription</th>
+                                            <th>Hsn Description</th>
                                             <th>GST</th>
                                             @if( Auth::user()->role_id == 0 )
                                                 <th class="text-center">Actions</th>
