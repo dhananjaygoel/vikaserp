@@ -3603,7 +3603,7 @@ function loaded_assign(){
                     _token: token
                 },
                 success: function (data) {
-                    alert(data);
+                    // alert(data);
                     
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);
@@ -3648,7 +3648,7 @@ function loaded_assign1(){
                     _token: token
                 },
                 success: function (data) {
-                    alert(data);
+                    // alert(data);
                     
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);
