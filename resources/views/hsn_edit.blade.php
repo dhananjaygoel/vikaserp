@@ -40,7 +40,7 @@
                             <input type="hidden" name="id" value="{{$hsn->id}}">
                             <div class="form-group">
                                 <label for="hsn_code">HSN Code<span class="mandatory">*</span></label>
-                                <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ $hsn->hsn_code }}" type="number" onkeypress=" return numbersOnly(this, event, false, false);">
+                                <input id="hsn_code" class="form-control" placeholder="HSN Code" name="hsn_code" value="{{ $hsn->hsn_code }}" type="text" onkeypress=" return numbersOnly(this, event, false, false);">
                             </div>
                             <div class="form-group">
                                 <label for="hsn_desc">HSN Description<span class="mandatory">*</span></label>
