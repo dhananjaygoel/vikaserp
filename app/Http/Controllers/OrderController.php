@@ -165,7 +165,21 @@ class OrderController extends Controller {
                 ]);
                 
                 echo "success";
-                } else {
+                $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
+                                 ->where('del_boy',$request->del_supervisor)
+                                 ->where('del_supervisor',Auth::id())
+                                 ->first();
+            
+                if(is_null($delivery_boydata)){
+                    $loadDelboy[] = [
+                            'delivery_id' => $request->delivery_id,
+                            'del_boy' => $request->del_supervisor,
+                            'del_supervisor' => Auth::id(),
+                        ];
+                    LoadDelboy::insert($loadDelboy);
+                }
+            
+            } else {
                     echo "failed";
             }
         }
