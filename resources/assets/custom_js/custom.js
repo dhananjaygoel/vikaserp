@@ -106,20 +106,37 @@ $(".btn_save_truck").click(function () {
      
      $(".modal-body #delivery_id").val( deliverid );
      if(roleid ==0 || roleid ==2 ){
-        
-           $(".del_supervisor").val(supervisor_id);
+
+        $(".del_supervisor").val(supervisor_id);
          
         //$(".del_supervisor").val(supervisor_id);
      }
-     else{
+    //  else{
         
-            $(".del_supervisor").val(delboy_id);
+    //         $(".del_supervisor").val(delboy_id);
          
         
-     }
+    //  }
     // $(".del_supervisor").val(delboy_id);
     
     
+});
+$(".assign_load1").click(function () {
+     
+    var deliverid = $(this).data('delivery_id');
+    var supervisor_id = $(this).data('supervisor_id');
+    var delboy_id = $(this).data('delivery_boy');
+    var roleid = $(this).data('role_id');
+    
+    $(".modal-body #delivery_id").val( deliverid );
+    if(roleid ==0 || roleid ==8){
+       
+           $("#del_boy").val(delboy_id);
+       
+    }
+   // $(".del_supervisor").val(delboy_id);
+   
+   
 });
     window.setTimeout(function () {
         $(".alert-autohide").fadeTo(1500, 0).slideUp(500, function () {
@@ -3586,7 +3603,52 @@ function loaded_assign(){
                     _token: token
                 },
                 success: function (data) {
-                    // alert(data);
+                    alert(data);
+                    
+                    if(data=='success'){
+                        $("#final-submit").prop('disabled',false);
+                        $(".err-p").removeClass('text-danger').addClass('text-success').html('Order assigned.');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
+                        window.location.reload();
+                    }
+                    else{
+                        // $(".err-p").removeClass('text-success').addClass('text-danger').html('Please try again..!');
+                        $(".err-p").removeClass('text-success').addClass('text-danger').html('Already Assigned');
+                        setTimeout(function(){
+                            $(".err-p").html('');
+                        }, 5000);
+                    }
+                }
+            });
+    }
+    else{
+            $(".err-p").removeClass('text-success').addClass('text-danger').html('Please Select anyone');
+            setTimeout(function(){
+                $(".err-p").html('');
+            }, 5000);
+    }
+}
+function loaded_assign1(){
+    var delivery_id = $("#delivery_id").val();
+    var assigntype = $("#assign_type").val();
+    var del_boy =$(".modal-body #del_boy").val(); 
+  
+    var token = $('#_token').val();
+    if(del_boy){
+        
+         $.ajax({
+                type: 'POST',
+                url: url + '/loaded_assign1',
+                data: {
+                    assign_type:assigntype,
+                    delivery_id:delivery_id,
+                    del_boy:del_boy,
+                    _token: token
+                },
+                success: function (data) {
+                    alert(data);
                     
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);

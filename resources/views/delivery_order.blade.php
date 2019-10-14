@@ -218,8 +218,18 @@
                                                   
                                             ?>  
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')  
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8  ||Auth::user()->role_id == 2 )
-                                             <?php $data_supervisor_id = $delivery->del_supervisor; ?>
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 )
+                                             <?php $data_supervisor_id = $delivery->del_supervisor;
+                                                if(isset($data_supervisor_id) && $data_supervisor_id != null) {
+                                                    $test = \App\User::where('id',$data_supervisor_id)->get();
+                                                    ?> 
+                                                    @foreach($test as $user)<?php 
+                                                    $opt = $user->first_name.' '.$user->last_name;
+                                                    ?>
+                                                    @endforeach
+                                                <?php
+                                                }
+                                             ?>
                                               <button class="btn btn-primary assign_load" id="assign_load" data-order_id="{{$delivery->order_id}}" 
                                             data-role_id ="{{Auth::user()->role_id}}"
                                            data-delivery_id="{{$delivery->id}}" 
@@ -230,11 +240,38 @@
                                        data-labour_pipe="{{$delivery->labour_pipe}}" 
                                        data-labour_structure="{{$delivery->labour_structure}}" 
                                        data-toggle="modal" data-target="#myModalassign" 
-                                       title="assign" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                       title="<?php isset($data_supervisor_id)? print $opt : print "Assign Delivery-Supervisor" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
                                       
                                            @endif   
                                           @endif 
                                            
+                                          @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')  
+                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8 )
+                                             <?php $data_delivery_boy = $delivery->del_boy;
+                                                if(isset($data_delivery_boy) && $data_delivery_boy != null) {
+                                                    $test = \App\User::where('id',$data_delivery_boy)->get();
+                                                    ?> 
+                                                    @foreach($test as $user)<?php 
+                                                    $opt = $user->first_name.' '.$user->last_name;
+                                                    ?>
+                                                    @endforeach
+                                                <?php
+                                                }
+                                              ?>
+                                              <button class="btn btn-primary assign_load1" id="assign_load_del_boy" data-order_id="{{$delivery->order_id}}" 
+                                            data-role_id ="{{Auth::user()->role_id}}"
+                                           data-delivery_id="{{$delivery->id}}" 
+                                           data-supervisor_id="{{$delivery->del_supervisor}}" 
+                                           data-delivery_boy="{{$delivery->del_boy}}" 
+                                       data-final_truck_weight="{{$delivery->final_truck_weight}}" 
+                                       data-product_detail_table="{{$delivery->product_detail_table}}" 
+                                       data-labour_pipe="{{$delivery->labour_pipe}}" 
+                                       data-labour_structure="{{$delivery->labour_structure}}" 
+                                       data-toggle="modal" data-target="#myModalassign1" 
+                                       title="<?php isset($data_delivery_boy) ? print $opt : print "Assign Delivery-Boy" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_delivery_boy)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-users fa-stack-3x fa-inverse"></i></button>
+                                      
+                                           @endif   
+                                          @endif 
                                                                        
                                                 <?php
 
@@ -518,7 +555,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign  </h4>
+                <h4 class="modal-title">Assign Delivery Supervisor </h4>
             </div>
             <div class="modal-body">
                 <p class="err-p text-center" style="font-weight: bold"></p>
@@ -527,8 +564,8 @@
                        $roleid = $dduser->role_id;
                        
                 
-                if($roleid ==0 || $roleid ==8 || $roleid ==2){
-                    if($roleid ==0 || $roleid ==2) {
+                if($roleid ==0 || $roleid ==2){
+                    if($roleid ==0) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
                            $array = \App\User::where('role_id',8)
@@ -554,21 +591,7 @@
                             @endforeach
                         <?php
                       }
-                      if($roleid ==8){
-                           $type = "del_boy";
-                            $options =array(''=>'Select Delivery boy');
-                            $array = \App\User::where('role_id',9)
-                                       ->orderBy('id', 'DESC')
-                                       ->get();
-                         
-                           ?>
-
-                            @foreach($array as $user)<?php 
-                               $options[$user->id] = $user->first_name.' '.$user->last_name;
-                              ?>
-                            @endforeach
-                        <?php
-                      }
+                      
                     ?>
                 
                 <div class="form-group">
@@ -590,6 +613,83 @@
                 <?php }}?>
                 <div class="form-group">
                     <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="myModalassign1" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Assign Delivery Boy </h4>
+            </div>
+            <div class="modal-body">
+                <p class="err-p text-center" style="font-weight: bold"></p>
+                <input type="hidden"  name="order_id" id="order_id" class="form-control">
+                <?php $dduser = auth()->user();
+                       $roleid = $dduser->role_id;
+                       
+                
+                if($roleid == 0 || $roleid == 8 ){
+                    if($roleid == 0) {
+                        $type = "del_boy";
+                        $options =array(''=>'Select Delivery boy');
+                        $array = \App\User::where('role_id',9)
+                                   ->orderBy('id', 'DESC')
+                                   ->get();
+                     
+                       ?>
+
+                        @foreach($array as $user)<?php 
+                           $options[$user->id] = $user->first_name.' '.$user->last_name;
+                          ?>
+                        @endforeach
+                    <?php 
+                    } 
+                    if($roleid == 8) {
+                        $type = "del_boy";
+                        $options =array(''=>'Select Delivery boy');
+                        $array = \App\User::where('role_id',9)
+                                   ->orderBy('id', 'DESC')
+                                   ->get();
+
+                       ?>
+
+                        @foreach($array as $user)<?php 
+                           $options[$user->id] = $user->first_name.' '.$user->last_name;
+                          ?>
+                        @endforeach
+                    <?php } ?>
+                <div class="form-group">
+                <?php if(!empty($delivery)){ 
+                    
+        
+        ?>
+                <select class="form-control del_supervisor" name="del_boy"  data-order_id="{{$delivery->order_id}}"data-role_id="{{$roleid}}" data-supervisor_id="{{$delivery->del_supervisor}}"
+                 data-delivery_boy="{{$delivery->del_boy}}" data-delivery_id="{{$delivery->id}}" id="del_boy"> 
+                                                        @foreach($options as $optkey =>$user)
+                                                       <?php  echo "kkk"; print_r($user);?>
+                                                              <option value = {{$optkey }}>{{$user}}</option>  
+                                                        @endforeach
+                   </select>
+                <input type ="hidden" name ="assign_type" id="assign_type" value = "{{$type}}">
+                 <input type ="hidden" name ="delivery_id" id="delivery_id" value ="{{$delivery->id}}">
+                 <input type ="hidden" name ="_token" id = "token" value="{{csrf_token()}}"/>
+                                                
+                </div>
+                <?php }}?>
+                <div class="form-group">
+                    <input type="button" value="Save" id="submit_3" onclick="loaded_assign1()" class="btn btn-sm btn-primary">
 
                 </div>
 

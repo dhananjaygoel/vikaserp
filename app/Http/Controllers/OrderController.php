@@ -126,42 +126,52 @@ class OrderController extends Controller {
        
         }
         
-        elseif($roleid ==8){
-            $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                'del_boy'=>$request->del_supervisor,            
-              ]);
+        // elseif($roleid ==8){
+        //     $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+        //         'del_boy'=>$request->del_supervisor,            
+        //       ]);
               
-            echo "success";
-            $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
-                                 ->where('del_boy',$request->del_supervisor)
-                                 ->where('del_supervisor',Auth::id())
-                                 ->first();
-            if(is_null($delivery_boydata)){
-                 $loadDelboy[] = [
-                        'delivery_id' => $request->delivery_id,
-                        'del_boy' => $request->del_supervisor,
-                        'del_supervisor' => Auth::id(),
+        //     echo "success";
+        //     $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
+        //                          ->where('del_boy',$request->del_supervisor)
+        //                          ->where('del_supervisor',Auth::id())
+        //                          ->first();
+        //     if(is_null($delivery_boydata)){
+        //          $loadDelboy[] = [
+        //                 'delivery_id' => $request->delivery_id,
+        //                 'del_boy' => $request->del_supervisor,
+        //                 'del_supervisor' => Auth::id(),
                       
                        
-                    ];
-             LoadDelboy::insert($loadDelboy);
-            }
+        //             ];
+        //      LoadDelboy::insert($loadDelboy);
+        //     }
             
+        // }
+        else{
+            echo "failed";
+        }
+    }
+    public function loaded_assign1(Request $request){
+        $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
+        
+        $del_boy = $request->del_boy;
+
+        $roleid = Auth::user()->role_id;
+       if($roleid == 0 || $roleid == 8){
+            if(($delivery_data->del_boy =='') || ($delivery_data->del_boy != $del_boy)){
+                $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+                    'del_boy'=>$request->del_boy,            
+                ]);
+                
+                echo "success";
+                } else {
+                    echo "failed";
+            }
         }
         else{
             echo "failed";
         }
-        
-        
-
-
-
-
-
-
-        
-        
-        
     }
      public function truck_load_bydelboy(Request $request){
         $delivery_data = LoadTrucks::where('deliver_id',$request->delivery_id)
