@@ -146,7 +146,7 @@
                                         @endif
                                         <tr><td><span>Remark: </span>{{$purchase_orders['remarks']}}</td></tr>
                                         <tr>
-                                            <td><span>Purchase Order By: </span>{{$purchase_orders->user->first_name." ".$purchase_orders->user->last_name}}</td>
+                                            <td><span>Purchase Order By: </span>{{isset($purchase_orders->user->first_name) && isset($purchase_orders->user->last_name)?$purchase_orders->user->first_name." ".$purchase_orders->user->last_name:''}}</td>
                                         </tr>
                                         <tr>
                                             <td><span>Purchase order Time/Date : </span>{{isset($purchase_orders->updated_at)?$purchase_orders->updated_at:''}}</td>
