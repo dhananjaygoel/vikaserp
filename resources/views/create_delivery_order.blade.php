@@ -292,9 +292,9 @@
                                 </tr>-->
                                 @endif
                                 <tr class="cdtable">
-
+                                <td class="cdfirst">Vehicle Number:</td>
                                     <td>
-                                        <input  class="form-control" placeholder="Vehicle Number" id="vehicle_number1" value="{{$order->vehicle_number}}" name="vehicle_number" type="hidden" >
+                                        <input  class="form-control" placeholder="Vehicle Number" id="vehicle_number1" value="{{$order->vehicle_number}}" name="vehicle_number" type="text" >
                                     </td>
                                 </tr>
                                 <tr class="cdtable">
