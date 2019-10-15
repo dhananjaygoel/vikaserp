@@ -122,8 +122,8 @@
                 }
                 
               }
-             // print_r($truckvalue);
-                         
+            //  dd($truck_info);
+
                           $delboy = json_decode($delboys);
  
                           $total_avg = 0;
@@ -152,8 +152,9 @@
                          else{
                              $total_avg = " ";
                          }
+                        //  dd($truckinformation);
               $owner_name =$info->users->first_name .' '.$info->users->last_name;
-              $label =" loaded by ".$owner_name;
+              $label =" loaded by ".$owner_name." on dated ".$truck_info->updated_at;
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
@@ -162,7 +163,7 @@
                         
                        
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
-                         </span><span style="padding-top:8px;">{{$label}}</span>
+                         <!-- </span><span style="padding-top:8px;">{{$label}}</span> -->
                           </div>
                          @else
                          <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 

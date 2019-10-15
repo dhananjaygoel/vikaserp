@@ -1034,6 +1034,7 @@ class DeliveryOrderController extends Controller {
                                 'final_truck_weight' => $truck_weight,
                                 'product_id'  =>$serialize,
                                 'userid' => $delboy,
+                                'updated_at' => date("Y-m-d H:i:s"),
                        
                            ];
                           LoadTrucks::insert($loadetrucks);
@@ -1065,6 +1066,7 @@ class DeliveryOrderController extends Controller {
                                       'final_truck_weight' => $truck_weight,
                                       'product_id'  =>$serialize,
                                       'userid' => $delboy,
+                                      'updated_at' => date("Y-m-d H:i:s"),
                        
                                 ];
                                 LoadTrucks::insert($loadetrucks);
@@ -1101,6 +1103,7 @@ class DeliveryOrderController extends Controller {
                          'final_truck_weight' => $truck_weight,
                          'product_id'  =>$serialize,
                         'userid' => $delboy,
+                        'updated_at' => date("Y-m-d H:i:s"),
                     ));
                   }
                 }
