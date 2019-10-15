@@ -1157,14 +1157,19 @@ class DeliveryOrderController extends Controller {
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          $action = Input::get('action');
          if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
-            if($action ==''){
-                return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
-            }
-            elseif($action == 'Save'){
-                return Redirect::back()->with('validation_message', 'Product loaded.');
+            if(!($truck_weight<$empty_truck_weight)) {
+                if($action ==''){
+                    return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+                }
+                elseif($action == 'Save'){
+                    return Redirect::back()->with('validation_message', 'Product loaded.');
+                }
+                else{
+                    return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+                }
             }
             else{
-                return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+                return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
             }
         }
         elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && $truck_weight == 0) {
