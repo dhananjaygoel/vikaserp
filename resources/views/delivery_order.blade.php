@@ -280,7 +280,7 @@
                                                   // {
                                                   //    $disable = "";
                                                   // }
-                                            if(Auth::user()->role_id == 0 && $delivery->final_truck_weight >0){
+                                            if(Auth::user()->role_id == 0 && $delivery->final_truck_weight >0 || Auth::user()->role_id == 8 ){
                                                 $tclass ="trucksuccess";
                                             }
                                             else{
@@ -294,7 +294,7 @@
                                             }
                                             ?>  
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered') 
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 9   )                                         
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9   )                                         
                                              <a style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" href="{{url('create_load_truck/'.$delivery->id)}}" class="btn btn-primary truck_load <?php echo $tclass; ?>" id="truck_load" title="Load truck"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></a>
 
                                             <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
