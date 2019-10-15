@@ -154,16 +154,18 @@
                          }
                         //  dd($truckinformation);
               $owner_name =$info->users->first_name .' '.$info->users->last_name;
-              $label = isset($truck_info->updated_at)?" loaded by ".$owner_name." on dated ".$truck_info->updated_at:" loaded by ".$owner_name;
+              $datevalue = isset($truck_info->updated_at)?$truck_info->updated_at:'';
+              $time = substr($datevalue,11);
+              $date = substr($datevalue,-19,10);
+              $label = isset($truck_info->updated_at)?" loaded by ".$owner_name." at ".$time ." on ".$date:" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
             
                         @if($info->del_boy == Auth::id() )
                         
-                       
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
-                         <!-- </span><span style="padding-top:8px;">{{$label}}</span> -->
+                         </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print $label : ''?></span>
                           </div>
                          @else
                          <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
@@ -196,7 +198,7 @@
                                             @if(Auth::user()->role_id ==0)<td><span>Amount</span></td>@endif 
                                             
                                         </tr>
-                                       <?php $key = 1;  ?>
+                                       <?php $key = 1; $actualsum =0; $actualtotal =0;?>
                                        @if(!$truck_load_prodcut_id->isEmpty())<?php 
                                         $truck_product_id = $truck_load_prodcut_id['0']['attributes']['product_id'];
                                         $truck_procudcts = unserialize($truck_product_id);
@@ -208,6 +210,11 @@
                                             @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <?php
+                                        $actual_quantity = $product->actual_pieces * $product->actual_quantity;              
+                                        $actualsum =  $actualsum + $actual_quantity;
+                                        $total_dc = $product->actual_quantity * $product->price;   
+                                        $actualtotal =  $actualtotal + $total_dc;
+
                                          if(in_array($product->product_category_id,$explodetruck_prodcuts)){
                                               $class = '';
                                           }
@@ -256,7 +263,7 @@
                                             
 
                                             <td class="col-md-1 sfdsf">
-                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]"></div></div>
+                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}}</div></div>
                                                 <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="" type="hidden" >
                                               
                                             <td class="col-md-2">
@@ -310,29 +317,37 @@
 
                             <label for="total_actual_qty_truck">
                                 <b class="load_truck">Actual Quantity*</b> 
-                                <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly=""  >  
+                                <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly=""  >  
                             </label>
-                            &nbsp;&nbsp;
+                            <!-- &nbsp;&nbsp;
                             <label for="total_avg_qty">
                                 <b class="load_truck">Total Avg Quantity*</b>
                                 <input type="text" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly" value ="{{$total_avg}}">
+                                <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>--
+                            </label> --> 
+                        </div>
+                        <div class="form-group">    
+                            <label for="total_avg_qty">
+                                <b class="load_truck">Total Avg Quantity*</b>
+                                <input type="text" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly" value ="{{$actualsum}}">
                                 <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
-                                </div>
-                                <div class="form-group">    
-                                    <label for="total">
-                                        <b class="load_truck">Total</b>
-                                        <span class="gtotal">
-                                            <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
-                                        </span>
-                                    </label>
-                                    &nbsp;&nbsp;
-                                    <label for="total">
-                                        <b class="load_truck">Total Actual Quantity</b>
-                                        <span class="gtotal">
-                                            <input type="text" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
-                                        </span>
-                                    </label>
-                                </div>
+                            </label>
+                        </div>
+                        <div class="form-group">    
+                            <!-- <label for="total">
+                                <b class="load_truck">Total</b>
+                                <span class="gtotal">
+                                    <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
+                                </span>
+                            </label>
+                            &nbsp;&nbsp; -->
+                            <label for="total">
+                                <b class="load_truck">Total Actual Quantity</b>
+                                <!-- <span class="gtotal"> -->
+                                    <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
+                                <!-- </span> -->
+                            </label>
+                        </div>
                                 
                                 <hr>
                                 <div>
