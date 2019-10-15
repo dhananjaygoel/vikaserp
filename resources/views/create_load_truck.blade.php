@@ -104,13 +104,18 @@
                         </div>
                         <hr>
                         <div class="form-group row">
-               @if($delivery_data->final_truck_weight > 0)
-                            <span class="col-md-2">Final Truck Weight(Kg):</span>
-                           <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:170px;">
+                        @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                            @if($delivery_data->final_truck_weight > 0)
+                                <span class="col-md-2">Final Truck Weight(Kg):</span>
+                                <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:170px;">
                             @else
-                 <span class="col-md-2">Final Truck Weight(Kg):</span>
-                           <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:170px;">
-             @endif  
+                                <span class="col-md-2">Final Truck Weight(Kg):</span>
+                                <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:170px;">
+                            @endif
+                        @else 
+                            <span class="col-md-2">Final Truck Weight(Kg):</span>
+                            <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="<?php isset($delivery_data->final_truck_weight) && $delivery_data->final_truck_weight>0? print $delivery_data->final_truck_weight:''?>" readonly="readonly" style="width:170px;">
+                        @endif 
             </div>
                           <?php
               $truckinformation =json_decode($truckdetails);
@@ -162,7 +167,7 @@
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
             
-                        @if($info->del_boy == Auth::id() )
+                        @if($info->del_boy == Auth::id() || Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                         
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                          </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print $label : ''?></span>
@@ -215,10 +220,13 @@
                                         $total_dc = $product->actual_quantity * $product->price;   
                                         $actualtotal =  $actualtotal + $total_dc;
 
-                                         if(in_array($product->product_category_id,$explodetruck_prodcuts)){
-                                              $class = '';
-                                          }
-                                          else{
+                                        // if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8) {
+                                        //     if(in_array($product->product_category_id,$explodetruck_prodcuts)){
+                                        //         $class = '';
+                                        //     }
+                                        // }
+
+                                        if(Auth::user()->role_id ==9){
                                              if($product->actual_pieces >0){
                                                  $class = 'readonly="readonly"';
                                                  $class1 = 'disabled';
@@ -227,7 +235,10 @@
                                                  $class = '';
                                                  $class1 = '';
                                              }
-                                          }
+                                          }else {
+                                                $class = '';
+                                                $class1 = '';
+                                            }
                                            
                                            $actual_quantity = $product->actual_pieces * $product->actual_quantity;
                                           
