@@ -280,18 +280,13 @@
                                                   // {
                                                   //    $disable = "";
                                                   // }
-                                            if(Auth::user()->role_id == 0 && $delivery->final_truck_weight >0 || Auth::user()->role_id == 8 ){
-                                                $tclass ="trucksuccess";
-                                            }
-                                            else{
-                                                if(Auth::user()->role_id == 9){
+                                            
+                                                if(Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
                                                     $tclass ="trucksuccess";
                                                 }
                                                 else{
                                                      $tclass ="disabled";
                                                 }
-                                               
-                                            }
                                             ?>  
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered') 
                                              @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9   )                                         
