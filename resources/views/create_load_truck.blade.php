@@ -154,7 +154,7 @@
                          }
                         //  dd($truckinformation);
               $owner_name =$info->users->first_name .' '.$info->users->last_name;
-              $label =" loaded by ".$owner_name." on dated ".$truck_info->updated_at;
+              $label =" loaded by ".$owner_name.isset($truck_info->updated_at)?" on dated ".$truck_info->updated_at:'';
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
