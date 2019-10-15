@@ -217,8 +217,10 @@
                                         <?php
                                         $actual_quantity = $product->actual_pieces * $product->actual_quantity;              
                                         $actualsum =  $actualsum + $actual_quantity;
-                                        $total_dc = $product->actual_quantity * $product->price;   
-                                        $actualtotal =  $actualtotal + $total_dc;
+                                        $total_dc = $product->actual_quantity * $product->price; 
+                                        $total_amt = $actual_quantity * $product->price;
+                                        
+                                        $actualtotal =  $actualtotal + $total_amt;
 
                                         // if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8) {
                                         //     if(in_array($product->product_category_id,$explodetruck_prodcuts)){
@@ -309,9 +311,9 @@
                                                 <div class="form-group">{{$product->length}}
                                                 <input type="hidden" class="form-control" id="product_length_{{$key}}" value="{{$product->length}}" name="product[{{$key}}][length]"></div>
                                             </td>
-                                            @if(Auth::user()->role_id ==0)
+                                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                                             <td class="col-md-2">
-                                                <div class="form-group"><div id="amount_{{$key}}"></div></div>
+                                                <div class="form-group"><div id="amount_{{$key}}">{{$total_amt}}</div></div>
                                             </td>
                                             @endif
                                         </tr>
@@ -325,38 +327,32 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group">
-
                             <label for="total_actual_qty_truck">
                                 <b class="load_truck">Actual Quantity*</b> 
                                 <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly=""  >  
                             </label>
-                            <!-- &nbsp;&nbsp;
+                            &nbsp;&nbsp;
                             <label for="total_avg_qty">
                                 <b class="load_truck">Total Avg Quantity*</b>
-                                <input type="text" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly" value ="{{$total_avg}}">
-                                <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>--
-                            </label> --> 
-                        </div>
-                        <div class="form-group">    
-                            <label for="total_avg_qty">
-                                <b class="load_truck">Total Avg Quantity*</b>
-                                <input type="text" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly" value ="{{$actualsum}}">
+                                <input type="text" value ="{{$actualsum}}" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="">
                                 <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
-                            </label>
+                            </label> 
                         </div>
-                        <div class="form-group">    
-                            <!-- <label for="total">
+                        <div class="form-group">  
+                        @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                            <label for="total">
                                 <b class="load_truck">Total</b>
                                 <span class="gtotal">
-                                    <input type="text" class="form-control" id="total_price" name="total_price" placeholder="" readonly="readonly">
+                                    <input type="text" value ="{{$actualtotal}}" class="form-control" id="total_price" name="total_price" placeholder="" readonly="">
                                 </span>
                             </label>
-                            &nbsp;&nbsp; -->
+                            &nbsp;&nbsp;
+                        @endif
                             <label for="total">
                                 <b class="load_truck">Total Actual Quantity</b>
-                                <!-- <span class="gtotal"> -->
+                                <span class="gtotal">
                                     <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
-                                <!-- </span> -->
+                                </span>
                             </label>
                         </div>
                                 
