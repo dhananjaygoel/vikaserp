@@ -127,7 +127,7 @@
                 }
                 
               }
-            //  dd($truck_info);
+            //  dd($truckdetails);
 
                           $delboy = json_decode($delboys);
  
@@ -159,10 +159,10 @@
                          }
                         //  dd($truckinformation);
               $owner_name =$info->users->first_name .' '.$info->users->last_name;
-              $datevalue = isset($truck_info->updated_at)?$truck_info->updated_at:'';
+              $datevalue = isset($info->updated_at)?$info->updated_at:'';
               $time = substr($datevalue,11);
               $date = substr($datevalue,-19,10);
-              $label = isset($truck_info->updated_at)?" loaded by ".$owner_name." at ".$time ." on ".$date:" loaded by ".$owner_name;
+              $label = isset($info->updated_at)?" loaded by ".$owner_name." at ".$time ." on ".$date:" loaded by ".$owner_name;
              ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>

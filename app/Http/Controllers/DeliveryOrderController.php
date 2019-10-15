@@ -1037,7 +1037,15 @@ class DeliveryOrderController extends Controller {
                                 'updated_at' => date("Y-m-d H:i:s"),
                        
                            ];
+                           
                           LoadTrucks::insert($loadetrucks);
+
+                          $loadelboys[] = [
+                            'delivery_id' => $id,
+                            'del_boy' => $delboy,
+                            'updated_at' => date("Y-m-d H:i:s"),
+                          ];
+                          LoadDelboy::insert($loadelboys);
                          }
                          else{
                                 $delivery_productdata = LoadTrucks::where('deliver_id',$id)->first();
@@ -1070,6 +1078,12 @@ class DeliveryOrderController extends Controller {
                        
                                 ];
                                 LoadTrucks::insert($loadetrucks);
+                                $loadelboys[] = [
+                                    'delivery_id' => $id,
+                                    'del_boy' => $delboy,
+                                    'updated_at' => date("Y-m-d H:i:s"),
+                                  ];
+                                  LoadDelboy::insert($loadelboys);
                          }
                     }
                       
@@ -1105,6 +1119,11 @@ class DeliveryOrderController extends Controller {
                         'userid' => $delboy,
                         'updated_at' => date("Y-m-d H:i:s"),
                     ));
+                    LoadDelboy::where('delivery_id', '=', $id)
+                    ->where('del_boy', '=', $delboy)
+                    ->update(array(
+                    'updated_at' => date("Y-m-d H:i:s"),
+                ));
                   }
                 }
                 
