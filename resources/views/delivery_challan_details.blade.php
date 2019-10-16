@@ -114,7 +114,7 @@
                                         <td class="col-md-1"><span>Amount</span></td>
                                     </tr>
                                     <?php $total_amount = 0; ?>
-                                    @foreach($allorder['all_order_products'] as $key=>$product)
+                                    @foreach($allorder['all_order_products'] as $key=>$product) 
                                     @if($product->order_type =='delivery_challan')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
                                         <td class="col-md-2">
@@ -330,11 +330,18 @@
                         <!--                        <div class="form-group">
                                                     <label for="Plusvat"><b class="challan">GST: </b> No</label>
                                                 </div>
-                                                <hr>-->                        
+                                                <hr>--> 
+                        
+                        @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
+                        <div class="form-group">
+                            <label for="total"><b class="challan">GST Amount: </b> {{$allorder->grand_price - $total_amount}}</label>
+                        </div>
+                        <hr/>
                         <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b> {{$allorder->round_off}}</label>
                         </div>
                         <hr/>
+                        @endif
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b> {{$allorder->grand_price}}</label>
                         </div>
