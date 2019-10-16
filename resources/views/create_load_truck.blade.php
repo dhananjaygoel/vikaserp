@@ -266,7 +266,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="submit" name="" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary btn_save" style="position: relative;top: -5px;">Save</button>
+                                                <button type="submit" name="action" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary btn_save" style="position: relative;top: -5px;">Save</button>
                                             </td>
                                             <td class="col-md-1">
                                               
