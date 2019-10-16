@@ -1040,12 +1040,12 @@ class DeliveryOrderController extends Controller {
                            
                           LoadTrucks::insert($loadetrucks);
 
-                          $loadelboys[] = [
-                            'delivery_id' => $id,
-                            'del_boy' => $delboy,
-                            'updated_at' => date("Y-m-d H:i:s"),
-                          ];
-                          LoadDelboy::insert($loadelboys);
+                        //   $loadelboys[] = [
+                        //     'delivery_id' => $id,
+                        //     'del_boy' => $delboy,
+                        //     'updated_at' => date("Y-m-d H:i:s"),
+                        //   ];
+                        //   LoadDelboy::insert($loadelboys);
                          }
                          else{
                                 $delivery_productdata = LoadTrucks::where('deliver_id',$id)->first();
