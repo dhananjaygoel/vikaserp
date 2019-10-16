@@ -197,10 +197,10 @@
                                             <td><span>Actual Quantity</span></td>    
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
-                                            @if(Auth::user()->role_id ==0)<td><span>GST</span></td> @endif  
+                                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)<td><span>GST</span></td> @endif  
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Length</span></td>
-                                            @if(Auth::user()->role_id ==0)<td><span>Amount</span></td>@endif 
+                                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)<td><span>Amount</span></td>@endif 
                                             
                                         </tr>
                                        <?php $key = 1; $actualsum =0; $actualtotal =0;?>
@@ -266,7 +266,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="submit" name="action" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary" style="position: relative;top: -5px;">Save</button>
+                                                <button type="submit" name="" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary btn_save" style="position: relative;top: -5px;">Save</button>
                                             </td>
                                             <td class="col-md-1">
                                               
@@ -288,7 +288,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
                                             </td>
-                                            @if(Auth::user()->role_id ==0)
+                                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
