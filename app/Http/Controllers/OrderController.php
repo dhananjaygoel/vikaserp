@@ -1729,6 +1729,30 @@ class OrderController extends Controller {
             }
             AllOrderProducts::insert($order_products);
 
+            //generate serial number
+                $current_date = date("m/d/");
+                $sms_flag = 0;
+                set_time_limit(0);
+                $date_letter = 'DO/' . $current_date . "" . $delivery_order_id;
+                $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
+
+                if (count($do) <= 0) {
+                    $number = '1';
+                } else {
+                    $serial_numbers = [];
+                    foreach ($do as $temp) {
+                        $list = explode("/", $temp->serial_no);
+                        $serial_numbers[] = $list[count($list) - 1];
+                        $pri_id = max($serial_numbers);
+                        $number = $pri_id + 1;
+                    }
+                }
+
+                $date_letter = 'DO/' . $current_date . "" . $number;
+                DeliveryOrder:: where('id', $delivery_order_id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
+
+
+
             //If pending quantity is Zero complete the order
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
