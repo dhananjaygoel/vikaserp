@@ -93,6 +93,7 @@
                             </div>
                         @endif
                        
+
                         <div class="form-group">
                             <label><b><span class="underline">Product Details</span></b></label>
                         </div>
@@ -114,6 +115,26 @@
                                         <td class="col-md-1"><span>Amount</span></td>
                                     </tr>
                                     <?php $total_amount = 0; ?>
+                                    <?php
+                                        $cust_id = $allorder->customer_id;
+                                        $order_id = $allorder->order_id;
+                                        // $state = \App\Customer::where('id',$cust_id)->first()->state;
+                                        // $local_state = App\States::where('id',$state)->first()->local_state;
+                                        $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
+                                        $state = \App\DeliveryLocation::where('id',$loc_id->delivery_location_id)->first();
+                                        $local = \App\States::where('id',$state->state_id)->first();
+                                        $local_state = $local->local_state;
+                                        $i = 1;
+                                        $total_price = 0;
+                        //                $total_qty = 0;
+                                        $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
+                                        $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
+                                        $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+                                        $final_vat_amount = 0; 
+                                        $final_total_amt = 0;
+                                    ?>
+
+
                                     @foreach($allorder['all_order_products'] as $key=>$product) 
                                     @if($product->order_type =='delivery_challan')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
@@ -164,6 +185,40 @@
                                                 $amount = $product->actual_quantity * $product->price;
                                                 $total_amount = round($amount + $total_amount, 2);
                                                 ?>
+                                                 <?php
+                                                    $productsub = \App\ProductSubCategory::where('id',$product['product_category_id'])->first();
+                                                    $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
+                                                    $sgst = 0;
+                                                    $cgst = 0;
+                                                    $igst = 0;
+                                                    $rate = $product->price;
+                                                    $is_gst = false;
+                                                    if(isset($product->vat_percentage) && $product->vat_percentage > 0){
+                                                        if($product_cat->hsn_code){
+                                                            
+                                                            $is_gst = true;
+                                                            $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                                                            $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                                                            // dd($hsn_det);
+                                                            if($local_state == 1){
+                                                                $sgst = $gst_det->sgst;
+                                                                $cgst = $gst_det->cgst;
+                                                            }
+                                                            else{
+                                                                $igst = $gst_det->igst;
+                                                            }
+                                                        }
+                                                    }
+                                                    else{
+                                                        $igst = 0;
+                                                    }
+
+                                                    $total_pr = $sgst + $cgst + $igst;
+                                                    $total_vat_amount = ($amount * $total_pr) / 100;
+                                                    $total_price += $total_vat_amount;
+                                                    // $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                                                    // print_r($total_price);
+                                                ?>
                                                 {{round($amount, 2)}}
                                             </div>
                                         </td>
@@ -201,6 +256,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
+                        <?php $total = $total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount?>
                             <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount); ?>
                         </div>                        
                         <hr>
@@ -331,19 +387,20 @@
                                                     <label for="Plusvat"><b class="challan">GST: </b> No</label>
                                                 </div>
                                                 <hr>--> 
-                        
+
+                       
                         @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                         <div class="form-group">
-                            <label for="total"><b class="challan">GST Amount: </b> {{$allorder->grand_price - $total_amount}}</label>
+                            <label for="total"><b class="challan">GST Amount: </b> {{round($total_price,5)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Round Off: </b> {{$allorder->round_off}}</label>
+                            <label for="total"><b class="challan">Round Off: </b> {{round($total_price,2)}}</label>
                         </div>
                         <hr/>
                         @endif
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total: </b> {{$allorder->grand_price}}</label>
+                            <label for="total"><b class="challan">Grand Total: </b> {{$total + $total_price}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
