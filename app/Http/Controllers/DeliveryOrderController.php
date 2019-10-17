@@ -1537,25 +1537,25 @@ class DeliveryOrderController extends Controller {
             $customer_type = Input::get('customer_type');
         }
 
-        // $current_date = date("m/d/");
-        // $sms_flag = 0;
-        // set_time_limit(0);
-        // $date_letter = 'DO/' . $current_date . "" . $id;
-        // $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
+        $current_date = date("m/d/");
+        $sms_flag = 0;
+        set_time_limit(0);
+        $date_letter = 'DO/' . $current_date . "" . $id;
+        $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
 
-        // if (count($do) <= 0) {
-        //     $number = '1';
-        // } else {
-        //     $serial_numbers = [];
-        //     foreach ($do as $temp) {
-        //         $list = explode("/", $temp->serial_no);
-        //         $serial_numbers[] = $list[count($list) - 1];
-        //         $pri_id = max($serial_numbers);
-        //         $number = $pri_id + 1;
-        //     }
-        // }
+        if (count($do) <= 0) {
+            $number = '1';
+        } else {
+            $serial_numbers = [];
+            foreach ($do as $temp) {
+                $list = explode("/", $temp->serial_no);
+                $serial_numbers[] = $list[count($list) - 1];
+                $pri_id = max($serial_numbers);
+                $number = $pri_id + 1;
+            }
+        }
 
-        // $date_letter = 'DO/' . $current_date . "" . $number;
+        $date_letter = 'DO/' . $current_date . "" . $number;
         // DeliveryOrder:: where('id', $id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
 //        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
