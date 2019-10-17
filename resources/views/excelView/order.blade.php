@@ -70,7 +70,7 @@
             <td>{{$order['all_order_products'][0]->remarks}}</td>         -->
             
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
-            <td>{{$order->createdby->first_name." ".$order->createdby->last_name}}</td>
+            <td>{{isset($order->createdby->first_name) && isset($order->createdby->last_name)?$order->createdby->first_name." ".$order->createdby->last_name:''}}</td>
             <td>{{isset($order->updated_at)?$order->updated_at:''}}</td>
         </tr>
         <?php $count = 0; ?>
