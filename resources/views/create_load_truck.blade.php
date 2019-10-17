@@ -195,7 +195,7 @@
                         
                       
                     // }
-                        $tvalue = $truck_info->final_truck_weight;
+                        $tvalue = $truckinfo->final_truck_weight;
                     
                         // dd($truckvalue);
                     ?>
