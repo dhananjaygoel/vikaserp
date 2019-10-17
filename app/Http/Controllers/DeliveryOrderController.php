@@ -1172,6 +1172,7 @@ class DeliveryOrderController extends Controller {
               ]); 
             
          }
+         $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          $action = Input::get('action');

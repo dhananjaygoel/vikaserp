@@ -134,23 +134,24 @@
                           $total_avg = 0;
               ?>
 
-                           @if ($delivery_data->del_boy != "")
+                @if ($delivery_data->del_boy != "")
                          
-                        @foreach($delboy as $key => $info) 
-              <?php
-              //print_R($info->customer->owner_name);
-                            if($key ==0){
-                                $labelkey = "1";
-                            }
-                            else{
-                                $labelkey = $key+1;
-                            }
-             if(!empty($truckvalue[$info->del_boy])){
-                $tvalue = $truckvalue[$info->del_boy];
-             }
-             else{
-               $tvalue =0;
-             }
+                    @foreach($delboy as $key => $info) 
+                        <?php
+                        //print_R($info->customer->owner_name);
+                                        if($key ==0){
+                                            $labelkey = "1";
+                                        }
+                                        else{
+                                            $labelkey = $key+1;
+                                        }
+                        if(!empty($truckvalue[$info->del_boy])){
+                            $tvalue = $truckvalue[$info->del_boy];
+                            // dd($truckvalue);
+                        }
+                        else{
+                        $tvalue =0;
+                        }
                          if($delivery_data->final_truck_weight > 0){
                              $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
                          }
@@ -158,12 +159,12 @@
                              $total_avg = " ";
                          }
                         //  dd($truckinformation);
-              $owner_name =$info->users->first_name .' '.$info->users->last_name;
-              $datevalue = isset($info->updated_at)?$info->updated_at:'';
-              $time = substr($datevalue,11);
-              $date = substr($datevalue,-19,10);
-              $label = isset($info->updated_at)?" loaded by ".$owner_name." at ".$time ." on ".$date:" loaded by ".$owner_name;
-             ?>
+                        $owner_name =$info->users->first_name .' '.$info->users->last_name;
+                        $datevalue = isset($info->updated_at)?$info->updated_at:'';
+                        $time = substr($datevalue,11);
+                        $date = substr($datevalue,-19,10);
+                        $label = isset($info->updated_at)?" loaded by ".$owner_name." at ".$time ." on ".$date:" loaded by ".$owner_name;
+                        ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
             
@@ -178,10 +179,23 @@
                         </span><span style="padding-top:8px;">  {{$label}}</span></div>
                           
                           
-                          @endif  
-                         
-                          @endforeach
                         @endif  
+                         
+                    @endforeach
+                @else
+                    <?php
+                        $tvalue =0;
+                    ?>
+                    @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                    <div class ="row form-group">
+                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
+                        <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                        <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print $label : ''?></span>
+                    </div>
+                    @endif
+                
+                
+                @endif  
                         <hr>
                         <div class="form-group underline">Product Details</div>
                         <div class="inquiry_table col-md-12">
