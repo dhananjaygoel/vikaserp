@@ -58,7 +58,7 @@
             <td>{{$order->location_difference}}</td>
             @endif
             <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0]['order_product_details'] : ''; ?>
-            <td>{{$product->alias_name}}</td>
+            <td>{{isset($product->alias_name)?$product->alias_name:''}}</td>
             <!--<td>{{$order['all_order_products'][0]->quantity}}</td>-->
            <td>{{(isset($order['all_order_products'][0]->quantity))?$order['all_order_products'][0]->quantity:''}}</td>
            <td>{{(isset($order['all_order_products'][0]->unit) && isset($order['all_order_products'][0]->unit->unit_name))?$order['all_order_products'][0]->unit->unit_name:''}}</td>
@@ -71,7 +71,7 @@
             
             <td>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
             <td>{{$order->createdby->first_name." ".$order->createdby->last_name}}</td>
-            <td>{{$order->updated_at}}</td>
+            <td>{{isset($order->updated_at)?$order->updated_at:''}}</td>
         </tr>
         <?php $count = 0; ?>
         @foreach($order['all_order_products'] as $product)
@@ -86,13 +86,13 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>{{$product['order_product_details']->alias_name}}</td>
+            <td>{{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:''}}</td>
             <td>{{isset($product->quantity)?$product->quantity:'0'}}</td>
            <td>{{(isset($product->unit) && $product->unit->unit_name!='')?$product->unit->unit_name:''}}</td>
            <td>{{(isset($product->price))?$product->price:''}}</td>
             <!--<td>{{$product->price}}</td>-->
             <td>{{($order->vat_percentage!='')?$order->vat_percentage:''}}</td>
-            <td>{{$product->remarks}}</td>
+            <td>{{isset($product->remarks)?$product->remarks:''}}</td>
             <td></td>
             <td></td>
             <td></td>
