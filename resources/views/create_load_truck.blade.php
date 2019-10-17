@@ -193,9 +193,10 @@
                           $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
                         }
                         
-                      }
+                      
                    
                         $tvalue = $truckvalue[$truck_info->userid];
+                    }
                         // dd($truckvalue);
                     ?>
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
