@@ -217,7 +217,7 @@
                                                     $total_vat_amount = ($amount * $total_pr) / 100;
                                                     $total_price += $total_vat_amount;
                                                     // $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
-                                                    print_r($total_price);
+                                                    print_r($total_pr);print_r($total_price);
                                                 ?>
                                                 {{round($amount, 2)}}
                                             </div>
