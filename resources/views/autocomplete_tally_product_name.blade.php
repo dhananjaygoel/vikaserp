@@ -1779,6 +1779,7 @@ $.widget("custom.combobox1", {
 //                    console.log(event);
                    if(ui.item.type_id == 3)
                    {
+                           $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', false);
                            $('#unit_'+id+'_1').hide();
                            $('#unit_'+id+'_2').hide();
@@ -1793,7 +1794,7 @@ $.widget("custom.combobox1", {
                    }
                    else
                    {
-                          $('#length_'+id).val('');
+                           $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', true);
                            $('#unit_'+id+'_1').show();
                            $('#unit_'+id+'_2').show();
@@ -2049,21 +2050,34 @@ function getProductDetails() {
                    
                    if(ui.item.type_id == 3)
                    {
+                           $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', false);
                            $('#unit_'+id+'_1').hide();
                            $('#unit_'+id+'_2').hide();
-                           $('#unit_'+id+'_3').hide();
+                           $('#unit_'+id+'_3').hide(); 
                            $('#unit_'+id+'_4').show();
                            $('#unit_'+id+'_5').show();
+                           if($('#unit_'+id+'_4').length == 0){
+                              $("#units_"+id).append($('<option>', {selected: true, value: 4,text: 'ft',id: 'unit_'+id+'_4'}));
+                              $("#units_"+id).append($('<option>', { value: 5,text: 'mm',id: 'unit_'+id+'_5'}));
+                              $('#units_'+id).trigger('change');   
+                          }
                    }
                    else
-                   {
+                   { 
+                           $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', true);
                            $('#unit_'+id+'_1').show();
                            $('#unit_'+id+'_2').show();
                            $('#unit_'+id+'_3').show();
                            $('#unit_'+id+'_4').hide();
                            $('#unit_'+id+'_5').hide();
+                           if($('#unit_'+id+'_1').length == 0){
+                              $("#units_"+id).append($('<option>', {selected: true, value: 1,text: 'KG',id: 'unit_'+id+'_1'}));
+                              $("#units_"+id).append($('<option>', { value: 2,text: 'Pieces',id: 'unit_'+id+'_2'}));
+                              $("#units_"+id).append($('<option>', { value: 3,text: 'Meter',id: 'unit_'+id+'_3'}));
+                              $('#units_'+id).trigger('change');   
+                          }
                    }
                     if(ui.item.product_price == ""){
                         var term = '';
