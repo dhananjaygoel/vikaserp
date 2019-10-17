@@ -119,6 +119,7 @@
             </div>
                           <?php
               $truckinformation =json_decode($truckdetails);
+            //   dd($truckinformation); 
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
@@ -184,13 +185,24 @@
                     @endforeach
                 @else
                     <?php
-                        $tvalue =0;
+                    $truckinfo =json_decode($truckdetails);
+                    if(!empty($truckinfo)){
+                        $truckvalue = array();
+                        foreach($truckinfo as $truck_info){
+                          
+                          $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
+                        }
+                        
+                      }
+                   
+                        $tvalue = $truckvalue[$truck_info->userid];
+                        // dd($truckvalue);
                     ?>
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                     <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                        <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print $label : ''?></span>
+                        <!-- <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print 'loaded' : ''?></span> -->
                     </div>
                     @endif
                 
