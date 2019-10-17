@@ -186,17 +186,17 @@
                 @else
                     <?php
                     $truckinfo =json_decode($truckdetails);
-                    if(!empty($truckinfo)){
-                        $truckvalue = array();
-                        foreach($truckinfo as $truck_info){
+                    // if(!empty($truckinfo)){
+                    //     $truckvalue = array();
+                    //     foreach($truckinfo as $truck_info){
                           
-                          $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
-                        }
+                    //       $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
+                    //     }
                         
                       
-                   
-                        $tvalue = $truckvalue[$truck_info->userid];
-                    }
+                    // }
+                        $tvalue = $truck_info->final_truck_weight;
+                    
                         // dd($truckvalue);
                     ?>
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
