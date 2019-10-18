@@ -585,7 +585,7 @@ function fetch_average_quantity() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
     for (var i = 0; i <= current_row_count + 1; i++) {
-        if (parseFloat($('#product_price_' + i).val())) {
+        // if (parseFloat($('#product_price_' + i).val())) {
             var quantity = $("#actual_quantity_readonly_" + i).val();
             if (quantity > 0) {
                 if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
@@ -618,7 +618,7 @@ function fetch_average_quantity() {
             if(final_var >0){
                 $('.btn_delorderto_delload_truck').removeClass( "disabled" )
             }
-        }
+        // }
     }
     fetch_actual_quantity();
 }
