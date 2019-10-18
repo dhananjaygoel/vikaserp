@@ -389,6 +389,7 @@ class DeliveryChallanController extends Controller {
 
         if (count($allorders) > 0) {
             foreach ($allorders as $key => $order) {
+                // dd($order);
                 $order_quantity = 0;
                 $total_quantity = 0;
                 $order_quantity_do = 0;
@@ -415,6 +416,7 @@ class DeliveryChallanController extends Controller {
                 foreach ($order['delivery_challan_products'] as $product_data) {
 
                     $product_size = $product_data['product_sub_category'];
+                    
                     if (isset($product_data)) {
                         if ($product_data->unit_id == 1) {
                             $total_quantity = $total_quantity + $product_data->actual_quantity;
@@ -427,6 +429,7 @@ class DeliveryChallanController extends Controller {
                         }
                         if ($product_data->unit_id == 4) {
                             $total_quantity = $total_quantity + ($product_data->actual_quantity * $product_size->weight  * $product_data->length);
+                            // dd($product_data->actual_quantity.'*'.$product_size->weight.'*'.$product_data->length);
                         }
                         if ($product_data->unit_id == 5) {
                             $total_quantity = $total_quantity + ($product_data->actual_quantity * $product_size->weight * ($product_data->length/305));
@@ -510,7 +513,7 @@ class DeliveryChallanController extends Controller {
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
-        $produc_type['profile'] = "0";
+        $produc_type['sheet'] = "0";
         foreach ($delivery_data['all_order_products'] as $key => $value) {
             if (isset($value['order_type']) && $value['order_type'] == "delivery_challan") {
                 if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
@@ -520,7 +523,7 @@ class DeliveryChallanController extends Controller {
                     $produc_type['structure'] = "1";
                 }
                 if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 3) {
-                    $produc_type['profile'] = "1";
+                    $produc_type['sheet'] = "1";
                 }
             }
         }
@@ -687,6 +690,7 @@ class DeliveryChallanController extends Controller {
                         'order_type' => 'delivery_challan',
                         'product_category_id' => $product_data['id'],
                         'unit_id' => $product_data['units'],
+                        'length' => (isset($product_data['length'])?$product_data['length']:'0'),
                         'actual_pieces' => $product_data['actual_pieces'],
                         'actual_quantity' => $product_data['actual_quantity'],
                         'quantity' => $product_data['actual_quantity'],
@@ -753,6 +757,22 @@ class DeliveryChallanController extends Controller {
                 }
                 $add_loaders_info = \App\DeliveryChallanLoadedBy::insert($loaders_info);
             }
+            if (isset($input_data['loaded_by_profile'])) {
+                $loaders = $input_data['loaded_by_profile'];
+                $loaders_info = [];
+                foreach ($loaders as $loader) {
+                    $loaders_info[] = [
+                        'delivery_challan_id' => $delivery_challan_id,
+                        'loaded_by_id' => $loader,
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                        'type' => 'sale',
+                        'product_type_id' => '3',
+                        'total_qty' => $actual_qty['loaded_by_profile'],
+                    ];
+                }
+                $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+            }
             if (isset($input_data['labour_pipe'])) {
                 $labours = $input_data['labour_pipe'];
                 $labours_info = [];
@@ -784,6 +804,22 @@ class DeliveryChallanController extends Controller {
                     ];
                 }
                 $add_loaders_info = \App\DeliveryChallanLabours::insert($labours_info);
+            }
+            if (isset($input_data['labour_profile'])) {
+                $labours = $input_data['labour_profile'];
+                $labours_info = [];
+                foreach ($labours as $labour) {
+                    $labours_info[] = [
+                        'delivery_challan_id' => $delivery_challan_id,
+                        'labours_id' => $labour,
+                        'created_at' => $created_at,
+                        'updated_at' => $updated_at,
+                        'type' => 'sale',
+                        'product_type_id' => '3',
+                        'total_qty' => $actual_qty['labour_profile'],
+                    ];
+                }
+                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
             }
 
 
@@ -890,10 +926,13 @@ class DeliveryChallanController extends Controller {
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
         $actual_qty['pipe'] = "0";
         $actual_qty['structure'] = "0";
+        $actual_qty['sheet'] = "0";
         $actual_qty['loaded_by_pipe'] = "0";
         $actual_qty['loaded_by_structure'] = "0";
+        $actual_qty['loaded_by_profile'] = "0";
         $actual_qty['labour_pipe'] = "0";
         $actual_qty['labour_structure'] = "0";
+        $actual_qty['labour_profile'] = "0";
 
         if ($dc_id != 0 && $input_data != []) {
             $allorder = DeliveryChallan::with('delivery_challan_products.order_product_details')->find($dc_id);
@@ -903,6 +942,8 @@ class DeliveryChallanController extends Controller {
                     $actual_qty['pipe'] += $value->actual_quantity;
                 } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
                     $actual_qty['structure'] += $value->actual_quantity;
+                }else if ($value['order_product_details']['product_category']->product_type_id == 3) {
+                    $actual_qty['sheet'] += $value->actual_quantity;
                 }
             }
 
@@ -912,11 +953,17 @@ class DeliveryChallanController extends Controller {
             if (isset($input_data['loaded_by_structure'])) {
                 $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
             }
+            if (isset($input_data['loaded_by_profile'])) {
+                $actual_qty['loaded_by_profile'] = $actual_qty['sheet'] / count($input_data['loaded_by_profile']);
+            }
             if (isset($input_data['labour_pipe'])) {
                 $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
             }
             if (isset($input_data['labour_structure'])) {
                 $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+            }
+            if (isset($input_data['labour_profile'])) {
+                $actual_qty['labour_profile'] = $actual_qty['sheet'] / count($input_data['labour_profile']);
             }
         }
 
@@ -1729,12 +1776,16 @@ class DeliveryChallanController extends Controller {
     function calc_qty_product_type_wise($update_delivery_challan) {
         $pipe_amount = 0;
         $structure_amount = 0;
+        $sheet_amount = 0;
         $pipe_qty = 0;
         $structure_qty = 0;
+        $sheet_qty = 0;
         $pipe_vat = 0;
         $structure_vat = 0;
+        $sheet_vat = 0;
         $pipe_vat_amount = 0;
         $structure_vat_amount = 0;
+        $sheet_vat_amount = 0;
 
         foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
             if (isset($delivery_challan_products['order_product_all_details']['product_category']['product_type']->id)) {
@@ -1749,6 +1800,11 @@ class DeliveryChallanController extends Controller {
                     $structure_qty += $delivery_challan_products->actual_quantity;
                     $structure_amount += $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
                     $structure_vat_amount += $amont * $structure_vat / 100;
+                } else if ($delivery_challan_products['order_product_all_details']['product_category']['product_type']->id == 3) {
+                    $sheet_vat = $update_delivery_challan->vat_percentage;
+                    $sheet_qty += $delivery_challan_products->actual_quantity;
+                    $sheet_amount += $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
+                    $sheet_vat_amount += $amont * $sheet_vat / 100;
                 }
             }
         }
@@ -1762,6 +1818,11 @@ class DeliveryChallanController extends Controller {
         $update_delivery_challan['structure_amount'] = $structure_amount;
         $update_delivery_challan['structure_vat'] = $structure_vat;
         $update_delivery_challan['structure_vat_amount'] = $structure_amount + $structure_vat_amount;
+
+        $update_delivery_challan['sheet_qty'] = $sheet_qty;
+        $update_delivery_challan['sheet_amount'] = $sheet_amount;
+        $update_delivery_challan['sheet_vat'] = $sheet_vat;
+        $update_delivery_challan['sheet_vat_amount'] = $sheet_amount + $sheet_vat_amount;
 
         return $update_delivery_challan;
     }

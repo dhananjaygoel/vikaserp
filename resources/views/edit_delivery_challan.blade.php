@@ -93,7 +93,7 @@
                                             <td><span>Select Product</span></td>
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Actual Quantity</span></td>
-
+                                            <td><span>Length</span></td>
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Rate</span></td>
                                             <td class="inquiry_vat_chkbox"><span>GST</span></td>
@@ -117,6 +117,7 @@
                                                     <input id="actual_pieces_{{$key}}" class="form-control" placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price();">
                                                 </div>
                                             </td>
+                                            
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->quantity}}" name="product[{{$key}}][quantity]">
@@ -125,6 +126,11 @@
                                                     @elseif($product->present_shipping <0)
                                                     <input id="actual_quantity_{{$key}}" class="form-control delivery_challan_qty" placeholder="Actual Quantity" name="product[{{$key}}][actual_quantity]" value="{{ $product->quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price();">
                                                     @endif
+                                                </div>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    <input type='text' id="poduct_length_{{$key}}" class="form-control" placeholder="Length" name="product[{{$key}}][length]" value="{{ $product->length}}" type="hidden" >
                                                 </div>
                                             </td>
 
@@ -368,7 +374,7 @@
                             //<input id="loadedby" class="form-control" placeholder="Loaded By" name="loadedby"  value="{{($allorder->loaded_by != '')?$allorder->loaded_by:''}}" type="text" readonly="">--
                             </div>
                             @endif -->
-                            <!-- @if($product_type['structure'] == 1)
+                            <!-- @if($product_type['structure'] == 2)
                             <div class="form-group">
                                 <label for="loadedby"><b class="challan">Loaded By (Structure):</b></label>
 
@@ -399,9 +405,9 @@
                                 </div>
                             </div>
                             @endif -->
-                            <!-- @if($product_type['profile'] == 1)
+                            <!-- @if($product_type['sheet'] == 3)
                             <div class="form-group">
-                                <label for="loadedby"><b class="challan">Loaded By (Profile):</b></label>
+                                <label for="loadedby"><b class="challan">Loaded By (Sheet):</b></label>
 
                                 <?php
                                 if (isset($allorder['challan_loaded_by'])) {
@@ -496,9 +502,9 @@
 
                             </div>
                             @endif -->
-                            <!-- @if($product_type['profile'] == 1)
+                            <!-- @if($product_type['sheet'] == 3)
                             <div class="form-group">
-                                <label for="labours"><b class="challan">Labours (Profile):</b></label>                               
+                                <label for="labours"><b class="challan">Labours (Sheet):</b></label>                               
                                 <?php
                                 if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
                                     foreach ($allorder['challan_labours'] as $challan_labour) {

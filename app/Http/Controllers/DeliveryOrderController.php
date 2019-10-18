@@ -655,7 +655,7 @@ class DeliveryOrderController extends Controller {
     public function check_product_type($delivery_data) {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
-        $produc_type['profile'] = "0";
+        $produc_type['sheet'] = "0";
 
         foreach ($delivery_data['delivery_product'] as $key => $value) {
             if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 1) {
@@ -665,7 +665,7 @@ class DeliveryOrderController extends Controller {
                 $produc_type['structure'] = "1";
             }
             if (isset($value['order_product_details']['product_category']->product_type_id) && $value['order_product_details']['product_category']->product_type_id == 3) {
-                $produc_type['profile'] = "1";
+                $produc_type['sheet'] = "1";
             }
         }
         return $produc_type;
@@ -939,7 +939,7 @@ class DeliveryOrderController extends Controller {
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
         $actual_qty['pipe'] = "0";
         $actual_qty['structure'] = "0";
-        $actual_qty['profile'] = "0";
+        $actual_qty['sheet'] = "0";
         $actual_qty['loaded_by_pipe'] = "0";
         $actual_qty['loaded_by_structure'] = "0";
         $actual_qty['loaded_by_profile'] = "0";
@@ -956,7 +956,7 @@ class DeliveryOrderController extends Controller {
                 } else if ($value['order_product_details']['product_category']->product_type_id == 2) {
                     $actual_qty['structure'] += $value->actual_quantity;
                 }else if ($value['order_product_details']['product_category']->product_type_id == 3) {
-                    $actual_qty['profile'] += $value->actual_quantity;
+                    $actual_qty['sheet'] += $value->actual_quantity;
                 }
             }
 
@@ -967,7 +967,7 @@ class DeliveryOrderController extends Controller {
                 $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
             }
             if (isset($input_data['loaded_by_profile'])) {
-                $actual_qty['loaded_by_profile'] = $actual_qty['profile'] / count($input_data['loaded_by_profile']);
+                $actual_qty['loaded_by_profile'] = $actual_qty['sheet'] / count($input_data['loaded_by_profile']);
             }
             if (isset($input_data['labour_pipe'])) {
                 $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
@@ -976,7 +976,7 @@ class DeliveryOrderController extends Controller {
                 $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
             }
             if (isset($input_data['labour_profile'])) {
-                $actual_qty['labour_profile'] = $actual_qty['profile'] / count($input_data['labour_profile']);
+                $actual_qty['labour_profile'] = $actual_qty['sheet'] / count($input_data['labour_profile']);
             }
         }
 
@@ -1222,6 +1222,17 @@ class DeliveryOrderController extends Controller {
          
       }
 
+    //   public function save_product(Request $request) {
+
+    //     $actual_pieces = Input::get('actual_pieces');
+    //     $average_weight = Input::get('average_weight');
+    //     dd($average_weight);
+    //     // foreach ($price as $key => $value) {
+    //     //     foreach ($value as $val) {
+    //     //         ProductCategory::where('id', $key)->update(array('price' => $val));
+    //     //     }
+    //     // }
+    // }
 
 
     /*
