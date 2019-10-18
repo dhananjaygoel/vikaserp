@@ -195,7 +195,11 @@
                         
                       
                     }
-                        $tvalue = $truck_info->final_truck_weight;
+                    if(isset($truck_info) && !empty($truck_info)) {
+                        $tvalue = isset($truck_info->final_truck_weight)?$truck_info->final_truck_weight:'';
+                    } else {
+                        $tvalue = 0;
+                    }
                     
                         // dd($truckvalue);
                     ?>
