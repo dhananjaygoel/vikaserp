@@ -1190,6 +1190,26 @@ class DeliveryOrderController extends Controller {
                                     ->update(array(
                                     'updated_at' => date("Y-m-d H:i:s")));
                          }
+                         if($truck_weight != 0 ) {
+                            $delivery_productdata = LoadTrucks::where('deliver_id',$id)
+                                                    ->where('userid', '=', $delboy)
+                                                    ->first();
+                            
+                            LoadTrucks:: where('deliver_id', '=', $id)
+                                        ->where('userid', '=', $delboy)
+                                        ->update(array(
+                                            'empty_truck_weight' => $empty_truck_weight,
+                                            'final_truck_weight' => $truck_weight,
+                                            'product_id'  =>$serialize,
+                                        'userid' => $delboy,
+                                        'updated_at' => date("Y-m-d H:i:s"),
+                                        ));
+                            LoadDelboy::where('delivery_id', '=', $id)
+                                        ->where('del_boy', '=', $delboy)
+                                        ->update(array(
+                                        'updated_at' => date("Y-m-d H:i:s"),
+                                        ));
+                         }
          }
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
