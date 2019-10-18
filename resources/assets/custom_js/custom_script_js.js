@@ -584,7 +584,7 @@ function fetch_average_quantity_temp() {
 function fetch_average_quantity() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
-    for (var i = 0; i <= current_row_count + 1; i++) {
+    for (var i = 1; i <= current_row_count + 1; i++) {
         // if (parseFloat($('#product_price_' + i).val())) {
             var quantity = $("#actual_quantity_readonly_" + i).val();
             if (quantity > 0) {
@@ -637,7 +637,7 @@ function fetch_actual_quantity() {
     Total_Actual_qty = parseFloat($("#total_actual_qty_truck").val());
     Total_Actual_qty_calc = 0;
     Total_Amount = 0;
-    for (var i = 0; i <= current_row_count + 1; i++) {
+    for (var i = 1; i <= current_row_count + 1; i++) {
         // if (parseFloat($('#product_price_' + i).val())) {
 
             actual_pieces = parseFloat($("#actual_pieces_" + i).val());
