@@ -584,8 +584,8 @@ function fetch_average_quantity_temp() {
 function fetch_average_quantity() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
-    for (var i = 1; i <= current_row_count + 1; i++) {
-        // if (parseFloat($('#product_price_' + i).val())) {
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseFloat($('#product_price_' + i).val())) {
             var quantity = $("#actual_quantity_readonly_" + i).val();
             if (quantity > 0) {
                 if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
@@ -618,7 +618,7 @@ function fetch_average_quantity() {
             if(final_var >0){
                 $('.btn_delorderto_delload_truck').removeClass( "disabled" )
             }
-        // }
+        }
     }
     fetch_actual_quantity();
 }
@@ -637,8 +637,8 @@ function fetch_actual_quantity() {
     Total_Actual_qty = parseFloat($("#total_actual_qty_truck").val());
     Total_Actual_qty_calc = 0;
     Total_Amount = 0;
-    for (var i = 1; i <= current_row_count + 1; i++) {
-        // if (parseFloat($('#product_price_' + i).val())) {
+    for (var i = 0; i <= current_row_count + 1; i++) {
+        if (parseFloat($('#product_price_' + i).val())) {
 
             actual_pieces = parseFloat($("#actual_pieces_" + i).val());
             average_weight = parseFloat($("#average_weight_" + i).val());
@@ -664,7 +664,7 @@ function fetch_actual_quantity() {
             if(!isNaN(parseFloat(amount))){
                 Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
             }
-        // }
+        }
 
     }
     $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
