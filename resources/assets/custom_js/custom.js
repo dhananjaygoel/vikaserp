@@ -3584,6 +3584,22 @@ function order_assign(){
     }
 }
 
+function fetch_actual_qty() {
+    var current_row_count = $(".add_product_row").length;
+    var total_qty = 0;
+
+    for (var j = 1; j < current_row_count + 1; j++) {
+        
+        var actual_pieces = $("#actual_pieces_" + j).val();
+        var average_weight = $("#average_weight_" + j).val();
+        var total = actual_pieces * average_weight;
+        total_qty = total_qty + total;
+        // alert(j+' '+actual_pieces+' '+average_weight);
+    }
+    $('#total_actual_qty_truck').val(total_qty);
+    fetch_average_quantity();
+}
+
 $("button").click(function() {
     var fired_button = $(this).val();
     // alert(baseurl);
@@ -3637,6 +3653,7 @@ $("button").click(function() {
                     setTimeout(function(){
                         $('.alert-success1').hide();
                     }, 5000);
+                    fetch_actual_qty();
                 }
             })
         }

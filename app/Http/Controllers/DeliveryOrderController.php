@@ -1135,6 +1135,7 @@ class DeliveryOrderController extends Controller {
         foreach($products_data as $pkey =>$product_info){
             $actual_pieces = $product_info['actual_pieces'];
             $average_weight = $product_info['average_weight'];
+            $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
             $productid =$product_info['order'];
             if(!empty($actual_pieces)&& !empty($average_weight)){
                 $update_product_details = AllOrderProducts::where('id',$productid)->update([
@@ -1142,11 +1143,12 @@ class DeliveryOrderController extends Controller {
                  'actual_quantity'=>$average_weight,            
               ]); 
             }
-         
+            if(!empty($vat_percentage) && $vat_percentage == 'yes'){
+                $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                    'vat_percentage'=> 1 ,
+                ]);
+            }
         }
-        
-         
-         
          $count = count($products_data);
          $productlist = AllOrderProducts::where('order_id', '=', $id)
                       ->where('actual_pieces', '>', 0)
@@ -1253,11 +1255,6 @@ class DeliveryOrderController extends Controller {
                 'actual_pieces'=>$actual_pieces,  
                 'actual_quantity'=>$average_weight,            
              ]); 
-             DB::enableQueryLog(); // Enable query log
-
-// Your Eloquent query
-
-dd(DB::getQueryLog());
     }
 
 
