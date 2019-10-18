@@ -805,6 +805,7 @@ function grand_total_challan() {
 //    total_l_d_f
     $("#total_price").val(total_price_products.toFixed(2));
     $("#total_actual_quantity").val(total_actual_quantity.toFixed(2));
+    $("#total_actual_quantity1").val(total_actual_quantity);
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {

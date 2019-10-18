@@ -57,7 +57,8 @@
                             <hr>
                             <div class="form-group row">
                                 <label class="col-md-2"><b>Total Actual Quantity:</b></label>                                 
-                                <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" style="width: 10.33%;" value="{{(isset($allorder->delivery_order->final_truck_weight)&&isset($allorder->delivery_order->empty_truck_weight))?($allorder->delivery_order->final_truck_weight - $allorder->delivery_order->empty_truck_weight):'0'}}"> 
+                                <!-- <input type="text" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly="" style="width: 10.33%;" value="{{(isset($allorder->delivery_order->final_truck_weight)&&isset($allorder->delivery_order->empty_truck_weight))?($allorder->delivery_order->final_truck_weight - $allorder->delivery_order->empty_truck_weight):'0'}}">  -->
+                                <input type="text" class="form-control" id="total_actual_quantity1" name="total_actual_quantity" placeholder="" readonly="readonly" style="width: 10.33%;" >
                             </div>
                             <?php // dd($allorder);?>
                             @if($allorder['delivery_order']->discount > 0)
