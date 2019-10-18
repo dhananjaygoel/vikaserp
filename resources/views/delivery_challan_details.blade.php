@@ -292,7 +292,7 @@
                         </div>
                         <hr>
                         @endif
-                        @if($product_type['profile'] == 1)
+                        @if($product_type['sheet'] == 3)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Profile): </b></label> <?php
                             if (isset($allorder['challan_loaded_by'])) {
@@ -350,7 +350,7 @@
                         </div>
                         <hr>
                         @endif -->
-                        <!-- @if($product_type['profile'] == 1)
+                        <!-- @if($product_type['sheet'] == 3)
                         <div class="form-group">
                             <label for="labour"><b class="challan">Labour (Profile): </b></label>
 
