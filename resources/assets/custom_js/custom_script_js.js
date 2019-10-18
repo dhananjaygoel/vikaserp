@@ -638,7 +638,7 @@ function fetch_actual_quantity() {
     Total_Actual_qty_calc = 0;
     Total_Amount = 0;
     for (var i = 0; i <= current_row_count + 1; i++) {
-        if (parseFloat($('#product_price_' + i).val())) {
+        // if (parseFloat($('#product_price_' + i).val())) {
 
             actual_pieces = parseFloat($("#actual_pieces_" + i).val());
             average_weight = parseFloat($("#average_weight_" + i).val());
@@ -664,7 +664,7 @@ function fetch_actual_quantity() {
             if(!isNaN(parseFloat(amount))){
                 Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
             }
-        }
+        // }
 
     }
     $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
