@@ -1216,15 +1216,15 @@ class DeliveryOrderController extends Controller {
          $action = Input::get('action');
          if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
             if(!($truck_weight<$empty_truck_weight)) {
-                if($action ==''){
+                // if($action ==''){
                     return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
-                }
-                elseif($action == 'Save'){
-                    return Redirect::back()->with('validation_message', 'Product loaded.');
-                }
-                else{
-                    return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
-                }
+                // }
+                // elseif($action == 'Save'){
+                //     return Redirect::back()->with('validation_message', 'Product loaded.');
+                // }
+                // else{
+                //     return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+                // }
             }
             else{
                 return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
@@ -1242,17 +1242,23 @@ class DeliveryOrderController extends Controller {
          
       }
 
-    //   public function save_product(Request $request) {
+      public function save_product(Request $request) {
 
-    //     $actual_pieces = Input::get('actual_pieces');
-    //     $average_weight = Input::get('average_weight');
-    //     dd($average_weight);
-    //     // foreach ($price as $key => $value) {
-    //     //     foreach ($value as $val) {
-    //     //         ProductCategory::where('id', $key)->update(array('price' => $val));
-    //     //     }
-    //     // }
-    // }
+        $actual_pieces = Input::get('actual_pieces');
+        $average_weight = Input::get('average_weight');
+        $delivery_id = Input::get('delivery_id');
+        $product_id = Input::get('product_id');
+
+        AllOrderProducts::where('id',$product_id)->where('order_id',$delivery_id)->update([
+                'actual_pieces'=>$actual_pieces,  
+                'actual_quantity'=>$average_weight,            
+             ]); 
+             DB::enableQueryLog(); // Enable query log
+
+// Your Eloquent query
+
+dd(DB::getQueryLog());
+    }
 
 
     /*

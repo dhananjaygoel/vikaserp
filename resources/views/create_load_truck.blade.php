@@ -216,6 +216,14 @@
                         <hr>
                         <div class="form-group underline">Product Details</div>
                         <div class="inquiry_table col-md-12">
+                        <div class="alert alert-success alert-success1" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Product values successfully updated.
+                        </div>
+                        <div class="alert alert-warning alert-success2" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Please Fill the values for product.
+                        </div>
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_load_truck" class="table table-hover">
                                     <tbody>
@@ -283,7 +291,7 @@
                                                     <input type="hidden" value="{{$product['order_product_details']->weight}}" id="product_weight_{{$key}}">
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
-                                                    <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
+                                                    <input type="hidden" name="product[{{$key}}][order]" id="product_id{{$key}}" value="{{$product->id}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -297,7 +305,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="submit" name="action" value="Save" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary btn_save" style="position: relative;top: -5px;">Save</button>
+                                                <button type="button" value="Save{{$key}}" id="btn_save_truck" <?php print isset($class1) ? $class1 :''; ?> class="btn btn-sm btn-primary btn_save" style="position: relative;top: -5px;">Save</button>
                                             </td>
                                             <td class="col-md-1">
                                               

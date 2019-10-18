@@ -3584,6 +3584,64 @@ function order_assign(){
     }
 }
 
+$("button").click(function() {
+    var fired_button = $(this).val();
+    // alert(baseurl);
+    var button_id = fired_button.substr(4);
+    // alert(button_id);
+    var i = button_id;
+    var status_form = 0;
+    if(fired_button == 'Save' + i) {
+            // alert(button_id);
+            if ($("#actual_pieces_" + i).val() == "" || $("#actual_pieces_" + i).val() == 0) {
+                $('#actual_pieces_' + i).addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#actual_pieces_' + i).removeClass('error_validation');
+            }
+            if ($("#average_weight_" + i).val() == "" || $("#average_weight_" + i).val() == 0) {
+                $('#average_weight_' + i).addClass('error_validation');
+                status_form = 1;
+            } else {
+                $('#average_weight_' + i).removeClass('error_validation');
+            }
+            if (status_form == 1) {
+                // $('html, body').animate({
+                //     scrollTop: $('.breadcrumb').offset().top
+                // }, 1000);
+                $('.alert-success2').show();
+                setTimeout(function(){
+                    $('.alert-success2').hide();
+                }, 5000);
+                return false;
+            } else {
+
+            var actual_pieces = $("#actual_pieces_" + i).val();
+            var average_weight = $("#average_weight_" + i).val();
+            var delivery_id = $("#delivery_id").val();
+            var product_id = $("#product_id" + i).val();
+            var url = $('#site_url').val();
+            // alert(url+ '/save_product');
+
+            $.ajax({
+                type: 'GET',
+                url: url + '/save_product',
+                data: {
+                    actual_pieces:actual_pieces,
+                    average_weight:average_weight,
+                    delivery_id:delivery_id,
+                    product_id:product_id,
+                },
+                success: function (data) {
+                    $('.alert-success1').show();
+                    setTimeout(function(){
+                        $('.alert-success1').hide();
+                    }, 5000);
+                }
+            })
+        }
+    }
+});
 
 function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
