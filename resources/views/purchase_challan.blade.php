@@ -215,7 +215,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-                                                <button type="button" class="btn btn-default delete_purchase_challan_submit" id="delete_purchase_challan_submit">Yes</button>
+                                                <button type="submit" class="btn btn-default delete_purchase_challan_submit" id="delete_purchase_challan_submit">Yes</button>
                                             </div>
                                             </form>
                                         </div>
