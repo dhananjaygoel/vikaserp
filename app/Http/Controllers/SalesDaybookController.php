@@ -581,6 +581,9 @@ class SalesDaybookController extends Controller {
                     // ->take(200)
                     ->get();
         }    
+        if (count($allorders) < 1) {
+            return redirect('sales_daybook')->with('flash_message', 'Order does not exist.');
+        }
        // echo '<pre>';
        // print_r($allorders) ;
        // exit;
