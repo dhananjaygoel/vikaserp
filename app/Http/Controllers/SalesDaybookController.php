@@ -610,8 +610,8 @@ class SalesDaybookController extends Controller {
                      else{
                          $tally_name = "Anonymous User";
                      }                      
-                    $total_btax = $value['delivery_challan_products'][0]->price;
-                    $balance = $value['delivery_challan_products'][0]->quantity;
+                    $total_btax = @$value['delivery_challan_products'][0]->price;
+                    $balance = @$value['delivery_challan_products'][0]->quantity;
                     $total = $total_btax * $balance; //$value->grand_price;
                     $percent = 12 * $total ;
                     $tax = $percent /100 ;//$value->vat_percentage; 
@@ -619,7 +619,7 @@ class SalesDaybookController extends Controller {
                     $invoice_no = $value->doc_number; 
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
                     $placeof_supply = $city_name;
-                    $producttitle = $value['delivery_challan_products'][0]['order_product_details']->alias_name;
+                    $producttitle = @$value['delivery_challan_products'][0]['order_product_details']->alias_name;
 
                 } else {
                     $tally_name = 'Anonymous User';
@@ -631,7 +631,7 @@ class SalesDaybookController extends Controller {
                     $invoice_no = '';
                     $due_date =  date("d/m/Y", strtotime($value->updated_at));
                     $placeof_supply = $city_name;
-                    $producttitle = $value['delivery_challan_products'][0]['order_product_details']->alias_name;
+                    $producttitle = @$value['delivery_challan_products'][0]['order_product_details']->alias_name;
                 }                                
             } else {
                 $tally_name = 'Anonymous User';
@@ -643,7 +643,7 @@ class SalesDaybookController extends Controller {
                 $invoice_no = '';
                 $due_date =  date("d/m/Y", strtotime($value->updated_at));
                 $placeof_supply = $city_name;
-                $producttitle = $value['delivery_challan_products'][0]['order_product_details']->alias_name;
+                $producttitle = @$value['delivery_challan_products'][0]['order_product_details']->alias_name;
             }
             
             $sr[$VchNo]['customer'] = $tally_name;
