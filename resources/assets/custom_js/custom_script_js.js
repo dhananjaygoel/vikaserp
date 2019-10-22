@@ -668,6 +668,7 @@ function fetch_actual_quantity() {
         // }
 
     }
+    if(!isNaN(parseFloat(Total_Actual_qty_calc)))
     $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
     if(Total_Amount>0){
         $('#total_price').val(Total_Amount.toFixed(2));
