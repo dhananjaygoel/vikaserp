@@ -588,7 +588,7 @@ class SalesDaybookController extends Controller {
         foreach ($allorders as $key => $value) {
             $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
             $sr[$VchNo]['type'] = 'Invoice';
-            $sr[$VchNo]['no'] = $value->id;
+            $sr[$VchNo]['no'] = isset($value->id)?$value->id:'';
             if($value->customer_id != '') {
                 $customer = Customer::find($value->customer_id);
                 $deliver_location = $customer->delivery_location_id;
@@ -713,7 +713,7 @@ class SalesDaybookController extends Controller {
                 foreach ($allorders as $key => $value) {
                     $sheet->appendRow(array(
                         'Date' => date('d-m-Y'),
-                        'Particulars' => $value['customer']->owner_name,
+                        'Particulars' => isset($value['customer']->owner_name)?$value['customer']->owner_name:'',
                         'Time' => '',
                         'Vch Type' => '',
                         'Vch No.' => '',
@@ -726,12 +726,12 @@ class SalesDaybookController extends Controller {
                     foreach ($value['delivery_challan_products'] as $key1 => $value1) {
                         $sheet->appendRow(array(
                             'Date' => '',
-                            'Particulars' => $value1['order_product_details']->alias_name,
+                            'Particulars' => isset($value1['order_product_details']->alias_name)?$value1['order_product_details']->alias_name:'',
                             'Time' => '',
                             'Vch Type' => '',
                             'Vch No.' => '',
-                            'Inwards Qty' => $value1->quantity,
-                            'Rate' => $value1->price,
+                            'Inwards Qty' => isset($value1->quantity)?$value1->quantity:'',
+                            'Rate' => isset($value1->price)?$value1->price:'',
                             'Amount' => ($value1->quantity * $value1->price),
                             'Credit Amount' => '',
                         ));
@@ -745,7 +745,7 @@ class SalesDaybookController extends Controller {
                         'Inwards Qty' => '',
                         'Rate' => '',
                         'Amount' => '',
-                        'Credit Amount' => $value->grand_price,
+                        'Credit Amount' => isset($value->grand_price)?$value->grand_price:'',
                     ));
                     $sheet->appendRow(array(
                         'Date' => '',
@@ -756,11 +756,11 @@ class SalesDaybookController extends Controller {
                         'Inwards Qty' => '',
                         'Rate' => '',
                         'Amount' => '',
-                        'Credit Amount' => $value->loading_charge,
+                        'Credit Amount' => isset($value->loading_charge)?$value->loading_charge:'',
                     ));
                     $sheet->appendRow(array(
                         'Date' => '',
-                        'Particulars' => $value['delivery_order']->vehicle_number,
+                        'Particulars' => isset($value['delivery_order']->vehicle_number)?$value['delivery_order']->vehicle_number:'',
                         'Time' => '',
                         'Vch Type' => '',
                         'Vch No.' => '',
