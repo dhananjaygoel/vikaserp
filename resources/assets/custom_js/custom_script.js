@@ -1271,7 +1271,7 @@ function delete_purchase_order(purchase_order_id) {
 /*
  * Delete order by AJAX call
  */
-$('.delete_purchase_order_submit').click(function () {
+$('.delete_purchase_order_submit').keypress(function () {
 
     $('#delete_purchase_order').modal('hide');
     /*Form token set up*/
