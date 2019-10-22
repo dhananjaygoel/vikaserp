@@ -25,7 +25,7 @@
                             {!! Form::open(array('method'=>'PUT','url'=>url('gst',$gst->id), 'id'=>''))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors) > 0)
-                                <div role="alert" class="alert alert-warning">
+                                <div role="alert" class="alert alert-danger">
                                     <ul>
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
