@@ -380,7 +380,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
+                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0))
                                                     🔵 Loaded    
                                             @else
                                                     🔴 Loading
