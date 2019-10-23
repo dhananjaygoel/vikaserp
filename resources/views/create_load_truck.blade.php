@@ -162,9 +162,9 @@
                         //  dd($truckinformation);
                         $owner_name =$info->users->first_name .' '.$info->users->last_name;
                         $datevalue = isset($info->updated_at)?$info->updated_at:'';
-                        $time = substr($datevalue,11);
-                        $date = substr($datevalue,-19,10);
-                        $label = isset($info->updated_at)?" loaded by ".$owner_name." at ".$time ." on ".$date:" loaded by ".$owner_name;
+                        $time = date('h:i a', strtotime($datevalue));
+                        $date = date('d/m/Y', strtotime($datevalue));
+                        $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
                         ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
@@ -207,7 +207,7 @@
                     <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                        <!-- <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print 'loaded' : ''?></span> -->
+                        <!-- <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print 'Loaded' : ''?></span> -->
                     </div>
                     @endif
                 
