@@ -1216,32 +1216,33 @@ class DeliveryOrderController extends Controller {
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          $action = Input::get('action');
-         if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
-            if(!($truck_weight<$empty_truck_weight)) {
-                // if($action ==''){
-                    return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
-                // }
-                // elseif($action == 'Save'){
-                //     return Redirect::back()->with('validation_message', 'Product loaded.');
-                // }
-                // else{
-                //     return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
-                // }
+         $del = LoadTrucks::where('deliver_id',$id)->where('userid', '=', $delboy)->count();
+         if(isset($del) && $del != 0) {
+            if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
+                if(!($truck_weight<$empty_truck_weight)) {
+                    // if($action ==''){
+                        return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+                    // }
+                    // elseif($action == 'Save'){
+                    //     return Redirect::back()->with('validation_message', 'Product loaded.');
+                    // }
+                    // else{
+                    //     return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
+                    // }
+                }
+                else{
+                    return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
+                }
+            }
+            elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight == 0) {
+                return Redirect::back()->with('validation_message', 'Please fill truck weight.');
             }
             else{
-                return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
+                return Redirect::back()->with('validation_message', 'Please fill empty truck weight.');
             }
+        }else {
+            return redirect('delivery_order' . $parameters)->with('success','You are not authorised to this order now.');
         }
-        elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight == 0) {
-            return Redirect::back()->with('validation_message', 'Please fill truck weight.');
-        }
-        else{
-            return Redirect::back()->with('validation_message', 'Please fill empty truck weight.');
-        }
-         
-         
-        
-         
       }
 
       public function save_product(Request $request) {
