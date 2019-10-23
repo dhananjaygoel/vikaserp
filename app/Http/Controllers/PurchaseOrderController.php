@@ -285,6 +285,7 @@ class PurchaseOrderController extends Controller {
             }
         } else {
             $forms_array = [];
+            if(isset($input_data['form_key']))
             array_push($forms_array, $input_data['form_key']);
             Session::put('forms_purchase_order', $forms_array);
         }
