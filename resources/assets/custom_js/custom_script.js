@@ -1271,8 +1271,7 @@ function delete_purchase_order(purchase_order_id) {
 /*
  * Delete order by AJAX call
  */
-$('.delete_purchase_order_submit').keypress(function () {
-
+$('.delete_purchase_order_submit').click(function () {
     $('#delete_purchase_order').modal('hide');
     /*Form token set up*/
     $.ajaxSetup({
@@ -1281,12 +1280,12 @@ $('.delete_purchase_order_submit').keypress(function () {
         }});
     purchase_order_id = $('#delete_purchase_order_submit').val();
     /*Purchase Order form id object*/
-    $form = $('.delete_purchase_order');
+    var form = $('.delete_purchase_order');
     /*Purchase Order form data*/
-    $data = $form.serialize();
+    var data = form.serialize();
     /*Purchase Order from url*/
     url = baseurl + '/purchase_orders/' + purchase_order_id + '-delete';
-    var posting = $.post(url, {formData: $data});
+    var posting = $.post(url, {formData: data});
     posting.done(function (data) {
         $("#pwdr").val('');
         location.reload();
