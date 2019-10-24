@@ -133,7 +133,7 @@
                         $cgst = 0;
                         $igst = 0;
                         $rate = $prod->price;
-                        if(isset($prod->vat_percentage) && $prod->vat_percentage > 0){
+                        if(isset($prod->vat_percentage) && $prod->vat_percentage > 0 && $delivery_data->vat_percentage == ''){
                             if($product_cat->hsn_code){
                                 $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                                 $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
@@ -147,10 +147,10 @@
                             }
                         }
                         else{
-                            $igst = 0;
+                            $gst = $delivery_data->vat_percentage;
                         }
                         ?>
-                        @if(isset($prod->vat_percentage) && $prod->vat_percentage>0)
+                        @if(isset($prod->vat_percentage) && $prod->vat_percentage>0 && $delivery_data->vat_percentage == '')
                             @if($local_state == 1)
                                 <td>{{$sgst}}</td>
                                 <td>{{$cgst}}</td>
@@ -158,7 +158,7 @@
                                 <td>{{$igst}}</td>
                             @endif
                         @else
-                            <td>{{$igst}}</td>
+                            <td>{{$gst}}</td>
                         @endif
                         <td><?php echo $rate = $prod->price; ?></td>
                         <td><?php $total_price = $rate * $prod->actual_quantity; 
@@ -223,7 +223,7 @@
                                 <tr>
                                     <td class="lable">
                                     Total GST
-                                    @if(isset($prod->vat_percentage) && $prod->vat_percentage>0)
+                                    @if(isset($prod->vat_percentage) && $prod->vat_percentage>0 && $delivery_data->vat_percentage == '')
                                         @if($local_state == 1)
                                             = SGST + CGST
                                         @else

@@ -96,7 +96,7 @@
                     <td>{{ isset($product->actual_pieces)?$product->actual_pieces:'' }}</td>
                     <td>{{ isset($product->present_shipping)?$product->present_shipping:'' }}</td>
                     <td><?php
-                            if($product->vat_percentage > 0){
+                            if($product->vat_percentage > 0 && $delivery_data->vat_percentage == ''){
                             $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first()->state_id;
                             $local_state = \App\States::where('id',$state)->first()->local_state;
                             $productsub = \App\ProductSubCategory::where('id',$product['product_category_id'])->first();
@@ -119,7 +119,7 @@
                                 @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                             @endif
                             <?php }else{ ?>
-                                @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                                @if($delivery_data->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                             <?php } ?>
                     </td>
                 </tr>
