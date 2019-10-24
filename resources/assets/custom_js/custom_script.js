@@ -1372,12 +1372,12 @@ $('.delete_purchase_advice_submit').click(function () {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     /* Purchase advice id object*/
-    $form = $('#delete_purchase_advice');
+    var form = $('#delete_purchase_advice');
     /*Purchase advice form data*/
-    $data = $form.serialize();
+    var data = delete_purchase_order_submitform.serialize();
     /*Purchase advice from url*/
-    url = $form.attr('action');
-    var posting = $.post(url, {formData: $data});
+    url = form.attr('action');
+    var posting = $.post(url, {formData: data});
     posting.done(function (data) {
         $("#pwdr").val('');
         if (data['message'] == 'success') {
@@ -1416,12 +1416,12 @@ $('.delete_purchase_challan_submit').click(function () {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     /* Purchase Challan form id object*/
-    $form = $('#delete_purchase_challan_form');
+    var form = $('#delete_purchase_challan_form');
     /*Purchase Challan form data*/
-    $data = $form.serialize();
+    var data = form.serialize();
     /*Purchase Challan url*/
     url = baseurl + '/purchase_challan/' + $('#delete_purchase_challan_submit').val() + '-delete';
-    var posting = $.post(url, {formData: $data});
+    var posting = $.post(url, {formData: data});
     posting.done(function (data) {
         $("#pwdr").val('');
         if (data['message'] == 'success') {
