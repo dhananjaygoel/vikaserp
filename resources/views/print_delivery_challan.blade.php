@@ -132,8 +132,9 @@
                         $sgst = 0;
                         $cgst = 0;
                         $igst = 0;
+                        $gst = 0;
                         $rate = $prod->price;
-                        if(isset($prod->vat_percentage) && $prod->vat_percentage > 0 && $delivery_data->vat_percentage == ''){
+                        if(isset($prod->vat_percentage) && $prod->vat_percentage > 0 && $allorder->vat_percentage == ''){
                             if($product_cat->hsn_code){
                                 $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                                 $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
@@ -147,10 +148,10 @@
                             }
                         }
                         else{
-                            $gst = $delivery_data->vat_percentage;
+                            $gst = $allorder->vat_percentage;
                         }
                         ?>
-                        @if(isset($prod->vat_percentage) && $prod->vat_percentage>0 && $delivery_data->vat_percentage == '')
+                        @if(isset($prod->vat_percentage) && $prod->vat_percentage>0 && $allorder->vat_percentage == '')
                             @if($local_state == 1)
                                 <td>{{$sgst}}</td>
                                 <td>{{$cgst}}</td>
@@ -168,7 +169,7 @@
                     </tr>
                 </tbody>
                 <?php
-                $total_pr = $sgst + $cgst + $igst;
+                $total_pr = $sgst + $cgst + $igst + $gst;
                 
                 $total_vat_amount = ($total_price * $total_pr) / 100;
                 // $total_price += $total_price;
@@ -223,7 +224,7 @@
                                 <tr>
                                     <td class="lable">
                                     Total GST
-                                    @if(isset($prod->vat_percentage) && $prod->vat_percentage>0 && $delivery_data->vat_percentage == '')
+                                    @if(isset($prod->vat_percentage) && $prod->vat_percentage>0 && $allorder->vat_percentage == '')
                                         @if($local_state == 1)
                                             = SGST + CGST
                                         @else
