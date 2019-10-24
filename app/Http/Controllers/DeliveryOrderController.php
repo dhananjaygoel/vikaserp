@@ -803,7 +803,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['actual_quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    'vat_percentage' => ((isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') || (isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != 0)) ? 1 : 0,
                     'from' => $input_data['order_id'],
                     'parent' => $product_data['order'],
                     'created_at' => $created_at,
@@ -823,7 +823,7 @@ class DeliveryOrderController extends Controller {
                     'quantity' => $product_data['quantity'],
                     'present_shipping' => $product_data['present_shipping'],
                     'price' => $product_data['price'],
-                    'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                    'vat_percentage' => ((isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') || (isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != 0)) ? 1 : 0,
                     'from' => '',
                     'parent' => '',
                     'created_at' => $created_at,
@@ -1356,7 +1356,7 @@ class DeliveryOrderController extends Controller {
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
 
-                        if($product_cat->hsn_code){
+                        if($product_cat->hsn_code && $delivery_order_details->vat_percentage == 0 ){
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                             $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
                             if($local_state){
@@ -1367,7 +1367,7 @@ class DeliveryOrderController extends Controller {
                             }
                         }
                         else{
-                            $profile_vat_amount = 0;
+                            $profile_vat_amount = $delivery_order_details->vat_percentage;
                         }
 
                         //$profile_vat_amount = $input_data['vat_percentage'];
@@ -1428,7 +1428,10 @@ class DeliveryOrderController extends Controller {
             $all_vat_on_overhead_count = 0;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
-            
+
+            if($delivery_order_details->vat_percentage != 0){
+                $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
+            }
            $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with puls VAT */
@@ -1444,6 +1447,9 @@ class DeliveryOrderController extends Controller {
 
             $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
 
+            if($delivery_order_details->vat_percentage != 0){
+                $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
+            }
             $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items without VAT */ 
@@ -1474,7 +1480,11 @@ class DeliveryOrderController extends Controller {
 
 //            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
 //            $vat_on_overhead_count = number_format((float) (($ratio_profile * $input_data['vat_percentage']) / 100), 2, '.', '');
-                                
+            
+            if($delivery_order_details->vat_percentage != 0){
+                $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
+            }
+            
             if(isset($total_profile_items) && $total_profile_items > 0){
                 $profile_input_data['product'] = $profile_product;
                 $profile_input_data['total_actual_quantity'] = $total_actual_quantity_profile;

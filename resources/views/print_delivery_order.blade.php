@@ -119,7 +119,7 @@
                                 @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                             @endif
                             <?php }else{ ?>
-                                @if($delivery_data->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
+                                @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                             <?php } ?>
                     </td>
                 </tr>
