@@ -501,7 +501,8 @@ Route::get('get-data', 'DeliveryOrderController@get_data');
     Route::post('updatethickness', 'DBController@updatethickness');
     Route::post('process/gst', 'DBController@storeGST');
     Route::post('process/state', 'DBController@storestate');
-    Route::get('update', 'DBController@update');
+    Route::post('update', 'DBController@update_hsn');
+    Route::get('update/hsn', 'DBController@update_hsn_test');
 
 Route::get('reponse/dropbox/callback', function() {
     echo "Comes";

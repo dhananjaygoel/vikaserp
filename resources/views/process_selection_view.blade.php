@@ -15,7 +15,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="breadcrumb"></div>
-                    <a href="{{URL::action('DBController@update')}}"  class="btn btn-info pull-right">
+                    <a href="{{URL::action('DBController@update_hsn_test')}}"  class="btn btn-info pull-right">
                           <i class="fa fa-refresh fa-lg"></i> Update HSN
                     </a>
             </div>
@@ -95,6 +95,23 @@
                     </header>
                     <div class="main-box-body clearfix panel-body">
                         <form action="{{URL::action('DBController@updatethickness')}}" method="post" role="form" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <input type="file" id="exampleInputFile" name="excel_file">
+                            </div>
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="main-box panel panel-default">
+                    <header class="main-box-header clearfix">
+                        <h2><b>Step - 4</b> &nbsp; Upload HSN For Product Category</h2>
+                    </header>
+                    <div class="main-box-body clearfix panel-body">
+                        <form action="{{URL::action('DBController@update_hsn')}}" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputFile">File input</label>
                                 <input type="file" id="exampleInputFile" name="excel_file">
