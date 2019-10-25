@@ -1240,12 +1240,12 @@ $('.delete_challan_submit').click(function () {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }});
     /* Delete Challan form id object*/
-    $form = $('#delete_delivery_challan');
+    var form = $('#delete_delivery_challan');
     /*Delete Challan form data*/
-    $data = $form.serialize();
+    var data = form.serialize();
     /*Delete Challan url*/
     url = baseurl + '/delivery_challan/' + $('#delete_challan_submit').val() + '-delete';
-    var posting = $.post(url, {formData: $data});
+    var posting = $.post(url, {formData: data});
     posting.done(function (data) {
         $("#pwdr").val('');
         if (data['message'] == 'success') {
