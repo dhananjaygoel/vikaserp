@@ -1271,6 +1271,16 @@ function delete_purchase_order(purchase_order_id) {
 /*
  * Delete order by AJAX call
  */
+$('#po_delete').keypress(function (e) {
+    var key = e.which;
+    
+    if(key == 13)  // the enter key code
+     {
+        // alert(key);
+       $('.delete_purchase_order_submit').click();
+       return false;  
+     }
+});
 $('.delete_purchase_order_submit').click(function () {
     $('#delete_purchase_order').modal('hide');
     /*Form token set up*/
@@ -1363,6 +1373,17 @@ function delete_purchase_advice(purchase_advice_id) {
 /*
  * Delete Purchase Advice from delivery order page
  */
+$('#advc_delete').keypress(function (e) {
+    var key = e.which;
+    
+    if(key == 13)  // the enter key code
+     {
+        // alert(key);
+       $('.delete_purchase_advice_submit').click();
+       return false;  
+     }
+});  
+
 $('.delete_purchase_advice_submit').click(function () {
 
     $('#deletePurchaseAdvice').modal('hide');
@@ -1374,7 +1395,7 @@ $('.delete_purchase_advice_submit').click(function () {
     /* Purchase advice id object*/
     var form = $('#delete_purchase_advice');
     /*Purchase advice form data*/
-    var data = delete_purchase_order_submitform.serialize();
+    var data = form.serialize();
     /*Purchase advice from url*/
     url = form.attr('action');
     var posting = $.post(url, {formData: data});
@@ -1407,6 +1428,18 @@ function delete_purchase_challan(purchase_challan_id) {
 /*
  * Delete the purchase challan by challan_id
  */
+
+$('#dc_delete').keypress(function (e) {
+    var key = e.which;
+    
+    if(key == 13)  // the enter key code
+     {
+        // alert(key);
+       $('.delete_purchase_challan_submit').click();
+       return false;  
+     }
+});   
+
 $('.delete_purchase_challan_submit').click(function () {
 
     $('#delete_purchase_challan').modal('hide');
