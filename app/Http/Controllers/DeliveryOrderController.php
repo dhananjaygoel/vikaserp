@@ -1217,7 +1217,7 @@ class DeliveryOrderController extends Controller {
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          $action = Input::get('action');
          $del = LoadTrucks::where('deliver_id',$id)->where('userid', '=', $delboy)->count();
-         if(isset($del) && $del != 0) {
+         if(isset($del) && $del != 0 && Auth::id() == 0) {
             if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
                 if(!($truck_weight<$empty_truck_weight)) {
                     // if($action ==''){
