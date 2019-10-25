@@ -316,7 +316,7 @@
                                                         <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                         <div class="pwd">
                                                             <div class="pwdl"><b>Password:</b></div>
-                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" id="pwdr" type="password"></div>
+                                                            <div class="pwdr"><input class="form-control" placeholder="" name="password" id="do_dc_delete" type="password"></div>
 
                                                         </div>
                                                         <div class="clearfix"></div>

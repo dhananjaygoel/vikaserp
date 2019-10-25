@@ -1232,6 +1232,16 @@ function delete_challan(challan_id) {
 /*
  * Delete the challan by challan_id
  */
+$('#do_dc_delete').keypress(function (e) {
+    var key = e.which;
+    
+    if(key == 13)  // the enter key code
+     {
+        // alert(key);
+       $('.delete_challan_submit').click();
+       return false;  
+     }
+});
 $('.delete_challan_submit').click(function () {
     $('#delete_challan').modal('hide');
     /*Form token set up*/
