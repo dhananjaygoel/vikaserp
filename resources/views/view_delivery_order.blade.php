@@ -123,6 +123,19 @@
                                             </td>
                                         </tr>                                    
                                     @endif
+                                        <tr>
+                                            <td>
+                                                <span><b>Empty Truck Weight(Kg):</b> </span>
+                                                {{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:0}} 
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span><b>Final Truck Weight(Kg):</b> </span>
+                                                {{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:0}} 
+                                            </td>
+                                        </tr>  
+
                                     <tr>
                                         <td><span class="underline"> Product Details </span></td>
                                     </tr>
@@ -133,6 +146,8 @@
                                     <tr class="headingunderline">
                                         <td><span>Product(Alias)</span></td>
                                         <td><span>Present shipping</span></td>
+                                        <td><span>Actual Pieces</span></td>
+                                        <td><span>Average Weight</span></td>
                                         @if(Auth::user()->role_id == 5)
                                         <td><span>Total Order</span></td>
                                         @endif
@@ -160,6 +175,8 @@
 
                                         </td>
                                         @endif
+                                        <td>{{isset($product->actual_pieces)?$product->actual_pieces:'0'}}</td>
+                                        <td>{{isset($product->actual_quantity)?$product->actual_quantity:'0'}}</td>
                                         <td>{{$product->length}}</td>
                                         <td>
                                         {{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}
