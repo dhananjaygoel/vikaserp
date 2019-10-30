@@ -1042,6 +1042,7 @@ class DeliveryOrderController extends Controller {
 
                           LoadDelboy::where('delivery_id', '=', $id)
                                     ->where('del_boy', '=', $delboy)
+                                    ->where('assigned_status', 1)
                                     ->update(array(
                                     'updated_at' => date("Y-m-d H:i:s")));
                          }
@@ -1078,6 +1079,7 @@ class DeliveryOrderController extends Controller {
                                 LoadTrucks::insert($loadetrucks);
                                 LoadDelboy::where('delivery_id', '=', $id)
                                     ->where('del_boy', '=', $delboy)
+                                    ->where('assigned_status', 1)
                                     ->update(array(
                                     'updated_at' => date("Y-m-d H:i:s")));
                          }
@@ -1117,6 +1119,7 @@ class DeliveryOrderController extends Controller {
                     ));
                     LoadDelboy::where('delivery_id', '=', $id)
                     ->where('del_boy', '=', $delboy)
+                    ->where('assigned_status', 1)
                     ->update(array(
                     'updated_at' => date("Y-m-d H:i:s"),
                 ));
@@ -1189,6 +1192,7 @@ class DeliveryOrderController extends Controller {
 
                           LoadDelboy::where('delivery_id', '=', $id)
                                     ->where('del_boy', '=', $delboy)
+                                    ->where('assigned_status', 1)
                                     ->update(array(
                                     'updated_at' => date("Y-m-d H:i:s")));
                          }
@@ -1208,6 +1212,7 @@ class DeliveryOrderController extends Controller {
                                         ));
                             LoadDelboy::where('delivery_id', '=', $id)
                                         ->where('del_boy', '=', $delboy)
+                                        ->where('assigned_status', 1)
                                         ->update(array(
                                         'updated_at' => date("Y-m-d H:i:s"),
                                         ));
@@ -1216,8 +1221,8 @@ class DeliveryOrderController extends Controller {
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
          $action = Input::get('action');
-         $del = LoadTrucks::where('deliver_id',$id)->where('userid', '=', $delboy)->count();
-         if((isset($del) && $del != 0) || Auth::user()->role_id == 0) {
+         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->count();
+         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
             if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
                 if(!($truck_weight<$empty_truck_weight)) {
                     // if($action ==''){
@@ -1251,11 +1256,16 @@ class DeliveryOrderController extends Controller {
         $average_weight = Input::get('average_weight');
         $delivery_id = Input::get('delivery_id');
         $product_id = Input::get('product_id');
-
+        $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
+        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
         AllOrderProducts::where('id',$product_id)->where('order_id',$delivery_id)->update([
                 'actual_pieces'=>$actual_pieces,  
                 'actual_quantity'=>$average_weight,            
              ]); 
+             echo "success";
+        } else{
+            echo "failed";
+        }
     }
 
 

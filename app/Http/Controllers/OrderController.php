@@ -168,17 +168,22 @@ class OrderController extends Controller {
                 $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
                                  ->where('del_boy',$request->del_boy)
                                  ->where('del_supervisor',Auth::id())
+                                 ->where('assigned_status',1)
                                  ->first();
             
                 if(is_null($delivery_boydata)){
+                    $update_delbys = LoadDelboy::where('delivery_id',$request->delivery_id)
+                                    ->update([
+                                        'assigned_status'=>'0',
+                                    ]);
                     $loadDelboy[] = [
                             'delivery_id' => $request->delivery_id,
                             'del_boy' => $request->del_boy,
                             'del_supervisor' => Auth::id(),
+                            'assigned_status' => '1',
                         ];
                     LoadDelboy::insert($loadDelboy);
                 }
-            
             } else {
                     echo "failed";
             }

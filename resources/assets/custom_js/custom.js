@@ -3649,12 +3649,17 @@ $("button").click(function() {
                     product_id:product_id,
                 },
                 success: function (data) {
-                    $('.alert-success1').show();
-                    setTimeout(function(){
-                        $('.alert-success1').hide();
-                    }, 5000);
-                    fetch_actual_qty();
-                }
+                    // alert(data);
+                    if(data=='success'){
+                        $('.alert-success1').show();
+                        setTimeout(function(){
+                            $('.alert-success1').hide();
+                        }, 5000);
+                        fetch_actual_qty();
+                    }else {
+                        $('.error-success1').show();
+                    }
+                } 
             })
         }
     }

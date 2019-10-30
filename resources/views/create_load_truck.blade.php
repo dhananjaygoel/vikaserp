@@ -131,7 +131,8 @@
             //  dd($truckdetails);
 
                           $delboy = json_decode($delboys);
- 
+//  dd($delboy);
+
                           $total_avg = 0;
               ?>
 
@@ -159,12 +160,16 @@
                          else{
                              $total_avg = " ";
                          }
-                        //  dd($truckinformation);
+                        //  dd($tvalue);
                         $owner_name =$info->users->first_name .' '.$info->users->last_name;
                         $datevalue = isset($info->updated_at)?$info->updated_at:'';
                         $time = date('h:i a', strtotime($datevalue));
                         $date = date('d/m/Y', strtotime($datevalue));
+                        $label = '';
+                        if($time == '12:00 am'){
+                        }else{
                         $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
+                        }
                         ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
@@ -172,13 +177,16 @@
                         @if($info->del_boy == Auth::id() || Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                         
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
-                         </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print $label : ''?></span>
+                         </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
                           </div>
                          @else
-                         <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
-                          
-                        </span><span style="padding-top:8px;">  {{$label}}</span></div>
-                          
+                            @if($tvalue == 0 )
+                                <span> <input type="text" readonly="readonly" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
+                                </span><span style="padding-top:8px;"> Not loaded </span></div>
+                            @else
+                                <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
+                                </span><span style="padding-top:8px;">  {{$label}}</span></div>
+                            @endif
                           
                         @endif  
                          
@@ -223,6 +231,10 @@
                         <div class="alert alert-warning alert-success2" style="display:none;">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Please Fill the values for product.
+                        </div>
+                        <div class="alert alert-warning error-success1" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            You are not authorised to this order now, Please submit for redirect.
                         </div>
                             <div class="table-responsive">
                                 <table id="add_product_table_delivery_load_truck" class="table table-hover">
