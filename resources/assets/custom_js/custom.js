@@ -3602,7 +3602,7 @@ function fetch_actual_qty() {
 
 $("button").click(function() {
     var fired_button = $(this).val();
-    // alert(baseurl);
+    // alert(fired_button);
     var button_id = fired_button.substr(4);
     // alert(button_id);
     var i = button_id;
@@ -3658,6 +3658,81 @@ $("button").click(function() {
                         fetch_actual_qty();
                     }else {
                         $('.error-success1').show();
+                    }
+                } 
+            })
+        }
+    }
+    if(fired_button == 'empty_truck_save') {
+        if ($("#empty_truck_weight").val() == "" || $("#empty_truck_weight").val() == 0) {
+            $('#empty_truck_weight').addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#empty_truck_weight').removeClass('error_validation');
+        }
+        if (status_form == 1) {
+            $('html, body').animate({
+                scrollTop: $('.breadcrumb').offset().top
+            }, 1000);
+            return false;
+        } else {
+            var empty_truck_value = $("#empty_truck_weight").val();
+            var delivery_id = $("#delivery_id").val();
+            var url = $('#site_url').val();
+            $.ajax({
+                type: 'GET',
+                url: url + '/save_empty_truck',
+                data: {
+                    empty_truck_value:empty_truck_value,
+                    delivery_id:delivery_id,
+                },
+                success: function (data) {
+                    // alert(data);
+                    if(data=='success'){
+                        $('.alert-success-empty-truck').show();
+                        setTimeout(function(){
+                            $('.alert-success-empty-truck').hide();
+                        }, 5000);
+                        return false;
+                    }
+                } 
+            })
+        }
+    }
+    if(fired_button == 'truck_weight_save') {
+        var textinput = $(this).attr('id');
+        var delboy_id  = textinput.substr(16,4);
+        // alert(delboy_id);
+
+        if ($("#truck_weight"+delboy_id).val() == "" || $("#truck_weight"+delboy_id).val() == 0) {
+            $('#truck_weight'+delboy_id).addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#truck_weight'+delboy_id).removeClass('error_validation');
+        }
+        if (status_form == 1) {
+            $('html, body').animate({
+                scrollTop: $('.breadcrumb').offset().top
+            }, 1000);
+            return false;
+        } else {
+            var truck_weight = $("#truck_weight"+delboy_id).val();
+            var delivery_id = $("#delivery_id").val();
+            var url = $('#site_url').val();
+            $.ajax({
+                type: 'GET',
+                url: url + '/save_truck_weight',
+                data: {
+                    truck_weight:truck_weight,
+                    delivery_id:delivery_id,
+                },
+                success: function (data) {
+                    if(data=='success'){
+                        $('.alert-success-truck-weight').show();
+                            setTimeout(function(){
+                                $('.alert-success-truck-weight').hide();
+                            }, 5000);
+                            return false;
                     }
                 } 
             })

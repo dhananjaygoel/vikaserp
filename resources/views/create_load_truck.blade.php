@@ -40,6 +40,14 @@
                             @endforeach
                         </div>
                         @endif
+                        <div class="alert alert-success alert-success-empty-truck" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Empty truck value successfully updated.
+                        </div>
+                        <div class="alert alert-success alert-success-truck-weight" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Truck weight value successfully updated.
+                        </div>
                         <div class="form-group">Date : {{date('d F, Y')}}</div>
                         <hr>
                         {!!Form::open(array('data-button'=>'btn_delorderto_deltruck','method'=>'POST','url'=>url('create_load_truck/'.$delivery_data['id']),'class'=>'load_truck_data','id'=>'onenter_prevent'))!!}
@@ -94,12 +102,16 @@
                             @if(isset($delivery_data->empty_truck_weight))
                             @if($delivery_data->empty_truck_weight > 0)
                             
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 10.33%;" maxlength="10" >
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 10.33%;" maxlength="10" >
+                            <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                           
                             @else
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                             @endif
                             @else
-                            <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                             @endif  
                         </div>
                         <hr>
@@ -167,9 +179,11 @@
                         $date = date('d/m/Y', strtotime($datevalue));
                         $label = '';
                         if($time == '12:00 am'){
+                            $label = "N/A";
                         }else{
                         $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
                         }
+                        // dd($info->del_boy);
                         ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
@@ -177,12 +191,13 @@
                         @if($info->del_boy == Auth::id() || Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                         
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
                          </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
                           </div>
                          @else
                             @if($tvalue == 0 )
                                 <span> <input type="text" readonly="readonly" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
-                                </span><span style="padding-top:8px;"> Not loaded </span></div>
+                                </span><span style="padding-top:8px;"> N/A </span></div>
                             @else
                                 <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
                                 </span><span style="padding-top:8px;">  {{$label}}</span></div>
@@ -215,6 +230,7 @@
                     <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                        <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
                         <!-- <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print 'Loaded' : ''?></span> -->
                     </div>
                     @endif
