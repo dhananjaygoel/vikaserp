@@ -236,7 +236,7 @@
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
                         @if($tvalue == 0 )
-                        </span><span style="padding-top:8px;">N/A </span></div>
+                        </span><span style="padding-top:8px;">N/A </span>
                         @endif
                     </div>
                     @endif
