@@ -183,7 +183,7 @@
                         }else{
                         $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
                         }
-                        // dd($info->del_boy);
+                        // print($label);
                         ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
@@ -192,7 +192,11 @@
                         
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                          <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
-                         </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
+                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                                </span><span style="padding-top:8px;"><?php print isset($label)?$label:'' ?></span>
+                            @else
+                                </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
+                            @endif
                           </div>
                          @else
                             @if($tvalue == 0 )
@@ -224,14 +228,16 @@
                         $tvalue = 0;
                     }
                     
-                        // dd($truckvalue);
+                        // dd($tvalue);
                     ?>
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                     <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
-                        <!-- <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print 'Loaded' : ''?></span> -->
+                        @if($tvalue == 0 )
+                        </span><span style="padding-top:8px;">N/A </span></div>
+                        @endif
                     </div>
                     @endif
                 
