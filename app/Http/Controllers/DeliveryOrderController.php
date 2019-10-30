@@ -1298,6 +1298,7 @@ class DeliveryOrderController extends Controller {
                 $loadetrucks[] = [
                 'deliver_id' => $delivery_id,
                 'final_truck_weight' => $truck_weight,
+                'user_id' => Auth::id(),
                 'updated_at' => date("Y-m-d H:i:s"),
         
             ];
@@ -1312,7 +1313,8 @@ class DeliveryOrderController extends Controller {
                     
             }
             if($truck_weight != 0 ) {
-            LoadTrucks:: where('deliver_id', '=', $delivery_id)
+                // dd(Auth::id());
+            LoadTrucks::where('deliver_id', '=', $delivery_id)
                         ->where('userid', '=', Auth::id())
                         ->update(array(
                             'final_truck_weight' => $truck_weight,
