@@ -178,12 +178,12 @@
                         $time = date('h:i a', strtotime($datevalue));
                         $date = date('d/m/Y', strtotime($datevalue));
                         $label = '';
-                        if($time == '12:00 am'){
+                        if($time == '12:00 am' || $tvalue == 0){
                             $label = "N/A";
                         }else{
                         $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
                         }
-                        // print($label);
+                        print($label);
                         ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
