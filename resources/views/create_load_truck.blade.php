@@ -182,8 +182,8 @@
                         }
                         
                         // dd($datevalue);
-                        $time = date('h:i a', strtotime($datevalue));
-                        $date = date('d/m/Y', strtotime($datevalue));
+                        $time = date('h:i a', strtotime(isset($datevalue)?$datevalue:'00:00:00'));
+                        $date = date('d/m/Y', strtotime(isset($datevalue)?$datevalue:'01/01/0000'));
                         $label = '';
                         if($time == '12:00 am' || $tvalue == 0){
                             $label = "N/A";
