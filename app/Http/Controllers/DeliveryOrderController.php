@@ -472,6 +472,7 @@ class DeliveryOrderController extends Controller {
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
+        $delivery_order->final_truck_weight = 0;
         $delivery_order->save();
 
         /* inventory code */
