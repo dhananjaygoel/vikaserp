@@ -142,16 +142,18 @@
               }
             //  dd($truckdetails);
 
-                          $delboy = json_decode($delboys);
-//  dd($delboy);
+                $delboy = json_decode($delboys);
 
-                          $total_avg = 0;
+                $load_labour = json_decode($load_labours);
+// dd($load_labour);
+                $total_avg = 0;
               ?>
 
                 @if ($delivery_data->del_boy != "")
                          
                     @foreach($delboy as $key => $info) 
                         <?php
+                        // dd($info);
                         //print_R($info->customer->owner_name);
                                         if($key ==0){
                                             $labelkey = "1";
@@ -191,24 +193,39 @@
                         @if($info->del_boy == Auth::id() || Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                         
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
-                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
+                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
+                         <!-- <select class=form-control style="width:15%;display:inline-block; margin-right:1em;" multiple="multiple"> -->
+                         <select id="labour_select" name="labour[]" class="form-control" multiple="multiple">
+                            <!-- <option value="">Please Select Labour</option> -->
+                                @if(isset($labours))
+                                    @foreach ($labours as $labour)
+                                        @if(!empty($load_labour))
+                                            @foreach ($load_labour as $lbr_id)
+                                            <option value="{{$labour->id}}" <?php if($labour->id==$lbr_id->labour_id) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                            @endforeach
+                                        @else
+                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </select></span>
                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                </span><span style="padding-top:8px;"><?php print isset($label)?$label:'' ?></span>
+                                <span style="padding-top:8px;"><?php print isset($label)?$label:'' ?></span>
                             @else
-                                </span><span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
+                                <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
                             @endif
-                          </div>
+                        </div>
                          @else
                             @if($tvalue == 0 )
                                 <span> <input type="text" readonly="readonly" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
-                                </span><span style="padding-top:8px;"> N/A </span></div>
+                                </span><span style="padding-top:8px;"> N/A </span>
                             @else
                                 <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
-                                </span><span style="padding-top:8px;">  {{$label}}</span></div>
+                                </span><span style="padding-top:8px;">  {{$label}}</span>
                             @endif
-                          
+                            </div>
                         @endif  
-                         
+                        
                     @endforeach
                 @else
                     <?php
@@ -234,11 +251,23 @@
                     <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                        <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin: 0 1em;">Save</button>
+                        <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
+                            <select id="labour_select" name="labour[]" class="form-control" multiple="multiple">
+                                @if(isset($labours))
+                                    @foreach ($labours as $labour)
+                                        @if(!empty($load_labour))
+                                            @foreach ($load_labour as $lbr_id)
+                                            <option value="{{$labour->id}}" <?php if($labour->id==$lbr_id->labour_id) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                            @endforeach
+                                        @else
+                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </select>
                         @if($tvalue == 0 )
-                        </span><span style="padding-top:8px;">N/A </span>
+                        <span style="padding-top:8px;">N/A </span></div>
                         @endif
-                    </div>
                     @endif
                 
                 

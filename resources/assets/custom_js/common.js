@@ -33,6 +33,12 @@ $(document).ready(function () {
         enableFiltering: true,
         buttonWidth: '400px'
     });
+    $('#labour_select').multiselect({
+        nonSelectedText: 'Please Select Labour',
+        includeSelectAllOption: true,
+        enableFiltering: true,
+        buttonWidth: '300px'
+    });
     
     $(document).on('click', '.delete-loader', function () {
         var baseurl = $('#baseurl').attr('name');
