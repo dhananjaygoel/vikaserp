@@ -33,7 +33,7 @@ $(document).ready(function () {
         enableFiltering: true,
         buttonWidth: '400px'
     });
-    $('#labour_select').multiselect({
+    $('.labour_select').multiselect({
         nonSelectedText: 'Please Select Labour',
         includeSelectAllOption: true,
         enableFiltering: true,

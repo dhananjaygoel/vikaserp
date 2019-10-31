@@ -195,7 +195,7 @@
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                          <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
                          <!-- <select class=form-control style="width:15%;display:inline-block; margin-right:1em;" multiple="multiple"> -->
-                         <select id="labour_select{{$info->del_boy}}" name="labour[]" class="form-control" multiple="multiple">
+                         <select id="labour_select{{$info->del_boy}}" name="labour[]" class="form-control labour_select" multiple="multiple">
                             <!-- <option value="">Please Select Labour</option> -->
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
@@ -252,7 +252,7 @@
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
-                            <select id="labour_select{{Auth::id()}}" name="labour[]" class="form-control" multiple="multiple">
+                            <select id="labour_select{{Auth::id()}}" name="labour[]" class="form-control labour_select" multiple="multiple">
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
                                         @if(!empty($load_labour))
