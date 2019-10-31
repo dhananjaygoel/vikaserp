@@ -186,7 +186,7 @@
                         if(!empty($timevalue[$info->del_boy])){
                             $datevalue = $timevalue[$info->del_boy];
                         }
-                        if(!empty($ar)){
+                        if(isset($ar) && !empty($ar)){
                             $lbr_id = $ar[$info->del_boy];
                         }
                         
@@ -251,7 +251,7 @@
                     } else {
                         $tvalue = 0;
                     }
-                    if(!empty($ar)){
+                    if(isset($ar) && !empty($ar)){
                         $lbr_id = $ar[Auth::id()];
                     }
                     
