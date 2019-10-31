@@ -137,8 +137,9 @@
                 foreach($truckinformation as $truck_info){
                   
                   $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
+                  $timevalue[$truck_info->userid] = $truck_info->updated_at;
                 }
-                
+                // dd($timevalue);
               }
             //  dd($truckdetails);
 
@@ -176,7 +177,11 @@
                          }
                         //  dd($tvalue);
                         $owner_name =$info->users->first_name .' '.$info->users->last_name;
-                        $datevalue = isset($info->updated_at)?$info->updated_at:'';
+                        if(!empty($timevalue[$info->del_boy])){
+                            $datevalue = $timevalue[$info->del_boy];
+                        }
+                        
+                        // dd($datevalue);
                         $time = date('h:i a', strtotime($datevalue));
                         $date = date('d/m/Y', strtotime($datevalue));
                         $label = '';
