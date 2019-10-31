@@ -212,7 +212,7 @@
                             <!-- <option value="">Please Select Labour</option> -->
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
-                                            <option value="{{$labour->id}}" <?php if(in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                            <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                     @endforeach
                                 @endif
                             </select></span>
@@ -265,7 +265,7 @@
                             <select id="labour_select{{Auth::id()}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
-                                        <option value="{{$labour->id}}" <?php if(in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                        <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                     @endforeach
                                 @endif
                             </select>
