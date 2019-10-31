@@ -146,7 +146,13 @@
                 $delboy = json_decode($delboys);
 
                 $load_labour = json_decode($load_labours);
-// dd($load_labour);
+                if(!empty($load_labour)){
+                    // echo '<pre>';
+                    foreach($load_labour as $load_lbr){
+                        $ar[$load_lbr->del_boy_id][] = $load_lbr->labour_id;
+                    }
+                }
+                // dd($labours);
                 $total_avg = 0;
               ?>
 
@@ -180,8 +186,13 @@
                         if(!empty($timevalue[$info->del_boy])){
                             $datevalue = $timevalue[$info->del_boy];
                         }
-                        
-                        // dd($datevalue);
+                        if(!empty($ar)){
+                            $lbr_id = $ar[$info->del_boy];
+                        }
+                        // if(in_array(1,$lbr_id)){
+                        //     dd('selected');
+                        // }
+                        // dd($lbr_id);
                         $time = date('h:i a', strtotime(isset($datevalue)?$datevalue:'00:00:00'));
                         $date = date('d/m/Y', strtotime(isset($datevalue)?$datevalue:'01/01/0000'));
                         $label = '';
@@ -200,17 +211,11 @@
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                          <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
                          <!-- <select class=form-control style="width:15%;display:inline-block; margin-right:1em;" multiple="multiple"> -->
-                         <select id="labour_select{{$info->del_boy}}" name="labour[]" class="form-control labour_select" multiple="multiple">
+                         <select id="labour_select{{$info->del_boy}}" name="labour[{{$info->del_boy}}][]" class="form-control labour_select" multiple="multiple">
                             <!-- <option value="">Please Select Labour</option> -->
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
-                                        @if(!empty($load_labour))
-                                            @foreach ($load_labour as $lbr_id)
-                                            <option value="{{$labour->id}}" <?php if($labour->id==$lbr_id->labour_id) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
-                                        @endif
+                                            <option value="{{$labour->id}}" <?php if(in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                     @endforeach
                                 @endif
                             </select></span>
@@ -249,6 +254,9 @@
                     } else {
                         $tvalue = 0;
                     }
+                    if(!empty($ar)){
+                        $lbr_id = $ar[Auth::id()];
+                    }
                     
                         // dd($tvalue);
                     ?>
@@ -257,16 +265,10 @@
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
                         <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
-                            <select id="labour_select{{Auth::id()}}" name="labour[]" class="form-control labour_select" multiple="multiple">
+                            <select id="labour_select{{Auth::id()}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
-                                        @if(!empty($load_labour))
-                                            @foreach ($load_labour as $lbr_id)
-                                            <option value="{{$labour->id}}" <?php if($labour->id==$lbr_id->labour_id) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="{{$labour->id}}">{{$labour->first_name}} {{$labour->last_name}}</option>
-                                        @endif
+                                        <option value="{{$labour->id}}" <?php if(in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                     @endforeach
                                 @endif
                             </select>
