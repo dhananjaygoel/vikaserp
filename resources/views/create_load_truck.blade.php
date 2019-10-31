@@ -189,10 +189,7 @@
                         if(!empty($ar)){
                             $lbr_id = $ar[$info->del_boy];
                         }
-                        // if(in_array(1,$lbr_id)){
-                        //     dd('selected');
-                        // }
-                        // dd($lbr_id);
+                        
                         $time = date('h:i a', strtotime(isset($datevalue)?$datevalue:'00:00:00'));
                         $date = date('d/m/Y', strtotime(isset($datevalue)?$datevalue:'01/01/0000'));
                         $label = '';
