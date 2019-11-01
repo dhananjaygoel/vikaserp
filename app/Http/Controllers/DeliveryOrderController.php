@@ -447,9 +447,6 @@ class DeliveryOrderController extends Controller {
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
-                $do = DeliveryOrder::find($id);
-                $do->final_truck_weight = 0;
-                $do->save();
             }
             else if ($product_data['name'] != "" && $product_data['order'] == '') {
                 $order_products = [
