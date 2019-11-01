@@ -1361,7 +1361,7 @@ class DeliveryOrderController extends Controller {
         $delboy_id = Input::get('delboy_id');
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
-            $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$delivery_id)->first();
+            $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$delivery_id)->where('userid', '=', $delboy_id)->first();
             if(empty($delivery_anothertruckdata)){
                 $loadetrucks[] = [
                 'deliver_id' => $delivery_id,
