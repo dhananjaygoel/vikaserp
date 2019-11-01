@@ -253,7 +253,7 @@
                         $tvalue = 0;
                     }
                     if(isset($ar) && !empty($ar)){
-                        $lbr_id = $ar[Auth::id()];
+                        $lbr_id = isset($ar[Auth::id()])?$ar[Auth::id()]:null;
                     }
                     
                         // dd($tvalue);
