@@ -1366,7 +1366,7 @@ class DeliveryOrderController extends Controller {
                 $loadetrucks[] = [
                 'deliver_id' => $delivery_id,
                 'final_truck_weight' => $truck_weight,
-                'userid' => Auth::id(),
+                'userid' => $delboy_id,
                 'updated_at' => date("Y-m-d H:i:s"),
         
             ];

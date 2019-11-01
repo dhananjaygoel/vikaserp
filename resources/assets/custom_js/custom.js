@@ -3694,9 +3694,9 @@ $("button").click(function() {
                         setTimeout(function(){
                             $('.alert-success-empty-truck').hide();
                         }, 5000);
-                        return false;
+                        window.onbeforeunload = null;
+                        // return false;
                     }
-                    window.onbeforeunload = null;
                 } 
             })
         }
@@ -3736,9 +3736,9 @@ $("button").click(function() {
                             setTimeout(function(){
                                 $('.alert-success-truck-weight').hide();
                             }, 5000);
-                            return false;
+                            window.onbeforeunload = null;
+                            // return false;
                     }
-                    window.onbeforeunload = null;
                 } 
             })
         }
