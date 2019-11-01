@@ -447,7 +447,11 @@ class DeliveryOrderController extends Controller {
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);
-            } else if ($product_data['name'] != "" && $product_data['order'] == '') {
+                $do = DeliveryOrder::find($id);
+                $do->final_truck_weight = 0;
+                $do->save();
+            }
+            else if ($product_data['name'] != "" && $product_data['order'] == '') {
                 $order_products = [
                     'order_id' => $id,
                     'order_type' => 'delivery_order',
@@ -462,6 +466,9 @@ class DeliveryOrderController extends Controller {
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::create($order_products);
+                $do = DeliveryOrder::find($id);
+                $do->final_truck_weight = 0;
+                $do->save();
             }
             /* check for vat/gst items */
             if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
@@ -472,7 +479,6 @@ class DeliveryOrderController extends Controller {
         $delivery_order = DeliveryOrder::find($id);
         $delivery_order_prod = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('order_id', '=', $id)->first();
         $delivery_order->updated_at = $delivery_order_prod->updated_at;
-        $delivery_order->final_truck_weight = 0;
         $delivery_order->save();
 
         /* inventory code */
