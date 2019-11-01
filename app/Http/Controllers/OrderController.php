@@ -167,7 +167,7 @@ class OrderController extends Controller {
                 echo "success";
                 $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
                                  ->where('del_boy',$request->del_boy)
-                                 ->where('del_supervisor',Auth::id())
+                                //  ->where('del_supervisor',Auth::id())
                                 //  ->where('assigned_status',1)
                                  ->first();
             
@@ -191,6 +191,8 @@ class OrderController extends Controller {
                     $loadDelboy = LoadDelboy::where('delivery_id',$request->delivery_id)
                                     ->where('del_boy',$request->del_boy)
                                     ->update([
+                                        'del_boy' => $request->del_boy,
+                                        'del_supervisor' => Auth::id(),
                                         'assigned_status'=>'1',
                                     ]);
                 }
