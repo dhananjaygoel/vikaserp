@@ -3656,6 +3656,7 @@ $("button").click(function() {
                             $('.alert-success1').hide();
                         }, 5000);
                         fetch_actual_qty();
+                        window.onbeforeunload = null;
                     }else {
                         $('.error-success1').show();
                     }
@@ -3695,6 +3696,7 @@ $("button").click(function() {
                         }, 5000);
                         return false;
                     }
+                    window.onbeforeunload = null;
                 } 
             })
         }
@@ -3734,6 +3736,7 @@ $("button").click(function() {
                             }, 5000);
                             return false;
                     }
+                    window.onbeforeunload = null;
                 } 
             })
         }
