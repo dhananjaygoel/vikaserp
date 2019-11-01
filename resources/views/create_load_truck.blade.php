@@ -151,8 +151,9 @@
                     foreach($load_labour as $load_lbr){
                         $ar[$load_lbr->del_boy_id][] = $load_lbr->labour_id;
                     }
+                    // print_r($ar);
                 }
-                // dd($labours);
+                
                 $total_avg = 0;
               ?>
 
@@ -187,9 +188,9 @@
                             $datevalue = $timevalue[$info->del_boy];
                         }
                         if(isset($ar) && !empty($ar)){
-                            $lbr_id = $ar[$info->del_boy];
+                            $lbr_id = isset($ar[$info->del_boy])?$ar[$info->del_boy]:null;
                         }
-                        
+                        // dd($ar);
                         $time = date('h:i a', strtotime(isset($datevalue)?$datevalue:'00:00:00'));
                         $date = date('d/m/Y', strtotime(isset($datevalue)?$datevalue:'01/01/0000'));
                         $label = '';
