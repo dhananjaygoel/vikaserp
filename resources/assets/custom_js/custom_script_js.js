@@ -535,7 +535,11 @@ function clear_actual_qty() {
 
     $("#total_actual_qty").val("");
 }
-
+function check_change() {
+    window.onbeforeunload = function() {
+        return 'Are you sure you want to navigate away from this page?';
+    };
+}
 
 /*
  * 
