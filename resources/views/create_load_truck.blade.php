@@ -129,9 +129,9 @@
                             <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="<?php isset($delivery_data->final_truck_weight) && $delivery_data->final_truck_weight>0? print $delivery_data->final_truck_weight:''?>" readonly="readonly" style="width:170px;">
                         @endif 
             </div>
-                          <?php
+            <?php
               $truckinformation =json_decode($truckdetails);
-            //   dd($truckinformation); 
+              
               if(!empty($truckinformation)){
                 $truckvalue = array();
                 foreach($truckinformation as $truck_info){
@@ -139,19 +139,15 @@
                   $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
                   $timevalue[$truck_info->userid] = $truck_info->updated_at;
                 }
-                // dd($timevalue);
               }
-            //  dd($truckdetails);
 
                 $delboy = json_decode($delboys);
 
                 $load_labour = json_decode($load_labours);
                 if(!empty($load_labour)){
-                    // echo '<pre>';
                     foreach($load_labour as $load_lbr){
                         $ar[$load_lbr->del_boy_id][] = $load_lbr->labour_id;
                     }
-                    // print_r($ar);
                 }
                 
                 $total_avg = 0;
@@ -161,17 +157,14 @@
                          
                     @foreach($delboy as $key => $info) 
                         <?php
-                        // dd($info);
-                        //print_R($info->customer->owner_name);
-                                        if($key ==0){
-                                            $labelkey = "1";
-                                        }
-                                        else{
-                                            $labelkey = $key+1;
-                                        }
+                        if($key ==0){
+                            $labelkey = "1";
+                        }
+                        else{
+                            $labelkey = $key+1;
+                        }
                         if(!empty($truckvalue[$info->del_boy])){
                             $tvalue = $truckvalue[$info->del_boy];
-                            // dd($truckvalue);
                         }
                         else{
                         $tvalue =0;
@@ -182,7 +175,6 @@
                          else{
                              $total_avg = " ";
                          }
-                        //  dd($tvalue);
                         $owner_name =$info->users->first_name .' '.$info->users->last_name;
                         if(!empty($timevalue[$info->del_boy])){
                             $datevalue = $timevalue[$info->del_boy];
@@ -190,7 +182,6 @@
                         if(isset($ar) && !empty($ar)){
                             $lbr_id = isset($ar[$info->del_boy])?$ar[$info->del_boy]:null;
                         }
-                        // dd($ar);
                         $time = date('h:i a', strtotime(isset($datevalue)?$datevalue:'00:00:00'));
                         $date = date('d/m/Y', strtotime(isset($datevalue)?$datevalue:'01/01/0000'));
                         $label = '';
@@ -199,7 +190,6 @@
                         }else{
                         $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
                         }
-                        // print($label);
                         ?>
                         <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
@@ -208,9 +198,7 @@
                         
                          <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                          <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
-                         <!-- <select class=form-control style="width:15%;display:inline-block; margin-right:1em;" multiple="multiple"> -->
                          <select id="labour_select{{$info->del_boy}}" name="labour[{{$info->del_boy}}][]" class="form-control labour_select" multiple="multiple">
-                            <!-- <option value="">Please Select Labour</option> -->
                                 @if(isset($labours))
                                     @foreach ($labours as $labour)
                                             <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
@@ -256,7 +244,6 @@
                         $lbr_id = isset($ar[Auth::id()])?$ar[Auth::id()]:null;
                     }
                     
-                        // dd($tvalue);
                     ?>
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                     <div class ="row form-group">
