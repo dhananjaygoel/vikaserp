@@ -1358,6 +1358,7 @@ class DeliveryOrderController extends Controller {
         $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
         // dd($truck_weight);
         $delivery_id = Input::get('delivery_id');
+        $delboy_id = Input::get('delboy_id');
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
             $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$delivery_id)->first();
@@ -1380,12 +1381,11 @@ class DeliveryOrderController extends Controller {
                     
             }
             if($truck_weight != 0 ) {
-                // dd(Auth::id());
             LoadTrucks::where('deliver_id', '=', $delivery_id)
-                        ->where('userid', '=', Auth::id())
+                        ->where('userid', '=', $delboy_id)
                         ->update(array(
                             'final_truck_weight' => $truck_weight,
-                        'userid' => Auth::id(),
+                        'userid' => $delboy_id,
                         'updated_at' => date("Y-m-d H:i:s"),
                         ));
             LoadDelboy::where('delivery_id', '=', $delivery_id)

@@ -3727,8 +3727,10 @@ $("button").click(function() {
                 data: {
                     truck_weight:truck_weight,
                     delivery_id:delivery_id,
+                    delboy_id:delboy_id,
                 },
                 success: function (data) {
+                    // alert(data);
                     if(data=='success'){
                         $('.alert-success-truck-weight').show();
                             setTimeout(function(){
