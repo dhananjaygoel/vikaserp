@@ -102,15 +102,15 @@
                             @if(isset($delivery_data->empty_truck_weight))
                             @if($delivery_data->empty_truck_weight > 0)
                             
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onchange="check_change()" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 10.33%;" maxlength="10" >
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onchange="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 10.33%;" maxlength="10" >
                             <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                            
                             @else
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onchange="check_change()" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onchange="check_change();" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                             <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                             @endif
                             @else
-                            <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onchange="check_change();">
                             <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                             @endif  
                         </div>
@@ -196,7 +196,7 @@
             
                         @if($info->del_boy == Auth::id() || Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                         
-                         <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onchange="check_change()" onkeypress=" return numbersOnly(this, event, true, false);" >
+                         <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onchange="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
                          <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
                          <select id="labour_select{{$info->del_boy}}" name="labour[{{$info->del_boy}}][]" class="form-control labour_select" multiple="multiple">
                                 @if(isset($labours))
@@ -248,7 +248,7 @@
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                     <div class ="row form-group">
                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
-                        <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onchange="check_change()" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                        <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onchange="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
                             <select id="labour_select{{Auth::id()}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                 @if(isset($labours))
@@ -351,12 +351,12 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" <?php print isset($class) ? $class :''; ?> class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onchange="check_change()" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity();" onclick="clear_actual_qty();" >
+                                                    <input id="actual_pieces_{{$key}}" <?php print isset($class) ? $class :''; ?> class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onchange="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity();" onclick="clear_actual_qty();" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="average_weight_{{$key}}" <?php print isset($class) ? $class :''; ?>  class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{$product->actual_quantity}}" type="tel" onchange="check_change()" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity();" maxlength="10" onclick="clear_actual_qty();">
+                                                    <input id="average_weight_{{$key}}" <?php print isset($class) ? $class :''; ?>  class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{$product->actual_quantity}}" type="tel" onchange="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity();" maxlength="10" onclick="clear_actual_qty();">
                                                 </div>
                                             </td>
                                             <td>
