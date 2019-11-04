@@ -3696,6 +3696,8 @@ $("button").click(function() {
                         }, 5000);
                         window.onbeforeunload = null;
                         // return false;
+                    }else {
+                        $('.error-success1').show();
                     }
                 } 
             })
@@ -3738,6 +3740,8 @@ $("button").click(function() {
                             }, 5000);
                             window.onbeforeunload = null;
                             // return false;
+                    }else {
+                        $('.error-success1').show();
                     }
                 } 
             })
