@@ -1798,9 +1798,8 @@ class DeliveryOrderController extends Controller {
         //dd($delivery_data->toArray());
 //        $delivery_locations = DeliveryLocation::all();
 //        $customers = Customer::all();
-
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('print_delivery_order', [
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
             'customer_type' => $customer_type,

@@ -853,8 +853,8 @@ $('.print_delivery_order').click(function () {
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');
-//            var printWindow = window.open('about:blank');
-            var printWindow = window.open('', '');
+           var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
 //            printWindow.document.open();
             if (printWindow) {
                 printWindow.document.write(data);
