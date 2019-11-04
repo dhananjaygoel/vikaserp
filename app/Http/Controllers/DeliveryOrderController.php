@@ -996,6 +996,8 @@ class DeliveryOrderController extends Controller {
        public function store_load_truck($id) {
          $input_data = Input::all();
         //  dd($input_data);
+        $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
+        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
         $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
         $truck_product_ids = "";
         if(!empty($inputprodut)){
@@ -1315,7 +1317,10 @@ class DeliveryOrderController extends Controller {
         }else {
             return redirect('delivery_order' . $parameters)->with('success','You are not authorised to this order now.');
         }
-      }
+        }else {
+            return redirect('delivery_order')->with('success','You are not authorised to this order now.');
+        }
+    }
 
       public function save_product(Request $request) {
 
