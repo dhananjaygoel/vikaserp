@@ -1452,8 +1452,8 @@ class DeliveryChallanController extends Controller {
 
             $date_letter = $update_delivery_challan->serial_number;
 
-            $pdf = app('dompdf.wrapper');
-            $pdf->loadView('delivery_challan_pdf', [
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount,
             ]);
@@ -1588,8 +1588,8 @@ class DeliveryChallanController extends Controller {
 //                $convert_value = $this->convert_number($allorder->grand_price);
 //            }
 //            $allorder['convert_value'] = $convert_value;
-            $pdf = app('dompdf.wrapper');
-            $pdf->loadView('delivery_challan_pdf', [
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
             ]);

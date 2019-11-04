@@ -896,7 +896,8 @@ $('.print_delivery_challan').click(function () {
         url: base_url + '/print_delivery_challan/' + $('#print_delivery_challan').val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -917,7 +918,8 @@ $('.print_inventory_report_list').click(function () {
         url: base_url + '/print_inventory_report/' + product_id,
         success: function (data) {
             $('#print_inventory_modal').modal('hide');
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -943,7 +945,8 @@ $('.print_account_customers').click(function () {
         },
         success: function (data) {
             $('#print_account_customers').modal('hide');
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -968,7 +971,8 @@ $('.print_customers_details').click(function () {
         },
         success: function (data) {
             $('#print_account_customers').modal('hide');
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -989,7 +993,8 @@ $('.print_inventory_price_list').click(function () {
         url: base_url + '/print_inventory_price_list/' + product_id,
         success: function (data) {
             $('#print_inventory_price_list').modal('hide');
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -1011,7 +1016,8 @@ $('.print_sales_order_daybook').click(function () {
         data: {export_from_date: export_from_date, export_to_date: export_to_date, _token: _token},
         url: base_url + '/print_sales_order_daybook',
         success: function (data) {
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             if (printWindow) {
                 printWindow.document.write(data);
                 printWindow.print();
@@ -1034,7 +1040,8 @@ $('.print_daily_proforma').click(function () {
         data: {export_from_date: export_from_date, export_to_date: export_to_date, _token: _token},
         url: base_url + '/print_daily_proforma',
         success: function (data) {
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             if (printWindow) {
                 printWindow.document.write(data);
                 printWindow.print();
@@ -1061,7 +1068,8 @@ $('.print_purchase_challan').click(function () {
         type: "GET",
         url: base_url + '/print_purchase_challan/' + $('#purchase_challan_id').val() + '?send_sms=' + send_sms,
         success: function (data) {
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -1108,7 +1116,8 @@ $('.print_purchase_advise').click(function () {
             data: {vehicle_number:vehicle_number},
             url: base_url + '/print_purchase_advise/' + id + '?send_sms=' + send_sms,
             success: function (data) {
-                var printWindow = window.open('', '');
+                var printWindow = window.open(data);
+                // var printWindow = window.open('', '');
                 printWindow.document.write(data);
                 printWindow.print();
                 printWindow.close();
@@ -1127,7 +1136,8 @@ $('.print_purchase_daybook').click(function () {
         type: "GET",
         url: base_url + '/print_purchase_daybook',
         success: function (data) {
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
@@ -1145,7 +1155,8 @@ $('.print_purchase_estimate').click(function () {
         type: "GET",
         url: base_url + '/print_purchase_estimate',
         success: function (data) {
-            var printWindow = window.open('', '');
+            var printWindow = window.open(data);
+            // var printWindow = window.open('', '');
             printWindow.document.write(data);
             printWindow.print();
             printWindow.close();
