@@ -61,11 +61,11 @@ class DBController extends Controller {
                 $results = $reader->all();
                 foreach ($results as $excel) {
                     $hsn = new Hsn();
-                    $hsn_result = Hsn::where('hsn_code', $excel->hsn_code)->pluck('id');
+                    $hsn_result = Hsn::where('hsn_code', $excel['hsn_code'])->pluck('id');
                     if(!$hsn_result>0){
-                        $hsn->hsn_code = $excel->hsn_code;
-                        $hsn->gst = $excel->gst;
-                        $hsn->hsn_desc = $excel->hsn_desc;
+                        $hsn->hsn_code = $excel['hsn_code'];
+                        $hsn->gst = $excel['gst'];
+                        $hsn->hsn_desc = $excel['hsn_desc'];
                         $hsn->save();
                     }
                 }
@@ -153,51 +153,24 @@ class DBController extends Controller {
       function update_hsn(){
         if (Input::hasFile('excel_file')) {
             $input = Input::file('excel_file');
+            ini_set('max_execution_time', 720);
             $filename = $input->getRealPath();
             Excel::load($filename, function($reader) {
-                  $excel = $reader->all();
-                //   $t = $excel->only(['category_id'])->unique();
-                //   echo '<pre>';
-                //   print_r($t);
-                //   $excel1 = $excel->distinct('category_name');
-                $array=array();
-                
-                  foreach ($excel as $hsn_result) {
-                    $array=[$hsn_result->category_id,$hsn_result->hsn_code];
-                    $hsn_id = array_unique($array);
-                  echo '<pre>';
-                    print_r(isset($hsn_id->category_id)?$hsn_id->category_id:'');
-                    //   $array2[]=$hsn_result->hsn_code;
-// $array[]=array_combine($array1,$array2);
-                    //   $t = $hsn_result->only(['category_id'])->unique();
-                    //   echo '<pre>';
-                    // print_r($t);
-                    // // dd((int)$hsn_result->category_id);
-                    // $product_category_id = (int)$hsn_result->category_id;
-                    // $t1 = $hsn_result->array_unique($product_category_id);
-                    // print($product_category_id);
-                    // App\ProductSubCategory::where('product_category_id',(int)$hsn_result->category_id)->update(['hsn_code',(int)$hsn_result->hsn_code]);
-                      
-                  }
-                //   $hsn_id = array_unique($array);
-                //   echo '<pre>';
-                //     print_r($hsn_id);
-                foreach ($hsn_id as $cat_id){
-                    // dd($cat_id);
-                    // App\ProductSubCategory::where('product_category_id',(int)$cat_id)->update(['hsn_code',(int)$hsn_result->hsn_code]);
-                }
-            });
-            
-              exit;
-            // $results = App\ProductSubCategory::select('product_category_id','hsn_code')->orderBy('product_category_id', 'asc')->get();
-            // foreach ($results as  $result) {
-            //     App\ProductCategory::where('id',$result->product_category_id)->update(['hsn_code'=>$result->hsn_code ]);
-            // }
+                $excel = $reader->all();
 
-            // $hsnresults = App\Hsn::orderBy('hsn_code', 'asc')->get();
-            // foreach ($hsnresults as $hsnresult) {
-            //     App\ProductCategory::where('hsn_code',$hsnresult->hsn_code)->update(['gst'=>$hsnresult->gst,'hsn_desc' =>$hsnresult->hsn_desc ]);
-            // }
+                foreach ($excel as $hsn_result) {
+                    // dd($hsn_result['alias_name']);
+                    App\ProductCategory::where('product_category_name',$hsn_result['category_name'])->update(['hsn_code'=>$hsn_result['hsn_code']]);
+
+                    App\ProductSubCategory::where('alias_name',$hsn_result['alias_name'])->update(['hsn_code'=>$hsn_result['hsn_code'] ]);
+                }
+                  
+                $hsnresults = App\Hsn::orderBy('hsn_code', 'asc')->get();
+                foreach ($hsnresults as $hsnresult) {
+                    App\ProductCategory::where('hsn_code',$hsnresult->hsn_code)->update(['gst'=>$hsnresult->gst,'hsn_desc' =>$hsnresult->hsn_desc ]);
+                }
+
+            });
             
             return redirect('process')->with('success', 'HSN successfully updated.');
         }
