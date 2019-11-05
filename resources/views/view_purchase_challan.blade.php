@@ -125,9 +125,9 @@
                                         <td  class="widthtable">
                                             <span>Amount</span>
                                         </td>
-                                        <td class="widthtable">
+                                        <!-- <td class="widthtable">
                                             <span>Remark</span>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <?php
                                     $total_quantity = 0;
@@ -151,7 +151,7 @@
                                             ?>
 
                                         </td>
-                                        <td> {{$product_data->remarks}}</td>
+                                        <!-- <td> {{$product_data->remarks}}</td> -->
                                     </tr>
                                     @endif
                                     @endforeach
