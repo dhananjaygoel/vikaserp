@@ -317,12 +317,14 @@ class PurchaseOrderController extends Controller {
             $validator = Validator::make($input_data, Customer::$new_supplier_inquiry_rules);
             if ($validator->passes()) {
                 $customers = new Customer();
-                $customers->owner_name = $input_data['supplier_name'];
-                $customers->phone_number1 = $input_data['mobile_number'];
-                $customers->credit_period = $input_data['credit_period'];
-                $customers->customer_status = 'pending';
-                $customers->save();
-                $customer_id = $customers->id;
+                // $customers->owner_name = $input_data['supplier_name'];
+                // $customers->phone_number1 = $input_data['mobile_number'];
+                // $customers->credit_period = $input_data['credit_period'];
+                // $customers->customer_status = 'pending';
+                // $customers->save();
+                // $customer_id = $customers->id;
+                $newcustomer = $customers->addNewSupplier($input_data['supplier_name'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['purchase_order_location']);
+                $customer_id = $newcustomer->id;
             } else {
                 $error_msg = $validator->messages();
                 Session::forget('product');

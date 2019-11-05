@@ -112,6 +112,16 @@ class Customer extends Model {
         $this->save();
         return $this;
     }
+    public function addNewSupplier($owner_name, $phone_number1, $credit_period, $devlivery_location_id = '444') {
+
+        $this->owner_name = $owner_name;
+        $this->phone_number1 = $phone_number1;
+        $this->credit_period = $credit_period;
+        $this->customer_status = 'pending';
+        $this->delivery_location_id = $devlivery_location_id;
+        $this->save();
+        return $this;
+    }
     
     public static $customers_rules = array(
         'owner_name' => 'required|max:100',                        
