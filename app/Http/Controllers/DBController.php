@@ -59,7 +59,7 @@ class DBController extends Controller {
           $filename = $input->getRealPath();
           Excel::load($filename, function($reader) {
                 $results = $reader->all();
-                DB::table('hsn')->truncate();
+                // DB::table('hsn')->truncate();
                 foreach ($results as $excel) {
                     $hsn = new Hsn();
                     $hsn_result = Hsn::where('hsn_code', $excel['hsn_code'])->pluck('id');
