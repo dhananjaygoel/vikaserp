@@ -59,6 +59,7 @@ class DBController extends Controller {
           $filename = $input->getRealPath();
           Excel::load($filename, function($reader) {
                 $results = $reader->all();
+                DB::table('hsn')->truncate();
                 foreach ($results as $excel) {
                     $hsn = new Hsn();
                     $hsn_result = Hsn::where('hsn_code', $excel['hsn_code'])->pluck('id');
@@ -153,9 +154,9 @@ class DBController extends Controller {
       function update_hsn(){
         if (Input::hasFile('excel_file')) {
             $input = Input::file('excel_file');
-            ini_set('max_execution_time', 720);
             $filename = $input->getRealPath();
             Excel::load($filename, function($reader) {
+                ini_set('max_execution_time', 720);
                 $excel = $reader->all();
 
                 foreach ($excel as $hsn_result) {
