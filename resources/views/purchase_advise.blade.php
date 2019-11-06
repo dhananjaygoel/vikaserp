@@ -20,25 +20,24 @@
                                 <div class="col-md-12">
                                     <?php
                                     $session_sort_type_order = Session::get('order-sort-type');
-                                    $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+                                    // $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+                                    if ((Input::get('advice_status') != "") || (Input::get('purchaseaAdviseFilter') != "")) {
+                                        if (Input::get('advice_status') != "") {
+                                            $qstring_sort_type_order = Input::get('advice_status');
+                                        } elseif (Input::get('purchaseaAdviseFilter') != "") {
+                                            $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+                                        }
+                                    }
                                     if (!empty($qstring_sort_type_order) && trim($qstring_sort_type_order) != "") {
                                         $qstring_sort_type_order = $qstring_sort_type_order;
                                     } else {
                                         $qstring_sort_type_order = $session_sort_type_order;
                                     }
+
                                     ?>
-                                    <select class="form-control" id="purchaseaAdviseFilter" name="purchaseaAdviseFilter">
-                                        <!--<option value="" selected="">Status</option>-->
-                                        <option value="in_process" <?php
-                                        if ($qstring_sort_type_order == "in_process" | $qstring_sort_type_order == "Inprocess") {
-                                            echo "selected=selected";
-                                        }
-                                        ?>>Inprocess</option>
-                                        <option value="delivered" <?php
-                                        if ($qstring_sort_type_order == "delivered" | $qstring_sort_type_order == "Delivered") {
-                                            echo "selected=selected";
-                                        }
-                                        ?>>Delivered</option>
+                                    <select class="form-control" id="advice_status" name="advice_status" onchange="this.form.submit()">
+                                        <option <?php if ($qstring_sort_type_order == 'in_process') echo 'selected=""'; ?> value="in_process">Inprocess</option>
+                                        <option <?php if ($qstring_sort_type_order == 'delivered') echo 'selected=""'; ?> value="delivered">Delivered</option>
 
                                     </select>
                                     <?php
@@ -309,6 +308,7 @@
                             @if($purchase_advise->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('purchaseorder_advise')}}" id="filter_search">
+                                <input type="hidden" name="advice_status" value="{{($qstring_sort_type_order!="")?$qstring_sort_type_order:""}}"/>
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;

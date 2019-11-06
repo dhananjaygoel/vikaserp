@@ -58,8 +58,13 @@ class PurchaseAdviseController extends Controller {
 
         $q = PurchaseAdvise::query()->with('supplier', 'purchase_products');
         $session_sort_type_order = Session::get('order-sort-type');
-        $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+        // $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
 
+        if (Input::get('advice_status') != "") {
+            $qstring_sort_type_order = Input::get('advice_status');
+        } elseif (Input::get('purchaseaAdviseFilter') != "") {
+            $qstring_sort_type_order = Input::get('purchaseaAdviseFilter');
+        }
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
             $qstring_sort_type_order = $qstring_sort_type_order;
         } else {
@@ -70,12 +75,15 @@ class PurchaseAdviseController extends Controller {
             }
         }
 
-        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != '')) {
-            $q->where('advice_status', '=', $qstring_sort_type_order);
+        if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
+            if ($qstring_sort_type_order == 'in_process') {
+                $q->where('advice_status', 'in_process');
+            } elseif ($qstring_sort_type_order == 'delivered') {
+                $q->where('advice_status', 'delivered');
+            }
         } else {
-            $q->where('advice_status', '=', 'in_process');
+            $q->where('advice_status', 'in_process');
         }
-
 
         $search_dates = [];
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
