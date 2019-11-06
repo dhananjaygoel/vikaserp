@@ -863,13 +863,13 @@ function purchase_challan_calculation() {
         if (parseFloat($('#product_price_' + i).val())) {
             var quantity = parseFloat($("#actual_quantity_" + i).val());
             var rate = $("#product_price_" + i).val();
-            var amount = parseFloat(rate) * parseFloat(quantity);
+            var amount = (parseFloat(rate) * parseFloat(quantity)).toFixed(2);
             $("#amount_" + i).html('' + amount + '');
             total_actual_quantity = total_actual_quantity + parseFloat(quantity);
-            total_amount_product = total_amount_product + amount;
+            total_amount_product = (parseFloat(total_amount_product) + parseFloat(amount)).toFixed(2);
         }
     }
-    $("#total_price2").html('' + total_amount_product.toFixed(2));
+    $("#total_price2").html('' + total_amount_product);
     $("#total_actual_quantity").html('' + total_actual_quantity);
     var discount_value = 0;
 
@@ -880,8 +880,9 @@ function purchase_challan_calculation() {
     discount_value = parseFloat(discount_value);
     var discount = discount_value.toFixed(2);
     $("#discount").val(discount);
-    total_price = total_amount_product + parseFloat(discount);
-    $("#total_price").html('' + total_price.toFixed(2));
+    total_price = (parseFloat(total_amount_product) + parseFloat(discount)).toFixed(2);
+    alert(total_price);
+    $("#total_price").html('' + total_price);
     //**************freight
     var freight_amount = 0;
     if ($("#freight").val() != '') {
@@ -890,29 +891,29 @@ function purchase_challan_calculation() {
     freight_amount = parseFloat(freight_amount);
     var fre = freight_amount.toFixed(2);
     $("#freight").val(fre);
-    tot_frt = total_price + parseFloat(fre);
-    $("#total_price").html('' + tot_frt.toFixed(2));
+    tot_frt = (parseFloat(total_price) + parseFloat(fre)).toFixed(2);
+    $("#total_price").html('' + tot_frt);
 
     //*********vat
     var vat_val = 0;
     if ($("#vat_percentage").val() > 0 && $("#vat_percentage").val() != '') {
-        vat_val = (tot_frt * parseFloat($('#vat_percentage').val())) / 100;
-        $("#vat_value").html('' + vat_val.toFixed(2));
+        vat_val = ((parseFloat(tot_frt) * parseFloat($('#vat_percentage').val())) / 100).toFixed(2);
+        $("#vat_value").html('' + vat_val);
     }
-    var vat_total = tot_frt + parseFloat(vat_val.toFixed(2));
-    $("#vat_tot_val").val(vat_total.toFixed(2));
+    var vat_total = (parseFloat(tot_frt) + parseFloat(vat_val)).toFixed(2);
+    $("#vat_tot_val").val(vat_total);
     //round off
     var round_off = 0;
     var grand_total = vat_total;
     if ($('#round_off').val() != '') {
         round_off = $("#round_off").val();
-        grand_total += parseFloat(round_off);
+        grand_total += parseFloat(round_off).toFixed(2);
     }
-    $("#grand_total").html('' + grand_total.toFixed(2));
-    $("#grand_total_val").val(grand_total.toFixed(2));
+    $("#grand_total").html('' + grand_total);
+    $("#grand_total_val").val(grand_total);
     //round up value for the textbox
-    round_off = parseFloat(round_off);
-    var r = round_off.toFixed(2);
+    round_off = parseFloat(round_off).toFixed(2);
+    var r = round_off;
     $("#round_off").val(r);
 
 }

@@ -553,7 +553,7 @@ function calutate_pending_order(qty, key) {
     }
     var pending = $('#pending_order_org' + key).val();
     if (parseInt(shipping) <= parseInt(qty)) {
-        $('#pending_order_' + key).val(qty - shipping);
+        $('#pending_order_' + key).val((qty - shipping).toFixed(2));
     } else {
 //        alert('Present shipping should not be greater than pending order');// Commented by amit on 29-09-2015 to allow shipping > actual quantity
 //        $('#present_shipping_' + key).val("");
