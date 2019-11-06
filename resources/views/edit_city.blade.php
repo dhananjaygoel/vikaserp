@@ -24,7 +24,7 @@
                         <hr>
                         {!! Form::open(array('method'=>'PUT','url'=>url('city',$city->id), 'id'=>''))!!}
                         @if (count($errors) > 0)
-                        <div role="alert" class="alert alert-warning">
+                        <div role="alert" class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

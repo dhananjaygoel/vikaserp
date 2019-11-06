@@ -26,7 +26,7 @@
 
                         <input type="hidden" name="id" value="{{$delivery_location->id}}">
                         @if (count($errors) > 0)
-                        <div role="alert" class="alert alert-warning">
+                        <div role="alert" class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
