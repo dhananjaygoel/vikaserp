@@ -881,7 +881,7 @@ function purchase_challan_calculation() {
     var discount = discount_value.toFixed(2);
     $("#discount").val(discount);
     total_price = (parseFloat(total_amount_product) + parseFloat(discount)).toFixed(2);
-    alert(total_price);
+    // alert(total_price);
     $("#total_price").html('' + total_price);
     //**************freight
     var freight_amount = 0;
