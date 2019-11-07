@@ -139,22 +139,22 @@
                                     @if($product->order_type =='delivery_challan')
                                     <tr id="add_row_{{$key}}" class="add_product_row">
                                         <td class="col-md-2">
-                                            <div class="form-group searchproduct">{{$product->order_product_details->alias_name}}</div>
+                                            <div class="form-group searchproduct">{{isset($product->order_product_details->alias_name)?$product->order_product_details->alias_name:''}}</div>
                                         </td>
                                         <td class="col-md-2">
-                                            <div class="form-group">{{$product->quantity}}</div>
+                                            <div class="form-group">{{isset($product->quantity)?$product->quantity:''}}</div>
                                         </td>
                                         <td class="col-md-1">
-                                            <div class="form-group">{{$product->actual_pieces}}</div>
+                                            <div class="form-group">{{isset($product->actual_pieces)?$product->actual_pieces:''}}</div>
                                         </td>
                                         <td class="col-md-1">
-                                            <div class="form-group ">{{$product->unit->unit_name}}</div>
+                                            <div class="form-group ">{{isset($product->unit->unit_name)?$product->unit->unit_name:''}}</div>
                                         </td>
                                         <td class="col-md-1">
-                                            <div class="form-group ">{{$product->length}}</div>
+                                            <div class="form-group ">{{isset($product->length)?$product->length:''}}</div>
                                         </td>
                                         <td class="col-md-2">
-                                            <div class="form-group">{{$product->present_shipping}}</div>
+                                            <div class="form-group">{{isset($product->present_shipping)?$product->present_shipping:''}}</div>
                                         </td>
 
                                         @if(Auth::user()->role_id == 5)
@@ -172,7 +172,7 @@
 
 
                                         <td class="col-md-1">
-                                            <div class="form-group">{{$product->price}}</div>
+                                            <div class="form-group">{{isset($product->price)?$product->price:''}}</div>
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group">
