@@ -42,7 +42,6 @@
                     }else{
                         $gstvalue = '';
                     }
-                    // echo '<pre>';print_r($gst);
                 }
             ?>
             <td>{{$gstvalue}}</td>
