@@ -13,6 +13,8 @@
             <td class="heading1">Thickness</td>
             <td class="heading1">Standard Length</td>
             <td class="heading1">Difference</td>
+            <td class="heading1">HSN</td>
+            <td class="heading1">GST</td>
         </tr>
         @foreach ($product_size_list as $key => $value)
         <tr>
@@ -31,7 +33,21 @@
             <td>{{$value->thickness}}</td>
             <td>{{$value->standard_length}}</td>
             <td>{{$value->difference}}</td>
+            <td>{{$value->hsn_code}}</td>
+            <?php
+                if(isset($value->hsn_code) && $value->hsn_code != ''){
+                    $hsn_det = \App\Hsn::where('hsn_code',$value->hsn_code)->first();
+                    if(isset($hsn_det->gst)){
+                        $gstvalue = $hsn_det->gst;
+                    }else{
+                        $gstvalue = '';
+                    }
+                    // echo '<pre>';print_r($gst);
+                }
+            ?>
+            <td>{{$gstvalue}}</td>
         </tr>
         @endforeach
+        exit;
     </table>
 </html>
