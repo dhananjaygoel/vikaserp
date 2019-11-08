@@ -44,7 +44,7 @@
                     }
                 }
             ?>
-            <td>{{$gstvalue}}</td>
+            <td>{{$gstvalue}}.0% GST</td>
         </tr>
         @endforeach
         exit;
