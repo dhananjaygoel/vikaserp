@@ -33,6 +33,8 @@ use App\Repositories\DropboxStorageRepository;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
 use DB;
+use QuickBooksOnline\API\Data\IPPSalesItemLineDetail;
+use QuickBooksOnline\API\Data\IPPTaxLineDetail;
 
 class DeliveryChallanController extends Controller {
 
@@ -1032,14 +1034,14 @@ class DeliveryChallanController extends Controller {
 
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(4);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851582276",
+            'QBORealmID' => "9130347257645096",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1059,7 +1061,7 @@ class DeliveryChallanController extends Controller {
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(4);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1085,25 +1087,17 @@ class DeliveryChallanController extends Controller {
     function getToken(){
         
         require_once base_path('quickbook/vendor/autoload.php');        
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(3);
         // echo '<pre>';
         // print_r($quickbook);
         // exit;
-        // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-        //     'auth_mode' => 'oauth2',
-        //     'ClientID' => $quickbook->client,
-        //     'ClientSecret' => $quickbook->secret,
-        //     'accessTokenKey' =>  $quickbook->access_token,
-        //     'refreshTokenKey' => $quickbook->refresh_token,
-        //     'QBORealmID' => "4620816365002291260",
-        //     'baseUrl' => "Development"));
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851577266",
+            'QBORealmID' => "9130347294696486",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1122,8 +1116,7 @@ class DeliveryChallanController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        // $quickbook = QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -1132,6 +1125,7 @@ class DeliveryChallanController extends Controller {
     }
 
     public function generate_invoice($id){
+        set_time_limit(0);
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
@@ -1143,6 +1137,19 @@ class DeliveryChallanController extends Controller {
             $dataService = $this->getToken();
         }
         
+        $error = $dataService->getLastError();
+        if ($error) {
+            if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
+            {
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();
+            }
+            else{
+                $this->refresh_token();
+                $dataService = $this->getToken();
+            }
+        }
+
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
                 \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
@@ -1187,10 +1194,10 @@ class DeliveryChallanController extends Controller {
              $line = [];
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
-                $TaxCodeRef = 24;
+                $TaxCodeRef = 0;
                 $hsncode = $del_products->order_product_all_details->hsn_code;
                 $hsn = Hsn::where('hsn_code',$hsncode)->first();
-                
+
                 if($hsn){
                    
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
@@ -1224,8 +1231,9 @@ class DeliveryChallanController extends Controller {
                 //print $item_details[0]->Id; 
                
 
-               
+                if($del_products->vat_percentage!=0){
                    $line[] = [
+                    // "HSN/SAC" => $del_products->hsn_code,
                     "Description" => $del_products->order_product_all_details->product_category->product_type->name,
                     "Amount" => $del_products->quantity * $del_products->price,
                     "DetailType" => "SalesItemLineDetail",
@@ -1234,15 +1242,38 @@ class DeliveryChallanController extends Controller {
                             "name" => $productname,
                             "value" => $quickbook_item_id
                         ],
+                        // "UQCId" => $del_products->unit_id,
                         "UnitPrice" => $del_products->price,
                         "Qty" => $del_products->quantity,
                         "TaxCodeRef" => [
                             "value" => $TaxCodeRef
-                        ]
+                        ],
+                        "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
                     ]
-                ];
+                   ];
+                }else{
+                    $line[] = [
+                    // "HSN/SAC" => $del_products->hsn_code,
+                    "Description" => $del_products->order_product_all_details->product_category->product_type->name,
+                    "Amount" => $del_products->quantity * $del_products->price,
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "ItemRef" => [
+                            "name" => $productname,
+                            "value" => $quickbook_item_id
+                        ],
+                        // "UQCId" => $del_products->unit_id,
+                        "UnitPrice" => $del_products->price,
+                        "Qty" => $del_products->quantity,
+                        "TaxCodeRef" => [
+                            "value" => 9
+                        ],
+                        "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
+                    ]
+                    ];
+                }
              }
-             
+
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;

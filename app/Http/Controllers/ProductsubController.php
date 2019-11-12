@@ -205,7 +205,7 @@ class ProductsubController extends Controller {
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(3);
         
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -213,7 +213,7 @@ class ProductsubController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851577266",
+            'QBORealmID' => "9130347294696486",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -222,7 +222,7 @@ class ProductsubController extends Controller {
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(3);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -233,14 +233,14 @@ class ProductsubController extends Controller {
 
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(4);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851582276",
+            'QBORealmID' => "9130347257645096",
             'baseUrl' => "Production",
             'minorVersion'=>34
         )); 
@@ -249,7 +249,7 @@ class ProductsubController extends Controller {
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(4);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -258,7 +258,55 @@ class ProductsubController extends Controller {
     }
 
 
-
+    /* update quickbook item ids into database */
+    public function update_item_plus_gst(){
+        $dataService = $this->getToken();
+        $error = $dataService->getLastError();
+        if ($error) {
+            $this->refresh_token();
+            $dataService = $this->getToken();
+        }
+        $sr = 1;
+        $item1 = "select count(*) from Item";
+        $count = $dataService->Query($item1);
+        $item = "select * from Item maxresults $count";
+        $det = $dataService->Query($item);
+        // dd($count);
+        foreach($det as $key=>$item_id){
+            // dd($item_id->Name);
+            if(isset($item_id->Name) && $item_id->Name != ''){
+                App\ProductSubCategory::where('alias_name',$item_id->Name)->update(['quickbook_item_id'=>$item_id->Id]);
+                echo $sr.".\n";
+                echo nl2br($item_id->Id."\n");
+                $sr++;
+            }
+        }
+    }
+    public function update_item_all_inc(){
+        $dataService = $this->getTokenWihtoutGST();
+        $error = $dataService->getLastError();
+        if ($error) {
+            $this->refresh_token_Wihtout_GST();
+            $dataService = $this->getTokenWihtoutGST();
+        }
+        $sr = 1;
+        $item1 = "select count(*) from Item";
+        $count = $dataService->Query($item1);
+        $item = "select * from Item maxresults $count";
+        $det = $dataService->Query($item);
+        // dd($det);
+        foreach($det as $key=>$item_id){
+            // dd($item_id->Name);
+            if(isset($item_id->Name) && $item_id->Name != ''){
+                App\ProductSubCategory::where('alias_name',$item_id->Name)->update(['quickbook_a_item_id'=>$item_id->Id]);
+                // $count++;
+                echo $sr.".\n";
+                echo nl2br($item_id->Id."\n");
+                $sr++;
+            }
+        }
+    }
+    
 
 
 /*This is start quickbook account All inclusive*/
@@ -321,7 +369,7 @@ class ProductsubController extends Controller {
         $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
 
 
-       /*$Qdata = [
+       $Qdata = [
             "Name" => $request->input('alias_name'),
             "Active" => true,
             "FullyQualifiedName" => $request->input('alias_name'),
@@ -360,10 +408,8 @@ class ProductsubController extends Controller {
         else{
             $gstitemid  =  $newiteminclusive->Id;
         }
-        $ProductSubCategory->quickbook_a_item_id = $gstitemid;
-        $ProductSubCategory->quickbook_item_id  = $inclusiveitemid;*/
-
-        
+        $ProductSubCategory->quickbook_a_item_id = $inclusiveitemid;
+        $ProductSubCategory->quickbook_item_id  = $gstitemid;
 
         /*$res = $this->quickbook_create_item($Qdata);
         if($res['status']){
