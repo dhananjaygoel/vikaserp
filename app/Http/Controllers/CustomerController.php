@@ -231,7 +231,7 @@ class CustomerController extends Controller {
 
     function getToken(){
        require_once base_path('quickbook/vendor/autoload.php');
-       $quickbook = App\QuickbookToken::find(3);
+       $quickbook = App\QuickbookToken::find(2);
        
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -239,25 +239,16 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347294696486",
+            'QBORealmID' => "9130347328068306",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
-    //    return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-    //         'auth_mode' => 'oauth2',
-    //         'ClientID' => $quickbook->client,
-    //         'ClientSecret' => $quickbook->secret,
-    //         'accessTokenKey' =>  $quickbook->access_token,
-    //         'refreshTokenKey' => $quickbook->refresh_token,
-    //         'QBORealmID' => "193514891360859",
-    //         'baseUrl' => "Production"
-    //    ));
     }
 
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
-        $quickbook = App\QuickbookToken::find(3);
+        $quickbook = App\QuickbookToken::find(2);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -284,14 +275,14 @@ class CustomerController extends Controller {
 
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(1);
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347257645096",
+            'QBORealmID' => "9130347328054516",
             'baseUrl' => "Production",
             'minorVersion'=>34
         )); 
@@ -300,7 +291,7 @@ class CustomerController extends Controller {
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
         // $quickbook = App\QuickbookToken::first();
-        $quickbook = App\QuickbookToken::find(4);
+        $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -359,6 +350,8 @@ class CustomerController extends Controller {
 
 
 public function update_cust_plus_gst(){
+    set_time_limit(0);
+    $this->refresh_token();
     $dataService = $this->getToken();
     $error = $dataService->getLastError();
     if ($error) {
@@ -368,7 +361,7 @@ public function update_cust_plus_gst(){
     $sr = 1;
     $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
-    $cust_det = "select * from Customer maxresults $count";
+    $cust_det = "select * from Customer order by Id maxresults $count";
     $det = $dataService->Query($cust_det);
     // dd($det);
     foreach($det as $key=>$cust_id){
@@ -382,6 +375,8 @@ public function update_cust_plus_gst(){
 }
 
 public function update_cust_all_inc(){
+    set_time_limit(0);
+    $this->refresh_token_Wihtout_GST();
     $dataService = $this->getTokenWihtoutGST();
     $error = $dataService->getLastError();
     if ($error) {
@@ -391,7 +386,7 @@ public function update_cust_all_inc(){
     $sr = 1;
     $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
-    $cust_det = "select * from Customer maxresults $count";
+    $cust_det = "select * from Customer order by Id maxresults $count";
     $det = $dataService->Query($cust_det);
     // dd($det);
     foreach($det as $key=>$cust_id){
