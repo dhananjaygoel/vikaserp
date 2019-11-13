@@ -82,6 +82,7 @@ class DBController extends Controller {
           $filename = $input->getRealPath();
           Excel::load($filename, function($reader) {
                 $results = $reader->all();
+                DB::table('gst')->truncate();
                 foreach ($results as $excel) {
                     $gst = new Gst();
                     if(Gst::where('gst',$excel->gst)->where('igst',$excel->igst)->where('deleted_at',NULL)->count() == 0){
@@ -89,6 +90,7 @@ class DBController extends Controller {
                     $gst->sgst = $excel->sgst;
                     $gst->cgst = $excel->cgst;
                     $gst->igst = $excel->igst;
+                    $gst->quick_gst_id = $excel->quick_gst_id;
                     $gst->save();
                     }
                 }
