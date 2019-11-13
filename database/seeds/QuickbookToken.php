@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 class QuickbookToken extends Seeder {
 
     public function run() {
+        DB::table('quickbook_token')->truncate();
         DB::table('quickbook_token')->insert(
                 array(
                     //All inclusive account
