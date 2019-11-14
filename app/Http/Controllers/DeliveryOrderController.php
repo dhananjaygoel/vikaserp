@@ -1509,10 +1509,10 @@ class DeliveryOrderController extends Controller {
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                             $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
                             if($local_state){
-                                $profile_vat_amount = $gst_det->cgst + $gst_det->sgst;
+                                $profile_vat_amount = isset($gst_det->cgst)?$gst_det->cgst:'' + isset($gst_det->sgst)?$gst_det->sgst:'';
                             }
                             else{
-                                $profile_vat_amount = $gst_det->igst;
+                                $profile_vat_amount = isset($gst_det->igst)?$gst_det->igst:'';
                             }
                         }
                         else{
