@@ -445,7 +445,7 @@ public function update_cust_all_inc(){
 
         $status = Input::get('status');
         $Qdata = [
-            "GivenName"=>  Input::get('tally_name'),
+            "GivenName"=>  Input::get('owner_name'),
             "FullyQualifiedName"=> Input::get('tally_name'),
             "CompanyName"=>  Input::get('company_name'),
             "DisplayName"=>  Input::get('tally_name'),
@@ -841,40 +841,80 @@ public function update_cust_all_inc(){
 
 
             $status = Input::get('status'); 
-            if(Input::get('status') == 'yes'){
-                $quickbook_id=$customer->quickbook_supplier_id;
-                $quickbook_a_id=$customer->quickbook_a_supplier_id;
-            }
-            else{
                 $quickbook_id=$customer->quickbook_customer_id;
                 $quickbook_a_id=$customer->quickbook_a_customer_id;
-            }
+            
             if($quickbook_id)
             {     
-                    
-                    $Qdata = [
-                        // "Id"=> $quickbook_id ,
-                        "GivenName"=>  Input::get('tally_name'),
-                        "FullyQualifiedName"=> Input::get('tally_name'),
-                        "CompanyName"=>  Input::get('company_name'),
-                        "DisplayName"=>  Input::get('tally_name'),
-                        "PrimaryPhone"=>  [
-                            "FreeFormNumber"=>  Input::get('phone_number1')
-                        ],
-                            "BillAddr"=> [
-                              "City"=> Input::get('city'), 
-                              "Line1"=> Input::get('address1')                  
-                            ]
-                    ];
+                $Qdata = [
+                    "GivenName"=>  Input::get('owner_name'),
+                    "FullyQualifiedName"=> Input::get('tally_name'),
+                    "CompanyName"=>  Input::get('company_name'),
+                    "DisplayName"=>  Input::get('tally_name'),
+                    "PrimaryEmailAddr" => [
+                        "Address" => Input::get('email')
+                    ],
+                    "PrimaryPhone"=>  [
+                        "FreeFormNumber"=>  Input::get('phone_number1')
+                    ],
+                    "BillAddr"=> [
+                          "Country"=> "India",
+                          "CountrySubDivisionCode"=> Input::get('state'),
+                          "City"=> Input::get('city'), 
+                          "PostalCode"=> Input::get('zip'), 
+                          "Line1" => Input::get('address1'), 
+                    ],
+                ];
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();
+                $resultingObj = $dataService->FindById('Customer', $quickbook_a_id);
+                // dd($resultingObj);
+                $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$Qdata);
+                $resultingCustomerObj = $dataService->Update($customerObj);
+                $error = $dataService->getLastError();
+                if ($error) { 
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST();  
+                }
+                else{
+                    $resultingCustomerObj = $dataService->Update($customerObj);
+                }
+                $this->refresh_token();
+                $nextdataservice = $this->getToken();
+                $nextresultingObj = $nextdataservice->FindById('Customer', $quickbook_id);
+                $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextresultingObj,$Qdata);
+                $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+                $error1 = $nextdataservice->getLastError();
+                if ($error1) { 
+                    $this->refresh_token();
+                    $nextdataservice = $this->getToken();  
+                }
+                else{
+                    $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+                }
+                    // $Qdata = [
+                    //     // "Id"=> $quickbook_id ,
+                    //     "GivenName"=>  Input::get('tally_name'),
+                    //     "FullyQualifiedName"=> Input::get('tally_name'),
+                    //     "CompanyName"=>  Input::get('company_name'),
+                    //     "DisplayName"=>  Input::get('tally_name'),
+                    //     "PrimaryPhone"=>  [
+                    //         "FreeFormNumber"=>  Input::get('phone_number1')
+                    //     ],
+                    //         "BillAddr"=> [
+                    //           "City"=> Input::get('city'), 
+                    //           "Line1"=> Input::get('address1')                  
+                    //         ]
+                    // ];
                 // dd(Input::get('status'));
-                    if(Input::get('status') == 'yes'){
-                        $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
+                    // if(Input::get('status') == 'yes'){
+                    //     $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
                         // if($res_q['status']){
                         //     $customer->quickbook_supplier_id = $res_q['message']->Id;
                         // }
-                    } else{
-                        $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
-                        if($res['status']){
+                    // } else{
+                    //     $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
+                    //     if($res['status']){
                            // $customer->quickbook_customer_id = $res['message']->Id;                   
                            // if(Input::get('status') == 'yes')
                            // {
@@ -883,11 +923,11 @@ public function update_cust_all_inc(){
                            //      //     $customer->quickbook_supplier_id = $res_q['message']->Id;
                            //      // }
                            //  }
-                        }
-                        else{
-                            $this->refresh_token();
-                            $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
-                            if($res['status']){
+                        // }
+                        // else{
+                        //     $this->refresh_token();
+                        //     $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
+                        //     if($res['status']){
                                // $customer->quickbook_customer_id = $res['message']->Id;
                                // if(Input::get('status') == 'yes')
                                // {                        
@@ -896,18 +936,18 @@ public function update_cust_all_inc(){
                                //      //     $customer->quickbook_supplier_id = $res_q['message']->Id;
                                //      // }
                                //  }
-                            }
-                        }
-                    }
+                        //     }
+                        // }
+                    // }
                     //start all inclusive
-                    if(Input::get('status') == 'yes'){
-                        $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
-                        if($res_q['status']){
-                            $customer->quickbook_supplier_id = $res_q['message']->Id;
-                        }
-                    } else{
-                        $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
-                        if($res['status']){
+                    // if(Input::get('status') == 'yes'){
+                    //     $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
+                    //     if($res_q['status']){
+                    //         $customer->quickbook_supplier_id = $res_q['message']->Id;
+                    //     }
+                    // } else{
+                    //     $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
+                    //     if($res['status']){
                            // $customer->quickbook_customer_id = $res['message']->Id;                   
                             // if(Input::get('status') == 'yes')
                             // {
@@ -916,11 +956,11 @@ public function update_cust_all_inc(){
                             //     //     // $customer->quickbook_supplier_id = $res_q['message']->Id;
                             //     // }
                             // }
-                        }
-                        else{
-                            $this->refresh_token_all();
-                            $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
-                            if($res['status']){
+                        // }
+                        // else{
+                        //     $this->refresh_token_all();
+                        //     $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
+                        //     if($res['status']){
                                // $customer->quickbook_customer_id = $res['message']->Id;                        
                                //  if(Input::get('status') == 'yes')
                                // {
@@ -929,9 +969,9 @@ public function update_cust_all_inc(){
                                //      //     // $customer->quickbook_supplier_id = $res_q['message']->Id;
                                //      // }
                                // }
-                            }
-                        }
-                    }
+                    //         }
+                    //     }
+                    // }
                     //end all inclusive
             }            
             // dd($customer);

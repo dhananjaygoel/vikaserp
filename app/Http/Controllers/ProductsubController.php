@@ -202,6 +202,20 @@ class ProductsubController extends Controller {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
     }
+    function quickbook_update_a_item($quickbook_item_a_id,$data){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $dataService = $this->getTokenWihtoutGST();
+        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $resultingObj  = $dataService->FindById('Item', $quickbook_item_a_id);
+        $customerObj = Item::update($resultingObj,$data);
+        $resultingCustomerObj = $dataService->Update($customerObj);
+        $error = $dataService->getLastError();
+        if ($error) {
+            return ['status'=>false,'message'=>$error->getResponseBody()];
+        } else {
+            return ['status'=>true,'message'=>$resultingCustomerObj];
+        }
+    }
 
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -389,8 +403,6 @@ class ProductsubController extends Controller {
                 "name" => "IncomRef"
             ],
             "TrackQtyOnHand"=>false,
-           
-
         ];
         $inclusiveitemid ="";
         $gstitemid = "";
@@ -608,28 +620,36 @@ class ProductsubController extends Controller {
                 $pro_sub_cat['alias_name'] = Input::get('alias_name');
             }
             $pcat = ProductCategory::where('id',$data['sub_product_name'])->first();
-                $Qdata = [
-                "Name" => Input::get('alias_name'),
-                // "Active" => true,
-                "sparse"=> false, 
-                "Active"=> true, 
-                "SyncToken"=> "3",
-                "FullyQualifiedName" => Input::get('alias_name'),
-                "UnitPrice" => $pcat->price + $data['difference'],
-                "Type" => "NonInventory",
-                "TaxClassificationRef"=>Input::get('hsn_code'),
-                "QtyOnHand"=> 1,
-                // "PurchaseCost"=> $pcat->price,                
-                "IncomeAccountRef"=> [
-                    "value"=> 3,
-                    "name" => "IncomRef"
-                ],
-                "TrackQtyOnHand"=>false
-                // "TaxClassificationRef"=>[
-                //     "value"=>1204
-                // ]
-            ];
+        
+            $ProductSubCategory = ProductSubCategory::find($id);
+            $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
+            $quickbook_a_item_id=$ProductSubCategory->quickbook_a_item_id;
 
+            if($quickbook_item_id){
+                $Qdata = [
+                    "Name" => $data['alias_name'],
+                    "Active" => true,
+                    "sparse"=> false,
+                    "ReverseChargeRate"=> false,
+                    "FullyQualifiedName" => $data['alias_name'],
+                    "UnitPrice" => $pcat->price + $data['difference'],
+                    "Type" => "NonInventory",
+                    "TaxClassificationRef"=>$data['hsn_code'],
+                    "IncomeAccountRef"=> [
+                        "value"=> 3,
+                        "name" => "IncomRef"
+                    ],
+                    "TrackQtyOnHand"=>false,
+                    
+                ];
+                $this->refresh_token_Wihtout_GST();
+                $resultingObj = $this->quickbook_update_a_item($quickbook_a_item_id,$Qdata);
+                
+                //Plus GST account
+                $this->refresh_token();
+                $nextresultingItemObj = $this->quickbook_update_item($quickbook_item_id,$Qdata);
+                
+            }
             // $Qdata = [
             //   "FullyQualifiedName" => "Rock Fountain", 
             //   "domain"=> "QBO", 
@@ -651,7 +671,7 @@ class ProductsubController extends Controller {
             // ];
 
             // $ProductSubCategory = ProductSubCategory::where('id',$id)->first();
-            $ProductSubCategory = ProductSubCategory::find($id);
+            // $ProductSubCategory = ProductSubCategory::find($id);
             /*$quickbook_item_id=$ProductSubCategory->quickbook_item_id;
             if($quickbook_item_id)  
             {          
