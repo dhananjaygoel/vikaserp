@@ -1507,7 +1507,7 @@ class DeliveryOrderController extends Controller {
 
                         if($product_cat->hsn_code && $delivery_order_details->vat_percentage == 0 ){
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
-                            $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                            $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
                             if($local_state){
                                 $profile_vat_amount = $gst_det->cgst + $gst_det->sgst;
                             }
