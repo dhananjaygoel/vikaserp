@@ -113,9 +113,14 @@
                 // $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 // $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                 // $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-                $loading_vat_amount = ($allorder->loading_charge * 18) / 100;
-                $freight_vat_amount = ($allorder->freight * 18) / 100;
-                $discount_vat_amount = ($allorder->discount * 18) / 100;
+                if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0){
+                    $loading_vat = 18;
+                }else{
+                    $loading_vat = 0;
+                }
+                $loading_vat_amount = ($allorder->loading_charge * $loading_vat) / 100;
+                $freight_vat_amount = ($allorder->freight * $loading_vat) / 100;
+                $discount_vat_amount = ($allorder->discount * $loading_vat) / 100;
                 $final_vat_amount = 0; 
                 $final_total_amt = 0;
             ?>

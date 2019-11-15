@@ -1252,10 +1252,12 @@ class DeliveryChallanController extends Controller {
                 if($del_products->vat_percentage==0){
                       $freight_id=$freight_item->quickbook_a_item_id;
                       $frieghtname = $freight_item->alias_name;
+                      $tax = 9;
                 }
                 else{
                     $freight_id=$freight_item->quickbook_item_id;
                     $frieghtname = $freight_item->alias_name;
+                    $tax = 15;
                 }
                     
                $line[] = [
@@ -1270,7 +1272,7 @@ class DeliveryChallanController extends Controller {
                                //  "value" => 1
                             ],
                             "TaxCodeRef"=>[
-                                "value" => 15
+                                "value" => $tax
                             ],                            
                         ]
                     ];
@@ -1281,10 +1283,12 @@ class DeliveryChallanController extends Controller {
                 if($del_products->vat_percentage==0){
                     $loading_id=$loading_item->quickbook_a_item_id;
                     $loadingname = $loading_item->alias_name;
+                    $tax = 9;
                 }
                 else{
                     $loading_id=$loading_item->quickbook_item_id;
                      $loadingname = $loading_item->alias_name;
+                     $tax = 15;
                 }
                     
                 
@@ -1297,7 +1301,7 @@ class DeliveryChallanController extends Controller {
                                 "value" => $loading_id
                             ],
                             "TaxCodeRef"=>[
-                                "value" => 15
+                                "value" => $tax
                             ],
                         ]
                     ];
@@ -1307,11 +1311,13 @@ class DeliveryChallanController extends Controller {
                  if($del_products->vat_percentage==0){
                      $discount_a_id=$discount_item->quickbook_a_item_id;
                     $discountname = $discount_item->alias_name;
+                    $tax = 9;
                  }
                     
                  else{
                       $discount_a_id=$discount_item->quickbook_item_id; 
                     $discountname = $discount_item->alias_name;
+                    $tax = 15;
                  }
                    
                  $line[] = [
@@ -1324,7 +1330,7 @@ class DeliveryChallanController extends Controller {
                                  "value" => $discount_a_id
                             ],
                             "TaxCodeRef"=>[
-                                "value" => 15
+                                "value" => $tax
                             ],                            
                         ]
                     ];
