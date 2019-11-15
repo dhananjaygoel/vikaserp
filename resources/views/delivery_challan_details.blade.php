@@ -198,6 +198,7 @@
                                                             
                                                             $is_gst = true;
                                                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                                                            if(isset($hsn_det->gst))
                                                             $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
                                                             // dd($hsn_det);
                                                             if($local_state == 1){
