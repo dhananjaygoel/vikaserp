@@ -130,7 +130,7 @@
                                         // $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                                         // $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                                         // $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-                                        if(isset($allorder['all_order_products']->vat_percentage) && $allorder['all_order_products']->vat_percentage > 0){
+                                        if(isset($allorder['all_order_products'][0]->vat_percentage) && $allorder['all_order_products'][0]->vat_percentage > 0){
                                             $loading_vat = 18;
                                         }else{
                                             $loading_vat = 0;
@@ -412,7 +412,7 @@
                         <hr/>
                         @endif
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total: </b> {{$total + $total_vat}}</label>
+                            <label for="total"><b class="challan">Grand Total: </b> {{round(($total + $total_vat),2)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
