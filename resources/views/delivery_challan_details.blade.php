@@ -127,9 +127,17 @@
                                         $i = 1;
                                         $total_price = 0;
                         //                $total_qty = 0;
-                                        $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
-                                        $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
-                                        $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+                                        // $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
+                                        // $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
+                                        // $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+                                        if(isset($allorder['all_order_products']->vat_percentage) && $allorder['all_order_products']->vat_percentage > 0){
+                                            $loading_vat = 18;
+                                        }else{
+                                            $loading_vat = 0;
+                                        }
+                                        $loading_vat_amount = ($allorder->loading_charge * $loading_vat) / 100;
+                                        $freight_vat_amount = ($allorder->freight * $loading_vat) / 100;
+                                        $discount_vat_amount = ($allorder->discount * $loading_vat) / 100;
                                         $final_vat_amount = 0; 
                                         $final_total_amt = 0;
                                     ?>
@@ -217,7 +225,8 @@
                                                     $total_pr = $sgst + $cgst + $igst;
                                                     $total_vat_amount = ($amount * $total_pr) / 100;
                                                     // $total_price += $total_vat_amount;
-                                                    $total_price += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                                                    // $total_price += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                                                    $total_price += ($total_vat_amount);
                                                     // print_r($total_pr);print_r($total_price);
                                                 ?>
                                                 {{round($amount, 2)}}
@@ -392,16 +401,18 @@
                        
                         @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                         <div class="form-group">
-                            <label for="total"><b class="challan">GST Amount: </b> {{round($total_price,5)}}</label>
+                            <label for="total"><b class="challan">GST Amount: </b> <?php
+                            $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                            ?> {{round($total_vat,5)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
-                            <label for="total"><b class="challan">Round Off: </b> {{round($total_price,2)}}</label>
+                            <label for="total"><b class="challan">Round Off: </b> {{round($total_vat,2)}}</label>
                         </div>
                         <hr/>
                         @endif
                         <div class="form-group">
-                            <label for="total"><b class="challan">Grand Total: </b> {{$total + $total_price}}</label>
+                            <label for="total"><b class="challan">Grand Total: </b> {{$total + $total_vat}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
