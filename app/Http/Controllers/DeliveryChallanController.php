@@ -1045,18 +1045,6 @@ class DeliveryChallanController extends Controller {
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
-        
-        // dd($quickbook);  
-        // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-        //     'auth_mode' => 'oauth2',
-        //     'ClientID' => $quickbook->client,
-        //     'ClientSecret' => $quickbook->secret,
-        //     'accessTokenKey' =>  $quickbook->access_token,
-        //     'refreshTokenKey' => $quickbook->refresh_token,
-        //     // 'QBORealmID' => "193514891354844",
-        //     'QBORealmID' => "4611809164061438748",
-        //     'baseUrl' => "Development"
-        // ));
     }
     function refresh_token_Wihtout_GST(){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -1068,21 +1056,6 @@ class DeliveryChallanController extends Controller {
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
-
-    // function getToken(){
-    //     require_once base_path('quickbook/vendor/autoload.php');
-    //     // $quickbook = App\QuickbookToken::first();
-    //     $quickbook = App\QuickbookToken::find(1);
-    //     return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
-    //         'auth_mode' => 'oauth2',
-    //         'ClientID' => $quickbook->client,
-    //         'ClientSecret' => $quickbook->secret,
-    //         'accessTokenKey' =>  $quickbook->access_token,
-    //         'refreshTokenKey' => $quickbook->refresh_token,
-    //         'QBORealmID' => "193514891360859",
-    //         'baseUrl' => "Production"
-    //     ));
-    // }
 
     function getToken(){
         
@@ -1102,17 +1075,6 @@ class DeliveryChallanController extends Controller {
             'minorVersion'=>34
         ));
     }
-    
-    // function refresh_token(){
-    //     require_once base_path('quickbook/vendor/autoload.php');
-    //     // $quickbook = App\QuickbookToken::first();
-    //     $quickbook = App\QuickbookToken::find(1); 
-    //     $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
-    //     $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
-    //     $accessTokenValue = $accessTokenObj->getAccessToken();
-    //     $refreshTokenValue = $accessTokenObj->getRefreshToken();
-    //     App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
-    // }
 
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -1129,11 +1091,11 @@ class DeliveryChallanController extends Controller {
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
-            
+            // $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();
         }
         else{
-
+            // $this->refresh_token();
             $dataService = $this->getToken();
         }
         
@@ -1157,8 +1119,8 @@ class DeliveryChallanController extends Controller {
             }
         }
         if($update_delivery_challan->doc_number){
-           
-            $invoice = $dataService->Query("select * from Invoice where docNumber = '".$update_delivery_challan->doc_number."' ");
+
+            $invoice = $dataService->Query("select * from Invoice where Id = '".$update_delivery_challan->doc_number."' ");
             
             $error = $dataService->getLastError();
             if ($error) {
@@ -1284,7 +1246,7 @@ class DeliveryChallanController extends Controller {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;   
             }
-           /* if($update_delivery_challan->freight>0){
+            if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
                 
                 if($del_products->vat_percentage==0){
@@ -1308,7 +1270,7 @@ class DeliveryChallanController extends Controller {
                                //  "value" => 1
                             ],
                             "TaxCodeRef"=>[
-                                "value" => 9
+                                "value" => 15
                             ],                            
                         ]
                     ];
@@ -1335,7 +1297,7 @@ class DeliveryChallanController extends Controller {
                                 "value" => $loading_id
                             ],
                             "TaxCodeRef"=>[
-                                "value" => 9
+                                "value" => 15
                             ],
                         ]
                     ];
@@ -1362,11 +1324,11 @@ class DeliveryChallanController extends Controller {
                                  "value" => $discount_a_id
                             ],
                             "TaxCodeRef"=>[
-                                "value" => 9
+                                "value" => 15
                             ],                            
                         ]
                     ];
-            }*/
+            }
            /* if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;     
@@ -1399,6 +1361,7 @@ class DeliveryChallanController extends Controller {
                     "name"=> $tally_name,
                     "value" => $quickbook_customer_id
                 ],
+                // "DocNumber"=>$update_delivery_challan->serial_number,
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
             
@@ -1436,11 +1399,11 @@ class DeliveryChallanController extends Controller {
                     die;
                 }
                 else{
-                    $doc_num =  $inv->DocNumber;
+                    $doc_num =  $inv->Id;
                 }
             }
             else {
-                $doc_num =  $inv->DocNumber;
+                $doc_num =  $inv->Id;
             }
 
             DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
