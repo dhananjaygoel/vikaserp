@@ -276,7 +276,7 @@
                                             $grand_price = $grand_price + $allorder->discount;
                                         }
                                     ?>
-                                    {{ round($grand_price + $final_vat_amount, 2) }}</td>
+                                    {{ round($grand_price + $vat, 2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
