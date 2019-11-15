@@ -366,7 +366,7 @@ public function update_cust_plus_gst(){
     // dd($det);
     foreach($det as $key=>$cust_id){
         if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
-            App\Customer::where('owner_name',$cust_id->DisplayName)->update(['quickbook_customer_id'=>$cust_id->Id]);
+            App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_customer_id'=>$cust_id->Id]);
             echo $sr.".\n";
             echo nl2br($cust_id->Id."\n");
             $sr++;
@@ -392,7 +392,7 @@ public function update_cust_all_inc(){
     foreach($det as $key=>$cust_id){
         // dd($cust_id->Name);
         if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
-            App\Customer::where('owner_name',$cust_id->DisplayName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
+            App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
             echo $sr.".\n";
             echo nl2br($cust_id->Id."\n");
             $sr++;
@@ -444,6 +444,10 @@ public function update_cust_all_inc(){
         }
 
         $status = Input::get('status');
+
+        $state = States::where('id',Input::get('state'))->first();
+        $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
+
         $Qdata = [
             "GivenName"=>  Input::get('owner_name'),
             "FullyQualifiedName"=> Input::get('tally_name'),
@@ -457,10 +461,11 @@ public function update_cust_all_inc(){
             ],
             "BillAddr"=> [
                   "Country"=> "India",
-                  "CountrySubDivisionCode"=> Input::get('state'),
-                  "City"=> Input::get('city'), 
+                  "CountrySubDivisionCode"=> $state->state_name,
+                  "City"=> $city->city_name, 
                   "PostalCode"=> Input::get('zip'), 
                   "Line1" => Input::get('address1'), 
+                  "Line2" => Input::get('address2'), 
             ],
         ];
         $inclusivecustomerid ="";
@@ -838,7 +843,8 @@ public function update_cust_all_inc(){
                 $users->password = Hash::make(Input::get('password'));
             }
 
-
+            $state = States::where('id',Input::get('state'))->first();
+            $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
 
             $status = Input::get('status'); 
                 $quickbook_id=$customer->quickbook_customer_id;
@@ -859,10 +865,11 @@ public function update_cust_all_inc(){
                     ],
                     "BillAddr"=> [
                           "Country"=> "India",
-                          "CountrySubDivisionCode"=> Input::get('state'),
-                          "City"=> Input::get('city'), 
+                          "CountrySubDivisionCode"=> $state->state_name,
+                          "City"=> $city->city_name, 
                           "PostalCode"=> Input::get('zip'), 
                           "Line1" => Input::get('address1'), 
+                          "Line2" => Input::get('address2'), 
                     ],
                 ];
                 $this->refresh_token_Wihtout_GST();
