@@ -106,14 +106,15 @@
                             if($hsn_code){
                                 $is_gst = true;
                                 $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
-                                $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                                $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
+                                print_r($hsn_code);
                             }
                             ?>
-                            @if($is_gst)
+                            @if(isset($is_gst) && $is_gst == true)
                                 @if($local_state)
-                                    {{$gst_det->sgst + $gst_det->cgst}} %
+                                    {{isset($gst_det->sgst)?$gst_det->sgst:0 + isset($gst_det->cgst)?$gst_det->cgst:0}} %
                                 @else
-                                    {{$gst_det->igst}} %
+                                    {{isset($gst_det->igst)?$gst_det->igst:0}} %
                                 @endif
                             @else
                                 @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}

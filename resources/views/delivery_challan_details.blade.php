@@ -201,11 +201,11 @@
                                                             $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
                                                             // dd($hsn_det);
                                                             if($local_state == 1){
-                                                                $sgst = $gst_det->sgst;
-                                                                $cgst = $gst_det->cgst;
+                                                                $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                                                $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
                                                             }
                                                             else{
-                                                                $igst = $gst_det->igst;
+                                                                $igst = isset($gst_det->igst)?$gst_det->igst:0;
                                                             }
                                                         }
                                                     }
