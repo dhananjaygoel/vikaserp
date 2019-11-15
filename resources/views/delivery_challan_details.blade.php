@@ -223,7 +223,8 @@
                                                     }
 
                                                     $total_pr = $sgst + $cgst + $igst;
-                                                    $total_vat_amount = ($amount * $total_pr) / 100;
+                                                    $total_vat_amount1 = ($amount * $total_pr) / 100;
+                                                    $total_vat_amount = round($total_vat_amount1,2);
                                                     // $total_price += $total_vat_amount;
                                                     // $total_price += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
                                                     $total_price += ($total_vat_amount);
