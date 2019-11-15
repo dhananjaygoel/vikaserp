@@ -181,7 +181,8 @@
                 
                 $total_vat_amount = ($total_price * $total_pr) / 100;
                 // $total_price += $total_price;
-                $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                // $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                $final_vat_amount += ($total_vat_amount);
 
                 ?>
                 @endif
@@ -244,7 +245,7 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = $final_vat_amount;
+                                        $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                                     ?>
                                     {{ round($vat,5) }}</td>
                                 </tr>
