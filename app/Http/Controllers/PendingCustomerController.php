@@ -417,6 +417,9 @@ class PendingCustomerController extends Controller {
         }
         $customer->customer_status = 'permanent';
         /* Add Customer to the Quickbook Account */
+        $state = States::where('id',Input::get('state'))->first();
+        $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
+
         $Qdata = [
             "GivenName"=>  Input::get('owner_name'),
             "FullyQualifiedName"=> Input::get('tally_name'),
@@ -430,10 +433,11 @@ class PendingCustomerController extends Controller {
             ],
             "BillAddr"=> [
                   "Country"=> "India",
-                  "CountrySubDivisionCode"=> Input::get('state'),
-                  "City"=> Input::get('city'), 
+                  "CountrySubDivisionCode"=> $state->state_name,
+                  "City"=> $city->city_name,
                   "PostalCode"=> Input::get('zip'), 
                   "Line1" => Input::get('address1'), 
+                  "Line2" => Input::get('address2'),
             ],
         ];
         $inclusivecustomerid ="";
