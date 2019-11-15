@@ -107,7 +107,7 @@
                                 $is_gst = true;
                                 $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
                                 $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
-                                print_r($hsn_code);
+                                // print_r($hsn_code);
                             }
                             ?>
                             @if(isset($is_gst) && $is_gst == true)
