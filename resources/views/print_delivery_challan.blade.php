@@ -177,9 +177,21 @@
                     </tr>
                 </tbody>
                 <?php
-                $total_pr = $sgst + $cgst + $igst + $gst;
-                
-                $total_vat_amount1 = ($total_price * $total_pr) / 100;
+                // $total_pr = $sgst + $cgst + $igst + $gst;
+                if((isset($prod->vat_percentage) && $prod->vat_percentage > 0) && empty($allorder['delivery_order']->vat_percentage)){
+                    if($local_state == 1){
+                        $total_sgst_amount = ($total_price * $sgst) / 100;
+                        $total_cgst_amount = ($total_price * $cgst) / 100;
+                        $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                    } else {
+                        $total_igst_amount = ($total_price * $igst) / 100;
+                        $total_vat_amount1 = round($total_igst_amount,2);
+                    }
+                } else{
+                    $total_gst_amount = ($total_price * $gst) / 100;
+                    $total_vat_amount1 = round($total_gst_amount,2);
+                }
+                // $total_vat_amount1 = ($total_price * $total_pr) / 100;
                 $total_vat_amount = round($total_vat_amount1,2);
                 // $total_price += $total_price;
                 // $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
