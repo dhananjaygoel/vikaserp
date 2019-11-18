@@ -546,6 +546,23 @@ class ProductsubController extends Controller {
             $inquery_count = InquiryProducts::where('product_category_id', $id)->count();
 
             if ($purchase_count == 0 && $order_count == 0 && $inquery_count == 0) {
+                $ProductSubCategory = ProductSubCategory::find($id);
+                $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
+                $quickbook_a_item_id=$ProductSubCategory->quickbook_a_item_id;
+
+                if(!empty($quickbook_item_id) && !empty($quickbook_a_item_id)){
+                    $Qdata = [
+                        "Active" => false,
+                        "sparse"=> false,
+                    ];
+                    $this->refresh_token_Wihtout_GST();
+                    $resultingObj = $this->quickbook_update_a_item($quickbook_a_item_id,$Qdata);
+                    
+                    //Plus GST account
+                    $this->refresh_token();
+                    $nextresultingItemObj = $this->quickbook_update_item($quickbook_item_id,$Qdata);
+                }
+
                 ProductSubCategory::destroy($id);
                 if(isset($_GET['page']) && $_GET['page'] != ""){
                     $page = $_REQUEST['page'];
@@ -625,7 +642,7 @@ class ProductsubController extends Controller {
             $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
             $quickbook_a_item_id=$ProductSubCategory->quickbook_a_item_id;
 
-            if($quickbook_item_id){
+            if(!empty($quickbook_item_id) && !empty($quickbook_a_item_id)){
                 $Qdata = [
                     "Name" => $data['alias_name'],
                     "Active" => true,
