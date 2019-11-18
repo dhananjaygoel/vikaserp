@@ -91,6 +91,7 @@ class DBController extends Controller {
                     $gst->cgst = $excel->cgst;
                     $gst->igst = $excel->igst;
                     $gst->quick_gst_id = $excel->quick_gst_id;
+                    $gst->quick_igst_id = $excel->quick_igst_id;
                     $gst->save();
                     }
                 }

@@ -917,6 +917,28 @@ class DeliveryChallanController extends Controller {
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
+        foreach($allorder['delivery_challan_products'] as $prod){
+            // dd($prod);
+            if($prod->vat_percentage == 0){
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();
+            }
+            else{
+                $this->refresh_token();
+                $dataService = $this->getToken();
+            }
+        }
+
+        $inv_id = DeliveryChallan::where('id',$id)->first();
+        if(!empty($inv_id->doc_number)){
+            $invoice = Invoice::create([
+                "Id" => $inv_id->doc_number,
+                "SyncToken" => "0"
+            ]);
+            $inv = $dataService->Delete($invoice);
+            DeliveryChallan::where('id',$id)->update(['doc_number'=>null]);
+        }
+
         DeliveryChallan::where('id',$id)->update(['is_editable'=>1]);
         if($tasked == 'del_ch') {
             return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
@@ -1091,11 +1113,11 @@ class DeliveryChallanController extends Controller {
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
         if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0){
-            // $this->refresh_token_Wihtout_GST();
+            $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();
         }
         else{
-            // $this->refresh_token();
+            $this->refresh_token();
             $dataService = $this->getToken();
         }
         
@@ -1152,8 +1174,8 @@ class DeliveryChallanController extends Controller {
 
         }
         else{
-          
-             $line = [];
+
+            $line = [];
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 0;
@@ -1161,12 +1183,18 @@ class DeliveryChallanController extends Controller {
                 $hsn = Hsn::where('hsn_code',$hsncode)->first();
 
                 if($hsn){
-                   
+                    $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
+                    $local = \App\States::where('id',$state->state_id)->first();
+                    $local_state = $local->local_state;
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
                             if($del_products->vat_percentage > 0){
-                                $TaxCodeRef = $gst->quick_gst_id;
+                                if($local_state == 1){
+                                    $TaxCodeRef = $gst->quick_gst_id;
+                                }else {
+                                    $TaxCodeRef = $gst->quick_igst_id;
+                                }
                             }
                         }
                     }
@@ -1257,7 +1285,11 @@ class DeliveryChallanController extends Controller {
                 else{
                     $freight_id=$freight_item->quickbook_item_id;
                     $frieghtname = $freight_item->alias_name;
-                    $tax = 15;
+                    if($local_state == 1){
+                        $tax = 15;
+                    } else{
+                        $tax = 22;
+                    }
                 }
                     
                $line[] = [
@@ -1288,7 +1320,11 @@ class DeliveryChallanController extends Controller {
                 else{
                     $loading_id=$loading_item->quickbook_item_id;
                      $loadingname = $loading_item->alias_name;
-                     $tax = 15;
+                     if($local_state == 1){
+                        $tax = 15;
+                    } else{
+                        $tax = 22;
+                    }
                 }
                     
                 
@@ -1317,7 +1353,11 @@ class DeliveryChallanController extends Controller {
                  else{
                       $discount_a_id=$discount_item->quickbook_item_id; 
                     $discountname = $discount_item->alias_name;
-                    $tax = 15;
+                    if($local_state == 1){
+                        $tax = 15;
+                    } else{
+                        $tax = 22;
+                    }
                  }
                    
                  $line[] = [
@@ -1348,10 +1388,11 @@ class DeliveryChallanController extends Controller {
             } */
            
 
-             $custom_query = "select * from Customer where DisplayName='".$tally_name."'";
+             $custom_query = "select * from Customer where CompanyName='".$update_delivery_challan->customer->company_name."'";
+            //  $custom_query = "select * from Customer maxresults 2";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
-           
+        //    dd($customer_details);
              if(!empty($customer_details)){
                     $quickbook_customer_id = $customer_details[0]->Id;
                 }
