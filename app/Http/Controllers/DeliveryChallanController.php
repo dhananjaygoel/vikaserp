@@ -1181,11 +1181,11 @@ class DeliveryChallanController extends Controller {
                 $TaxCodeRef = 0;
                 $hsncode = $del_products->order_product_all_details->hsn_code;
                 $hsn = Hsn::where('hsn_code',$hsncode)->first();
+                $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
+                $local = \App\States::where('id',$state->state_id)->first();
+                $local_state = $local->local_state;
 
                 if($hsn){
-                    $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
-                    $local = \App\States::where('id',$state->state_id)->first();
-                    $local_state = $local->local_state;
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
                         if(isset($gst->quick_gst_id) && $gst->quick_gst_id){
@@ -1219,47 +1219,46 @@ class DeliveryChallanController extends Controller {
                    $quickbook_item_id =$quickbook_item_id;
                 }*/
                 //print $item_details[0]->Id; 
-               
 
                 if($del_products->vat_percentage!=0){
-                   $line[] = [
-                    // "HSN/SAC" => $del_products->hsn_code,
-                    "Description" => $del_products->order_product_all_details->product_category->product_type->name,
-                    "Amount" => $del_products->quantity * $del_products->price,
-                    "DetailType" => "SalesItemLineDetail",
-                    "SalesItemLineDetail" => [
-                        "ItemRef" => [
-                            "name" => $productname,
-                            "value" => $quickbook_item_id
-                        ],
-                        // "UQCId" => $del_products->unit_id,
-                        "UnitPrice" => $del_products->price,
-                        "Qty" => $del_products->quantity,
-                        "TaxCodeRef" => [
-                            "value" => $TaxCodeRef
-                        ],
-                        "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
-                    ]
-                   ];
+                    $line[] = [
+                        // "HSN/SAC" => $del_products->hsn_code,
+                        "Description" => $del_products->order_product_all_details->product_category->product_type->name,
+                        "Amount" => $del_products->quantity * $del_products->price,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => $productname,
+                                "value" => $quickbook_item_id
+                            ],
+                            // "UQCId" => $del_products->unit_id,
+                            "UnitPrice" => $del_products->price,
+                            "Qty" => $del_products->quantity,
+                            "TaxCodeRef" => [
+                                "value" => $TaxCodeRef
+                            ],
+                            "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code,
+                        ]
+                    ];
                 }else{
                     $line[] = [
-                    // "HSN/SAC" => $del_products->hsn_code,
-                    "Description" => $del_products->order_product_all_details->product_category->product_type->name,
-                    "Amount" => $del_products->quantity * $del_products->price,
-                    "DetailType" => "SalesItemLineDetail",
-                    "SalesItemLineDetail" => [
-                        "ItemRef" => [
-                            "name" => $productname,
-                            "value" => $quickbook_item_id
-                        ],
-                        // "UQCId" => $del_products->unit_id,
-                        "UnitPrice" => $del_products->price,
-                        "Qty" => $del_products->quantity,
-                        "TaxCodeRef" => [
-                            "value" => 9
-                        ],
-                        "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
-                    ]
+                        // "HSN/SAC" => $del_products->hsn_code,
+                        "Description" => $del_products->order_product_all_details->product_category->product_type->name,
+                        "Amount" => $del_products->quantity * $del_products->price,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => $productname,
+                                "value" => $quickbook_item_id
+                            ],
+                            // "UQCId" => $del_products->unit_id,
+                            "UnitPrice" => $del_products->price,
+                            "Qty" => $del_products->quantity,
+                            "TaxCodeRef" => [
+                                "value" => 9
+                            ],
+                            "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
+                        ]
                     ];
                 }
              }
@@ -1408,6 +1407,10 @@ class DeliveryChallanController extends Controller {
                     "name"=> $tally_name,
                     "value" => $quickbook_customer_id
                 ],
+                "ShipAddr"=> [
+                    "City"=> $state->area_name, 
+                    "CountrySubDivisionCode"=> $local->state_name
+                ]
                 // "DocNumber"=>$update_delivery_challan->serial_number,
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
