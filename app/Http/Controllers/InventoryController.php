@@ -1370,7 +1370,7 @@ class InventoryController extends Controller {
                     }
                 }
             }
-            sort($thickness_array);
+            // sort($thickness_array);
             $report_arr = $final_arr;
         Excel::create('Inventory Report', function($excel) use($product_last, $thickness_array, $report_arr, $product_column) {
             $excel->sheet('Inventory Report', function($sheet) use($product_last, $thickness_array, $report_arr, $product_column) {
@@ -1452,7 +1452,7 @@ class InventoryController extends Controller {
                     }
                 }
             }
-            sort($thickness_array);
+            // sort($thickness_array);
             $report_arr = $final_arr;
 
         return view('print_inventory_report')->with('product_last', $product_last)
