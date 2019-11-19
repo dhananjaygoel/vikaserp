@@ -126,6 +126,7 @@
                                         $local_state = $local->local_state;
                                         $i = 1;
                                         $total_price = 0;
+                                        $total_vat = 0;
                         //                $total_qty = 0;
                                         // $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                                         // $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
@@ -427,7 +428,7 @@
                         @endif
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b>
-                            <?php $tot = $total + isset($total_vat)?$total_vat:0; ?> {{round($tot,2)}}</label>
+                            <?php $tot = $total + $total_vat; ?> {{round($tot,2)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
