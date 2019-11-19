@@ -224,15 +224,15 @@
                                                     }
                                                     if(isset($product->vat_percentage) && $product->vat_percentage > 0){
                                                         if($local_state == 1){
-                                                            $total_sgst_amount = ($total_price * $sgst) / 100;
-                                                            $total_cgst_amount = ($total_price * $cgst) / 100;
+                                                            $total_sgst_amount = ($amount * $sgst) / 100;
+                                                            $total_cgst_amount = ($amount * $cgst) / 100;
                                                             $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
                                                         } else {
-                                                            $total_igst_amount = ($total_price * $igst) / 100;
+                                                            $total_igst_amount = ($amount * $igst) / 100;
                                                             $total_vat_amount1 = round($total_igst_amount,2);
                                                         }
                                                     } else{
-                                                        $total_gst_amount = ($total_price * $igst) / 100;
+                                                        $total_gst_amount = ($amount * $igst) / 100;
                                                         $total_vat_amount1 = round($total_gst_amount,2);
                                                     }
                                                     // $total_pr = $sgst + $cgst + $igst;
