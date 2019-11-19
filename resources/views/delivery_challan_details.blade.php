@@ -421,13 +421,13 @@
                         <hr/>
                         <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b>
-                            <?php $roundoff = $total_vat;?> {{round($roundoff,2)}}</label>
+                            <?php $roundoff = $total_vat; ?> {{round($roundoff,2)}}</label>
                         </div>
                         <hr/>
                         @endif
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b>
-                            <?php $tot = $total + $total_vat; ?> {{round($tot,2)}}</label>
+                            <?php $tot = $total + isset($total_vat)?$total_vat:0; ?> {{round($tot,2)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
