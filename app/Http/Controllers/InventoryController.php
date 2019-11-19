@@ -263,6 +263,12 @@ class InventoryController extends Controller {
                                 if ($orders_product_details->unit_id == 3) {
                                     $order_qty = $order_qty + (($orders_product_details->quantity / $orders_product_details->product_sub_category->standard_length ) * $orders_product_details->product_sub_category->weight);
                                 }
+                                if ($orders_product_details->unit_id == 4) {
+                                    $order_qty = $order_qty + ($orders_product_details->quantity * $orders_product_details->product_sub_category->weight * $orders_product_details->length );
+                                }
+                                if ($orders_product_details->unit_id == 5) {
+                                    $order_qty = $order_qty + ($orders_product_details->quantity * $orders_product_details->product_sub_category->weight * ($orders_product_details->length/305));
+                                }
                             }
                         }
 
@@ -287,6 +293,12 @@ class InventoryController extends Controller {
                                                 }
                                                 if ($delivery_orders_product_details->unit_id == 3) {
                                                     $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
+                                                }
+                                                if ($delivery_orders_product_details->unit_id == 4) {
+                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight * $delivery_orders_product_details->length );
+                                                }
+                                                if ($delivery_orders_product_details->unit_id == 5) {
+                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight * ($delivery_orders_product_details->length/305));
                                                 }
                                             }
                                         }
@@ -320,6 +332,12 @@ class InventoryController extends Controller {
                                     }
                                     if ($delivery_orders_product_details->unit_id == 3) {
                                         $pending_delivery_order_qty = $pending_delivery_order_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
+                                    }
+                                    if ($delivery_orders_product_details->unit_id == 4) {
+                                        $pending_delivery_order_qty = $pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight * $delivery_orders_product_details->length );
+                                    }
+                                    if ($delivery_orders_product_details->unit_id == 5) {
+                                        $pending_delivery_order_qty = $pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight * ($delivery_orders_product_details->length/305));
                                     }
                                 }
                             }
@@ -445,6 +463,12 @@ class InventoryController extends Controller {
                                     if ($purchase_orders_product_details->unit_id == 3) {
                                         $pending_purchase_order_qty = $pending_purchase_order_qty + (($purchase_orders_product_details->quantity / $purchase_orders_product_details->product_sub_category->standard_length ) * $purchase_orders_product_details->product_sub_category->weight);
                                     }
+                                    if ($purchase_orders_product_details->unit_id == 4) {
+                                        $pending_purchase_order_qty = $pending_purchase_order_qty + ($purchase_orders_product_details->quantity * $purchase_orders_product_details->product_sub_category->weight * $purchase_orders_product_details->length );
+                                    }
+                                    if ($purchase_orders_product_details->unit_id == 5) {
+                                        $pending_purchase_order_qty = $pending_purchase_order_qty + ($purchase_orders_product_details->quantity * $purchase_orders_product_details->product_sub_category->weight * ($purchase_orders_product_details->length/305));
+                                    }
                                 }
                             }
                         }
@@ -469,6 +493,12 @@ class InventoryController extends Controller {
                                                 }
                                                 if ($purchase_advice_product_details->unit_id == 3) {
                                                     $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
+                                                }
+                                                if ($purchase_advice_product_details->unit_id == 4) {
+                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight * $purchase_advice_product_details->length );
+                                                }
+                                                if ($purchase_advice_product_details->unit_id == 5) {
+                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight * ($purchase_advice_product_details->length/305));
                                                 }
                                             }
                                         }
@@ -500,6 +530,12 @@ class InventoryController extends Controller {
                                     }
                                     if ($purchase_advice_product_details->unit_id == 3) {
                                         $pending_purchase_advice_qty = $pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
+                                    }
+                                    if ($purchase_advice_product_details->unit_id == 4) {
+                                        $pending_purchase_advice_qty = $pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight * $purchase_advice_product_details->length );
+                                    }
+                                    if ($purchase_advice_product_details->unit_id == 5) {
+                                        $pending_purchase_advice_qty = $pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight * ($purchase_advice_product_details->length/305));
                                     }
                                 }
                             }
