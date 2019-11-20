@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreCustomer;
+use View;
+use App;
 use App\Vendor\Phpoffice\Phpexcel\Classes;
 use Maatwebsite\Excel\Facades\Excel;
 use App\States;
 use App\ProductCategory;
 use App\ProductSubCategory;
 use App\Http\Requests\ProductCategoryRequest;
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
+use QuickBooksOnline\API\Facades\Vendor;
+use App\QuickbookToken;
+use App\Http\Controllers\CustomerController;
 use App\Http\Requests\UserValidation;
 use Input;
 use DB;
@@ -19,6 +29,7 @@ use Session;
 use Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 use Dropbox\Client;
 use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
@@ -229,6 +240,57 @@ class WelcomeController extends Controller {
 //$server_output = curl_exec ($ch);
 //curl_close ($ch);
 //echo $server_output;
+    }
+
+    public function getToken(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = QuickbookToken::find(2);
+         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+             'auth_mode' => 'oauth2',
+             'ClientID' => $quickbook->client,
+             'ClientSecret' => $quickbook->secret,
+             'accessTokenKey' =>  $quickbook->access_token,
+             'refreshTokenKey' => $quickbook->refresh_token,
+             'QBORealmID' => "9130347328068306",
+             'baseUrl' => "Production",
+             'minorVersion'=>34
+         ));
+     }
+ 
+    public function refresh_token(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = QuickbookToken::find(2);
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+
+        QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
+
+    public function getTokenWihtoutGST(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = App\QuickbookToken::find(1);
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "9130347328054516",
+            'baseUrl' => "Production",
+            'minorVersion'=>34
+        )); 
+
+    }
+    public function refresh_token_Wihtout_GST(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        $quickbook = QuickbookToken::find(1);
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
 
     public function exportExcel($type) {
@@ -782,7 +844,60 @@ class WelcomeController extends Controller {
                 }
                 $customer->customer_status = 'permanent';
                 $customer->relationship_manager = 2;
+
+                $state = States::where('id',1)->first();
+                $city = City::where('id',1)->where('state_id',1)->first();
+
+                $Qdata = [
+                    "GivenName"=>  $rowData[0],
+                    "FullyQualifiedName"=> $rowData[9],
+                    "CompanyName"=>  $rowData[1],
+                    "DisplayName"=>  $rowData[9],
+                    "PrimaryEmailAddr" => [
+                        "Address" => $rowData[8]
+                    ],
+                    "PrimaryPhone"=>  [
+                        "FreeFormNumber"=>  $rowData[10]
+                    ],
+                    "BillAddr"=> [
+                        "Country"=> "India",
+                        "CountrySubDivisionCode"=> $state->state_name,
+                        "City"=> $city->city_name, 
+                        "PostalCode"=> $rowData[7], 
+                        "Line1" => $rowData[3], 
+                        "Line2" => $rowData[4], 
+                    ],
+                ];
+                $inclusivecustomerid ="";
+                $gstcustomerid = "";
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();
+                $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
+                $newcus = $dataService->add($newCustomerObj);
+                $error = $dataService->getLastError();
+                if ($error) { 
+                    $this->refresh_token_Wihtout_GST();
+                    $dataService = $this->getTokenWihtoutGST();  
+                }
+                else{
+                    $inclusivecustomerid =  $newcus->Id;
+                }
+                $this->refresh_token();
+                $nextdataservice = $this->getToken();
+                $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+                $error1 = $nextdataservice->getLastError();
+                if ($error1) { 
+                    $this->refresh_token();
+                    $dataService = $this->getToken();  
+                }
+                else{
+                    $gstcustomerid =  $newcustoinclusive->Id;
+                }
+                $customer->quickbook_a_customer_id  = $inclusivecustomerid;
+                $customer->quickbook_customer_id  = $gstcustomerid;
+
                 $customer->save();
+                                
             }
             return "success_data";
         }
