@@ -417,6 +417,9 @@ class PendingCustomerController extends Controller {
         }
         $customer->customer_status = 'permanent';
         /* Add Customer to the Quickbook Account */
+        $quickbook_a_customer_id  = $customer->quickbook_a_customer_id;
+        $quickbook_customer_id = $customer->quickbook_customer_id;
+
         $state = States::where('id',Input::get('state'))->first();
         $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
 
@@ -445,30 +448,45 @@ class PendingCustomerController extends Controller {
         $this->refresh_token_Wihtout_GST();
         $dataService = $this->getTokenWihtoutGST();
         // $newCustomerObj = Vendor::create($Qdata);
-        $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
-        // dd($newCustomerObj);
-        $newcus = $dataService->add($newCustomerObj);
-        $error = $dataService->getLastError();
-        if ($error) { 
-            $this->refresh_token_Wihtout_GST();
-            $dataService = $this->getTokenWihtoutGST();  
-        }
-        else{
-            $inclusivecustomerid =  $newcus->Id;
+        if($quickbook_customer_id && $quickbook_a_customer_id){
+            $resultingObj = $dataService->FindById('Customer', $quickbook_a_customer_id);
+            // dd($resultingObj);
+            $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$Qdata);
+            $resultingCustomerObj = $dataService->Update($customerObj);
+        } else {
+            $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
+            // dd($newCustomerObj);
+            $newcus = $dataService->add($newCustomerObj);
+            $error = $dataService->getLastError();
+            if ($error) { 
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();  
+            }
+            else{
+                $inclusivecustomerid =  $newcus->Id;
+            }
         }
         $this->refresh_token();
         $nextdataservice = $this->getToken();
-        $newcustoinclusive = $nextdataservice->add($newCustomerObj);
-        $error1 = $nextdataservice->getLastError();
-        if ($error1) { 
-            $this->refresh_token();
-            $dataService = $this->getToken();  
+        if($quickbook_customer_id && $quickbook_a_customer_id){
+            $nextresultingObj = $nextdataservice->FindById('Customer', $quickbook_customer_id);
+            $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextresultingObj,$Qdata);
+            $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+            $customer->quickbook_a_customer_id  = $quickbook_a_customer_id;
+            $customer->quickbook_customer_id  = $quickbook_customer_id;
+        } else {
+            $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+            $error1 = $nextdataservice->getLastError();
+            if ($error1) { 
+                $this->refresh_token();
+                $dataService = $this->getToken();  
+            }
+            else{
+                $gstcustomerid =  $newcustoinclusive->Id;
+            }
+            $customer->quickbook_a_customer_id  = $inclusivecustomerid;
+            $customer->quickbook_customer_id  = $gstcustomerid;
         }
-        else{
-            $gstcustomerid =  $newcustoinclusive->Id;
-        }
-        $customer->quickbook_a_customer_id  = $inclusivecustomerid;
-        $customer->quickbook_customer_id  = $gstcustomerid;
         /* Added Customer to the Quickbook Account */
 
         if ($customer->save()) {

@@ -2,6 +2,12 @@
 
 namespace App;
 
+use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
+use Input;
+use App;
+use App\City;
+use App\States;
+use App\QuickbookToken;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model {
@@ -15,6 +21,58 @@ class Customer extends Model {
 
 //    protected $fillable = ['state_id', 'city_id', 'area_name'];
 
+function getToken(){
+    require_once base_path('quickbook/vendor/autoload.php');
+    $quickbook = App\QuickbookToken::find(2);
+    return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+        'auth_mode' => 'oauth2',
+        'ClientID' => $quickbook->client,
+        'ClientSecret' => $quickbook->secret,
+        'accessTokenKey' =>  $quickbook->access_token,
+        'refreshTokenKey' => $quickbook->refresh_token,
+        'QBORealmID' => "9130347328068306",
+        'baseUrl' => "Production",
+        'minorVersion'=>34
+    ));
+}
+function refresh_token(){
+    require_once base_path('quickbook/vendor/autoload.php');
+    $quickbook = App\QuickbookToken::find(2);
+    $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+    $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+    $accessTokenValue = $accessTokenObj->getAccessToken();
+    $refreshTokenValue = $accessTokenObj->getRefreshToken();
+    App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+}
+
+//function for All Inclusive Account 
+function getTokenWihtoutGST(){
+
+    require_once base_path('quickbook/vendor/autoload.php');
+    // $quickbook = App\QuickbookToken::first();
+    $quickbook = App\QuickbookToken::find(1);
+    return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+        'auth_mode' => 'oauth2',
+        'ClientID' => $quickbook->client,
+        'ClientSecret' => $quickbook->secret,
+        'accessTokenKey' =>  $quickbook->access_token,
+        'refreshTokenKey' => $quickbook->refresh_token,
+        'QBORealmID' => "9130347328054516",
+        'baseUrl' => "Production",
+        'minorVersion'=>34
+    )); 
+
+}
+function refresh_token_Wihtout_GST(){
+    require_once base_path('quickbook/vendor/autoload.php');
+    // $quickbook = App\QuickbookToken::first();
+    $quickbook = App\QuickbookToken::find(1);
+    $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+    $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+    $accessTokenValue = $accessTokenObj->getAccessToken();
+    $refreshTokenValue = $accessTokenObj->getRefreshToken();
+    App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+}
     public function deliverylocation() {
         return $this->hasOne('App\DeliveryLocation', 'id', 'delivery_location_id')->with('city', 'states');
     }
@@ -109,6 +167,53 @@ class Customer extends Model {
         $this->credit_period = $credit_period;
         $this->customer_status = 'pending';
         $this->delivery_location_id = $devlivery_location_id;
+
+        $state = States::where('id',1)->first();
+        $city = City::where('id',1)->where('state_id',1)->first();
+
+        $Qdata = [
+            "GivenName"=>  $owner_name,
+            "FullyQualifiedName"=> $contact_person,
+            "DisplayName"=>  $owner_name,
+            "PrimaryPhone"=>  [
+                "FreeFormNumber"=>  $phone_number1
+            ],
+            "BillAddr"=> [
+                  "Country"=> "India",
+                  "CountrySubDivisionCode"=> $state->state_name,
+                  "City"=> $city->city_name,
+            ],
+        ];
+        $inclusivecustomerid ="";
+        $gstcustomerid = "";
+        $this->refresh_token_Wihtout_GST();
+        $dataService = $this->getTokenWihtoutGST();
+        // $newCustomerObj = Vendor::create($Qdata);
+        $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
+        // dd($newCustomerObj);
+        $newcus = $dataService->add($newCustomerObj);
+        $error = $dataService->getLastError();
+        if ($error) { 
+            $this->refresh_token_Wihtout_GST();
+            $dataService = $this->getTokenWihtoutGST();  
+        }
+        else{
+            $inclusivecustomerid =  $newcus->Id;
+        }
+        $this->refresh_token();
+        $nextdataservice = $this->getToken();
+        $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+        $error1 = $nextdataservice->getLastError();
+        if ($error1) { 
+            $this->refresh_token();
+            $dataService = $this->getToken();  
+        }
+        else{
+            $gstcustomerid =  $newcustoinclusive->Id;
+        }
+        $this->quickbook_a_customer_id  = $inclusivecustomerid;
+        $this->quickbook_customer_id  = $gstcustomerid;
+        /* Added Customer to the Quickbook Account */
         $this->save();
         return $this;
     }
