@@ -1795,7 +1795,16 @@ $.widget("custom.combobox1", {
                    }
                    else
                    {
-                           $('#units_'+id).val('');
+                        var value = ui.item.value;
+                        var product_name = value.substr(value.length - 7);
+                        
+                        if(product_name == 'GI Pipe'){
+                            $('#unit_'+id+'_0').attr('style', 'display:none;');
+                            $('#unit_'+id+'_3').attr('selected',true);
+                        } else{
+                            $('#unit_'+id+'_0').attr('style', 'display:none;');
+                            $('#unit_'+id+'_1').attr('selected',true);
+                        }
                            $('#length_'+id).attr('disabled', true);
                            $('#unit_'+id+'_1').show();
                            $('#unit_'+id+'_2').show();
@@ -2068,7 +2077,17 @@ function getProductDetails() {
                    }
                    else
                    { 
-                           $('#units_'+id).val('');
+                        var value = ui.item.value;
+                        var product_name = value.substr(value.length - 7);
+                        
+                        if(product_name == 'GI Pipe'){
+                            $('#unit_'+id+'_0').attr('style', 'display:none;');
+                            $('#unit_'+id+'_3').attr('selected',true);
+                        } else{
+                            $('#unit_'+id+'_0').attr('style', 'display:none;');
+                            $('#unit_'+id+'_1').attr('selected',true);
+                        }
+                        //    $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', true);
                            $('#unit_'+id+'_1').show();
                            $('#unit_'+id+'_2').show();
