@@ -563,7 +563,7 @@
                     if($roleid ==0) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
-                           $array = \App\User::where('role_id',8)
+                           $array = \App\User::where('role_id',8)->where('is_active',1)
                                        ->orderBy('id', 'DESC')
                                        ->get();
                            ?>
@@ -576,7 +576,7 @@
                       if($roleid ==2) {
                           $type = "del_supervisor";
                            $options =array(''=>'Select Supervisor');
-                           $array = \App\User::where('role_id',8)
+                           $array = \App\User::where('role_id',8)->where('is_active',1)
                                        ->orderBy('id', 'DESC')
                                        ->get();
                            ?>
@@ -639,7 +639,7 @@
                     if($roleid == 0) {
                         $type = "del_boy";
                         $options =array(''=>'Select Delivery boy');
-                        $array = \App\User::where('role_id',9)
+                        $array = \App\User::where('role_id',9)->where('is_active',1)
                                    ->orderBy('id', 'DESC')
                                    ->get();
                      
@@ -654,7 +654,7 @@
                     if($roleid == 8) {
                         $type = "del_boy";
                         $options =array(''=>'Select Delivery boy');
-                        $array = \App\User::where('role_id',9)
+                        $array = \App\User::where('role_id',9)->where('is_active',1)
                                    ->orderBy('id', 'DESC')
                                    ->get();
 

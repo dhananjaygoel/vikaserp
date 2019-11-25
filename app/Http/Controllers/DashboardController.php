@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Auth;
 use App\Order;
+use App\User;
 use App\Inquiry;
 use App\DeliveryOrder;
 use App\DeliveryChallan;
@@ -43,13 +44,14 @@ class DashboardController extends Controller {
      */
 
     public function index() {
-        // print_r(Auth::user()->role_id);
+        // dd(Auth::user()->id);
         // exit;
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
 
         if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9 || Auth::user()->role_id == 3){
+            User::where('id',Auth::user()->id)->update(['is_active'=>1]);
             return Redirect::to('delivery_order');
         }
 

@@ -292,7 +292,7 @@ interface Kernel
     public function getApplication();
 }
 namespace Illuminate\Contracts\Auth;
-
+use App\User;
 interface Guard
 {
     public function check();
@@ -369,6 +369,7 @@ class AuthManager extends Manager
 namespace Illuminate\Auth;
 
 use RuntimeException;
+use App\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Auth\UserProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -581,6 +582,7 @@ class Guard implements GuardContract
     public function logout()
     {
         $user = $this->user();
+        User::where('id',$user->id)->update(['is_active'=>0]);
         $this->clearUserDataFromStorage();
         if (!is_null($this->user)) {
             $this->refreshRememberToken($user);
