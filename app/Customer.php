@@ -170,7 +170,9 @@ function refresh_token_Wihtout_GST(){
 
         $state = States::where('id',1)->first();
         $city = City::where('id',1)->where('state_id',1)->first();
-
+        $customer = Customer::where('owner_name',$owner_name)->where('customer_status','pending')->first();
+        $quickbook_id=$customer->quickbook_customer_id;
+        $quickbook_a_id=$customer->quickbook_a_customer_id;
         $Qdata = [
             "GivenName"=>  $owner_name,
             "FullyQualifiedName"=> $contact_person,
@@ -179,40 +181,69 @@ function refresh_token_Wihtout_GST(){
                 "FreeFormNumber"=>  $phone_number1
             ],
             "BillAddr"=> [
-                  "Country"=> "India",
-                  "CountrySubDivisionCode"=> $state->state_name,
-                  "City"=> $city->city_name,
+                "Country"=> "India",
+                "CountrySubDivisionCode"=> $state->state_name,
+                "City"=> $city->city_name,
             ],
         ];
-        $inclusivecustomerid ="";
-        $gstcustomerid = "";
-        $this->refresh_token_Wihtout_GST();
-        $dataService = $this->getTokenWihtoutGST();
-        // $newCustomerObj = Vendor::create($Qdata);
-        $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
-        // dd($newCustomerObj);
-        $newcus = $dataService->add($newCustomerObj);
-        $error = $dataService->getLastError();
-        if ($error) { 
+        if(empty($quickbook_id) && empty($quickbook_a_id)){
+            $inclusivecustomerid ="";
+            $gstcustomerid = "";
             $this->refresh_token_Wihtout_GST();
-            $dataService = $this->getTokenWihtoutGST();  
-        }
-        else{
-            $inclusivecustomerid =  $newcus->Id;
-        }
-        $this->refresh_token();
-        $nextdataservice = $this->getToken();
-        $newcustoinclusive = $nextdataservice->add($newCustomerObj);
-        $error1 = $nextdataservice->getLastError();
-        if ($error1) { 
+            $dataService = $this->getTokenWihtoutGST();
+            $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
+            $newcus = $dataService->add($newCustomerObj);
+            $error = $dataService->getLastError();
+            if ($error) { 
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();  
+            }
+            else{
+                $inclusivecustomerid =  $newcus->Id;
+            }
             $this->refresh_token();
-            $dataService = $this->getToken();  
+            $nextdataservice = $this->getToken();
+            $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+            $error1 = $nextdataservice->getLastError();
+            if ($error1) { 
+                $this->refresh_token();
+                $dataService = $this->getToken();  
+            }
+            else{
+                $gstcustomerid =  $newcustoinclusive->Id;
+            }
+            $this->quickbook_a_customer_id  = $inclusivecustomerid;
+            $this->quickbook_customer_id  = $gstcustomerid;
+        }else{
+            $this->refresh_token_Wihtout_GST();
+            $dataService = $this->getTokenWihtoutGST();
+            $resultingObj = $dataService->FindById('Customer', $quickbook_a_id);
+            $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$Qdata);
+            $resultingCustomerObj = $dataService->Update($customerObj);
+            $error = $dataService->getLastError();
+            if ($error) { 
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();  
+            }
+            else{
+                $resultingCustomerObj = $dataService->Update($customerObj);
+            }
+            $this->refresh_token();
+            $nextdataservice = $this->getToken();
+            $nextresultingObj = $nextdataservice->FindById('Customer', $quickbook_id);
+            $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextresultingObj,$Qdata);
+            $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+            $error1 = $nextdataservice->getLastError();
+            if ($error1) { 
+                $this->refresh_token();
+                $nextdataservice = $this->getToken();  
+            }
+            else{
+                $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+            }
+            $this->quickbook_a_customer_id  = $quickbook_a_id;
+            $this->quickbook_customer_id  = $quickbook_id;
         }
-        else{
-            $gstcustomerid =  $newcustoinclusive->Id;
-        }
-        $this->quickbook_a_customer_id  = $inclusivecustomerid;
-        $this->quickbook_customer_id  = $gstcustomerid;
         /* Added Customer to the Quickbook Account */
         $this->save();
         return $this;
