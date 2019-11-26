@@ -171,8 +171,8 @@ function refresh_token_Wihtout_GST(){
         $state = States::where('id',1)->first();
         $city = City::where('id',1)->where('state_id',1)->first();
         $customer = Customer::where('owner_name',$owner_name)->where('customer_status','pending')->first();
-        $quickbook_id=$customer->quickbook_customer_id;
-        $quickbook_a_id=$customer->quickbook_a_customer_id;
+        $quickbook_id=isset($customer->quickbook_customer_id)?$customer->quickbook_customer_id:0;
+        $quickbook_a_id=isset($customer->quickbook_a_customer_id)?$customer->quickbook_a_customer_id:0;
         $Qdata = [
             "GivenName"=>  $owner_name,
             "FullyQualifiedName"=> $contact_person,
