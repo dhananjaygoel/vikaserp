@@ -1777,7 +1777,7 @@ $.widget("custom.combobox1", {
 //                     alert($('#unit_'+id+'_4').length );//this.element.attr("data-productid")
         //         	var i = $('#units_' + id).val();
 //                    console.log(event);
-                   if(ui.item.type_id == 3)
+                   if(ui.item.type_id == 3 || ui.item.id == 3 )
                    {
                            $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', false);
@@ -1795,13 +1795,18 @@ $.widget("custom.combobox1", {
                    }
                    else
                    {
-                        var value = ui.item.value;
-                        var product_name = value.substr(value.length - 7);
-                        
-                        if(product_name == 'GI Pipe'){
-                            $('#unit_'+id+'_0').attr('style', 'display:none;');
-                            $('#unit_'+id+'_3').attr('selected',true);
-                        } else{
+                        if(ui.item.type_id == 1 || ui.item.id == 1){
+                            var value = ui.item.value;
+                            var product_name = value.substr(value.length - 7);
+                            
+                            if(product_name == 'GI Pipe'){
+                                $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                $('#unit_'+id+'_3').attr('selected',true);
+                            } else{
+                                $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                $('#unit_'+id+'_1').attr('selected',true);
+                            }
+                        } else {
                             $('#unit_'+id+'_0').attr('style', 'display:none;');
                             $('#unit_'+id+'_1').attr('selected',true);
                         }
@@ -1812,8 +1817,8 @@ $.widget("custom.combobox1", {
                            $('#unit_'+id+'_4').hide();
                            $('#unit_'+id+'_5').hide();
                           if($('#unit_'+id+'_1').length == 0){
-                              $("#units_"+id).append($('<option>', {selected: true, value: '',text: '--Select--',id: 'unit_'+id+'_0'}));
-                              $("#units_"+id).append($('<option>', { value: 1,text: 'KG',id: 'unit_'+id+'_1'}));
+                            //   $("#units_"+id).append($('<option>', {selected: true, value: '',text: '--Select--',id: 'unit_'+id+'_0'}));
+                              $("#units_"+id).append($('<option>', { selected: true, value: 1,text: 'KG',id: 'unit_'+id+'_1'}));
                               $("#units_"+id).append($('<option>', { value: 2,text: 'Pieces',id: 'unit_'+id+'_2'}));
                               $("#units_"+id).append($('<option>', { value: 3,text: 'Meter',id: 'unit_'+id+'_3'}));
                               $('#units_'+id).trigger('change');   
@@ -2059,7 +2064,7 @@ function getProductDetails() {
                 autocompleteselect: function (event, ui) {
                    // console.log(ui);
                    
-                   if(ui.item.type_id == 3)
+                   if(ui.item.type_id == 3 || ui.item.id == 3 )
                    {
                            $('#units_'+id).val('');
                            $('#length_'+id).attr('disabled', false);
@@ -2077,13 +2082,18 @@ function getProductDetails() {
                    }
                    else
                    { 
-                        var value = ui.item.value;
-                        var product_name = value.substr(value.length - 7);
-                        
-                        if(product_name == 'GI Pipe'){
-                            $('#unit_'+id+'_0').attr('style', 'display:none;');
-                            $('#unit_'+id+'_3').attr('selected',true);
-                        } else{
+                        if(ui.item.type_id == 1 || ui.item.id == 1){
+                            var value = ui.item.value;
+                            var product_name = value.substr(value.length - 7);
+                            
+                            if(product_name == 'GI Pipe'){
+                                $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                $('#unit_'+id+'_3').attr('selected',true);
+                            } else{
+                                $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                $('#unit_'+id+'_1').attr('selected',true);
+                            }
+                        } else {
                             $('#unit_'+id+'_0').attr('style', 'display:none;');
                             $('#unit_'+id+'_1').attr('selected',true);
                         }
@@ -2095,8 +2105,8 @@ function getProductDetails() {
                            $('#unit_'+id+'_4').hide();
                            $('#unit_'+id+'_5').hide();
                            if($('#unit_'+id+'_1').length == 0){
-                              $("#units_"+id).append($('<option>', {selected: true, value: '',text: '--Select--',id: 'unit_'+id+'_0'}));
-                              $("#units_"+id).append($('<option>', { value: 1,text: 'KG',id: 'unit_'+id+'_1'}));
+                            //   $("#units_"+id).append($('<option>', {selected: true, value: '',text: '--Select--',id: 'unit_'+id+'_0'}));
+                              $("#units_"+id).append($('<option>', { selected: true, value: 1,text: 'KG',id: 'unit_'+id+'_1'}));
                               $("#units_"+id).append($('<option>', { value: 2,text: 'Pieces',id: 'unit_'+id+'_2'}));
                               $("#units_"+id).append($('<option>', { value: 3,text: 'Meter',id: 'unit_'+id+'_3'}));
                               $('#units_'+id).trigger('change');   
