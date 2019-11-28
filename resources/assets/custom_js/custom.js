@@ -3749,6 +3749,77 @@ $("button").click(function() {
     }
 });
 
+$(".assign_load1").click(function(e){
+    e.preventDefault();
+
+    var select = $('#del_boy');
+    var role_id = $(this).attr('data-role_id');
+    var delivery_boy = $(this).attr('data-delivery_boy');
+    var title = $(this).attr('title');
+    // alert(delivery_boy);
+    // console.log(select);
+    select.empty();
+
+    $.ajax({
+        type: 'GET',
+        url: url + '/del_boy_reload',
+        data: {
+            role_id:role_id,
+            delivery_boy:delivery_boy,
+        },
+        success: function (data) {
+            // alert(data);
+            var opts = $.parseJSON(data);
+            // alert(opts);
+            
+            select.append('<option value="">Select Delivery boy</option>')
+            if(delivery_boy != ''){
+                select.append('<option value="' + delivery_boy + '" selected>' + title +'</option>');
+            }
+            $.each(opts, function(i, d){
+                if(d.id != delivery_boy){
+                    select.append('<option value="' + d.id + '">' + d.first_name +' '+ d.last_name +'</option>');
+                }
+            });
+        }
+    });
+});
+
+$(".assign_load").click(function(e){
+    e.preventDefault();
+
+    var select = $('#del_supervisor');
+    var role_id = $(this).attr('data-role_id');
+    var supervisor_id = $(this).attr('data-supervisor_id');
+    var title = $(this).attr('title');
+    // alert(supervisor_id);
+    // console.log(select);
+    select.empty();
+        $.ajax({
+            type: 'GET',
+            url: url + '/supervisor_reload',
+            data: {
+                role_id:role_id,
+                supervisor_id:supervisor_id,
+            },
+            success: function (data) {
+                // alert(data);
+                var opts = $.parseJSON(data);
+                // alert(opts);
+                select.append('<option value="">Select Supervisor</option>')
+                if(supervisor_id != ''){
+                    select.append('<option value="' + supervisor_id + '" selected>' + title +'</option>');
+                }
+                $.each(opts, function(i, d){
+                    if(d.id != supervisor_id){
+                        select.append('<option value="' + d.id + '">' + d.first_name +' '+ d.last_name +'</option>');
+                    }
+                });
+            }
+        });
+
+});
+
 function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();

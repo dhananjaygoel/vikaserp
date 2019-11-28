@@ -596,9 +596,9 @@
         ?>
                 <select class="form-control del_supervisor" name="del_supervisor"  data-order_id="{{$delivery->order_id}}"data-role_id="{{$roleid}}" data-supervisor_id="{{$delivery->del_supervisor}}"
                  data-delivery_boy="{{$delivery->del_boy}}" data-delivery_id="{{$delivery->id}}" id="del_supervisor"> 
-                                                        @foreach($options as $optkey =>$user)
+                                                        <!-- @foreach($options as $optkey =>$user)
                                                               <option value = {{$optkey }}>{{$user}}</option>  
-                                                        @endforeach
+                                                        @endforeach -->
                    </select>
                 <input type ="hidden" name ="assign_type" id="assign_type" value = "{{$type}}">
                  <input type ="hidden" name ="delivery_id" id="delivery_id" value ="{{$delivery->id}}">
@@ -643,7 +643,7 @@
                                    ->orderBy('id', 'DESC')
                                    ->get();
                      
-                       ?>
+                        ?>
 
                         @foreach($array as $user)<?php 
                            $options[$user->id] = $user->first_name.' '.$user->last_name;
@@ -672,10 +672,9 @@
         ?>
                 <select class="form-control del_supervisor" name="del_boy"  data-order_id="{{$delivery->order_id}}"data-role_id="{{$roleid}}" data-supervisor_id="{{$delivery->del_supervisor}}"
                  data-delivery_boy="{{$delivery->del_boy}}" data-delivery_id="{{$delivery->id}}" id="del_boy"> 
-                                                        @foreach($options as $optkey =>$user)
-                                                       <?php  echo "kkk"; print_r($user);?>
+                                                        <!-- @foreach($options as $optkey =>$user)
                                                               <option value = {{$optkey }}>{{$user}}</option>  
-                                                        @endforeach
+                                                        @endforeach -->
                    </select>
                 <input type ="hidden" name ="assign_type" id="assign_type" value = "{{$type}}">
                  <input type ="hidden" name ="delivery_id" id="delivery_id" value ="{{$delivery->id}}">

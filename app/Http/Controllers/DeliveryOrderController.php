@@ -2389,6 +2389,50 @@ class DeliveryOrderController extends Controller {
         }
     }
 
+    public function del_boy_reload(Request $request){
+
+        $roleid = $request->role_id;
+        $delivery_boy = $request->delivery_boy;
+
+        if($roleid == 0 || $roleid == 8 ){
+            if($roleid == 0) {
+                $type = "del_boy";
+                $array = \App\User::where('role_id',9)->where('is_active',1)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+            } 
+        }
+        if($roleid == 8) {
+            $type = "del_boy";
+            $array = \App\User::where('role_id',9)->where('is_active',1)
+                        ->orderBy('id', 'DESC')
+                        ->get();
+        }
+        echo json_encode($array);
+    }
+
+    public function supervisor_reload(Request $request){
+
+        $roleid = $request->role_id;
+        $supervisor_id = $request->supervisor_id;
+
+        if($roleid == 0 || $roleid == 2 ){
+            if($roleid == 0) {
+                $type = "del_supervisor";
+                $array = \App\User::where('role_id',8)->where('is_active',1)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+            } 
+        }
+        if($roleid == 2) {
+            $type = "del_supervisor";
+            $array = \App\User::where('role_id',8)->where('is_active',1)
+                        ->orderBy('id', 'DESC')
+                        ->get();
+        }
+        echo json_encode($array);
+    }
+
     public function get_data() {
         $product_sub_category = ProductSubCategory::with('product_category')->get();
         $customer_product_difference = CustomerProductDifference::all();
