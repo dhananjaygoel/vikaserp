@@ -3799,6 +3799,7 @@ $(".assign_load").click(function(e){
                 role_id:role_id,
                 supervisor_id:supervisor_id,
             },
+            dataType: 'json',
             success: function (data) {
                 // alert(data);
                 select.append('<option value="">Select Supervisor</option>')
