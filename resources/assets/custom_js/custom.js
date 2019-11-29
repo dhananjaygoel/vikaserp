@@ -3756,8 +3756,6 @@ $(".assign_load1").click(function(e){
     var role_id = $(this).attr('data-role_id');
     var delivery_boy = $(this).attr('data-delivery_boy');
     var title = $(this).attr('title');
-    // alert(delivery_boy);
-    // console.log(select);
     select.empty();
 
     $.ajax({
@@ -3767,19 +3765,20 @@ $(".assign_load1").click(function(e){
             role_id:role_id,
             delivery_boy:delivery_boy,
         },
+        dataType: 'json',
         success: function (data) {
-            // alert(data);
-            var opts = $.parseJSON(data);
-            // alert(opts);
             
             select.append('<option value="">Select Delivery boy</option>')
             if(delivery_boy != ''){
-                select.append('<option value="' + delivery_boy + '" selected>' + title +'</option>');
+                select.append('<option id="opt'+delivery_boy+'" value="' + delivery_boy + '" style="color:red;" selected>' + title +'</option>');
             }
-            $.each(opts, function(i, d){
+            $.each(data[0], function(i, d){
                 if(d.id != delivery_boy){
-                    select.append('<option value="' + d.id + '">' + d.first_name +' '+ d.last_name +'</option>');
+                    select.append('<option id="opt'+d.id+'" value="' + d.id + '" style="color:red;">' + d.first_name +' '+ d.last_name +'</option>');
                 }
+            });
+            $.each(data[1], function(i, m){
+                $('#opt'+m.id).attr('style','color: green;');
             });
         }
     });
@@ -3792,8 +3791,6 @@ $(".assign_load").click(function(e){
     var role_id = $(this).attr('data-role_id');
     var supervisor_id = $(this).attr('data-supervisor_id');
     var title = $(this).attr('title');
-    // alert(supervisor_id);
-    // console.log(select);
     select.empty();
         $.ajax({
             type: 'GET',
@@ -3804,16 +3801,17 @@ $(".assign_load").click(function(e){
             },
             success: function (data) {
                 // alert(data);
-                var opts = $.parseJSON(data);
-                // alert(opts);
                 select.append('<option value="">Select Supervisor</option>')
                 if(supervisor_id != ''){
-                    select.append('<option value="' + supervisor_id + '" selected>' + title +'</option>');
+                    select.append('<option id="opt'+supervisor_id+'" value="' + supervisor_id + '" style="color:red;" selected>' + title +'</option>');
                 }
-                $.each(opts, function(i, d){
+                $.each(data[0], function(i, d){
                     if(d.id != supervisor_id){
-                        select.append('<option value="' + d.id + '">' + d.first_name +' '+ d.last_name +'</option>');
+                        select.append('<option id="opt'+d.id+'" value="' + d.id + '" style="color:red;">' + d.first_name +' '+ d.last_name +'</option>');
                     }
+                });
+                $.each(data[1], function(i, m){
+                    $('#opt'+m.id).attr('style','color: green;');
                 });
             }
         });
