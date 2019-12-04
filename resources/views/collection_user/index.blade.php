@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/dashboard">Home</a></li>
+                    <li><a href="{{url('/')}}/dashboard">Home</a></li>
                     <li class="active"><span>Collection Users</span></li>
                 </ol>
             </div>
@@ -18,7 +18,7 @@
                     <h1 class="pull-left">Collection Users</h1>
                 </div>
                 <div class="col-lg-9">
-                        <form method="GET" action=" {{url()}}/account" id="st_collection_user_form">
+                        <form method="GET" action=" {{url('/')}}/account" id="st_collection_user_form">
                             <div class="col-lg-3">
                                 <div class="input-group pull-right">
                                     <input type="text" class="form-control" name="search" id="search" placeholder="Search Collection User" value="{{ Request::get('search') }}">
@@ -51,7 +51,7 @@
                             </div> 
                         </form>  
                         <div class="col-lg-5 pull-right"> 
-                        <a class="btn btn-primary" href="{{url()}}/account/create"><i class="fa fa-plus"></i> Add Collection User</a>
+                        <a class="btn btn-primary" href="{{url('/')}}/account/create"><i class="fa fa-plus"></i> Add Collection User</a>
                         <button class="btn btn-primary st_download_collection_u_list" data-token="{{csrf_token()}}"><i class="fa fa-plus"></i> Download List</button>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>    
-                                    @if(isset($users) && !empty($users) && count($users)>0) 
+                                    @if(isset($users) && !empty($users) && count((array)$users)>0) 
                                     @foreach($users as $key => $user)
                                     <tr>
                                         <td class="col-md-1">{{ $key+1 }}</td>
@@ -127,7 +127,7 @@
                                             @endif
                                         </td>-->
                                         <td>
-                                            {{count($user->locations)}}
+                                            {{count((array)$user->locations)}}
                                         </td>
                                         <td class="text-center">
                                             <a href="{{URL::route('account.show',$user->id)}}" class="table-link" title="view">

@@ -2,8 +2,9 @@
 
 use \Mockery as m;
 use Rollbar\Payload\Data;
+use Rollbar\Payload\Level;
 
-class DataTest extends \PHPUnit_Framework_TestCase
+class DataTest extends BaseRollbarTest
 {
     private $body;
     private $data;
@@ -16,20 +17,6 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function testEnvironmentMustBeString()
     {
-        try {
-            $data = new Data(1, $this->body);
-            $this->fail("Above should throw");
-        } catch (\InvalidArgumentException $e) {
-            $this->assertContains("must be a string", $e->getMessage());
-        }
-
-        try {
-            $data = new Data(null, $this->body);
-            $this->fail("Above should throw");
-        } catch (\InvalidArgumentException $e) {
-            $this->assertContains("must not be null", $e->getMessage());
-        }
-
         $data = new Data("env", $this->body);
         $this->assertEquals("env", $data->getEnvironment());
 
@@ -47,8 +34,13 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function testLevel()
     {
-        $level = m::mock("Rollbar\Payload\Level");
-        $this->assertEquals($level, $this->data->setLevel($level)->getLevel());
+        $levelFactory = new LevelFactory;
+        $level = Level::ERROR;
+        
+        $this->assertEquals(
+            $levelFactory->fromName($level),
+            $this->data->setLevel($level)->getLevel()
+        );
     }
 
     public function testTimestamp()
@@ -163,13 +155,13 @@ class DataTest extends \PHPUnit_Framework_TestCase
             ->setRequest($request)
             ->setPerson($person)
             ->setServer($server)
-            ->setCustom(array("x" => "hello", "extra" => new \ArrayObject()))
+            ->setCustom(array("x" => "hello", "extra" => array('key'=>'val')))
             ->setFingerprint("big-fingerprint")
             ->setTitle("The Title")
             ->setUuid("123e4567-e89b-12d3-a456-426655440000")
             ->setNotifier($notifier);
 
-        $encoded = json_encode($data->jsonSerialize());
+        $encoded = json_encode($data->serialize());
 
         $this->assertContains("\"environment\":\"testing\"", $encoded);
         $this->assertContains("\"body\":\"{BODY}\"", $encoded);
@@ -183,7 +175,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
         $this->assertContains("\"request\":\"{REQUEST}\"", $encoded);
         $this->assertContains("\"person\":\"{PERSON}\"", $encoded);
         $this->assertContains("\"server\":\"{SERVER}\"", $encoded);
-        $this->assertContains("\"custom\":{\"x\":\"hello\",\"extra\":{}}", $encoded);
+        $this->assertContains("\"custom\":{\"x\":\"hello\",\"extra\":{\"key\":\"val\"}}", $encoded);
         $this->assertContains("\"fingerprint\":\"big-fingerprint\"", $encoded);
         $this->assertContains("\"title\":\"The Title\"", $encoded);
         $this->assertContains("\"uuid\":\"123e4567-e89b-12d3-a456-426655440000\"", $encoded);
@@ -193,9 +185,9 @@ class DataTest extends \PHPUnit_Framework_TestCase
     private function mockSerialize($mock, $returnVal)
     {
         if (is_string($mock)) {
-            $mock = m::mock("$mock, \JsonSerializable");
+            $mock = m::mock("$mock, \Serializable");
         }
-        return $mock->shouldReceive("jsonSerialize")
+        return $mock->shouldReceive("serialize")
             ->andReturn($returnVal)
             ->mock();
     }

@@ -31,11 +31,6 @@ class PurchaseOrderController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -127,7 +122,7 @@ class PurchaseOrderController extends Controller {
             }
         }
 
-        if (count($order_objects) == 0) {
+        if (count((array)$order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
         } else {
             $units = Units::all();
@@ -138,7 +133,7 @@ class PurchaseOrderController extends Controller {
 //            print_r($order_objects[0]['purchase_products'][0]->toArray());
 //            echo "</pre>";
 //            exit;
-//            
+//
 
             Excel::create($excel_name, function($excel) use($order_objects, $units, $delivery_location, $customers, $excel_sheet_name) {
                 $excel->sheet('Purchase-Order-' . $excel_sheet_name, function($sheet) use($order_objects, $units, $delivery_location, $customers) {
@@ -179,7 +174,7 @@ class PurchaseOrderController extends Controller {
             $q = $q->where('order_status', '=', $data['order_filter']);
         } else {
             $q = $q->where('order_status', '=', 'pending');
-        }        
+        }
 
         if (Auth::user()->role_id > 1) {
             $q->where('is_view_all', '=', 1);
@@ -232,7 +227,7 @@ class PurchaseOrderController extends Controller {
                 ->with('customer', 'user', 'purchase_products.purchase_product_details', 'purchase_product_has_from','delivery_location')
                 ->Paginate(20);
         $purchase_orders = $this->quantity_calculation($purchase_orders);
-        
+
 
 //        foreach ($purchase_orders as $key => $purchase_order) {
 //
@@ -240,8 +235,8 @@ class PurchaseOrderController extends Controller {
 //                $po = PurchaseOrder::where('id', $purchase_order->id)->update(['order_status' => 'completed']);
 //            }
 //        }
-     
-       
+
+
         $all_customers = Customer::where('customer_status', '=', 'permanent')->orderBy('tally_name', 'ASC')->get();
         $purchase_orders->setPath('purchase_orders');
 
@@ -275,7 +270,7 @@ class PurchaseOrderController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_purchase_order')) {
             $session_array = Session::get('forms_purchase_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message', 'This purchase order is already saved. Please refresh the page');
                 } else {
@@ -303,7 +298,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -388,7 +383,7 @@ class PurchaseOrderController extends Controller {
         if ($sms_flag == 1) {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase order has been logged for following \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -415,7 +410,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has logged purchase order for " . $customer->owner_name . " \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -460,7 +455,7 @@ class PurchaseOrderController extends Controller {
         }
         $purchase_order_products = array();
         // dd($input_data);
-        
+
         foreach ($input_data['product'] as $product_data) {
             // dd($product_data['length']);
             if ($product_data['name'] != "") {
@@ -498,8 +493,8 @@ class PurchaseOrderController extends Controller {
 //                if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
                 $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'delivery_location')->find($purchase_order_id);
 
-                if (count($purchase_order) > 0) {
-                    if (count($purchase_order['delivery_location']) > 0) {
+                if (count((array)$purchase_order) > 0) {
+                    if (count((array)$purchase_order['delivery_location']) > 0) {
                         $delivery_location = $purchase_order['delivery_location']->area_name;
                     } else {
                         $delivery_location = $purchase_order->other_location;
@@ -529,7 +524,7 @@ class PurchaseOrderController extends Controller {
 //                }
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'all_purchase_products', 'purchase_order'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -548,7 +543,7 @@ class PurchaseOrderController extends Controller {
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'delivery_location', 'purchase_products.purchase_product_details', 'customer', 'user')->find($id);
         // $prod = PurchaseProducts::all();
         // dd($prod);
-        if (count($purchase_orders) < 1) {
+        if (count((array)$purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
@@ -564,7 +559,7 @@ class PurchaseOrderController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $purchase_order = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')->find($id);
-        if (count($purchase_order) < 1) {
+        if (count((array)$purchase_order) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
         $units = Units::all();
@@ -585,7 +580,7 @@ class PurchaseOrderController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_edit_purchase_order')) {
             $session_array = Session::get('forms_edit_purchase_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message_error', 'This purchase order is already updated. Please refresh the page');
                 } else {
@@ -600,7 +595,7 @@ class PurchaseOrderController extends Controller {
         }
         $customer_id = 0;
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -689,7 +684,7 @@ class PurchaseOrderController extends Controller {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase order has been edited and changed as follows \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -715,7 +710,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has edited a purchase order for " . $customer->owner_name . " \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -797,8 +792,8 @@ class PurchaseOrderController extends Controller {
             $customers = Customer::find($customer_id);
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
             $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'delivery_location')->find($id);
-            if (count($purchase_order) > 0) {
-                if (count($purchase_order['delivery_location']) > 0) {
+            if (count((array)$purchase_order) > 0) {
+                if (count((array)$purchase_order['delivery_location']) > 0) {
                     $delivery_location = $purchase_order['delivery_location']->area_name;
                 } else {
                     $delivery_location = $purchase_order->other_location;
@@ -828,7 +823,7 @@ class PurchaseOrderController extends Controller {
 //            }
         }
 
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'all_purchase_products', 'purchase_order'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -842,7 +837,7 @@ class PurchaseOrderController extends Controller {
         $purchase_orders = $this->quantity_calculation($purchase_orders);
 
         PurchaseOrder::where('id',$id)->update(['is_editable'=>1]);
-        
+
         return redirect('purchase_orders' . $parameters)->with('flash_message', 'Purchase order details successfully updated.');
     }
 
@@ -873,7 +868,7 @@ class PurchaseOrderController extends Controller {
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'all_purchase_products', 'purchase_order'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -890,11 +885,11 @@ class PurchaseOrderController extends Controller {
         if (Auth::user()->role_id == 5 | $order_id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-        
+
         $purchase_orders = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer', 'purchase_advice.purchase_products', 'purchase_products.purchase_product_advise')->find($order_id);
-        
+
         foreach ($purchase_orders['purchase_products'] as $key => $value) {                                  $total_advise_product_quantity =0;
-            if (isset($value['purchase_product_advise']) && count($value['purchase_product_advise'])) {
+            if (isset($value['purchase_product_advise']) && count((array)$value['purchase_product_advise'])) {
                 $purchase_advise_products = $value['purchase_product_advise'];
             } else {
                 $purchase_advise_products = PurchaseProducts::where('from', '=', $value->purchase_order_id)->where('product_category_id', '=', $value->product_category_id)->where('order_type','=','purchase_advice')->get();
@@ -905,13 +900,13 @@ class PurchaseOrderController extends Controller {
                 }
             }
             if($value->quantity - $total_advise_product_quantity>0){
-                $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);                
+                $purchase_orders['purchase_products'][$key]['pending_quantity'] = ($value->quantity - $total_advise_product_quantity);
             }else{
                unset($purchase_orders['purchase_products'][$key]);
             }
         }
-        
-        if (count($purchase_orders) < 1) {
+
+        if (count((array)$purchase_orders) < 1) {
             return redirect('purchase_orders')->with('flash_message', 'Purchase order not found');
         }
         return view('create_purchase_advice', compact('purchase_orders'));
@@ -944,7 +939,7 @@ class PurchaseOrderController extends Controller {
         if ($sms_flag == 1) {
             if (isset($input['sendsms']) && $input['sendsms'] == "true") {
                 $customer = Customer::with('manager')->find($purchase_order['customer']->id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\n Your purchase order has been completed for following \n";
                     foreach ($purchase_order['purchase_products'] as $product_data) {
@@ -976,8 +971,8 @@ class PurchaseOrderController extends Controller {
         if (isset($input_data['send_email']) && $input_data['send_email'] == 'true' && $purchase_order['customer']->email != "") {
             $customers = $purchase_order['customer'];
             $purchase_order = PurchaseOrder::with('purchase_products.purchase_product_details', 'purchase_products.unit', 'customer')->find($purchase_order_id);
-            if (count($purchase_order) > 0) {
-                if (count($purchase_order['delivery_location']) > 0) {
+            if (count((array)$purchase_order) > 0) {
+                if (count((array)$purchase_order['delivery_location']) > 0) {
                     $delivery_location = $purchase_order['delivery_location']->area_name;
                 } else {
                     $delivery_location = $purchase_order->other_location;
@@ -1015,7 +1010,7 @@ class PurchaseOrderController extends Controller {
             'order_status' => 'canceled'
         ));
 
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'all_purchase_products', 'purchase_order'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1058,15 +1053,15 @@ class PurchaseOrderController extends Controller {
     function quantity_calculation($purchase_orders) {
 
         foreach ($purchase_orders as $key => $order) {
-            
+
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
             $purchase_order_advise_products = $order['purchase_advice'];
-            if (count($purchase_order_advise_products) > 0) {
+            if (count((array)$purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as  $purchase_advice) {
                     foreach ($purchase_advice['purchase_products'] as $prod) {
-                        $product_size = $prod['product_sub_category'];                    
+                        $product_size = $prod['product_sub_category'];
                         if ($prod->unit_id == 1) {
                             $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity;
                         }
@@ -1086,7 +1081,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
 
-            if (count($order['purchase_products']) > 0) {
+            if (count((array)$order['purchase_products']) > 0) {
 
                 foreach ($order['purchase_products'] as $popk => $popv) {
                     $product_size = $popv['product_sub_category'];
@@ -1155,9 +1150,9 @@ class PurchaseOrderController extends Controller {
             // } else {
             //     $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
             // }
-            
-            // if( $purchase_orders[$key]['pending_quantity'] == 0){                
-            //    $purchase_orders[$key]['order_status'] = 'completed';                 
+
+            // if( $purchase_orders[$key]['pending_quantity'] == 0){
+            //    $purchase_orders[$key]['order_status'] = 'completed';
             //    PurchaseOrder::where('id', $purchase_orders[$key]['id'])->update(['order_status' => 'completed']);
             // }
             // $purchase_orders[$key]['total_quantity'] = $purchase_order_quantity;

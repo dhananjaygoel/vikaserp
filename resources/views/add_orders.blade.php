@@ -21,7 +21,7 @@
                         <form id="onenter_prevent" data-button='btn_add_order' method="POST" action="{{URL::action('OrderController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -34,7 +34,7 @@
                             <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
                             @endif
                             <div class="form-group">
-                               
+
                                 <div class="radio">
                                     <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio">
                                     @if(Auth::user()->role_id <> 5)
@@ -45,11 +45,11 @@
                                     <label for="supplier_radio">Supplier</label>
                                     @endif
                                 </div>
-                               
+
                                 <div class="supplier_order" style="display:none">
                                     <select class="form-control" name="supplier_id" id="add_status_type">
                                         <option value="" selected="">Select supplier</option>
-                                        @if(count($customers)>0)
+                                        @if(count((array)$customers)>0)
                                         @foreach($customers as $customer)
                                         @if($customer->customer_status == 'permanent')
                                         <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>
@@ -60,17 +60,17 @@
                                 </div>
                                 <br/>
                                 <label>Customer<span class="mandatory">*</span></label>
-                               
+
                                 <div class="radio">
                                     <input checked value="existing_customer" id="existing_customer" name="customer_status" type="radio" class="existing_customer_order" {{(Input::old('customer_status') == "existing_customer")? 'checked' : ''}}>
                                     <label for="existing_customer" >Existing</label>
-                                    <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio" {{(Input::old('customer_status') == "new_customer")?'checked':''}}> 
-                                    
+                                    <input value="new_customer" id="new_customer" class="new_customer_order" name="customer_status" type="radio" {{(Input::old('customer_status') == "new_customer")?'checked':''}}>
+
                                      @if(Auth::user()->role_id <> 5)
                                     <label for="new_customer">New</label>
                                     @endif
-                                </div>  
-                                
+                                </div>
+
                                 <style>
 .searchproduct .fa-sort-desc{position: absolute;right:6px;top:7px;cursor:pointer;}
                                 </style>
@@ -82,15 +82,15 @@
                                             <input type="hidden" id="existing_customer_id" name="existing_customer_name">
                                             <input type="hidden" id="customer_default_location">
                                                 <!--<i class="fa fa-sort-desc " id='existing_customer_id_focus'></i>-->
-                                         @endif   
-                                            
-                                            
+                                         @endif
+
+
                                          @if(Auth::user()->role_id == 5)
                                             <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$order->tally_name}}" id="existing_customer_name1" tabindex="1" disabled="yes">
                                               <input type="hidden" id="existing_customer_id" name="existing_customer_name" value="{{$order->id}}">
                                             <input type="hidden" id="customer_default_location" value="{{$order->delivery_location_id}}">
-                                         @endif   
-                                            
+                                         @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -130,9 +130,9 @@
                                             @endforeach
                                             <option id="other_location" value="other">Other</option>
                                         </select>
-                                         @endif  
-                                          
-                                        @if(Auth::user()->role_id == 5) 
+                                         @endif
+
+                                        @if(Auth::user()->role_id == 5)
                                            <select class="form-control focus_on_enter" name="add_order_location" id="add_order_location" tabindex="2" >
                                         <option value="0">Delivery Location</option>
                                         @foreach($delivery_locations as $location)
@@ -149,43 +149,43 @@
                                         @else
                                         <option id="other_location" value="other">Other</option>
                                         @endif
-                                    </select>                                       
-                                        @endif   
-                                         
+                                    </select>
+                                        @endif
+
                                     </div>
                                     <div class="col-md-2">
                                         <label for="location">Freight</label>
                                           @if(Auth::user()->role_id <> 5)
                                         <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
-                                        
+
                                         @endif
-                                        
+
                                         @if(Auth::user()->role_id == 5)
                                         <input id="location_difference" class="form-control focus_on_enter tabindex3" placeholder="Freight " name="location_difference" value="{{$order->delivery_location['difference']}}" type="tel" tabindex="3" onkeypress=" return numbersOnly(this, event, true, true);" >
                                         @endif
-                                        
+
                                     </div>
                                     @if(Auth::user()->role_id <> 5)
                                     <div class="col-md-2">
-                                        <label for="location">Discount/Premium:</label>                                        
+                                        <label for="location">Discount/Premium:</label>
                                         <select class="form-control focus_on_enter tabindex2" name="discount_type" id="discount_type" tabindex="2" >
                                             <option value="Discount" selected="">Discount</option>
                                             <option value="Premium">Premium</option>
-                                        </select>                                        
+                                        </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="location">Fixed/Percentage:</label>                                        
+                                        <label for="location">Fixed/Percentage:</label>
                                         <select class="form-control focus_on_enter tabindex2" name="discount_unit" id="discount_unit" tabindex="2" >
                                             <option value="Fixed" selected="">Fixed</option>
                                             <option value="Percent">Percent</option>
-                                        </select>                                        
+                                        </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="discount">Amount</label>                                         
-                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >                                          
+                                        <label for="discount">Amount</label>
+                                            <input id="discount_amount" class="form-control focus_on_enter tabindex3" placeholder="Amount " name="discount" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" tabindex="3" >
                                     </div>
                                     @endif
-                                    @if(Auth::user()->role_id == 5) 
+                                    @if(Auth::user()->role_id == 5)
                                         <input type = "hidden" name ="discount_type"  value = "">
                                         <input type = "hidden" name ="discount_unit"  value = "">
                                         <input type = "hidden" name ="discount"  value = "0">
@@ -211,14 +211,14 @@
                                                 <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                                 <td><span>Unit</span><span class="mandatory">*</span></td>
                                                 <td><span>Length</span></td>
-                                                <td><span>Quantity</span></td>                                                
+                                                <td><span>Quantity</span></td>
                                                 <td><span>Price</span><span class="mandatory">*</span></td>
                                                 <td class="inquiry_vat_chkbox"><span>GST</span></td>
                                                 <td><span>Remark</span></td>
                                             </tr>
                                             <?php
-                                            
-                                            $session_data = Session::get('input_data');                                            
+
+                                            $session_data = Session::get('input_data');
                                             if (isset($session_data['product'])) {
                                                 $total_products_added = sizeof($session_data['product']);
                                             }
@@ -255,7 +255,7 @@
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    
+
                                                     <td class="col-md-1">
                                                         <div class = "form-group">
                                                             <div class = "form-group length_list_{{$i}}">

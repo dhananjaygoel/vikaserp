@@ -19,7 +19,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         {!! Form::open(array('method'=>'PUT','url'=>url('inquiry',$inquiry->id), 'id'=>'onenter_prevent','data-button'=>'btn_edit_inquiry'))!!}
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -495,5 +495,5 @@
         top: 20px !important;
     }
 </style>
-{{-- @include('autocomplete_tally_product_name') --}}
+<!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @stop

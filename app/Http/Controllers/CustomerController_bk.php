@@ -46,11 +46,6 @@ class CustomerController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -70,13 +65,13 @@ class CustomerController extends Controller {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders');
-        }        
+        }
 
         $customers = '';
-        
+
         $customer_filter = Input::get('customer_filter');
         $customers = Customer::orderBy('tally_name', 'asc');
-        
+
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
 
@@ -104,23 +99,23 @@ class CustomerController extends Controller {
                             ->orWhere('phone_number2', 'like', $term);
                     })
                     ->where('customer_status', '=', 'permanent');
-                    
-        } 
+
+        }
         if (isset($customer_filter) && !empty($customer_filter)) {
-            if($customer_filter=='supplier'){                
-                $customers = $customers->where('is_supplier', '=', 'yes');                
+            if($customer_filter=='supplier'){
+                $customers = $customers->where('is_supplier', '=', 'yes');
             }
-            elseif($customer_filter=='customer'){               
-                $customers = $customers->where('is_supplier', '!=', 'yes');                                       
+            elseif($customer_filter=='customer'){
+                $customers = $customers->where('is_supplier', '!=', 'yes');
             }
         }
-                
+
 
         $customers = $customers->where('customer_status', '=', 'permanent');
-        $customers = $customers->paginate(20);        
+        $customers = $customers->paginate(20);
         $customers->setPath('customers');
         $city = City::all();
-        
+
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
@@ -188,7 +183,7 @@ class CustomerController extends Controller {
      * Show the form for creating a new customer.
      */
     public function create() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -223,7 +218,7 @@ class CustomerController extends Controller {
         $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
                 ->get();
 
-        if (count($already_exists_mobile_number) > 0) {
+        if (count((array)$already_exists_mobile_number) > 0) {
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
 
@@ -354,7 +349,7 @@ class CustomerController extends Controller {
             $admins = User::where('role_id', '=', 4)->get();
             $customer = Customer::with('manager')->find($customer_id);
 
-            if (count($admins) > 0) {
+            if (count((array)$admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
                     $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
@@ -374,7 +369,7 @@ class CustomerController extends Controller {
                 }
             }
 
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
@@ -394,7 +389,7 @@ class CustomerController extends Controller {
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
                 if (App::environment('development')) {
@@ -412,7 +407,7 @@ class CustomerController extends Controller {
                 }
             }
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'users'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -428,7 +423,7 @@ class CustomerController extends Controller {
      * Display the specific customer.
      */
     public function show($id) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -454,7 +449,7 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::with('customerproduct')->find($id);
-        if (count($customer) < 1) {
+        if (count((array)$customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
         $managers = User::where('role_id', '=', 0)->get();
@@ -472,7 +467,7 @@ class CustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $validator = Validator::make(Input::all(), Customer::$customers_rules);
-        
+
         if ($validator->passes()) {
             $customer = Customer::find($id);
 
@@ -480,12 +475,12 @@ class CustomerController extends Controller {
                     ->where('id', '<>', $id)
                     ->get();
 
-            if (count($already_exists_mobile_number) > 0) {
+            if (count((array)$already_exists_mobile_number) > 0) {
                 return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
             }
 
 
-    //               
+    //
             $users = User::where('role_id', '=', '5')
                     ->where('email', '=', $customer->email)
                     ->where('mobile_number', '=', $customer->phone_number1)
@@ -494,7 +489,7 @@ class CustomerController extends Controller {
                     ->first();
 
 
-            if (count($customer) < 1 && count($users) < 1) {
+            if (count((array)$customer) < 1 && count((array)$users) < 1) {
                 return redirect('customers/')->with('error', 'Trying to access an invalid customer');
             }
 
@@ -518,7 +513,7 @@ class CustomerController extends Controller {
             }
             if (Input::has('contact_person')) {
                 $customer->contact_person = Input::get('contact_person');
-            }        
+            }
             if (Input::has('address1')) {
                 $customer->address1 = Input::get('address1');
             }
@@ -573,7 +568,7 @@ class CustomerController extends Controller {
                     foreach ($product_category_id as $key => $value) {
                         if (Input::get('product_differrence')[$key] != '') {
                             $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-                            if (count($product_difference) > 0) {
+                            if (count((array)$product_difference) > 0) {
                                 $product_difference = $product_difference;
                             } else {
                                 $product_difference = new CustomerProductDifference();
@@ -584,7 +579,7 @@ class CustomerController extends Controller {
                             $product_difference->save();
                         } else {
                             $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-                            if (count($product_difference1) > 0) {
+                            if (count((array)$product_difference1) > 0) {
                                 $product_difference1->delete();
                             }
                         }
@@ -600,7 +595,7 @@ class CustomerController extends Controller {
 
                 $customer = Customer::with('manager')->find($id);
 
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited your profile - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
@@ -620,7 +615,7 @@ class CustomerController extends Controller {
                     }
                 }
 
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a customer - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
                     if (App::environment('development')) {
@@ -639,7 +634,7 @@ class CustomerController extends Controller {
                 }
 
 
-                //         update sync table         
+                //         update sync table
                 $tables = ['customers', 'users'];
                 $ec = new WelcomeController();
                 $ec->set_updated_date_to_sync_table($tables);
@@ -647,7 +642,7 @@ class CustomerController extends Controller {
 
                 $parameter = Session::get('parameters');
                 $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-                /* end code */            
+                /* end code */
 
                 return redirect('customers'. $parameters)->with('success', 'Customer details updated successfully');
             } else {
@@ -656,7 +651,7 @@ class CustomerController extends Controller {
         }else {
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);
-        }    
+        }
     }
 
     /**
@@ -697,13 +692,13 @@ class CustomerController extends Controller {
             $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
             $cust_flag = "";
 
-            if (isset($customer_inquiry) && (count($customer_inquiry) > 0)) {
+            if (isset($customer_inquiry) && (count((array)$customer_inquiry) > 0)) {
                 $customer_exist['customer_inquiry'] = 1;
                 $cust_msg .= "Inquiry";
                 $cust_flag = 1;
             }
 
-            if (isset($customer_order) && (count($customer_order) > 0)) {
+            if (isset($customer_order) && (count((array)$customer_order) > 0)) {
                 $customer_exist['customer_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Order";
@@ -713,7 +708,7 @@ class CustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0)) {
+            if (isset($customer_delivery_order) && (count((array)$customer_delivery_order) > 0)) {
                 $customer_exist['customer_delivery_order'] = 1;
 
                 if ($customer_exist['customer_inquiry'] == 1) {
@@ -726,7 +721,7 @@ class CustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0)) {
+            if (isset($customer_delivery_challan) && (count((array)$customer_delivery_challan) > 0)) {
                 $customer_exist['customer_delivery_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Delievry Challan";
@@ -740,7 +735,7 @@ class CustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_order) && (count($customer_purchase_order) > 0)) {
+            if (isset($customer_purchase_order) && (count((array)$customer_purchase_order) > 0)) {
                 $customer_exist['customer_purchase_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Order";
@@ -756,7 +751,7 @@ class CustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_advice) && (count($customer_purchase_advice) > 0)) {
+            if (isset($customer_purchase_advice) && (count((array)$customer_purchase_advice) > 0)) {
                 $customer_exist['customer_purchase_advice'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Advice";
@@ -774,7 +769,7 @@ class CustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_challan) && (count($customer_purchase_challan) > 0)) {
+            if (isset($customer_purchase_challan) && (count((array)$customer_purchase_challan) > 0)) {
                 $customer_exist['customer_purchase_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Challan";
@@ -797,7 +792,7 @@ class CustomerController extends Controller {
             if ($cust_flag == 1) {
                 $parameter = Session::get('parameters');
                 $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-                
+
                 return redirect('customers'. $parameters)->with('error', $cust_msg);
             } else {
                 $customer->delete();
@@ -807,7 +802,7 @@ class CustomerController extends Controller {
                         ->where('created_at', '=', $customer->created_at)
                         ->delete();
 
-                //         update sync table         
+                //         update sync table
                 $tables = ['customers', 'users'];
                 $ec = new WelcomeController();
                 $ec->set_updated_date_to_sync_table($tables);
@@ -815,9 +810,9 @@ class CustomerController extends Controller {
 
                 $parameter = Session::get('parameters');
                 $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-            /* end code */            
+            /* end code */
 
-                return redirect('customers'. $parameters)->with('success', 'Customer deleted successfully.');                
+                return redirect('customers'. $parameters)->with('success', 'Customer deleted successfully.');
             }
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');
@@ -874,8 +869,8 @@ class CustomerController extends Controller {
         if($state_id ==0){
            $data = City::orderBy('city_name', 'ASC')->get();
         }else{
-           $data = City::where('state_id', $state_id)->get(); 
-        }        
+           $data = City::where('state_id', $state_id)->get();
+        }
         $city = array();
         $i = 0;
         foreach ($data as $key => $val) {
@@ -979,7 +974,7 @@ class CustomerController extends Controller {
         }
 
         $product_category = ProductCategory::where('product_type_id', $product_type)->get();
-        $pipe_category_count = ProductCategory::where('product_type_id', 1)->count();        
+        $pipe_category_count = ProductCategory::where('product_type_id', 1)->count();
         $struct_category_count = ProductCategory::where('product_type_id', 2)->count();
         $profile_category_count = ProductCategory::where('product_type_id', 3)->count();
         $customer->setPath('bulk_set_price');
@@ -1007,7 +1002,7 @@ class CustomerController extends Controller {
         }
         $product_pipe_category = ProductCategory::where('product_type_id', 1)->get();
         $product_structure_category = ProductCategory::where('product_type_id', 2)->get();
-        $product_profile_category = ProductCategory::where('product_type_id', 3)->get();        
+        $product_profile_category = ProductCategory::where('product_type_id', 3)->get();
         $product_category = ProductCategory::all();
 
         foreach ($data['set_diff'] as $key => $value) {
@@ -1016,10 +1011,10 @@ class CustomerController extends Controller {
                 $pipe = $value['pipe'];
                 $custid = $value['cust_id'];
                 $structure = $value['structure'];
-                $profile = $value['profile'];             
+                $profile = $value['profile'];
                 $count = CustomerProductDifference::where('customer_id', $custid)->count();
                 if ($count == 0) {
-                    foreach ($product_category as $value) {                        
+                    foreach ($product_category as $value) {
                         if ($value->product_type_id == 1 && isset($pipe) && $pipe != "") {
                             $diff = new CustomerProductDifference();
                             $diff->product_category_id = $value->id;
@@ -1046,7 +1041,7 @@ class CustomerController extends Controller {
 
                     if (isset($value['pipe']) && !empty($value['pipe']) && $value['pipe'] != "") {
 
-                        foreach ($product_pipe_category as $curr_category) {                            
+                        foreach ($product_pipe_category as $curr_category) {
                             $count = CustomerProductDifference::where('product_category_id', $curr_category->id)
                                             ->where('customer_id', $custid)->count();
                             if ($count == 0) {
@@ -1187,7 +1182,7 @@ class CustomerController extends Controller {
                     $query->where('challan_status', '=', 'completed');
                 });
 
-//               dd($customers->toSql());  
+//               dd($customers->toSql());
 //                dd($customers->get());
             }
         }
@@ -1266,7 +1261,7 @@ class CustomerController extends Controller {
                         ->with('territories', $territories);
     }
 
-//    
+//
 //    public function get_customers_list() {
 //        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 6) {
 //            return redirect()->back();
@@ -1281,7 +1276,7 @@ class CustomerController extends Controller {
 //            /* old code */
 ////            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
 ////                                    ->whereHas('delivery_challan', function ($query) {
-////                                    $query->where('challan_status','=', 'completed');                                            
+////                                    $query->where('challan_status','=', 'completed');
 ////                                    });
 //
 //            /* new code */
@@ -1331,7 +1326,7 @@ class CustomerController extends Controller {
 //                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
 //                });
 //
-////               dd($customers->toSql());  
+////               dd($customers->toSql());
 ////                dd($customers->get());
 //            }
 //        }
@@ -1458,7 +1453,7 @@ class CustomerController extends Controller {
                         ->select('id')->first();
 
 
-        if (count($discount_user) && $discount_user->id == $id) {
+        if (count((array)$discount_user) && $discount_user->id == $id) {
             $is_discount_user = 'true';
         } else {
             $is_discount_user = 'false';
@@ -1529,7 +1524,7 @@ class CustomerController extends Controller {
                     $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
 
-//               dd($customers->toSql());  
+//               dd($customers->toSql());
 //                dd($customers->get());
             }
         }
@@ -1593,7 +1588,7 @@ class CustomerController extends Controller {
                     $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
 
-//               dd($customers->toSql());  
+//               dd($customers->toSql());
 //                dd($customers->get());
             }
         }

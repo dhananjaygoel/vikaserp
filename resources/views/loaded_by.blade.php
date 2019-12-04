@@ -48,7 +48,7 @@
                         {{Session::get('error')}}
                     </div>
                     @endif
-                    @if(count($loaders)>0)
+                    @if(count((array)$loaders)>0)
                     <div class="table-responsive">
                         <table id="table-example" class="table customerview_table">
                             <thead>

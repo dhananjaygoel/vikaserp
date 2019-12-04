@@ -41,7 +41,7 @@ class InventoryController extends Controller {
 
         $term = '%' . Input::get('term') . '%';
         $product = ProductSubCategory::where('alias_name', 'like', $term)->get();
-        if (count($product) > 0) {
+        if (count((array)$product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [ 'value' => $prod->alias_name];
             }
@@ -111,7 +111,7 @@ class InventoryController extends Controller {
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
             $alias_name = '%' . Input::get('search_inventory') . '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
-            if (count($product_sub_id)) {
+            if (count((array)$product_sub_id)) {
                 $query->where('product_sub_category_id', '=', $product_sub_id->id);
             }
         }
@@ -128,7 +128,7 @@ class InventoryController extends Controller {
                 ->paginate(50);
         $inventory_newlist->setPath('inventory');
 
-        if (count($inventory_newlist)) {
+        if (count((array)$inventory_newlist)) {
 
             foreach ($inventory_newlist as $product_categoriy) {
                 $product_category_ids[] = $product_categoriy->product_sub_category_id;
@@ -248,9 +248,9 @@ class InventoryController extends Controller {
 //                            ->with(['all_order_products.product_sub_category', 'all_order_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-            if (isset($orders) && count($orders) > 0) {
+            if (isset($orders) && count((array)$orders) > 0) {
                 foreach ($orders as $orders_details) {
-                    if (isset($orders_details->all_order_products) && count($orders_details->all_order_products) > 0) {
+                    if (isset($orders_details->all_order_products) && count((array)$orders_details->all_order_products) > 0) {
                         foreach ($orders_details->all_order_products as $orders_product_details) {
                             if (isset($orders_product_details) && $orders_product_details->quantity != '' && $orders_product_details['product_category_id'] == $product_sub_id) {
 //                                $order_qty = $order_qty + $orders_product_details->quantity;
@@ -278,9 +278,9 @@ class InventoryController extends Controller {
 //                                                $q->where('product_category_id', '=', $product_sub_id);
 //                                            }])->get();
 
-                        if (isset($order_delivery_orders) && count($order_delivery_orders) > 0) {
+                        if (isset($order_delivery_orders) && count((array)$order_delivery_orders) > 0) {
                             foreach ($order_delivery_orders as $delivery_orders_details) {
-                                if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
+                                if (isset($delivery_orders_details->delivery_product) && count((array)$delivery_orders_details->delivery_product) > 0) {
                                     foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
                                         if ($delivery_orders_product_details['product_category_id'] == $product_sub_id && $delivery_orders_details['order_id'] == $orders_details->id) {
                                             if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
@@ -317,9 +317,9 @@ class InventoryController extends Controller {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
 
-            if (isset($delivery_orders) && count($delivery_orders) > 0) {
+            if (isset($delivery_orders) && count((array)$delivery_orders) > 0) {
                 foreach ($delivery_orders as $delivery_orders_details) {
-                    if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
+                    if (isset($delivery_orders_details->delivery_product) && count((array)$delivery_orders_details->delivery_product) > 0) {
                         foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
                             if ($delivery_orders_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
@@ -352,9 +352,9 @@ class InventoryController extends Controller {
 //                                }])->get();
 
 
-            if (isset($delivery_challan) && count($delivery_challan) > 0) {
+            if (isset($delivery_challan) && count((array)$delivery_challan) > 0) {
                 foreach ($delivery_challan as $delivery_challan_details) {
-                    if (isset($delivery_challan_details->delivery_challan_products) && count($delivery_challan_details->delivery_challan_products) > 0) {
+                    if (isset($delivery_challan_details->delivery_challan_products) && count((array)$delivery_challan_details->delivery_challan_products) > 0) {
                         foreach ($delivery_challan_details->delivery_challan_products as $delivery_challan_product_details) {
                             if ($delivery_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
@@ -383,9 +383,9 @@ class InventoryController extends Controller {
 //                            ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-            if (isset($delivery_challan_completed) && count($delivery_challan_completed) > 0) {
+            if (isset($delivery_challan_completed) && count((array)$delivery_challan_completed) > 0) {
                 foreach ($delivery_challan_completed as $delivery_challan_details) {
-                    if (isset($delivery_challan_details->delivery_challan_products) && count($delivery_challan_details->delivery_challan_products) > 0) {
+                    if (isset($delivery_challan_details->delivery_challan_products) && count((array)$delivery_challan_details->delivery_challan_products) > 0) {
                         foreach ($delivery_challan_details->delivery_challan_products as $delivery_challan_product_details) {
                             if ($delivery_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
@@ -416,9 +416,9 @@ class InventoryController extends Controller {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
 //           
-//            if (isset($delivery_orders) && count($delivery_orders) > 0) {
+//            if (isset($delivery_orders) && count((array)$delivery_orders) > 0) {
 //                foreach ($delivery_orders as $delivery_orders_details) {
-//                    if (isset($delivery_orders_details->delivery_product) && count($delivery_orders_details->delivery_product) > 0) {
+//                    if (isset($delivery_orders_details->delivery_product) && count((array)$delivery_orders_details->delivery_product) > 0) {
 //                        foreach ($delivery_orders_details->delivery_product as $delivery_orders_product_details) {
 //                            if (isset($delivery_orders_product_details) && $delivery_orders_product_details->quantity != '') {
 ////                                $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_orders_product_details->quantity;
@@ -445,12 +445,12 @@ class InventoryController extends Controller {
 //                            ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-            if (isset($purchase_orders) && count($purchase_orders) > 0) {
+            if (isset($purchase_orders) && count((array)$purchase_orders) > 0) {
                 foreach ($purchase_orders as $purchase_orders_details) {
-                    if (isset($purchase_orders_details->purchase_products) && count($purchase_orders_details->purchase_products) > 0) {
+                    if (isset($purchase_orders_details->purchase_products) && count((array)$purchase_orders_details->purchase_products) > 0) {
                         foreach ($purchase_orders_details->purchase_products as $purchase_orders_product_details) {
                             if ($purchase_orders_product_details['product_category_id'] == $product_sub_id) {
-                                if (isset($purchase_orders_product_details) && $purchase_orders_product_details->quantity != '' && count($purchase_orders_product_details->quantity) > 0) {
+                                if (isset($purchase_orders_product_details) && $purchase_orders_product_details->quantity != '' && count((array)$purchase_orders_product_details->quantity) > 0) {
 //                                $pending_purchase_order_qty = $pending_purchase_order_qty + $purchase_orders_product_details->quantity;
                                     if ($purchase_orders_product_details->unit_id == 1) {
                                         $pending_purchase_order_qty = $pending_purchase_order_qty + $purchase_orders_product_details->quantity;
@@ -478,9 +478,9 @@ class InventoryController extends Controller {
 //                                        ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
 //                                                $q->where('product_category_id', '=', $product_sub_id);
 //                                            }])->get();
-                        if (isset($purchase_orders_purchase_advice) && count($purchase_orders_purchase_advice) > 0) {
+                        if (isset($purchase_orders_purchase_advice) && count((array)$purchase_orders_purchase_advice) > 0) {
                             foreach ($purchase_orders_purchase_advice as $purchase_advice_details) {
-                                if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
+                                if (isset($purchase_advice_details->purchase_products) && count((array)$purchase_advice_details->purchase_products) > 0) {
                                     foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
                                         if ($purchase_advice_product_details['product_category_id'] == $product_sub_id && $purchase_advice_product_details['order_id'] == $orders_details->id) {
                                             if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
@@ -515,9 +515,9 @@ class InventoryController extends Controller {
 //                            ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-            if (isset($purchase_advice) && count($purchase_advice) > 0) {
+            if (isset($purchase_advice) && count((array)$purchase_advice) > 0) {
                 foreach ($purchase_advice as $purchase_advice_details) {
-                    if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
+                    if (isset($purchase_advice_details->purchase_products) && count((array)$purchase_advice_details->purchase_products) > 0) {
                         foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
                             if ($purchase_advice_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
@@ -548,9 +548,9 @@ class InventoryController extends Controller {
 //                            ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-            if (isset($purchase_challan) && count($purchase_challan) > 0) {
+            if (isset($purchase_challan) && count((array)$purchase_challan) > 0) {
                 foreach ($purchase_challan as $purchase_challan_details) {
-                    if (isset($purchase_challan_details->all_purchase_products) && count($purchase_challan_details->all_purchase_products) > 0) {
+                    if (isset($purchase_challan_details->all_purchase_products) && count((array)$purchase_challan_details->all_purchase_products) > 0) {
                         foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
                             if ($purchase_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
@@ -577,9 +577,9 @@ class InventoryController extends Controller {
 //                            ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-            if (isset($purchase_challan_completed) && count($purchase_challan_completed) > 0) {
+            if (isset($purchase_challan_completed) && count((array)$purchase_challan_completed) > 0) {
                 foreach ($purchase_challan_completed as $purchase_challan_details) {
-                    if (isset($purchase_challan_details->all_purchase_products) && count($purchase_challan_details->all_purchase_products) > 0) {
+                    if (isset($purchase_challan_details->all_purchase_products) && count((array)$purchase_challan_details->all_purchase_products) > 0) {
                         foreach ($purchase_challan_details->all_purchase_products as $purchase_challan_product_details) {
                             if ($purchase_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($purchase_challan_product_details) && $purchase_challan_product_details->quantity != '') {
@@ -607,9 +607,9 @@ class InventoryController extends Controller {
 //                            ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-//            if (isset($purchase_advice) && count($purchase_advice) > 0) {
+//            if (isset($purchase_advice) && count((array)$purchase_advice) > 0) {
 //                foreach ($purchase_advice as $purchase_advice_details) {
-//                    if (isset($purchase_advice_details->purchase_products) && count($purchase_advice_details->purchase_products) > 0) {
+//                    if (isset($purchase_advice_details->purchase_products) && count((array)$purchase_advice_details->purchase_products) > 0) {
 //                        foreach ($purchase_advice_details->purchase_products as $purchase_advice_product_details) {
 //                            if (isset($purchase_advice_product_details) && $purchase_advice_product_details->quantity != '') {
 ////                                $purchase_challan_qty = $purchase_challan_qty + $purchase_advice_product_details->quantity;
@@ -829,7 +829,7 @@ class InventoryController extends Controller {
         if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
             $alias_name = '%' . trim(Input::get('search_inventory')) . '%';
             $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
-            if (count($product_sub_id)) {
+            if (count((array)$product_sub_id)) {
                 $query->where('product_sub_category_id', '=', $product_sub_id->id);
             }else{
                 return;
@@ -876,7 +876,7 @@ class InventoryController extends Controller {
 
         $subcategory_list = ProductSubCategory::all();
         $inventory_list = Inventory::all();
-        if (count($subcategory_list) > 0 && count($inventory_list) == 0) {
+        if (count((array)$subcategory_list) > 0 && count((array)$inventory_list) == 0) {
             foreach ($subcategory_list as $subcategory) {
                 $product_category_idsinventory = new Inventory();
                 $product_category_idsinventory->product_sub_category_id = $subcategory->id;
@@ -891,7 +891,7 @@ class InventoryController extends Controller {
             return redirect('change_password');
         }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-        if (count($product_cat) > 0) {
+        if (count((array)$product_cat) > 0) {
             $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
             $size_array = [];
             $thickness_array = [];
@@ -1074,7 +1074,7 @@ class InventoryController extends Controller {
         }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
 
-        if (count($product_cat) > 0) {
+        if (count((array)$product_cat) > 0) {
             $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
 //        $product_last = ProductCategory::where('id', '=' , 40)->with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
             $product_id = $product_last[0]->id;

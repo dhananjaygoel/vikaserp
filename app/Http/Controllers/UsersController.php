@@ -35,11 +35,11 @@ class UsersController extends Controller {
      */
 
     public function index() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-       
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -60,7 +60,7 @@ class UsersController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -169,11 +169,11 @@ class UsersController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
-        $this->validate($request, [ 
+        $this->validate($request, [
             'email' => 'required|email|unique:users,email'. ($id ? ",$id" : ''),
             'mobile_number' => 'integer|digits_between:10,15|required|unique:users,mobile_number'. ($id ? ",$id" : '')
         ]);
-       
+
         $user_data = array(
             'role_id' => Input::get('user_type'),
             'first_name' => Input::get('first_name'),
@@ -205,13 +205,13 @@ class UsersController extends Controller {
             return redirect('users')->with('error', 'Unable to update the user details ');
         }
     }
-    
+
     public function get_do_vehicle_list() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-       
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -220,46 +220,46 @@ class UsersController extends Controller {
             $do_vehicle_list = \App\DeliveryOrder::where('order_status','=',"pending")
                                                   ->where('vehicle_number','!=',"")->select('vehicle_number')
                                                   ->orderBy('updated_at', 'desc')
-                                                  ->where('vehicle_number','like', $term)->paginate(20);            
+                                                  ->where('vehicle_number','like', $term)->paginate(20);
         }else{
             $do_vehicle_list = \App\DeliveryOrder::where('order_status','=',"pending")
-                                                 ->where('vehicle_number','!=',"")                                                 
+                                                 ->where('vehicle_number','!=',"")
                                                  ->select('vehicle_number')
-                                                 ->orderBy('updated_at', 'desc')->paginate(20);           
-        }       
-//        dd($pa_vehicle_list);       
+                                                 ->orderBy('updated_at', 'desc')->paginate(20);
+        }
+//        dd($pa_vehicle_list);
         $do_vehicle_list->setPath('vehicle-list');
-//        $pa_vehicle_list->setPath('vehicle-list');              
-        
+//        $pa_vehicle_list->setPath('vehicle-list');
+
         return view('do_vehicle_list', compact('do_vehicle_list','pa_vehicle_list'));
     }
-    
+
     public function get_pa_vehicle_list() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-       
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Input::get('search') != '') {
-            $term = '%' . Input::get('search') . '%';            
+            $term = '%' . Input::get('search') . '%';
             $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")->select('vehicle_number')
-                                                    ->where('vehicle_number','like', $term)   
+                                                    ->where('vehicle_number','like', $term)
                                                     ->where('vehicle_number','!=',"")
                                                     ->orderBy('updated_at', 'desc')
                                                     ->select('vehicle_number')->paginate(20);
-        }else{            
+        }else{
             $pa_vehicle_list = \App\PurchaseAdvise::where('advice_status','=',"in_process")
                                                     ->orderBy('updated_at', 'desc')
                                                     ->select('vehicle_number')->paginate(20);
-        }       
-//        dd($pa_vehicle_list);       
+        }
+//        dd($pa_vehicle_list);
         $pa_vehicle_list->setPath('pa-vehicle-list');
-//        $pa_vehicle_list->setPath('vehicle-list');              
-        
+//        $pa_vehicle_list->setPath('vehicle-list');
+
         return view('pa_vehicle_list', compact('pa_vehicle_list'));
     }
-    
+
 }

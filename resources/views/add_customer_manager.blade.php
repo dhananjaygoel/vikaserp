@@ -18,7 +18,7 @@
                     <div class="main-box-body clearfix">
                         <form method="POST" action="{{url('customer_manager')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)

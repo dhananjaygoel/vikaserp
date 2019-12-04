@@ -67,7 +67,7 @@
                         <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('error') }}</div>
                         @endif
 
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-danger">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
@@ -166,7 +166,7 @@
                                                     ?>                                                    
                                                 @endforeach
                                                 @endif
-                                                {{count($lb_arr)}}
+                                                {{count((array)$lb_arr)}}
                                             </td>
                                             <td>
                                                 @if(isset($challan['challan_labours']))
@@ -178,7 +178,7 @@
                                                     ?>                                                    
                                                 @endforeach
                                                 @endif
-                                                {{count($lbr_arr)}}                                                
+                                                {{count((array)$lbr_arr)}}                                                
                                             </td> -->
                                             <td>
                                                 <?php

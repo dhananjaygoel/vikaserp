@@ -19,7 +19,7 @@
                         <form id="" method="POST" action="{{url('pending_customers/'.$customer->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)

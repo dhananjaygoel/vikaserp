@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12">
             <ol class="breadcrumb">
-                <li><a href="{{url()}}/product_category">Product Category</a></li>
+                <li><a href="{{url('/')}}/product_category">Product Category</a></li>
                 <li class="active"><span>Edit Product Category</span></li>
             </ol>
             <div class="clearfix">
@@ -16,7 +16,7 @@
     <div class="col-lg-12">
         <div class="main-box">           
             <div class="main-box-body clearfix">
-                @if (count($errors) > 0)
+                @if (count($errors->all()) > 0)
                 <div class="alert alert-warning">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     @foreach ($errors->all() as $error)
@@ -75,7 +75,7 @@
                 <hr>
                 <div >
                     <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                    <a href="{{url()}}/product_category" class="btn btn-default form_button_footer">Back</a>
+                    <a href="{{url('/')}}/product_category" class="btn btn-default form_button_footer">Back</a>
                 </div>
                 <div class="clearfix"></div>
                 </form>

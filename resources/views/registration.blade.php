@@ -3,7 +3,7 @@
 
 @section('content')
 <!-- Favicon -->
-<link href="{{ asset('/resources/assets/backend/img/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
+<link href="{{ asset('assets/backend/img/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
 <body id="login-page">
     <div class="container">
         <div class="row">
@@ -17,7 +17,7 @@
                                         <img src="img/logo.png" alt=""/>
                                     </div>
                                 </header>
-                                @if (count($errors) > 0)
+                                @if (count($errors->all()) > 0)
                                     <div class="alert alert-danger">
                                         <strong>Whoops!</strong> There were some problems with your input.<br><br>
                                         <ul>
@@ -48,7 +48,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <a href="{{ url('/password/email') }}" id="login-forget-link" class="col-xs-6">
+                                                <a href="{{ url('/password/reset') }}" id="login-forget-link" class="col-xs-6">
                                                     Forgot password?
                                                 </a>
                                             </div>
@@ -68,7 +68,7 @@
                     <div id="login-box-footer">
                         <div class="row">
                             <div class="col-xs-12">
-                                Do not have an account? 
+                                Do not have an account?
                                 <a href="registration.php">
                                     Register now
                                 </a>

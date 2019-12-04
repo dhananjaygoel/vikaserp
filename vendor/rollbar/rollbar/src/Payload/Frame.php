@@ -1,8 +1,6 @@
 <?php namespace Rollbar\Payload;
 
-use Rollbar\Utilities;
-
-class Frame implements \JsonSerializable
+class Frame implements \Serializable
 {
     private $filename;
     private $lineno;
@@ -11,10 +9,11 @@ class Frame implements \JsonSerializable
     private $code;
     private $context;
     private $args;
-    private $kwargs;
+    private $utilities;
 
     public function __construct($filename)
     {
+        $this->utilities = new \Rollbar\Utilities();
         $this->setFilename($filename);
     }
 
@@ -25,7 +24,6 @@ class Frame implements \JsonSerializable
 
     public function setFilename($filename)
     {
-        Utilities::validateString($filename, "filename", null, false);
         $this->filename = $filename;
         return $this;
     }
@@ -37,7 +35,6 @@ class Frame implements \JsonSerializable
 
     public function setLineno($lineno)
     {
-        Utilities::validateInteger($lineno, "lineno");
         $this->lineno = $lineno;
         return $this;
     }
@@ -49,7 +46,6 @@ class Frame implements \JsonSerializable
 
     public function setColno($colno)
     {
-        Utilities::validateInteger($colno, "colno");
         $this->colno = $colno;
         return $this;
     }
@@ -61,7 +57,6 @@ class Frame implements \JsonSerializable
 
     public function setMethod($method)
     {
-        Utilities::validateString($method, "method");
         $this->method = $method;
         return $this;
     }
@@ -73,7 +68,6 @@ class Frame implements \JsonSerializable
 
     public function setCode($code)
     {
-        Utilities::validateString($code, "code");
         $this->code = $code;
         return $this;
     }
@@ -100,20 +94,25 @@ class Frame implements \JsonSerializable
         return $this;
     }
 
-    public function getKwargs()
+    public function serialize()
     {
-        return $this->kwargs;
+        $result = array(
+            "filename" => $this->filename,
+            "lineno" => $this->lineno,
+            "colno" => $this->colno,
+            "method" => $this->method,
+            "code" => $this->code,
+            "context" => $this->context,
+            "args" => $this->args
+        );
+        
+        $objectHashes = \Rollbar\Utilities::getObjectHashes();
+        
+        return $this->utilities->serializeForRollbar($result, null, $objectHashes);
     }
-
-    public function setKwargs(array $kwargs)
+    
+    public function unserialize($serialized)
     {
-        $this->kwargs = $kwargs;
-        return $this;
-    }
-
-
-    public function jsonSerialize()
-    {
-        return Utilities::serializeForRollbar(get_object_vars($this));
+        throw new \Exception('Not implemented yet.');
     }
 }

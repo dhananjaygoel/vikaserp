@@ -6,22 +6,22 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="_token" content="<?php echo csrf_token(); ?>" id="csrf_token" />
         <?php
-        // echo 'slkhfkj';
+        // echo "slkhfkj";
         // exit;
         ?>
-        <base id="baseurl" name="{{url()}}">
-        <title>@yield('title')</title>
-        @yield('meta')
+        <base id="baseurl" name="{{url("/")}}">
+        <title>@yield("title")</title>
+        @yield("meta")
 
         <!-- bootstrap -->
-        {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
+        {{ HTML::style("assets/css/bootstrap/bootstrap.min.css") }}
 
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <!--        {!! HTML::style('/resources/assets/css/libs/jquery-ui.css') !!}-->
+        <!--        {{ HTML::style("assets/css/libs/jquery-ui.css") }}-->
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">-->
 
         <!-- RTL support - for demo only -->
-        {!! HTML::style('/resources/assets/css/bootstrap/bootstrap.min.css') !!}
+        {{ HTML::style("assets/css/bootstrap/bootstrap.min.css") }}
         <!--<script src="js/demo-rtl.js"></script>-->
         <!--
         If you need RTL support just include here RTL CSS file <link rel="stylesheet" type="text/css" href="css/libs/bootstrap-rtl.min.css" />
@@ -29,35 +29,35 @@
         -->
 
         <!-- libraries -->
-        {!! HTML::style('/resources/assets/css/libs/font-awesome.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/nanoscroller.css') !!}
+        {{ HTML::style("assets/css/libs/font-awesome.css") }}
+        {{ HTML::style("assets/css/libs/nanoscroller.css") }}
 
 
         <!-- global styles -->
-        {!! HTML::style('/resources/assets/css/compiled/theme_style.css') !!}
+        {{ HTML::style("assets/css/compiled/theme_style.css") }}
 
         <!-- this page specific styles -->
-        {!! HTML::style('/resources/assets/css/libs/fullcalendar.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/fullcalendar.print.css') !!}
-        {!! HTML::style('/resources/assets/css/compiled/calendar.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/morris.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/datepicker.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/daterangepicker.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/jquery-jvectormap-1.2.2.css') !!}
-        {!! HTML::style('/resources/assets/css/libs/select2.min.css') !!}
+        {{ HTML::style("assets/css/libs/fullcalendar.css") }}
+        {{ HTML::style("assets/css/libs/fullcalendar.print.css") }}
+        {{ HTML::style("assets/css/compiled/calendar.css") }}
+        {{ HTML::style("assets/css/libs/morris.css") }}
+        {{ HTML::style("assets/css/libs/datepicker.css") }}
+        {{ HTML::style("assets/css/libs/daterangepicker.css") }}
+        {{ HTML::style("assets/css/libs/jquery-jvectormap-1.2.2.css") }}
+        {{ HTML::style("assets/css/libs/select2.min.css") }}
 
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-        {!! HTML::style('/resources/assets/css/custom_style/custom_styles.css') !!}
-        {!! HTML::style('/resources/assets/css/custom_style/custom_media_query.css') !!}
+        {{ HTML::style("assets/css/custom_style/custom_styles.css") }}
+        {{ HTML::style("assets/css/custom_style/custom_media_query.css") }}
 
         <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>-->
 
         <!-- google font libraries -->
-        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400" rel="stylesheet" type="text/css">
         <!-- Favicon -->
-        <link href="{{ asset('/resources/assets/img/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
+        <link href="{{ asset("assets/img/favicon.png") }}" rel="shortcut icon" type="image/x-icon">
         <!--[if lt IE 9]>
                 <script src="js/html5shiv.js"></script>
                 <script src="js/respond.min.js"></script>
@@ -150,7 +150,7 @@
             }([function (r, e, o) {
                     "use strict";
                     var n = o(1).Rollbar, t = o(2);
-                    _rollbarConfig.rollbarJsUrl = _rollbarConfig.rollbarJsUrl || "{{url().'/resources/assets/js/rollbar.min.js'}}";
+                    _rollbarConfig.rollbarJsUrl = _rollbarConfig.rollbarJsUrl || "{{url("/")."assets/js/rollbar.min.js"}}";
 //                    _rollbarConfig.rollbarJsUrl = _rollbarConfig.rollbarJsUrl || "https://cdnjs.cloudflare.com/ajax/libs/rollbar.js/1.9.4/rollbar.min.js";
                     var a = n.init(window, _rollbarConfig), i = t(a, _rollbarConfig);
                     a.loadFull(window, document, !_rollbarConfig.async, _rollbarConfig, i)
@@ -292,15 +292,15 @@
     </head>
     <body>
         <div id="theme-wrapper">
-            <span id="baseurl" style="display: none;">{{url()}}</span>
-            @include('layouts.header')
+            <span id="baseurl" style="display: none;">{{url("/")}}</span>
+            @include("layouts.header")
             <div id="page-wrapper" class="container dashboard-nav nav-small">
 
                 <div class="row">
-                    @include('layouts.sidebar-left')
+                    @include("layouts.sidebar-left")
                     <div id="content-wrapper">
-                        @yield('content')
-                        @include('layouts.footer')
+                        @yield("content")
+                        @include("layouts.footer")
                     </div>
                 </div>
             </div>
@@ -315,87 +315,94 @@
 <script src="js/scripts.js"></script>
 <script src="js/pace.min.js"></script>-->
         <!-- global scripts -->
-        {!! HTML::script('/resources/assets/js/demo-skin-changer.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery.js') !!}
+        {{ HTML::script("assets/js/demo-skin-changer.js") }}
+        {{ HTML::script("assets/js/jquery.js") }}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        {!! HTML::script('/resources/assets/js/bootstrap.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery.nanoscroller.min.js') !!}
-        {!! HTML::script('/resources/assets/js/demo.js') !!}
+        {{ HTML::script("assets/js/bootstrap.js") }}
+        {{ HTML::script("assets/js/jquery.nanoscroller.min.js") }}
+        {{ HTML::script("assets/js/demo.js") }}
         <!-- this page specific scripts -->
 
         <!-- Bootbox Js -->
-        <!--{!! HTML::script('/resources/assets/js/bootbox.min.js') !!}-->
-        {!! HTML::script('/resources/assets/js/jquery_block_UI.js') !!}
+        <!--{{ HTML::script("assets/js/bootbox.min.js") }}-->
+        {{ HTML::script("assets/js/jquery_block_UI.js") }}
 
         <!-- Bootstrap spinner Js -->
-        {!! HTML::script('/resources/assets/js/bootstrap-datepicker.js') !!}
+        {{ HTML::script("assets/js/bootstrap-datepicker.js") }}
 
-        {!! HTML::script('/resources/assets/js/jquery-ui.custom.min.js') !!}
+        {{ HTML::script("assets/js/jquery-ui.custom.min.js") }}
         <!--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
-        {!! HTML::script('/resources/assets/js/moment.min.js') !!}
-        {!! HTML::script('/resources/assets/js/fullcalendar.min.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery.slimscroll.min.js') !!}
-        {!! HTML::script('/resources/assets/js/raphael-min.js') !!}
-        {!! HTML::script('/resources/assets/js/morris.min.js') !!}
+        {{ HTML::script("assets/js/moment.min.js") }}
+        {{ HTML::script("assets/js/fullcalendar.min.js") }}
+        {{ HTML::script("assets/js/jquery.slimscroll.min.js") }}
+        {{ HTML::script("assets/js/raphael-min.js") }}
+        {{ HTML::script("assets/js/morris.min.js") }}
 
-        {!! HTML::script('/resources/assets/js/jquery-jvectormap-1.2.2.min.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery-jvectormap-world-merc-en.js') !!}
-        {!! HTML::script('/resources/assets/js/gdp-data.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.min.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.pie.min.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.stack.min.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.resize.min.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.time.min.js') !!}
-        {!! HTML::script('/resources/assets/js/flot/jquery.flot.threshold.js') !!}
-        {!! HTML::script('/resources/assets/js/jquery.countTo.js') !!}
-        <!--{!! HTML::script('/resources/assets/js/jquery.spinner.min.js') !!}-->
+        {{ HTML::script("assets/js/jquery-jvectormap-1.2.2.min.js") }}
+        {{ HTML::script("assets/js/jquery-jvectormap-world-merc-en.js") }}
+        {{ HTML::script("assets/js/gdp-data.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.min.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.pie.min.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.stack.min.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.resize.min.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.time.min.js") }}
+        {{ HTML::script("assets/js/flot/jquery.flot.threshold.js") }}
+        {{ HTML::script("assets/js/jquery.countTo.js") }}
+        <!--{{ HTML::script("assets/js/jquery.spinner.min.js") }}-->
 
-        {!! HTML::script('/resources/assets/js/daterangepicker.js') !!}
+        {{ HTML::script("assets/js/daterangepicker.js") }}
 
         <!-- theme scripts -->
-        {!! HTML::script('/resources/assets/js/scripts.js') !!}
+        {{ HTML::script("assets/js/scripts.js") }}
 
         <!-- Confirm Exit JS -->
-        {!! HTML::script('/resources/assets/js/jquery.confirmExit.min.js') !!}
+        {{ HTML::script("assets/js/jquery.confirmExit.min.js") }}
 
         <!-- Sortable Script Support -->
-        {!! HTML::script('/resources/assets/custom_js/my_script.js') !!}
+        {{ HTML::script("assets/custom_js/my_script.js") }}
 
         <!-- Custom Script Support -->
-        {!! HTML::script('/resources/assets/js/select2.v.4.0.3.min.js') !!}
+        {{ HTML::script("assets/js/select2.v.4.0.3.min.js") }}
 
-        {!! HTML::script('/resources/assets/custom_js/custom_script.js') !!}
-        {!! HTML::script('/resources/assets/custom_js/custom_script_js.js') !!}
-        {!! HTML::script('/resources/assets/custom_js/custom.js') !!}
+        {{ HTML::script("assets/custom_js/custom_script.js") }}
+        {{ HTML::script("assets/custom_js/custom_script_js.js") }}
+        {{ HTML::script("assets/custom_js/custom.js") }}
 
         <?php
-        $currentRoute = Route::getCurrentRoute();
-        if ($currentRoute) {
-            $path = $currentRoute->getPath();
+        $currentRoute = Route::current();
+        $currentPath= Route::getFacadeRoot()->current()->uri();
+        // var_dump ($currentPath);
+        // var_dump (Route::current());
+        if (Route::current()) {
+            
+            $path = Route::getFacadeRoot()->current()->uri();
+            
             if ($path == "dashboard") {
                 ?>
-                <script src="{{url()."/resources/assets/custom_js/graph.js"}}"></script>
+                 {{ HTML::script("assets/custom_js/graph.js") }}
+                <!-- <script src="{{url("/")."assets/custom_js/graph.js"}}"></script> -->
                 <?php
             }
         }
         ?>
 
 
-        {!! HTML::script('/resources/assets/js/jquery.validate.min.js') !!}
-        {!! HTML::script('/resources/assets/js/bootstrap-multiselect.min.js') !!}
+        {{ HTML::script("assets/js/jquery.validate.min.js") }}
+        {{ HTML::script("assets/js/bootstrap-multiselect.min.js") }}
 
-
-        <script src="{{url()."/resources/assets/custom_js/laravel.js"}}"></script>
-        <script src="{{url()."/resources/assets/custom_js/common.js"}}"></script>
+        {{ HTML::script("assets/custom_js/laravel.js") }}
+        {{ HTML::script("assets/custom_js/common.js") }}
+        <!-- <script src="{{url("/")."/assets/custom_js/laravel.js"}}"></script>
+        <script src="{{url("/")."/assets/custom_js/common.js"}}"></script> -->
 
         <?php
-        $currentRoute = Route::getCurrentRoute();
-        
-        if ($currentRoute) {
-            $path = $currentRoute->getPath();
+
+        if (Route::current()) {
+            $path = Route::getFacadeRoot()->current()->uri();
             // print_r($path);
             // exit;
+            // dd($path);
             if ($path == "inquiry/create" ||
                     $path == "inquiry/{inquiry}/edit" ||
                     $path == "orders/create" ||
@@ -410,32 +417,33 @@
                     $path == "purchase_orders/{purchase_orders}/edit"
             ) {
                 ?>
-                @include('autocomplete_tally_product_name')
-                <script src="{{url()."/resources/assets/custom_js/custom_autoload_logic.js"}}"></script>
+                
+                {{ HTML::script("assets/custom_js/custom_autoload_logic.js") }}
+                <!-- <script src="{{url("/")."assets/custom_js/custom_autoload_logic.js"}}"></script> -->
             <?php
             }
         }
         ?>
 
-        <!--            {!! HTML::style('/resources/assets/css/custom_style/bootstrap-multiselect.css') !!}
-                    <script type="text/javascript" src="{{url()."/js/bootstrap-multiselect.js"}}"></script>-->
+        <!--            {{ HTML::style("assets/css/custom_style/bootstrap-multiselect.css") }}
+                    <script type="text/javascript" src="{{url("/")."/js/bootstrap-multiselect.js"}}"></script>-->
 
         <script>
-            var token = '{{csrf_token()}}';
-            var url = '{{url()}}';
+            var token = "{{csrf_token()}}";
+            var url = "{{url("/")}}";
             $(function ($) {
-                $('#datepickerDate').datepicker({
-                    format: 'dd-mm-yyyy'
+                $("#datepickerDate").datepicker({
+                    format: "dd-mm-yyyy"
                 });
 
-                $('#datepickerDateComponent').datepicker();
+                $("#datepickerDateComponent").datepicker();
             });
             $(function ($) {
-                $('#datepickerDate1').datepicker({
-                    format: 'dd-mm-yyyy'
+                $("#datepickerDate1").datepicker({
+                    format: "dd-mm-yyyy"
                 });
 
-                $('#datepickerDateComponent').datepicker();
+                $("#datepickerDateComponent").datepicker();
             });
 
         </script>
@@ -446,16 +454,16 @@
                 /* initialize the external events
                  -----------------------------------------------------------------*/
 
-                $('#external-events div.external-event').each(function () {
+                $("#external-events div.external-event").each(function () {
 
                     // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-                    // it doesn't need to have a start or end
+                    // it doesn"t need to have a start or end
                     var eventObject = {
-                        title: $.trim($(this).text()) // use the element's text as the event title
+                        title: $.trim($(this).text()) // use the element"s text as the event title
                     };
 
                     // store the Event Object in the DOM element so we can get to it later
-                    $(this).data('eventObject', eventObject);
+                    $(this).data("eventObject", eventObject);
 
                     // make the event draggable using jQuery UI
                     $(this).draggable({
@@ -475,19 +483,19 @@
                 var m = date.getMonth();
                 var y = date.getFullYear();
 
-                var calendar = $('#calendar').fullCalendar({
+                var calendar = $("#calendar").fullCalendar({
                     header: {
-                        left: '',
-                        center: 'title',
-                        right: 'prev,next'
+                        left: "",
+                        center: "title",
+                        right: "prev,next"
                     },
-                    isRTL: $('body').hasClass('rtl'), //rtl support for calendar
+                    isRTL: $("body").hasClass("rtl"), //rtl support for calendar
                     selectable: true,
                     selectHelper: true,
                     select: function (start, end, allDay) {
-                        var title = prompt('Event Title:');
+                        var title = prompt("Event Title:");
                         if (title) {
-                            calendar.fullCalendar('renderEvent',
+                            calendar.fullCalendar("renderEvent",
                                     {
                                         title: title,
                                         start: start,
@@ -497,16 +505,16 @@
                             true // make the event "stick"
                                     );
                         }
-                        calendar.fullCalendar('unselect');
+                        calendar.fullCalendar("unselect");
                     },
                     editable: true,
                     droppable: true, // this allows things to be dropped onto the calendar !!!
                     drop: function (date, allDay) { // this function is called when something is dropped
 
-                        // retrieve the dropped element's stored Event Object
-                        var originalEventObject = $(this).data('eventObject');
+                        // retrieve the dropped element"s stored Event Object
+                        var originalEventObject = $(this).data("eventObject");
 
-                        // we need to copy it, so that multiple events don't have a reference to the same object
+                        // we need to copy it, so that multiple events don"t have a reference to the same object
                         var copiedEventObject = $.extend({}, originalEventObject);
 
                         // assign it the date that was reported
@@ -514,7 +522,7 @@
                         copiedEventObject.allDay = allDay;
 
                         // copy label class from the event object
-                        var labelClass = $(this).data('eventclass');
+                        var labelClass = $(this).data("eventclass");
 
                         if (labelClass) {
                             copiedEventObject.className = labelClass;
@@ -522,75 +530,75 @@
 
                         // render the event on the calendar
                         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-                        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                        $("#calendar").fullCalendar("renderEvent", copiedEventObject, true);
 
                         // is the "remove after drop" checkbox checked?
-                        if ($('#drop-remove').is(':checked')) {
+                        if ($("#drop-remove").is(":checked")) {
                             // if so, remove the element from the "Draggable Events" list
                             $(this).remove();
                         }
 
                     },
                     buttonText: {
-                        prev: '<i class="fa fa-chevron-left"></i>',
-                        next: '<i class="fa fa-chevron-right"></i>'
+                        prev: "<i class='fa fa-chevron-left'></i>",
+                        next: "<i class='fa fa-chevron-right'></i>"
                     },
                     events: [
                         {
-                            title: 'All Day Event',
+                            title: "All Day Event",
                             start: new Date(y, m, 1),
-                            className: 'label-success'
+                            className: "label-success"
                         },
                         {
-                            title: 'Long Event',
+                            title: "Long Event",
                             start: new Date(y, m, d - 5),
                             end: new Date(y, m, d - 2)
                         },
                         {
                             id: 999,
-                            title: 'Repeating Event',
+                            title: "Repeating Event",
                             start: new Date(y, m, d - 3, 16, 0),
                             allDay: false,
-                            className: 'label-danger'
+                            className: "label-danger"
                         },
                         {
                             id: 999,
-                            title: 'Repeating Event',
+                            title: "Repeating Event",
                             start: new Date(y, m, d + 4, 16, 0),
                             allDay: false
                         },
                         {
-                            title: 'Meeting',
+                            title: "Meeting",
                             start: new Date(y, m, d, 10, 30),
                             allDay: false,
-                            className: 'label-info'
+                            className: "label-info"
                         },
                         {
-                            title: 'Lunch',
+                            title: "Lunch",
                             start: new Date(y, m, d, 12, 0),
                             end: new Date(y, m, d, 14, 0),
                             allDay: false,
-                            className: 'label-success'
+                            className: "label-success"
                         },
                         {
-                            title: 'Birthday Party',
+                            title: "Birthday Party",
                             start: new Date(y, m, d + 1, 19, 0),
                             end: new Date(y, m, d + 1, 22, 30),
                             allDay: false,
-                            className: 'label-info'
+                            className: "label-info"
                         },
                         {
-                            title: 'Click for Google',
+                            title: "Click for Google",
                             start: new Date(y, m, 28),
                             end: new Date(y, m, 29),
-                            url: 'http://google.com/',
-                            className: 'label-danger'
+                            url: "http://google.com/",
+                            className: "label-danger"
                         }
                     ]
                 });
 
-                $('.conversation-inner').slimScroll({
-                    height: '332px',
+                $(".conversation-inner").slimScroll({
+                    height: "332px",
                     alwaysVisible: false,
                     railVisible: true,
                     wheelStep: 5,
@@ -601,14 +609,14 @@
 
 
                 //WORLD MAP
-                $('#world-map').vectorMap({
-                    map: 'world_merc_en',
-                    backgroundColor: '#ffffff',
+                $("#world-map").vectorMap({
+                    map: "world_merc_en",
+                    backgroundColor: "#ffffff",
                     zoomOnScroll: false,
                     regionStyle: {
                         initial: {
-                            fill: '#e1e1e1',
-                            stroke: 'none',
+                            fill: "#e1e1e1",
+                            stroke: "none",
                             "stroke-width": 0,
                             "stroke-opacity": 1
                         },
@@ -616,7 +624,7 @@
                             "fill-opacity": 0.8
                         },
                         selected: {
-                            fill: '#8dc859'
+                            fill: "#8dc859"
                         },
                         selectedHover: {
                         }
@@ -624,33 +632,33 @@
                     series: {
                         regions: [{
                                 values: gdpData,
-                                scale: ['#6fc4fe', '#2980b9'],
-                                normalizeFunction: 'polynomial'
+                                scale: ["#6fc4fe", "#2980b9"],
+                                normalizeFunction: "polynomial"
                             }]
                     },
                     onRegionLabelShow: function (e, el, code) {
-                        el.php(el.php() + ' (' + gdpData[code] + ')');
+                        el.php(el.php() + " (" + gdpData[code] + ")");
                     }
                 });
 
-                $('.infographic-box .value .timer').countTo({});
+                $(".infographic-box .value .timer").countTo({});
 
             });
 
             $("#product_sub_category_select").change(function () {
                if(this.value == 3){
-                   $('#length_u').show();
+                   $("#length_u").show();
                }
                else{
-                   $('#length_u').hide();
+                   $("#length_u").hide();
                }
             });
 
             $(".length_unit").change(function(){
                 var val = $("#length").val();
-                var l_u = $('#length_u .length_unit:checked').val();
+                var l_u = $("#length_u .length_unit:checked").val();
 
-                if(l_u == 'mm'){
+                if(l_u == "mm"){
                     val = val * 305;
                     $("#length").val(val);
                 }
@@ -661,7 +669,7 @@
             });
 
             function setDiffrence(val) {
-                var diff = val.split(':')[1];
+                var diff = val.split(":")[1];
                 if(diff){
                     $("#difference").val(diff);
                 }
@@ -670,31 +678,31 @@
                 }
             }
 
-            $("#hsn_desc_get_desc").on('change',function () {
+            $("#hsn_desc_get_desc").on("change",function () {
                var hsncode = this.value;
                if(hsncode){
-                    var hsndesc = hsncode.split(':')[1];
-                    $('#hsn_desc').val(hsndesc);
+                    var hsndesc = hsncode.split(":")[1];
+                    $("#hsn_desc").val(hsndesc);
                }
             });
 
-            $("#del_supervisor").on('change',function () {
+            $("#del_supervisor").on("change",function () {
                 var del_supervisor = this.value;
                 if(del_supervisor){
-                    $("#truck_load").prop('disabled', false);
+                    $("#truck_load").prop("disabled", false);
                 }
                 else{
-                    $("#truck_load").prop('disabled', true);
+                    $("#truck_load").prop("disabled", true);
                 }
-            });            
+            });
 
-            $("#del_boy").on('change',function () {
+            $("#del_boy").on("change",function () {
                 var del_boy = this.value;
                 if(del_boy){
-                    $("#truck_load").prop('disabled', false);
+                    $("#truck_load").prop("disabled", false);
                 }
                 else{
-                    $("#truck_load").prop('disabled', true);
+                    $("#truck_load").prop("disabled", true);
                 }
             });
 
@@ -705,6 +713,6 @@
 
 
 
-        <input type="hidden" id="site_url" value="{{url()}}"/>
+        <input type="hidden" id="site_url" value="{{url("/")}}"/>
     </body>
 </html>

@@ -12,7 +12,7 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Customer Manager</h1>
 
-                    @if(count($manager) < 1)
+                    @if(count((array)$manager) < 1)
                     <a href="{{url('customer_manager/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Customer Manager
                     </a>
@@ -38,7 +38,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                        @if(count($manager) > 0)
+                        @if(count((array)$manager) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>

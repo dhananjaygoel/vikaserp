@@ -20,7 +20,7 @@
                 $ipaddress = 'UNKNOWN';
 
             $ip = App\Security::all();
-            if (count($ip) > 0) {
+            if (count((array)$ip) > 0) {
                 foreach ($ip as $key => $value) {
                     $ip_array[$key] = $value->ip_address;
                 }
@@ -36,7 +36,7 @@
                     <?php
                     $full_name = $_SERVER['PHP_SELF'];
                     $name_array = explode('/', $full_name);
-                    $count = count($name_array);
+                    $count = count((array)$name_array);
                     $page_name = $name_array[$count - 1];
 
                     ?>
@@ -135,7 +135,7 @@
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('*users*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Users">
-                        <a href="{{url()}}/users">
+                        <a href="{{url('/')}}/users">
                             <i class="fa fa-user"></i>
                             <span>Users</span>
                             <span class="label label-info label-circle pull-right"></span>
@@ -178,7 +178,7 @@
                     @endif
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 ||  Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
                     <li class="<?php
-                    if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')) {
+                    if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')|| Request::is('*daily_pro_forma_invoice*')) {
                         echo 'active';
                     }
                     ?>">
@@ -202,12 +202,12 @@
                                 @if(Auth::user()->role_id != 2 && Auth::user()->role_id != 3)
                                 <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                     <a href="{{url('orders')}}" >
-                                        Order 
+                                        Order
                                     </a>
                                 </li>
                                 @endif
                                 @endif
-                            <li class="{{ (Request::is('*delivery_order*') ? 'active' : '') }}">
+                            <li class="{{ (Request::is('delivery_order*') ? 'active' : '') }}">
                                 <a href="{{url('delivery_order')}}">
                                     Delivery Order
                                 </a>
@@ -256,7 +256,7 @@
 
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array) && Auth::user()->role_id <> 5) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                     <li class="<?php
-                    if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*')) {
+                    if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*') || Request::is('*purchase_estimate*')) {
                         echo 'active';
                     }
                     ?>">
@@ -324,7 +324,7 @@
                     @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
-                    if (Request::is('*product_category*') || Request::is('*product_sub_category*')) {
+                    if (Request::is('*product_category*') || Request::is('*product_sub_category*') || Request::is('*thickness*')) {
                         echo 'active';
                     }
                     ?>">
@@ -335,17 +335,17 @@
                         </a>
                         <ul  class="submenu">
                             <li class="{{ (Request::is('*product_category*') ? 'active' : '') }}">
-                                <a href="{{url()}}/product_category" >
+                                <a href="{{url('/')}}/product_category" >
                                     Product Category
                                 </a>
                             </li>
                             <li class="{{ (Request::is('*product_sub_category*') ? 'active' : '') }}">
-                                <a href="{{url()}}/product_sub_category">
+                                <a href="{{url('/')}}/product_sub_category">
                                     Product Size
                                 </a>
                             </li>
                             <li class="{{ (Request::is('*thickness*') ? 'active' : '') }}">
-                                <a href="{{url()}}/thickness">
+                                <a href="{{url('/')}}/thickness">
                                     Product Thickness
                                 </a>
                             </li>
@@ -506,4 +506,3 @@
         </div>
     </section>
 </div>
-

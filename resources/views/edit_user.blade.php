@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/users">Users</a></li>
+                    <li><a href="{{url('/')}}/users">Users</a></li>
                     <li class="active"><span>Edit User</span></li>
                 </ol>
             </div>
@@ -19,7 +19,7 @@
                         {!!Form::open(array('method'=>'PUT','url'=>url('users/'.$user_data['id']),'id'=>''))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning">                          
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
@@ -76,7 +76,7 @@
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer">Submit</button>
-                            <a href="{{url()}}/users" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('/')}}/users" class="btn btn-default form_button_footer">Back</a>
                         </div>                            
                         <div class="clearfix"></div>
                         {!! Form::close() !!}

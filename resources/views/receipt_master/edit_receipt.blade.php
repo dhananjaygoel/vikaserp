@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}">Home</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
                     <li class="active">Receipt Master</li>
                 </ol>
                 <div class="clearfix">
@@ -54,7 +54,7 @@
                         <input type="hidden" name="user_type" value="{{$user_type}}" id="user_type">
                         <input type="hidden" name="receipt_id" value="{{$receipt_id}}" id="receipt_id">
                         <input type="hidden" name="customer_ids_array" value='' id="customer_ids_array">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
                             @foreach ($errors->all() as $error)
@@ -237,7 +237,7 @@
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer" id="edit_receipt_btn" >Submit</button>
-                            <a href="{{url()}}/receipt-master" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('/')}}/receipt-master" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
                         <!--</form>-->

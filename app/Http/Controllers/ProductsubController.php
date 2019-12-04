@@ -33,11 +33,6 @@ class ProductsubController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -56,14 +51,14 @@ class ProductsubController extends Controller {
     }
 
     public function index() {
-       
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
         if (Auth::user()->role_id == 5 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-      
+
         $product_type = ProductType::all();
         $units = Units::all();
         $product_sub_cat = "";
@@ -220,7 +215,7 @@ class ProductsubController extends Controller {
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
         $quickbook = App\QuickbookToken::find(2);
-        
+
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -257,7 +252,7 @@ class ProductsubController extends Controller {
             'QBORealmID' => "9130347328054516",
             'baseUrl' => "Production",
             'minorVersion'=>34
-        )); 
+        ));
 
     }
     function refresh_token_Wihtout_GST(){
@@ -265,7 +260,7 @@ class ProductsubController extends Controller {
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
-        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
@@ -283,7 +278,7 @@ class ProductsubController extends Controller {
             $dataService = $this->getToken();
         }
         $sr = 1;
-        $item1 = "select count(*) from Item";
+        $item1 = "select count((array)*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
             $item = "select * from Item order by Id asc startposition $i maxresults 1000";
@@ -310,7 +305,7 @@ class ProductsubController extends Controller {
             $dataService = $this->getTokenWihtoutGST();
         }
         $sr = 1;
-        $item1 = "select count(*) from Item";
+        $item1 = "select count((array)*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
             $item = "select * from Item order by Id asc startposition $i maxresults 1000";
@@ -328,7 +323,7 @@ class ProductsubController extends Controller {
             }
         }
     }
-    
+
 
 
 /*This is start quickbook account All inclusive*/
@@ -348,7 +343,7 @@ class ProductsubController extends Controller {
     function getTokenAll(){
         require_once base_path('quickbook/vendor/autoload.php');
         $quickbook = App\QuickbookToken::find(4);
-      
+
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -410,10 +405,10 @@ class ProductsubController extends Controller {
         $newItemObj = Item::create($Qdata);
         $newitem = $dataService->add($newItemObj);
         $error = $dataService->getLastError();
-        
-        if ($error) { 
+
+        if ($error) {
             $this->refresh_token_Wihtout_GST();
-            $dataService = $this->getTokenWihtoutGST();  
+            $dataService = $this->getTokenWihtoutGST();
         }
         else{
             $inclusiveitemid =  $newitem->Id;
@@ -421,9 +416,9 @@ class ProductsubController extends Controller {
         $nextdataservice = $this->getToken();
         $newiteminclusive = $nextdataservice->add($newItemObj);
         $error1 = $nextdataservice->getLastError();
-        if ($error1) { 
+        if ($error1) {
             $this->refresh_token();
-            $dataService = $this->getToken();  
+            $dataService = $this->getToken();
         }
         else{
             $gstitemid  =  $newiteminclusive->Id;
@@ -458,7 +453,7 @@ class ProductsubController extends Controller {
         }
         */
         //dd($res);
-       
+
         $ProductSubCategory->product_category_id = $request->input('sub_product_name');
         $ProductSubCategory->alias_name = $request->input('alias_name');
         $ProductSubCategory->hsn_code = $request->input('hsn_code');
@@ -490,7 +485,7 @@ class ProductsubController extends Controller {
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $admins = User::where('role_id', '=', 0)->get();
-            if (count($admins) > 0) {
+            if (count((array)$admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_category = ProductCategory::with('product_type')->find($request->input('select_product_categroy'));
                     $str = "Dear " . $admin->first_name . " \n" .
@@ -557,7 +552,7 @@ class ProductsubController extends Controller {
                     ];
                     $this->refresh_token_Wihtout_GST();
                     $resultingObj = $this->quickbook_update_a_item($quickbook_a_item_id,$Qdata);
-                    
+
                     //Plus GST account
                     $this->refresh_token();
                     $nextresultingItemObj = $this->quickbook_update_item($quickbook_item_id,$Qdata);
@@ -595,7 +590,7 @@ class ProductsubController extends Controller {
             return Redirect::to('product_sub_category')->with('error', 'You do not have permission.');
         }
         $prod_sub_cat = ProductSubCategory::with('product_category', 'product_unit')->find($id);
-        if (count($prod_sub_cat) < 1) {
+        if (count((array)$prod_sub_cat) < 1) {
             return redirect('product_sub_category')->with('success', 'Product sub category does not exist.');
         }
         $product_type = ProductType::all();
@@ -612,7 +607,7 @@ class ProductsubController extends Controller {
 
     public function update($id) {
         $validator = Validator::make(Input::all(), ProductSubCategory::$product_sub_category_rules);
- 
+
 
         if ($validator->passes()) {
             $data = Input::all();
@@ -637,7 +632,7 @@ class ProductsubController extends Controller {
                 $pro_sub_cat['alias_name'] = Input::get('alias_name');
             }
             $pcat = ProductCategory::where('id',$data['sub_product_name'])->first();
-        
+
             $ProductSubCategory = ProductSubCategory::find($id);
             $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
             $quickbook_a_item_id=$ProductSubCategory->quickbook_a_item_id;
@@ -657,41 +652,41 @@ class ProductsubController extends Controller {
                         "name" => "IncomRef"
                     ],
                     "TrackQtyOnHand"=>false,
-                    
+
                 ];
                 $this->refresh_token_Wihtout_GST();
                 $resultingObj = $this->quickbook_update_a_item($quickbook_a_item_id,$Qdata);
-                
+
                 //Plus GST account
                 $this->refresh_token();
                 $nextresultingItemObj = $this->quickbook_update_item($quickbook_item_id,$Qdata);
-                
+
             }
             // $Qdata = [
-            //   "FullyQualifiedName" => "Rock Fountain", 
-            //   "domain"=> "QBO", 
-            //   "Id" => "28", 
-            //   "Name" => "Rock Fountain", 
-            //   "Type"=> "NonInventory", 
-            //   "PurchaseCost"=> 125, 
+            //   "FullyQualifiedName" => "Rock Fountain",
+            //   "domain"=> "QBO",
+            //   "Id" => "28",
+            //   "Name" => "Rock Fountain",
+            //   "Type"=> "NonInventory",
+            //   "PurchaseCost"=> 125,
             //   "ReverseChargeRate"=>1.0,
-            //   "sparse" => false, 
-            //   "Active" => true, 
-            //   "SyncToken" => "2", 
-            //   "UnitPrice" => 275, 
+            //   "sparse" => false,
+            //   "Active" => true,
+            //   "SyncToken" => "2",
+            //   "UnitPrice" => 275,
             //   "IncomeAccountRef"=> [
-            //     "name" => "IncomRef", 
+            //     "name" => "IncomRef",
             //     "value" => "3"
-            //   ], 
-            //   "PurchaseDesc" => "Rock Fountain", 
+            //   ],
+            //   "PurchaseDesc" => "Rock Fountain",
             //   "Description" => "New, updated description for Rock Fountain"
             // ];
 
             // $ProductSubCategory = ProductSubCategory::where('id',$id)->first();
             // $ProductSubCategory = ProductSubCategory::find($id);
             /*$quickbook_item_id=$ProductSubCategory->quickbook_item_id;
-            if($quickbook_item_id)  
-            {          
+            if($quickbook_item_id)
+            {
                 $res = $this->quickbook_update_item($quickbook_item_id,$Qdata);
                 if($res['status']){
                     // $ProductSubCategory->quickbook_item_id = $res['message']->Id;
@@ -716,9 +711,9 @@ class ProductsubController extends Controller {
             //$newItemObj = Item::update($Qdata);
             $newitem = $dataService->add($newItemObj);
             $error = $dataService->getLastError();
-            if ($error) { 
+            if ($error) {
                 $this->refresh_token_Wihtout_GST();
-                $dataService = $this->getTokenWihtoutGST();  
+                $dataService = $this->getTokenWihtoutGST();
             }
             else{
                 $inclusiveitemid =  $newitem->Id;
@@ -726,9 +721,9 @@ class ProductsubController extends Controller {
             $nextdataservice = $this->getToken();
             $newiteminclusive = $nextdataservice->add($newItemObj);
             $error1 = $nextdataservice->getLastError();
-            if ($error1) { 
+            if ($error1) {
                 $this->refresh_token();
-                $dataService = $this->getToken();  
+                $dataService = $this->getToken();
             }
             else{
                 $gstitemid  =  $newiteminclusive->Id;
@@ -745,7 +740,7 @@ class ProductsubController extends Controller {
             $input = Input::all();
             if (isset($input['sendsms']) && $input['sendsms'] == "true") {
                 $admins = User::where('role_id', '=', 0)->get();
-                if (count($admins) > 0) {
+                if (count((array)$admins) > 0) {
                     foreach ($admins as $key => $admin) {
                         $product_category = ProductCategory::with('product_type')->find($data['select_product_categroy']);
                         $str = "Dear "
@@ -798,7 +793,7 @@ class ProductsubController extends Controller {
         $input = Input::all();
 
         $admins = User::where('role_id', '=', 0)->get();
-        if (count($admins) > 0) {
+        if (count((array)$admins) > 0) {
             foreach ($admins as $key => $admin) {
                 $productsubcategory = ProductSubCategory::find(Input::get('id'));
                 $product_category = ProductCategory::with('product_type')->find($productsubcategory->product_category_id);
@@ -852,7 +847,7 @@ class ProductsubController extends Controller {
                 ->orWhere('alias_name', 'like', $term)->orderBy('size', 'desc')->orderBy('alias_name', 'desc')
                 ->get();
 
-        if (count($product) > 0) {
+        if (count((array)$product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [
                     'value' => $prod->size . " - " . $prod->alias_name,
@@ -870,7 +865,7 @@ class ProductsubController extends Controller {
     public function fetch_product_name() {
         $term = '%' . Input::get('term') . '%';
         $product = ProductCategory::where('product_category_name', 'like', $term)->get();
-        if (count($product) > 0) {
+        if (count((array)$product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [
                     'value' => $prod->product_category_name

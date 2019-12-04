@@ -48,11 +48,6 @@ class CommonController_gst extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -125,13 +120,13 @@ class CommonController_gst extends Controller {
     }
 
 
-    
+
     /**
      * Store a newly created customer in database.
      */
     public function index(Request $request) {
         // StoreCustomer
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -139,7 +134,7 @@ class CommonController_gst extends Controller {
        //dd($customer_data);
        $customer = Customer::where('id', 1827)->where('quickbook_customer_id', '=', NULL)->first();
         // foreach ($customer_data as $customer) {
-        // if(count($customer)!=10){
+        // if(count((array)$customer)!=10){
             $users = new User();
             $users->first_name = $customer->owner_name;
             $users->role_id = '5';
@@ -149,7 +144,7 @@ class CommonController_gst extends Controller {
                 $status ='no';
             else
                 $status ='yes';
-            $Qdata = [             
+            $Qdata = [
                 "GivenName"=>  $customer->owner_name,
                 "FullyQualifiedName"=> $customer->owner_name,
                 "CompanyName"=>  $customer->company_name,
@@ -158,11 +153,11 @@ class CommonController_gst extends Controller {
                     "FreeFormNumber"=>  $customer->phone_number1
                 ],
                 "BillAddr"=> [
-                      "City"=> $customer->city, 
-                      "Line1"=> $customer->address1                  
-                    ], 
+                      "City"=> $customer->city,
+                      "Line1"=> $customer->address1
+                    ],
             ];
-           
+
 
             if($status == 'yes'){
                 $res_q = $this->quickbook_create_supplier($Qdata);
@@ -216,7 +211,7 @@ class CommonController_gst extends Controller {
                 }
             }
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'users'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -228,14 +223,14 @@ class CommonController_gst extends Controller {
     }
 
 
-  
 
-   
+
+
     /**
      * Display the specific Product.
      */
     public function product_store(Request $request) {
-        
+
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -253,7 +248,7 @@ class CommonController_gst extends Controller {
             "Type" => "NonInventory",
             "IncomeAccountRef"=> [
                 "value"=> 3,
-                "name" => "IncomRef" 
+                "name" => "IncomRef"
             ],
             "TrackQtyOnHand"=>false,
             /*"TaxClassificationRef"=>[
@@ -275,5 +270,5 @@ class CommonController_gst extends Controller {
         $ProductSubCategory->save();
         } //  end foreach
         return redirect('customers')->with('success', 'Customer Successfully added');
-    }   
+    }
 }

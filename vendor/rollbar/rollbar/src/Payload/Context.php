@@ -1,14 +1,14 @@
 <?php namespace Rollbar\Payload;
 
-use Rollbar\Utilities;
-
-class Context implements \JsonSerializable
+class Context implements \Serializable
 {
     private $pre;
     private $post;
+    private $utilities;
 
     public function __construct($pre, $post)
     {
+        $this->utilities = new \Rollbar\Utilities();
         $this->setPre($pre);
         $this->setPost($post);
     }
@@ -20,7 +20,6 @@ class Context implements \JsonSerializable
 
     public function setPre($pre)
     {
-        $this->validateAllString($pre, "pre");
         $this->pre = $pre;
         return $this;
     }
@@ -32,22 +31,24 @@ class Context implements \JsonSerializable
 
     public function setPost($post)
     {
-        $this->validateAllString($post, "post");
         $this->post = $post;
         return $this;
     }
 
-    public function jsonSerialize()
+    public function serialize()
     {
-        return Utilities::serializeForRollbar(get_object_vars($this));
+        $result = array(
+            "pre" => $this->pre,
+            "post" => $this->post,
+        );
+        
+        $objectHashes = \Rollbar\Utilities::getObjectHashes();
+        
+        return $this->utilities->serializeForRollbar($result, null, $objectHashes);
     }
-
-    private function validateAllString($arr, $arg)
+    
+    public function unserialize($serialized)
     {
-        foreach ($arr as $line) {
-            if (!is_string($line)) {
-                throw new \InvalidArgumentException("\$$arg must be all strings");
-            }
-        }
+        throw new \Exception('Not implemented yet.');
     }
 }

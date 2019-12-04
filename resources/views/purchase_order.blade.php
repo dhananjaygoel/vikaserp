@@ -20,8 +20,8 @@
                     $qstring_sort_type_order = $session_sort_type_order;
                 }
                 ?>
-                
-               
+
+
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
                     <li class="active"><span>Purchase Orders</span></li>
@@ -30,7 +30,7 @@
                     <h1 class="pull-left">Purchase Orders</h1>
                 </div>
                 <div class="col-lg-6">
-               
+
                 <form class="search_form" method="GET" action="{{URL::action('PurchaseOrderController@index')}}">
                         <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                         if (Input::get('export_from_date') != "") {
@@ -79,10 +79,10 @@
                     </form>
             </div>
                 <!-- <div class="search_form_wrapper orders_search_wrapper">
-                   
+
                 </div> -->
 
-                <div class="filter-block">                   
+                <div class="filter-block">
                     <div class="pull-right top-page-ui">
                         <form method="GET" action="{{url('purchase_orders')}}">
                             <div class="filter-block pull-right">
@@ -118,8 +118,8 @@
                                 </div>
                                 <div class="form-group pull-left">
                                     <div class="col-md-12">
-                                       
-                                        
+
+
                                         <select class="form-control" id="purchase_order_filter" name="order_filter" onchange="this.form.submit();">
 
                                             <option value="pending" <?php if ($qstring_sort_type_order == "pending") echo "selected=''"; ?>>Pending</option>
@@ -201,7 +201,7 @@
                                         @endif
 
                                         <td class="text-center" style="min-width: 180px;">
-                                            <a href="{{ Url::action('PurchaseOrderController@show', ['id' => $purchase_order->id]) }}" class="table-link" title="view">
+                                            <a href="{{ Url::action('PurchaseOrderController@show', ['purchase_order' => $purchase_order->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
@@ -210,7 +210,7 @@
                                             @if($purchase_order->order_status !='completed' || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
 
                                             @if($purchase_order->order_status =='pending')
-                                            <a href="{{ Url::action('PurchaseOrderController@edit', ['id' => $purchase_order->id]) }}" class="table-link" title="edit">
+                                            <a href="{{ Url::action('PurchaseOrderController@edit', ['purchase_order' => $purchase_order->id]) }}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>

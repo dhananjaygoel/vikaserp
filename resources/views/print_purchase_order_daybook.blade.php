@@ -80,7 +80,7 @@
                                 ?>                                                    
                             @endforeach
                         @endif
-                        {{count($lb_arr)}}
+                        {{count((array)$lb_arr)}}
                     </td>
                     <td> @if(isset($obj['challan_labours']))
                             @foreach($obj['challan_labours'] as $labour)                                                    
@@ -91,7 +91,7 @@
                                 ?>                                                    
                             @endforeach
                         @endif
-                        {{count($lbr_arr)}}
+                        {{count((array)$lbr_arr)}}
                     </td>
                     <td>{{ isset($obj->remarks) ? $obj->remarks : '' }}</td>
                 </tr>

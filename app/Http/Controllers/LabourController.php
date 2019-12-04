@@ -38,11 +38,6 @@ class LabourController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -52,10 +47,10 @@ class LabourController extends Controller {
      * @return Response
      */
     public function index(Request $request) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
-        }        
+        }
         $request->url();
         if (Auth::user()->role_id != 0) {
             return redirect()->back();
@@ -167,7 +162,7 @@ class LabourController extends Controller {
             return redirect()->back();
         }
         $labour = Labour::find($id);
-        if (count($labour) < 1) {
+        if (count((array)$labour) < 1) {
             return redirect('performance/labours/')->with('error', 'Trying to access an invalid labour');
         }
 
@@ -243,23 +238,23 @@ class LabourController extends Controller {
 //            $labour = Labour::find($id);
 //
 //            $labour_exist = array();
-//            
+//
 //            $labour_exist['customer_delivery_challan'] = "";
 //            $labour_exist['customer_purchase_challan'] = "";
-//            
-//            $labour_delivery_challan = DeliveryChallan::where('labours', $labour->id)->get();           
+//
+//            $labour_delivery_challan = DeliveryChallan::where('labours', $labour->id)->get();
 //            $labour_purchase_challan = PurchaseChallan::where('labours', $labour->id)->get();
 //
 //            $cust_msg = 'Labour can not be deleted as details are associated with one or more ';
 //            $cust_flag = "";
 //
-//            if (isset($labour_delivery_challan) && (count($labour_delivery_challan) > 0)) {
+//            if (isset($labour_delivery_challan) && (count((array)$labour_delivery_challan) > 0)) {
 //                $labour_exist['customer_delivery_challan'] = 1;
 //                $cust_msg .= "Delievry Challan";
 //                $cust_flag = 1;
-//            }           
+//            }
 //
-//            if (isset($labour_purchase_challan) && (count($labour_purchase_challan) > 0)) {
+//            if (isset($labour_purchase_challan) && (count((array)$labour_purchase_challan) > 0)) {
 //                $labour_exist['customer_purchase_challan'] = 1;
 //                $cust_msg .= "Purchase Challan";
 //                $cust_flag = 1;
@@ -268,7 +263,7 @@ class LabourController extends Controller {
 //            if ($cust_flag == 1) {
 //                return Redirect::to('performance/labours')->with('error', $cust_msg);
 //            } else {
-//                $labour->delete();                
+//                $labour->delete();
 //                return Redirect::to('performance/labours')->with('success', 'Labour deleted successfully.');
 //            }
         } else {
@@ -279,7 +274,7 @@ class LabourController extends Controller {
     public function labourPerformance(Request $request) {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
-        } 
+        }
         if (Auth::user()->role_id != 0) {
             return redirect()->back();
         }
@@ -313,7 +308,7 @@ class LabourController extends Controller {
                         ->where('created_at', '>=', "$date")
                         ->where('created_at', '<=', "$enddate")
                         ->get();
-                
+
                 $labour_all = \App\DeliveryChallanLabours::get();
             } else if ($val == "Day") {
                 $month = Input::get('month');
@@ -330,7 +325,7 @@ class LabourController extends Controller {
                         has('challan_labours.pc_delivery_challan.all_purchase_products')
                         ->with('challan_labours')
                         ->get();
-                
+
                 $labour_all = \App\DeliveryChallanLabours::get();
             }
         } else {
@@ -395,15 +390,15 @@ class LabourController extends Controller {
             }
         }
 
-       
+
         foreach ($loader_arr as $key => $value_temp) {
             if (isset($value_temp['pipe_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['pipe_tonnage'] / 1000;
                 $loaders_data[$var++]['labours'] = $value_temp['pipe_labour'];
-            } 
-            if (isset($value_temp['structure_labour'])) { 
+            }
+            if (isset($value_temp['structure_labour'])) {
                 $loaders_data[$var]['delivery_id'] = $value_temp['delivery_id'];
                 $loaders_data[$var]['delivery_date'] = $value_temp['delivery_date'];
                 $loaders_data[$var]['tonnage'] = $value_temp['structure_tonnage'] / 1000;
@@ -428,7 +423,7 @@ class LabourController extends Controller {
             $arr = array();
             $arr_money = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+            if (isset($delivery_order_info->challan_labours) && count((array)$delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
                     $deliver_sum = 0.00;
                     $money = 0.00;
@@ -441,7 +436,7 @@ class LabourController extends Controller {
 
 
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
@@ -572,7 +567,7 @@ class LabourController extends Controller {
             $arr = array();
             $arr_money = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+            if (isset($delivery_order_info->challan_labours) && count((array)$delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
                     $deliver_sum = 0.00;
                     $money = 0.00;
@@ -589,13 +584,13 @@ class LabourController extends Controller {
 
 
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count((array)$loaders);
                 }
             }
             $loaders_data[$var] = $loader_arr;
@@ -606,7 +601,7 @@ class LabourController extends Controller {
             $arr = array();
             $arr_money = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+            if (isset($delivery_order_info->challan_labours) && count((array)$delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
                     $deliver_sum = 0.00;
                     $money = 0.00;
@@ -623,13 +618,13 @@ class LabourController extends Controller {
 
 
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count((array)$loaders);
                 }
             }
             $loaders_data[$var] = $loader_arr;
@@ -689,7 +684,7 @@ class LabourController extends Controller {
     function checkpending_quantity($unit_id, $product_category_id, $product_qty, $prod_info = false) {
 
         $kg_qty = 0;
-        if ($prod_info && count($prod_info)) {
+        if ($prod_info && count((array)$prod_info)) {
             $product_info = $prod_info;
         } else {
             $product_info = ProductSubCategory::find($product_category_id);

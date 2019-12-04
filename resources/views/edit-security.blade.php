@@ -32,7 +32,7 @@
                         <hr>
 
                         <form method="POST" action="{{url('security/'.$security->id)}}" accept-charset="UTF-8" >
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)

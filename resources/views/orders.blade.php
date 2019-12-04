@@ -29,7 +29,7 @@
                 <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">                        
                     <div class="col-lg-4">
                         @if(Auth::user()->role_id != 5)
-                        <form method="GET" action="{{url()}}/orders">
+                        <form method="GET" action="{{url('/')}}/orders">
                             <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
                                 <option value="" selected="">Select Territory</option>
                                 @if(isset($all_territories) && !empty($all_territories))
@@ -493,7 +493,7 @@
                                     <tr id="order_row_{{isset($order->id) ? $order->id:''}}">
                                         <td>{{isset($k)?$k++:''}}</td>                                    
                                         <td>{{(isset($order["customer"]->tally_name) && $order["customer"]->tally_name != "")? $order["customer"]->tally_name : "Anonymous User"}} </td>
-                                        @if(count($pending_orders) > 0)
+                                        @if(count((array)$pending_orders) > 0)
                                         @foreach($pending_orders as $porder)
                                         @if($porder['id'] == $order->id)
                                         <td>{{ isset($porder['total_quantity']) ? round($porder['total_quantity'], 2):'0.00' }}</td>

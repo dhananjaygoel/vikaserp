@@ -190,8 +190,8 @@
                                         <td>{{$product->remarks}}</td>
                                     </tr>
                                     <?php
-                                    $grand = $grand + $product->present_shipping * $product->price;
-                                    $grand = $grand - $grand * $delivery_data->vat_percentage / 100;
+                                    $grand = $grand + (float)$product->present_shipping * (float)$product->price;
+                                    $grand = $grand - $grand * (float)$delivery_data->vat_percentage / 100;
                                     ?>
                                     @endif
                                     @endforeach

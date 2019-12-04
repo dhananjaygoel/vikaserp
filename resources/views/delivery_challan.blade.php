@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title','Delivery Challan')
-@section('content') 
+@section('content')
 
 <div class="row">
     <div class="col-lg-12">
@@ -133,7 +133,7 @@
                                     @if($challan->challan_status == 'pending')
                                     <tr id="challan_order_row_{{$challan->id}}">
                                         <td class="text-center">{{$k++}}</td>
-                                        <td class="text-center">                                          
+                                        <td class="text-center">
                                             @if(isset($challan['customer']->tally_name) && $challan['customer']->tally_name!="")
                                                 {{ $challan['customer']->tally_name}}
                                             @elseif(isset($challan['customer']->owner_name))
@@ -158,7 +158,7 @@
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id == 0)
-                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
+                                            <a href="{{URL::action('DeliveryChallanController@edit', ['delivery_challan'=> $challan->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -231,7 +231,7 @@
                                             {{$challan['delivery_order']->vehicle_number}}
                                             @endif
                                         </td>
-                                      
+
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">
@@ -240,7 +240,7 @@
                                                 </span>
                                             </a>
                                             @if(Auth::user()->role_id == 0)
-                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id])}}" class="table-link" title="edit">
+                                            <a href="{{URL::action('DeliveryChallanController@edit', ['delivery_challan'=> $challan->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -249,7 +249,7 @@
                                             @endif
 
                                             @if(Auth::user()->role_id == 0)
-                                               <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
+                                               <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
@@ -297,7 +297,7 @@
 
                                         </td>
                                     </tr>
-                                    
+
                                     @endif
                                     @endforeach
                                 <div class="modal fade" id="delete_challan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

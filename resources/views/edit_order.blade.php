@@ -20,7 +20,7 @@
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" name="order_id" value="{{$order->id}}">
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -47,7 +47,7 @@
                             <div class="supplier_order" style="display:none">
                                 <select class="form-control" name="supplier_id" id="add_status_type">
                                     <option value="" selected="">Select supplier</option>
-                                    @if(count($customers)>0)
+                                    @if(count((array)$customers)>0)
                                     @foreach($customers as $customer)
                                     <option value="{{$customer->id}}" >{{$customer->tally_name}}</option>
                                     @endforeach
@@ -64,7 +64,7 @@
                             <div class="supplier_order">
                                 <select class="form-control" name="supplier_id" id="add_status_type">
                                     <option value="" disabled="">Select supplier</option>
-                                    @if(count($customers)>0)
+                                    @if(count((array)$customers)>0)
                                     @foreach($customers as $customer)
                                     <option
                                     <?php
@@ -550,6 +550,6 @@
     </div>
 </div>
 
-{{-- @include('autocomplete_tally_product_name') --}}
+<!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @stop
 

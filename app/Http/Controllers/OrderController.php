@@ -38,11 +38,6 @@ class OrderController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP', ['except' => ['create', 'store']]);
     }
 
@@ -100,8 +95,8 @@ class OrderController extends Controller {
                      ->first();
         if(is_null($delivery_data->del_supervisor)){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                 'del_supervisor'=>$request->del_supervisor,            
-              ]);      
+                 'del_supervisor'=>$request->del_supervisor,
+              ]);
               echo "success";
           }
           else{
@@ -110,27 +105,27 @@ class OrderController extends Controller {
      }
    public function loaded_assign(Request $request){
         $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
-        
+
         $del_supervisor = $request->del_supervisor;
 
         $roleid = Auth::user()->role_id;
         if($roleid == 0 || $roleid == 2){
           if(($delivery_data->del_supervisor =='') || ($delivery_data->del_supervisor != $del_supervisor)){
             $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                 'del_supervisor'=>$request->del_supervisor,            
-              ]);      
+                 'del_supervisor'=>$request->del_supervisor,
+              ]);
               echo "success";
           } else{
             echo "failed";
        }
-       
+
         }
-        
+
         // elseif($roleid ==8){
         //     $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-        //         'del_boy'=>$request->del_supervisor,            
+        //         'del_boy'=>$request->del_supervisor,
         //       ]);
-              
+
         //     echo "success";
         //     $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
         //                          ->where('del_boy',$request->del_supervisor)
@@ -141,12 +136,12 @@ class OrderController extends Controller {
         //                 'delivery_id' => $request->delivery_id,
         //                 'del_boy' => $request->del_supervisor,
         //                 'del_supervisor' => Auth::id(),
-                      
-                       
+
+
         //             ];
         //      LoadDelboy::insert($loadDelboy);
         //     }
-            
+
         // }
         else{
             echo "failed";
@@ -154,23 +149,23 @@ class OrderController extends Controller {
     }
     public function loaded_assign1(Request $request){
         $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
-        
+
         $del_boy = $request->del_boy;
 
         $roleid = Auth::user()->role_id;
        if($roleid == 0 || $roleid == 8){
             if(($delivery_data->del_boy =='') || ($delivery_data->del_boy != $del_boy)){
                 $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                    'del_boy'=>$request->del_boy,            
+                    'del_boy'=>$request->del_boy,
                 ]);
-                
+
                 echo "success";
                 $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
                                  ->where('del_boy',$request->del_boy)
                                 //  ->where('del_supervisor',Auth::id())
                                 //  ->where('assigned_status',1)
                                  ->first();
-            
+
                 if(is_null($delivery_boydata)){
                     $update_delbys = LoadDelboy::where('delivery_id',$request->delivery_id)
                                     ->update([
@@ -214,7 +209,7 @@ class OrderController extends Controller {
               ->update([
                 'final_truck_weight' => $request->weight,
                 'empty_truck_weight' => $request->empty_truck_weight,
-            ]);  
+            ]);
         }
         else{
              $loadetrucks[] = [
@@ -222,22 +217,22 @@ class OrderController extends Controller {
                         'empty_truck_weight' =>  $request->empty_truck_weight,
                         'final_truck_weight' => $request->weight,
                         'userid' => $request->delboy_id,
-                       
+
                     ];
              LoadTrucks::insert($loadetrucks);
         }
     }
     public function loaded_truck_delivery(Request $request){
         $delivery_data = DeliveryOrder::where('order_id',$request->order_id)->first();
-        if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_spervisor)) 
-        {       
+        if(!is_null($delivery_data->del_boy) || !is_null($delivery_data->del_spervisor))
+        {
             $update = Order::where('id',$request->order_id)->update([
                 'final_truck_weight' => $request->final_truck_weight,
-            ]);  
+            ]);
             $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
                 'final_truck_weight' => $request->final_truck_weight,
-            ]);      
-            if($update){            
+            ]);
+            if($update){
                 echo "success";
             }
             else{
@@ -246,51 +241,51 @@ class OrderController extends Controller {
         }
         // else{
 
-        //         echo "failed".$delivery_data; 
+        //         echo "failed".$delivery_data;
         //         // return Redirect::back()->withInput()->with('err-p', 'Please select delivery supervisor or delivery boy');
         // }
-        
+
 
     }
     public function delivery_order_spervisor(Request $request){
       if($request->del_spervisor==null)
-            $request->del_spervisor=null;  
+            $request->del_spervisor=null;
         $update = Order::where('id',$request->order_id)->update([
-            'del_supervisor'=>$request->del_spervisor  
-        ]);  
+            'del_supervisor'=>$request->del_spervisor
+        ]);
         $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
-            'del_supervisor'=>$request->del_spervisor,            
-        ]);      
+            'del_supervisor'=>$request->del_spervisor,
+        ]);
         if($update){
             if($request->del_spervisor){
                 User::where('id',$request->del_spervisor)->update(['status'=>1]);
-            }            
+            }
             echo "success";
         }
         else{
             echo "failed";
-        }        
+        }
 
     }
-    public function delivery_order_del_boy(Request $request){  
+    public function delivery_order_del_boy(Request $request){
     if($request->del_boy==null)
-            $request->del_boy=null; 
+            $request->del_boy=null;
 
         $update = Order::where('id',$request->order_id)->update([
-            'del_boy'=>$request->del_boy  
-        ]);  
+            'del_boy'=>$request->del_boy
+        ]);
         $update_delivery = DeliveryOrder::where('order_id',$request->order_id)->update([
-            'del_boy'=>$request->del_boy,            
-        ]);      
+            'del_boy'=>$request->del_boy,
+        ]);
         if($update){
             if($request->del_boy){
                 User::where('id',$request->del_boy)->update(['status'=>1]);
-            }            
+            }
             echo "success";
         }
         else{
             echo "failed";
-        }        
+        }
 
     }
 
@@ -320,7 +315,7 @@ class OrderController extends Controller {
         }
         $q = Order::query();
         if (Auth::user()->role_id == 5) {
-            
+
         } else {
             if (isset($data['order_filter']) && $data['order_filter'] != '') {
                 if ($data['order_filter'] == 'approval') {
@@ -484,7 +479,7 @@ class OrderController extends Controller {
         Session::put('parameters', $parameters);
 
         // dd($allorders);
-        // dd($delivery_location);            
+        // dd($delivery_location);
 
         return View::make('orders', compact('delivery_location', 'delivery_order', 'customers', 'allorders', 'users', 'cancelledorders', 'pending_orders', 'product_size', 'product_category_id', 'search_dates', 'all_territories'));
     }
@@ -508,11 +503,11 @@ class OrderController extends Controller {
            $order = Customer::with('delivery_location')->find($cust->id);
 
 //         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
-//         if (count($order) < 1) {
+//         if (count((array)$order) < 1) {
 //            return redirect('orders')->with('flash_message', 'Order does not exist.');
 //         }
 
-           if (count($order) < 1) {
+           if (count((array)$order) < 1) {
                return redirect('order')->with('flash_message', 'Order does not exist.');
            }
         }
@@ -546,7 +541,7 @@ class OrderController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
                     //  return redirect('orders')->with('flash_message', 'Order details successfully added.');
@@ -567,9 +562,9 @@ class OrderController extends Controller {
             Session::put('input_data', $input_data);
             return Redirect::back()->withErrors($validator1)->withInput();
         }
-        
+
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if (($product_data['name'] == "") || ($product_data['quantity'] == "")) {
                 $i++;
@@ -597,10 +592,10 @@ class OrderController extends Controller {
         }
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
-            if ($validator->passes() && $validator1->passes()) {                
+            if ($validator->passes() && $validator1->passes()) {
                 $customers = new Customer();
                 $newcustomer = $customers->addNewCustomer($input_data['customer_name'], $input_data['contact_person'], $input_data['mobile_number'], $input_data['credit_period'], $input_data['add_order_location']);
-                $customer_id = $newcustomer->id;               
+                $customer_id = $newcustomer->id;
             } else {
                 $error_msg = $validator->messages();
                 Session::forget('product');
@@ -618,7 +613,7 @@ class OrderController extends Controller {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
         }
-        
+
         if ($input_data['status'] == 'warehouse') {
             $order_status = 'warehouse';
             $supplier_id = 0;
@@ -636,7 +631,7 @@ class OrderController extends Controller {
 //        }
 //        if ($input_data['status1'] == 'exclude_vat') {
 //            $vat_price = $input_data['vat_price'];
-//        }        
+//        }
         $order = new Order();
         $order->order_source = $order_status;
         $order->supplier_id = $supplier_id;
@@ -666,7 +661,7 @@ class OrderController extends Controller {
                     // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
         $order_id = $order->id;
         $order_products = array();
-        foreach ($input_data['product'] as $product_data) {          
+        foreach ($input_data['product'] as $product_data) {
 
             if (($product_data['name'] != "") && ($product_data['id'] != "") && ($product_data['id'] > 0)) {
                 $tmp = [
@@ -690,7 +685,7 @@ class OrderController extends Controller {
                 /**/
             }
         }
-        if (count($order_products)) {
+        if (count((array)$order_products)) {
             AllOrderProducts::insert($order_products);
         }
 
@@ -704,7 +699,7 @@ class OrderController extends Controller {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been created as following \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -742,7 +737,7 @@ class OrderController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -783,8 +778,8 @@ class OrderController extends Controller {
             $customers = Customer::find($customer_id);
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
             $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($order_id);
-            if (count($order) > 0) {
-                if (count($order['delivery_location']) > 0) {
+            if (count((array)$order) > 0) {
+                if (count((array)$order['delivery_location']) > 0) {
                     $delivery_location = $order['delivery_location']->area_name;
                 } else {
                     $delivery_location = $order->other_location;
@@ -812,7 +807,7 @@ class OrderController extends Controller {
 //            }
         }
 
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'orders', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -842,7 +837,7 @@ class OrderController extends Controller {
             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
         }
 
-        if (count($order) < 1) {
+        if (count((array)$order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
         $units = Units::all();
@@ -879,7 +874,7 @@ class OrderController extends Controller {
             $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')->find($id);
         }
 
-        if (count($order) < 1) {
+        if (count((array)$order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
         $units = Units::all();
@@ -895,11 +890,11 @@ class OrderController extends Controller {
      */
     public function update($id, PlaceOrderRequest $request) {
 
-        $input_data = Input::all();        
+        $input_data = Input::all();
         $sms_flag = 0;
         if (Session::has('forms_edit_order')) {
             $session_array = Session::get('forms_edit_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already updated. Please refresh the page');
                 } else {
@@ -923,7 +918,7 @@ class OrderController extends Controller {
 
         $i = 0;
         $customer_id = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -1075,7 +1070,7 @@ class OrderController extends Controller {
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nAdmin has approved your order for following items\n";
                     foreach ($input_data['product'] as $product_data) {
@@ -1114,7 +1109,7 @@ class OrderController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
-                    if (count($customer['manager']) > 0) {
+                    if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has approved an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1134,7 +1129,7 @@ class OrderController extends Controller {
 //            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             } else {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been edited and changed as following \n";
                     foreach ($input_data['product'] as $product_data) {
@@ -1172,7 +1167,7 @@ class OrderController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
-                    if (count($customer['manager']) > 0) {
+                    if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited and changed an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1203,8 +1198,8 @@ class OrderController extends Controller {
             $customers = Customer::find($customer_id);
 
             $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($id);
-            if (count($order) > 0) {
-                if (count($order['delivery_location']) > 0) {
+            if (count((array)$order) > 0) {
+                if (count((array)$order['delivery_location']) > 0) {
                     $delivery_location = $order['delivery_location']->area_name;
                 } else {
                     $delivery_location = $order->other_location;
@@ -1231,7 +1226,7 @@ class OrderController extends Controller {
             }
 //            }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'orders', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1249,7 +1244,7 @@ class OrderController extends Controller {
      * Functioanlity: Delete individual order details
      */
     public function destroy($id) {
-        
+
         $inputData = Input::get('formData');
         $flag = 0;
         $sms_flag = 0;
@@ -1277,7 +1272,7 @@ class OrderController extends Controller {
 
                     $ord = Order::find($id);
                     $customer = Customer::with('manager')->find($ord->customer_id);
-                    if (count($customer) > 0) {
+                    if (count((array)$customer) > 0) {
                         $total_quantity = '';
                         $str = '';
 
@@ -1286,7 +1281,7 @@ class OrderController extends Controller {
                         foreach ($input_data as $product_data) {
 
                             if ($product_data['order_product_details']->alias_name != "") {
-                                $product = ProductSubCategory::find($product_data['id']);                                
+                                $product = ProductSubCategory::find($product_data['id']);
                                 $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                                 if ($product_data['units'] == 1) {
                                     $total_quantity = $total_quantity + $product_data['quantity'];
@@ -1314,8 +1309,8 @@ class OrderController extends Controller {
                                     $total_quantity = $total_quantity + $product_data['quantity'];
                                 }
                             }
-                            $str .= "\nVIKAS ASSOCIATES";                            
-                           
+                            $str .= "\nVIKAS ASSOCIATES";
+
                             if (App::environment('development')) {
                                 $phone_number = Config::get('smsdata.send_sms_to');
                             } else {
@@ -1329,7 +1324,7 @@ class OrderController extends Controller {
                                 $curl_scraped_page = curl_exec($ch);
                                 curl_close($ch);
                             }
-                            if (count($customer['manager']) > 0) {
+                            if (count((array)$customer['manager']) > 0) {
                                 $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited and changed an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                                 if (App::environment('development')) {
                                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -1445,7 +1440,7 @@ class OrderController extends Controller {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($order['customer']->id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\n Your order has been canceled for following \n";
                 foreach ($order['all_order_products'] as $product_data) {
@@ -1477,8 +1472,8 @@ class OrderController extends Controller {
             $customers = $order['customer'];
 //            if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
             $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($order_id);
-            if (count($order) > 0) {
-                if (count($order['delivery_location']) > 0) {
+            if (count((array)$order) > 0) {
+                if (count((array)$order['delivery_location']) > 0) {
                     $delivery_location = $order['delivery_location']->area_name;
                 } else {
                     $delivery_location = $order->other_location;
@@ -1515,7 +1510,7 @@ class OrderController extends Controller {
                     'cancelled_by' => Auth::id()
         ]);
 
-        //         update sync table         
+        //         update sync table
         $tables = ['orders', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1540,7 +1535,7 @@ class OrderController extends Controller {
         /* new */
 
 
-        if (count($order) < 1) {
+        if (count((array)$order) < 1) {
             return redirect('orders')->with('flash_message', 'Order does not exist.');
         }
 
@@ -1583,7 +1578,7 @@ class OrderController extends Controller {
                 $temp['total_quantity'] = $products['quantity'];
                 $temp['unit'] = $products['unit_id'];
                 $add_pendings = 0;
-                if (count($temp_array) > 0) {
+                if (count((array)$temp_array) > 0) {
                     foreach ($temp_array as $key => $t) {
                         if ($t['from'] == $products->from && $t['product_id'] == $products->product_category_id && $products->unit_id == $t['unit']) {
                             $total_qty = $t['total_quantity'] + $products['quantity'];
@@ -1638,7 +1633,7 @@ class OrderController extends Controller {
         }
         if (Session::has('forms_delivery_order')) {
             $session_array = Session::get('forms_delivery_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message', 'This delivery order is already saved. Please refresh the page');
                 } else {
@@ -1753,13 +1748,13 @@ class OrderController extends Controller {
                 $date_letter = 'DO/' . $current_date . "" . $delivery_order_id;
                 $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
 
-                if (count($do) <= 0) {
+                if (count((array)$do) <= 0) {
                     $number = '1';
                 } else {
                     $serial_numbers = [];
                     foreach ($do as $temp) {
                         $list = explode("/", $temp->serial_no);
-                        $serial_numbers[] = $list[count($list) - 1];
+                        $serial_numbers[] = $list[count((array)$list) - 1];
                         $pri_id = max($serial_numbers);
                         $number = $pri_id + 1;
                     }
@@ -1783,7 +1778,7 @@ class OrderController extends Controller {
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'orders', 'all_order_products', 'delivery_order'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -1814,8 +1809,8 @@ class OrderController extends Controller {
 
 
             /* new */
-            $delivery_order_products = NULL;
-            if (isset($order['delivery_orders']) && count($order['delivery_orders'])) {
+            $delivery_order_products = (array)NULL;
+            if (isset($order['delivery_orders']) && count((array)$order['delivery_orders'])) {
                 $delivery_order_products = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->where('order_type', '=', 'delivery_order')->get();
             }
 
@@ -1833,12 +1828,12 @@ class OrderController extends Controller {
             // }
             /* old */
 
-            if (count($delivery_order_products) > 0) {
+            if (count((array)$delivery_order_products) > 0) {
                 // echo "in del;";
                 // dd($delivery_order_products);
 
                 foreach ($delivery_order_products as $dopk => $dopv) {
-                    //new 
+                    //new
                     $product_size = $dopv['product_sub_category'];
                     //new
                     /* old */
@@ -1895,7 +1890,7 @@ class OrderController extends Controller {
                     }
                 }
             }
-            if (count($order['all_order_products']) > 0) {
+            if (count((array)$order['all_order_products']) > 0) {
 
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     /* new */
@@ -1913,7 +1908,7 @@ class OrderController extends Controller {
                         else{
                             $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
                         }*/
-                        
+
                         if ($opv->unit_id == 1) {
                             $order_quantity = $order_quantity + $opv->quantity;
                         } elseif ($opv->unit_id == 2) {
@@ -1942,7 +1937,7 @@ class OrderController extends Controller {
                                 $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
                             } else {
                                 $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
-                                // dd($order_quantity);                            
+                                // dd($order_quantity);
                             }
                         }
                         elseif($opv->unit_id == 4) {
@@ -1967,7 +1962,7 @@ class OrderController extends Controller {
            // $pr_s_c = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
-            
+
         }
         return $allorders;
     }
@@ -1980,7 +1975,7 @@ class OrderController extends Controller {
 
         $term = '%' . Input::get('term') . '%';
         $product = ProductSubCategory::where('size', 'like', $term)->get();
-        if (count($product) > 0) {
+        if (count((array)$product) > 0) {
             foreach ($product as $prod) {
                 $data_array[] = [ 'value' => $prod->size];
             }
@@ -2088,7 +2083,7 @@ class OrderController extends Controller {
             }
         }
 
-        if (count($order_objects) == 0) {
+        if (count((array)$order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Order does not exist.');
         } else {
             $units = Units::all();
@@ -2113,7 +2108,7 @@ class OrderController extends Controller {
                 ->where('is_approved', 'no')
                 ->get();
 
-        if (count($is_approve)) {
+        if (count((array)$is_approve)) {
             return Redirect::to('orders')->withInput()->with('error', 'Order have to be approved by Admin.');
         }
 
@@ -2121,7 +2116,7 @@ class OrderController extends Controller {
         if (isset($id)) {
             $order_id = $id;
             $customer = Order::find($id);
-            if (count($customer) == 0) {
+            if (count((array)$customer) == 0) {
                 return Redirect::back()->withInput()->with('error', 'Invalid Order.');
             }
 

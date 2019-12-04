@@ -31,11 +31,6 @@ class LoadByController extends Controller {
      */
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -351,7 +346,7 @@ class LoadByController extends Controller {
         foreach ($purchase_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+            if (isset($delivery_order_info->challan_loaded_by) && count((array)$delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
                 foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
@@ -361,12 +356,12 @@ class LoadByController extends Controller {
                         }
                     }
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+//                    $loader_arr['tonnage'] = round($deliver_sum / count((array)$loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                 }
             }
@@ -485,7 +480,7 @@ class LoadByController extends Controller {
         foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+            if (isset($delivery_order_info->challan_loaded_by) && count((array)$delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
                 foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
@@ -499,12 +494,12 @@ class LoadByController extends Controller {
                         }
                     }
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+//                    $loader_arr['tonnage'] = round($deliver_sum / count((array)$loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                 }
             }
@@ -514,23 +509,23 @@ class LoadByController extends Controller {
         foreach ($purchase_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+            if (isset($delivery_order_info->challan_loaded_by) && count((array)$delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
                 foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
                     foreach ($challan_info->pc_delivery_challan as $info) {
                         foreach ($info->all_purchase_products as $delivery_order_productinfo) {
                             $deliver_sum += $delivery_order_productinfo->quantity;
-//                                
+//
                         }
                     }
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+//                    $loader_arr['tonnage'] = round($deliver_sum / count((array)$loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                 }
             }

@@ -41,7 +41,7 @@
                                         </td>
                                     </tr>
                                     <?php // dd($purchase_challan['purchase_order']); ?>
-                                    @if(isset($purchase_challan['purchase_order']) && count($purchase_challan['purchase_order'])>0)
+                                    @if(isset($purchase_challan['purchase_order']) && count((array)$purchase_challan['purchase_order'])>0)
                                         @if($purchase_challan['purchase_order']->order_for == 0)
                                             <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
                                         @elseif($purchase_challan['purchase_order']->order_for != 0)
@@ -60,7 +60,7 @@
                                         <tr><td><span><b>Order For: </b></span> </td></tr>    
                                     @endif    
                                     <?php // dd($purchase_challan['purchase_order']); ?>
-                                    @if(isset($purchase_challan['purchase_order']) && count($purchase_challan['purchase_order'])>0 && $purchase_challan['purchase_order']->discount > 0)
+                                    @if(isset($purchase_challan['purchase_order']) && count((array)$purchase_challan['purchase_order'])>0 && $purchase_challan['purchase_order']->discount > 0)
                                         <tr>
                                             <td>
                                                 <span><b>Discount/Premium :</b> </span>

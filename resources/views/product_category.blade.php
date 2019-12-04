@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/dashboard">Home</a></li>
+                    <li><a href="{{url('/')}}/dashboard">Home</a></li>
                     <li class="active"><span>Product Category</span></li>
                 </ol>
                 <div class="clearfix">
@@ -32,7 +32,7 @@
                             Product category price successfully updated
                         </div>
 
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             @foreach ($errors->all() as $error)
@@ -97,7 +97,7 @@
                                                 {{'Sheets'}}
                                                 @endif
                                             </td>
-                                           
+
                                             <td>{{$product->hsn_code}}</td>
                                             <td>{{$product->hsn_desc}}</td>
                                             <td>
@@ -120,14 +120,14 @@
                                             <!--<td>{{date("d F, Y", strtotime($product->created_at))}}</td>-->
                                             <td>{{date("F jS, Y", strtotime($product->updated_at))}}</td>
                                             <td>
-                                                <a href="{{URL::action('ProductController@show',['id'=> $product->id])}}" class="table-link" title="view">
+                                                <a href="{{URL::action('ProductController@show',['product_category'=> $product->id])}}" class="table-link" title="view">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                     </span>
                                                 </a>
                                                 @if(Auth::user()->role_id == 0)
-                                                <a href="{{URL::action('ProductController@edit',['id'=> $product->id])}}" class="table-link" title="edit">
+                                                <a href="{{URL::action('ProductController@edit',['product_category'=> $product->id])}}" class="table-link" title="edit">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>

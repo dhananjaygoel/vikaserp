@@ -2,12 +2,12 @@
 
 namespace Rollbar;
 
-class BackwardsCompatibilityConfigTest extends \PHPUnit_Framework_TestCase
+class BackwardsCompatibilityConfigTest extends BaseRollbarTest
 {
     public function testConfigValues()
     {
         Rollbar::init(array(
-            'access_token' => 'ad865e76e7fb496fab096ac07b1dbabb',
+            'access_token' => $this->getTestAccessToken(),
             'agent_log_location' => '/var/log/rollbar-php',
             'base_api_url' => 'http://dev:8090/api/1/',
             'batch_size' => 50,
@@ -50,7 +50,6 @@ class BackwardsCompatibilityConfigTest extends \PHPUnit_Framework_TestCase
             },
             'root' => '/Users/brian/www/app',
             'scrub_fields' => array('test'),
-            'shift_function' => false,
             'timeout' => 10,
             'report_suppressed' => true,
             'use_error_reporting' => true,

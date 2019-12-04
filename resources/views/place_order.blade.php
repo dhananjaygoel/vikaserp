@@ -25,7 +25,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         {!! Form::open(array('method'=>'POST','url'=>url('store_order/'.$inquiry->id), 'id'=>'place_order_form'))!!}
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -54,7 +54,7 @@
                         <div class="supplier_order" style="display:none">
                             <select class="form-control" name="supplier_id" id="add_status_type">
                                 <option value="" selected="">Select supplier</option>
-                                @if(count($customers)>0)
+                                @if(count((array)$customers)>0)
                                 @foreach($customers as $customer)
                                 @if($customer->customer_status == 'permanent')
                                 <option value="{{$customer->id}}" >{{$inquiry['customer']->tally_name}}</option>
@@ -466,5 +466,5 @@
         </div>
     </div>
 </div>
-{{-- @include('autocomplete_tally_product_name') --}}
+<!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @stop

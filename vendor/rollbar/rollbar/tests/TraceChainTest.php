@@ -3,7 +3,9 @@
 use \Mockery as m;
 use Rollbar\Payload\TraceChain;
 
-class TraceChainTest extends \PHPUnit_Framework_TestCase
+use Rollbar;
+
+class TraceChainTest extends Rollbar\BaseRollbarTest
 {
     private $trace1;
     private $trace2;
@@ -35,14 +37,14 @@ class TraceChainTest extends \PHPUnit_Framework_TestCase
     public function testEncode()
     {
         $trace1 = m::mock("Rollbar\Payload\Trace")
-            ->shouldReceive("jsonSerialize")
+            ->shouldReceive("serialize")
             ->andReturn("TRACE1")
             ->mock();
         $trace2 = m::mock("Rollbar\Payload\Trace")
-            ->shouldReceive("jsonSerialize")
+            ->shouldReceive("serialize")
             ->andReturn("TRACE2")
             ->mock();
         $chain = new TraceChain(array($trace1, $trace2));
-        $this->assertEquals('["TRACE1","TRACE2"]', json_encode($chain->jsonSerialize()));
+        $this->assertEquals('["TRACE1","TRACE2"]', json_encode($chain->serialize()));
     }
 }

@@ -29,11 +29,6 @@ class PurchaseChallanController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -41,7 +36,7 @@ class PurchaseChallanController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -79,13 +74,13 @@ class PurchaseChallanController extends Controller {
                     'export_to_date' => $data["export_to_date"]
                 ];
             }
-//             
+//
 //            print_r($status."--".$date1."--".$date2);
 ////            print_r($data['order_filter']);
 //            echo "<pre>";
 //            print_r($q->toSql());
 //            echo "</pre>";
-//            exit; 
+//            exit;
 
             $purchase_challan = $q->orderBy('created_at', 'desc')->paginate(20);
         } else {
@@ -193,9 +188,9 @@ class PurchaseChallanController extends Controller {
 //        print_r($order_objects[0]['all_purchase_products'][0]['purchase_product_details']->alias_name);
 //        echo "</pre>";
 //        exit;
-//       
+//
 
-        if (count($order_objects) == 0) {
+        if (count((array)$order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
         } else {
             $units = Units::all();
@@ -227,7 +222,7 @@ class PurchaseChallanController extends Controller {
         }
         if (Session::has('forms_purchase_challan')) {
             $session_array = Session::get('forms_purchase_challan');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
                 } else {
@@ -401,16 +396,16 @@ class PurchaseChallanController extends Controller {
         if (isset($challan['vat_percentage']) && !empty($challan['vat_percentage']) && $challan != "") {
             $sms_flag = 1;
         }
-        /**/       
+        /**/
 
         $input_data = $purchase_challan['all_purchase_products'];
         $send_sms = Input::get('send_sms');
-       
+
 //        if($send_sms == 'true'){
         if ( $sms_flag == 1) {
             $customer_id = $purchase_challan->supplier_id;
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
                 foreach ($input_data as $product_data) {
@@ -452,7 +447,7 @@ class PurchaseChallanController extends Controller {
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has dispatched material for " . $customer->owner_name . " as follows ";
                 foreach ($input_data as $product_data) {
@@ -497,7 +492,7 @@ class PurchaseChallanController extends Controller {
         }
 
 
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'purchase_challan', 'all_purchase_products', 'purchase_advice'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -511,7 +506,7 @@ class PurchaseChallanController extends Controller {
      * Display the specified resource.
      */
     public function show($id = "") {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -522,7 +517,7 @@ class PurchaseChallanController extends Controller {
 
         $purchase_challan = PurchaseChallan::with('purchase_advice','purchase_order','delivery_location', 'supplier', 'purchase_product.purchase_product_details', 'purchase_product.unit', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        if (count($purchase_challan) < 1) {
+        if (count((array)$purchase_challan) < 1) {
             return redirect('purchase_challan')->with('flash_message', 'Challan not found');
         }
 
@@ -538,7 +533,7 @@ class PurchaseChallanController extends Controller {
 //    public function edit($id) {
 //
 //        $purchase_challan = PurchaseChallan::with('purchase_advice', 'supplier', 'purchase_product.product_sub_category', 'purchase_product.unit')->find($id);
-//        if (count($purchase_challan) < 1) {
+//        if (count((array)$purchase_challan) < 1) {
 //            return redirect('purchase_challan')->with('flash_message', 'Challan not found');
 //        }
 //        return view('edit_purchase_challan', compact('purchase_challan'));
@@ -614,7 +609,7 @@ class PurchaseChallanController extends Controller {
 
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'purchase_challan', 'all_purchase_products'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -646,7 +641,7 @@ class PurchaseChallanController extends Controller {
                     'order_status' => "Completed"
         ));
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($id);
-        
+
         /* inventory code */
         $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_challan')->get();
         foreach ($product_categories as $product_categoriy) {
@@ -672,7 +667,7 @@ class PurchaseChallanController extends Controller {
             if ($send_sms == 'true') {
                 $customer_id = $purchase_challan->supplier_id;
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been delivered as follows ";
                     foreach ($input_data as $product_data) {
@@ -715,7 +710,7 @@ class PurchaseChallanController extends Controller {
                     }
                 }
 
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has delivered for " . $customer->owner_name . " as follows ";
                     foreach ($input_data as $product_data) {
@@ -747,7 +742,7 @@ class PurchaseChallanController extends Controller {
 //                        $phone_number = $customer->phone_number1;
                     $phone_number = (isset($customer['manager']->mobile_number) && !empty($customer['manager']->mobile_number))?$customer['manager']->mobile_number:'';
                     }
-                    
+
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
@@ -759,12 +754,12 @@ class PurchaseChallanController extends Controller {
                 }
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'purchase_challan', 'all_purchase_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-        
+
         return view('print_purchase_challan', compact('purchase_challan'));
     }
 

@@ -1,16 +1,22 @@
 <?php namespace Rollbar\Payload;
 
-use Rollbar\Utilities;
-
-class Person implements \JsonSerializable
+/**
+ * Suppress PHPMD.ShortVariable for this class, since using property $id is
+ * intended.
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
+class Person implements \Serializable
 {
     private $id;
     private $username;
     private $email;
     private $extra;
+    private $utilities;
 
     public function __construct($id, $username = null, $email = null, array $extra = null)
     {
+        $this->utilities = new \Rollbar\Utilities();
         $this->setId($id);
         $this->setUsername($username);
         $this->setEmail($email);
@@ -24,7 +30,6 @@ class Person implements \JsonSerializable
 
     public function setId($id)
     {
-        Utilities::validateString($id, "id", null, false);
         $this->id = $id;
         return $this;
     }
@@ -36,7 +41,6 @@ class Person implements \JsonSerializable
 
     public function setUsername($username)
     {
-        Utilities::validateString($username, "username");
         $this->username = $username;
         return $this;
     }
@@ -48,7 +52,6 @@ class Person implements \JsonSerializable
 
     public function setEmail($email)
     {
-        Utilities::validateString($email, "email");
         $this->email = $email;
         return $this;
     }
@@ -63,13 +66,24 @@ class Person implements \JsonSerializable
         $this->extra[$name] = $val;
     }
 
-    public function jsonSerialize()
+    public function serialize()
     {
-        $result = get_object_vars($this);
-        unset($result['extra']);
+        $result = array(
+            "id" => $this->id,
+            "username" => $this->username,
+            "email" => $this->email,
+        );
         foreach ($this->extra as $key => $val) {
             $result[$key] = $val;
         }
-        return Utilities::serializeForRollbar($result, null, array_keys($this->extra));
+        
+        $objectHashes = \Rollbar\Utilities::getObjectHashes();
+        
+        return $this->utilities->serializeForRollbar($result, array_keys($this->extra), $objectHashes);
+    }
+    
+    public function unserialize($serialized)
+    {
+        throw new \Exception('Not implemented yet.');
     }
 }

@@ -1,119 +1,144 @@
-<?php namespace Illuminate\Mail;
+<?php
 
-use Swift_Mailer;
+namespace Illuminate\Mail;
+
+use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Swift_DependencyContainer;
+use Swift_Mailer;
 
-class MailServiceProvider extends ServiceProvider {
+class MailServiceProvider extends ServiceProvider implements DeferrableProvider
+{
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->registerSwiftMailer();
+        $this->registerIlluminateMailer();
+        $this->registerMarkdownRenderer();
+    }
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = true;
+    /**
+     * Register the Illuminate mailer instance.
+     *
+     * @return void
+     */
+    protected function registerIlluminateMailer()
+    {
+        $this->app->singleton('mailer', function ($app) {
+            $config = $app->make('config')->get('mail');
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		$this->app->singleton('mailer', function($app)
-		{
-			$this->registerSwiftMailer();
+            // Once we have create the mailer instance, we will set a container instance
+            // on the mailer. This allows us to resolve mailer classes via containers
+            // for maximum testability on said classes instead of passing Closures.
+            $mailer = new Mailer(
+                $app['view'], $app['swift.mailer'], $app['events']
+            );
 
-			// Once we have create the mailer instance, we will set a container instance
-			// on the mailer. This allows us to resolve mailer classes via containers
-			// for maximum testability on said classes instead of passing Closures.
-			$mailer = new Mailer(
-				$app['view'], $app['swift.mailer'], $app['events']
-			);
+            if ($app->bound('queue')) {
+                $mailer->setQueue($app['queue']);
+            }
 
-			$this->setMailerDependencies($mailer, $app);
+            // Next we will set all of the global addresses on this mailer, which allows
+            // for easy unification of all "from" addresses as well as easy debugging
+            // of sent messages since they get be sent into a single email address.
+            foreach (['from', 'reply_to', 'to'] as $type) {
+                $this->setGlobalAddress($mailer, $config, $type);
+            }
 
-			// If a "from" address is set, we will set it on the mailer so that all mail
-			// messages sent by the applications will utilize the same "from" address
-			// on each one, which makes the developer's life a lot more convenient.
-			$from = $app['config']['mail.from'];
+            return $mailer;
+        });
+    }
 
-			if (is_array($from) && isset($from['address']))
-			{
-				$mailer->alwaysFrom($from['address'], $from['name']);
-			}
+    /**
+     * Set a global address on the mailer by type.
+     *
+     * @param  \Illuminate\Mail\Mailer  $mailer
+     * @param  array  $config
+     * @param  string  $type
+     * @return void
+     */
+    protected function setGlobalAddress($mailer, array $config, $type)
+    {
+        $address = Arr::get($config, $type);
 
-			// Here we will determine if the mailer should be in "pretend" mode for this
-			// environment, which will simply write out e-mail to the logs instead of
-			// sending it over the web, which is useful for local dev environments.
-			$pretend = $app['config']->get('mail.pretend', false);
+        if (is_array($address) && isset($address['address'])) {
+            $mailer->{'always'.Str::studly($type)}($address['address'], $address['name']);
+        }
+    }
 
-			$mailer->pretend($pretend);
+    /**
+     * Register the Swift Mailer instance.
+     *
+     * @return void
+     */
+    public function registerSwiftMailer()
+    {
+        $this->registerSwiftTransport();
 
-			return $mailer;
-		});
-	}
+        // Once we have the transporter registered, we will register the actual Swift
+        // mailer instance, passing in the transport instances, which allows us to
+        // override this transporter instances during app start-up if necessary.
+        $this->app->singleton('swift.mailer', function ($app) {
+            if ($domain = $app->make('config')->get('mail.domain')) {
+                Swift_DependencyContainer::getInstance()
+                                ->register('mime.idgenerator.idright')
+                                ->asValue($domain);
+            }
 
-	/**
-	 * Set a few dependencies on the mailer instance.
-	 *
-	 * @param  \Illuminate\Mail\Mailer  $mailer
-	 * @param  \Illuminate\Foundation\Application  $app
-	 * @return void
-	 */
-	protected function setMailerDependencies($mailer, $app)
-	{
-		$mailer->setContainer($app);
+            return new Swift_Mailer($app['swift.transport']->driver());
+        });
+    }
 
-		if ($app->bound('Psr\Log\LoggerInterface'))
-		{
-			$mailer->setLogger($app->make('Psr\Log\LoggerInterface'));
-		}
+    /**
+     * Register the Swift Transport instance.
+     *
+     * @return void
+     */
+    protected function registerSwiftTransport()
+    {
+        $this->app->singleton('swift.transport', function ($app) {
+            return new TransportManager($app);
+        });
+    }
 
-		if ($app->bound('queue'))
-		{
-			$mailer->setQueue($app['queue.connection']);
-		}
-	}
+    /**
+     * Register the Markdown renderer instance.
+     *
+     * @return void
+     */
+    protected function registerMarkdownRenderer()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/resources/views' => $this->app->resourcePath('views/vendor/mail'),
+            ], 'laravel-mail');
+        }
 
-	/**
-	 * Register the Swift Mailer instance.
-	 *
-	 * @return void
-	 */
-	public function registerSwiftMailer()
-	{
-		$this->registerSwiftTransport();
+        $this->app->singleton(Markdown::class, function ($app) {
+            $config = $app->make('config');
 
-		// Once we have the transporter registered, we will register the actual Swift
-		// mailer instance, passing in the transport instances, which allows us to
-		// override this transporter instances during app start-up if necessary.
-		$this->app['swift.mailer'] = $this->app->share(function($app)
-		{
-			return new Swift_Mailer($app['swift.transport']->driver());
-		});
-	}
+            return new Markdown($app->make('view'), [
+                'theme' => $config->get('mail.markdown.theme', 'default'),
+                'paths' => $config->get('mail.markdown.paths', []),
+            ]);
+        });
+    }
 
-	/**
-	 * Register the Swift Transport instance.
-	 *
-	 * @return void
-	 */
-	protected function registerSwiftTransport()
-	{
-		$this->app['swift.transport'] = $this->app->share(function($app)
-		{
-			return new TransportManager($app);
-		});
-	}
-
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return ['mailer', 'swift.mailer', 'swift.transport'];
-	}
-
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            'mailer', 'swift.mailer', 'swift.transport', Markdown::class,
+        ];
+    }
 }

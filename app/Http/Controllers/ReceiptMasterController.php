@@ -196,7 +196,7 @@ class ReceiptMasterController extends Controller {
                 return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
 //                return redirect()->back()->withInput()->withErrors($validator->errors());
             }
-            if (isset($settle_amount) && count($settle_amount) > 0) {
+            if (isset($settle_amount) && count((array)$settle_amount) > 0) {
                 $receiptObj = new Receipt();
                 if ($receiptObj->save()) {
                     foreach ($settle_amount as $key => $user) {
@@ -218,7 +218,7 @@ class ReceiptMasterController extends Controller {
                         }
                     }
                     /* new code */
-                    if (isset($settle_amount_debited_to) && count($settle_amount_debited_to)>0 && !empty($settle_amount_debited_to)) {
+                    if (isset($settle_amount_debited_to) && count((array)$settle_amount_debited_to)>0 && !empty($settle_amount_debited_to)) {
                         foreach ($settle_amount_debited_to as $key => $user) {
                             if ($key != '') {
                                 $customerReceiptObj = new CustomerReceiptsDebitedTo();
@@ -297,10 +297,10 @@ class ReceiptMasterController extends Controller {
             } else {
                 $user_type = 'account';
             }
-            if (isset($receiptObj) && $receiptObj != '' && !empty($receiptObj) && count($receiptObj)) {
+            if (isset($receiptObj) && $receiptObj != '' && !empty($receiptObj) && count((array)$receiptObj)) {
                 $customer_arr = [];
                 foreach ($receiptObj as $obj) {
-//                    if (!isset($obj->customer_receipts) || count($obj->customer_receipts) <= 0) {
+//                    if (!isset($obj->customer_receipts) || count((array)$obj->customer_receipts) <= 0) {
 //                        return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after sometime.');
 //                    } else {
 //                        $receipt_id = $obj['id'];
@@ -311,7 +311,7 @@ class ReceiptMasterController extends Controller {
 //                        }
 //                    }
                     /* new code */
-                    if (!isset($obj->customer_receipts) || count($obj->customer_receipts) <= 0 || !isset($obj->customer_receipts_debit) || count($obj->customer_receipts_debit) <= 0) {
+                    if (!isset($obj->customer_receipts) || count((array)$obj->customer_receipts) <= 0 || !isset($obj->customer_receipts_debit) || count((array)$obj->customer_receipts_debit) <= 0) {
                         return Redirect::back()->withInput()->with('error', 'Some error occoured. Please try after sometime.');
                     } else {
                         $receipt_id = $obj['id'];
@@ -425,7 +425,7 @@ class ReceiptMasterController extends Controller {
                         } elseif (Auth::user()->role_id == 4) {
                             foreach ($old_customers as $old_customer) {
                                 $customer_receipt = Receipt::with('customer_receipts')->find($id);
-                                if (count($customer_receipt->customer_receipts) > 1) {
+                                if (count((array)$customer_receipt->customer_receipts) > 1) {
                                     $customer_receipt_obj = Customer_receipts::where('customer_id', '=', $old_customer)
                                                     ->where('receipt_id', '=', $id)->first();
                                     if (isset($customer_receipt_obj)) {
@@ -484,7 +484,7 @@ class ReceiptMasterController extends Controller {
                         $customerObj->delete();
                     }
                 }
-                if (isset($settle_amount) && count($settle_amount) > 0) {
+                if (isset($settle_amount) && count((array)$settle_amount) > 0) {
                     foreach ($settle_amount as $key => $user) {
                         if ($key != '') {
                             $customerReceiptObj = new Customer_receipts();

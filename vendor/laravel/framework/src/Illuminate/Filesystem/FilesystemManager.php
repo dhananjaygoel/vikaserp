@@ -1,235 +1,370 @@
-<?php namespace Illuminate\Filesystem;
+<?php
 
-use Closure;
+namespace Illuminate\Filesystem;
+
 use Aws\S3\S3Client;
-use OpenCloud\Rackspace;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\Filesystem as Flysystem;
-use League\Flysystem\Rackspace\RackspaceAdapter;
-use League\Flysystem\Adapter\Local as LocalAdapter;
-use League\Flysystem\AwsS3v2\AwsS3Adapter as S3Adapter;
+use Closure;
 use Illuminate\Contracts\Filesystem\Factory as FactoryContract;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
+use League\Flysystem\Adapter\Ftp as FtpAdapter;
+use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\AdapterInterface;
+use League\Flysystem\AwsS3v3\AwsS3Adapter as S3Adapter;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\Storage\Memory as MemoryStore;
+use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Sftp\SftpAdapter;
 
-class FilesystemManager implements FactoryContract {
+/**
+ * @mixin \Illuminate\Contracts\Filesystem\Filesystem
+ */
+class FilesystemManager implements FactoryContract
+{
+    /**
+     * The application instance.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
 
-	/**
-	 * The application instance.
-	 *
-	 * @var \Illuminate\Contracts\Foundation\Application
-	 */
-	protected $app;
+    /**
+     * The array of resolved filesystem drivers.
+     *
+     * @var array
+     */
+    protected $disks = [];
 
-	/**
-	 * The array of resolved filesystem drivers.
-	 *
-	 * @var array
-	 */
-	protected $disks = [];
+    /**
+     * The registered custom driver creators.
+     *
+     * @var array
+     */
+    protected $customCreators = [];
 
-	/**
-	 * The registered custom driver creators.
-	 *
-	 * @var array
-	 */
-	protected $customCreators = [];
+    /**
+     * Create a new filesystem manager instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return void
+     */
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
 
-	/**
-	 * Create a new filesystem manager instance.
-	 *
-	 * @param  \Illuminate\Contracts\Foundation\Application  $app
-	 * @return void
-	 */
-	public function __construct($app)
-	{
-		$this->app = $app;
-	}
+    /**
+     * Get a filesystem instance.
+     *
+     * @param  string|null  $name
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function drive($name = null)
+    {
+        return $this->disk($name);
+    }
 
-	/**
-	 * Get a filesystem instance.
-	 *
-	 * @param  string  $name
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	public function drive($name = null)
-	{
-		return $this->disk($name);
-	}
+    /**
+     * Get a filesystem instance.
+     *
+     * @param  string|null  $name
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function disk($name = null)
+    {
+        $name = $name ?: $this->getDefaultDriver();
 
-	/**
-	 * Get a filesystem instance.
-	 *
-	 * @param  string  $name
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	public function disk($name = null)
-	{
-		$name = $name ?: $this->getDefaultDriver();
+        return $this->disks[$name] = $this->get($name);
+    }
 
-		return $this->disks[$name] = $this->get($name);
-	}
+    /**
+     * Get a default cloud filesystem instance.
+     *
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function cloud()
+    {
+        $name = $this->getDefaultCloudDriver();
 
-	/**
-	 * Attempt to get the disk from the local cache.
-	 *
-	 * @param  string  $name
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	protected function get($name)
-	{
-		return isset($this->disks[$name]) ? $this->disks[$name] : $this->resolve($name);
-	}
+        return $this->disks[$name] = $this->get($name);
+    }
 
-	/**
-	 * Resolve the given disk.
-	 *
-	 * @param  string  $name
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	protected function resolve($name)
-	{
-		$config = $this->getConfig($name);
+    /**
+     * Attempt to get the disk from the local cache.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    protected function get($name)
+    {
+        return $this->disks[$name] ?? $this->resolve($name);
+    }
 
-		if (isset($this->customCreators[$config['driver']]))
-		{
-			return $this->callCustomCreator($config);
-		}
+    /**
+     * Resolve the given disk.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function resolve($name)
+    {
+        $config = $this->getConfig($name);
 
-		return $this->{"create".ucfirst($config['driver'])."Driver"}($config);
-	}
+        if (empty($config['driver'])) {
+            throw new InvalidArgumentException("Disk [{$name}] does not have a configured driver.");
+        }
 
-	/**
-	 * Call a custom driver creator.
-	 *
-	 * @param  array  $config
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	protected function callCustomCreator(array $config)
-	{
-		$driver = $this->customCreators[$config['driver']]($this->app, $config);
+        $name = $config['driver'];
 
-		if ($driver instanceof FilesystemInterface)
-		{
-			return $this->adapt($driver);
-		}
+        if (isset($this->customCreators[$name])) {
+            return $this->callCustomCreator($config);
+        }
 
-		return $driver;
-	}
+        $driverMethod = 'create'.ucfirst($name).'Driver';
 
-	/**
-	 * Create an instance of the local driver.
-	 *
-	 * @param  array  $config
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	public function createLocalDriver(array $config)
-	{
-		return $this->adapt(new Flysystem(new LocalAdapter($config['root'])));
-	}
+        if (method_exists($this, $driverMethod)) {
+            return $this->{$driverMethod}($config);
+        } else {
+            throw new InvalidArgumentException("Driver [{$name}] is not supported.");
+        }
+    }
 
-	/**
-	 * Create an instance of the Amazon S3 driver.
-	 *
-	 * @param  array  $config
-	 * @return \Illuminate\Contracts\Filesystem\Cloud
-	 */
-	public function createS3Driver(array $config)
-	{
-		$s3Config = array_only($config, ['key', 'region', 'secret', 'signature', 'base_url']);
+    /**
+     * Call a custom driver creator.
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    protected function callCustomCreator(array $config)
+    {
+        $driver = $this->customCreators[$config['driver']]($this->app, $config);
 
-		return $this->adapt(
-			new Flysystem(new S3Adapter(S3Client::factory($s3Config), $config['bucket']))
-		);
-	}
+        if ($driver instanceof FilesystemInterface) {
+            return $this->adapt($driver);
+        }
 
-	/**
-	 * Create an instance of the Rackspace driver.
-	 *
-	 * @param  array  $config
-	 * @return \Illuminate\Contracts\Filesystem\Cloud
-	 */
-	public function createRackspaceDriver(array $config)
-	{
-		$client = new Rackspace($config['endpoint'], [
-			'username' => $config['username'], 'apiKey' => $config['key'],
-		]);
+        return $driver;
+    }
 
-		return $this->adapt(new Flysystem(
-			new RackspaceAdapter($this->getRackspaceContainer($client, $config))
-		));
-	}
+    /**
+     * Create an instance of the local driver.
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function createLocalDriver(array $config)
+    {
+        $permissions = $config['permissions'] ?? [];
 
-	/**
-	 * Get the Rackspace Cloud Files container.
-	 *
-	 * @param  Rackspace  $client
-	 * @param  array  $config
-	 * @return \OpenCloud\ObjectStore\Resource\Container
-	 */
-	protected function getRackspaceContainer(Rackspace $client, array $config)
-	{
-		$urlType = array_get($config, 'url_type');
+        $links = ($config['links'] ?? null) === 'skip'
+            ? LocalAdapter::SKIP_LINKS
+            : LocalAdapter::DISALLOW_LINKS;
 
-		$store = $client->objectStoreService('cloudFiles', $config['region'], $urlType);
+        return $this->adapt($this->createFlysystem(new LocalAdapter(
+            $config['root'], $config['lock'] ?? LOCK_EX, $links, $permissions
+        ), $config));
+    }
 
-		return $store->getContainer($config['container']);
-	}
+    /**
+     * Create an instance of the ftp driver.
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function createFtpDriver(array $config)
+    {
+        return $this->adapt($this->createFlysystem(
+            new FtpAdapter($config), $config
+        ));
+    }
 
-	/**
-	 * Adapt the filesystem implementation.
-	 *
-	 * @param  \League\Flysystem\FilesystemInterface  $filesystem
-	 * @return \Illuminate\Contracts\Filesystem\Filesystem
-	 */
-	protected function adapt(FilesystemInterface $filesystem)
-	{
-		return new FilesystemAdapter($filesystem);
-	}
+    /**
+     * Create an instance of the sftp driver.
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function createSftpDriver(array $config)
+    {
+        return $this->adapt($this->createFlysystem(
+            new SftpAdapter($config), $config
+        ));
+    }
 
-	/**
-	 * Get the filesystem connection configuration.
-	 *
-	 * @param  string  $name
-	 * @return array
-	 */
-	protected function getConfig($name)
-	{
-		return $this->app['config']["filesystems.disks.{$name}"];
-	}
+    /**
+     * Create an instance of the Amazon S3 driver.
+     *
+     * @param  array  $config
+     * @return \Illuminate\Contracts\Filesystem\Cloud
+     */
+    public function createS3Driver(array $config)
+    {
+        $s3Config = $this->formatS3Config($config);
 
-	/**
-	 * Get the default driver name.
-	 *
-	 * @return string
-	 */
-	public function getDefaultDriver()
-	{
-		return $this->app['config']['filesystems.default'];
-	}
+        $root = $s3Config['root'] ?? null;
 
-	/**
-	 * Register a custom driver creator Closure.
-	 *
-	 * @param  string    $driver
-	 * @param  \Closure  $callback
-	 * @return $this
-	 */
-	public function extend($driver, Closure $callback)
-	{
-		$this->customCreators[$driver] = $callback;
+        $options = $config['options'] ?? [];
 
-		return $this;
-	}
+        return $this->adapt($this->createFlysystem(
+            new S3Adapter(new S3Client($s3Config), $s3Config['bucket'], $root, $options), $config
+        ));
+    }
 
-	/**
-	 * Dynamically call the default driver instance.
-	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
-	 */
-	public function __call($method, $parameters)
-	{
-		return call_user_func_array(array($this->disk(), $method), $parameters);
-	}
+    /**
+     * Format the given S3 configuration with the default options.
+     *
+     * @param  array  $config
+     * @return array
+     */
+    protected function formatS3Config(array $config)
+    {
+        $config += ['version' => 'latest'];
 
+        if (! empty($config['key']) && ! empty($config['secret'])) {
+            $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Create a Flysystem instance with the given adapter.
+     *
+     * @param  \League\Flysystem\AdapterInterface  $adapter
+     * @param  array  $config
+     * @return \League\Flysystem\FilesystemInterface
+     */
+    protected function createFlysystem(AdapterInterface $adapter, array $config)
+    {
+        $cache = Arr::pull($config, 'cache');
+
+        $config = Arr::only($config, ['visibility', 'disable_asserts', 'url']);
+
+        if ($cache) {
+            $adapter = new CachedAdapter($adapter, $this->createCacheStore($cache));
+        }
+
+        return new Flysystem($adapter, count($config) > 0 ? $config : null);
+    }
+
+    /**
+     * Create a cache store instance.
+     *
+     * @param  mixed  $config
+     * @return \League\Flysystem\Cached\CacheInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function createCacheStore($config)
+    {
+        if ($config === true) {
+            return new MemoryStore;
+        }
+
+        return new Cache(
+            $this->app['cache']->store($config['store']),
+            $config['prefix'] ?? 'flysystem',
+            $config['expire'] ?? null
+        );
+    }
+
+    /**
+     * Adapt the filesystem implementation.
+     *
+     * @param  \League\Flysystem\FilesystemInterface  $filesystem
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    protected function adapt(FilesystemInterface $filesystem)
+    {
+        return new FilesystemAdapter($filesystem);
+    }
+
+    /**
+     * Set the given disk instance.
+     *
+     * @param  string  $name
+     * @param  mixed  $disk
+     * @return $this
+     */
+    public function set($name, $disk)
+    {
+        $this->disks[$name] = $disk;
+
+        return $this;
+    }
+
+    /**
+     * Get the filesystem connection configuration.
+     *
+     * @param  string  $name
+     * @return array
+     */
+    protected function getConfig($name)
+    {
+        return $this->app['config']["filesystems.disks.{$name}"] ?: [];
+    }
+
+    /**
+     * Get the default driver name.
+     *
+     * @return string
+     */
+    public function getDefaultDriver()
+    {
+        return $this->app['config']['filesystems.default'];
+    }
+
+    /**
+     * Get the default cloud driver name.
+     *
+     * @return string
+     */
+    public function getDefaultCloudDriver()
+    {
+        return $this->app['config']['filesystems.cloud'];
+    }
+
+    /**
+     * Unset the given disk instances.
+     *
+     * @param  array|string  $disk
+     * @return $this
+     */
+    public function forgetDisk($disk)
+    {
+        foreach ((array) $disk as $diskName) {
+            unset($this->disks[$diskName]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Register a custom driver creator Closure.
+     *
+     * @param  string    $driver
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function extend($driver, Closure $callback)
+    {
+        $this->customCreators[$driver] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Dynamically call the default driver instance.
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        return $this->disk()->$method(...$parameters);
+    }
 }

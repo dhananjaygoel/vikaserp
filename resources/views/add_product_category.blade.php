@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/product_category">Product Category</a></li>
+                    <li><a href="{{url('/')}}/product_category">Product Category</a></li>
                     <li class="active"><span>Add Product Category</span></li>
                 </ol>
                 <div class="clearfix">
@@ -24,7 +24,7 @@
                          @if (Session::has('flash_message'))
         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
         @endif
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning">                        
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>
@@ -81,7 +81,7 @@
                             <hr>
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer" id='product-id-submit-btn' data-id='sendSMS'>Submit</button>
-                                <a href="{{url()}}/product_category" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('/')}}/product_category" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

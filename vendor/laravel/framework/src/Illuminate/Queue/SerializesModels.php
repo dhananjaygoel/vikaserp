@@ -1,81 +1,135 @@
-<?php namespace Illuminate\Queue;
+<?php
+
+namespace Illuminate\Queue;
 
 use ReflectionClass;
 use ReflectionProperty;
-use Illuminate\Contracts\Queue\QueueableEntity;
-use Illuminate\Contracts\Database\ModelIdentifier;
 
-trait SerializesModels {
+trait SerializesModels
+{
+    use SerializesAndRestoresModelIdentifiers;
 
-	/**
-	 * Prepare the instance for serialization.
-	 *
-	 * @return array
-	 */
-	public function __sleep()
-	{
-		$properties = (new ReflectionClass($this))->getProperties();
+    /**
+     * Prepare the instance for serialization.
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        $properties = (new ReflectionClass($this))->getProperties();
 
-		foreach ($properties as $property)
-		{
-			$property->setValue($this, $this->getSerializedPropertyValue(
-				$this->getPropertyValue($property)
-			));
-		}
+        foreach ($properties as $property) {
+            $property->setValue($this, $this->getSerializedPropertyValue(
+                $this->getPropertyValue($property)
+            ));
+        }
 
-		return array_map(function($p) { return $p->getName(); }, $properties);
-	}
+        return array_values(array_filter(array_map(function ($p) {
+            return $p->isStatic() ? null : $p->getName();
+        }, $properties)));
+    }
 
-	/**
-	 * Restore the model after serialization.
-	 *
-	 * @return void
-	 */
-	public function __wakeup()
-	{
-		foreach ((new ReflectionClass($this))->getProperties() as $property)
-		{
-			$property->setValue($this, $this->getRestoredPropertyValue(
-				$this->getPropertyValue($property)
-			));
-		}
-	}
+    /**
+     * Restore the model after serialization.
+     *
+     * @return void
+     */
+    public function __wakeup()
+    {
+        foreach ((new ReflectionClass($this))->getProperties() as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
 
-	/**
-	 * Get the property value prepared for serialization.
-	 *
-	 * @param  mixed  $value
-	 * @return mixed
-	 */
-	protected function getSerializedPropertyValue($value)
-	{
-		return $value instanceof QueueableEntity
-						? new ModelIdentifier(get_class($value), $value->getQueueableId()) : $value;
-	}
+            $property->setValue($this, $this->getRestoredPropertyValue(
+                $this->getPropertyValue($property)
+            ));
+        }
+    }
 
-	/**
-	 * Get the restored property value after deserialization.
-	 *
-	 * @param  mixed  $value
-	 * @return mixed
-	 */
-	protected function getRestoredPropertyValue($value)
-	{
-		return $value instanceof ModelIdentifier
-						? (new $value->class)->findOrFail($value->id) : $value;
-	}
+    /**
+     * Prepare the instance values for serialization.
+     *
+     * @return array
+     */
+    public function __serialize()
+    {
+        $values = [];
 
-	/**
-	 * Get the property value for the given property.
-	 *
-	 * @param  \ReflectionProperty  $property
-	 * @return mixed
-	 */
-	protected function getPropertyValue(ReflectionProperty $property)
-	{
-		$property->setAccessible(true);
+        $properties = (new ReflectionClass($this))->getProperties();
 
-		return $property->getValue($this);
-	}
+        $class = get_class($this);
 
+        foreach ($properties as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+
+            $name = $property->getName();
+
+            if ($property->isPrivate()) {
+                $name = "\0{$class}\0{$name}";
+            } elseif ($property->isProtected()) {
+                $name = "\0*\0{$name}";
+            }
+
+            $values[$name] = $this->getSerializedPropertyValue(
+                $this->getPropertyValue($property)
+            );
+        }
+
+        return $values;
+    }
+
+    /**
+     * Restore the model after serialization.
+     *
+     * @param  array  $values
+     * @return array
+     */
+    public function __unserialize(array $values)
+    {
+        $properties = (new ReflectionClass($this))->getProperties();
+
+        $class = get_class($this);
+
+        foreach ($properties as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+
+            $name = $property->getName();
+
+            if ($property->isPrivate()) {
+                $name = "\0{$class}\0{$name}";
+            } elseif ($property->isProtected()) {
+                $name = "\0*\0{$name}";
+            }
+
+            if (! array_key_exists($name, $values)) {
+                continue;
+            }
+
+            $property->setAccessible(true);
+
+            $property->setValue(
+                $this, $this->getRestoredPropertyValue($values[$name])
+            );
+        }
+
+        return $values;
+    }
+
+    /**
+     * Get the property value for the given property.
+     *
+     * @param  \ReflectionProperty  $property
+     * @return mixed
+     */
+    protected function getPropertyValue(ReflectionProperty $property)
+    {
+        $property->setAccessible(true);
+
+        return $property->getValue($this);
+    }
 }

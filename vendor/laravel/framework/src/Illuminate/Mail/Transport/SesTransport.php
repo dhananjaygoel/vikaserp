@@ -1,96 +1,92 @@
-<?php namespace Illuminate\Mail\Transport;
+<?php
 
-use Swift_Transport;
+namespace Illuminate\Mail\Transport;
+
 use Aws\Ses\SesClient;
-use Swift_Mime_Message;
-use Swift_Events_EventListener;
+use Swift_Mime_SimpleMessage;
 
-class SesTransport implements Swift_Transport {
+class SesTransport extends Transport
+{
+    /**
+     * The Amazon SES instance.
+     *
+     * @var \Aws\Ses\SesClient
+     */
+    protected $ses;
 
-	/**
-	 * The Amazon SES instance.
-	 *
-	 * @var \Aws\Ses\SesClient
-	 */
-	protected $ses;
+    /**
+     * The Amazon SES transmission options.
+     *
+     * @var array
+     */
+    protected $options = [];
 
-	/**
-	 * Create a new SES transport instance.
-	 *
-	 * @param  \Aws\Ses\SesClient  $ses
-	 * @return void
-	 */
-	public function __construct(SesClient $ses)
-	{
-		$this->ses = $ses;
-	}
+    /**
+     * Create a new SES transport instance.
+     *
+     * @param  \Aws\Ses\SesClient  $ses
+     * @param  array  $options
+     * @return void
+     */
+    public function __construct(SesClient $ses, $options = [])
+    {
+        $this->ses = $ses;
+        $this->options = $options;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isStarted()
-	{
-		return true;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
+    {
+        $this->beforeSendPerformed($message);
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function start()
-	{
-		return true;
-	}
+        $result = $this->ses->sendRawEmail(
+            array_merge(
+                $this->options, [
+                    'Source' => key($message->getSender() ?: $message->getFrom()),
+                    'RawMessage' => [
+                        'Data' => $message->toString(),
+                    ],
+                ]
+            )
+        );
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function stop()
-	{
-		return true;
-	}
+        $message->getHeaders()->addTextHeader('X-SES-Message-ID', $result->get('MessageId'));
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function send(Swift_Mime_Message $message, &$failedRecipients = null)
-	{
-		return $this->ses->sendRawEmail([
-			'Source' => $message->getSender(),
-			'Destinations' => $this->getTo($message),
-			'RawMessage' => [
-				'Data' => base64_encode((string) $message),
-			],
-		]);
-	}
+        $this->sendPerformed($message);
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function registerPlugin(Swift_Events_EventListener $plugin)
-	{
-		//
-	}
+        return $this->numberOfRecipients($message);
+    }
 
-	/**
-	 * Get the "to" payload field for the API request.
-	 *
-	 * @param  \Swift_Mime_Message  $message
-	 * @return array
-	 */
-	protected function getTo(Swift_Mime_Message $message)
-	{
-		$destinations = [];
+    /**
+     * Get the Amazon SES client for the SesTransport instance.
+     *
+     * @return \Aws\Ses\SesClient
+     */
+    public function ses()
+    {
+        return $this->ses;
+    }
 
-		$contacts = array_merge(
-			(array) $message->getTo(), (array) $message->getCc(), (array) $message->getBcc()
-		);
+    /**
+     * Get the transmission options being used by the transport.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-		foreach ($contacts as $address => $display)
-		{
-			$destinations[] = $address;
-		}
-
-		return $destinations;
-	}
-
+    /**
+     * Set the transmission options being used by the transport.
+     *
+     * @param  array  $options
+     * @return array
+     */
+    public function setOptions(array $options)
+    {
+        return $this->options = $options;
+    }
 }

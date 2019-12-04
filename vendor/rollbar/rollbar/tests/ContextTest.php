@@ -3,7 +3,7 @@
 use \Mockery as m;
 use Rollbar\Payload\Context;
 
-class ContextTest extends \PHPUnit_Framework_TestCase
+class ContextTest extends BaseRollbarTest
 {
     public function testContextPre()
     {
@@ -28,11 +28,11 @@ class ContextTest extends \PHPUnit_Framework_TestCase
     public function testEncode()
     {
         $context = new Context(array(), array());
-        $encoded = json_encode($context->jsonSerialize());
+        $encoded = json_encode($context->serialize());
         $this->assertEquals('{"pre":[],"post":[]}', $encoded);
 
         $context = new Context(array("one"), array("three"));
-        $encoded = json_encode($context->jsonSerialize());
+        $encoded = json_encode($context->serialize());
         $this->assertEquals('{"pre":["one"],"post":["three"]}', $encoded);
     }
 }

@@ -118,9 +118,9 @@
                 }else{
                     $loading_vat = 0;
                 }
-                $loading_vat_amount = ($allorder->loading_charge * $loading_vat) / 100;
-                $freight_vat_amount = ($allorder->freight * $loading_vat) / 100;
-                $discount_vat_amount = ($allorder->discount * $loading_vat) / 100;
+                $loading_vat_amount = (float)($allorder->loading_charge * $loading_vat) / 100;
+                $freight_vat_amount = (float)($allorder->freight * $loading_vat) / 100;
+                $discount_vat_amount = (float)($allorder->discount * $loading_vat) / 100;
                 $final_vat_amount = 0; 
                 $final_total_amt = 0;
             ?>
@@ -147,11 +147,11 @@
                                 $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                                 $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
                                 if($local_state == 1){
-                                    $sgst = $gst_det->sgst;
-                                    $cgst = $gst_det->cgst;
+                                    $sgst = (float)$gst_det->sgst;
+                                    $cgst = (float)$gst_det->cgst;
                                 }
                                 else{
-                                    $igst = $gst_det->igst;
+                                    $igst = (float)$gst_det->igst;
                                 }
                             }
                         }
@@ -169,27 +169,27 @@
                         @else
                             <td>{{$gst}}</td>
                         @endif
-                        <td><?php echo $rate = $prod->price; ?></td>
-                        <td><?php $total_price = $rate * $prod->actual_quantity; 
-                            $final_total_amt += $total_price;
+                        <td><?php echo $rate = (float)$prod->price; ?></td>
+                        <td><?php $total_price = (float)$rate * (float)$prod->actual_quantity; 
+                            $final_total_amt += (float)$total_price;
                             ?>
-                            {{ ($rate * $prod->actual_quantity) }}</td>
+                            {{ ($rate * (float)$prod->actual_quantity) }}</td>
                     </tr>
                 </tbody>
                 <?php
                 // $total_pr = $sgst + $cgst + $igst + $gst;
                 if((isset($prod->vat_percentage) && $prod->vat_percentage > 0) && empty($allorder['delivery_order']->vat_percentage)){
                     if($local_state == 1){
-                        $total_sgst_amount = ($total_price * $sgst) / 100;
-                        $total_cgst_amount = ($total_price * $cgst) / 100;
-                        $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                        $total_sgst_amount = ((float)$total_price * (float)$sgst) / 100;
+                        $total_cgst_amount = ((float)$total_price * (float)$cgst) / 100;
+                        $total_vat_amount1 = (round((float)$total_sgst_amount,2) + round((float)$total_cgst_amount,2));
                     } else {
-                        $total_igst_amount = ($total_price * $igst) / 100;
-                        $total_vat_amount1 = round($total_igst_amount,2);
+                        $total_igst_amount = ((float)$total_price * (float)$igst) / 100;
+                        $total_vat_amount1 = round((float)$total_igst_amount,2);
                     }
                 } else{
-                    $total_gst_amount = ($total_price * $gst) / 100;
-                    $total_vat_amount1 = round($total_gst_amount,2);
+                    $total_gst_amount = ((float)$total_price * (float)$gst) / 100;
+                    $total_vat_amount1 = round((float)$total_gst_amount,2);
                 }
                 // $total_vat_amount1 = ($total_price * $total_pr) / 100;
                 $total_vat_amount = $total_vat_amount1;
@@ -326,7 +326,7 @@
                         $no = floor($no / $divider);
                         $i += ($divider == 10) ? 1 : 2;
                         if ($number) {
-                            $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                            $plural = (($counter = count((array)$str)) && $number > 9) ? 's' : null;
                             $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
                             $str [] = ($number < 21) ? $words[$number] .
                                     " " . $digits[$counter] . $plural . " " . $hundred :

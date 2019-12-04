@@ -39,7 +39,7 @@
                         {!! Form::open(array('method'=>'PUT','url'=>url('territory',$territory->id), 'id'=>''))!!}
 
                         <input type="hidden" name="id" value="{{$territory->id}}">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>

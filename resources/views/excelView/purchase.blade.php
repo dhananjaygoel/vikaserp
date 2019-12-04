@@ -1,6 +1,6 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('/resources/assets/css/custom_style/excel-export-table.css') !!}
+    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
     <table>
         
         
@@ -42,7 +42,7 @@
         <?php
          $VchNo=1;
          foreach ($purchase_orders as $key => $value) {
-            $next_cnt = count($value['delivery_challan_products']);
+            $next_cnt = count((array)$value['delivery_challan_products']);
             $grand_vat_amt = 0;
             $current_number = 1;
             ?>
@@ -338,7 +338,7 @@
         $i = 1;
         $j = 1;
         foreach ($purchase_orders as $key => $value) {
-            $next_cnt = count($value['all_purchase_products']);
+            $next_cnt = count((array)$value['all_purchase_products']);
             $current_number = 1;
             $grand_vat_amt = 0;
             foreach ($value['all_purchase_products'] as $key1 => $value1) {

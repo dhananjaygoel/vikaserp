@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>    
-            @if(isset($users) && !empty($users) && count($users)>0) 
+            @if(isset($users) && !empty($users) && count((array)$users)>0) 
             @foreach($users as $key => $user)
             <tr>
                 <td class="col-md-1">{{ $key+1 }}</td>

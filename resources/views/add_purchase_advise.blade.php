@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Session;
                         <form data-button="btn_add_purchase_advice" id="onenter_prevent" method="POST" action="{{url('purchaseorder_advise')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -90,7 +90,7 @@ use Illuminate\Support\Facades\Session;
 <!--                                <div class="supplier" <?= $style ?>>
                                     <select class="form-control" name="supplier_id" id="supplier_select" onchange="get_default_location();">
                                         <option value="0" selected="">Select supplier</option>
-                                        @if(count($customers))
+                                        @if(count((array)$customers))
                                         @foreach($customers as $c)
                                         <option value="{{$c->id}}" default_location="{{$c->delivery_location_id}}">{{$c->owner_name.'-'.$c->tally_name}}</option>
                                         @endforeach
@@ -276,7 +276,7 @@ use Illuminate\Support\Facades\Session;
                                     <label for="orderfor">Order For:</label>
                                     <select class="form-control" id="orderfor" name="order_for">
                                         <option value="0">Warehouse</option>
-                                        @if(count($customers))
+                                        @if(count((array)$customers))
                                         @foreach($customers as $c)
                                         <option value="{{$c->id}}">{{$c->tally_name}}</option>
                                         @endforeach
@@ -344,5 +344,5 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 </div>
-@include('autocomplete_tally_product_name')
+<!-- @include('autocomplete_tally_product_name') -->
 @stop

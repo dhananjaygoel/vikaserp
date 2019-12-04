@@ -21,7 +21,7 @@
                         <input type="hidden" name="customer_id" value="{{$order['customer']->id}}" id="hidden_cutomer_id">
                         <input type="hidden" name="existing_customer_id" value="{{$order['customer']->id}}" id="existing_customer_id">                                                    
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -403,5 +403,5 @@
 </div>
 
 
-{{-- @include('autocomplete_tally_product_name') --}}
+<!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @stop

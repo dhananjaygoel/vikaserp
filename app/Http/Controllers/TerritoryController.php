@@ -24,12 +24,12 @@ class TerritoryController extends Controller {
         date_default_timezone_set("Asia/Calcutta");
     }
 
-    public function index() {
+    public function index(Request $request) {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
         $territories = '';
-        if (Input::get('search') != '') {
+        if ($request->get('search') != '') {
             $term = '%' . Input::get('search') . '%';
             $territories = \App\Territory::where('teritory_name', 'like', $term)->orderBy('created_at', 'DESC')->paginate(20);
         } else {
@@ -134,7 +134,7 @@ class TerritoryController extends Controller {
         $territory_loc = TerritoryLocation::where('teritory_id', '=', $id)->get();
         foreach ($territory_loc as $loc) {
             $territory_old = TerritoryLocation::find($loc->id);
-            if(count($territory_old) > 0)
+            if(count((array)$territory_old) > 0)
             $territory_old->delete();
         }
 
@@ -160,7 +160,7 @@ class TerritoryController extends Controller {
     public function destroy($id, Request $request) {
         if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
             $territory = Territory::find($id);
-            if(count($territory) > 0)
+            if(count((array)$territory) > 0)
             $territory->delete();
             return redirect('territory')->with('flash_success_message', 'Territory successfully deleted.');
         } else {

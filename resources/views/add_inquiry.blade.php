@@ -19,7 +19,7 @@
                         <form id="onenter_prevent" data-button='btn_add_inquiry' name="add_inquiry_form" method="POST" action="{{URL::action('InquiryController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -319,7 +319,7 @@
                             <div>
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_inquiry">Submit</button>
                                 <!--<input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">-->
-                                <a href="{{url()}}/inquiry" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('/')}}/inquiry" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

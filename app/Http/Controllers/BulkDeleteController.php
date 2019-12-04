@@ -62,7 +62,7 @@ class BulkDeleteController extends Controller {
             if (!Hash::check($password_delete_all, Auth::user()->password)) {
                 return back()->with('flash_message_error', 'You have entered wrong password. Please provide correct password.');
             }
-        }else if (count($delete_seletected_module) > 0) {
+        }else if (count((array)$delete_seletected_module) > 0) {
             if (!Hash::check($password, Auth::user()->password)) {
                 return back()->with('flash_message_error', 'You have entered wrong password. Please provide correct password.');
             }
@@ -829,7 +829,7 @@ class BulkDeleteController extends Controller {
 
                     $result_data[$key][1] = $temp->serial_number;
                     $result_data[$key][2] = $temp->bill_number;  
-                    if(isset($temp['purchase_advice']) && count($temp['purchase_advice'])>0){
+                    if(isset($temp['purchase_advice']) && count((array)$temp['purchase_advice'])>0){
                         $result_data[$key][3] = date("F jS, Y", strtotime($temp['purchase_advice']->purchase_advice_date));
                     }else{
                         $result_data[$key][3]="-";
@@ -910,7 +910,7 @@ class BulkDeleteController extends Controller {
 //----------------------------------------------------            
         }
         $msg = '';
-        if (($module != '') && (count($delete_seletected_module) > 0) || $is_delete_all == 'yes') {
+        if (($module != '') && (count((array)$delete_seletected_module) > 0) || $is_delete_all == 'yes') {
             $msg = $module . " - Selected details removed successfully.";
         } else {
             $msg = '';
@@ -919,7 +919,7 @@ class BulkDeleteController extends Controller {
             $result_temp->setPath('bulk-delete');
         }
         $bulk_searched_result = 'bulk_searched_result';
-        if (count($delete_seletected_module) > 0) {
+        if (count((array)$delete_seletected_module) > 0) {
             return redirect('bulk-delete?select_module=' . $module . '&expected_date=' . $expected_date)->with('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg');
         } else {
             return view('bulk_delete', compact('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg'));
@@ -990,13 +990,13 @@ class BulkDeleteController extends Controller {
 
     function checkpending_quantity($delivery_orders) {
 
-        if (count($delivery_orders) > 0) {
+        if (count((array)$delivery_orders) > 0) {
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
-                if (count($del_order['delivery_product']) > 0) {
+                if (count((array)$del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
-                        if (isset($popv['product_sub_category']) && count($popv['product_sub_category'])) {
+                        if (isset($popv['product_sub_category']) && count((array)$popv['product_sub_category'])) {
                             $product_size = $popv['product_sub_category'];
                         } else {
                             $product_size = ProductSubCategory::find($popv->product_category_id);
@@ -1029,9 +1029,9 @@ class BulkDeleteController extends Controller {
             $purchase_order_quantity = 0;
             $purchase_order_advise_quantity = 0;
             $purchase_order_advise_products = PurchaseProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
-            if (count($purchase_order_advise_products) > 0) {
+            if (count((array)$purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
-                    if (isset($poapv['product_sub_category']) && count($poapv['product_sub_category'])) {
+                    if (isset($poapv['product_sub_category']) && count((array)$poapv['product_sub_category'])) {
                         $product_size = $poapv['product_sub_category'];
                     } else {
                         $product_size = ProductSubCategory::find($poapv->product_category_id);
@@ -1047,9 +1047,9 @@ class BulkDeleteController extends Controller {
                     }
                 }
             }
-            if (count($order['purchase_products']) > 0) {
+            if (count((array)$order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
-                    if (isset($popv['product_sub_category']) && count($popv['product_sub_category'])) {
+                    if (isset($popv['product_sub_category']) && count((array)$popv['product_sub_category'])) {
                         $product_size = $popv['product_sub_category'];
                     } else {
                         $product_size = ProductSubCategory::find($popv->product_category_id);

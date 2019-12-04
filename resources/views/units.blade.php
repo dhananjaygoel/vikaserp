@@ -59,7 +59,7 @@
                                         <td>{{$units_data->unit_name}}</td>
                                         @if( Auth::user()->role_id == 0  )
 <!--                                        <td class="text-center">
-                                            <a href="{{ Url::action('UnitController@edit', ['id' => $units_data->id]) }}" class="table-link">
+                                            <a href="{{ Url::action('UnitController@edit', ['unit' => $units_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -84,7 +84,7 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('unit',$units_data->id), 'id'=>'delete_units_form'))!!}
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('unit',$units_data->id), 'unit'=>'delete_units_form'))!!}
                                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>

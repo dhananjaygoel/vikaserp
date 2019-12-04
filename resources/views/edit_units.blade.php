@@ -23,7 +23,7 @@
                     <div class="main-box-body clearfix">
                         <hr>
                         {!! Form::open(array('method'=>'PUT','url'=>url('unit',$unit->id), 'id'=>'edit_unit_form'))!!}
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
                                 @foreach ($errors->all() as $error)

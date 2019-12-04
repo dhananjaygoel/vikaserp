@@ -15,6 +15,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\User;
 use Auth;
 use App\ProductCategory;
+use App\Hsn;
 use App\ProductSubCategory;
 use App\ProductType;
 use App\Http\Requests\ProductCategoryRequest;
@@ -27,11 +28,6 @@ class ProductController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -40,7 +36,7 @@ class ProductController extends Controller {
      */
 
     public function index() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -81,7 +77,7 @@ class ProductController extends Controller {
         ]);
         if (Session::has('forms_product_category')) {
             $session_array = Session::get('forms_product_category');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($request->form_key, $session_array)) {
                     return Redirect::back()->with('flash_message', 'This product category is already saved. Please refresh the page');
                 } else {
@@ -94,11 +90,15 @@ class ProductController extends Controller {
             array_push($forms_array, $request->form_key);
             Session::put('forms_product_category', $forms_array);
         }
+        $hsn = Hsn::where('hsn_code', explode(':',$request->input('hsn_code'))[0])->get();
+        foreach($hsn as $hsn_code){
+            $gst = $hsn_code->gst;
+        }
         $product_category = new ProductCategory();
         $product_category->product_type_id = $request->input('product_type');
         $product_category->product_category_name = $request->input('product_category_name');
         $product_category->price = $request->input('price');
-        //$product_category->gst = $request->input('gst');
+        $product_category->gst = $gst;
         $product_category->hsn_code = explode(':',$request->input('hsn_code'))[0];
         $product_category->hsn_desc = $request->input('hsn_desc');
         $product_category->save();
@@ -111,7 +111,7 @@ class ProductController extends Controller {
         $input = Input::all();
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $admins = User::where('role_id', '=', 0)->get();
-            if (count($admins) > 0) {
+            if (count((array)$admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
                     $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
@@ -140,7 +140,7 @@ class ProductController extends Controller {
 
     public function show($id) {
         $product_cat = ProductCategory::with('product_sub_category', 'product_type')->find($id);
-        if (count($product_cat) < 1) {
+        if (count((array)$product_cat) < 1) {
             return redirect('product_category')->with('success', 'Product category does not exist.');
         }
         $product_cat = ProductCategory::with('product_sub_category', 'product_type')->find($id);
@@ -179,7 +179,7 @@ class ProductController extends Controller {
         }
 
         $product_cat = ProductCategory::where('id', $id)->get();
-        if (count($product_cat) < 1) {
+        if (count((array)$product_cat) < 1) {
             return redirect('product_category')->with('success', 'Product category does not exist.');
         }
 
@@ -217,8 +217,8 @@ class ProductController extends Controller {
          */
 
         $admins = User::where('role_id', '=', 0)->get();
-      
-        if (count($admins) > 0) {
+
+        if (count((array)$admins) > 0) {
             foreach ($admins as $key => $admin) {
                 $product_type = ProductType::find($request->input('product_type'));
                 $str = "Dear " . $admin->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
@@ -227,7 +227,7 @@ class ProductController extends Controller {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $admin->mobile_number;
-                    
+
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -263,7 +263,7 @@ class ProductController extends Controller {
 
 //        $admins = User::where('role_id', '=', 0)->get();
 //
-//        if (count($admins) > 0) {
+//        if (count((array)$admins) > 0) {
 //            foreach ($admins as $key => $admin) {
 //                $productcategory = ProductCategory::find($id);
 //                $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category price as " . $productcategory->product_category_name . "-" . $val . " kindly check.\nVIKAS ASSOCIATES";

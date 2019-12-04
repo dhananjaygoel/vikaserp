@@ -40,11 +40,6 @@ class DeliveryChallanController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -59,7 +54,7 @@ class DeliveryChallanController extends Controller {
 //        if (Auth::user()->role_id == 6) {
 //            return Redirect::to('due-payment');
 //        }
-//        
+//
 //
 //
 //        $data = Input::all();
@@ -130,58 +125,58 @@ class DeliveryChallanController extends Controller {
 //                                ->orderBy('updated_at', 'desc')->Paginate(20);
 //            }
 //        }
-////        
-////        if (count($allorders) > 0) {
+////
+////        if (count((array)$allorders) > 0) {
 ////            foreach ($allorders as $key => $order) {
 ////                $order_quantity = 0;
 ////                $order_quantity_pending =0;
-////                
-////                
+////
+////
 ////                $all_dc_details = DeliveryChallan::with('delivery_order','order_details','delivery_challan_products')->find($order->id);
-////                
+////
 //////                $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details[0]['delivery_order']->id);
-////                
-////                
+////
+////
 ////            foreach($all_dc_details['delivery_challan_products'] as $delivery_challan_products){
-////                 
+////
 ////                  $order_quantity = $order_quantity + $delivery_challan_products->present_shipping;
 ////                  $all_do_details = DeliveryOrder::with('delivery_product')->find($all_dc_details['delivery_order']->id);
-////                  
-////                  foreach($all_do_details['delivery_product'] as $delivery_product) 
+////
+////                  foreach($all_do_details['delivery_product'] as $delivery_product)
 ////                  {
 ////                      $delivery_product->product_category_id;
 ////                      $delivery_challan_products->product_category_id;
-////                      
+////
 ////                      if($delivery_product->product_category_id == $delivery_challan_products->product_category_id)
-////                      { 
+////                      {
 ////                          echo "<pre>";
 ////                          print_r($delivery_product->quantity);
 ////                          echo "</pre>";
-////                           
-////                         
-////                          
+////
+////
+////
 ////                      }
-////                    
-////                      
+////
+////
 ////                  }
-////                 
+////
 ////            }
-////                
-////                
+////
+////
 ////                echo "<pre>";
 ////                print_r($delivery_challan_products->product_category_id);
 ////                echo "</pre>";
 ////                exit;
-////                
-////                
+////
+////
 ////            }
 ////        }
-////        
+////
 //
 //
 //
 //
-//        if (count($allorders) > 0) {
+//        if (count((array)$allorders) > 0) {
 //            foreach ($allorders as $key => $order) {
 //                $order_quantity = 0;
 //                $order_quantity_pending = 0;
@@ -190,7 +185,7 @@ class DeliveryChallanController extends Controller {
 //                $previous_dc_quantity_parent = 0;
 //
 //
-//                if (count($order['delivery_challan_products']) > 0) {
+//                if (count((array)$order['delivery_challan_products']) > 0) {
 //                    $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
 //                }
 //                $allorders[$key]['total_quantity'] = $order_quantity;
@@ -205,7 +200,7 @@ class DeliveryChallanController extends Controller {
 //
 //                    $product_for_deliveryorder = DeliveryOrder::where('order_id', '=', $order->order_id)->get();
 //
-//                    if (count($product_for_deliveryorder) > 0) {
+//                    if (count((array)$product_for_deliveryorder) > 0) {
 //                        foreach ($product_for_deliveryorder as $deliveryorder) {
 //                            $product_for_order_do = AllOrderProducts::where('order_type', '=', 'delivery_order')
 //                                    ->where('order_id', '=', $deliveryorder->id)
@@ -236,7 +231,7 @@ class DeliveryChallanController extends Controller {
 ////                   echo "<pre>";
 ////                       print_r($product_for_order_do_pending ."--" .$previous_dc_quantity."--".$product_for_order[0]->quantity."--".$previous_dc_quantity_parent."--".$product_for_order_do[0]->id);
 ////                       echo "</pre>";
-////                 
+////
 //
 //                    foreach ($product_for_order as $product_order_pending) {
 //
@@ -257,7 +252,7 @@ class DeliveryChallanController extends Controller {
 //                $allorders[$key]['total_quantity_pending'] = $order_quantity_pending - $order_quantity;
 //
 ////                 if($order_quantity_pending > $order_quantity){
-////                   
+////
 ////                    $allorders[$key]['total_quantity_pending'] = $order_quantity_pending -$order_quantity;
 ////                }else {
 ////                         $allorders[$key]['total_quantity_pending'] = '0';
@@ -271,7 +266,7 @@ class DeliveryChallanController extends Controller {
 
 
     public function index(Request $request) {
-       
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -360,9 +355,9 @@ class DeliveryChallanController extends Controller {
                     $allorders = DeliveryChallan::where('challan_status', '=', $qstring_sort_type_order)
                     ->with('customer', 'delivery_challan_products.product_sub_category', 'delivery_order_products', 'order_products', 'delivery_order')
                                     ->orderBy('updated_at', 'desc')->Paginate(20);
-                }   
+                }
             }
-            
+
         } else {
             if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -389,7 +384,7 @@ class DeliveryChallanController extends Controller {
             }
         }
 
-        if (count($allorders) > 0) {
+        if (count((array)$allorders) > 0) {
             foreach ($allorders as $key => $order) {
                 // dd($order);
                 $order_quantity = 0;
@@ -402,23 +397,23 @@ class DeliveryChallanController extends Controller {
                 $previous_dc_quantity_parent = 0;
 
 
-                if (count($order['delivery_challan_products']) > 0) {
+                if (count((array)$order['delivery_challan_products']) > 0) {
                     $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
                 }
-                if (count($order['delivery_challan_products']) > 0) {
+                if (count((array)$order['delivery_challan_products']) > 0) {
                     $actual_quantity = $order['delivery_challan_products']->sum('actual_quantity');
                 }
-                if (count($order['delivery_order_products']) > 0) {
+                if (count((array)$order['delivery_order_products']) > 0) {
                     $order_quantity_do = $order['delivery_order_products']->sum('quantity');
                 }
-                if (count($order['order_products']) > 0) {
+                if (count((array)$order['order_products']) > 0) {
                     $order_quantity_o = $order['order_products']->sum('quantity');
                 }
 
                 foreach ($order['delivery_challan_products'] as $product_data) {
 
                     $product_size = $product_data['product_sub_category'];
-                    
+
                     if (isset($product_data)) {
                         if ($product_data->unit_id == 1) {
                             $total_quantity = $total_quantity + $product_data->actual_quantity;
@@ -476,12 +471,12 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
 
-        if (count($allorder) < 1) {
+        if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
 
         $order_product = Order::with('all_order_products')->find($allorder->order_id);
-        if (count($order_product) < 1) {
+        if (count((array)$order_product) < 1) {
             $order_product = 0;
         }
         $product_type = $this->check_product_type($allorder);
@@ -497,12 +492,12 @@ class DeliveryChallanController extends Controller {
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
 
-        if (count($allorder) < 1) {
+        if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
         }
 
         $order_product = Order::with('all_order_products')->find($allorder->order_id);
-        if (count($order_product) < 1) {
+        if (count((array)$order_product) < 1) {
             $order_product = 0;
         }
         $product_type = $this->check_product_type($allorder);
@@ -543,7 +538,7 @@ class DeliveryChallanController extends Controller {
         } else {
             $data['task'] = 'del_ch';
         }
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -556,7 +551,7 @@ class DeliveryChallanController extends Controller {
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
 
-        if (count($allorder) < 1) {
+        if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('validation_message', 'Inavalid delivery challan.');
         }
 
@@ -582,7 +577,7 @@ class DeliveryChallanController extends Controller {
         }
         if (Session::has('forms_edit_delivery_challan')) {
             $session_array = Session::get('forms_edit_delivery_challan');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('validation_message', 'This delivery challan is already Updated. Please refresh the page');
                 } else {
@@ -596,7 +591,7 @@ class DeliveryChallanController extends Controller {
             Session::put('forms_edit_delivery_challan', $forms_array);
         }
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -848,7 +843,7 @@ class DeliveryChallanController extends Controller {
             $customer_id = $allorder->customer_id;
             $customer = Customer::with('manager')->find($customer_id);
             if ($sms_flag == 1) {
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
 
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been edited as follows ";
@@ -878,7 +873,7 @@ class DeliveryChallanController extends Controller {
                         curl_close($ch);
                     }
                 }
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited material for " . $customer->owner_name . " as follows " . $s;
 //                foreach ($input_data as $product_data) {
@@ -909,7 +904,7 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['delivery_challan', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -944,7 +939,7 @@ class DeliveryChallanController extends Controller {
             return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
         } else {
             return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
-        }        
+        }
     }
 
     public function calc_actual_qty($dc_id = 0, $input_data = []) {
@@ -972,22 +967,22 @@ class DeliveryChallanController extends Controller {
             }
 
             if (isset($input_data['loaded_by_pipe'])) {
-                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count($input_data['loaded_by_pipe']);
+                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count((array)$input_data['loaded_by_pipe']);
             }
             if (isset($input_data['loaded_by_structure'])) {
-                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
+                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count((array)$input_data['loaded_by_structure']);
             }
             if (isset($input_data['loaded_by_profile'])) {
-                $actual_qty['loaded_by_profile'] = $actual_qty['sheet'] / count($input_data['loaded_by_profile']);
+                $actual_qty['loaded_by_profile'] = $actual_qty['sheet'] / count((array)$input_data['loaded_by_profile']);
             }
             if (isset($input_data['labour_pipe'])) {
-                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
+                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count((array)$input_data['labour_pipe']);
             }
             if (isset($input_data['labour_structure'])) {
-                $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+                $actual_qty['labour_structure'] = $actual_qty['structure'] / count((array)$input_data['labour_structure']);
             }
             if (isset($input_data['labour_profile'])) {
-                $actual_qty['labour_profile'] = $actual_qty['sheet'] / count($input_data['labour_profile']);
+                $actual_qty['labour_profile'] = $actual_qty['sheet'] / count((array)$input_data['labour_profile']);
             }
         }
 
@@ -1023,7 +1018,7 @@ class DeliveryChallanController extends Controller {
             $calc->inventoryCalc($product_category_ids);
 
             Session::put('order-sort-type', $order_sort_type);
-            //         update sync table         
+            //         update sync table
             $tables = ['delivery_challan', 'all_order_products'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -1073,15 +1068,15 @@ class DeliveryChallanController extends Controller {
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
-        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
 
     function getToken(){
-        
-        require_once base_path('quickbook/vendor/autoload.php');        
+
+        require_once base_path('quickbook/vendor/autoload.php');
         $quickbook = App\QuickbookToken::find(2);
         // echo '<pre>';
         // print_r($quickbook);
@@ -1120,7 +1115,7 @@ class DeliveryChallanController extends Controller {
             $this->refresh_token();
             $dataService = $this->getToken();
         }
-        
+
         $error = $dataService->getLastError();
         if ($error) {
             if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
@@ -1143,22 +1138,22 @@ class DeliveryChallanController extends Controller {
         if($update_delivery_challan->doc_number){
 
             $invoice = $dataService->Query("select * from Invoice where Id = '".$update_delivery_challan->doc_number."' ");
-            
+
             $error = $dataService->getLastError();
             if ($error) {
                 if($update_delivery_challan->delivery_challan_products[0]->vat_percentage==0)
                 {
                     $this->refresh_token_Wihtout_GST();
-                    $dataService = $this->getTokenWihtoutGST();                    
+                    $dataService = $this->getTokenWihtoutGST();
                 }
                 else{
                     $this->refresh_token();
                     $dataService = $this->getToken();
-                   
+
                 }
-               
+
                 $invoice = $dataService->Query("select * from Invoice where Id = '".$update_delivery_challan->doc_number."' ");
-               
+
                 $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
             }
             else{
@@ -1211,14 +1206,14 @@ class DeliveryChallanController extends Controller {
                 $productname = ltrim($productname);
                  $item_query = "select * from Item where Name ='".$productname."'";
                 $item_details = $dataService->Query($item_query);
-               
+
                 if(!empty($item_details)){
                     $quickbook_item_id = $item_details[0]->Id;
                 }
                 /*else{
                    $quickbook_item_id =$quickbook_item_id;
                 }*/
-                //print $item_details[0]->Id; 
+                //print $item_details[0]->Id;
 
                 if($del_products->vat_percentage!=0){
                     $line[] = [
@@ -1266,16 +1261,16 @@ class DeliveryChallanController extends Controller {
             if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
-                $tally_name = $update_delivery_challan->customer->tally_name;                      
+                $tally_name = $update_delivery_challan->customer->tally_name;
             }
             else
-            {   
+            {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
-                $tally_name = $update_delivery_challan->customer->tally_name;   
+                $tally_name = $update_delivery_challan->customer->tally_name;
             }
             if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
-                
+
                 if($del_products->vat_percentage==0){
                       $freight_id=$freight_item->quickbook_a_item_id;
                       $frieghtname = $freight_item->alias_name;
@@ -1290,21 +1285,21 @@ class DeliveryChallanController extends Controller {
                         $tax = 22;
                     }
                 }
-                    
+
                $line[] = [
                         "Amount" => $update_delivery_challan->freight,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                
+
                                 "name" => $frieghtname,
                                 "value" => $freight_id
-                               // "name" => "Services", 
+                               // "name" => "Services",
                                //  "value" => 1
                             ],
                             "TaxCodeRef"=>[
                                 "value" => $tax
-                            ],                            
+                            ],
                         ]
                     ];
             }
@@ -1325,8 +1320,8 @@ class DeliveryChallanController extends Controller {
                         $tax = 22;
                     }
                 }
-                    
-                
+
+
                  $line[] = [
                         "Amount" => $update_delivery_challan->loading_charge,
                         "DetailType" => "SalesItemLineDetail",
@@ -1341,16 +1336,16 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-             if($update_delivery_challan->discount>0){ 
-                 $discount_item = ProductSubCategory::where('alias_name','Discount')->first(); 
+             if($update_delivery_challan->discount>0){
+                 $discount_item = ProductSubCategory::where('alias_name','Discount')->first();
                  if($del_products->vat_percentage==0){
                      $discount_a_id=$discount_item->quickbook_a_item_id;
                     $discountname = $discount_item->alias_name;
                     $tax = 9;
                  }
-                    
+
                  else{
-                      $discount_a_id=$discount_item->quickbook_item_id; 
+                      $discount_a_id=$discount_item->quickbook_item_id;
                     $discountname = $discount_item->alias_name;
                     if($local_state == 1){
                         $tax = 15;
@@ -1358,34 +1353,34 @@ class DeliveryChallanController extends Controller {
                         $tax = 22;
                     }
                  }
-                   
+
                  $line[] = [
                         "Amount" => floatval($update_delivery_challan->discount),
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                
+
                                 "name" => $discountname,
                                  "value" => $discount_a_id
                             ],
                             "TaxCodeRef"=>[
                                 "value" => $tax
-                            ],                            
+                            ],
                         ]
                     ];
             }
            /* if($del_products->vat_percentage==0)
             {
-                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;     
-                $tally_name = $update_delivery_challan->customer->tally_name;    
-                          
+                $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
+                $tally_name = $update_delivery_challan->customer->tally_name;
+
             }
             else
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
-                $tally_name = $update_delivery_challan->customer->tally_name;      
+                $tally_name = $update_delivery_challan->customer->tally_name;
             } */
-           
+
 
              $custom_query = "select * from Customer where CompanyName='".$update_delivery_challan->customer->company_name."'";
             //  $custom_query = "select * from Customer maxresults 2";
@@ -1398,7 +1393,7 @@ class DeliveryChallanController extends Controller {
                 else{
                    $quickbook_customer_id =$quickbook_customer_id;
                 }
-            
+
            // $quickbook_customer_id = $customer_details[0]->Id;
           // print_R($customer_details);
             $theResourceObj = Invoice::create([
@@ -1408,36 +1403,36 @@ class DeliveryChallanController extends Controller {
                     "value" => $quickbook_customer_id
                 ],
                 "ShipAddr"=> [
-                    "City"=> $state->area_name, 
+                    "City"=> $state->area_name,
                     "CountrySubDivisionCode"=> $local->state_name
                 ]
                 // "DocNumber"=>$update_delivery_challan->serial_number,
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
-            
-            
+
+
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
-            if ($error) {  
+            if ($error) {
                 if($del_products->vat_percentage==0)
                 {
                     $this->refresh_token_Wihtout_GST();
-                    $dataService = $this->getTokenWihtoutGST(); 
-                    // $inv = $dataService->add($theResourceObj);                   
+                    $dataService = $this->getTokenWihtoutGST();
+                    // $inv = $dataService->add($theResourceObj);
                 }
                 else{
                     $this->refresh_token();
                     $dataService = $this->getToken();
                 }
-               
-                $inv = $dataService->add($theResourceObj);  
+
+                $inv = $dataService->add($theResourceObj);
                 $error1 = $dataService->getLastError();
                 if($error1){
                     if($del_products->vat_percentage==0)
                 {
                     $this->refresh_token_Wihtout_GST();
-                    $dataService = $this->getTokenWihtoutGST(); 
-                    // $inv = $dataService->add($theResourceObj);                   
+                    $dataService = $this->getTokenWihtoutGST();
+                    // $inv = $dataService->add($theResourceObj);
                 }
                 else{
                     $this->refresh_token();
@@ -1463,11 +1458,11 @@ class DeliveryChallanController extends Controller {
             $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
-            
 
-            
+
+
         }
-         
+
     }
 
 
@@ -1476,14 +1471,16 @@ class DeliveryChallanController extends Controller {
         $current_date = date("m/d/");
         $sms_flag = 0;
 //      $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
-        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);        
+        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
+        // echo '<pre>';
+        // print_r($update_delivery_challan);
         if (isset($update_delivery_challan->serial_number) && $update_delivery_challan->challan_status == 'completed') {
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
             $allorder = $update_delivery_challan;
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 //                            ->with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->first();
 
-            $total_vat_amount = 0;            
+            $total_vat_amount = 0;
 
             foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
                 if ($delivery_challan_products->vat_percentage > 0) {
@@ -1511,7 +1508,7 @@ class DeliveryChallanController extends Controller {
             $profile_present = 0;
             $total_vat_amount = 0;
             $product_type_id = "";
-            if (isset($update_delivery_challan->delivery_challan_products) && count($update_delivery_challan->delivery_challan_products) > 0) {
+            if (isset($update_delivery_challan->delivery_challan_products) && count((array)$update_delivery_challan->delivery_challan_products) > 0) {
                 foreach ($update_delivery_challan->delivery_challan_products as $key => $delivery_challan_products) {
 //                   dd($delivery_challan_products['order_product_all_details']);
                     if(isset($delivery_challan_products['order_product_all_details']) && isset($delivery_challan_products['order_product_all_details']['product_category'])){
@@ -1544,14 +1541,14 @@ class DeliveryChallanController extends Controller {
             }
 
             $dc = DeliveryChallan::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
-
-            if (count($dc) <= 0) {
+            $number = '1';
+            if (count((array)$dc) <= 0) {
                 $number = '1';
             } else {
                 $serial_numbers = [];
                 foreach ($dc as $temp) {
                     $list = explode("/", $temp->serial_number);
-                    $serial_numbers[] = chop(chop($list[count($list) - 1], "P"), "A");
+                    $serial_numbers[] = chop(chop($list[count((array)$list) - 1], "P"), "A");
                     $pri_id = max($serial_numbers);
                     $number = $pri_id + 1;
                 }
@@ -1564,7 +1561,7 @@ class DeliveryChallanController extends Controller {
                             $modified_id = $number;
                         } else {
                             $list = explode("/", $connected_dc->serial_number);
-                            $modified_id = substr($list[count($list) - 1], 0, -1);
+                            $modified_id = substr($list[count((array)$list) - 1], 0, -1);
                             $modified_str = explode("V", $modified_id);
                             $modified_id = $modified_str[0];
                         }
@@ -1579,7 +1576,7 @@ class DeliveryChallanController extends Controller {
                             $modified_id = $number;
                         } else {
                             $list = explode("/", $connected_dc->serial_number);
-                            $modified_id = substr($list[count($list) - 1], 0, -1);
+                            $modified_id = substr($list[count((array)$list) - 1], 0, -1);
                             $modified_str = explode("V", $modified_id);
                             $modified_id = $modified_str[0];
                         }
@@ -1587,13 +1584,13 @@ class DeliveryChallanController extends Controller {
                         $modified_id = $number;
                     }
                 }
-            }            
+            }
 
 //            if ($update_delivery_challan->ref_delivery_challan_id == 0) {
 //                $modified_id = $id;
 //            } else {
 //                $modified_id = $update_delivery_challan->ref_delivery_challan_id;
-//            }                        
+//            }
             if($profile_present>0){
                 $suffix = 'VP';
             }
@@ -1608,7 +1605,7 @@ class DeliveryChallanController extends Controller {
             $update_delivery_challan->challan_status = 'completed';
             $update_delivery_challan->save();
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
-// //            $this->checkpending_quantity(); 
+// //            $this->checkpending_quantity();
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
 ////                            ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 //                            ->with('delivery_challan_products.order_product_details', 'customer','delivery_order.location')->first();
@@ -1637,9 +1634,9 @@ class DeliveryChallanController extends Controller {
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
             ]);
-            
-            
-            
+
+
+
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
@@ -1647,7 +1644,8 @@ class DeliveryChallanController extends Controller {
         }
 
         /* inventory code */
-        $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
+        // $product_categories = AllOrderProducts::where('order_id', $id)->where('order_type', 'delivery_challan')->get();
+        $product_categories = DB::table('all_order_products')->where('order_id', $id)->where('order_type', 'delivery_challan')->get();
         foreach ($product_categories as $product_categoriy) {
             $product_category_ids[] = $product_categoriy->product_category_id;
         }
@@ -1678,7 +1676,7 @@ class DeliveryChallanController extends Controller {
             if ($send_sms == 'true') {
                 $customer_id = $allorder->customer_id;
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
                     foreach ($input_data as $product_data) {
@@ -1707,7 +1705,7 @@ class DeliveryChallanController extends Controller {
                         curl_close($ch);
                     }
                 }
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . "  has dispatched material for  " . $customer->owner_name . " as follows\n " . $s;
 
@@ -1728,7 +1726,7 @@ class DeliveryChallanController extends Controller {
                 }
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['delivery_challan', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1748,12 +1746,12 @@ class DeliveryChallanController extends Controller {
             }
             if (isset($temp_var)) {
                 $amont = $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
-                
+
 
                 if (in_array($temp_var, $hsn_list)) {
-                    foreach ($hsn_data as $key => $value) {                        
+                    foreach ($hsn_data as $key => $value) {
                         if ($temp_var == $value['id']) {
-                            
+
                             $actual_quantity = $value['actual_quantity']+$delivery_challan_products->actual_quantity;
                             $final_amount = $value['amount']+$amont;
                             if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
@@ -1766,7 +1764,7 @@ class DeliveryChallanController extends Controller {
                             }
                             else{
                                 $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
-                            }                            
+                            }
 
                             $hsn_data[$key] = [
                                 'id' => $temp_var,
@@ -1777,7 +1775,7 @@ class DeliveryChallanController extends Controller {
                             ];
                         }
                     }
-                } else { 
+                } else {
                     if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
                         $hsn_list[] = $temp_var;
                         if($delivery_challan_products->vat_percentage == 1){
@@ -1788,7 +1786,7 @@ class DeliveryChallanController extends Controller {
                                 'amount' => $amont,
                                 'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
                             ];
-                        }else{                            
+                        }else{
                             $hsn_data[] = [
                                 'id' => $temp_var,
                                 'vat_percentage' => 0,
@@ -1797,7 +1795,7 @@ class DeliveryChallanController extends Controller {
                                 'vat_amount' => 0,
                             ];
                         }
-                        
+
                     }else{
                         $hsn_list[] = $temp_var;
                         $hsn_data[] = [
@@ -1807,14 +1805,14 @@ class DeliveryChallanController extends Controller {
                             'amount' => $amont,
                             'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
                         ];
-                    }                    
+                    }
                 }
             }
         }
 
         $update_delivery_challan['hsn'] = $hsn_data;
         return $update_delivery_challan;
-        
+
     }
 
     function calc_qty_product_type_wise($update_delivery_challan) {
@@ -2026,7 +2024,7 @@ class DeliveryChallanController extends Controller {
                 $no = floor($no / $divider);
                 $i += ($divider == 10) ? 1 : 2;
                 if ($number) {
-                    $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                    $plural = (($counter = count((array)$str)) && $number > 9) ? 's' : null;
                     $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
                     $str [] = ($number < 21) ? $words[$number] .
                             " " . $digits[$counter] . $plural . " " . $hundred :
@@ -2071,7 +2069,7 @@ class DeliveryChallanController extends Controller {
                 $no = floor($no / $divider);
                 $i += ($divider == 10) ? 1 : 2;
                 if ($number) {
-                    $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                    $plural = (($counter = count((array)$str)) && $number > 9) ? 's' : null;
                     $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
                     $str [] = ($number < 21) ? $words[$number] .
                             " " . $digits[$counter] . $plural . " " . $hundred :
@@ -2199,9 +2197,9 @@ class DeliveryChallanController extends Controller {
                     ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->orderBy('updated_at', 'desc')->get();
             }
         }
-        
 
-        if (count($delivery_challan_objects) == 0) {
+
+        if (count((array)$delivery_challan_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
             Excel::create($excel_name, function($excel) use($delivery_challan_objects, $excel_sheet_name) {
@@ -2214,13 +2212,13 @@ class DeliveryChallanController extends Controller {
 
     function checkpending_quantity1($delivery_orders) {
 
-        if (count($delivery_orders) > 0) {
+        if (count((array)$delivery_orders) > 0) {
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
                 $pending_order_temp = 0;
                 $pending_order = 0;
-                if (count($del_order['delivery_product']) > 0) {
+                if (count((array)$del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
                         $product_size = ProductSubCategory::find($popv->product_category_id);
                         if ($popv->unit_id == 1) {
@@ -2288,7 +2286,7 @@ class DeliveryChallanController extends Controller {
 //        print_r($delivery_orders->toArray());
 //        echo "</pre>";
 //        exit;
-//        
+//
 //        exit;
         return $delivery_orders;
     }

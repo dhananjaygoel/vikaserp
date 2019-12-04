@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Session;
                         <form data-button="sendSMSPurchaseOrder" id="onenter_prevent" method="POST" action="{{URL::action('PurchaseOrderController@store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">                                                        
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -487,5 +487,5 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 </div>
-{{--  @include('autocomplete_tally_product_name')  --}}
+<!-- {{--  @include('autocomplete_tally_product_name')  --}} -->
 @stop

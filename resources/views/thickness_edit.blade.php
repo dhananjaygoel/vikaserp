@@ -24,7 +24,7 @@
                             <hr>
                             {!! Form::open(array('method'=>'PUT','url'=>url('thickness',$state->id), 'id'=>''))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                                 <div role="alert" class="alert alert-warning">
                                     <ul>
                                         @foreach ($errors->all() as $error)

@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}">Home</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
                     <li class="active">Receipt Master</li>
                 </ol>
                 <div class="clearfix">
@@ -36,7 +36,7 @@
                         {!! Form::open(array('id'=>'add_receipt','method'=>'post','action'=>'ReceiptMasterController@store'))!!}
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="receipt_type" value="{{$type}}">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
                             @foreach ($errors->all() as $error)
@@ -182,7 +182,7 @@
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" id="add_receipt_btn" >Submit</button>
-                                <a href="{{url()}}/receipt-master" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('/')}}/receipt-master" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                             <!--</form>-->

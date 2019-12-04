@@ -7,8 +7,8 @@
     }
 </style>
 <div class="row">
-    <div class="col-lg-12">        
-        <div class="row">            
+    <div class="col-lg-12">
+        <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="{{url('dashboard')}}">Home</a></li>
@@ -33,7 +33,7 @@
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             </span>
-                        </div>                        
+                        </div>
                     </form>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        @if(sizeof($territories) ==0)                        
+                        @if(sizeof($territories) ==0)
                         <div class="alert alert-info no_data_msg_container">
                             Currently no territories have been added.
                         </div>
@@ -68,28 +68,28 @@
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">#</th>
-                                        <th class="col-md-9">Territory Name</th>                                        
+                                        <th class="col-md-9">Territory Name</th>
                                         @if( Auth::user()->role_id == 0 )
                                         <th class="text-center">Actions</th>
                                         @endif
                                     </tr>
                                 </thead>
-                                <tbody>          
+                                <tbody>
                                     <?php $i = 1 ?>
                                     @foreach($territories as $territory)
-                                    <tr>                            
+                                    <tr>
                                         <td class="col-md-1">{{$i++}}</td>
                                         <td>{{$territory->teritory_name}}</td>
-                                        
+
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
-                                            <a href="{{ Url::action('TerritoryController@show', ['id' => $territory->id]) }}" class="table-link" title="view">
+                                            <a href="{{ Url::action('TerritoryController@show', ['territory' => $territory->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a title="Edit" href="{{ Url::action('TerritoryController@edit', ['id' => $territory->id]) }}" class="table-link">
+                                            <a title="Edit" href="{{ Url::action('TerritoryController@edit', ['territory' => $territory->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -104,21 +104,21 @@
                                         </td>
                                         @endif
                                     </tr>
-                                                                        
+
                                     @endforeach
                                 </tbody>
                             </table>
                             <span class="pull-right">
                                 <?php echo $territories->render(); ?>
                             </span>
-                            <div class="clearfix"></div>                          
+                            <div class="clearfix"></div>
                         </div>
                         @endif
                     </div>
                 </div>
             </div>
         </div>
-        
+
 
     </div>
 </div>
@@ -151,7 +151,7 @@
                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
                 </div>
             </div>
-            
+
             <div class="modal-footer">
 
                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>

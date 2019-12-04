@@ -165,7 +165,7 @@
                                                                     ?>
                                                                 @endforeach
                                                             @endif
-                                                            {{count($lb_arr)}}
+                                                            {{count((array)$lb_arr)}}
                                                         </td>
                                                         <td>
                                                             @if(isset($daybook['challan_labours']))
@@ -177,7 +177,7 @@
                                                                     ?>
                                                                 @endforeach
                                                             @endif
-                                                            {{count($lbr_arr)}}
+                                                            {{count((array)$lbr_arr)}}
                                                         </td>
                                                         <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
                                                         <td>{{ $daybook->grand_total}}</td>

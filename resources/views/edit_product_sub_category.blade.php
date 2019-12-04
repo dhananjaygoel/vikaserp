@@ -19,7 +19,7 @@
             <div class="col-lg-12">
                 <div class="main-box">                     
                     <div class="main-box-body clearfix">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning"> 
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             @foreach ($errors->all() as $error)
@@ -38,7 +38,7 @@
                         {!!Form::open(array('method'=>'PUT','url'=>url('product_sub_category/'.$prod_sub_cat->id),'id'=>''))!!}
 
                         <div class="form-group productcategory col-md-3">
-                            <input type="hidden" name="baseurl" id="baseurl2" value="{{url()}}" /> 
+                            <input type="hidden" name="baseurl" id="baseurl2" value="{{url('/')}}" /> 
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="units" id="units" value="{{$units->id}}">
                             <label for="status">Select Product Category<span class="mandatory">*</span></label>
@@ -135,7 +135,7 @@
                         <hr>
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                            <a href="{{url()}}/product_sub_category" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('/')}}/product_sub_category" class="btn btn-default form_button_footer">Back</a>
                         </div>
                         <div class="clearfix"></div>
                         {!!Form::close()!!}

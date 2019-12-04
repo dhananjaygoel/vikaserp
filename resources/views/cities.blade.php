@@ -60,7 +60,7 @@
                                         <td>{{$cities_data->city_name}}</td>
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
-                                            <a href="{{ Url::action('CityController@edit', ['id' => $cities_data->id]) }}" class="table-link">
+                                            <a href="{{ Url::action('CityController@edit', ['city' => $cities_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -79,7 +79,7 @@
 
                                 <div class="modal fade" id="delete_city_modal_{{$cities_data->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        {!! Form::open(array('method'=>'DELETE','url'=>url('city',$cities_data->id), 'id'=>'delete_city_form'))!!}
+                                        {!! Form::open(array('method'=>'DELETE','url'=>url('city',$cities_data->id), 'city'=>'delete_city_form'))!!}
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -119,7 +119,7 @@
                                 <?php echo $cities->render(); ?>
                             </span>
                              <span class="clearfix"></span>
-                            
+
                             @if($cities->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('city')}}" id="filter_search">
@@ -132,8 +132,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
 
                         </div>
                         @endif

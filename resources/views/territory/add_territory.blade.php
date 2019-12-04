@@ -38,7 +38,7 @@
                         <hr>
                         <form id="" method="POST" action="{{URL::action('TerritoryController@store')}}">
 
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

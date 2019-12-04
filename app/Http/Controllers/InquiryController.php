@@ -38,11 +38,6 @@ class InquiryController extends Controller {
     public function __construct() {
 
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP', ['except' => ['create', 'store', 'fetch_existing_customer', 'fetch_products']]);
     }
 
@@ -59,24 +54,24 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id <> 5) {
-           
+
             if ((isset($data['inquiry_filter'])) && $data['inquiry_filter'] != '') {
-                
+
                 if ($data['inquiry_filter'] == 'Approval') {
-                   
+
                     $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
                             ->where('is_approved', '=', 'no')
                             ->where('inquiry_status', '=', 'pending')
                             ->orderBy('created_at', 'desc')
                             ->paginate(20);
                 } else {
-                  
-     
+
+
                     $inquiries = Inquiry::where('inquiry_status', '=', $data['inquiry_filter'])->with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')->orderBy('created_at', 'desc')->where('is_approved', '=', 'yes')->Paginate(20);
-                    
+
                 }
             } else {
-             
+
                 $inquiries = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'inquiry_products.unit', 'createdby')
                         ->where('inquiry_status', 'pending')
                         ->orderBy('created_at', 'desc')
@@ -90,7 +85,7 @@ class InquiryController extends Controller {
                     ->where('email', '=', Auth::user()->email)
                     ->first();
 
-            if (count($cust) <= 0) {
+            if (count((array)$cust) <= 0) {
                 $cust = Customer::where('phone_number1', '=', Auth::user()->mobile_number)
                         ->where('email', '=', Auth::user()->email)
                         ->first();
@@ -109,7 +104,7 @@ class InquiryController extends Controller {
                         ->Paginate(20);
             }
         }
-       
+
 //        $non_approved_inquiry = Inquiry::with('customer', 'delivery_location', 'inquiry_products.inquiry_product_details', 'createdby')
 //                ->where('is_approved', '=', 'no')
 //                ->where('inquiry_status', '=', 'pending')
@@ -145,7 +140,7 @@ class InquiryController extends Controller {
 
             $inquiry = Customer::with('delivery_location')->find($cust->id);
 
-            if (count($inquiry) < 1) {
+            if (count((array)$inquiry) < 1) {
                 return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
             }
         }
@@ -160,11 +155,11 @@ class InquiryController extends Controller {
      */
     public function store(InquiryRequest $request) {
 
-        $input_data = Input::all();     
+        $input_data = Input::all();
         $sms_flag = 0;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     //return Redirect::back()->with('flash_message', 'This inquiry is already saved. Please refresh the page');
                      $parameter = Session::get('parameters');
@@ -192,13 +187,13 @@ class InquiryController extends Controller {
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "" || $product_data['id'] == "" || $product_data['id'] <= 0) {
                 $i++;
             }
         }
-        
+
         if ($input_data['customer_status'] == "new_customer") {
             $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             if ($validator->passes()) {
@@ -213,7 +208,7 @@ class InquiryController extends Controller {
             if ($validator->passes()) {
                 $customer_id = $input_data['existing_customer_name'];
             } else {
-               
+
                 return Redirect::back()->withInput()->withErrors($validator);
             }
         }
@@ -247,7 +242,7 @@ class InquiryController extends Controller {
                 $inquiry_products = [
                     'inquiry_id' => $inquiry_id,
                     'product_category_id' => $product_data['id'],
-                    'unit_id' => $product_data['units'],                    
+                    'unit_id' => $product_data['units'],
                     'quantity' => $product_data['quantity'],
                     'length' => $length,
                     'price' => $product_data['price'],
@@ -271,7 +266,7 @@ class InquiryController extends Controller {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
                 foreach ($input_data['product'] as $product_data) {
@@ -314,7 +309,7 @@ class InquiryController extends Controller {
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an inquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
 //                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
                 if (App::environment('development')) {
@@ -333,7 +328,7 @@ class InquiryController extends Controller {
             }
         }
 
-        //         update sync table         
+        //         update sync table
         $tables = ['inquiry', 'customers', 'inquiry_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -367,7 +362,7 @@ class InquiryController extends Controller {
 
 
 
-        if (count($inquiry) < 1) {
+        if (count((array)$inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
         $flash_message = '';
@@ -384,7 +379,7 @@ class InquiryController extends Controller {
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer_id = $inquiry->customer_id;
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nPrices for your inquiry are as follows\n";
                 foreach ($input_data as $product_data) {
@@ -406,7 +401,7 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
             }
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for " . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -465,7 +460,7 @@ class InquiryController extends Controller {
         }
 
 
-        if (count($inquiry) < 1) {
+        if (count((array)$inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
         }
         $units = Units::all();
@@ -487,7 +482,7 @@ class InquiryController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_edit_inquiry')) {
             $session_array = Session::get('forms_edit_inquiry');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     // return Redirect::back()->with('flash_message_error', 'This inquiry is already updated. Please refresh the page');
                     return Redirect::back()->with('flash_message', 'Inquiry updated successfully');
@@ -512,7 +507,7 @@ class InquiryController extends Controller {
         $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -571,7 +566,7 @@ class InquiryController extends Controller {
             $location_difference = $input_data['location_difference'];
         }
         $inquiry = Inquiry::find($id);
-        if (count($inquiry) == 0) {
+        if (count((array)$inquiry) == 0) {
             return redirect('inquiry')->with('flash_message', 'Inquiry details Rejected.');
         }
 
@@ -606,7 +601,7 @@ class InquiryController extends Controller {
                 } else {
                     $length = '';
                 }
-                
+
                 $inquiry_products = [
                     'inquiry_id' => $id,
                     'product_category_id' => $product_data['id'],
@@ -642,7 +637,7 @@ class InquiryController extends Controller {
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items.";
                     foreach ($input_data['product'] as $product_data) {
@@ -666,7 +661,7 @@ class InquiryController extends Controller {
                         curl_close($ch);
                     }
 
-                    if (count($customer['manager']) > 0) {
+                    if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -686,7 +681,7 @@ class InquiryController extends Controller {
 //            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             } else {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for foll.";
                     foreach ($input_data['product'] as $product_data) {
@@ -710,7 +705,7 @@ class InquiryController extends Controller {
                         curl_close($ch);
                     }
 
-                    if (count($customer['manager']) > 0) {
+                    if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -729,7 +724,7 @@ class InquiryController extends Controller {
                 }
             }
         }
-//         update sync table         
+//         update sync table
         $tables = ['inquiry', 'customers', 'inquiry_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -751,7 +746,7 @@ class InquiryController extends Controller {
         }
 
         $inquiry_filter=Input::get('inquiry_sort_type')!=""?Input::get('inquiry_sort_type'):"";
-        
+
         if (Input::has('inquiry_id') && Input::has('password') && (Hash::check(Input::get('password'), Auth::user()->password))) {
             $sms_flag = 0;
 
@@ -767,7 +762,7 @@ class InquiryController extends Controller {
                     }
                 }
                 /**/
-                if (count($customer) > 0 && $sms_flag == 1) {
+                if (count((array)$customer) > 0 && $sms_flag == 1) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items.\n";
                     foreach ($input_data as $product_data) {
@@ -792,7 +787,7 @@ class InquiryController extends Controller {
                         curl_close($ch);
                     }
 
-                    if (count($customer['manager']) > 0) {
+                    if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has rejected an inquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -834,7 +829,7 @@ class InquiryController extends Controller {
 
             $tally_name_search = substr($term, strpos($term, " - ") + strlen(" - "));
             $term = '%' . $term . '%';
-//            $tally_name_search = '%' . $tally_name_search . '%';           
+//            $tally_name_search = '%' . $tally_name_search . '%';
 
 
             $customers = Customer::where(function($query) use($term) {
@@ -855,7 +850,7 @@ class InquiryController extends Controller {
             $customers = Customer::with('delivery_location')->where('tally_name', '<>', '')->orderBy('tally_name', 'ASC')->select(DB::raw('CONCAT(id," - ",tally_name) AS value'), 'id AS id', 'delivery_location_id AS delivery_location_id')->get();
         }
 
-//        if (count($customers) > 0) {
+//        if (count((array)$customers) > 0) {
 //            foreach ($customers as $customer) {
 //                $data_array[] = [
 //                    'value' =>$customer->tally_name,
@@ -864,8 +859,8 @@ class InquiryController extends Controller {
 //                    'location_difference' =>  $customer['deliverylocation']->difference,
 //                ];
 //            }
-//           
-//            
+//
+//
 //        } else {
 //            $customers[] = [ 'value' => 'No Customers'];
 //        }
@@ -895,12 +890,12 @@ class InquiryController extends Controller {
 //                            })
 //                            ->orderBy('alias_name')->get();
 //
-//            if (count($products) > 0) {
+//            if (count((array)$products) > 0) {
 //                foreach ($products as $product) {
 //                    $cust = 0;
 //                    if ($customer_id > 0) {
 //                        $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-//                        if (count($customer) > 0) {
+//                        if (count((array)$customer) > 0) {
 //                            $cust = $customer->difference_amount;
 //                        }
 //                    }
@@ -915,7 +910,7 @@ class InquiryController extends Controller {
 //            }
 //        } elseif ($term == '') {
 //            $products = \App\ProductType::get();
-//            if (count($products) > 0) {
+//            if (count((array)$products) > 0) {
 //
 //                foreach ($products as $product) {
 //                    $data_array[] = [
@@ -941,7 +936,7 @@ class InquiryController extends Controller {
 //
 //            if ($level == 1) {
 //                $products = \App\ProductCategory::where('product_type_id', '=', $id)->get();
-//                if (count($products) > 0) {
+//                if (count((array)$products) > 0) {
 //                    $data_array[] = [
 //                        'value' => '<-- Back',
 //                        'id' => '0',
@@ -970,7 +965,7 @@ class InquiryController extends Controller {
 //                    $type_id = $products[0]['product_category']['product_type_id'];
 //                }
 //
-//                if (count($products) > 0) {
+//                if (count((array)$products) > 0) {
 //                    $data_array[] = [
 //                        'value' => '<-- Back',
 //                        'id' => $type_id,
@@ -995,7 +990,7 @@ class InquiryController extends Controller {
 //                    $cust = 0;
 //                    if ($customer_id > 0) {
 //                        $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-//                        if (count($customer) > 0) {
+//                        if (count((array)$customer) > 0) {
 //                            $cust = $customer->difference_amount;
 //                        }
 //                    }
@@ -1040,16 +1035,16 @@ class InquiryController extends Controller {
                             // })
                             ->orderBy('alias_name')->get();
            }
-            if (count($products) > 0) {                
+            if (count((array)$products) > 0) {
                 foreach ($products as $product) {
-                    $cust = 0;                    
+                    $cust = 0;
                     if ($customer_id > 0) {
                         $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                        if (count($customer) > 0) {
+                        if (count((array)$customer) > 0) {
                             $cust = $customer->difference_amount;
                         }
                     }
-                    if($discount!="" && $discount>0 ){                        
+                    if($discount!="" && $discount>0 ){
                         if($discount_type=='discount'){
                             if($discount_unit=='fixed'){
                                 $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
@@ -1062,9 +1057,9 @@ class InquiryController extends Controller {
                                 $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
                             }elseif($discount_unit=='percent'){
                                 $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
-                            }        
+                            }
                         }
-                    }else{                        
+                    }else{
                         $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference;
                     }
                     $data_array[] = [
@@ -1079,7 +1074,7 @@ class InquiryController extends Controller {
             }
         } elseif ($term == '') {
             $products = \App\ProductType::get();
-            if (count($products) > 0) {
+            if (count((array)$products) > 0) {
 
                 foreach ($products as $product) {
                     $data_array[] = [
@@ -1097,7 +1092,7 @@ class InquiryController extends Controller {
             if(isset($data[1]) && isset($data[2])){
                 $level = $data[1];
                 $id = $data[2];
-            }            
+            }
             if (Input::hasFile('level')) {
                 $level = Input::get('level');
             }
@@ -1106,7 +1101,7 @@ class InquiryController extends Controller {
             }
             if ($level == 1) {
                 $products = \App\ProductCategory::where('product_type_id', '=', $id)->get();
-                if (count($products) > 0) {
+                if (count((array)$products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
                         'id' => '0',
@@ -1139,14 +1134,14 @@ class InquiryController extends Controller {
                         ->orderBy('size', 'asc')
                         ->groupBy('size')
                         ->selectRaw('size, group_concat(id) ids,product_category_id')
-                        ->get();                
+                        ->get();
                 $type_id = 1;
-                
+
                 if (isset($products[0]['product_category']->product_type_id)) {
                     $type_id = $products[0]['product_category']->product_type_id;
                 }
 
-                if (count($products) > 0) {
+                if (count((array)$products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
                         'id' => $type_id,
@@ -1181,7 +1176,7 @@ class InquiryController extends Controller {
                     $cat_id = $products[0]['product_category']->product_type_id;
                 }
 
-                if (count($products) > 0) {
+                if (count((array)$products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
                         'id' => $type_id,
@@ -1205,13 +1200,13 @@ class InquiryController extends Controller {
                     $data_array[] = [ 'value' => 'No Products'];
                 }
             }
-            if ($level == 4) {                
+            if ($level == 4) {
                 $products = \App\ProductSubCategory::where('id', '=', $id)->get();
                 foreach ($products as $product) {
                     $cust = 0;
                     if ($customer_id > 0) {
                         $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                        if (count($customer) > 0) {
+                        if (count((array)$customer) > 0) {
                             $cust = $customer->difference_amount;
                         }
                     }
@@ -1245,10 +1240,10 @@ class InquiryController extends Controller {
         if($discount_unit==""){
             $discount_unit='fixed';
         }
-        
+
         if($discount==""){
             $discount=0;
-        }        
+        }
         $location_diff = 0;
         $product_price = 0;
         $location_diff = Input::get('location_difference');
@@ -1257,14 +1252,14 @@ class InquiryController extends Controller {
         }
         $term = Input::get('term');
         if(isset($product_id) && $product_id!=""){
-            $product = ProductSubCategory::find($product_id);        
+            $product = ProductSubCategory::find($product_id);
             $cust = 0;
             if ($customer_id > 0) {
                 $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $cust = $customer->difference_amount;
                 }
-            }        
+            }
             if($discount_type=='discount'){
                 if($discount_unit=='fixed'){
                     $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
@@ -1288,9 +1283,9 @@ class InquiryController extends Controller {
             $data_array[] = [ 'value' => 0,
                 'id' => 0,
                 'product_price' => $product_price,
-            ]; 
+            ];
         }
-        
+
         echo json_encode(array('data_array' => $data_array));
     }
 
@@ -1328,7 +1323,7 @@ class InquiryController extends Controller {
         }
 
 
-        if (count($inquiry) < 1) {
+        if (count((array)$inquiry) < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
         // echo '<pre>';
@@ -1353,7 +1348,7 @@ class InquiryController extends Controller {
         $inquiry = Inquiry::find($id);
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
                 } else {
@@ -1371,7 +1366,7 @@ class InquiryController extends Controller {
         $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
         $datetime = new DateTime($date);
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -1392,7 +1387,7 @@ class InquiryController extends Controller {
                 'customer_name' => 'required|min:2|max:100',
                 'contact_person' => 'required|min:2|max:100',
                 'mobile_number'=>'numeric|digits:10|required|unique:customers,phone_number1'.($cust_id?",$cust_id":''),
-                'credit_period' => 'integer|required', 
+                'credit_period' => 'integer|required',
             ]);
             // $validator = Validator::make($input_data, Customer::$new_customer_inquiry_rules);
             // if ($validator->passes()) {
@@ -1487,7 +1482,7 @@ class InquiryController extends Controller {
 //      if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour order has been logged for following \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -1527,7 +1522,7 @@ class InquiryController extends Controller {
                     curl_close($ch);
                 }
             }
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . " '" . round($total_quantity, 2) . "'. Kindly check. Vikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -1593,8 +1588,8 @@ class InquiryController extends Controller {
             $customers = Customer::find($customer_id);
             if (!filter_var($customers->email, FILTER_VALIDATE_EMAIL) === false) {
                 $order = Order::with('all_order_products.order_product_details', 'delivery_location')->find($order_id);
-                if (count($order) > 0) {
-                    $delivery_location = (count($order['delivery_location']) > 0) ? $order['delivery_location']->area_name : $order->other_location;
+                if (count((array)$order) > 0) {
+                    $delivery_location = (count((array)$order['delivery_location']) > 0) ? $order['delivery_location']->area_name : $order->other_location;
                     $mail_array = array(
                         'customer_name' => $customers->owner_name,
                         'expected_delivery_date' => $order->expected_delivery_date,
@@ -1618,7 +1613,7 @@ class InquiryController extends Controller {
             }
         }
         Inquiry::where('id', '=', $id)->update(['inquiry_status' => 'Completed']);
-        //         update sync table         
+        //         update sync table
         $tables = ['inquiry', 'customers', 'inquiry_products', 'orders', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1659,7 +1654,7 @@ class InquiryController extends Controller {
                 ->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')
                 ->orderBy('created_at', 'desc')
                 ->get();
-        if (count($inquiry_objects) == 0) {
+        if (count((array)$inquiry_objects) == 0) {
             return redirect::back()->with('flash_message', 'No data found');
         } else {
             $delivery_location = DeliveryLocation::all();

@@ -82,7 +82,7 @@
                                         </td>
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
-                                            <a title="Edit" href="{{ Url::action('DeliveryLocationController@edit', ['id' => $location_data->id]) }}" class="table-link">
+                                            <a title="Edit" href="{{ Url::action('DeliveryLocationController@edit', ['location' => $location_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -107,7 +107,7 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('location',$location_data->id), 'id'=>'delete_location_form'))!!}
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('location',$location_data->id), 'location'=>'delete_location_form'))!!}
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">

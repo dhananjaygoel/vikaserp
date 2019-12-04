@@ -21,13 +21,13 @@ header('Content-Type: text/html');?>
                             <div class="col-xs-12">
                                 <header id="login-header">
                                     <div id="login-logo">
-                                        {!! HTML::image('/resources/assets/img/logo.png' , 'Logo') !!}
+                                        {!! HTML::image('assets/img/logo.png' , 'Logo') !!}
                                     </div>
                                 </header>
 
                                 <div id="login-box-inner">
-                                    <form action="{{ url('/auth/login') }}" method="POST">
-                                        @if (count($errors) > 0)
+                                    <form action="{{ route('login') }}" method="POST">
+                                        @if (count($errors->all()) > 0)
                                         <div class="alert alert-danger">
                                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
                                             <ul>
@@ -56,7 +56,7 @@ header('Content-Type: text/html');?>
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <a href="{{ url('/password/email') }}" id="login-forget-link" class="col-xs-6">
+                                                <a href="{{ url('/password/reset') }}" id="login-forget-link" class="col-xs-6">
                                                     Forgot password?
                                                 </a>
                                             </div>
@@ -66,7 +66,7 @@ header('Content-Type: text/html');?>
                                                 <button type="submit" class="btn btn-success col-xs-12" >Login</button>
                                             </div>
                                         </div>
-                                         
+
                                     </form>
                                 </div>
                             </div>

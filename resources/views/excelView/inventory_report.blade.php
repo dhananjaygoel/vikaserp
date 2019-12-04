@@ -1,6 +1,6 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('/resources/assets/css/custom_style/excel-export-table.css') !!}
+    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
     
     <table id="day-wise" class="table table-bordered text-center complex-data-table">
         <tbody>

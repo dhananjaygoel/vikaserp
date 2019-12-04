@@ -3,7 +3,7 @@
 use \Mockery as m;
 use Rollbar\Payload\Body;
 
-class BodyTest extends \PHPUnit_Framework_TestCase
+class BodyTest extends BaseRollbarTest
 {
     public function testBodyValue()
     {
@@ -15,16 +15,34 @@ class BodyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($mock2, $body->setValue($mock2)->getValue());
     }
 
-    public function testEncode()
+    public function testExtra()
     {
         $value = m::mock("Rollbar\Payload\ContentInterface")
-            ->shouldReceive("jsonSerialize")
+            ->shouldReceive("serialize")
             ->andReturn("{CONTENT}")
             ->shouldReceive("getKey")
             ->andReturn("content_interface")
             ->mock();
-        $body = new Body($value);
-        $encoded = json_encode($body->jsonSerialize());
-        $this->assertEquals("{\"content_interface\":\"{CONTENT}\"}", $encoded);
+        $expected = array(
+            "hello" => "world"
+        );
+        $body = new Body($value, $expected);
+        $this->assertEquals($body->getExtra(), $expected);
+    }
+
+    public function testSerialize()
+    {
+        $value = m::mock("Rollbar\Payload\ContentInterface")
+            ->shouldReceive("serialize")
+            ->andReturn("{CONTENT}")
+            ->shouldReceive("getKey")
+            ->andReturn("content_interface")
+            ->mock();
+        $body = new Body($value, array('foo' => 'bar'));
+        $encoded = json_encode($body->serialize());
+        $this->assertEquals(
+            "{\"content_interface\":\"{CONTENT}\",\"extra\":{\"foo\":\"bar\"}}",
+            $encoded
+        );
     }
 }

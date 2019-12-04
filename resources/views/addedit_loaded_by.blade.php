@@ -20,7 +20,7 @@
                             {!! Form::open(array('id'=>'add_loaded_by','method'=>'post','action'=>'LoadByController@store'))!!}
                         @endif
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="position: relative;"><span aria-hidden="true">&times;</span></button>
                                 <ul>

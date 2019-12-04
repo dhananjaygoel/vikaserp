@@ -67,7 +67,7 @@
                                     <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('error') }}</div>
                                 @endif
 
-                                @if (count($errors) > 0)
+                                @if (count($errors->all()) > 0)
                                     <div role="alert" class="alert alert-danger">
                                         @foreach ($errors->all() as $error)
                                             <p>{{ $error }}</p>
@@ -112,7 +112,7 @@
                                             @foreach($allorders as $challan)
 
                                                 <?php $lb_arr = []; $lbr_arr=[];
-                                                    
+
 
                                                 ?>
                                                 <tr class="add_product_row">
@@ -170,7 +170,7 @@
                                                                 ?>
                                                             @endforeach
                                                         @endif
-                                                        {{count($lb_arr)}}
+                                                        {{count((array)$lb_arr)}}
                                                     </td> -->
                                                     <!-- <td>
                                                         @if(isset($challan['challan_labours']))
@@ -182,11 +182,11 @@
                                                                 ?>
                                                             @endforeach
                                                         @endif
-                                                        {{count($lbr_arr)}}
+                                                        {{count((array)$lbr_arr)}}
                                                     </td> -->
                                                     <td>
                                                         <?php
-                                                     
+
                                                         /*foreach ($challan["delivery_challan_products"] as $products) {
                                                             print_r($products['order_product_details']->alias_name);
                                                         }*/
@@ -235,7 +235,7 @@
                                                             </span>
                                                         </a>
                                                             <!-- @if(Auth::user()->role_id == 0)
-                                                            <a href="{{URL::action('DeliveryChallanController@edit', ['id'=> $challan->id,'task'=> 'daily_pro'])}}" class="table-link" title="edit">
+                                                            <a href="{{URL::action('DeliveryChallanController@edit', ['delivery_challan'=> $challan->id,'task'=> 'daily_pro'])}}" class="table-link" title="edit">
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -288,14 +288,14 @@
                                                                 </span>
                                                             </a>
                                                             @endif
-                                                    
+
 
                                                     </td>
 
-                                                    
+
 
                                                 </tr>
-                                               
+
                                             @endforeach
                                             </tbody>
                                         </table>

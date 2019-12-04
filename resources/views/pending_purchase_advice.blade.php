@@ -37,7 +37,7 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
-                        @if(count($pending_advise) > 0)
+                        @if(count((array)$pending_advise) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>

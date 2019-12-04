@@ -1,17 +1,19 @@
 <?php namespace Rollbar\Payload;
 
-use Rollbar\Utilities;
-
-class Body implements \JsonSerializable
+class Body implements \Serializable
 {
     /**
      * @var ContentInterface
      */
     private $value;
+    private $utilities;
+    private $extra;
 
-    public function __construct(ContentInterface $value)
+    public function __construct(ContentInterface $value, array $extra = array())
     {
+        $this->utilities = new \Rollbar\Utilities();
         $this->setValue($value);
+        $this->setExtra($extra);
     }
 
     public function getValue()
@@ -24,13 +26,38 @@ class Body implements \JsonSerializable
         $this->value = $value;
         return $this;
     }
-
-    public function jsonSerialize()
+    
+    public function setExtra(array $extra)
     {
-        $overrideNames = array(
-            "value" => $this->value->getKey()
+        $this->extra = $extra;
+        return $this;
+    }
+    
+    public function getExtra()
+    {
+        return $this->extra;
+    }
+
+    public function serialize()
+    {
+        $result = array();
+        $result[$this->value->getKey()] = $this->value;
+        
+        if (!empty($this->extra)) {
+            $result['extra'] = $this->extra;
+        }
+        
+        $objectHashes = \Rollbar\Utilities::getObjectHashes();
+        
+        return $this->utilities->serializeForRollbar(
+            $result,
+            array('extra'),
+            $objectHashes
         );
-        $obj = get_object_vars($this);
-        return Utilities::serializeForRollbar($obj, $overrideNames);
+    }
+    
+    public function unserialize($serialized)
+    {
+        throw new \Exception('Not implemented yet.');
     }
 }

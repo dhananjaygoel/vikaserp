@@ -19,7 +19,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         {!! Form::open(array('data-button'=>'sendSMSEditPurchaseOrder','method'=>'PUT','url'=>url('purchase_orders',$purchase_order->id), 'id'=>'onenter_prevent'))!!}
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -497,5 +497,5 @@
     </div>
 </div>
 </div>
-{{-- @include('autocomplete_tally_product_name') --}}
+<!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @stop

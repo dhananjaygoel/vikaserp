@@ -1,11 +1,9 @@
 <?php namespace Rollbar\Payload;
 
-use Rollbar\Utilities;
-
-class Notifier implements \JsonSerializable
+class Notifier implements \Serializable
 {
     const NAME = "rollbar-php";
-    const VERSION = "1.0.1";
+    const VERSION = "1.8.1";
 
     public static function defaultNotifier()
     {
@@ -14,9 +12,11 @@ class Notifier implements \JsonSerializable
 
     private $name;
     private $version;
+    private $utilities;
 
     public function __construct($name, $version)
     {
+        $this->utilities = new \Rollbar\Utilities();
         $this->setName($name);
         $this->setVersion($version);
     }
@@ -28,7 +28,6 @@ class Notifier implements \JsonSerializable
 
     public function setName($name)
     {
-        Utilities::validateString($name, "name", null, false);
         $this->name = $name;
         return $this;
     }
@@ -40,13 +39,24 @@ class Notifier implements \JsonSerializable
 
     public function setVersion($version)
     {
-        Utilities::validateString($version, "version", null, false);
         $this->version = $version;
         return $this;
     }
 
-    public function jsonSerialize()
+    public function serialize()
     {
-        return Utilities::serializeForRollbar(get_object_vars($this));
+        $result = array(
+            "name" => $this->name,
+            "version" => $this->version,
+        );
+        
+        $objectHashes = \Rollbar\Utilities::getObjectHashes();
+        
+        return $this->utilities->serializeForRollbar($result, null, $objectHashes);
+    }
+    
+    public function unserialize($serialized)
+    {
+        throw new \Exception('Not implemented yet.');
     }
 }

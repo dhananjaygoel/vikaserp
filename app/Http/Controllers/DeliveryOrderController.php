@@ -19,7 +19,6 @@ use App\Customer;
 use App\Units;
 use Input;
 use App;
-use Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -44,11 +43,6 @@ class DeliveryOrderController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('auth');
     }
 
@@ -102,7 +96,7 @@ class DeliveryOrderController extends Controller {
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
 
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-           
+
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if ($date1 == $date2) {
                 $q->where('created_at', 'like', $date1 . '%');
@@ -131,14 +125,14 @@ class DeliveryOrderController extends Controller {
                 ->paginate(20);
 
         //dd($delivery_data->toArray());
-        
+
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
 
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
-        Session::put('parameters', $parameters);        
+        Session::put('parameters', $parameters);
         return view('delivery_order', compact('delivery_data', 'search_dates'));
     }
 
@@ -164,7 +158,7 @@ class DeliveryOrderController extends Controller {
         $input_data = Input::all();
         if (Session::has('forms_delivery_order')) {
             $session_array = Session::get('forms_delivery_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('validation_message', 'This delivery order is already saved. Please refresh the page');
                 } else {
@@ -179,7 +173,7 @@ class DeliveryOrderController extends Controller {
         }
         $i = 0;
         $customer_id = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -225,7 +219,7 @@ class DeliveryOrderController extends Controller {
             $vat_price = $input_data['vat_price'];
         } else {
             $vat_price = 0;
-        }        
+        }
         $delivery_order = new DeliveryOrder();
         $delivery_order->order_id = 0;
         $delivery_order->order_source = 'warehouse';
@@ -237,14 +231,14 @@ class DeliveryOrderController extends Controller {
         $delivery_order->remarks = $input_data['order_remark'];
         $delivery_order->vehicle_number = $input_data['vehicle_number'];
         $delivery_order->driver_contact_no = $input_data['driver_contact'];
-        $delivery_order->order_status = "Pending";       
+        $delivery_order->order_status = "Pending";
         if (isset($input_data['add_order_location']) && ($input_data['add_order_location'] == "other")) {
             $delivery_order->other_location = $input_data['other_location_name'];
             $delivery_order->location_difference = $input_data['location_difference'];
         } else {
             $delivery_order->delivery_location_id = $input_data['add_order_location'];
             $delivery_order->location_difference = $input_data['location_difference'];
-        }        
+        }
         $delivery_order->save();
         $delivery_order_id = $delivery_order->id;
         $order_products = array();
@@ -264,7 +258,7 @@ class DeliveryOrderController extends Controller {
                 AllOrderProducts::create($order_products);
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['delivery_order', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -282,7 +276,7 @@ class DeliveryOrderController extends Controller {
         }
 
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->find($id);
-        if (count($delivery_data) < 1) {
+        if (count((array)$delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
 
@@ -306,10 +300,10 @@ class DeliveryOrderController extends Controller {
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
-        if (count($delivery_data) < 1) {
+        if (count((array)$delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
-       
+
 
         $customers = Customer::all();
         $pending_orders = $this->pending_quantity_order($id);
@@ -323,14 +317,14 @@ class DeliveryOrderController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
-         
+
 
         $input_data = Input::all();
-      
+
         $sms_flag = 0;
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('validation_message', 'This delivery order is already updated. Please refresh the page');
                     //   $parameter = Session::get('parameters');
@@ -400,7 +394,7 @@ class DeliveryOrderController extends Controller {
         } else {
             $vat_price = 0;
         }
-        
+
         $delivery_location = 0;
         $location = "";
         $other_location_difference = "";
@@ -425,7 +419,7 @@ class DeliveryOrderController extends Controller {
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'remarks' => isset($input_data['order_remark']) ? $input_data['order_remark'] : '',
             'vehicle_number' => $input_data['vehicle_number'],
-            'driver_contact_no' => $input_data['driver_contact'],  
+            'driver_contact_no' => $input_data['driver_contact'],
             'discount_type' => $input_data['discount_type'],
             'discount_unit' => $input_data['discount_unit'],
             'discount' => $input_data['discount'],
@@ -500,7 +494,7 @@ class DeliveryOrderController extends Controller {
         $customer_id = $delivery_order->customer_id;
         $customer = Customer::with('manager')->find($customer_id);
         if ($sms_flag == 1) {
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
@@ -528,7 +522,7 @@ class DeliveryOrderController extends Controller {
                     curl_close($ch);
                 }
             }
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited DO for " . $customer->owner_name . " as follows\n";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
@@ -558,7 +552,7 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-        //         update sync table         
+        //         update sync table
         $tables = ['delivery_order', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -604,7 +598,7 @@ class DeliveryOrderController extends Controller {
             $calc->inventoryCalc($product_category_ids);
 //            Session::put('order-sort-type', $order_sort_type);
 //            return array('message' => 'success');
-            //         update sync table         
+            //         update sync table
             $tables = ['delivery_order', 'all_order_products'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -689,7 +683,7 @@ class DeliveryOrderController extends Controller {
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
 
 
-        if (count($delivery_data) < 1) {
+        if (count((array)$delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
         if (empty($delivery_data['customer'])) {
@@ -716,7 +710,7 @@ class DeliveryOrderController extends Controller {
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
 
 
-        if (count($delivery_data) < 1) {
+        if (count((array)$delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
         if (empty($delivery_data['customer'])) {
@@ -728,7 +722,7 @@ class DeliveryOrderController extends Controller {
         $customers = Customer::all();
         $load_labours = LoadLabour::where('delivery_id',$id)->get();
         // $labours = Labour::where('type', '<>', 'sale')->get();
-        $labours = Labour::all(); 
+        $labours = Labour::all();
         $loaders = LoadedBy::where('type', '<>', 'sale')->get();
         $truckdetails = LoadTrucks::where('deliver_id', '=', $id)->get();
         $delboys = LoadDelboy::with('users')->where('delivery_id', '=', $id)->get();
@@ -742,7 +736,7 @@ class DeliveryOrderController extends Controller {
      */
 
     public function store_delivery_challan_vat_wise($input_data, $id = "", $refid = NULL) {
-        
+
         $delivery_challan = new DeliveryChallan();
         $delivery_challan->order_id = $input_data['order_id'];
         $delivery_challan->delivery_order_id = $id;
@@ -969,22 +963,22 @@ class DeliveryOrderController extends Controller {
             }
 
             if (isset($input_data['loaded_by_pipe'])) {
-                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count($input_data['loaded_by_pipe']);
+                $actual_qty['loaded_by_pipe'] = $actual_qty['pipe'] / count((array)$input_data['loaded_by_pipe']);
             }
             if (isset($input_data['loaded_by_structure'])) {
-                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count($input_data['loaded_by_structure']);
+                $actual_qty['loaded_by_structure'] = $actual_qty['structure'] / count((array)$input_data['loaded_by_structure']);
             }
             if (isset($input_data['loaded_by_profile'])) {
-                $actual_qty['loaded_by_profile'] = $actual_qty['sheet'] / count($input_data['loaded_by_profile']);
+                $actual_qty['loaded_by_profile'] = $actual_qty['sheet'] / count((array)$input_data['loaded_by_profile']);
             }
             if (isset($input_data['labour_pipe'])) {
-                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count($input_data['labour_pipe']);
+                $actual_qty['labour_pipe'] = $actual_qty['pipe'] / count((array)$input_data['labour_pipe']);
             }
             if (isset($input_data['labour_structure'])) {
-                $actual_qty['labour_structure'] = $actual_qty['structure'] / count($input_data['labour_structure']);
+                $actual_qty['labour_structure'] = $actual_qty['structure'] / count((array)$input_data['labour_structure']);
             }
             if (isset($input_data['labour_profile'])) {
-                $actual_qty['labour_profile'] = $actual_qty['sheet'] / count($input_data['labour_profile']);
+                $actual_qty['labour_profile'] = $actual_qty['sheet'] / count((array)$input_data['labour_profile']);
             }
         }
 
@@ -1026,7 +1020,7 @@ class DeliveryOrderController extends Controller {
          $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
          //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
          $delivery_order_details = DeliveryOrder::find($id);
-         
+
         if ($delivery_order_details->del_boy != ""){
              foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
                 $variable = 'truck_weight'.$info;
@@ -1046,9 +1040,9 @@ class DeliveryOrderController extends Controller {
                                 'product_id'  =>$serialize,
                                 'userid' => $delboy,
                                 'updated_at' => date("Y-m-d H:i:s"),
-                       
+
                            ];
-                           
+
                           LoadTrucks::insert($loadetrucks);
 
                           LoadDelboy::where('delivery_id', '=', $id)
@@ -1077,7 +1071,7 @@ class DeliveryOrderController extends Controller {
                                 }
                                 else{
                                         $serialize = "";
-                                } 
+                                }
                                 $loadetrucks[] = [
                                       'deliver_id' => $id,
                                       'empty_truck_weight' =>  $empty_truck_weight,
@@ -1085,7 +1079,7 @@ class DeliveryOrderController extends Controller {
                                       'product_id'  =>$serialize,
                                       'userid' => $delboy,
                                       'updated_at' => date("Y-m-d H:i:s"),
-                       
+
                                 ];
                                 LoadTrucks::insert($loadetrucks);
                                 LoadDelboy::where('delivery_id', '=', $id)
@@ -1095,7 +1089,7 @@ class DeliveryOrderController extends Controller {
                                     'updated_at' => date("Y-m-d H:i:s")));
                          }
                     }
-                      
+
                 }
                 else{
                       if($truck_weight !=0){
@@ -1110,7 +1104,7 @@ class DeliveryOrderController extends Controller {
                             if(in_array($product_id,$explodetruck_prodcuts)){
                                  $secproductids[] = $product_id;
                             }
-                            
+
                          }
                          if(!empty($secproductids)){
                             $truck_secproduct_ids = implode(',',$secproductids);
@@ -1118,7 +1112,7 @@ class DeliveryOrderController extends Controller {
                          }
                         else{
                                 $serialize = "";
-                         } 
+                         }
                     LoadTrucks:: where('deliver_id', '=', $id)
                         ->where('userid', '=', $delboy)
                         ->update(array(
@@ -1138,14 +1132,14 @@ class DeliveryOrderController extends Controller {
                 }
                 $labour = (Input::has('labour')) ? Input::get('labour') : '';
                 if(!empty($labour)){
-                    
-                    
+
+
                     $truck_load = LoadTrucks::where('deliver_id', '=', $id)
                                     ->where('userid', '=', $delboy)
                                     ->first();
                     // dd($truck_load);
                     if(!empty($truck_load)){
-                        
+
                         foreach($labour as $key => $val){
                             $labour_count = LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->first();
                                 if(!empty($labour_count)){
@@ -1153,18 +1147,18 @@ class DeliveryOrderController extends Controller {
                                 }
                             foreach($val as $load_val){
                                 // print_r($key);
-                                
+
                                     $load_loabour = [
                                         'del_boy_id' => $key,
                                         'labour_id' => $load_val,
                                         'delivery_id' => $id,
                                     ];
                                     LoadLabour::insert($load_loabour);
-                                
+
                             }
-                            
+
                         }
-                        
+
                     }
                 }
              }
@@ -1173,7 +1167,7 @@ class DeliveryOrderController extends Controller {
         if($empty_truck_weight != '' || $empty_truck_weight != '0') {
             $update_delivery = DeliveryOrder::where('id',$id)->update([
                 'empty_truck_weight'=>$empty_truck_weight,
-            ]); 
+            ]);
         }
           $products_data = $_POST['product'];
         foreach($products_data as $pkey =>$product_info){
@@ -1183,9 +1177,9 @@ class DeliveryOrderController extends Controller {
             $productid =$product_info['order'];
             if(!empty($actual_pieces)&& !empty($average_weight)){
                 $update_product_details = AllOrderProducts::where('id',$productid)->update([
-                 'actual_pieces'=>$actual_pieces,  
-                 'actual_quantity'=>$average_weight,            
-              ]); 
+                 'actual_pieces'=>$actual_pieces,
+                 'actual_quantity'=>$average_weight,
+              ]);
             }
             if(!empty($vat_percentage) && $vat_percentage == 'yes'){
                 $update_product_details = AllOrderProducts::where('id',$productid)->update([
@@ -1193,26 +1187,26 @@ class DeliveryOrderController extends Controller {
                 ]);
             }
         }
-         $count = count($products_data);
+         $count = count((array)$products_data);
          $productlist = AllOrderProducts::where('order_id', '=', $id)
                       ->where('actual_pieces', '>', 0)
                       ->where('order_type', '=', 'delivery_order')
               ->get();
          $productlistcount = $productlist->count();
          $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
-        
+
          if($productlistcount ==$count){
-            
+
              $sum =0;
               foreach($trucklist as $truck){
-                  
+
                   $sum = $sum + $truck->final_truck_weight;
               }
               $final_weight = $total_avg + $empty_truck_weight;
                $update_delivery = DeliveryOrder::where('id',$id)->update([
-                 'final_truck_weight'=>$final_weight,            
-              ]); 
-            
+                 'final_truck_weight'=>$final_weight,
+              ]);
+
          }
          if ($delivery_order_details->del_boy == ""){
          $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
@@ -1226,9 +1220,9 @@ class DeliveryOrderController extends Controller {
                                 'product_id'  =>$serialize,
                                 'userid' => $delboy,
                                 'updated_at' => date("Y-m-d H:i:s"),
-                       
+
                            ];
-                           
+
                           LoadTrucks::insert($loadetrucks);
 
                           LoadDelboy::where('delivery_id', '=', $id)
@@ -1241,7 +1235,7 @@ class DeliveryOrderController extends Controller {
                             $delivery_productdata = LoadTrucks::where('deliver_id',$id)
                                                     ->where('userid', '=', $delboy)
                                                     ->first();
-                            
+
                             LoadTrucks:: where('deliver_id', '=', $id)
                                         ->where('userid', '=', $delboy)
                                         ->update(array(
@@ -1261,8 +1255,8 @@ class DeliveryOrderController extends Controller {
 
                          $labour = (Input::has('labour')) ? Input::get('labour') : '';
                          if(!empty($labour)){
-                             
-                             
+
+
                              $truck_load = LoadTrucks::where('deliver_id', '=', $id)
                                              ->where('userid', '=', $delboy)
                                              ->first();
@@ -1275,7 +1269,7 @@ class DeliveryOrderController extends Controller {
                                          }
                                      foreach($val as $load_val){
                                          // print_r($key);
-                                         
+
                                              $load_loabour = [
                                                  'del_boy_id' => $key,
                                                  'labour_id' => $load_val,
@@ -1332,15 +1326,15 @@ class DeliveryOrderController extends Controller {
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
         AllOrderProducts::where('id',$product_id)->where('order_id',$delivery_id)->update([
-                'actual_pieces'=>$actual_pieces,  
-                'actual_quantity'=>$average_weight,            
-             ]); 
+                'actual_pieces'=>$actual_pieces,
+                'actual_quantity'=>$average_weight,
+             ]);
              echo "success";
         } else{
             echo "failed";
         }
     }
-    
+
     public function save_empty_truck(Request $request) {
 
         $empty_truck_value = (Input::has('empty_truck_value')) ? Input::get('empty_truck_value') : '0';
@@ -1350,11 +1344,11 @@ class DeliveryOrderController extends Controller {
             if($empty_truck_value != '' || $empty_truck_value != '0') {
                 $update_delivery = DeliveryOrder::where('id',$delivery_id)->update([
                     'empty_truck_weight'=>$empty_truck_value,
-                ]); 
-            
+                ]);
+
                 echo "success";
-            } 
-             
+            }
+
         } else{
             echo "failed";
         }
@@ -1374,9 +1368,9 @@ class DeliveryOrderController extends Controller {
                 'final_truck_weight' => $truck_weight,
                 'userid' => $delboy_id,
                 'updated_at' => date("Y-m-d H:i:s"),
-        
+
             ];
-            
+
             LoadTrucks::insert($loadetrucks);
 
             LoadDelboy::where('delivery_id', '=', $delivery_id)
@@ -1384,7 +1378,7 @@ class DeliveryOrderController extends Controller {
                     ->where('assigned_status', 1)
                     ->update(array(
                     'updated_at' => date("Y-m-d H:i:s")));
-                    
+
             }
             if($truck_weight != 0 ) {
             LoadTrucks::where('deliver_id', '=', $delivery_id)
@@ -1400,7 +1394,7 @@ class DeliveryOrderController extends Controller {
                         ->update(array(
                         'updated_at' => date("Y-m-d H:i:s"),
                         ));
-                        
+
             }
             echo "success";
         } else{
@@ -1432,7 +1426,7 @@ class DeliveryOrderController extends Controller {
 
         if (Session::has('forms_delivery_challan')) {
             $session_array = Session::get('forms_delivery_challan');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('validation_message', 'This delivery challan is already saved. Please refresh the page');
                 } else {
@@ -1456,22 +1450,22 @@ class DeliveryOrderController extends Controller {
 
         $delivery_order_details->save();
         if (isset($input_data['product']))
-            $total_product_count = count($input_data['product']);
+            $total_product_count = count((array)$input_data['product']);
         else
             $total_product_count = 0;
 
         $total_vat_items = 0;
-        $total_vat_price = 0;        
+        $total_vat_price = 0;
         $total_without_vat_items = 0;
         $total_without_vat_price = 0;
         $total_profile_items = 0;
-        $total_profile_price = 0;        
+        $total_profile_price = 0;
         $counter_vat = 0;
         $counter_without_vat = 0;
         $counter_profile = 0;
         $vat_product;
         $without_vat_product;
-        $profile_product;        
+        $profile_product;
         $total_actual_quantity_vat = 0;
         $total_actual_quantity_without_vat = 0;
         $total_actual_quantity_profile = 0;
@@ -1479,13 +1473,13 @@ class DeliveryOrderController extends Controller {
         $case = array();
 
         foreach ($input_data['product'] as $product) {
-            $product_id = $product['id'];                                
-            $product_sub = ProductSubCategory::with('product_category')->where('id','=',$product_id)->get();            
+            $product_id = $product['id'];
+            $product_sub = ProductSubCategory::with('product_category')->where('id','=',$product_id)->get();
             if(isset($product_sub) && isset($product_sub[0]['product_category'])){
                 $product_type_id = $product_sub[0]['product_category']->product_type_id;
             }
 
-            if (isset($product['actual_quantity']) && isset($product['price'])) {                
+            if (isset($product['actual_quantity']) && isset($product['price'])) {
                 if (isset($product_type_id)) {
 
 
@@ -1602,7 +1596,7 @@ class DeliveryOrderController extends Controller {
             }
             $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
-        /* all items without VAT */ 
+        /* all items without VAT */
         elseif ($total_product_count == $total_without_vat_items) {
 
             $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
@@ -1611,8 +1605,8 @@ class DeliveryOrderController extends Controller {
             $case = 'all_without_vat';
             $savedid =  $this->store_delivery_challan_vat_wise($input_data, $id);
         }
-        /* all items with and without VAT */ 
-        else {            
+        /* all items with and without VAT */
+        else {
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $profile_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
@@ -1630,11 +1624,11 @@ class DeliveryOrderController extends Controller {
 
 //            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
 //            $vat_on_overhead_count = number_format((float) (($ratio_profile * $input_data['vat_percentage']) / 100), 2, '.', '');
-            
+
             if($delivery_order_details->vat_percentage != 0){
                 $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
             }
-            
+
             if(isset($total_profile_items) && $total_profile_items > 0){
                 $profile_input_data['product'] = $profile_product;
                 $profile_input_data['total_actual_quantity'] = $total_actual_quantity_profile;
@@ -1670,7 +1664,7 @@ class DeliveryOrderController extends Controller {
                 $without_vat_input_data['loading'] = number_format((float) ($ratio_without_vat * $input_data['loading']) / 100, 2, '.', '');
                 $without_vat_input_data['round_off'] = number_format((float) ($ratio_without_vat * $input_data['round_off']) / 100, 2, '.', '');
                 //$without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
-                $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');                
+                $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + $without_vat_share_overhead + $without_vat_input_data['round_off'], 2, '.', '');
             }
 
 
@@ -1692,7 +1686,7 @@ class DeliveryOrderController extends Controller {
                 $savedid = $this->store_delivery_challan_vat_wise($vat_input_data, $id);
                 $this->store_delivery_challan_vat_wise($without_vat_input_data, $id, $savedid);
             }
-                                    
+
         }
         DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed',
             'empty_truck_weight' => $empty_truck_weight,
@@ -1708,7 +1702,7 @@ class DeliveryOrderController extends Controller {
         $calc->inventoryCalc($product_category_ids);
 
 
-        //         update sync table         
+        //         update sync table
         $tables = ['delivery_order', 'all_order_products', 'delivery_challan'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1757,13 +1751,13 @@ class DeliveryOrderController extends Controller {
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
 
-        if (count($do) <= 0) {
+        if (count((array)$do) <= 0) {
             $number = '1';
         } else {
             $serial_numbers = [];
             foreach ($do as $temp) {
                 $list = explode("/", $temp->serial_no);
-                $serial_numbers[] = $list[count($list) - 1];
+                $serial_numbers[] = $list[count((array)$list) - 1];
                 $pri_id = max($serial_numbers);
                 $number = $pri_id + 1;
             }
@@ -1835,7 +1829,7 @@ class DeliveryOrderController extends Controller {
             if ($send_sms == 'true') {
                 $customer_id = $delivery_data->customer_id;
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been created as follows\n";
                     foreach ($input_data as $product_data) {
@@ -1857,7 +1851,7 @@ class DeliveryOrderController extends Controller {
                         curl_close($ch);
                     }
                 }
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created DO for " . $customer->owner_name . " as follows\n";
                     foreach ($input_data as $product_data) {
@@ -1896,11 +1890,11 @@ class DeliveryOrderController extends Controller {
 //        $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        $response = curl_exec($ch);        
+//        $response = curl_exec($ch);
 //        curl_close($ch);
 //        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-            
-        //         update sync table         
+
+        //         update sync table
         $tables = ['delivery_order', 'all_order_products'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -1949,7 +1943,7 @@ class DeliveryOrderController extends Controller {
         $product_difference = $product_sub_category['difference'];
         $customer_product = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $input_data)->first();
         $customer_difference = 0;
-        if (count($customer_product) > 0) {
+        if (count((array)$customer_product) > 0) {
             $customer_difference = $customer_product->difference_amount;
         }
         $data_array[] = [
@@ -1967,15 +1961,15 @@ class DeliveryOrderController extends Controller {
 
     function checkpending_quantity($delivery_orders) {
 
-        if (count($delivery_orders) > 0) {
+        if (count((array)$delivery_orders) > 0) {
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
                 $pending_order_temp = 0;
-                $pending_order = 0;                
+                $pending_order = 0;
 //                dd($del_order['track_order_product']);
-                if (count($del_order['delivery_product']) > 0) {
-                    foreach ($del_order['delivery_product'] as $popk => $popv) {                         
+                if (count((array)$del_order['delivery_product']) > 0) {
+                    foreach ($del_order['delivery_product'] as $popk => $popv) {
 
                         if (isset($popv)) {
                             $product_size = $popv['product_sub_category'];
@@ -1990,13 +1984,13 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                                 $is_slice = 0;
-                                $total_old_shipping = 0;                                
-                                foreach ($del_order['track_do_product'] as $track_do_product) {                                    
+                                $total_old_shipping = 0;
+                                foreach ($del_order['track_do_product'] as $track_do_product) {
 
                                         if ($track_do_product->parent == $popv->parent && $popv->created_at > $track_do_product->created_at) {
                                             $is_slice++;
                                             $total_old_shipping += $track_do_product->present_shipping;
-                                        }                                    
+                                        }
                                 }
                                 if (isset($prd_details) && $popv->parent>0) {
                                     if ($is_slice == 0)
@@ -2009,7 +2003,7 @@ class DeliveryOrderController extends Controller {
                                     } else {
                                         $pending_order = $pending_order + $pending_order_temp;
                                     }
-                                }                               
+                                }
                             } elseif ($popv->unit_id == 2) {
                                 $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
                                 $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
@@ -2162,7 +2156,7 @@ class DeliveryOrderController extends Controller {
                     }
                 }
                // dd($pending_order);
-               
+
                 $delivery_orders[$key]['total_quantity'] = $delivery_order_quantity;
                 $delivery_orders[$key]['present_shipping'] = $delivery_order_present_shipping;
                 $delivery_orders[$key]['pending_order'] = ($pending_order < 0 ? 0 : $pending_order);
@@ -2173,13 +2167,13 @@ class DeliveryOrderController extends Controller {
 
 //    function checkpending_quantity($delivery_orders) {
 //
-//        if (count($delivery_orders) > 0) {
+//        if (count((array)$delivery_orders) > 0) {
 //            foreach ($delivery_orders as $key => $del_order) {
 //                $delivery_order_quantity = 0;
 //                $delivery_order_present_shipping = 0;
 //                $pending_order_temp = 0;
 //                $pending_order = 0;
-//                if (count($del_order['delivery_product']) > 0) {
+//                if (count((array)$del_order['delivery_product']) > 0) {
 //                    foreach ($del_order['delivery_product'] as $popk => $popv) {
 //
 //                        if (isset($popv)) {
@@ -2193,14 +2187,14 @@ class DeliveryOrderController extends Controller {
 ////                            if(isset($prd_details[0]))
 ////                            $pending_order_temp = $prd_details[0]->quantity - $popv->quantity;
 ////                            else
-////                              $pending_order_temp =0;  
-////                                
+////                              $pending_order_temp =0;
+////
 ////                            if($pending_order ==0){
 ////                                $pending_order = $pending_order_temp;
 ////                            }
 ////                            else{
 ////                                $pending_order = $pending_order + $pending_order_temp;
-////                            }    
+////                            }
 //
 //
 //                            if ($popv->unit_id == 1) {
@@ -2295,7 +2289,7 @@ class DeliveryOrderController extends Controller {
             $excel_sheet_name = 'Delivered';
             $excel_name = 'DeliveryOrder-Delivered-' . date('dmyhis');
         }
-        if (Auth::user()->role_id == 9){ 
+        if (Auth::user()->role_id == 9){
             if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
                 $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
                 $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
@@ -2375,7 +2369,7 @@ class DeliveryOrderController extends Controller {
                         ->get();
             }
         }
-        if (count($delivery_order_objects) == 0) {
+        if (count((array)$delivery_order_objects) == 0) {
             return redirect::back()->with('error', 'No data found');
         } else {
             $units = Units::all();
@@ -2388,70 +2382,6 @@ class DeliveryOrderController extends Controller {
                 });
             })->export('xls');
         }
-    }
-
-    public function del_boy_reload(Request $request){
-
-        $roleid = $request->role_id;
-        $delivery_boy = $request->delivery_boy;
-        $date = new Carbon\Carbon;
-        $date->modify('-115 minutes');
-        $formatted_date = $date->format('Y-m-d H:i:s');
-        // dd($formatted_date);
-
-        if($roleid == 0 || $roleid == 8 ){
-            if($roleid == 0) {
-                $type = "del_boy";
-                $all = \App\User::where('role_id',9)
-                            ->orderBy('id', 'DESC')
-                            ->get();
-                $new = \App\User::where('role_id',9)->where('is_active',1)->where('updated_at','>',$formatted_date)
-                            ->orderBy('id', 'DESC')
-                            ->get();
-            } 
-        }
-        if($roleid == 8) {
-            $type = "del_boy";
-            $all = \App\User::where('role_id',9)
-                            ->orderBy('id', 'DESC')
-                            ->get();
-            $new = \App\User::where('role_id',9)->where('is_active',1)->where('updated_at','>',$formatted_date)
-                        ->orderBy('id', 'DESC')
-                        ->get();
-        }
-        echo json_encode(array($all,$new));
-    }
-
-    public function supervisor_reload(Request $request){
-
-        $roleid = $request->role_id;
-        $supervisor_id = $request->supervisor_id;
-        $date = new Carbon\Carbon;
-        $date->modify('-115 minutes');
-        $formatted_date = $date->format('Y-m-d H:i:s');
-
-        if($roleid == 0 || $roleid == 2 ){
-            if($roleid == 0) {
-                $type = "del_supervisor";
-                $all = \App\User::where('role_id',8)
-                            ->orderBy('id', 'DESC')
-                            ->get();
-                $new = \App\User::where('role_id',8)->where('is_active',1)->where('updated_at','>',$formatted_date)
-                            ->orderBy('id', 'DESC')
-                            ->get();
-            } 
-           
-        }
-        if($roleid == 2) {
-            $type = "del_supervisor";
-            $all = \App\User::where('role_id',8)
-                            ->orderBy('id', 'DESC')
-                            ->get();
-            $new = \App\User::where('role_id',8)->where('is_active',1)->where('updated_at','>',$formatted_date)
-                        ->orderBy('id', 'DESC')
-                        ->get();
-        }
-        echo json_encode(array($all,$new));
     }
 
     public function get_data() {

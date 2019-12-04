@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Session;
                         @endif
                         <form id="bulk_delete_form" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -54,12 +54,12 @@ use Illuminate\Support\Facades\Session;
                                                 <option id="other_location" {{(isset($module) && $module == "order-pending")?'selected':''}} value="order-pending">Pending</option>
                                             <option id="other_location" {{(isset($module) && $module == "order-completed")?'selected':''}} value="order-completed">Completed</option>
                                             </optgroup>
-                                            
+
                                             <optgroup label="Delivery Orders">
                                                 <option id="other_location" {{(isset($module) && $module == "delivery_order_pending")?'selected':''}} value="delivery_order_pending">Pending</option>
                                             <option id="other_location" {{(isset($module) && $module == "delivery_order_completed")?'selected':''}} value="delivery_order_completed">Completed</option>
                                             </optgroup>
-                                            
+
                                             <!--<option id="other_location" {{(isset($module) && $module == "delivery_order")?'selected':''}} value="delivery_order">Delivery Orders</option>-->
                                             <optgroup label="Delivery Challan">
                                                 <option id="other_location" {{(isset($module) && $module == "delivery_challan_pending")?'selected':''}} value="delivery_challan_pending">Pending</option>
@@ -76,7 +76,7 @@ use Illuminate\Support\Facades\Session;
                                                 <option id="other_location" {{(isset($module) && $module == "purchase_advice_pending")?'selected':''}} value="purchase_advice_pending">Pending</option>
                                             <option id="other_location" {{(isset($module) && $module == "purchase_advice_completed")?'selected':''}} value="purchase_advice_completed">Completed</option>
                                             </optgroup>
-                                            
+
 <!--                                            <option id="other_location" {{(isset($module) && $module == "purchase_advice")?'selected':''}} value="purchase_advice">Purchase Advise</option>-->
                                             <optgroup label="Purchase Challan">
                                                 <option id="other_location" {{(isset($module) && $module == "purchase_challan_pending")?'selected':''}} value="purchase_challan_pending">Pending</option>
@@ -139,17 +139,17 @@ use Illuminate\Support\Facades\Session;
                     @endif
                     @if (Session::has('success'))
                     <div class="alert alert-success alert-success1">
-                        {{Session::get('success')}}                            
+                        {{Session::get('success')}}
                     </div>
                     @endif
 
                     @if (Session::has('wrong'))
                     <div class="alert alert-danger alert-success1">
-                        {{Session::get('wrong')}}                            
+                        {{Session::get('wrong')}}
                     </div>
                     @endif
 
-                    @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())                        
+                    @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())
                     <div class="table-responsive">
                         <table id="table-example" class="table table-hover">
                             <thead>
@@ -184,7 +184,7 @@ use Illuminate\Support\Facades\Session;
                                 <?php echo $result_temp->appends(Input::except('page'))->render(); ?>
                             </ul>
                         </span>
-                        <div class="clearfix"></div>  
+                        <div class="clearfix"></div>
                     </div>
                     <div class="pull-right targetdate">
                         <label for="date"></label>
@@ -212,7 +212,7 @@ use Illuminate\Support\Facades\Session;
                                     <span aria-hidden="true">×</span>
                                 </button>
                                 <h4 class="modal-title" id="myModalLabel">Bulk Delete</h4>
-                            </div>                            
+                            </div>
                             <div class="modal-body">
                                 <div class="alert alert-danger alert-dismissable delete_records_empty">
                                     <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -246,7 +246,7 @@ use Illuminate\Support\Facades\Session;
                                     <span aria-hidden="true">×</span>
                                 </button>
                                 <h4 class="modal-title" id="myModalLabel">Bulk Delete</h4>
-                            </div>                            
+                            </div>
                             <div class="modal-body">
                                 <div class="alert alert-danger alert-dismissable delete_records_empty">
                                     <a href="#" class="close" data-dismiss="alert">&times;</a>

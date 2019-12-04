@@ -1,66 +1,39 @@
-<?php namespace Illuminate\Foundation\Providers;
+<?php
 
-use Illuminate\Support\ServiceProvider;
+namespace Illuminate\Foundation\Providers;
+
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\ServiceProvider;
 
-class FormRequestServiceProvider extends ServiceProvider {
+class FormRequestServiceProvider extends ServiceProvider
+{
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
-	}
+    /**
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->app->afterResolving(ValidatesWhenResolved::class, function ($resolved) {
+            $resolved->validateResolved();
+        });
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->app['events']->listen('router.matched', function()
-		{
-			$this->app->resolving(function(FormRequest $request, $app)
-			{
-				$this->initializeRequest($request, $app['request']);
+        $this->app->resolving(FormRequest::class, function ($request, $app) {
+            $request = FormRequest::createFrom($app['request'], $request);
 
-				$request->setContainer($app)
-                        ->setRedirector($app['Illuminate\Routing\Redirector']);
-			});
-		});
-	}
-
-	/**
-	 * Initialize the form request with data from the given request.
-	 *
-	 * @param  \Illuminate\Foundation\Http\FormRequest  $form
-	 * @param  \Symfony\Component\HttpFoundation\Request  $current
-	 * @return void
-	 */
-	protected function initializeRequest(FormRequest $form, Request $current)
-	{
-		$files = $current->files->all();
-
-		$files = is_array($files) ? array_filter($files) : $files;
-
-		$form->initialize(
-			$current->query->all(), $current->request->all(), $current->attributes->all(),
-			$current->cookies->all(), $files, $current->server->all(), $current->getContent()
-		);
-
-		if ($session = $current->getSession())
-		{
-			$form->setSession($session);
-		}
-
-		$form->setUserResolver($current->getUserResolver());
-
-		$form->setRouteResolver($current->getRouteResolver());
-	}
-
+            $request->setContainer($app)->setRedirector($app->make(Redirector::class));
+        });
+    }
 }

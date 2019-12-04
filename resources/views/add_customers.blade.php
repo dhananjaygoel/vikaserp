@@ -18,7 +18,7 @@
                     <div class="main-box-body clearfix">
                         <form id="" method="POST" action="{{url('customers')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -200,7 +200,7 @@
                                                                 <label for="checkbox-inl-1"> </label>
                                                             </div>
                                                             <br>
-                                                            @if(count($product_category) > 0)
+                                                            @if(count((array)$product_category) > 0)
                                                             <div class="category_div col-md-12">
                                                                 <div class="table-responsive">
                                                                     <table id="table-example" class="table table-hover  ">

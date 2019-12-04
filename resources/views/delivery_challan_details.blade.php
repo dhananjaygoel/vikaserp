@@ -136,9 +136,9 @@
                                         }else{
                                             $loading_vat = 0;
                                         }
-                                        $loading_vat_amount = ($allorder->loading_charge * $loading_vat) / 100;
-                                        $freight_vat_amount = ($allorder->freight * $loading_vat) / 100;
-                                        $discount_vat_amount = ($allorder->discount * $loading_vat) / 100;
+                                        $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                                        $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                                        $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
                                         $final_vat_amount = 0; 
                                         $final_total_amt = 0;
                                     ?>
@@ -191,7 +191,7 @@
                                         <td class="col-md-2">
                                             <div class="form-group">
                                                 <?php
-                                                $amount = $product->actual_quantity * $product->price;
+                                                $amount = (float)$product->actual_quantity * (float)$product->price;
                                                 $total_amount = round($amount + $total_amount, 2);
                                                 ?>
                                                  <?php
@@ -200,7 +200,7 @@
                                                     $sgst = 0;
                                                     $cgst = 0;
                                                     $igst = 0;
-                                                    $rate = $product->price;
+                                                    $rate = (float)$product->price;
                                                     $is_gst = false;
                                                     if(isset($product->vat_percentage) && $product->vat_percentage > 0){
                                                         if($product_cat->hsn_code){
@@ -224,15 +224,15 @@
                                                     }
                                                     if(isset($product->vat_percentage) && $product->vat_percentage > 0){
                                                         if($local_state == 1){
-                                                            $total_sgst_amount = ($amount * $sgst) / 100;
-                                                            $total_cgst_amount = ($amount * $cgst) / 100;
+                                                            $total_sgst_amount = ((float)$amount * (float)$sgst) / 100;
+                                                            $total_cgst_amount = ((float)$amount * (float)$cgst) / 100;
                                                             $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
                                                         } else {
-                                                            $total_igst_amount = ($amount * $igst) / 100;
+                                                            $total_igst_amount = ((float)$amount * (float)$igst) / 100;
                                                             $total_vat_amount1 = round($total_igst_amount,2);
                                                         }
                                                     } else{
-                                                        $total_gst_amount = ($amount * $igst) / 100;
+                                                        $total_gst_amount = ((float)$amount * (float)$igst) / 100;
                                                         $total_vat_amount1 = round($total_gst_amount,2);
                                                     }
                                                     // $total_pr = $sgst + $cgst + $igst;
@@ -280,22 +280,22 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                        <?php $total = $total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount?>
-                            <label for="total"><b class="challan">Total: </b></label> <?php print_r($total_amount + $allorder->freight + $allorder->loading_charge + $allorder->discount); ?>
+                        <?php $total = (float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount?>
+                            <label for="total"><b class="challan">Total: </b></label> <?php print_r((float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount); ?>
                         </div>                        
                         <hr>
                         <!-- @if($product_type['pipe'] == 1)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Pipe): </b></label> <?php
-                            if (isset($allorder['challan_loaded_by'])) {
-                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
-                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 1 | $challan_loaded_by->product_type_id == 0)) {
-                                            echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
-                                        }
-                                    }
-                                }
-                            }
+                            // if (isset($allorder['challan_loaded_by'])) {
+                            //     foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                            //         foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                            //             if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 1 | $challan_loaded_by->product_type_id == 0)) {
+                            //                 echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                            //             }
+                            //         }
+                            //     }
+                            // }
                             ?>
                         </div>
                         <hr>
@@ -303,15 +303,15 @@
                         <!-- @if($product_type['structure'] == 1)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Structure): </b></label> <?php
-                            if (isset($allorder['challan_loaded_by'])) {
-                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
-                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 2 | $challan_loaded_by->product_type_id == 0)) {
-                                        echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
-                                        }
-                                    }
-                                }
-                            }
+                            // if (isset($allorder['challan_loaded_by'])) {
+                            //     foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                            //         foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                            //             if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 2 | $challan_loaded_by->product_type_id == 0)) {
+                            //             echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                            //             }
+                            //         }
+                            //     }
+                            // }
                             ?>
                         </div>
                         <hr>
@@ -319,15 +319,15 @@
                         @if($product_type['sheet'] == 3)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Loaded By (Profile): </b></label> <?php
-                            if (isset($allorder['challan_loaded_by'])) {
-                                foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
-                                    foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
-                                        if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 3 | $challan_loaded_by->product_type_id == 0)) {
-                                        echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
-                                        }
-                                    }
-                                }
-                            }
+                            // if (isset($allorder['challan_loaded_by'])) {
+                            //     foreach ($allorder['challan_loaded_by'] as $challan_loaded_by) {
+                            //         foreach ($challan_loaded_by['dc_loaded_by'] as $loadedby) {
+                            //             if (isset($challan_loaded_by->product_type_id) && ($challan_loaded_by->product_type_id == 3 | $challan_loaded_by->product_type_id == 0)) {
+                            //             echo ucfirst($loadedby->first_name) . " " . ucfirst($loadedby->last_name) . ", ";
+                            //             }
+                            //         }
+                            //     }
+                            // }
                             ?>
                         </div>
                         <hr>
@@ -337,17 +337,17 @@
                             <label for="labour"><b class="challan">Labour (Pipe): </b></label>
 
                             <?php
-                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
-                                foreach ($allorder['challan_labours'] as $challan_labour) {
-                                    foreach ($challan_labour['dc_labour'] as $labour) {
-                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 1 | $challan_labour->product_type_id == 0)) {
-                                            echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
-                                        }
-                                    }
-                                }
-                            } else {
-                                echo "N/A";
-                            }
+                            // if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                            //     foreach ($allorder['challan_labours'] as $challan_labour) {
+                            //         foreach ($challan_labour['dc_labour'] as $labour) {
+                            //             if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 1 | $challan_labour->product_type_id == 0)) {
+                            //                 echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                            //             }
+                            //         }
+                            //     }
+                            // } else {
+                            //     echo "N/A";
+                            // }
                             ?>
 
                         </div>
@@ -358,17 +358,17 @@
                             <label for="labour"><b class="challan">Labour (Structure): </b></label>
 
                             <?php
-                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
-                                foreach ($allorder['challan_labours'] as $challan_labour) {
-                                    foreach ($challan_labour['dc_labour'] as $labour) {
-                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 2 | $challan_labour->product_type_id == 0)) {
-                                            echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
-                                        }
-                                    }
-                                }
-                            } else {
-                                echo "N/A";
-                            }
+                            // if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                            //     foreach ($allorder['challan_labours'] as $challan_labour) {
+                            //         foreach ($challan_labour['dc_labour'] as $labour) {
+                            //             if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 2 | $challan_labour->product_type_id == 0)) {
+                            //                 echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                            //             }
+                            //         }
+                            //     }
+                            // } else {
+                            //     echo "N/A";
+                            // }
                             ?>
 
                         </div>
@@ -379,17 +379,17 @@
                             <label for="labour"><b class="challan">Labour (Profile): </b></label>
 
                             <?php
-                            if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
-                                foreach ($allorder['challan_labours'] as $challan_labour) {
-                                    foreach ($challan_labour['dc_labour'] as $labour) {
-                                        if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 3 | $challan_labour->product_type_id == 0)) {
-                                            echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
-                                        }
-                                    }
-                                }
-                            } else {
-                                echo "N/A";
-                            }
+                            // if (isset($allorder['challan_labours']) && !empty($allorder['challan_labours'])) {
+                            //     foreach ($allorder['challan_labours'] as $challan_labour) {
+                            //         foreach ($challan_labour['dc_labour'] as $labour) {
+                            //             if (isset($challan_labour->product_type_id) && ($challan_labour->product_type_id == 3 | $challan_labour->product_type_id == 0)) {
+                            //                 echo ucfirst($labour->first_name) . " " . ucfirst($labour->last_name) . ", ";
+                            //             }
+                            //         }
+                            //     }
+                            // } else {
+                            //     echo "N/A";
+                            // }
                             ?>
 
                         </div>

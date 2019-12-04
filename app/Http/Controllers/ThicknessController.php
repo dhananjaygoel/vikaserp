@@ -48,7 +48,7 @@ class ThicknessController extends Controller {
         //     'difference' => 'required|integer',($diff ? ",$diff" : ''),
 		// ]);
 		if(Thickness::where('thickness','=',$thick)->where('diffrence','=',$diff)->count() > 0)
-		{ 
+		{
 			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
 		}
 		else
@@ -116,7 +116,7 @@ class ThicknessController extends Controller {
 			return redirect('thickness')->with('flash_success_message', 'Thickness updated successfully');
 
 		}
-		else 
+		else
 		{
 			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
 		}

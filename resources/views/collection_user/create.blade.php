@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/users">Collection Users</a></li>
+                    <li><a href="{{url('/')}}/users">Collection Users</a></li>
                     <li class="active"><span><?php echo(isset($data) ? 'Edit' : 'Add'); ?> Collection User</span></li>
                 </ol>
                 <div class="clearfix">
@@ -32,7 +32,7 @@
                         @else
                         <form method="POST" action="{{URL::action('CollectionUserController@store')}}" accept-charset="UTF-8" >                        
                         @endif
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div class="alert alert-warning">
                                 <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
                                   &times;
@@ -113,7 +113,7 @@
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" ><?php echo(isset($data) ? 'Update' : 'Submit'); ?></button>
-                                <a href="{{url()}}/account" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('/')}}/account" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

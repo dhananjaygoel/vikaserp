@@ -18,7 +18,7 @@
                         <form method="POST" action="{{url('update_set_price')}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="customer_id" type="hidden" value="{{$customer_id['id']}}">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -44,7 +44,7 @@
                             <div class="clearfix"></div>
                             <div class="form-group">                               
 
-                                @if(count($product_category) > 0)
+                                @if(count((array)$product_category) > 0)
                                 <div class="category_div col-md-12" style="display:block">
                                     <div class="table-responsive">
                                         <table id="table-example" class="table table-hover">

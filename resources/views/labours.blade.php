@@ -55,7 +55,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                        @if(count($labours) > 0)
+                        @if(count((array)$labours) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>

@@ -1,5 +1,153 @@
 # Changelog
 
+## 1.5.1
+- #367 Newest version 1.5.0 missing changelog, Notifier version not bumped
+- #366 Make the anonymized IP addresses indexable
+- Removed `CHANGELOG.md` in favor of using [release notes](https://github.com/rollbar/rollbar-php/releases)
+
+## 1.5.0
+- #362 - Fix running isolated tests by requiring the Config.php file with ROLLBAR_INCLUDED_ERRNO_BITMASK definition
+- #353 - Only collect person.id by default for person tracking
+- #354 - Allow IP collection to be easily turned on and off in config
+- #355 - Anonymize IP address config option
+
+## 1.4.1
+- Temporarily add `\Rollbar\Monolog\Handler\MonologHandler` until `Seldaek:monolog` PR 1042 gets merged into their `master`
+- Refactor JSON encoding mechanis to limit calls to `json_encode` to minimum with `\Rollbar\Payload\EncodedPayload`
+- Optimize performance of `StringsStrategy` and `FramesStrategy` truncation strategies
+- Remove `RawStrategy` and `MinBodyStrategy` completely (they are not adding any value - the same results are achieved by the combination of other strategies)
+- Fix for non-encodable values in the payload data. This was occasionally causing `400` response codes from the API
+- Updat code examples in README.md
+- Lock Monolog dependency at `^1.23`. The implementation of `\Monolog\TestCase` class in their master is currently not stable
+- Add instructions on using Rollbar with Monolog after bringing the `MonologHandler` into this repo
+- Clean up `RollbarLogger` instances after each test in the testsuite so the configuration doesn't persist between test cases
+- Add `composer performance` command to run performance test suite
+
+## 1.4.0
+- Add internal SDK debugging with `verbosity` configuration option
+- `local_vars_dump` configuration option is now enabled by default
+- Update rollbar.js snippet to v2.3.6
+- Refactor error, fatal error and exception handling from the ground up
+- Exception traces will now include an additional frame with the file name and line
+  where the Exception was actually thrown
+- Fix a bug where `E_USER_ERROR` type errors were reported twice
+- Add enable / disable functionality to Rollbar class and `enabled` configuration option
+- `Rollbar`'s class proxy methods will now return the return value of the proxied method
+
+## 1.3.6
+
+- Replace a leftover invocation to exec() with shell_exec()
+- Eliminate error duplication on PHP 7+ / Symfony environments by expanding ignore to all Throwables
+[293](https://github.com/rollbar/rollbar-php/issues/293)
+
+## 1.3.5
+
+- Fix sending $context argument from the log() method with exception logs.
+
+## 1.3.4
+
+- Increase the minimum version constraint for the monolog/monolog package to support composer --prefer-minimum
+- Decrease the minimum version constraint for psr/log package to match the monolog/monolog package in --prefer-minimum
+- Add support for dynamic custom data
+
+## 1.3.3
+
+- Remove fluent/logger from the required section of composer.json
+
+## 1.3.2
+
+- Performance improvments
+- Include request body for PUT requests if `include_raw_request_body` is true
+
+## 1.3.1
+
+- Remove dependency on rollbar.js through composer
+- Actually change the notifier version number constant
+- Stop duplicate logging some errors [#240](https://github.com/rollbar/rollbar-php/pull/240)
+
+## 1.3.0
+
+- all of the senders should return a response
+[#239](https://github.com/rollbar/rollbar-php/pull/239)
+- add an explicit semicolon between snippet and custom js
+[#238](https://github.com/rollbar/rollbar-php/pull/238)
+- GitHub Issue #225: Allow custom JS addition in RollbarJsHelper
+[#235](https://github.com/rollbar/rollbar-php/pull/235)
+- Minor spacing and indentation on Scrubber
+[#234](https://github.com/rollbar/rollbar-php/pull/234)
+- GitHub Issue #227: Add curl_error() to check for log submission failures
+[#231](https://github.com/rollbar/rollbar-php/pull/231)
+- GitHub Issue 229: Make fluentd a suggest requirement rather than mandatory
+[#230](https://github.com/rollbar/rollbar-php/pull/230)
+- Github Issue 226: Update rollbar.js code snippet
+[#228](https://github.com/rollbar/rollbar-php/pull/228)
+- configuration option to disallow calling exec to get git information
+[#223](https://github.com/rollbar/rollbar-php/pull/223)
+- use the configuration array directly, don't nest it under options
+[#222](https://github.com/rollbar/rollbar-php/pull/222)
+- GitHub Issue #144: allow passing ROLLBAR_TEST_TOKEN in phpunit arguments
+[#219](https://github.com/rollbar/rollbar-php/pull/219)
+- Performance fixes
+[#217](https://github.com/rollbar/rollbar-php/pull/217)
+
+## 1.2.0
+
+- No longer ignore the native PHP error handler:
+  [#175](https://github.com/rollbar/rollbar-php/pull/175)
+- Fix for when `HTTP_X_FORWARDED_PROTO` includes multiple values: [#179](https://github.com/rollbar/rollbar-php/pull/179)
+- Add the `use_error_reporting` option back: [#182](https://github.com/rollbar/rollbar-php/pull/182)
+- Fix a backwards compatibility bug with `base_api_url` which has since been deprecated in favor of
+  `endpoint`: [#189](https://github.com/rollbar/rollbar-php/pull/189)
+- Add a helper method to inject the javascript snippet into views:
+  [#186](https://github.com/rollbar/rollbar-php/pull/186)
+- Add option to include some local variables to stack traces:
+  [#192](https://github.com/rollbar/rollbar-php/pull/192)
+- Address an issue reading from php://input for PHP < 5.6 and provide a workaround:
+  [#181](https://github.com/rollbar/rollbar-php/pull/181)
+- Add static helper methods for Level: [#210](https://github.com/rollbar/rollbar-php/pull/210)
+- Correctly reverse frames in a stacktrace: [#211](https://github.com/rollbar/rollbar-php/pull/211).
+  NOTE: this behaviour is consistent with this library for versions less than 1.0, we consider it a
+  bug that the frames were in the wrong order for versions 1.0.0 to 1.1.1. However, this change will
+  cause the fingerprints of errors to change and therefore may result in some errors showing up as
+  new when in fact they already existed with the stack trace in the opposite order.
+- Allow sampling for exceptions: [#215](https://github.com/rollbar/rollbar-php/pull/215)
+- Add a whitelist to prevent scrubbing of specific fields:
+  [#216](https://github.com/rollbar/rollbar-php/pull/216)
+- Various refactorings and cleanup
+
+## 1.1.1
+
+- Forgot to bump the version number in the README and in the Notifier configuration.
+
+## 1.1.0
+
+This release includes some new features, some improvements to existing functionality, and several
+bug fixes. Below are the highlights of issues/PRs that are included in this release:
+
+- GitHub Issue [#38](https://github.com/rollbar/rollbar-php/issues/38): truncate payload [#167](https://github.com/rollbar/rollbar-php/pull/167)
+- GitHub Issue [#102](https://github.com/rollbar/rollbar-php/issues/102): Support the Forwarded (RFC 7239) header [#155](https://github.com/rollbar/rollbar-php/pull/155)
+- GitHub Issue [#72](https://github.com/rollbar/rollbar-php/issues/72): status 200 when using set_exception_handler [#143](https://github.com/rollbar/rollbar-php/pull/143)
+- GitHub Issue [#53](https://github.com/rollbar/rollbar-php/issues/53): Option to capture stack trace in report_message() [#145](https://github.com/rollbar/rollbar-php/pull/145)
+- Fix how include_error_code_context works with defaults [#168](https://github.com/rollbar/rollbar-php/pull/168)
+- Fix how we handle scrubbing related to query strings so that we don't accidentially urlencode
+  things that should not be, such as sql queries [#164](https://github.com/rollbar/rollbar-php/pull/164)
+- Bug: infinite loop when previous exception set [#158](https://github.com/rollbar/rollbar-php/pull/158) (@vilius-g)
+- Bug: checkIgnore was not getting passed documented arguments [#152](https://github.com/rollbar/rollbar-php/pull/152)
+- Only report legitimate fatal errors during shutdown rather than anything returned by
+  error_get_last(), Fatal handler type check [#161](https://github.com/rollbar/rollbar-php/pull/161) (@vilius-g)
+- Move packfire/php5.3-compat from require to suggest in composer.json [#169](https://github.com/rollbar/rollbar-php/pull/169) (@elazar)
+
+## 1.0.1
+
+- Bug fix related to scrubbing potential query strings
+- Update notifier to send the correct version number in the payload
+
+## 1.0.0
+
+Almost everything has been refactored or rewritten. The updated README has all of the current
+information on how to use the notifier. This release includes API that is backwards compatible with 0.18.2,
+however this is for convenience only and the methods that have changed have been marked deprecated.
+
 ## 0.18.2
 
 - removed type hinting from RollbarException

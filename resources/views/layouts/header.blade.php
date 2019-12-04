@@ -1,7 +1,7 @@
 <header class="navbar" id="header-navbar">
     <div class="container">
         <a href="{{url('/')}}" id="logo" class="navbar-brand">
-            {!! HTML::image('/resources/assets/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
+            {!! HTML::image('assets/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
            
         </a>
         <div class="clearfix">
@@ -22,7 +22,7 @@
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown profile-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('/resources/assets/img/samples/scarlet-159.png')}}" alt=""/>
+                            <img src="{{asset('assets/img/samples/scarlet-159.png')}}" alt=""/>
                             <span class="hidden-xs"> {{(Auth::user()) ? Auth::user()->first_name : ''}}&nbsp;{{(Auth::user())?Auth::user()->last_name:''}}</span>
                             <b class="caret"></b>
                         </a>

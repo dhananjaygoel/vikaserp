@@ -1,9 +1,9 @@
 <header class="navbar" id="header-navbar">
     <div class="container">
         <a href="{{URL::to('admin/users')}}" id="logo" class="navbar-brand">
-            {!! HTML::image('/resources/assets/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
-            {!! HTML::image('/resources/assets/img/logo-black.png' , 'Logo', array('class' => 'normal-logo logo-black')) !!}
-            {!! HTML::image('/resources/assets/img/logo-small.png' , 'Logo', array('class' => 'small-logo hidden-xs hidden-sm hidden')) !!}
+            {!! HTML::image('assets/img/logo1.png' , 'Logo', array('class' => 'normal-logo logo-white')) !!}
+            {!! HTML::image('assets/img/logo-black.png' , 'Logo', array('class' => 'normal-logo logo-black')) !!}
+            {!! HTML::image('assets/img/logo-small.png' , 'Logo', array('class' => 'small-logo hidden-xs hidden-sm hidden')) !!}
         </a>
 
         <div class="clearfix">
@@ -26,7 +26,7 @@
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown profile-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="show_nav_dropdown();" id="navbar_dropdown">
-                            {!! HTML::image('/resources/assets/img/user1.png' , 'User') !!}
+                            {!! HTML::image('assets/img/user1.png' , 'User') !!}
                             <?php if (Auth::check()) { ?>
                                 <span class="hidden-xs">{{Auth::user()->first_name}}</span> <b class="caret"></b>
                             <?php } ?>

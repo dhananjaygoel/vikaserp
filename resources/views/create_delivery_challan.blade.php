@@ -33,7 +33,7 @@
                         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                         @endif
                         <div id="flash_error_present_shipping"></div>
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-warning">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>

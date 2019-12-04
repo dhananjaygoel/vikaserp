@@ -4,66 +4,48 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Rollbar\Rollbar;
-use Rollbar\Payload\Level;
-use Config;
-use Illuminate\Session\TokenMismatchException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-//use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-class Handler extends ExceptionHandler {
-
+class Handler extends ExceptionHandler
+{
     /**
-     * A list of the exception types that should not be reported.
+     * A list of the exception types that are not reported.
      *
      * @var array
      */
-//    protected $dontReport = [
-//        'Symfony\Component\HttpKernel\Exception\HttpException'
-//    ];        
+    protected $dontReport = [
+        //
+    ];
+
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
+        'password',
+        'password_confirmation',
+    ];
 
     /**
      * Report or log an exception.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        if ($this->shouldReport($e)) {
-            if ($e instanceof NotFoundHttpException)
-            {
-//                app('sentry')->captureException($e);
-            }else{
-                app('sentry')->captureException($e);
-            }
-            
-        }        
-
-        parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e) {        
-        /* newcode */
-        if ($e instanceof TokenMismatchException) {
-            return redirect($request->fullUrl())->with('csrf_error', "Opps! Seems you couldn't submit form for a longtime. Please try again");
-        }
-        /* end */
-        if ($this->isHttpException($e)) {
-            return $this->renderHttpException($e);
-        }
-
-        return parent::render($request, $e);
+    public function render($request, Exception $exception)
+    {
+        return parent::render($request, $exception);
     }
-
 }

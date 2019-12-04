@@ -122,7 +122,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                        @if(count($purchase_advise) > 0)
+                        @if(count((array)$purchase_advise) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>

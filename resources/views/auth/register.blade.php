@@ -14,7 +14,7 @@
                             <div class="col-xs-12">
                                 <header id="login-header">
                                     <div id="login-logo">
-                                        {!! HTML::image('/resources/assets/img/logo.png' , 'Logo') !!}
+                                        {!! HTML::image('assets/img/logo.png' , 'Logo') !!}
                                         
                                     </div>
                                 </header>
@@ -26,7 +26,7 @@
                                 </div>
                                 @endif
 
-                                @if (count($errors) > 0)
+                                @if (count($errors->all()) > 0)
                                 <div class="alert alert-danger">
                                     <strong>Whoops!</strong> There were some problems with your input.<br><br>
                                     <ul>

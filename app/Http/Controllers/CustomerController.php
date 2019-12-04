@@ -45,11 +45,6 @@ class CustomerController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
     // exit;
@@ -70,13 +65,13 @@ class CustomerController extends Controller {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
             return Redirect::to('orders');
-        }        
+        }
 
         $customers = '';
-        
+
         $customer_filter = Input::get('customer_filter');
         $customers = Customer::orderBy('tally_name', 'asc');
-        
+
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';
 
@@ -104,23 +99,23 @@ class CustomerController extends Controller {
                             ->orWhere('phone_number2', 'like', $term);
                     })
                     ->where('customer_status', '=', 'permanent');
-                    
-        } 
+
+        }
         if (isset($customer_filter) && !empty($customer_filter)) {
-            if($customer_filter=='supplier'){                
-                $customers = $customers->where('is_supplier', '=', 'yes');                
+            if($customer_filter=='supplier'){
+                $customers = $customers->where('is_supplier', '=', 'yes');
             }
-            elseif($customer_filter=='customer'){               
-                $customers = $customers->where('is_supplier', '!=', 'yes');                                       
+            elseif($customer_filter=='customer'){
+                $customers = $customers->where('is_supplier', '!=', 'yes');
             }
         }
-                
+
 
         $customers = $customers->where('customer_status', '=', 'permanent');
-        $customers = $customers->paginate(20);        
+        $customers = $customers->paginate(20);
         $customers->setPath('customers');
         $city = City::all();
-        
+
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
@@ -157,7 +152,7 @@ class CustomerController extends Controller {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
     }
-/* This will start update customer*/  
+/* This will start update customer*/
 
     function quickbook_update_customer($quickbook_id,$data){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -232,7 +227,7 @@ class CustomerController extends Controller {
     function getToken(){
        require_once base_path('quickbook/vendor/autoload.php');
        $quickbook = App\QuickbookToken::find(2);
-       
+
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -256,7 +251,7 @@ class CustomerController extends Controller {
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
 
-/* This is start from 2 account inserted data all inclusive*/   
+/* This is start from 2 account inserted data all inclusive*/
 
     function quickbook_create_a_customer($data){
         require_once base_path('quickbook/vendor/autoload.php');
@@ -285,7 +280,7 @@ class CustomerController extends Controller {
             'QBORealmID' => "9130347328054516",
             'baseUrl' => "Production",
             'minorVersion'=>34
-        )); 
+        ));
 
     }
     function refresh_token_Wihtout_GST(){
@@ -293,7 +288,7 @@ class CustomerController extends Controller {
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
-        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
@@ -311,7 +306,7 @@ class CustomerController extends Controller {
         } else {
             return ['status'=>true,'message'=>$resultingCustomerObj];
         }
-    } 
+    }
     function getTokenAll(){
        require_once base_path('quickbook/vendor/autoload.php');
        $quickbook = App\QuickbookToken::find(4);
@@ -345,8 +340,8 @@ class CustomerController extends Controller {
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
-    }    
-/* This is end from 2 account inserted data all inclusive*/    
+    }
+/* This is end from 2 account inserted data all inclusive*/
 
 
 public function update_cust_plus_gst(){
@@ -359,7 +354,7 @@ public function update_cust_plus_gst(){
         $dataService = $this->getToken();
     }
     $sr = 1;
-    $cust = "select count(*) from Customer";
+    $cust = "select count((array)*) from Customer";
     $count = $dataService->Query($cust);
     $cust_det = "select * from Customer order by Id maxresults $count";
     $det = $dataService->Query($cust_det);
@@ -384,7 +379,7 @@ public function update_cust_all_inc(){
         $dataService = $this->getTokenWihtoutGST();
     }
     $sr = 1;
-    $cust = "select count(*) from Customer";
+    $cust = "select count((array)*) from Customer";
     $count = $dataService->Query($cust);
     $cust_det = "select * from Customer order by Id maxresults $count";
     $det = $dataService->Query($cust_det);
@@ -404,7 +399,7 @@ public function update_cust_all_inc(){
      * Show the form for creating a new customer.
      */
     public function create() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -439,7 +434,7 @@ public function update_cust_all_inc(){
         $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
                 ->get();
 
-        if (count($already_exists_mobile_number) > 0) {
+        if (count((array)$already_exists_mobile_number) > 0) {
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
 
@@ -462,10 +457,10 @@ public function update_cust_all_inc(){
             "BillAddr"=> [
                   "Country"=> "India",
                   "CountrySubDivisionCode"=> $state->state_name,
-                  "City"=> $city->city_name, 
-                  "PostalCode"=> Input::get('zip'), 
-                  "Line1" => Input::get('address1'), 
-                  "Line2" => Input::get('address2'), 
+                  "City"=> $city->city_name,
+                  "PostalCode"=> Input::get('zip'),
+                  "Line1" => Input::get('address1'),
+                  "Line2" => Input::get('address2'),
             ],
         ];
         $inclusivecustomerid ="";
@@ -476,9 +471,9 @@ public function update_cust_all_inc(){
         // dd($newCustomerObj);
         $newcus = $dataService->add($newCustomerObj);
         $error = $dataService->getLastError();
-        if ($error) { 
+        if ($error) {
             $this->refresh_token_Wihtout_GST();
-            $dataService = $this->getTokenWihtoutGST();  
+            $dataService = $this->getTokenWihtoutGST();
         }
         else{
             $inclusivecustomerid =  $newcus->Id;
@@ -486,16 +481,16 @@ public function update_cust_all_inc(){
         $nextdataservice = $this->getToken();
         $newcustoinclusive = $nextdataservice->add($newCustomerObj);
         $error1 = $nextdataservice->getLastError();
-        if ($error1) { 
+        if ($error1) {
             $this->refresh_token();
-            $dataService = $this->getToken();  
+            $dataService = $this->getToken();
         }
         else{
             $gstcustomerid =  $newcustoinclusive->Id;
         }
         $customer->quickbook_a_customer_id  = $inclusivecustomerid;
         $customer->quickbook_customer_id  = $gstcustomerid;
-        
+
        /*if(isset($status) && Input::get('status') == 'yes'){
             $res_q = $this->quickbook_create_supplier($Qdata);
             if($res_q['status']){
@@ -630,7 +625,7 @@ public function update_cust_all_inc(){
             $admins = User::where('role_id', '=', 4)->get();
             $customer = Customer::with('manager')->find($customer_id);
 
-            if (count($admins) > 0) {
+            if (count((array)$admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $product_type = ProductType::find($request->input('product_type'));
                     $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
@@ -650,7 +645,7 @@ public function update_cust_all_inc(){
                 }
             }
 
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
@@ -670,7 +665,7 @@ public function update_cust_all_inc(){
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
                 if (App::environment('development')) {
@@ -688,7 +683,7 @@ public function update_cust_all_inc(){
                 }
             }
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'users'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -704,7 +699,7 @@ public function update_cust_all_inc(){
      * Display the specific customer.
      */
     public function show($id) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -730,7 +725,7 @@ public function update_cust_all_inc(){
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::with('customerproduct')->find($id);
-        if (count($customer) < 1) {
+        if (count((array)$customer) < 1) {
             return redirect('customers/')->with('error', 'Trying to access an invalid customer');
         }
         $managers = User::where('role_id', '=', 0)->get();
@@ -749,19 +744,19 @@ public function update_cust_all_inc(){
         }
         $validator = Validator::make(Input::all(), Customer::$customers_rules);
         // dd(Input::get('status'));
-        
+
         if ($validator->passes()) {
             $customer = Customer::find($id);
             $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
                     ->where('id', '<>', $id)
                     ->get();
 
-            if (count($already_exists_mobile_number) > 0) {
+            if (count((array)$already_exists_mobile_number) > 0) {
                 return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
             }
 
 
-    //               
+    //
             $users = User::where('role_id', '=', '5')
                     ->where('email', '=', $customer->email)
                     ->where('mobile_number', '=', $customer->phone_number1)
@@ -770,7 +765,7 @@ public function update_cust_all_inc(){
                     ->first();
 
 
-            if (count($customer) < 1 && count($users) < 1) {
+            if (count((array)$customer) < 1 && count((array)$users) < 1) {
                 return redirect('customers/')->with('error', 'Trying to access an invalid customer');
             }
 
@@ -794,7 +789,7 @@ public function update_cust_all_inc(){
             }
             if (Input::has('contact_person')) {
                 $customer->contact_person = Input::get('contact_person');
-            }        
+            }
             if (Input::has('address1')) {
                 $customer->address1 = Input::get('address1');
             }
@@ -846,12 +841,12 @@ public function update_cust_all_inc(){
             $state = States::where('id',Input::get('state'))->first();
             $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
 
-            $status = Input::get('status'); 
+            $status = Input::get('status');
             $quickbook_id=$customer->quickbook_customer_id;
             $quickbook_a_id=$customer->quickbook_a_customer_id;
-            
+
             if($quickbook_id)
-            {     
+            {
                 $Qdata = [
                     "GivenName"=>  Input::get('owner_name'),
                     "FullyQualifiedName"=> Input::get('tally_name'),
@@ -866,10 +861,10 @@ public function update_cust_all_inc(){
                     "BillAddr"=> [
                           "Country"=> "India",
                           "CountrySubDivisionCode"=> $state->state_name,
-                          "City"=> $city->city_name, 
-                          "PostalCode"=> Input::get('zip'), 
-                          "Line1" => Input::get('address1'), 
-                          "Line2" => Input::get('address2'), 
+                          "City"=> $city->city_name,
+                          "PostalCode"=> Input::get('zip'),
+                          "Line1" => Input::get('address1'),
+                          "Line2" => Input::get('address2'),
                     ],
                 ];
                 $this->refresh_token_Wihtout_GST();
@@ -879,9 +874,9 @@ public function update_cust_all_inc(){
                 $customerObj = \QuickBooksOnline\API\Facades\Customer::update($resultingObj,$Qdata);
                 $resultingCustomerObj = $dataService->Update($customerObj);
                 $error = $dataService->getLastError();
-                if ($error) { 
+                if ($error) {
                     $this->refresh_token_Wihtout_GST();
-                    $dataService = $this->getTokenWihtoutGST();  
+                    $dataService = $this->getTokenWihtoutGST();
                 }
                 else{
                     $resultingCustomerObj = $dataService->Update($customerObj);
@@ -892,9 +887,9 @@ public function update_cust_all_inc(){
                 $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextresultingObj,$Qdata);
                 $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
                 $error1 = $nextdataservice->getLastError();
-                if ($error1) { 
+                if ($error1) {
                     $this->refresh_token();
-                    $nextdataservice = $this->getToken();  
+                    $nextdataservice = $this->getToken();
                 }
                 else{
                     $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
@@ -909,8 +904,8 @@ public function update_cust_all_inc(){
                     //         "FreeFormNumber"=>  Input::get('phone_number1')
                     //     ],
                     //         "BillAddr"=> [
-                    //           "City"=> Input::get('city'), 
-                    //           "Line1"=> Input::get('address1')                  
+                    //           "City"=> Input::get('city'),
+                    //           "Line1"=> Input::get('address1')
                     //         ]
                     // ];
                 // dd(Input::get('status'));
@@ -922,7 +917,7 @@ public function update_cust_all_inc(){
                     // } else{
                     //     $res = $this->quickbook_update_customer($quickbook_id,$Qdata);
                     //     if($res['status']){
-                           // $customer->quickbook_customer_id = $res['message']->Id;                   
+                           // $customer->quickbook_customer_id = $res['message']->Id;
                            // if(Input::get('status') == 'yes')
                            // {
                            //      $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
@@ -937,7 +932,7 @@ public function update_cust_all_inc(){
                         //     if($res['status']){
                                // $customer->quickbook_customer_id = $res['message']->Id;
                                // if(Input::get('status') == 'yes')
-                               // {                        
+                               // {
                                //      $res_q = $this->quickbook_update_supplier($quickbook_id,$Qdata);
                                //      // if($res_q['status']){
                                //      //     $customer->quickbook_supplier_id = $res_q['message']->Id;
@@ -955,7 +950,7 @@ public function update_cust_all_inc(){
                     // } else{
                     //     $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
                     //     if($res['status']){
-                           // $customer->quickbook_customer_id = $res['message']->Id;                   
+                           // $customer->quickbook_customer_id = $res['message']->Id;
                             // if(Input::get('status') == 'yes')
                             // {
                             //     // $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
@@ -968,7 +963,7 @@ public function update_cust_all_inc(){
                         //     $this->refresh_token_all();
                         //     $res = $this->quickbook_update_a_customer($quickbook_a_id,$Qdata);
                         //     if($res['status']){
-                               // $customer->quickbook_customer_id = $res['message']->Id;                        
+                               // $customer->quickbook_customer_id = $res['message']->Id;
                                //  if(Input::get('status') == 'yes')
                                // {
                                //      // $res_q = $this->quickbook_update_a_supplier($quickbook_a_id,$Qdata);
@@ -980,7 +975,7 @@ public function update_cust_all_inc(){
                     //     }
                     // }
                     //end all inclusive
-            }            
+            }
             // dd($customer);
             if ($customer->save() && $users->save()) {
                 $product_category_id = Input::get('product_category_id');
@@ -988,7 +983,7 @@ public function update_cust_all_inc(){
                     foreach ($product_category_id as $key => $value) {
                         if (Input::get('product_differrence')[$key] != '') {
                             $product_difference = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-                            if (count($product_difference) > 0) {
+                            if (count((array)$product_difference) > 0) {
                                 $product_difference = $product_difference;
                             } else {
                                 $product_difference = new CustomerProductDifference();
@@ -999,7 +994,7 @@ public function update_cust_all_inc(){
                             $product_difference->save();
                         } else {
                             $product_difference1 = CustomerProductDifference::where('product_category_id', '=', $value)->first();
-                            if (count($product_difference1) > 0) {
+                            if (count((array)$product_difference1) > 0) {
                                 $product_difference1->delete();
                             }
                         }
@@ -1015,7 +1010,7 @@ public function update_cust_all_inc(){
 
                 $customer = Customer::with('manager')->find($id);
 
-                if (count($customer) > 0) {
+                if (count((array)$customer) > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited your profile - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
@@ -1035,7 +1030,7 @@ public function update_cust_all_inc(){
                     }
                 }
 
-                if (count($customer['manager']) > 0) {
+                if (count((array)$customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a customer - " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
 
                     if (App::environment('development')) {
@@ -1054,7 +1049,7 @@ public function update_cust_all_inc(){
                 }
 
 
-                //         update sync table         
+                //         update sync table
                 $tables = ['customers', 'users'];
                 $ec = new WelcomeController();
                 $ec->set_updated_date_to_sync_table($tables);
@@ -1062,7 +1057,7 @@ public function update_cust_all_inc(){
 
                 $parameter = Session::get('parameters');
                 $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-                /* end code */            
+                /* end code */
 
                 return redirect('customers'. $parameters)->with('success', 'Customer details updated successfully');
             } else {
@@ -1071,7 +1066,7 @@ public function update_cust_all_inc(){
         }else {
             $error_msg = $validator->messages();
             return Redirect::back()->withInput()->withErrors($validator);
-        }    
+        }
     }
 
     /**
@@ -1112,13 +1107,13 @@ public function update_cust_all_inc(){
             $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
             $cust_flag = "";
 
-            if (isset($customer_inquiry) && (count($customer_inquiry) > 0)) {
+            if (isset($customer_inquiry) && (count((array)$customer_inquiry) > 0)) {
                 $customer_exist['customer_inquiry'] = 1;
                 $cust_msg .= "Inquiry";
                 $cust_flag = 1;
             }
 
-            if (isset($customer_order) && (count($customer_order) > 0)) {
+            if (isset($customer_order) && (count((array)$customer_order) > 0)) {
                 $customer_exist['customer_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Order";
@@ -1128,7 +1123,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0)) {
+            if (isset($customer_delivery_order) && (count((array)$customer_delivery_order) > 0)) {
                 $customer_exist['customer_delivery_order'] = 1;
 
                 if ($customer_exist['customer_inquiry'] == 1) {
@@ -1141,7 +1136,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0)) {
+            if (isset($customer_delivery_challan) && (count((array)$customer_delivery_challan) > 0)) {
                 $customer_exist['customer_delivery_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Delievry Challan";
@@ -1155,7 +1150,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_order) && (count($customer_purchase_order) > 0)) {
+            if (isset($customer_purchase_order) && (count((array)$customer_purchase_order) > 0)) {
                 $customer_exist['customer_purchase_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Order";
@@ -1171,7 +1166,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_advice) && (count($customer_purchase_advice) > 0)) {
+            if (isset($customer_purchase_advice) && (count((array)$customer_purchase_advice) > 0)) {
                 $customer_exist['customer_purchase_advice'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Advice";
@@ -1189,7 +1184,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_challan) && (count($customer_purchase_challan) > 0)) {
+            if (isset($customer_purchase_challan) && (count((array)$customer_purchase_challan) > 0)) {
                 $customer_exist['customer_purchase_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Challan";
@@ -1212,7 +1207,7 @@ public function update_cust_all_inc(){
             if ($cust_flag == 1) {
                 $parameter = Session::get('parameters');
                 $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-                
+
                 return redirect('customers'. $parameters)->with('error', $cust_msg);
             } else {
                 $quickbook_id=$customer->quickbook_customer_id;
@@ -1229,9 +1224,9 @@ public function update_cust_all_inc(){
                     $customerObj = \QuickBooksOnline\API\Facades\Customer::update($customer_details[0],$Qdata);
                     $resultingCustomerObj = $dataService->Update($customerObj);
                     $error = $dataService->getLastError();
-                    if ($error) { 
+                    if ($error) {
                         $this->refresh_token_Wihtout_GST();
-                        $dataService = $this->getTokenWihtoutGST();  
+                        $dataService = $this->getTokenWihtoutGST();
                     }
                     else{
                         $resultingCustomerObj = $dataService->Update($customerObj);
@@ -1244,9 +1239,9 @@ public function update_cust_all_inc(){
                     $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextcust_details[0],$Qdata);
                     $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
                     $error1 = $nextdataservice->getLastError();
-                    if ($error1) { 
+                    if ($error1) {
                         $this->refresh_token();
-                        $nextdataservice = $this->getToken();  
+                        $nextdataservice = $this->getToken();
                     }
                     else{
                         $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
@@ -1260,7 +1255,7 @@ public function update_cust_all_inc(){
                         ->where('created_at', '=', $customer->created_at)
                         ->delete();
 
-                //         update sync table         
+                //         update sync table
                 $tables = ['customers', 'users'];
                 $ec = new WelcomeController();
                 $ec->set_updated_date_to_sync_table($tables);
@@ -1268,9 +1263,9 @@ public function update_cust_all_inc(){
 
                 $parameter = Session::get('parameters');
                 $parameters = (isset($parameter) && !empty($parameter)) ? '?' . Session::get('parameters') : '';
-            /* end code */            
+            /* end code */
 
-                return redirect('customers'. $parameters)->with('success', 'Customer deleted successfully.');                
+                return redirect('customers'. $parameters)->with('success', 'Customer deleted successfully.');
             }
         } else {
             return Redirect::to('customers')->with('error', 'Invalid password');
@@ -1327,8 +1322,8 @@ public function update_cust_all_inc(){
         if($state_id ==0){
            $data = City::orderBy('city_name', 'ASC')->get();
         }else{
-           $data = City::where('state_id', $state_id)->get(); 
-        }        
+           $data = City::where('state_id', $state_id)->get();
+        }
         $city = array();
         $i = 0;
         foreach ($data as $key => $val) {
@@ -1432,7 +1427,7 @@ public function update_cust_all_inc(){
         }
 
         $product_category = ProductCategory::where('product_type_id', $product_type)->get();
-        $pipe_category_count = ProductCategory::where('product_type_id', 1)->count();        
+        $pipe_category_count = ProductCategory::where('product_type_id', 1)->count();
         $struct_category_count = ProductCategory::where('product_type_id', 2)->count();
         $profile_category_count = ProductCategory::where('product_type_id', 3)->count();
         $customer->setPath('bulk_set_price');
@@ -1460,7 +1455,7 @@ public function update_cust_all_inc(){
         }
         $product_pipe_category = ProductCategory::where('product_type_id', 1)->get();
         $product_structure_category = ProductCategory::where('product_type_id', 2)->get();
-        $product_profile_category = ProductCategory::where('product_type_id', 3)->get();        
+        $product_profile_category = ProductCategory::where('product_type_id', 3)->get();
         $product_category = ProductCategory::all();
 
         foreach ($data['set_diff'] as $key => $value) {
@@ -1469,10 +1464,10 @@ public function update_cust_all_inc(){
                 $pipe = $value['pipe'];
                 $custid = $value['cust_id'];
                 $structure = $value['structure'];
-                $profile = $value['profile'];             
+                $profile = $value['profile'];
                 $count = CustomerProductDifference::where('customer_id', $custid)->count();
                 if ($count == 0) {
-                    foreach ($product_category as $value) {                        
+                    foreach ($product_category as $value) {
                         if ($value->product_type_id == 1 && isset($pipe) && $pipe != "") {
                             $diff = new CustomerProductDifference();
                             $diff->product_category_id = $value->id;
@@ -1499,7 +1494,7 @@ public function update_cust_all_inc(){
 
                     if (isset($value['pipe']) && !empty($value['pipe']) && $value['pipe'] != "") {
 
-                        foreach ($product_pipe_category as $curr_category) {                            
+                        foreach ($product_pipe_category as $curr_category) {
                             $count = CustomerProductDifference::where('product_category_id', $curr_category->id)
                                             ->where('customer_id', $custid)->count();
                             if ($count == 0) {
@@ -1640,7 +1635,7 @@ public function update_cust_all_inc(){
                     $query->where('challan_status', '=', 'completed');
                 });
 
-//               dd($customers->toSql());  
+//               dd($customers->toSql());
 //                dd($customers->get());
             }
         }
@@ -1719,7 +1714,7 @@ public function update_cust_all_inc(){
                         ->with('territories', $territories);
     }
 
-//    
+//
 //    public function get_customers_list() {
 //        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 6) {
 //            return redirect()->back();
@@ -1734,7 +1729,7 @@ public function update_cust_all_inc(){
 //            /* old code */
 ////            $customers = Customer::with('delivery_challan')->with('customer_receipt')->with('collection_user_location.collection_user')->with('delivery_location')->with('collection_user_location')->orderBy('created_at', 'desc')
 ////                                    ->whereHas('delivery_challan', function ($query) {
-////                                    $query->where('challan_status','=', 'completed');                                            
+////                                    $query->where('challan_status','=', 'completed');
 ////                                    });
 //
 //            /* new code */
@@ -1784,7 +1779,7 @@ public function update_cust_all_inc(){
 //                    $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
 //                });
 //
-////               dd($customers->toSql());  
+////               dd($customers->toSql());
 ////                dd($customers->get());
 //            }
 //        }
@@ -1911,7 +1906,7 @@ public function update_cust_all_inc(){
                         ->select('id')->first();
 
 
-        if (count($discount_user) && $discount_user->id == $id) {
+        if (count((array)$discount_user) && $discount_user->id == $id) {
             $is_discount_user = 'true';
         } else {
             $is_discount_user = 'false';
@@ -1982,7 +1977,7 @@ public function update_cust_all_inc(){
                     $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
 
-//               dd($customers->toSql());  
+//               dd($customers->toSql());
 //                dd($customers->get());
             }
         }
@@ -2046,7 +2041,7 @@ public function update_cust_all_inc(){
                     $query->whereRaw("Date(DATE_ADD(delivery_challan.created_at,INTERVAL customers.credit_period DAY)) <= CURDATE()");
                 });
 
-//               dd($customers->toSql());  
+//               dd($customers->toSql());
 //                dd($customers->get());
             }
         }

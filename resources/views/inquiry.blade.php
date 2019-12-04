@@ -9,7 +9,7 @@
         </ol>
         <div class="clearfix">
 
-            <div class="pull-right top-page-ui">                        
+            <div class="pull-right top-page-ui">
                 <a href="{{URL::action('InquiryController@create')}}" class="btn btn-primary pull-right">
                     <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
                 </a>
@@ -25,7 +25,7 @@
                         </form>
                     </div>
                 </div>
-                
+
                 @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
                 <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending'])}}" class="btn btn-primary pull-right">
                     Export
@@ -60,10 +60,10 @@
                 </ol>
                 <div class="clearfix">
                     <h1 class="pull-left">Inquiry</h1>
-                    <div class="pull-right top-page-ui">                        
+                    <div class="pull-right top-page-ui">
                         <a href="{{URL::action('InquiryController@create')}}" class="btn btn-primary pull-right">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
-                        </a> 
+                        </a>
                         <div class="form-group pull-right">
                             <div class="col-md-12">
                                 <form method="GET" action="{{url('inquiry')}}">
@@ -110,11 +110,11 @@
                                     <tr>
                                         <th>#</th>
                                         <th class="text-center">Tally Name</th>
-                                      
+
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Delivery Location</th>
-                                       
+
                                         @if((Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == ''))
                                         <th class="text-center">Place Order</th>
 
@@ -123,19 +123,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1; 
-                                     
+                                    <?php $i = ($inquiries->currentPage() - 1) * $inquiries->perPage() + 1;
+
                                      ?>
 
-                                
+
                                     @foreach($inquiries as $inquiry)
-                                  
+
                                     <tr id="inquiry_row_{{$inquiry['id']}}">
                                         <td class="text-center">{{$i++}}</td>
                                         <td class="text-center">
                                             {{(isset($inquiry["customer"]->tally_name) && $inquiry["customer"]->tally_name != "")? $inquiry["customer"]->tally_name :(isset($inquiry["customer"]->owner_name) ? $inquiry["customer"]->owner_name:'')}}
                                         </td>
-                                       
+
                                         <?php $qty = 0; $alias = 0; ?>
                                         @foreach($inquiry['inquiry_products'] as $prod)
                                         <?php  $alias = $prod['inquiry_product_details']->alias_name;?>
@@ -176,7 +176,7 @@
                                             @endif
                                         @endif
                                         @endforeach
-                                       
+
                                         <td class="text-center">{{ round($qty, 2) }}</td>
                                         <td class="text-center">{{$inquiry['customer']['phone_number1']}} </td>
                                         @if($inquiry['delivery_location']['area_name'] !="")
@@ -187,7 +187,7 @@
                                         @if($inquiry->inquiry_status != 'completed')
                                          @if(Input::get('inquiry_filter') == 'Pending' || Input::get('inquiry_filter') == '')
                                         <td class="text-center">
-                                           
+
                                             @if($inquiry->is_approved=='no')
                                             <a href="javascript:void(0)" class="table-link" title="Need Admin Approval">
                                                 <span class="fa-stack">
@@ -201,24 +201,24 @@
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-book fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a> 
+                                            </a>
                                             @endif
-                                           
+
                                         </td>
                                          @endif
                                         @endif
                                         <td class="text-center">                                                                    @if($inquiry->is_approved=='no' &&   Auth::user()->role_id == 0 )
-                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
+                                            <a title="View" href="{{ Url::action('InquiryController@show', ['inquiry' => $inquiry['id'],'way' => 'approval']) }}" class="btn btn-primary btn-sm /*table-link*/">View
 <!--                                                <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>-->
                                             </a>
-                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id'],'way' => 'approval']) }}">Approve</a>                                   
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="reject_inquiry_row({{$inquiry['id']}})">Reject</a>  
-                                            
+                                            <a title="Approve" class="btn btn-primary btn-sm"  href="{{ Url::action('InquiryController@edit', ['inquiry' => $inquiry['id'],'way' => 'approval']) }}">Approve</a>                                   
+                                            <a class="btn btn-danger btn-sm" href="javascript:;" data-toggle="modal" title="Reject" data-target="#delete_inquiry" onclick="reject_inquiry_row({{$inquiry['id']}})">Reject</a>
+
                                             @else
-                                            <a title="View" href="{{ Url::action('InquiryController@show', ['id' => $inquiry['id']]) }}" class="table-link">
+                                            <a title="View" href="{{ Url::action('InquiryController@show', ['inquiry' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
@@ -226,12 +226,12 @@
                                             </a>
                                             @if($inquiry->inquiry_status != 'completed')
                                              @if( Auth::user()->role_id <> 2 && Auth::user()->role_id <> 3)
-                                            <a title="Edit" href="{{ Url::action('InquiryController@edit', ['id' => $inquiry['id']]) }}" class="table-link">
+                                            <a title="Edit" href="{{ Url::action('InquiryController@edit', ['inquiry' => $inquiry['id']]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
-                                            </a>                                            
+                                            </a>
                                             @endif
                                             @endif
 
@@ -243,7 +243,7 @@
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @endif                                                                                   @endif 
+                                            @endif                                                                                   @endif
                                         </td>
                                     </tr>
 
@@ -278,7 +278,7 @@
                                                     <input class="form-control" name="inquiry_id" id="inquiry_id" type="hidden"/>
                                                     <input class="form-control" name="way" id="way" type="hidden"/>
                                                     <input type="hidden" name="inquiry_sort_type" value="{{(Input::get('inquiry_filter')!="")?Input::get('inquiry_filter'):""}}"/>
-                                                    
+
                                                     <div class="delete">
                                                         <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                         <div class="pwd">
@@ -301,7 +301,7 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php  
+                                <?php
                                 echo $inquiries->appends(Input::except('page'))->render();
                                 ?>
                             </span>
@@ -320,8 +320,8 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
-                            @endif 
+                            </span>
+                            @endif
 
                         </div>
                         @endif

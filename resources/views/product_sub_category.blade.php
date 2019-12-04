@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/dashboard">Home</a></li>
+                    <li><a href="{{url('/')}}/dashboard">Home</a></li>
                     <li class="active"><span>Product Size</span></li>
                 </ol>
                 <div class="clearfix">
@@ -93,7 +93,7 @@
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Product differences have been successfully updated.
                         </div>
-                        @if(sizeof($product_sub_cat) != 0)
+                        @if(sizeof((array)$product_sub_cat) != 0)
                         <div class="table-responsive">
                             <form method="POST" id="save_all_product_sizes">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">
@@ -122,7 +122,7 @@
                                         $i = ($product_sub_cat->currentPage() - 1 ) * $product_sub_cat->perPage() + 1;
                                         ?>
                                         @foreach($product_sub_cat as $produ_sub)
-                                        @if(sizeof($produ_sub['product_category']) != 0)
+                                        @if(sizeof((array)$produ_sub['product_category']) != 0)
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $produ_sub['product_category']->product_category_name }} </td>
@@ -180,7 +180,7 @@
                                             </td>
                                             @if( Auth::user()->role_id == 0 )
                                             <td>
-                                                <a href="{{URL::action('ProductsubController@edit',['id'=>$produ_sub->id])}}" class="table-link">
+                                                <a href="{{URL::action('ProductsubController@edit',['product_sub_category'=>$produ_sub->id])}}" class="table-link">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -251,7 +251,7 @@
 
                             <span class="pull-right">
                                 <ul class="pagination pull-right">
-                                    @if(sizeof($_GET) < 2)
+                                    @if(sizeof((array)$_GET) < 2)
                                     <?php echo $product_sub_cat->render(); ?>
                                     @else
                                     <?php echo $product_sub_cat->appends(array('product_size' => $filter[0], 'search_text' => $filter[1], 'product_filter' => $filter[2]))->render(); ?>

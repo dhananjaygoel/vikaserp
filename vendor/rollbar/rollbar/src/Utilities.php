@@ -2,31 +2,16 @@
 
 final class Utilities
 {
-    // In order to support < 5.6 we had to use __callStatic to define
-    // coalesce, because the splat operator was introduced in 5.6
-    public static function __callStatic($name, $args)
+    private static $ObjectHashes;
+    
+    public static function getObjectHashes()
     {
-        if ($name == 'coalesce') {
-            return self::coalesceArray($args);
-        }
-        return null;
+        return self::$ObjectHashes;
     }
-
-    public static function coalesceArray(array $values)
+    
+    public static function isWindows()
     {
-        foreach ($values as $key => $val) {
-            if ($val) {
-                return $val;
-            }
-        }
-        return null;
-    }
-
-    // Modified from: http://stackoverflow.com/a/1176023/456188
-    public static function pascalToCamel($input)
-    {
-        $s1 = preg_replace('/([^_])([A-Z][a-z]+)/', '$1_$2', $input);
-        return strtolower(preg_replace('/([a-z0-9])([A-Z])/', '$1_$2', $s1));
+        return php_uname('s') == 'Windows NT';
     }
 
     public static function validateString(
@@ -94,27 +79,134 @@ final class Utilities
 
     public static function serializeForRollbar(
         $obj,
-        array $overrideNames = null,
-        array $customKeys = null
+        array $customKeys = null,
+        &$objectHashes = array(),
+        $maxDepth = -1,
+        $depth = 0
     ) {
+        
         $returnVal = array();
-        $overrideNames = $overrideNames == null ? array() : $overrideNames;
-        $customKeys = $customKeys == null ? array() : $customKeys;
+        
+        if (is_object($obj)) {
+            if (self::serializedAlready($obj, $objectHashes)) {
+                return self::circularReferenceLabel($obj);
+            } else {
+                self::markSerialized($obj, $objectHashes);
+            }
+        }
+        
+        if ($maxDepth > 0 && $depth > $maxDepth) {
+            return null;
+        }
 
         foreach ($obj as $key => $val) {
-            if ($val instanceof \JsonSerializable) {
-                $val = $val->jsonSerialize();
+            if (is_object($val)) {
+                $val = self::serializeObject(
+                    $val,
+                    $customKeys,
+                    $objectHashes,
+                    $maxDepth,
+                    $depth
+                );
+            } elseif (is_array($val)) {
+                $val = self::serializeForRollbar(
+                    $val,
+                    $customKeys,
+                    $objectHashes,
+                    $maxDepth,
+                    $depth+1
+                );
             }
-            $newKey = array_key_exists($key, $overrideNames)
-                ? $overrideNames[$key]
-                : Utilities::pascalToCamel($key);
-            if (in_array($key, $customKeys)) {
+            
+            if ($customKeys !== null && in_array($key, $customKeys)) {
                 $returnVal[$key] = $val;
             } elseif (!is_null($val)) {
-                $returnVal[$newKey] = $val;
+                $returnVal[$key] = $val;
             }
         }
 
         return $returnVal;
+    }
+    
+    private static function serializeObject(
+        $obj,
+        array $customKeys = null,
+        &$objectHashes = array(),
+        $maxDepth = -1,
+        $depth = 0
+    ) {
+        $serialized = null;
+        
+        if (self::serializedAlready($obj, $objectHashes)) {
+            $serialized = self::circularReferenceLabel($obj);
+        } else {
+            if ($obj instanceof \Serializable) {
+                self::markSerialized($obj, $objectHashes);
+                $serialized = $obj->serialize();
+            } else {
+                $serialized = array(
+                    'class' => get_class($obj)
+                );
+                
+                if ($obj instanceof \Iterator) {
+                    $serialized['value'] = 'non-serializable';
+                } else {
+                    $serialized['value'] = self::serializeForRollbar(
+                        $obj,
+                        $customKeys,
+                        $objectHashes,
+                        $maxDepth,
+                        $depth+1
+                    );
+                }
+            }
+        }
+        
+        return $serialized;
+    }
+    
+    private static function serializedAlready($obj, &$objectHashes)
+    {
+        if (!isset($objectHashes[spl_object_hash($obj)])) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private static function markSerialized($obj, &$objectHashes)
+    {
+        $objectHashes[spl_object_hash($obj)] = true;
+        self::$ObjectHashes = $objectHashes;
+    }
+    
+    private static function circularReferenceLabel($obj)
+    {
+        return '<CircularReference type:('.get_class($obj).') ref:('.spl_object_hash($obj).')>';
+    }
+    
+    // from http://www.php.net/manual/en/function.uniqid.php#94959
+    public static function uuid4()
+    {
+        mt_srand();
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            // 32 bits for "time_low"
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            // 16 bits for "time_mid"
+            mt_rand(0, 0xffff),
+            // 16 bits for "time_hi_and_version",
+            // four most significant bits holds version number 4
+            mt_rand(0, 0x0fff) | 0x4000,
+            // 16 bits, 8 bits for "clk_seq_hi_res",
+            // 8 bits for "clk_seq_low",
+            // two most significant bits holds zero and one for variant DCE1.1
+            mt_rand(0, 0x3fff) | 0x8000,
+            // 48 bits for "node"
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
+        );
     }
 }

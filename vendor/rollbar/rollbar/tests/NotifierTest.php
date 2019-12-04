@@ -3,7 +3,7 @@
 use \Mockery as m;
 use Rollbar\Payload\Notifier;
 
-class NotifierTest extends \PHPUnit_Framework_TestCase
+class NotifierTest extends BaseRollbarTest
 {
     public function testName()
     {
@@ -28,7 +28,7 @@ class NotifierTest extends \PHPUnit_Framework_TestCase
     public function testEncode()
     {
         $notifier = Notifier::defaultNotifier();
-        $encoded = json_encode($notifier->jsonSerialize());
-        $this->assertEquals('{"name":"rollbar-php","version":"1.0.1"}', $encoded);
+        $encoded = json_encode($notifier->serialize());
+        $this->assertEquals('{"name":"rollbar-php","version":"1.8.1"}', $encoded);
     }
 }

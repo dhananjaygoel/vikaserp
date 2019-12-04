@@ -3,7 +3,7 @@
 use \Mockery as m;
 use Rollbar\Payload\Frame;
 
-class FrameTest extends \PHPUnit_Framework_TestCase
+class FrameTest extends BaseRollbarTest
 {
     private $exception;
     private $frame;
@@ -62,20 +62,14 @@ class FrameTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(1, "hi"), $this->frame->getArgs());
     }
 
-    public function testKwargs()
-    {
-        $this->frame->setKwargs(array("hi" => "bye"));
-        $this->assertEquals(array("hi" => "bye"), $this->frame->getKwargs());
-    }
-
     public function testEncode()
     {
-        $context = m::mock("Rollbar\Payload\Context, \JsonSerializable")
-            ->shouldReceive("jsonSerialize")
+        $context = m::mock("Rollbar\Payload\Context, \Serializable")
+            ->shouldReceive("serialize")
             ->andReturn("{CONTEXT}")
             ->mock();
         $this->exception
-            ->shouldReceive("jsonSerialize")
+            ->shouldReceive("serialize")
             ->andReturn("{EXC}")
             ->mock();
         $this->frame->setFilename("rollbar.php")
@@ -84,18 +78,16 @@ class FrameTest extends \PHPUnit_Framework_TestCase
             ->setMethod("testEncode()")
             ->setCode('$frame->setFilename("rollbar.php")')
             ->setContext($context)
-            ->setArgs(array("hello", "world"))
-            ->setKwargs(array("whatever" => "Faked"));
+            ->setArgs(array("hello", "world"));
 
-        $actual = json_encode($this->frame->jsonSerialize());
+        $actual = json_encode($this->frame->serialize());
         $expected = '{' .
                 '"filename":"rollbar.php",' .
                 '"lineno":1024,"colno":42,' .
                 '"method":"testEncode()",' .
                 '"code":"$frame->setFilename(\"rollbar.php\")",' .
                 '"context":"{CONTEXT}",' .
-                '"args":["hello","world"],' .
-                '"kwargs":{"whatever":"Faked"}' .
+                '"args":["hello","world"]' .
             '}';
 
         $this->assertEquals($expected, $actual);

@@ -33,11 +33,6 @@ class PurchaseAdviseController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -207,7 +202,7 @@ class PurchaseAdviseController extends Controller {
             }
         }
 
-        if (count($order_objects) == 0) {
+        if (count((array)$order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Purchase Order does not exist.');
         } else {
             $units = Units::all();
@@ -252,7 +247,7 @@ class PurchaseAdviseController extends Controller {
         $input_data = Input::all();
         if (Session::has('forms_purchase_advise')) {
             $session_array = Session::get('forms_purchase_advise');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message_error', 'This purchase advise is already saved. Please refresh the page');
                 } else {
@@ -276,7 +271,7 @@ class PurchaseAdviseController extends Controller {
             return Redirect::back()->withErrors($validator)->withInput();
         }
         $i = 0;
-        $j = count($input_data['product']);
+        $j = count((array)$input_data['product']);
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] == "") {
                 $i++;
@@ -358,7 +353,7 @@ class PurchaseAdviseController extends Controller {
                 PurchaseProducts::create($purchase_advise_products);
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'purchase_order', 'all_purchase_products', 'purchase_advice'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -370,7 +365,7 @@ class PurchaseAdviseController extends Controller {
      * Display the specified resource.
      */
     public function show($id = "") {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -379,7 +374,7 @@ class PurchaseAdviseController extends Controller {
         }
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
-        if (count($purchase_advise) < 1) {
+        if (count((array)$purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
         return View::make('view_purchase_advice', array('purchase_advise' => $purchase_advise,'customers'=> $customers));
@@ -389,7 +384,7 @@ class PurchaseAdviseController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit($id) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -399,7 +394,7 @@ class PurchaseAdviseController extends Controller {
         }
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
-        if (count($purchase_advise) < 1) {
+        if (count((array)$purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -416,7 +411,7 @@ class PurchaseAdviseController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_edit_purchase_advise')) {
             $session_array = Session::get('forms_edit_purchase_advise');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message_error', 'This purchase advise is already updated. Please refresh the page');
                 } else {
@@ -507,7 +502,7 @@ class PurchaseAdviseController extends Controller {
         $customer_id = $purchase_advise->supplier_id;
         $customer = Customer::with('manager')->find($customer_id);
         if ($sms_flag == 1) {
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
                 foreach ($input_data as $product_data) {
@@ -531,7 +526,7 @@ class PurchaseAdviseController extends Controller {
                     curl_close($ch);
                 }
             }
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
@@ -556,7 +551,7 @@ class PurchaseAdviseController extends Controller {
                 }
             }
         }
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'all_purchase_products', 'purchase_advice'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -600,7 +595,7 @@ class PurchaseAdviseController extends Controller {
 
             $calc = new InventoryController();
             $calc->inventoryCalc($product_category_ids);
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'all_purchase_products', 'purchase_advice'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -622,7 +617,7 @@ class PurchaseAdviseController extends Controller {
         $input_data = Input::all();
         if (Session::has('forms_purchase_advise')) {
             $session_array = Session::get('forms_purchase_advise');
-            if (count($session_array) > 0) {
+            if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
                     return Redirect::back()->with('flash_message_error', 'This purchase advise is already saved. Please refresh the page');
                 } else {
@@ -739,7 +734,7 @@ class PurchaseAdviseController extends Controller {
 //                ));
 //            }
 
-            $PO = PurchaseOrder::where('id', $input_data['id'])->get();           
+            $PO = PurchaseOrder::where('id', $input_data['id'])->get();
             $this->quantity_calculation_po($PO);
 
             /* inventory code */
@@ -753,7 +748,7 @@ class PurchaseAdviseController extends Controller {
                 $calc->inventoryCalc($product_category_ids);
             }
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers', 'purchase_order', 'all_purchase_products', 'purchase_advice'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -798,7 +793,7 @@ class PurchaseAdviseController extends Controller {
         }
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'location', 'purchase_products.unit', 'purchase_products.purchase_product_details','purchase_order')->find($id);
-        if (count($purchase_advise) < 1) {
+        if (count((array)$purchase_advise) < 1) {
             return redirect('purchaseorder_advise')->with('flash_message', 'Purchase advise not found');
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -809,9 +804,9 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function print_purchase_advise($id) {
-        
+
         if (Input::has('vehicle_number')) {
-            $vehicle_number = Input::get('vehicle_number');            
+            $vehicle_number = Input::get('vehicle_number');
         }
         $current_date = date("/m/d/");
         $pr_a = PurchaseAdvise::where('id','=',$id)->with('purchase_order_single')->first();
@@ -828,7 +823,7 @@ class PurchaseAdviseController extends Controller {
             PurchaseAdvise::where('id', '=', $id)->update(array(
                 'serial_number' => $date_letter,
                 'vehicle_number' => $vehicle_number,
-            ));    
+            ));
         }else{
             PurchaseAdvise::where('id', '=', $id)->update(array(
                 'serial_number' => $date_letter
@@ -856,7 +851,7 @@ class PurchaseAdviseController extends Controller {
         if ($send_sms == 'true' && $sms_flag == 1) {
             $customer_id = $purchase_advise->supplier_id;
             $customer = Customer::with('manager')->find($customer_id);
-            if (count($customer) > 0) {
+            if (count((array)$customer) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows\n";
                 foreach ($input_data as $product_data) {
@@ -881,7 +876,7 @@ class PurchaseAdviseController extends Controller {
                 }
             }
 
-            if (count($customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
@@ -916,7 +911,7 @@ class PurchaseAdviseController extends Controller {
         $calc = new InventoryController();
         $calc->inventoryCalc($product_category_ids);
 
-        //         update sync table         
+        //         update sync table
         $tables = ['customers', 'all_purchase_products', 'purchase_advice'];
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
@@ -930,11 +925,11 @@ class PurchaseAdviseController extends Controller {
      */
     function checkpending_quantity($purchase_advise) {
         $pending_orders = array();
-        if (count($purchase_advise) > 0) {
+        if (count((array)$purchase_advise) > 0) {
 
             foreach ($purchase_advise as $key => $del_order) {
                 $purchase_order_quantity = 0;
-                if (count($del_order['purchase_products']) > 0) {
+                if (count((array)$del_order['purchase_products']) > 0) {
 
                     foreach ($del_order['purchase_products'] as $popk => $popv) {
                         $product_size = $popv['product_sub_category'];
@@ -980,7 +975,7 @@ class PurchaseAdviseController extends Controller {
             $purchase_order_advise_quantity = 0;
             //$purchase_order_advise_products = PurchaseProducts::where('from', '=', $order->id)->get();
             $purchase_order_advise_products = $order['purchase_product_has_from'];
-            if (count($purchase_order_advise_products) > 0) {
+            if (count((array)$purchase_order_advise_products) > 0) {
                 foreach ($purchase_order_advise_products as $poapk => $poapv) {
                     $product_size = $poapv['product_sub_category'];
                     //$product_size = ProductSubCategory::find($poapv->product_category_id);
@@ -1002,7 +997,7 @@ class PurchaseAdviseController extends Controller {
                 }
             }
 
-            if (count($order['purchase_products']) > 0) {
+            if (count((array)$order['purchase_products']) > 0) {
                 foreach ($order['purchase_products'] as $popk => $popv) {
                     $product_size = $popv['product_sub_category'];
                     //$product_size = ProductSubCategory::find($popv->product_category_id);

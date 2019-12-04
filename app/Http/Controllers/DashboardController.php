@@ -157,7 +157,7 @@ class DashboardController extends Controller {
 
 //        $delivery_challan = DeliveryChallan::with('delivery_challan_products')->get();
 //        $delivery_challan_sum = 0;
-//       
+//
 ////        foreach ($pur_challan as $qty) {
 ////            foreach ($qty['delivery_challan_products'] as $qty_val) {
 ////                $challan_sum += $qty_val->quantity;
@@ -169,8 +169,8 @@ class DashboardController extends Controller {
 ////                    $delivery_challan_sum += $delivery_challan_productinfo->quantity;
 ////                else
 ////                    $delivery_challan_sum += $this->checkpending_quantity($delivery_challan_productinfo->unit_id, $delivery_challan_productinfo->product_category_id, $delivery_challan_productinfo->quantity);
-//               
-//               
+//
+//
 //                if($delivery_challan_info->challan_status == 'completed'){
 //                    $delivery_challan_sum =  $delivery_challan_sum + $delivery_challan_productinfo->actual_quantity;
 //                }
@@ -193,7 +193,7 @@ class DashboardController extends Controller {
 //            }
 //        }
 //        $purc_order_sum = $purc_order_sum / 1000;
-//        dd(DB::getQueryLog());           
+//        dd(DB::getQueryLog());
 //            exit;
 
 
@@ -205,7 +205,7 @@ class DashboardController extends Controller {
     function checkpending_quantity($unit_id, $product_category_id, $product_qty, $prod_info = false) {
 
         $kg_qty = 0;
-        if ($prod_info && count($prod_info)) {
+        if ($prod_info && count((array)(array)$prod_info)) {
             $product_info = $prod_info;
         } else {
             $product_info = ProductSubCategory::find($product_category_id);
@@ -319,7 +319,7 @@ class DashboardController extends Controller {
 //                    ->where('order_status', '=', 'completed')
 //                    ->where('updated_at', 'like', $date_search . '%')
 //                    ->get();
-//            if (count($orders_stats) > 0) {
+//            if (count((array)$orders_stats) > 0) {
 //                foreach ($orders_stats as $order) {
 //                    foreach ($order['all_order_products'] as $order_products) {
 //                        if (isset($order_products['order_product_details']['product_category']['product_type_id'])) {
@@ -383,7 +383,7 @@ class DashboardController extends Controller {
             $date_search = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - ($i - 1), date("Y")));
             $orders_stats_all[$i]['day'] = $date_search;
 
-            if (count($orders_stats) > 0) {
+            if (count((array)$orders_stats) > 0) {
                 foreach ($orders_stats as $order) {
                     if (date('Y-m-d', strtotime($order->updated_at)) == $date_search) {
                         foreach ($order['aopwpsc'] as $order_products) {
@@ -477,8 +477,8 @@ class DashboardController extends Controller {
 //                            if ($delivery_challan_products['unit_id'] == 1){
 //                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
 //                            }elseif (($delivery_challan_products['unit_id'] == 2)) {
-//                                
-//                                
+//
+//
 //                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
 //                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
 //                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
@@ -521,7 +521,7 @@ class DashboardController extends Controller {
 //
 //                    if (isset($delivery_challan_products['order_product_details']['product_category']['product_type_id'])) {
 //                        if ($delivery_challan_products['order_product_details']['product_category']['product_type_id'] == 1) {
-//                           
+//
 //                            if ($delivery_challan_products['unit_id'] == 1) {
 //                                $delivery_challan_stats_all[$i]['pipe'] += $delivery_challan_products['quantity'];
 //                            } elseif (($delivery_challan_products['unit_id'] == 2)) {
@@ -536,12 +536,12 @@ class DashboardController extends Controller {
 ////                            elseif (($delivery_challan_products['unit_id'] == 2) || ($delivery_challan_products['unit_id'] == 3))
 ////                                $delivery_challan_stats_all[$i]['pipe'] += $this->checkpending_quantity($delivery_challan_products['unit_id'], $delivery_challan_products['product_category_id'], $delivery_challan_products['quantity']);
 //                        } else {
-//                           
+//
 //                            if ($delivery_challan_products['unit_id'] == 1){
 //                                $delivery_challan_stats_all[$i]['structure'] += $delivery_challan_products['quantity'];
 //                            }elseif (($delivery_challan_products['unit_id'] == 2)) {
-//                                
-//                                
+//
+//
 //                                $delivery_challan_stats_all[$i]['structure'] += ($delivery_challan_products['quantity'] * $delivery_challan_products['order_product_details']['weight']);
 //                            } elseif (($delivery_challan_products['unit_id'] == 3)) {
 //                                $standard_length = $delivery_challan_products['order_product_details']['standard_length'];
@@ -563,7 +563,7 @@ class DashboardController extends Controller {
 //        return ($delivery_challan_stats_all);
 //    }
 //
-//    
+//
 //    public function graph_order_temp() {
 //
 //        $date = new Carbon\Carbon;
@@ -585,7 +585,7 @@ class DashboardController extends Controller {
 //
 ////        $product_list = \App\AllOrderProducts::with('order_product_details')
 ////                        ->whereIn('order_id', $list_with_ids)
-////                        ->where('order_type', 'order')->get(); 
+////                        ->where('order_type', 'order')->get();
 //
 //        set_time_limit(0);
 //        $product_list = AllOrderProducts::with('order_product_details')
@@ -659,8 +659,8 @@ class DashboardController extends Controller {
 //            }
 //        }
 //
-//        if (count($date_search)) {
-//            $k = count($orders_stats_temp) + 1;
+//        if (count((array)$date_search)) {
+//            $k = count((array)$orders_stats_temp) + 1;
 //            foreach ($date_search as $key => $temp) {
 //                $orders_stats_temp[$k]['day'] = $temp;
 //                $orders_stats_temp[$k]['pipe'] = 0;

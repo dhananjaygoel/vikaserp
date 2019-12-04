@@ -36,11 +36,6 @@ class PendingCustomerController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        define('PROFILE_ID', Config::get('smsdata.profile_id'));
-        define('PASS', Config::get('smsdata.password'));
-        define('SENDER_ID', Config::get('smsdata.sender_id'));
-        define('SMS_URL', Config::get('smsdata.url'));
-        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -48,7 +43,7 @@ class PendingCustomerController extends Controller {
     function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');
         $quickbook = App\QuickbookToken::find(2);
-        
+
         return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $quickbook->client,
@@ -60,8 +55,8 @@ class PendingCustomerController extends Controller {
             'minorVersion'=>34
         ));
     }
- 
- 
+
+
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
         $quickbook = App\QuickbookToken::find(2);
@@ -72,7 +67,7 @@ class PendingCustomerController extends Controller {
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
     }
 
-    //function for All Inclusive Account 
+    //function for All Inclusive Account
     function getTokenWihtoutGST(){
 
         require_once base_path('quickbook/vendor/autoload.php');
@@ -87,7 +82,7 @@ class PendingCustomerController extends Controller {
             'QBORealmID' => "9130347328054516",
             'baseUrl' => "Production",
             'minorVersion'=>34
-        )); 
+        ));
 
     }
     function refresh_token_Wihtout_GST(){
@@ -95,7 +90,7 @@ class PendingCustomerController extends Controller {
         // $quickbook = App\QuickbookToken::first();
         $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
-        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);         
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
         $refreshTokenValue = $accessTokenObj->getRefreshToken();
         App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
@@ -105,7 +100,7 @@ class PendingCustomerController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -123,7 +118,7 @@ class PendingCustomerController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -132,7 +127,7 @@ class PendingCustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
-        if (count($customer) < 1) {
+        if (count((array)$customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
         $managers = User::where('role_id', '=', 0)->get();
@@ -165,7 +160,7 @@ class PendingCustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
-        if (count($customer) < 1) {
+        if (count((array)$customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
         if (Input::has('owner_name')) {
@@ -183,7 +178,7 @@ class PendingCustomerController extends Controller {
         $customer->customer_status = 'pending';
         if ($customer->save()) {
 
-            //         update sync table         
+            //         update sync table
             $tables = ['customers'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
@@ -231,13 +226,13 @@ class PendingCustomerController extends Controller {
             $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
             $cust_flag = "";
 
-            if (isset($customer_inquiry) && (count($customer_inquiry) > 0)) {
+            if (isset($customer_inquiry) && (count((array)$customer_inquiry) > 0)) {
                 $customer_exist['customer_inquiry'] = 1;
                 $cust_msg .= "Inquiry";
                 $cust_flag = 1;
             }
 
-            if (isset($customer_order) && (count($customer_order) > 0)) {
+            if (isset($customer_order) && (count((array)$customer_order) > 0)) {
                 $customer_exist['customer_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Order";
@@ -247,7 +242,7 @@ class PendingCustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_order) && (count($customer_delivery_order) > 0)) {
+            if (isset($customer_delivery_order) && (count((array)$customer_delivery_order) > 0)) {
                 $customer_exist['customer_delivery_order'] = 1;
 
                 if ($customer_exist['customer_inquiry'] == 1) {
@@ -260,7 +255,7 @@ class PendingCustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_challan) && (count($customer_delivery_challan) > 0)) {
+            if (isset($customer_delivery_challan) && (count((array)$customer_delivery_challan) > 0)) {
                 $customer_exist['customer_delivery_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Delievry Challan";
@@ -274,7 +269,7 @@ class PendingCustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_order) && (count($customer_purchase_order) > 0)) {
+            if (isset($customer_purchase_order) && (count((array)$customer_purchase_order) > 0)) {
                 $customer_exist['customer_purchase_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Order";
@@ -290,7 +285,7 @@ class PendingCustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_advice) && (count($customer_purchase_advice) > 0)) {
+            if (isset($customer_purchase_advice) && (count((array)$customer_purchase_advice) > 0)) {
                 $customer_exist['customer_purchase_advice'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Advice";
@@ -308,7 +303,7 @@ class PendingCustomerController extends Controller {
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_challan) && (count($customer_purchase_challan) > 0)) {
+            if (isset($customer_purchase_challan) && (count((array)$customer_purchase_challan) > 0)) {
                 $customer_exist['customer_purchase_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Challan";
@@ -353,7 +348,7 @@ class PendingCustomerController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
-        if (count($customer) < 1) {
+        if (count((array)$customer) < 1) {
             return redirect('pending_customers/')->with('error', 'Trying to access an invalid customer');
         }
 
@@ -438,8 +433,8 @@ class PendingCustomerController extends Controller {
                   "Country"=> "India",
                   "CountrySubDivisionCode"=> $state->state_name,
                   "City"=> $city->city_name,
-                  "PostalCode"=> Input::get('zip'), 
-                  "Line1" => Input::get('address1'), 
+                  "PostalCode"=> Input::get('zip'),
+                  "Line1" => Input::get('address1'),
                   "Line2" => Input::get('address2'),
             ],
         ];
@@ -458,9 +453,9 @@ class PendingCustomerController extends Controller {
             // dd($newCustomerObj);
             $newcus = $dataService->add($newCustomerObj);
             $error = $dataService->getLastError();
-            if ($error) { 
+            if ($error) {
                 $this->refresh_token_Wihtout_GST();
-                $dataService = $this->getTokenWihtoutGST();  
+                $dataService = $this->getTokenWihtoutGST();
             }
             else{
                 $inclusivecustomerid =  $newcus->Id;
@@ -477,9 +472,9 @@ class PendingCustomerController extends Controller {
         } else {
             $newcustoinclusive = $nextdataservice->add($newCustomerObj);
             $error1 = $nextdataservice->getLastError();
-            if ($error1) { 
+            if ($error1) {
                 $this->refresh_token();
-                $dataService = $this->getToken();  
+                $dataService = $this->getToken();
             }
             else{
                 $gstcustomerid =  $newcustoinclusive->Id;
@@ -511,7 +506,7 @@ class PendingCustomerController extends Controller {
              */
             $input = Input::all();
             $admins = User::where('role_id', '=', 4)->get();
-            if (count($admins) > 0) {
+            if (count((array)$admins) > 0) {
                 foreach ($admins as $key => $admin) {
                     $str = "Dear " . $admin->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has converted a new customer from " . Input::get('owner_name') . " to new account as " . Input::get('owner_name') . " kindly check.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
@@ -529,13 +524,13 @@ class PendingCustomerController extends Controller {
                     }
                 }
             }
-            
-            //         update sync table         
+
+            //         update sync table
             $tables = ['customers','users'];
             $ec = new WelcomeController();
             $ec->set_updated_date_to_sync_table($tables);
             /* end code */
-            
+
             return redirect('customers')->with('success', 'Customer successfully upgraded as permanent customer');
         } else {
             return Redirect::back()->with('error', 'Some error occoured while saving customer');

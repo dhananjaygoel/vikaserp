@@ -49,7 +49,7 @@
                                 ?>>
                                 @if(Input::get('order_filter') == 'completed')
                                 <input type="hidden" name="order_filter" value="completed">
-                               
+
                                 @elseif(Input::get('order_filter') == 'pending')
                                 <input type="hidden" name="order_filter" value="pending">
                                 @else
@@ -96,7 +96,7 @@
                             {{Session::get('success')}}
                         </div>
                         @endif
-                        @if(count($purchase_challan) > 0)
+                        @if(count((array)$purchase_challan) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -164,7 +164,7 @@
                                             ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{URL::action('PurchaseChallanController@show',['id'=> $challan->id]) }}" class="table-link" title="view">
+                                            <a href="{{URL::action('PurchaseChallanController@show',['purchase_challan'=> $challan->id]) }}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
@@ -254,7 +254,7 @@
                                 </tbody>
                             </table>
                             <span class="pull-right">
-                                <?php 
+                                <?php
                                  echo $purchase_challan->appends(Input::except('page'))->render();?>
                             </span>
                             <div class="clearfix"></div>

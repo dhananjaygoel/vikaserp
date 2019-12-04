@@ -4,7 +4,7 @@ use \Mockery as m;
 use Rollbar\Payload\Payload;
 use Rollbar\Payload\Level;
 
-class PayloadTest extends \PHPUnit_Framework_TestCase
+class PayloadTest extends BaseRollbarTest
 {
     public function testPayloadData()
     {
@@ -34,30 +34,6 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $payload = new Payload($data, $accessToken);
         $this->assertEquals($accessToken, $payload->getAccessToken());
 
-        $accessToken = "too_short";
-        $config = m::mock("Rollbar\Config")
-                    ->shouldReceive('getAccessToken')
-                    ->andReturn($accessToken)
-                    ->mock();
-        try {
-            new Payload($data, $accessToken);
-            $this->fail("Above should throw");
-        } catch (\InvalidArgumentException $e) {
-            $this->assertContains("32", $e->getMessage());
-        }
-
-        $accessToken = "too_longtoo_longtoo_longtoo_longtoo_longtoo_long";
-        $config = m::mock("Rollbar\Config")
-                    ->shouldReceive('getAccessToken')
-                    ->andReturn($accessToken)
-                    ->mock();
-        try {
-            new Payload($data, $accessToken);
-            $this->fail("Above should throw");
-        } catch (\InvalidArgumentException $e) {
-            $this->assertContains("32", $e->getMessage());
-        }
-
         $accessToken = "012345678901234567890123456789ab";
         $config = m::mock("Rollbar\Config")
                     ->shouldReceive('getAccessToken')
@@ -72,12 +48,12 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
     public function testEncode()
     {
-        $accessToken = '012345678901234567890123456789ab';
-        $data = m::mock('Rollbar\Payload\Data, \JsonSerializable')
-            ->shouldReceive('jsonSerialize')
+        $accessToken = $this->getTestAccessToken();
+        $data = m::mock('Rollbar\Payload\Data, \Serializable')
+            ->shouldReceive('serialize')
             ->andReturn(new \ArrayObject())
             ->mock();
-        $dataBuilder = m::mock('Rollbar\DataBuilder')
+        m::mock('Rollbar\DataBuilder')
             ->shouldReceive('getScrubFields')
             ->andReturn(array())
             ->shouldReceive('scrub')
@@ -85,7 +61,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
             ->mock();
         
         $payload = new Payload($data, $accessToken);
-        $encoded = json_encode($payload->jsonSerialize());
+        $encoded = json_encode($payload->serialize());
         $json = '{"data":{},"access_token":"'.$accessToken.'"}';
         $this->assertEquals($json, $encoded);
     }

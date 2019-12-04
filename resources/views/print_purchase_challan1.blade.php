@@ -360,7 +360,7 @@
 //                $no = floor($no / $divider);
 //                $i += ($divider == 10) ? 1 : 2;
 //                if ($number) {
-//                    $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+//                    $plural = (($counter = count((array)$str)) && $number > 9) ? 's' : null;
 //                    $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
 //                    $str [] = ($number < 21) ? $words[$number] .
 //                            " " . $digits[$counter] . $plural . " " . $hundred :

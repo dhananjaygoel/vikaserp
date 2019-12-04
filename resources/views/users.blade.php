@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/dashboard">Home</a></li>
+                    <li><a href="{{url('/')}}/dashboard">Home</a></li>
                     <li class="active"><span>Users</span></li>
                 </ol>
                 <div class="clearfix">
@@ -21,7 +21,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="main-box clearfix">            
+                <div class="main-box clearfix">
                     <div class="main-box-body main_contents clearfix">
                         @if (Session::has('flash_message'))
                         <div class="alert alert-success alert-success1">
@@ -31,17 +31,17 @@
                         @endif
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
                         @endif
 
                         @if (Session::has('wrong'))
                         <div class="alert alert-danger alert-success1">
-                            {{Session::get('wrong')}}                            
+                            {{Session::get('wrong')}}
                         </div>
                         @endif
 
-                        @if(sizeof($users_data) != 0)                        
+                        @if(sizeof($users_data) != 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>
@@ -51,26 +51,26 @@
                                         <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
-                                        <th>Mobile</th>                                                            
-                                        <th>Type Of User</th>                                                            
+                                        <th>Mobile</th>
+                                        <th>Type Of User</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>                 
+                                <tbody>
                                     <?php
                                     $i = ($users_data->currentPage() - 1 ) * $users_data->perPage() + 1;
                                     ?>
-                                    @foreach($users_data as $user)                                    
+                                    @foreach($users_data as $user)
                                     <tr>
                                         <td class="col-md-1">{{ $i }}</td>
                                         <td>{{$user->first_name}}</td>
                                         <td>{{$user->last_name}}</td>
-                                        <td>{{$user->email}}</td>                                        
+                                        <td>{{$user->email}}</td>
                                         <td>{{$user->phone_number}}</td>
                                         <td>{{$user->mobile_number}} </td>
                                         <td>{{$user['user_role']->name}}</td>
                                         <td class="text-center">
-                                            <a href="{{URL::action('UsersController@edit',['id'=> $user->id])}}" class="table-link" title="Edit">
+                                            <a href="{{URL::action('UsersController@edit',['user'=> $user->id])}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -83,7 +83,7 @@
                                                 </span>
                                             </a>
                                         </td>
-                                    </tr>                                    
+                                    </tr>
                                 <div class="modal fade" id="myModal<?php echo $user->id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -111,7 +111,7 @@
                                                     <div class="clearfix"></div>
                                                     <div class="delp">Are you sure you want to <b>delete </b>?</div>
                                                 </div>
-                                            </div>           
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                                 <button type="submit" class="btn btn-default">Yes</button>
@@ -130,7 +130,7 @@
                                     <?php echo $users_data->render(); ?>
                                 </ul>
                             </span>
-                            <div class="clearfix"></div>  
+                            <div class="clearfix"></div>
                             @if($users_data->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('users')}}" id="filter_search">
@@ -143,7 +143,7 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
+                            </span>
                             @endif
                         </div>
                         @else
@@ -156,5 +156,5 @@
             </div>
         </div>
     </div>
-</div>       
+</div>
 @endsection

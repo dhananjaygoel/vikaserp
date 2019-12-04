@@ -63,7 +63,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                 ?>
                 <td><?php
                     $dc_id_list = array_unique($dc_id_list);
-                    ?>{{count($dc_id_list)}}</td></td>
+                    ?>{{count((array)$dc_id_list)}}</td></td>
                 @endfor
             </tr>
             </tr>
@@ -147,7 +147,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     ?>
                     <td><?php
                         $dc_id_list = array_unique($dc_id_list);
-                        ?>{{count($dc_id_list)}}</td>
+                        ?>{{count((array)$dc_id_list)}}</td>
                     @endfor
                 </tr>
             <?php } ?>

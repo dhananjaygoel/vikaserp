@@ -1,17 +1,26 @@
-<?php namespace Illuminate\View;
+<?php
 
-use Closure;
+namespace Illuminate\View;
+
 use ArrayAccess;
 use BadMethodCallException;
-use Illuminate\Support\MessageBag;
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\View\Engines\EngineInterface;
-use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\MessageProvider;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Engine;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use Throwable;
 
-class View implements ArrayAccess, ViewContract
+class View implements ArrayAccess, Htmlable, ViewContract
 {
+    use Macroable {
+        __call as macroCall;
+    }
 
     /**
      * The view factory instance.
@@ -23,7 +32,7 @@ class View implements ArrayAccess, ViewContract
     /**
      * The engine implementation.
      *
-     * @var \Illuminate\View\Engines\EngineInterface
+     * @var \Illuminate\Contracts\View\Engine
      */
     protected $engine;
 
@@ -52,13 +61,13 @@ class View implements ArrayAccess, ViewContract
      * Create a new view instance.
      *
      * @param  \Illuminate\View\Factory  $factory
-     * @param  \Illuminate\View\Engines\EngineInterface  $engine
+     * @param  \Illuminate\Contracts\View\Engine  $engine
      * @param  string  $view
      * @param  string  $path
-     * @param  array   $data
+     * @param  mixed  $data
      * @return void
      */
-    public function __construct(Factory $factory, EngineInterface $engine, $view, $path, $data = array())
+    public function __construct(Factory $factory, Engine $engine, $view, $path, $data = [])
     {
         $this->view = $view;
         $this->path = $path;
@@ -71,10 +80,12 @@ class View implements ArrayAccess, ViewContract
     /**
      * Get the string contents of the view.
      *
-     * @param  \Closure|null  $callback
-     * @return string
+     * @param  callable|null  $callback
+     * @return array|string
+     *
+     * @throws \Throwable
      */
-    public function render(Closure $callback = null)
+    public function render(callable $callback = null)
     {
         try {
             $contents = $this->renderContents();
@@ -84,11 +95,15 @@ class View implements ArrayAccess, ViewContract
             // Once we have the contents of the view, we will flush the sections if we are
             // done rendering all views so that there is nothing left hanging over when
             // another view gets rendered in the future by the application developer.
-            $this->factory->flushSectionsIfDoneRendering();
+            $this->factory->flushStateIfDoneRendering();
 
-            return $response ?: $contents;
+            return ! is_null($response) ? $response : $contents;
         } catch (Exception $e) {
-            $this->factory->flushSections();
+            $this->factory->flushState();
+
+            throw $e;
+        } catch (Throwable $e) {
+            $this->factory->flushState();
 
             throw $e;
         }
@@ -119,20 +134,6 @@ class View implements ArrayAccess, ViewContract
     }
 
     /**
-     * Get the sections of the rendered view.
-     *
-     * @return array
-     */
-    public function renderSections()
-    {
-        $env = $this->factory;
-
-        return $this->render(function ($view) use ($env) {
-            return $env->getSections();
-        });
-    }
-
-    /**
      * Get the evaluated contents of the view.
      *
      * @return string
@@ -147,7 +148,7 @@ class View implements ArrayAccess, ViewContract
      *
      * @return array
      */
-    protected function gatherData()
+    public function gatherData()
     {
         $data = array_merge($this->factory->getShared(), $this->data);
 
@@ -158,6 +159,20 @@ class View implements ArrayAccess, ViewContract
         }
 
         return $data;
+    }
+
+    /**
+     * Get the sections of the rendered view.
+     *
+     * @return array
+     *
+     * @throws \Throwable
+     */
+    public function renderSections()
+    {
+        return $this->render(function () {
+            return $this->factory->getSections();
+        });
     }
 
     /**
@@ -186,7 +201,7 @@ class View implements ArrayAccess, ViewContract
      * @param  array   $data
      * @return $this
      */
-    public function nest($key, $view, array $data = array())
+    public function nest($key, $view, array $data = [])
     {
         return $this->with($key, $this->factory->make($view, $data));
     }
@@ -199,33 +214,21 @@ class View implements ArrayAccess, ViewContract
      */
     public function withErrors($provider)
     {
-        if ($provider instanceof MessageProvider) {
-            $this->with('errors', $provider->getMessageBag());
-        } else {
-            $this->with('errors', new MessageBag((array) $provider));
-        }
+        $this->with('errors', $this->formatErrors($provider));
 
         return $this;
     }
 
     /**
-     * Get the view factory instance.
+     * Format the given message provider into a MessageBag.
      *
-     * @return \Illuminate\View\Factory
+     * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
+     * @return \Illuminate\Support\MessageBag
      */
-    public function getFactory()
+    protected function formatErrors($provider)
     {
-        return $this->factory;
-    }
-
-    /**
-     * Get the view's rendering engine.
-     *
-     * @return \Illuminate\View\Engines\EngineInterface
-     */
-    public function getEngine()
-    {
-        return $this->engine;
+        return $provider instanceof MessageProvider
+                        ? $provider->getMessageBag() : new MessageBag((array) $provider);
     }
 
     /**
@@ -277,6 +280,26 @@ class View implements ArrayAccess, ViewContract
     public function setPath($path)
     {
         $this->path = $path;
+    }
+
+    /**
+     * Get the view factory instance.
+     *
+     * @return \Illuminate\View\Factory
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
+     * Get the view's rendering engine.
+     *
+     * @return \Illuminate\Contracts\View\Engine
+     */
+    public function getEngine()
+    {
+        return $this->engine;
     }
 
     /**
@@ -362,7 +385,7 @@ class View implements ArrayAccess, ViewContract
      * Remove a piece of bound data from the view.
      *
      * @param  string  $key
-     * @return bool
+     * @return void
      */
     public function __unset($key)
     {
@@ -380,17 +403,35 @@ class View implements ArrayAccess, ViewContract
      */
     public function __call($method, $parameters)
     {
-        if (starts_with($method, 'with')) {
-            return $this->with(snake_case(substr($method, 4)), $parameters[0]);
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
         }
 
-        throw new BadMethodCallException("Method [$method] does not exist on view.");
+        if (! Str::startsWith($method, 'with')) {
+            throw new BadMethodCallException(sprintf(
+                'Method %s::%s does not exist.', static::class, $method
+            ));
+        }
+
+        return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
+    }
+
+    /**
+     * Get content as a string of HTML.
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        return $this->render();
     }
 
     /**
      * Get the string contents of the view.
      *
      * @return string
+     *
+     * @throws \Throwable
      */
     public function __toString()
     {

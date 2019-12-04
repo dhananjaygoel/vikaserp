@@ -121,7 +121,7 @@
     </thead>
     <?php //dd($delivery_challans); ?>
     <tbody>                                        
-            @if(isset($delivery_challans) && count($delivery_challans)>0 && $delivery_challans!="")
+            @if(isset($delivery_challans) && count((array)$delivery_challans)>0 && $delivery_challans!="")
             <?php $i=1;?>
             @foreach($delivery_challans as $challan)
                 <?php

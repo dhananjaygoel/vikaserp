@@ -76,7 +76,7 @@ $today_month = date("m", strtotime($enddate));
                     ?>
                     <td><?php
                         $dc_id_list = array_unique($dc_id_list);
-                        ?>{{count($dc_id_list)}}</td>
+                        ?>{{count((array)$dc_id_list)}}</td>
                     @endfor
                 </tr>
             <?php } ?>
@@ -164,7 +164,7 @@ $today_month = date("m", strtotime($enddate));
                     ?>
                     <td><?php
                         $dc_id_list = array_unique($dc_id_list);
-                        ?>{{count($dc_id_list)}}</td>
+                        ?>{{count((array)$dc_id_list)}}</td>
                     @endfor
                 </tr>
             <?php } ?>

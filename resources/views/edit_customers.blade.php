@@ -18,7 +18,7 @@
                         <form id="" method="POST" action="{{url('customers/'.$customer->id)}}" accept-charset="UTF-8" >
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input name="_method" type="hidden" value="PUT">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -179,7 +179,7 @@
                                 </div>
                                 <br>
 
-                                @if(count($product_category) > 0)
+                                @if(count((array)$product_category) > 0)
                                 <div class="category_div col-md-12" <?php if (sizeof($customer['customerproduct']) > 0) echo 'style="display:block;"'; ?>>
                                     <div class="table-responsive">
                                         <table id="table-example" class="table table-hover  ">

@@ -24,7 +24,7 @@
                         <hr>
                         <form method="POST" action="{{URL::action('UnitController@store')}}">
 
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)

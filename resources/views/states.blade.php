@@ -62,7 +62,7 @@
                                         <td>{{($states_data->local_state==0)?'No':'Yes'}}</td>
                                         @if( Auth::user()->role_id == 0 )
                                         <td class="text-center">
-                                            <a href="{{ Url::action('StatesController@edit', ['id' => $states_data->id]) }}" class="table-link">
+                                            <a href="{{ Url::action('StatesController@edit', ['state' => $states_data->id]) }}" class="table-link">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -86,7 +86,7 @@
                                                 <h4 class="modal-title" id="myModalLabel"></h4>
                                             </div>
                                             <div class="modal-body">
-                                                {!! Form::open(array('method'=>'DELETE','url'=>url('states',$states_data->id), 'id'=>'delete_states_form'))!!}
+                                                {!! Form::open(array('method'=>'DELETE','url'=>url('states',$states_data->id), 'state'=>'delete_states_form'))!!}
                                                 <div class="delete">
                                                     <div><b>UserID:</b> {{Auth::user()->mobile_number}}</div>
                                                     <div class="pwd">
@@ -119,7 +119,7 @@
                             <span class="pull-right">
                                 <?php echo $states->render(); ?>
                             </span>
-                            <div class="clearfix"></div>                            
+                            <div class="clearfix"></div>
                             @if($states->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('states')}}" id="filter_search">
@@ -132,7 +132,7 @@
                                         <a onclick="this.form.submit()"></a>
                                     </div>
                                 </form>
-                            </span> 
+                            </span>
                             @endif
                         </div>
                         @endif

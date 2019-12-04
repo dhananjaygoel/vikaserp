@@ -147,7 +147,7 @@ class WelcomeController extends Controller {
 //        $ch = curl_init('https://api.smsbump.com/send/1B9mOYKhejDQ.json?');
 //        curl_setopt($ch, CURLOPT_HEADER, false);
 //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_POST, count($postData));
+//        curl_setopt($ch, CURLOPT_POST, count((array)$postData));
 //        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
 //        
 //        $result = curl_exec($ch);
@@ -745,9 +745,9 @@ class WelcomeController extends Controller {
             return "Column name - delivery_location is missing please please check excel file.";
         }
 
-        if (isset($missing_colname) && count($missing_colname) > 0) {
+        if (isset($missing_colname) && count((array)$missing_colname) > 0) {
             return "Some Column are missing please add column same as given file.";
-        } else if (isset($error_list_invalid) && count($error_list_invalid) > 0) {
+        } else if (isset($error_list_invalid) && count((array)$error_list_invalid) > 0) {
             return "Some Column are not as per given file. Please try again.";
         } else {
             return "success";
@@ -1693,7 +1693,7 @@ class WelcomeController extends Controller {
 //
 //        $add_loaders_info = \App\Inventory::insert($inventory);
 //        
-//        if(count($add_loaders_info)){
+//        if(count((array)$add_loaders_info)){
 //            echo "<pre>";
 //            print_r("Inventory updated successfully");
 //            echo "</pre>";
@@ -1766,7 +1766,7 @@ class WelcomeController extends Controller {
             $arr = array();
             $arr_money = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_labours) && count($delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
+            if (isset($delivery_order_info->challan_labours) && count((array)$delivery_order_info->challan_labours) > 0 && !empty($delivery_order_info->challan_labours)) {
                 foreach ($delivery_order_info->challan_labours as $challan_info) {
                     $deliver_sum = 0.00;
                     $money = 0.00;
@@ -1779,13 +1779,13 @@ class WelcomeController extends Controller {
 
 
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['labours'] = $loaders;
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count($loaders);
+//                    $loader_arr['delivery_sum_money'] = $info->loading_charge / count((array)$loaders);
                 }
             }
             $loaders_data[$var] = $loader_arr;
@@ -1796,7 +1796,7 @@ class WelcomeController extends Controller {
         $loaders_data = array_values($loaders_data);
 
         $update_count = 0;
-        for ($i = 0; $i < count($loaders_data); $i++) {
+        for ($i = 0; $i < count((array)$loaders_data); $i++) {
             $data = \App\DeliveryChallanLabours::
                     where('total_qty', 0)->
                     where('product_type_id', 0)->
@@ -1855,7 +1855,7 @@ class WelcomeController extends Controller {
          foreach ($delivery_order_data as $delivery_order_info) {
             $arr = array();
             $loaders = array();
-            if (isset($delivery_order_info->challan_loaded_by) && count($delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
+            if (isset($delivery_order_info->challan_loaded_by) && count((array)$delivery_order_info->challan_loaded_by) > 0 && !empty($delivery_order_info->challan_loaded_by)) {
                 foreach ($delivery_order_info->challan_loaded_by as $challan_info) {
                     $deliver_sum = 0;
                     array_push($loaders, $challan_info->loaded_by_id);
@@ -1869,12 +1869,12 @@ class WelcomeController extends Controller {
                         }
                     }
                     array_push($loader_array, $loaders);
-                    $all_kg = $deliver_sum / count($loaders);
+                    $all_kg = $deliver_sum / count((array)$loaders);
                     $all_tonnage = $all_kg / 1000;
                     $loader_arr['delivery_id'] = $delivery_order_info['id'];
                     $loader_arr['delivery_date'] = date('Y-m-d', strtotime($delivery_order_info['created_at']));
                     $loader_arr['tonnage'] = $all_tonnage;
-//                    $loader_arr['tonnage'] = round($deliver_sum / count($loaders, 2));
+//                    $loader_arr['tonnage'] = round($deliver_sum / count((array)$loaders, 2));
                     $loader_arr['loaders'] = $loaders;
                 }
             }
@@ -1885,7 +1885,7 @@ class WelcomeController extends Controller {
         $loaders_data = array_values($loaders_data);
 
         $update_count = 0;
-        for ($i = 0; $i < count($loaders_data); $i++) {
+        for ($i = 0; $i < count((array)$loaders_data); $i++) {
             $data = \App\DeliveryChallanLoadedBy::
                     where('total_qty', 0)->
                     where('product_type_id', 0)->

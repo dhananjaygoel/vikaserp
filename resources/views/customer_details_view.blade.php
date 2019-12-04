@@ -172,7 +172,7 @@
                                 </thead>
                                 <?php //dd($delivery_challans);  ?>
                                 <tbody>                                        
-                                    @if(isset($delivery_challans) && count($delivery_challans)>0 && $delivery_challans!="")
+                                    @if(isset($delivery_challans) && count((array)$delivery_challans)>0 && $delivery_challans!="")
                                     <?php $i = 1; ?>
                                     @foreach($delivery_challans as $challan)
                                     <?php
@@ -366,7 +366,7 @@ $data = array_values($data);
             </div>
             <div class="modal-body">
                 <div class="row print_time "> 
-                    @if(count($customer['customer_receipt']))
+                    @if(count((array)$customer['customer_receipt']))
                     <table id="table-example2" class="table table-hover">
                         <thead>
                             <tr>

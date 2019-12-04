@@ -22,7 +22,7 @@
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                             <input name="_method" type="hidden" value="PUT">
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div role="alert" class="alert alert-warning">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -232,5 +232,5 @@
         </div>
     </div>
 </div>
-{{-- @include('autocomplete_tally_product_name') --}}
+<!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @endsection

@@ -21,7 +21,7 @@
                             @if (Session::has('validation_message'))
                                 <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('validation_message') }}</div>
                             @endif
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                                 <div role="alert" class="alert alert-warning">
                                     @foreach ($errors->all() as $error)
                                         <p>{{ $error }}</p>
@@ -579,6 +579,6 @@
         </div>
     </div>
 
-    {{-- @include('autocomplete_tally_product_name') --}}
+    <!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 
 @stop

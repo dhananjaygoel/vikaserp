@@ -291,7 +291,9 @@ class SalesDaybookController extends Controller {
                 set_time_limit(0);
                 gc_disable();
                 $data = Input::all();
+                // dd($data);
                 if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+                    dd("1");
                     $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
                     $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
                     if ($date1 == $date2) {
@@ -322,6 +324,7 @@ class SalesDaybookController extends Controller {
                                 ->get();
                     }
                 } else {
+                    // dd("2");
                     $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
                             ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                             ->where('serial_number', 'like', '%A%')
@@ -338,6 +341,7 @@ class SalesDaybookController extends Controller {
                     $sr[$VchNo]['date'] = date("d/m/Y", strtotime($value->updated_at));
                     $sr[$VchNo]['type'] = 'Invoice';
                     $sr[$VchNo]['no'] = $value->id;
+                    // dd($sr);
                     if($value->customer_id != '') {
                         $customer = Customer::find($value->customer_id);
                         $deliver_location = $customer->delivery_location_id;
@@ -359,7 +363,8 @@ class SalesDaybookController extends Controller {
                             else{
                                 $tally_name ='Anonymous User';
                             }
-                            $total_btax = $value['delivery_challan_products'][0]->price;
+                            // $total_btax = $value['delivery_challan_products']->price;
+                            dd($value);
                             $balance = $value['delivery_challan_products'][0]->quantity;
                             $total = $total_btax * $balance; //$value->grand_price;
                             $percent = 12 * $total ;
@@ -408,9 +413,10 @@ class SalesDaybookController extends Controller {
                     
                     $VchNo++;
                 }
-                //echo '<pre>';
-               // print_r($allorders);
-               // exit;
+                dd($allorders);
+            //     echo '<pre>';
+            //    print_r($allorders);
+            //    exit;
                 Excel::create('Daily Proforma Invoice', function($excel) use($sr) {
                     $excel->sheet('Daily Proforma Invoice', function($sheet) use($sr) {
                         $sheet->loadView('excelView.sales', array('allorders' => $sr));
@@ -581,7 +587,7 @@ class SalesDaybookController extends Controller {
                     // ->take(200)
                     ->get();
         }    
-        if (count($allorders) < 1) {
+        if (count((array)$allorders) < 1) {
             return redirect('sales_daybook')->with('flash_message', 'Order does not exist.');
         }
        // echo '<pre>';

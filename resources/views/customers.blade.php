@@ -66,7 +66,7 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-                        @if(count($customers) > 0)
+                        @if(count((array)$customers) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">
                                 <thead>

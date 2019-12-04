@@ -3,7 +3,7 @@
 use \Mockery as m;
 use Rollbar\Payload\Person;
 
-class PersonTest extends \PHPUnit_Framework_TestCase
+class PersonTest extends BaseRollbarTest
 {
     public function testId()
     {
@@ -50,7 +50,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
         $person->Settings = array(
             "send_email" => true
         );
-        $encoded = json_encode($person->jsonSerialize());
+        $encoded = json_encode($person->serialize());
         $expected ='{"id":"1024","username":"username","email":"user@gmail.com","Settings":{"send_email":true}}';
         $this->assertEquals($expected, $encoded);
     }

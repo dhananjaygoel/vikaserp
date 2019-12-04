@@ -1,16 +1,23 @@
 <?php namespace Rollbar\Payload;
 
-use Rollbar\Utilities;
-
-class Message extends ContentInterface
+class Message implements ContentInterface
 {
     private $body;
-    private $extra;
+    private $backtrace;
+    private $utilities;
 
-    public function __construct($body, array $extra = null)
-    {
+    public function __construct(
+        $body,
+        $backtrace = null
+    ) {
+        $this->utilities = new \Rollbar\Utilities();
         $this->setBody($body);
-        $this->extra = $extra == null ? array() : $extra;
+        $this->setBacktrace($backtrace);
+    }
+
+    public function getKey()
+    {
+        return 'message';
     }
 
     public function getBody()
@@ -23,23 +30,29 @@ class Message extends ContentInterface
         $this->body = $body;
         return $this;
     }
-
-    public function __set($key, $val)
+    
+    public function getBacktrace()
     {
-        $this->extra[$key] = $val;
+        return $this->backtrace;
     }
 
-    public function __get($key)
+    public function setBacktrace($backtrace)
     {
-        return isset($this->extra[$key]) ? $this->extra[$key] : null;
+        $this->backtrace = $backtrace;
+        return $this;
     }
 
-    public function jsonSerialize()
+    public function serialize()
     {
-        $toSerialize = array("body" => $this->getBody());
-        foreach ($this->extra as $key => $value) {
-            $toSerialize[$key] = $value;
-        }
-        return Utilities::serializeForRollbar($toSerialize, null, array_keys($this->extra));
+        $toSerialize = array(
+            "body" => $this->getBody(),
+            "backtrace" => $this->getBacktrace()
+        );
+        return $this->utilities->serializeForRollbar($toSerialize);
+    }
+    
+    public function unserialize($serialized)
+    {
+        throw new \Exception('Not implemented yet.');
     }
 }

@@ -25,7 +25,7 @@
                         {!! Form::open(array('method'=>'PUT','url'=>url('location',$delivery_location->id), 'id'=>''))!!}
 
                         <input type="hidden" name="id" value="{{$delivery_location->id}}">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div role="alert" class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)

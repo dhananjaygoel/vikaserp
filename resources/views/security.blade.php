@@ -45,7 +45,7 @@
                                 {{Session::get('message')}}
                             </div>
                             @endif
-                            @if(count($sec)>0)
+                            @if(count((array)$sec)>0)
                             <table id="table-example" class="table table-hover">
                                 <thead>
                                     <tr>

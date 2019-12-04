@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/users">User</a></li>
+                    <li><a href="{{url('/')}}/users">User</a></li>
                     <li class="active"><span>Add User</span></li>
                 </ol>
                 <div class="clearfix">
@@ -24,7 +24,7 @@
                         <hr>
                         <form method="POST" action="{{URL::action('UsersController@store')}}" accept-charset="UTF-8" >
 
-                            @if (count($errors) > 0)
+                            @if (count($errors->all()) > 0)
                             <div class="alert alert-warning">
                                 @foreach ($errors->all() as $error)
                                 <p>{{ $error }}</p>
@@ -73,7 +73,7 @@
                             <hr>
                             <div >
                                 <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
-                                <a href="{{url()}}/users" class="btn btn-default form_button_footer">Back</a>
+                                <a href="{{url('/')}}/users" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

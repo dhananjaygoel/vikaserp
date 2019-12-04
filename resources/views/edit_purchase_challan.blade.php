@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">
-                        @if (count($errors) > 0)
+                        @if (count($errors->all()) > 0)
                         <div class="alert alert-warning">
                             @foreach ($errors->all() as $error)
                             <p>{{ $error }}</p>

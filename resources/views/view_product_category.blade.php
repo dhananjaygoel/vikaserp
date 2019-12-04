@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url()}}/product_category">Product Category</a></li>
+                    <li><a href="{{url('/')}}/product_category">Product Category</a></li>
                     <li class="active"><span>View Product Category</span></li>
                 </ol>
 
@@ -59,7 +59,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <a href="{{url()}}/product_category" class="btn btn-default form_button_footer">Back</a>
+                            <a href="{{url('/')}}/product_category" class="btn btn-default form_button_footer">Back</a>
                         </div>
                     </div>
                 </div>

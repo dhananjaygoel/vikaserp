@@ -2,9 +2,9 @@
 
 use \Mockery as m;
 use Rollbar\Payload\Trace;
-use rollbar\Payload\Frame;
+use Rollbar\Payload\Frame;
 
-class TraceTest extends \PHPUnit_Framework_TestCase
+class TraceTest extends BaseRollbarTest
 {
     public function testTraceConstructor()
     {
@@ -19,13 +19,6 @@ class TraceTest extends \PHPUnit_Framework_TestCase
         $trace = new Trace($frames, $exc);
         $this->assertEquals($frames, $trace->getFrames());
         $this->assertEquals($exc, $trace->getException());
-
-        try {
-            $trace = new Trace($badFrames, $exc);
-            $this->fail("Above should throw");
-        } catch (\InvalidArgumentException $e) {
-            $this->assertEquals("\$frames must all be Rollbar\Payload\Frames", $e->getMessage());
-        }
     }
 
     public function testFrames()
@@ -51,12 +44,12 @@ class TraceTest extends \PHPUnit_Framework_TestCase
 
     public function testEncode()
     {
-        $value = m::mock("Rollbar\Payload\ExceptionInfo, \JsonSerializable")
-            ->shouldReceive("jsonSerialize")
+        $value = m::mock("Rollbar\Payload\ExceptionInfo, \Serializable")
+            ->shouldReceive("serialize")
             ->andReturn("{EXCEPTION}")
             ->mock();
         $trace = new Trace(array(), $value);
-        $encoded = json_encode($trace->jsonSerialize());
+        $encoded = json_encode($trace->serialize());
         $this->assertEquals("{\"frames\":[],\"exception\":\"{EXCEPTION}\"}", $encoded);
     }
 

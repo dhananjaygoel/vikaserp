@@ -53,7 +53,7 @@
                     </div>
                     {{--*/ Session::forget('flash_message') /*--}}
                     @endif
-                    @if(count($receipts)>0)
+                    @if(count((array)$receipts)>0)
                     <div class="table-responsive tablepending">
                         <table id="table-example" class="table table-hover">
                             <thead>
@@ -111,13 +111,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-4 text-center">
-                            <a href="{{url()}}/receipt-master/journal" class="btn btn-sm btn-primary">Journal</a>
+                            <a href="{{url('/')}}/receipt-master/journal" class="btn btn-sm btn-primary">Journal</a>
                         </div>
                         <div class="col-md-4 text-center">
-                            <a href="{{url()}}/receipt-master/bank" class="btn btn-sm btn-primary">Bank</a>
+                            <a href="{{url('/')}}/receipt-master/bank" class="btn btn-sm btn-primary">Bank</a>
                         </div>
                         <div class="col-md-4 text-center">
-                            <a href="{{url()}}/receipt-master/cash" class="btn btn-sm btn-primary">Cash</a>
+                            <a href="{{url('/')}}/receipt-master/cash" class="btn btn-sm btn-primary">Cash</a>
                         </div>
                     </div>
                 </div>    
