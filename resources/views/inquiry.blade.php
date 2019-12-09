@@ -14,8 +14,11 @@
                     <i class="fa fa-plus-circle fa-lg"></i> Add New Inquiry
                 </a>
                  @if( Auth::user()->role_id <> 5)
+                 
                 <div class="form-group pull-right">
+                    
                     <div class="col-md-12">
+                       
                         <form method="GET" action="{{url('inquiry')}}">
                             <select class="form-control" id="inquiry_filter" name="inquiry_filter" onchange="this.form.submit();">
                                 <option <?php if (Input::get('inquiry_filter') == 'Pending') echo 'selected=""'; ?> value="Pending">Pending</option>
@@ -25,8 +28,19 @@
                         </form>
                     </div>
                 </div>
-
-                @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
+                <form action="{{URL::action('InquiryController@exportinquiryBasedOnStatus')}}" class="pull-right">
+                            <input type="hidden" name="inquiry_status" id="inquiry_status" <?php
+                            if (sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')=='')) {
+                                echo "value='Pending'";
+                            }elseif(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Completed'){
+                                echo "value='Completed'";
+                            }elseif(sizeof($inquiries)!=0 && Input::get('inquiry_filter') == 'Approval'){
+                                echo "value='Pending_Approval'";
+                            }
+                            ?>>
+                           <input type="submit" value="Export" class="btn btn-primary pull-right">
+                </form>
+                <!-- @if(sizeof($inquiries)!=0 && (Input::get('inquiry_filter') == 'Pending' ||Input::get('inquiry_filter')==''))
                 <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending'])}}" class="btn btn-primary pull-right">
                     Export
                 </a>
@@ -40,7 +54,8 @@
                 <a href="{{URL::action('InquiryController@exportinquiryBasedOnStatus',['inquiry_status'=>'Pending_Approval'])}}" class="btn btn-primary pull-right">
                     Export
                 </a>
-                @endif
+                @endif -->
+                
                 @endif
             </div>
         </div>

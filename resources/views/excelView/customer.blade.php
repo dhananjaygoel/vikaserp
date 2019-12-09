@@ -1,26 +1,26 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
+
     <table>
         <tr>
-            <td class="heading1">owner_name</td>
-            <td class="heading1">company_name</td>
-            <td class="heading1">contact_person</td>
-            <td class="heading1">address1</td>
-            <td class="heading1">address2</td>
-            <td class="heading1">state_name</td>
-            <td class="heading1">city_name</td>
-            <td class="heading1">zip</td>
-            <td class="heading1">email</td>
-            <td class="heading1">tally_name</td>
-            <td class="heading1">phone_number_1</td>
-            <td class="heading1">phone_number_2</td>
-            <td class="heading1">excise_number</td>
-            <td class="heading1">delivery_location</td>
-            <td class="heading1">user_name</td>
-            <td class="heading1">password</td>
-            <td class="heading1">credit_period</td>
-            <td class="heading1">relationship_manager</td>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>owner_name</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>company_name</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>contact_person</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>address1</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>address2</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>state_name</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>city_name</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>zip</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>email</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>tally_name</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>phone_number_1</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>phone_number_2</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>excise_number</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>delivery_location</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>user_name</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>password</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>credit_period</b></th>
+            <th style="height:20px;font-size:16px;color:#000080;"><b>relationship_manager</b></th>
         </tr>
         <?php
         ini_set('max_execution_time', 720);

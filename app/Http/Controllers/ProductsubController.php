@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductSizeExport;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -96,14 +97,16 @@ class ProductsubController extends Controller {
         }
 
         if (Input::has('export_data') && Input::get('export_data') == 'Export') {
-           set_time_limit(0);
-            $product_size_list = $q->orderBy('id', 'asc')->get();
-            Excel::create('Product Sizes', function($excel) use($product_size_list) {
-                $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
-                    $sheet->loadView('excelView.productsize', array('product_size_list' => $product_size_list));
-                });
-            })->export('xls');
-            exit();
+
+            return Excel::download(new ProductSizeExport, 'Product-Sizes-List.xls');
+        //    set_time_limit(0);
+        //     $product_size_list = $q->orderBy('id', 'asc')->get();
+        //     Excel::create('Product Sizes', function($excel) use($product_size_list) {
+        //         $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
+        //             $sheet->loadView('excelView.productsize', array('product_size_list' => $product_size_list));
+        //         });
+        //     })->export('xls');
+        //     exit();
         }
 
         $product_sub_cat = $q->orderBy('id', 'DESC')->paginate(20);

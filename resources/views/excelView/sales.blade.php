@@ -1,6 +1,6 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
+    <!-- {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!} -->
     
 
     <table >
@@ -19,21 +19,21 @@
 
 
         <tr>
-            <td class="heading1"> InvoiceNo</td>
-            <td class="heading1"> Customer</td>
-            <td class="heading1">InvoiceDate</td>
-            <td class="heading1">DueDate</td>
-            <td class="heading1">Terms</td>
-            <td class="heading1">Memo</td>
-            <td class="heading1">Place Of Supply</td>
-            <td class="heading1">Item(Product/Service)</td>
-            <td class="heading1">ItemDescription</td>
-            <td class="heading1">ItemQuantity</td>
-            <td class="heading1">ItemRate</td>
-            <td class="heading1">ItemAmount</td>
+            <th style="height:20px;font-size:16px;color:#000080;"> InvoiceNo</th>
+            <th style="height:20px;font-size:16px;color:#000080;"> Customer</th>
+            <th style="height:20px;font-size:16px;color:#000080;">InvoiceDate</th>
+            <th style="height:20px;font-size:16px;color:#000080;">DueDate</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Terms</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Memo</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Place Of Supply</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Item(Product/Service)</th>
+            <th style="height:20px;font-size:16px;color:#000080;">ItemDescription</th>
+            <th style="height:20px;font-size:16px;color:#000080;">ItemQuantity</th>
+            <th style="height:20px;font-size:16px;color:#000080;">ItemRate</th>
+            <th style="height:20px;font-size:16px;color:#000080;">ItemAmount</th>
             <!-- <td class="heading1">ItemTaxCode</td> -->
             <!-- <td class="heading1">ItemTaxAmount</td> -->
-            <td class="heading1">Service Date</td>
+            <th style="height:20px;font-size:16px;color:#000080;">Service Date</th>
             <!-- <td class="heading1">Date</td>            
             <td class="heading1">Type</td>
             <td class="heading1">No</td>
@@ -71,21 +71,21 @@
         $VchNo = 1;
         foreach ($allorders as $key => $value) { ?>
                 <tr>
-                    <td>{{ $value['invoice_no'] }}</td>    
-                    <td>{{ $value['customer'] }}</td>    
-                    <td>{{ $value['date'] }}</td>     
-                    <td>{{ $value['date'] }}</td>  
-                    <td>Net 30</td>
-                    <td>Memo</td>    
-                    <td>{{ $value['placeof_supply'] }}</td>      
-                    <td>{{ $value['producttitle'] }}</td>  
-                    <td>{{ $value['producttitle'] }}</td>                    
-                    <td>{{ $value['balance'] }}</td>       
-                    <td>{{ $value['total_btax'] }}</td>    
-                    <td>{{ $value['total'] }}</td>    
+                    <td style="height:16px;">{{ $value['invoice_no'] }}</td>    
+                    <td style="height:16px;">{{ $value['customer'] }}</td>    
+                    <td style="height:16px;">{{ $value['date'] }}</td>     
+                    <td style="height:16px;">{{ $value['date'] }}</td>  
+                    <td style="height:16px;">Net 30</td>
+                    <td style="height:16px;">Memo</td>    
+                    <td style="height:16px;">{{ $value['placeof_supply'] }}</td>      
+                    <td style="height:16px;">{{ $value['producttitle'] }}</td>  
+                    <td style="height:16px;">{{ $value['producttitle'] }}</td>                    
+                    <td style="height:16px;">{{ $value['balance'] }}</td>       
+                    <td style="height:16px;">{{ $value['total_btax'] }}</td>    
+                    <td style="height:16px;">{{ $value['total'] }}</td>    
                     <!-- <td> 12.0% GST </td>     -->
                     <!-- <td>{{ $value['tax'] }}</td>        -->
-                    <td>{{ $value['due_date'] }}</td>   
+                    <td style="height:16px;">{{ $value['due_date'] }}</td>   
                 </tr>
             <?php
             $VchNo++;

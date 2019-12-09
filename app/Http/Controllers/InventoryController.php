@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InventoryExport;
+use App\Exports\InventoryReportExport;
+use App\Exports\InventoryPriceExport;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -89,7 +92,7 @@ class InventoryController extends Controller {
 
 
         if (Input::has('export_data') && Input::get('export_data') == 'Export Inventory List') {
-            $this->export_inventory(Input::get());
+            $this->export_inventory();
         }
 
 //        $this->updateOpeningStock();
@@ -136,7 +139,7 @@ class InventoryController extends Controller {
                 array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
             }
 
-            $this->inventoryCalc($product_category_ids);
+            $this->inventoryCalc((array)$product_category_ids);
         }
 
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist,'virtual_qty'=>$virtual_stock_qty, 'product_category' => $product_category]);
@@ -811,50 +814,10 @@ class InventoryController extends Controller {
      * Export inventory details in excel file
      */
 
-    public function export_inventory($input = null) {
+    public function export_inventory() {
 
-        $query = Inventory::query();
-        if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
+        return Excel::download(new InventoryExport, 'Inventory_List.xls');
 
-//                $query->where('minimal','<','physical_closing_qty'-'pending_delivery_order_qty'-'pending_sales_order_qty'+'pending_purchase_advise_qty');
-            $query->whereRaw('minimal < physical_closing_qty-pending_delivery_order_qty-pending_sales_order_qty+pending_purchase_advise_qty');
-        }
-        if (Input::has('product_category_filter') && Input::get('product_category_filter') != '') {
-            $categoryid = Input::get('product_category_filter');
-            $query->whereHas('product_sub_category', function($q) use($categoryid) {
-                $q->where('product_category_id', '=', $categoryid);
-            });
-        }
-
-        if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
-            $alias_name = '%' . trim(Input::get('search_inventory')) . '%';
-            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
-            if (count((array)$product_sub_id)) {
-                $query->where('product_sub_category_id', '=', $product_sub_id->id);
-            }else{
-                return;
-            }
-        }
-
-
-        $inventorys = $query->with('product_sub_category')
-                ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
-                ->orderBy('product_sub_category.alias_name', 'ASC')
-                ->get();
-        
-
-        Excel::create('Inventory List', function($excel) use($inventorys) {
-            $excel->sheet('Inventory-List', function($sheet) use($inventorys) {
-                $virtual_stock_qty = array();
-                foreach ($inventorys as $inventory) {
-                    $virtual_qty = ($inventory->physical_closing_qty + $inventory->pending_purchase_order_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
-                    array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
-                }
-
-                $sheet->loadView('excelView.inventory', array('inventorys' => $inventorys,'virtual_stock_qty'=>$virtual_stock_qty));
-            });
-        })->export('xls');
-        exit();
     }
 
 //    public function export_inventory() {
@@ -1258,161 +1221,25 @@ class InventoryController extends Controller {
     }
 
     public function exportinventoryPriceList(Request $request) {
-        $product_id = $request->input('product_id');
-        $size = $request->input('size');
-        $thickness = $request->input('thickness');
-        $new_price = $request->input('new_price');
-        $product_id = $request->input('product_id');
-        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-//        $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'desc')->limit(1)->get();
-        $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
-        $product_price = $product_last[0]->price;
-        $size_array = [];
-        $thickness_array = [];
-        $report_arr = [];
-        $final_arr = [];
-        $product_type = $product_last[0]->product_type_id;
-        if ($product_type == 1 || $product_type == 3) {
-            $product_column = "Size";
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->thickness, $thickness_array)) {
-                    array_push($thickness_array, $sub_cat->thickness);
-                }
-            }
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->size, $size_array)) {
-                    array_push($size_array, $sub_cat->size);
-                }
-            }
-            foreach ($thickness_array as $thickness) {
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $total_price = 0;
-                    if ($sub_cat->thickness == $thickness) {
-                        $inventory = $sub_cat['product_inventory'];
-                        $total_price = $product_price + $sub_cat->difference;
 
-                        $report_arr[$sub_cat->size][$sub_cat->thickness] = $total_price;
-                    }
-                }
-            }
-        }
-        if ($product_type == 2) {
-            $product_column = "Product Alias";
-            array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                if (!in_array($sub_cat->alias_name, $size_array)) {
-                    array_push($size_array, $sub_cat->alias_name);
-                }
-            }
-            foreach ($thickness_array as $thickness) {
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    $total_price = 0;
-                    $inventory = $sub_cat['product_inventory'];
-                    $total_price = $product_price + $sub_cat->difference;
-                    $report_arr[$sub_cat->alias_name][$thickness] = $total_price;
-                }
-            }
-        }
+        return Excel::download(new InventoryPriceExport, 'Inventory_Price_List.xls');
 
-        foreach ($size_array as $size) {
-            foreach ($thickness_array as $thickness) {
-                if (isset($report_arr[$size][$thickness])) {
-                    $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-                } else {
-                    $final_arr[$size][$thickness] = "-";
-                }
-            }
-        }
-
-        $report_arr = $final_arr;
-        Excel::create('Inventory Price List', function($excel) use($product_last, $thickness_array, $report_arr, $product_column) {
-            $excel->sheet('Inventory Price List', function($sheet) use($product_last, $thickness_array, $report_arr, $product_column) {
-                $sheet->loadView('excelView.inventory_price_list', array('product_last' => $product_last, 'thickness_array' => $thickness_array, 'report_arr' => $report_arr, 'product_column' => $product_column));
-            });
-        })->export('xls');
+//         Excel::create('Inventory Price List', function($excel) use($product_last, $thickness_array, $report_arr, $product_column) {
+//             $excel->sheet('Inventory Price List', function($sheet) use($product_last, $thickness_array, $report_arr, $product_column) {
+//                 $sheet->loadView('excelView.inventory_price_list', array('product_last' => $product_last, 'thickness_array' => $thickness_array, 'report_arr' => $report_arr, 'product_column' => $product_column));
+//             });
+//         })->export('xls');
     }
 
     public function exportInventoryReport(Request $request) { //Export 
-        $product_id = $request->input('product_id');
-        $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
-        $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
-                   $size_array = [];
-            $thickness_array = [];
-            $report_arr = [];
-            $final_arr = [];
-            $product_id = $product_last[0]->id;
-            $product_type = $product_last[0]->product_type_id;
-            if ($product_type == 1 || $product_type == 3) {
-                $product_column = "Size";
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    if (!in_array($sub_cat->thickness, $thickness_array)) {
-                        array_push($thickness_array, $sub_cat->thickness);
-                    }
-                }
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    if (!in_array($sub_cat->size, $size_array)) {
-                        array_push($size_array, $sub_cat->size);
-                    }
-                }
-                foreach ($size_array as $size) {
-                    foreach ($thickness_array as $thickness) {
-                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
-                                $inventory = $sub_cat['product_inventory'];
-                                $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                                } else {
-                                    $total_qnty = "-";
-                                }
-                                $report_arr[$size][$thickness] = $total_qnty;
-                            }
-                        }
-                    }
-                }
-            }
-            if ($product_type == 2) {
-                $product_column = "Product Alias";
-                array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                    if (!in_array($sub_cat->alias_name, $size_array)) {
-                        array_push($size_array, $sub_cat->alias_name);
-                    }
-                }
-                foreach ($size_array as $size) {
-                    foreach ($thickness_array as $thickness) {
-                        foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                            if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
-                                $inventory = $sub_cat['product_inventory'];
-                                $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                                } else {
-                                    $total_qnty = "-";
-                                }
-                                $report_arr[$size][$thickness] = $total_qnty;
-                            }
-                        }
-                    }
-                }
-            }
-            foreach ($size_array as $size) {
-                foreach ($thickness_array as $thickness) {
-                    if (isset($report_arr[$size][$thickness])) {
-//                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-                        $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
-                    } else {
-                        $final_arr[$size][$thickness] = "-";
-                    }
-                }
-            }
-            // sort($thickness_array);
-            $report_arr = $final_arr;
-        Excel::create('Inventory Report', function($excel) use($product_last, $thickness_array, $report_arr, $product_column) {
-            $excel->sheet('Inventory Report', function($sheet) use($product_last, $thickness_array, $report_arr, $product_column) {
-                $sheet->loadView('excelView.inventory_report', array('product_last' => $product_last, 'thickness_array' => $thickness_array, 'report_arr' => $report_arr, 'product_column' => $product_column));
-            });
-        })->export('xls');
+
+        return Excel::download(new InventoryReportExport, 'Inventory_Report.xls');
+
+        // Excel::create('Inventory Report', function($excel) use($product_last, $thickness_array, $report_arr, $product_column) {
+        //     $excel->sheet('Inventory Report', function($sheet) use($product_last, $thickness_array, $report_arr, $product_column) {
+        //         $sheet->loadView('excelView.inventory_report', array('product_last' => $product_last, 'thickness_array' => $thickness_array, 'report_arr' => $report_arr, 'product_column' => $product_column));
+        //     });
+        // })->export('xls');
     }
 
     public function print_inventory_report($id, DropboxStorageRepository $connection) {

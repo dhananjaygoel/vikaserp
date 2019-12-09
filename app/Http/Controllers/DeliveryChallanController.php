@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DCExport;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -2136,78 +2137,85 @@ class DeliveryChallanController extends Controller {
 
     /* Function used to export delivery challan  list based on order status */
 
+    // public function exportDeliveryChallanBasedOnStatus() {
+    //     $data = Input::all();
+    //     set_time_limit(0);
+    //     ini_set('max_execution_time', 1000);
+    //     if ($data['delivery_order_status'] == 'pending') {
+    //         $delivery_order_status = 'pending';
+    //         $excel_sheet_name = 'Pending';
+    //         $excel_name = 'DeliveryChallan-InProgress-' . date('dmyhis');
+
+    //         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+    //         $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+    //         $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+    //         if ($date1 == $date2) {
+    //             $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
+    //                     ->where('updated_at', 'like', $date1 . '%')
+    //                     ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
+    //                     ->orderBy('updated_at', 'desc')
+    //                     ->get();
+    //         } else {
+    //             $delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_order_status)
+    //                     ->where('updated_at', '>=', $date1)
+    //                     ->where('updated_at', '<=', $date2 . ' 23:59:59')
+    //                     ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
+    //                     ->orderBy('updated_at', 'desc')
+    //                     ->get();
+    //             }
+    //         } else {
+    //             $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
+    //                 ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->orderBy('updated_at', 'desc')->get();
+    //         }
+
+    //     } elseif ($data['delivery_order_status'] == 'completed') {
+    //         $delivery_order_status = 'completed';
+    //         $excel_sheet_name = 'Completed';
+    //         $excel_name = 'DeliveryChallan-Completed-' . date('dmyhis');
+
+    //         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+    //         $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+    //         $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+    //         if ($date1 == $date2) {
+    //             $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
+    //                     ->where('serial_number', 'like', '%P')
+    //                     ->where('updated_at', 'like', $date1 . '%')
+    //                     ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
+    //                     ->orderBy('updated_at', 'desc')
+    //                     ->get();
+    //         } else {
+    //             $delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_order_status)
+    //                     ->where('serial_number', 'like', '%P')
+    //                     ->where('updated_at', '>=', $date1)
+    //                     ->where('updated_at', '<=', $date2 . ' 23:59:59')
+    //                     ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
+    //                     ->orderBy('updated_at', 'desc')
+    //                     ->get();
+    //         }
+    //         } else {
+    //             $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
+    //                 ->where('serial_number', 'like', '%P')
+    //                 ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->orderBy('updated_at', 'desc')->get();
+    //         }
+    //     }
+
+
+    //     if (count((array)$delivery_challan_objects) == 0) {
+    //         return redirect::back()->with('flash_message', 'No data found');
+    //     } else {
+    //         Excel::store($excel_name, function($excel) use($delivery_challan_objects, $excel_sheet_name) {
+    //             $excel->sheet('DeliveryChallan-' . $excel_sheet_name, function($sheet) use($delivery_challan_objects, $excel_sheet_name) {
+    //                 $sheet->loadView('excelView.delivery_challan', array('delivery_challan_objects' => $delivery_challan_objects));
+    //             });
+    //         })->export('xls');
+    //         $sheet->loadView('excelView.delivery_challan', array('delivery_challan_objects' => $delivery_challan_objects));
+
+    //     }
+    // }
+
     public function exportDeliveryChallanBasedOnStatus() {
-        $data = Input::all();
-        set_time_limit(0);
-        ini_set('max_execution_time', 1000);
-        if ($data['delivery_order_status'] == 'pending') {
-            $delivery_order_status = 'pending';
-            $excel_sheet_name = 'Pending';
-            $excel_name = 'DeliveryChallan-InProgress-' . date('dmyhis');
-
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
-            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if ($date1 == $date2) {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
-                        ->where('updated_at', 'like', $date1 . '%')
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('updated_at', 'desc')
-                        ->get();
-            } else {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_order_status)
-                        ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('updated_at', 'desc')
-                        ->get();
-                }
-            } else {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
-                    ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->orderBy('updated_at', 'desc')->get();
-            }
-
-        } elseif ($data['delivery_order_status'] == 'completed') {
-            $delivery_order_status = 'completed';
-            $excel_sheet_name = 'Completed';
-            $excel_name = 'DeliveryChallan-Completed-' . date('dmyhis');
-
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
-            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if ($date1 == $date2) {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
-                        ->where('serial_number', 'like', '%P')
-                        ->where('updated_at', 'like', $date1 . '%')
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('updated_at', 'desc')
-                        ->get();
-            } else {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status',$delivery_order_status)
-                        ->where('serial_number', 'like', '%P')
-                        ->where('updated_at', '>=', $date1)
-                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('updated_at', 'desc')
-                        ->get();
-            }
-            } else {
-                $delivery_challan_objects = DeliveryChallan::where('challan_status', $delivery_order_status)
-                    ->where('serial_number', 'like', '%P')
-                    ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby')->orderBy('updated_at', 'desc')->get();
-            }
-        }
-
-
-        if (count((array)$delivery_challan_objects) == 0) {
-            return redirect::back()->with('flash_message', 'No data found');
-        } else {
-            Excel::create($excel_name, function($excel) use($delivery_challan_objects, $excel_sheet_name) {
-                $excel->sheet('DeliveryChallan-' . $excel_sheet_name, function($sheet) use($delivery_challan_objects, $excel_sheet_name) {
-                    $sheet->loadView('excelView.delivery_challan', array('delivery_challan_objects' => $delivery_challan_objects));
-                });
-            })->export('xls');
-        }
+        
+        return Excel::download(new DCExport, 'DeliveryChallan-Pending.xls');
     }
 
     function checkpending_quantity1($delivery_orders) {

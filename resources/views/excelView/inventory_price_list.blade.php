@@ -1,14 +1,13 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
     
-    <table id="day-wise" class="table table-bordered text-center complex-data-table">
+    <table>
         <tbody>
-            <tr style="width:50px; height:50px;">                
-                <td class="crossout" colspan="1" rowspan="1"><span class="size-head">{{$product_column}}</span><span class="thickness-head">Thickness</span></td> 
+            <tr>                
+                <th style="height:20px;font-size:16px;color:#000080;" colspan="1" rowspan="1"><span style="float: left;margin-top: 20px;">{{$product_column}}</span><span style="float: right;margin-top: -10px;">Thickness</span></th> 
                 @if(isset($thickness_array))
                     @foreach($thickness_array as $thickness)
-                       <td>{{$thickness}}</td>
+                       <th style="height:20px;font-size:16px;color:#000080;">{{$thickness}}</th>
                     @endforeach
                 @endif                                            
             </tr>        
@@ -16,11 +15,11 @@
             ini_set('max_execution_time', 720);                        
             ?>
             @foreach($report_arr as $key=>$record)
-            <tr class="text-center">                
-                <td>{{$key}}</td>                                                                                        
+            <tr>                
+                <td style="height:16px;">{{$key}}</td>                                                                                        
                 @if(isset($record))
                     @foreach($record as $key1=>$value)
-                    <td class="text-center">
+                    <td style="height:16px;text-align: center;">
                        @if(isset($value) && $value!="-")
                             {{$value}}
                        @else

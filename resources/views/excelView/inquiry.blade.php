@@ -1,26 +1,23 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
     <table>
         <tr>
-            <td class="heading1">Sr No.</td>
-            <td class="heading1">Tally Name</td>
-            <td class="heading1">Contact Person</td>
-            <td class="heading1">Phone Number</td>
-            <td class="heading1">Credit Period(Days)</td>
-            <td class="heading1">Delivery Location</td>
-            <td class="heading1">Freight</td>
-
-            <td class="heading1">Product(Alias)</td>
-            <td class="heading1">Quantity</td>
-            <td class="heading1">Unit</td>
-            <td class="heading1">Price</td>
-            <td class="heading1">GST Percentage</td>
-            <td class="heading1">Update Price</td>
-
-            <td class="heading1">Remark</td>
-            <td class="heading1">Expected Delivery Date</td>
-            <td class="heading1">Remark</td>
+            <th style="height:20px;font-size:16px;color:#000080;">Sr No.</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Tally Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Contact Person</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Phone Number</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Credit Period(Days)</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Delivery Location</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Freight</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Product(Alias)</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Quantity</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Unit</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Price</th>
+            <th style="height:20px;font-size:16px;color:#000080;">GST Percentage</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Update Price</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Expected Delivery Date</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
 
         </tr>
         <?php  $counter = 1; ?>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DOExport;
 use App\Labour;
 use App\LoadedBy;
 use App\DeliveryChallanLoadedBy;
@@ -2275,8 +2276,18 @@ class DeliveryOrderController extends Controller {
 //    }
 
     /* Function used to export dilivery order list based on order status */
-
+    
     public function exportDeliveryOrderBasedOnStatus() {
+        $data = Input::all();
+        if ($data['delivery_order_status'] == 'Inprocess') {
+            $excel_name = '-InProcess-' . date('dmyhis');
+        } elseif ($data['delivery_order_status'] == 'Delivered') {
+            $excel_name = '-Delivered-' . date('dmyhis');
+        }
+        return Excel::download(new DOExport, 'DeliveryOrder'.$excel_name.'.xls');
+    }
+
+    public function exportDeliveryOrderBasedOnStatus_old() {
         $data = Input::all();
         set_time_limit(0);
         ini_set('max_execution_time', 1000);

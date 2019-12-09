@@ -575,7 +575,7 @@ function show_hide_customer(status) {
 
 /** product_autocomplete  */
 function product_autocomplete(id) {
-   alert('ki');
+//    alert('ki');
      $.ajax({
         url: baseurl + '/get-data',
         success: function (data) {

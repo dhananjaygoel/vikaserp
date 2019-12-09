@@ -1,10 +1,9 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
     <table>
         <tr>
-            <td class="heading1">#</td>
-            <td class="heading1">Territory name</td>           
+            <th style="height:20px;font-size:16px;color:#000080;">#</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Territory name</th>           
             
         </tr>
         <?php
@@ -13,8 +12,8 @@
         foreach ($allterritory as $value) {
             ?>
             <tr>
-                <td>{{$k++}}</td>
-                <td>{{$value->teritory_name}}</td>               
+                <td style="height:16px;">{{$k++}}</td>
+                <td style="height:16px;">{{$value->teritory_name}}</td>               
             </tr>
             <?php
         }

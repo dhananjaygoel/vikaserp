@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TerritoryExport;
+use App\Exports\CustomerExport;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -1041,12 +1043,14 @@ class WelcomeController extends Controller {
      */
     public function excel_export_customer() {
 
-        $allcustomers = Customer::where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
-        Excel::create('Customer List', function($excel) use($allcustomers) {
-            $excel->sheet('Customers List', function($sheet) use($allcustomers) {
-                $sheet->loadView('excelView.customer', array('allcustomers' => $allcustomers));
-            });
-        })->export('xls');
+        // $allcustomers = Customer::where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
+        // Excel::create('Customer List', function($excel) use($allcustomers) {
+        //     $excel->sheet('Customers List', function($sheet) use($allcustomers) {
+        //         $sheet->loadView('excelView.customer', array('allcustomers' => $allcustomers));
+        //     });
+        // })->export('xls');
+
+        return Excel::download(new CustomerExport, 'Customers_List.xls');
     }
 
     public function excel_export_labours() {
@@ -1061,12 +1065,14 @@ class WelcomeController extends Controller {
 
     public function excel_export_territory() {
 
-        $allterritory = \App\Territory::orderBy('created_at', 'DESC')->get();
-        Excel::create('Territory List', function($excel) use($allterritory) {
-            $excel->sheet('Territory List', function($sheet) use($allterritory) {
-                $sheet->loadView('excelView.territory', array('allterritory' => $allterritory));
-            });
-        })->export('xls');
+        return Excel::download(new TerritoryExport, 'Territory List.xls');
+
+        // $allterritory = \App\Territory::orderBy('created_at', 'DESC')->get();
+        // Excel::create('Territory List', function($excel) use($allterritory) {
+        //     $excel->sheet('Territory List', function($sheet) use($allterritory) {
+        //         $sheet->loadView('excelView.territory', array('allterritory' => $allterritory));
+        //     });
+        // })->export('xls');
     }
 
     public function excel_export_loaded_by() {

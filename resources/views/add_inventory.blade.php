@@ -40,9 +40,9 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <!--                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>-->
-                                        <input type="hidden" id="export-data-field" name="export_data" value="" class="btn btn-primary form_button_footer">
-                                        <a class="btn btn-primary" id="export-inventory-list">Export Inventory List</a>                                        
+                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
+                                        <!-- <input type="hidden" id="export-data-field" name="export_data" value="" class="btn btn-primary form_button_footer"> -->
+                                        <!-- <a class="btn btn-primary" id="export-inventory-list">Export Inventory List</a>                                         -->
                                         @if(auth()->user()->role_id == 0)
                                         <a class="btn btn-primary save_all_inventory">Save all</a>
                                         @endif

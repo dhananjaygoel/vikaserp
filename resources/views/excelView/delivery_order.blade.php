@@ -1,29 +1,28 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!}
     <table>
         <tr>
-            <td class="heading1">Sr No.</td>
-            <td class="heading1">Tally Name</td>
-            <td class="heading1">Contact Person</td>
-            <td class="heading1">Date</td>
-            <td class="heading1">Serial Number</td>
-            <td class="heading1">Mobile Number</td>
-            <td class="heading1">Delivery Location</td>
-            <td class="heading1">Delivery Freight</td>
-            <td class="heading1">Product(Alias)</td>
-            <td class="heading1">Present shipping</td>
-            <td class="heading1">Unit</td>
-            <td class="heading1">Price</td>
-            <td class="heading1">GST Percentage</td>
-            <td class="heading1">Remark</td>
-            <td class="heading1">Vehicle Name</td>
-            <td class="heading1">Driver Contact</td>
-            <td class="heading1">Remark</td>
-            <td class="heading1">Order By</td>
-            <td class="heading1">Order Time/Date</td>
-            <td class="heading1">Delivery Order By</td>
-            <td class="heading1">Delivery Order Time/Date</td>
+            <th style="height:20px;font-size:16px;color:#000080;">Sr No.</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Tally Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Contact Person</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Date</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Serial Number</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Mobile Number</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Delivery Location</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Delivery Freight</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Product(Alias)</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Present shipping</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Unit</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Price</th>
+            <th style="height:20px;font-size:16px;color:#000080;">GST Percentage</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Vehicle Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Driver Contact</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Order By</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Order Time/Date</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Delivery Order By</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Delivery Order Time/Date</th>
         </tr>
         <?php $counter=1;?>
         @foreach ($delivery_order_objects as $delivery_data)

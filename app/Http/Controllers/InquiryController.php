@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InquiryExport;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 Use Cache;
@@ -1627,43 +1628,16 @@ class InquiryController extends Controller {
 
     /* Function used to export inquiry records */
 
-    public function exportinquiryBasedOnStatus($inquiry_status) {
-
-        if ($inquiry_status == 'Pending') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'pending')->with('delivery_product', 'customer', 'order_details')->paginate(20);
-            $inquiry_status = 'pending';
-            $is_approval = 'yes';
-            $excel_sheet_name = 'Pending';
-            $excel_name = 'Inquiry-Pending-' . date('dmyhis');
-        } elseif ($inquiry_status == 'Completed') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
-            $inquiry_status = 'completed';
-            $is_approval = 'yes';
-            $excel_sheet_name = 'Completed';
-            $excel_name = 'Inquiry-Completed-' . date('dmyhis');
-        } elseif ($inquiry_status == 'Pending_Approval') {
-//                $delivery_data = DeliveryOrder::orderBy('updated_at', 'desc')->where('order_status', 'completed')->with('delivery_product', 'customer', 'order_details')->paginate(20);
-            $inquiry_status = 'pending';
-            $is_approval = 'no';
-            $excel_sheet_name = 'Pending_Approval';
-            $excel_name = 'Inquiry-Pending_Approval-' . date('dmyhis');
-        }
-
-        $inquiry_objects = Inquiry::where('inquiry_status', $inquiry_status)
-                ->where('is_approved', '=', $is_approval)
-                ->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')
-                ->orderBy('created_at', 'desc')
-                ->get();
-        if (count((array)$inquiry_objects) == 0) {
-            return redirect::back()->with('flash_message', 'No data found');
-        } else {
-            $delivery_location = DeliveryLocation::all();
-            Excel::create($excel_name, function($excel) use($inquiry_objects, $excel_sheet_name, $delivery_location) {
-                $excel->sheet('Inquiry-' . $excel_sheet_name, function($sheet) use($inquiry_objects, $delivery_location) {
-                    $sheet->loadView('excelView.inquiry', array('inquiry_objects' => $inquiry_objects, 'delivery_location' => $delivery_location));
-                });
-            })->export('xls');
-        }
+    public function exportinquiryBasedOnStatus() {
+        $inquiry = Input::all();
+            if ($inquiry['inquiry_status'] == 'Pending') {
+                $excel_name = '-Pending-' . date('dmyhis');
+            } elseif ($inquiry['inquiry_status'] == 'Completed') {
+                $excel_name = '-Completed-' . date('dmyhis');
+            } elseif ($inquiry['inquiry_status'] == 'Pending_Approval') {
+                $excel_name = '-Pending_Approval-' . date('dmyhis');
+            }
+        return Excel::download(new InquiryExport, 'Inquiry'.$excel_name.'.xls');
     }
 
     function getenviroment() {
