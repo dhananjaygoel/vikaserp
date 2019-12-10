@@ -45,6 +45,11 @@ class CustomerController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
     // exit;
@@ -431,8 +436,7 @@ public function update_cust_all_inc(){
 
         $users->role_id = '5';
 
-        $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
-                ->count();
+        $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))->count();
         if ($already_exists_mobile_number > 0) {
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
@@ -542,55 +546,56 @@ public function update_cust_all_inc(){
                 }
             }
         }*/
-        if (Input::has('status')) {
+        if (Input::has('status') && Input::get('status') != "") {
             $customer->is_supplier = Input::get('status');
         }
-        if (Input::has('company_name')) {
-            $customer->company_name = Input::get('company_name');
+        if (Input::has('company_name') && Input::get('company_name') != "") {
+            $customer->company_name = Input::get('company_name', false);
         }
-        if (Input::has('gstin_number')) {
+        if (Input::has('gstin_number') && Input::get('gstin_number') != "") {
             $customer->gstin_number = Input::get('gstin_number');
         }
-        if (Input::has('contact_person')) {
-            $customer->contact_person = Input::get('contact_person');
+        if (Input::has('contact_person') && Input::get('contact_person') != "") {
+            $customer->contact_person = Input::get('contact_person', false);
         }
-        if (Input::has('address1')) {
-            $customer->address1 = Input::get('address1');
+        if (Input::has('address1') && Input::get('address1') != "") {
+            $customer->address1 = Input::get('address1', false);
         }
-        if (Input::has('address2')) {
-            $customer->address2 = Input::get('address2');
+        if (Input::has('address2') && Input::get('address2') != "") {
+            $customer->address2 = Input::get('address2', false);
         }
         $customer->city = Input::get('city');
         $customer->state = Input::get('state');
-        if (Input::has('zip')) {
-            $customer->zip = Input::get('zip');
+        if (Input::has('zip') && Input::get('zip') != "") {
+            $customer->zip = Input::get('zip', false);
         }
-        if (Input::has('email')) {
-            $customer->email = Input::get('email');
-            $users->email = Input::get('email');
+        if (Input::has('email') && Input::get('email') != "") {
+            $customer->email = Input::get('email', false);
+            $users->email = Input::get('email', false);
         }
         $customer->tally_name = Input::get('tally_name');
         $customer->phone_number1 = Input::get('phone_number1');
         $users->mobile_number = Input::get('phone_number1');
 
 
-        if (Input::has('phone_number2')) {
-            $customer->phone_number2 = Input::get('phone_number2');
-            $users->phone_number = Input::get('phone_number2');
+        if (Input::has('phone_number2') && Input::get('phone_number2') != "") {
+            $customer->phone_number2 = Input::get('phone_number2', false);
+            $users->phone_number = Input::get('phone_number2', false);
         }
-        if (Input::has('username')) {
-            $customer->username = Input::get('username');
+        if (Input::has('username') && Input::get('username') != "") {
+            $customer->username = Input::get('username', false);
         }
-        if (Input::has('credit_period')) {
+        if (Input::has('credit_period') && Input::get('credit_period') != "") {
             $customer->credit_period = Input::get('credit_period');
         } else {
             $customer->credit_period = 0;
         }
 
-        if (Input::has('relationship_manager')) {
+        if (Input::has('relationship_manager') && Input::get('relationship_manager') != "") {
             $customer->relationship_manager = Input::get('relationship_manager');
         }
-        $customer->delivery_location_id = Input::get('delivery_location');
+        
+        $customer->delivery_location_id = Input::get('delivery_location', false);
 
         if (Input::has('password') && Input::get('password') != '') {
             $customer->password = Hash::make(Input::get('password'));
