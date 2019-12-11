@@ -1103,24 +1103,26 @@ public function update_cust_all_inc(){
             $customer_exist['customer_purchase_advice'] = "";
             $customer_exist['customer_purchase_challan'] = "";
 
-            $customer_inquiry = Inquiry::where('customer_id', $customer->id)->get();
-            $customer_order = Order::where('customer_id', $customer->id)->get();
-            $customer_delivery_order = DeliveryOrder::where('customer_id', $customer->id)->get();
-            $customer_delivery_challan = DeliveryChallan::where('customer_id', $customer->id)->get();
-            $customer_purchase_order = PurchaseOrder::where('supplier_id', $customer->id)->get();
-            $customer_purchase_advice = PurchaseAdvise::where('supplier_id', $customer->id)->get();
-            $customer_purchase_challan = PurchaseChallan::where('supplier_id', $customer->id)->get();
+            $customer_inquiry = Inquiry::where('customer_id', $customer->id)->count();
+            $customer_order = Order::where('customer_id', $customer->id)->count();
+            $customer_delivery_order = DeliveryOrder::where('customer_id', $customer->id)->count();
+            $customer_delivery_challan = DeliveryChallan::where('customer_id', $customer->id)->count();
+            $customer_purchase_order = PurchaseOrder::where('supplier_id', $customer->id)->count();
+            $customer_purchase_advice = PurchaseAdvise::where('supplier_id', $customer->id)->count();
+            $customer_purchase_challan = PurchaseChallan::where('supplier_id', $customer->id)->count();
+
+            dd($customer_purchase_order.$customer_purchase_advice.$customer_purchase_challan);
 
             $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
             $cust_flag = "";
 
-            if (isset($customer_inquiry) && (count((array)$customer_inquiry) > 0)) {
+            if ($customer_inquiry > 0) {
                 $customer_exist['customer_inquiry'] = 1;
                 $cust_msg .= "Inquiry";
                 $cust_flag = 1;
             }
 
-            if (isset($customer_order) && (count((array)$customer_order) > 0)) {
+            if (($customer_order) > 0) {
                 $customer_exist['customer_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Order";
@@ -1130,7 +1132,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_order) && (count((array)$customer_delivery_order) > 0)) {
+            if (($customer_delivery_order) > 0) {
                 $customer_exist['customer_delivery_order'] = 1;
 
                 if ($customer_exist['customer_inquiry'] == 1) {
@@ -1143,7 +1145,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_delivery_challan) && (count((array)$customer_delivery_challan) > 0)) {
+            if (($customer_delivery_challan) > 0) {
                 $customer_exist['customer_delivery_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Delievry Challan";
@@ -1157,7 +1159,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_order) && (count((array)$customer_purchase_order) > 0)) {
+            if (($customer_purchase_order) > 0) {
                 $customer_exist['customer_purchase_order'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Order";
@@ -1173,7 +1175,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_advice) && (count((array)$customer_purchase_advice) > 0)) {
+            if (($customer_purchase_advice) > 0) {
                 $customer_exist['customer_purchase_advice'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Advice";
@@ -1191,7 +1193,7 @@ public function update_cust_all_inc(){
                 $cust_flag = 1;
             }
 
-            if (isset($customer_purchase_challan) && (count((array)$customer_purchase_challan) > 0)) {
+            if (($customer_purchase_challan) > 0) {
                 $customer_exist['customer_purchase_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
                     $cust_msg .= ", Purchase Challan";
