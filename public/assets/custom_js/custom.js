@@ -3600,6 +3600,8 @@ function fetch_actual_qty() {
     fetch_average_quantity();
 }
 
+$('div.valid_test').delay(3000).slideUp(300);
+
 $("button").click(function() {
     var fired_button = $(this).val();
     // alert(fired_button);
