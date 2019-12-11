@@ -414,7 +414,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('fetch_product_price', 'DeliveryOrderController@product_price');
     Route::post('upload_excel', 'WelcomeController@upload_excel');
     Route::resource('excel_import', 'WelcomeController@excel_import');
-    Route::resource('excel_import_customer', 'WelcomeController@excel_import_customer');
+    Route::any('excel_import_customer', 'WelcomeController@excel_import_customer');
     Route::any('excel_export_customer', 'WelcomeController@excel_export_customer');
     Route::post('upload_customer_excel', 'WelcomeController@upload_customer_excel');
     Route::any('excel_export_labours', 'WelcomeController@excel_export_labours');
