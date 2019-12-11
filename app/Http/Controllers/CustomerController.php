@@ -757,10 +757,10 @@ public function update_cust_all_inc(){
         if ($validator->passes()) {
             $customer = Customer::find($id);
             $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))
-                    ->where('id', '<>', $id)
-                    ->get();
-
-            if (count((array)$already_exists_mobile_number) > 0) {
+                    ->where('id', '<>', $id)->count();
+                    
+dd($already_exists_mobile_number);
+            if ($already_exists_mobile_number > 0) {
                 return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
             }
 
