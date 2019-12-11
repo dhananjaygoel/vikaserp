@@ -1111,8 +1111,6 @@ public function update_cust_all_inc(){
             $customer_purchase_advice = PurchaseAdvise::where('supplier_id', $customer->id)->count();
             $customer_purchase_challan = PurchaseChallan::where('supplier_id', $customer->id)->count();
 
-            dd($customer_purchase_order.$customer_purchase_advice.$customer_purchase_challan);
-
             $cust_msg = 'Customer can not be deleted as details are associated with one or more ';
             $cust_flag = "";
 
