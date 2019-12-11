@@ -15,7 +15,7 @@
                 <div class="main-box">
                     <div class="main-box-body clearfix">
                         @if (Session::has('wrong'))
-                        <div class="alert alert-danger alert-success1">
+                        <div class="alert alert-danger">
                             {{Session::get('wrong')}}                            
                         </div>
                         @endif

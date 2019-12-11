@@ -608,10 +608,9 @@ class WelcomeController extends Controller {
             
             end($newdata);$endkey = key($newdata);reset($newdata);
                 
-                for($key = 1; $key<=$endkey; $key++ ){
-                    $result_validation = $this->checkvalidation($newdata[$key]);
-                }
-
+                
+            $result_validation = $this->checkvalidation($newdata);
+              
                 if ($result_validation == "success") {
                     ini_set('max_execution_time', 720);
                     for($key = 1; $key<=$endkey; $key++ ){
@@ -714,81 +713,86 @@ class WelcomeController extends Controller {
             16 => "credit_period",
             17 => "relationship_manager"
         );
+        // echo '<pre>';print_r($rowData);
+        for ($i = 0; $i < 18; $i++) {
+            if ($org_col[$i] != trim($rowData[0][$i])) {
+                return "Please arrange column name same as given file.";
+            }
+        }
         
-        // for ($i = 0; $i < 18; $i++) {
-        //     if ($org_col[$i] != trim($rowData[0][$i])) {
-        //         return "Please arrange column name same as given file.";
-        //     }
-        // }
+        end($rowData);$endkey = key($rowData);reset($rowData);
+        for($key = 1; $key<=$endkey; $key++ ){
+            // echo '<pre>';print_r($rowData[$key][10]);
+            if (isset($rowData[$key][0])) {
+                if (trim($rowData[$key][0] == "")) {
+    //                $error_list_invalid[] = "owner_name";
+                    return "Column name - owner_name is invalid please check excel file.";
+                }
+            } else {
+    //            $missing_colname[] = "owner_name";
+                return "Column name - owner_name is missing please check excel file.";
+            }
 
-        if (isset($rowData[0])) {
-            if (trim($rowData[0] == "")) {
-//                $error_list_invalid[] = "owner_name";
-                return "Column name - owner_name is invalid please please check excel file.";
+            if (isset($rowData[$key][8])) {
+                if (trim($rowData[$key][8] == "")) {
+    //                $error_list_invalid[] = "email";
+                    return "Column name - email is invalid please check excel file.";
+                }
+            } else {
+    //            $missing_colname[] = "email";
+                return "Column name - email is missing please check excel file.";
             }
-        } else {
-//            $missing_colname[] = "owner_name";
-            return "Column name - owner_name is missing please check excel file.";
-        }
 
-        if (isset($rowData[8])) {
-            if (trim($rowData[8] == "")) {
-//                $error_list_invalid[] = "email";
-                return "Column name - email is invalid please check excel file.";
+            if (isset($rowData[$key][9])) {
+                if (trim($rowData[$key][9] == "")) {
+    //                $error_list_invalid[] = "tally_name";
+                    return "Column name - tally_name is invalid please check excel file.";
+                }
+            } else {
+    //            $missing_colname[] = "tally_name";
+                return "Column name - tally_name is missing please check excel file.";
             }
-        } else {
-//            $missing_colname[] = "email";
-            return "Column name - email is missing please check excel file.";
-        }
 
-        if (isset($rowData[9])) {
-            if (trim($rowData[9] == "")) {
-//                $error_list_invalid[] = "tally_name";
-                return "Column name - tally_name is invalid please check excel file.";
+            if (isset($rowData[$key][10])) {
+                if (trim($rowData[$key][10] == "")) {
+                    print_r('kiokj');
+    //                $error_list_invalid[] = "phone_number_1";
+                    return "Column name - phone_number_1 is invalid please check excel file.";
+                }
+            } else {
+                print_r('ght');
+    //            $missing_colname[] = "phone_number_1";
+                return "Column name - phone_number_1 is missing please check excel file.";
             }
-        } else {
-//            $missing_colname[] = "tally_name";
-            return "Column name - tally_name is missing please check excel file.";
-        }
 
-        if (isset($rowData[10])) {
-            if (trim($rowData[10] == "")) {
-//                $error_list_invalid[] = "phone_number_1";
-                return "Column name - phone_number_1 is invalid please check excel file.";
+            if (isset($rowData[$key][5])) {
+                if (trim($rowData[$key][5] == "")) {
+    //                $error_list_invalid[] = "state_name";
+                    return "Column name - state_name is invalid please check excel file.";
+                }
+            } else {
+    //            $missing_colname[] = "state_name";
+                return "Column name - state_name is missing please check excel file.";
             }
-        } else {
-//            $missing_colname[] = "phone_number_1";
-            return "Column name - phone_number_1 is missing please check excel file.";
-        }
-
-        if (isset($rowData[5])) {
-            if (trim($rowData[5] == "")) {
-//                $error_list_invalid[] = "state_name";
-                return "Column name - state_name is invalid please check excel file.";
+            if (isset($rowData[$key][6])) {
+                if (trim($rowData[$key][6] == "")) {
+    //                $error_list_invalid[] = "city_name";
+                    return "Column name - city_name is invalid please check excel file.";
+                }
+            } else {
+    //            $missing_colname[] = "city_name";
+                return "Column name - city_name is missing please check excel file.";
             }
-        } else {
-//            $missing_colname[] = "state_name";
-            return "Column name - state_name is missing please check excel file.";
-        }
-        if (isset($rowData[6])) {
-            if (trim($rowData[6] == "")) {
-//                $error_list_invalid[] = "city_name";
-                return "Column name - city_name is invalid please check excel file.";
+            if (isset($rowData[$key][13])) {
+                if (trim($rowData[$key][13] == "")) {
+    //                $error_list_invalid[] = "delivery_location";
+                    return "Column name - delivery_location is invalid please check excel file.";
+                }
+            } else {
+    //            $missing_colname[] = "delivery_location";
+                return "Column name - delivery_location is missing please check excel file.";
             }
-        } else {
-//            $missing_colname[] = "city_name";
-            return "Column name - city_name is missing please check excel file.";
         }
-        if (isset($rowData[13])) {
-            if (trim($rowData[13] == "")) {
-//                $error_list_invalid[] = "delivery_location";
-                return "Column name - delivery_location is invalid please check excel file.";
-            }
-        } else {
-//            $missing_colname[] = "delivery_location";
-            return "Column name - delivery_location is missing please check excel file.";
-        }
-
         if (isset($missing_colname) && count((array)$missing_colname) > 0) {
             return "Some Column are missing please add column same as given file.";
         } else if (isset($error_list_invalid) && count((array)$error_list_invalid) > 0) {
