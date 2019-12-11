@@ -492,7 +492,7 @@ Route::post('export-purchase-challan', 'PurchaseChallanController@exportPurchase
 Route::get('export-inquiry', 'InquiryController@exportinquiryBasedOnStatus');
 Route::get('get-data', 'DeliveryOrderController@get_data');
 
-    Route::resource('process', 'DBController@index');
+    Route::any('process', 'DBController@index');
     Route::post('process/hsn', 'DBController@store');
     Route::post('process/thickness', 'DBController@storethickness');
     Route::post('updatethickness', 'DBController@updatethickness');
