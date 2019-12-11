@@ -441,6 +441,7 @@ public function update_cust_all_inc(){
         $users->role_id = '5';
 
         $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))->count();
+        dd($already_exists_mobile_number);
         if ($already_exists_mobile_number > 0) {
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
         }
