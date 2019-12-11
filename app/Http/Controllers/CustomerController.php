@@ -359,17 +359,19 @@ public function update_cust_plus_gst(){
         $dataService = $this->getToken();
     }
     $sr = 1;
-    $cust = "select count((array)*) from Customer";
+    $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
-    $cust_det = "select * from Customer order by Id maxresults $count";
-    $det = $dataService->Query($cust_det);
-    // dd($det);
-    foreach($det as $key=>$cust_id){
-        if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
-            App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_customer_id'=>$cust_id->Id]);
-            echo $sr.".\n";
-            echo nl2br($cust_id->Id."\n");
-            $sr++;
+    for($i = 1; $i<=$count; $i+=1000){
+        $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
+        $det = $dataService->Query($cust_det);
+        // dd($det);
+        foreach($det as $key => $cust_id){
+            if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
+                App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_customer_id'=>$cust_id->Id]);
+                echo $sr.".\n";
+                echo nl2br($cust_id->Id."\n");
+                $sr++;
+            }
         }
     }
 }
@@ -384,18 +386,20 @@ public function update_cust_all_inc(){
         $dataService = $this->getTokenWihtoutGST();
     }
     $sr = 1;
-    $cust = "select count((array)*) from Customer";
+    $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
-    $cust_det = "select * from Customer order by Id maxresults $count";
-    $det = $dataService->Query($cust_det);
-    // dd($det);
-    foreach($det as $key=>$cust_id){
-        // dd($cust_id->Name);
-        if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
-            App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
-            echo $sr.".\n";
-            echo nl2br($cust_id->Id."\n");
-            $sr++;
+    for($i = 1; $i<=$count; $i+=1000){
+        $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
+        $det = $dataService->Query($cust_det);
+        // dd($det);
+        foreach($det as $key=>$cust_id){
+            // dd($cust_id->Name);
+            if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
+                App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
+                echo $sr.".\n";
+                echo nl2br($cust_id->Id."\n");
+                $sr++;
+            }
         }
     }
 }

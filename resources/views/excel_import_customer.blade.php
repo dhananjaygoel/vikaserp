@@ -21,7 +21,7 @@
                         @endif
 
                         @if (Session::has('success'))
-                        <div class="alert alert-success alert-success1">
+                        <div class="alert alert-success">
                             {{Session::get('success')}}                            
                         </div>
                         @endif  

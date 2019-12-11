@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\TerritoryExport;
 use App\Exports\CustomerExport;
+use App\Imports\CustomerImport;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -599,51 +600,91 @@ class WelcomeController extends Controller {
     public function upload_customer_excel() {
 
         if (Input::hasFile('excel_file')) {
-            $input = Input::file('excel_file');
-            $filename = $input->getRealPath();
-            $extension = $input->getClientOriginalExtension();
-            $msg = "";
-            if (in_array($extension, array('xlsx', 'xls'))) {
 
-
-                Excel::load($filename, function($reader) {
-                    ini_set('max_execution_time', 720);
-                    $sheet = $reader->getSheet(0);
-                    $highestColumn = $sheet->getHighestColumn();
-                    $highestRow = $sheet->getHighestRow();
-
-                    for ($row = 1; $row <= 1; $row++) {
-                        $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-                        $result_validation = $this->checkvalidation($rowData[0]);
-                    }
-                    if ($result_validation == "success") {
-                        for ($row = 2; $row <= $highestRow; $row++) {
-                            ini_set('max_execution_time', 720);
-                            $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-                            $result_save = $this->savecustomer($rowData);
-                        }
-                        $this->copy_customers();
-                        $msg = "success";
-                        Session::set('resultmsg', $msg);
-                    } else {
-                        $msg = $result_validation;
-                        Session::set('resultmsg', $msg);
-                    }
-                });
-                $msg = Session::get('resultmsg');
-                if ($msg == "success") {
-                    Session::forget('resultmsg');
-                    return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
-                } else {
-                    Session::forget('resultmsg');
-                    return redirect('excel_import_customer')->with('wrong', $msg);
+            $path1 = Input::file('excel_file')->store('temp'); 
+            $path=storage_path('app').'/'.$path1;  
+            $data = Excel::toArray(new CustomerImport, $path);
+            $newdata = $data[0];
+            
+            end($newdata);$endkey = key($newdata);reset($newdata);
+                
+                for($key = 1; $key<=$endkey; $key++ ){
+                    $result_validation = $this->checkvalidation($newdata[$key]);
                 }
+
+                if ($result_validation == "success") {
+                    ini_set('max_execution_time', 720);
+                    for($key = 1; $key<=$endkey; $key++ ){
+                        $this->savecustomer($newdata[$key]);
+                    }
+                    $this->copy_customers();
+                    $msg = "success";
+                    Session::put('resultmsg', $msg);
+                } else {
+                    $msg = $result_validation;
+                    Session::put('resultmsg', $msg);
+                }
+
+            $msg = Session::get('resultmsg');
+            if ($msg == "success") {
+                Session::forget('resultmsg');
+                return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
             } else {
-                return redirect('excel_import_customer')->with('wrong', 'File format is invalid.');
+                Session::forget('resultmsg');
+                return redirect('excel_import_customer')->with('wrong', $msg);
             }
+            
         } else {
             return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
         }
+
+
+        // if (Input::hasFile('excel_file')) {
+        //     $input = Input::file('excel_file');
+        //     $filename = $input->getRealPath();
+        //     $extension = $input->getClientOriginalExtension();
+        //     $msg = "";
+        //     if (in_array($extension, array('xlsx', 'xls'))) {
+
+
+        //         Excel::load($filename, function($reader) {
+        //             ini_set('max_execution_time', 720);
+        //             $sheet = $reader->getSheet(0);
+        //             $highestColumn = $sheet->getHighestColumn();
+        //             $highestRow = $sheet->getHighestRow();
+
+        //             for ($row = 1; $row <= 1; $row++) {
+        //                 $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+        //                 $result_validation = $this->checkvalidation($rowData[0]);
+        //             }
+        //             if ($result_validation == "success") {
+        //                 for ($row = 2; $row <= $highestRow; $row++) {
+        //                     ini_set('max_execution_time', 720);
+        //                     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+        //                     $result_save = $this->savecustomer($rowData);
+        //                 }
+        //                 $this->copy_customers();
+        //                 $msg = "success";
+        //                 Session::set('resultmsg', $msg);
+        //             } else {
+        //                 $msg = $result_validation;
+        //                 Session::set('resultmsg', $msg);
+        //             }
+        //         });
+        //         $msg = Session::get('resultmsg');
+        //         if ($msg == "success") {
+        //             Session::forget('resultmsg');
+        //             return redirect('excel_import_customer')->with('success', 'Customer details excel file successfully uploaded.');
+        //         } else {
+        //             Session::forget('resultmsg');
+        //             return redirect('excel_import_customer')->with('wrong', $msg);
+        //         }
+        //     } else {
+        //         return redirect('excel_import_customer')->with('wrong', 'File format is invalid.');
+        //     }
+        // } else {
+        //     return redirect('excel_import_customer')->with('wrong', 'Please select file to upload');
+        // }
     }
 
     /**
@@ -673,11 +714,12 @@ class WelcomeController extends Controller {
             16 => "credit_period",
             17 => "relationship_manager"
         );
-        for ($i = 0; $i < 18; $i++) {
-            if ($org_col[$i] != $rowData[$i]) {
-                return "Please arrange column name same as given file.";
-            }
-        }
+        
+        // for ($i = 0; $i < 18; $i++) {
+        //     if ($org_col[$i] != trim($rowData[0][$i])) {
+        //         return "Please arrange column name same as given file.";
+        //     }
+        // }
 
         if (isset($rowData[0])) {
             if (trim($rowData[0] == "")) {
@@ -712,7 +754,7 @@ class WelcomeController extends Controller {
         if (isset($rowData[10])) {
             if (trim($rowData[10] == "")) {
 //                $error_list_invalid[] = "phone_number_1";
-                return "Column name - phone_number_1 is invalid please please check excel file.";
+                return "Column name - phone_number_1 is invalid please check excel file.";
             }
         } else {
 //            $missing_colname[] = "phone_number_1";
@@ -722,29 +764,29 @@ class WelcomeController extends Controller {
         if (isset($rowData[5])) {
             if (trim($rowData[5] == "")) {
 //                $error_list_invalid[] = "state_name";
-                return "Column name - state_name is invalid please please check excel file.";
+                return "Column name - state_name is invalid please check excel file.";
             }
         } else {
 //            $missing_colname[] = "state_name";
-            return "Column name - state_name is missing please please check excel file.";
+            return "Column name - state_name is missing please check excel file.";
         }
         if (isset($rowData[6])) {
             if (trim($rowData[6] == "")) {
 //                $error_list_invalid[] = "city_name";
-                return "Column name - city_name is invalid please please check excel file.";
+                return "Column name - city_name is invalid please check excel file.";
             }
         } else {
 //            $missing_colname[] = "city_name";
-            return "Column name - city_name is missing please please check excel file.";
+            return "Column name - city_name is missing please check excel file.";
         }
         if (isset($rowData[13])) {
             if (trim($rowData[13] == "")) {
 //                $error_list_invalid[] = "delivery_location";
-                return "Column name - delivery_location is invalid please please check excel file.";
+                return "Column name - delivery_location is invalid please check excel file.";
             }
         } else {
 //            $missing_colname[] = "delivery_location";
-            return "Column name - delivery_location is missing please please check excel file.";
+            return "Column name - delivery_location is missing please check excel file.";
         }
 
         if (isset($missing_colname) && count((array)$missing_colname) > 0) {
@@ -785,9 +827,9 @@ class WelcomeController extends Controller {
     /**
      * Functionality: Save imported customer data into database
      */
-    public function savecustomer($row) {
+    public function savecustomer($rowData) {
 
-        foreach ($row as $rowData) {
+        // foreach ($row as $rowData) {
 
             $check_customer = Customer::where('tally_name', $rowData[9])->where('phone_number1', $rowData[10])->first();
             if (isset($check_customer)) {
@@ -832,8 +874,8 @@ class WelcomeController extends Controller {
                 }
                 $location = "";
                 if (isset($rowData[13])) {
-                    $location = DeliveryLocation::where('area_name', 'like', '%' . $rowData [13] . '%')->first();
-                    $customer->delivery_location_id = $location->id;
+                    $location = DeliveryLocation::where('area_name', 'like', '%' . $rowData[13] . '%')->first();
+                    $customer->delivery_location_id = $location['id'];
                 }
                 if (isset($rowData[14])) {
                     $customer->username = $rowData[14];
@@ -849,60 +891,65 @@ class WelcomeController extends Controller {
 
                 $state = States::where('id',1)->first();
                 $city = City::where('id',1)->where('state_id',1)->first();
-
-                $Qdata = [
-                    "GivenName"=>  $rowData[0],
-                    "FullyQualifiedName"=> $rowData[9],
-                    "CompanyName"=>  $rowData[1],
-                    "DisplayName"=>  $rowData[9],
-                    "PrimaryEmailAddr" => [
-                        "Address" => $rowData[8]
-                    ],
-                    "PrimaryPhone"=>  [
-                        "FreeFormNumber"=>  $rowData[10]
-                    ],
-                    "BillAddr"=> [
-                        "Country"=> "India",
-                        "CountrySubDivisionCode"=> $state->state_name,
-                        "City"=> $city->city_name, 
-                        "PostalCode"=> $rowData[7], 
-                        "Line1" => $rowData[3], 
-                        "Line2" => $rowData[4], 
-                    ],
-                ];
-                $inclusivecustomerid ="";
-                $gstcustomerid = "";
-                $this->refresh_token_Wihtout_GST();
-                $dataService = $this->getTokenWihtoutGST();
-                $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
-                $newcus = $dataService->add($newCustomerObj);
-                $error = $dataService->getLastError();
-                if ($error) { 
+                $quickbook_a_customer_id =  $customer->quickbook_a_customer_id;
+                $quickbook_customer_id = $customer->quickbook_customer_id;
+                if(!empty($quickbook_a_customer_id) && !empty($quickbook_customer_id)){
+                    $customer->quickbook_a_customer_id  = $quickbook_a_customer_id;
+                    $customer->quickbook_customer_id  = $quickbook_customer_id;
+                } else {
+                    $Qdata = [
+                        "GivenName"=>  $rowData[0],
+                        "FullyQualifiedName"=> $rowData[9],
+                        "CompanyName"=>  $rowData[1],
+                        "DisplayName"=>  $rowData[9],
+                        "PrimaryEmailAddr" => [
+                            "Address" => $rowData[8]
+                        ],
+                        "PrimaryPhone"=>  [
+                            "FreeFormNumber"=>  $rowData[10]
+                        ],
+                        "BillAddr"=> [
+                            "Country"=> "India",
+                            "CountrySubDivisionCode"=> $state->state_name,
+                            "City"=> $city->city_name, 
+                            "PostalCode"=> $rowData[7], 
+                            "Line1" => $rowData[3], 
+                            "Line2" => $rowData[4], 
+                        ],
+                    ];
+                    $inclusivecustomerid ="";
+                    $gstcustomerid = "";
                     $this->refresh_token_Wihtout_GST();
-                    $dataService = $this->getTokenWihtoutGST();  
-                }
-                else{
-                    $inclusivecustomerid =  $newcus->Id;
-                }
-                $this->refresh_token();
-                $nextdataservice = $this->getToken();
-                $newcustoinclusive = $nextdataservice->add($newCustomerObj);
-                $error1 = $nextdataservice->getLastError();
-                if ($error1) { 
+                    $dataService = $this->getTokenWihtoutGST();
+                    $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
+                    $newcus = $dataService->add($newCustomerObj);
+                    $error = $dataService->getLastError();
+                    if ($error) { 
+                        $this->refresh_token_Wihtout_GST();
+                        $dataService = $this->getTokenWihtoutGST();  
+                    }
+                    else{
+                        $inclusivecustomerid =  $newcus->Id;
+                    }
                     $this->refresh_token();
-                    $dataService = $this->getToken();  
+                    $nextdataservice = $this->getToken();
+                    $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+                    $error1 = $nextdataservice->getLastError();
+                    if ($error1) { 
+                        $this->refresh_token();
+                        $dataService = $this->getToken();  
+                    }
+                    else{
+                        $gstcustomerid =  $newcustoinclusive->Id;
+                    }
+                    $customer->quickbook_a_customer_id  = $inclusivecustomerid;
+                    $customer->quickbook_customer_id  = $gstcustomerid;
                 }
-                else{
-                    $gstcustomerid =  $newcustoinclusive->Id;
-                }
-                $customer->quickbook_a_customer_id  = $inclusivecustomerid;
-                $customer->quickbook_customer_id  = $gstcustomerid;
-
                 $customer->save();
                                 
             }
             return "success_data";
-        }
+        // }
     }
 
     /**

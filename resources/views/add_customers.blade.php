@@ -168,7 +168,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input id="password" class="form-control" placeholder=" Password" name="password" value="" type="password">
+                                <input id="password" class="form-control" placeholder="Password" name="password" value="" type="password">
                             </div> 
                             <div class="form-group">
                                 <label for="confirm_password">Confirm Password</label>
