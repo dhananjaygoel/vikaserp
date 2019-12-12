@@ -128,8 +128,13 @@ class PurchaseChallanController extends Controller {
         $input_data = Input::all();
         $sms_flag = 0;
         $purchase_advise_details = PurchaseAdvise::find($request->input('purchase_advice_id'));
-        if ($purchase_advise_details->advice_status == 'delivered') {
-            return Redirect::back()->with('validation_message', 'This purchase advise is already converted to purchase challan. Please refresh the page');
+        if ($purchase_advise_details['advice_status'] == 'delivered') {
+            if(Session::has('success') == 'Challan details successfully added.' ){
+                return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
+            }else{
+                return Redirect::back()->with('validation_message', 'This purchase advise is already converted to purchase challan. Please refresh the page');
+                exit;
+            }
         }
         if (Session::has('forms_purchase_challan')) {
             $session_array = Session::get('forms_purchase_challan');
@@ -177,6 +182,7 @@ class PurchaseChallanController extends Controller {
         $add_challan->order_status = 'pending';
         $add_challan->freight = $input_data['Freight'];
         $add_challan->is_editable = $purchase_advise_details->is_editable;
+        // dd($add_challan);
         $add_challan->save();
 
         $challan_id = DB::getPdo()->lastInsertId();

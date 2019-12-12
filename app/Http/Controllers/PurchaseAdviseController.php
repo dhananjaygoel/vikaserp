@@ -325,11 +325,16 @@ class PurchaseAdviseController extends Controller {
 
         $input_data = Input::all();
         $sms_flag = 0;
+        
         if (Session::has('forms_edit_purchase_advise')) {
             $session_array = Session::get('forms_edit_purchase_advise');
-            if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message_error', 'This purchase advise is already updated. Please refresh the page');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
+                    if(Session::has('success') == 'Purchase advise updated successfully'){
+                        return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
+                    }else{
+                        return Redirect::back()->with('flash_message_error', 'This purchase advise is already updated. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_purchase_advise', $session_array);
