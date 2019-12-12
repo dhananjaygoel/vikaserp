@@ -407,7 +407,7 @@
                     $path == "inquiry/{inquiry}/edit" ||
                     $path == "orders/create" ||
                     $path == "place_order/{id}" ||
-                    $path == "orders/{orders}/edit" ||
+                    $path == "orders/{order}/edit" ||
                     $path == "create_delivery_order/{id}" ||
                     $path == "delivery_order/{delivery_order}/edit" ||
                     $path == "delivery_challan/{delivery_challan}/edit" ||
