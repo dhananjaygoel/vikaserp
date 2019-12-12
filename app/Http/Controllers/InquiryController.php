@@ -39,6 +39,11 @@ class InquiryController extends Controller {
     public function __construct() {
 
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP', ['except' => ['create', 'store', 'fetch_existing_customer', 'fetch_products']]);
     }
 
@@ -1009,7 +1014,8 @@ class InquiryController extends Controller {
 
 
     public function fetch_products() {
-        $term = Input::get();
+        // dd($request);
+        // $term = Input::get();
         $term = Input::get('term');
         $product_id = Input::get('product_id');
         $discount_type = strtolower(Input::get('discount_type'));
@@ -1036,7 +1042,7 @@ class InquiryController extends Controller {
                             // })
                             ->orderBy('alias_name')->get();
            }
-            if (count((array)$products) > 0) {
+            if (count($products) > 0) {
                 foreach ($products as $product) {
                     $cust = 0;
                     if ($customer_id > 0) {
@@ -1075,7 +1081,7 @@ class InquiryController extends Controller {
             }
         } elseif ($term == '') {
             $products = \App\ProductType::get();
-            if (count((array)$products) > 0) {
+            if (count($products) > 0) {
 
                 foreach ($products as $product) {
                     $data_array[] = [
@@ -1102,7 +1108,7 @@ class InquiryController extends Controller {
             }
             if ($level == 1) {
                 $products = \App\ProductCategory::where('product_type_id', '=', $id)->get();
-                if (count((array)$products) > 0) {
+                if (count($products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
                         'id' => '0',
@@ -1142,7 +1148,7 @@ class InquiryController extends Controller {
                     $type_id = $products[0]['product_category']->product_type_id;
                 }
 
-                if (count((array)$products) > 0) {
+                if (count($products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
                         'id' => $type_id,
@@ -1177,7 +1183,7 @@ class InquiryController extends Controller {
                     $cat_id = $products[0]['product_category']->product_type_id;
                 }
 
-                if (count((array)$products) > 0) {
+                if (count($products) > 0) {
                     $data_array[] = [
                         'value' => '<-- Back',
                         'id' => $type_id,
@@ -1207,7 +1213,7 @@ class InquiryController extends Controller {
                     $cust = 0;
                     if ($customer_id > 0) {
                         $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                        if (count((array)$customer) > 0) {
+                        if (count($customer) > 0) {
                             $cust = $customer->difference_amount;
                         }
                     }

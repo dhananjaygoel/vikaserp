@@ -34,6 +34,11 @@ class ProductsubController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP');
     }
 
@@ -281,7 +286,7 @@ class ProductsubController extends Controller {
             $dataService = $this->getToken();
         }
         $sr = 1;
-        $item1 = "select count((array)*) from Item";
+        $item1 = "select count(*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
             $item = "select * from Item order by Id asc startposition $i maxresults 1000";
@@ -308,7 +313,7 @@ class ProductsubController extends Controller {
             $dataService = $this->getTokenWihtoutGST();
         }
         $sr = 1;
-        $item1 = "select count((array)*) from Item";
+        $item1 = "select count(*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
             $item = "select * from Item order by Id asc startposition $i maxresults 1000";

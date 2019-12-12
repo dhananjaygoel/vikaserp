@@ -1596,7 +1596,7 @@
     //                 return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
     // }) !!} --}} 
     // fac();
-    // });
+    });
     });
     
     
@@ -1734,7 +1734,7 @@
     // 	{!! FormAutocomplete::selector('.each_product_detail')->source(function(){
 	//                     return \App\ProductSubCategory::with('product_category')->lists('alias_name');  // You need to return array values.
 	//     }) !!}
-    }
+    // }
    
     
     $(function () {

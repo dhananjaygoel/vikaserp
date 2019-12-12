@@ -39,6 +39,11 @@ class OrderController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
         $this->middleware('validIP', ['except' => ['create', 'store']]);
     }
 
@@ -504,11 +509,11 @@ class OrderController extends Controller {
            $order = Customer::with('delivery_location')->find($cust->id);
 
 //         $order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);
-//         if (count((array)$order) < 1) {
+//         if (count($order) < 1) {
 //            return redirect('orders')->with('flash_message', 'Order does not exist.');
 //         }
 
-           if (count((array)$order) < 1) {
+           if (count($order) < 1) {
                return redirect('order')->with('flash_message', 'Order does not exist.');
            }
         }
@@ -542,10 +547,10 @@ class OrderController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
-            if (count((array)$session_array) > 0) {
+            if ((count($session_array)) > 0) {
                 if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
-                    //  return redirect('orders')->with('flash_message', 'Order details successfully added.');
+                    // return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                     return redirect('orders')->with('flash_message', 'Order details successfully added.');
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_order', $session_array);
@@ -1373,7 +1378,7 @@ class OrderController extends Controller {
 
                 /* inventory code */
                 $calc = new InventoryController();
-                $calc->inventoryCalc($product_category_ids);
+                $calc->inventoryCalc((array)$product_category_ids);
                 $message = "Record deleted successfully.";
                 /**/
 //                Session::put('order-sort-type', $order_sort_type);

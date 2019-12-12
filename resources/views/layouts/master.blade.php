@@ -417,7 +417,7 @@
                     $path == "purchase_orders/{purchase_orders}/edit"
             ) {
                 ?>
-                
+                {{ HTML::script("assets/custom_js/custom_new.js") }}
                 {{ HTML::script("assets/custom_js/custom_autoload_logic.js") }}
                 <!-- <script src="{{url("/")."assets/custom_js/custom_autoload_logic.js"}}"></script> -->
             <?php
