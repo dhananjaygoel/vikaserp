@@ -414,7 +414,7 @@
                     $path == "purchase_orders/create" ||
                     $path == "create_purchase_advice/{create_purchase_advice}" ||
                     $path == "purchaseorder_advise/{purchaseorder_advise}/edit" ||
-                    $path == "purchase_orders/{purchase_orders}/edit"
+                    $path == "purchase_orders/{purchase_order}/edit"
             ) {
                 ?>
                 {{ HTML::script("assets/custom_js/custom_new.js") }}
