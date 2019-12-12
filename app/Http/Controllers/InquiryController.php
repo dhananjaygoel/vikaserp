@@ -280,20 +280,20 @@ class InquiryController extends Controller {
                         $product_size = ProductSubCategory::find($product_data['id']);
                        $str1=  $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                         if ($product_data['units'] == 1) {
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                         if ($product_data['units'] == 2) {
-                            $total_quantity = $total_quantity + $product_data['quantity'] * $product_size->weight;
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product_size->weight;
                         }
                         if ($product_data['units'] == 3) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product_size->standard_length ) * $product_size->weight;
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product_size->standard_length ) * (float)$product_size->weight;
                         }
 
                         if ($product_data['units'] == 4) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product_size->weight * $product_data['length']);
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product_size->weight * (float)$product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product_size->weight * ($product_data['length'] / 305));
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product_size->weight * ((float)$product_data['length'] / 305));
                         }
                     }
                 }
@@ -390,7 +390,7 @@ class InquiryController extends Controller {
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nPrices for your inquiry are as follows\n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                    $total_quantity = $total_quantity + $product_data['quantity'];
+                    $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                 }
                 $str .= " materials will be dispatched by " . date('j M, Y', strtotime($inquiry['expected_delivery_date'])) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
@@ -489,7 +489,7 @@ class InquiryController extends Controller {
         if (Session::has('forms_edit_inquiry')) {
             $session_array = Session::get('forms_edit_inquiry');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     // return Redirect::back()->with('flash_message_error', 'This inquiry is already updated. Please refresh the page');
                     return Redirect::back()->with('flash_message', 'Inquiry updated successfully');
                 } else {
@@ -649,7 +649,7 @@ class InquiryController extends Controller {
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
                     $str .= "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
@@ -693,7 +693,7 @@ class InquiryController extends Controller {
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
                     $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
@@ -775,7 +775,7 @@ class InquiryController extends Controller {
 
                         if ($product_data['inquiry_product_details']->alias_name != "") {
                             $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
                     $str .= "\nVIKAS ASSOCIATES";
@@ -1054,20 +1054,20 @@ class InquiryController extends Controller {
                     if($discount!="" && $discount>0 ){
                         if($discount_type=='discount'){
                             if($discount_unit=='fixed'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference - (float)$discount;
                             }elseif($discount_unit=='percent'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference - (((float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference)*(float)$discount/100);
                             }
                         }
                         elseif($discount_type=='premium'){
                             if($discount_unit=='fixed'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference + (float)$discount;
                             }elseif($discount_unit=='percent'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference + (((float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference)*(float)$discount/100);
                             }
                         }
                     }else{
-                        $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference;
+                        $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference;
                     }
                     $data_array[] = [
                         'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
@@ -1269,16 +1269,16 @@ class InquiryController extends Controller {
             }
             if($discount_type=='discount'){
                 if($discount_unit=='fixed'){
-                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+                    $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference - (float)$discount;
                 }elseif($discount_unit=='percent'){
-                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                    $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference - (((float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference)*(float)$discount/100);
                 }
             }
             elseif($discount_type=='premium'){
                 if($discount_unit=='fixed'){
-                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+                    $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference + (float)$discount;
                 }elseif($discount_unit=='percent'){
-                    $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                    $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference + (((float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference)*(float)$discount/100);
                 }
     //            $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
             }
@@ -1356,7 +1356,7 @@ class InquiryController extends Controller {
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -1497,19 +1497,19 @@ class InquiryController extends Controller {
                         $product = ProductSubCategory::find($product_data['id']);
                         $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                         if ($product_data['units'] == 1) {
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                         if ($product_data['units'] == 2) {
-                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
                         }
                         if ($product_data['units'] == 3) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                         }
                         if ($product_data['units'] == 4) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * $product_data['length']);
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * ($product_data['length'] / 305));
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                         }
                     }
                 }
