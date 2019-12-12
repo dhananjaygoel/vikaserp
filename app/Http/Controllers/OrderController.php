@@ -548,7 +548,7 @@ class OrderController extends Controller {
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
             if ((count($session_array)) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     // return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
                      return redirect('orders')->with('flash_message', 'Order details successfully added.');
                 } else {
@@ -713,19 +713,19 @@ class OrderController extends Controller {
                         $product = ProductSubCategory::find($product_data['id']);
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         if ($product_data['units'] == 1) {
-                            $total_quantity = $total_quantity + $product_data['quantity'];
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                         if ($product_data['units'] == 2) {
-                            $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
                         }
                         if ($product_data['units'] == 3) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                         }
                         if ($product_data['units'] == 4) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * $product_data['length']);
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * ($product_data['length'] / 305));
+                            $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                         }
                     }
                 }
@@ -901,7 +901,7 @@ class OrderController extends Controller {
         if (Session::has('forms_edit_order')) {
             $session_array = Session::get('forms_edit_order');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already updated. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -1084,20 +1084,20 @@ class OrderController extends Controller {
                             $product = ProductSubCategory::find($product_data['id']);
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                             if ($product_data['units'] == 1) {
-                                $total_quantity = $total_quantity + $product_data['quantity'];
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                             }
                             if ($product_data['units'] == 2) {
-                                $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                             }
 
                             if ($product_data['units'] == 4) {
-                                $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * $product_data['length']);
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
                             }
                             if ($product_data['units'] == 5) {
-                                $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * ($product_data['length'] / 305));
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                             }
                         }
                     }
@@ -1143,19 +1143,19 @@ class OrderController extends Controller {
                             $product = ProductSubCategory::find($product_data['id']);
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                             if ($product_data['units'] == 1) {
-                                $total_quantity = $total_quantity + $product_data['quantity'];
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                             }
                             if ($product_data['units'] == 2) {
-                                $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
-                                $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * $product_data['length']);
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
                             }
                             if ($product_data['units'] == 5) {
-                                $total_quantity = $total_quantity + ($product_data['quantity'] * $product->weight * ($product_data['length'] / 305));
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                             }
                         }
                     }
@@ -1290,13 +1290,13 @@ class OrderController extends Controller {
                                 $product = ProductSubCategory::find($product_data['id']);
                                 $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                                 if ($product_data['units'] == 1) {
-                                    $total_quantity = $total_quantity + $product_data['quantity'];
+                                    $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                                 }
                                 if ($product_data['units'] == 2) {
-                                    $total_quantity = $total_quantity + $product_data['quantity'] * $product->weight;
+                                    $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
                                 }
                                 if ($product_data['units'] == 3) {
-                                    $total_quantity = $total_quantity + ($product_data['quantity'] / $product->standard_length ) * $product->weight;
+                                    $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                                 }
                             }
 
@@ -1312,7 +1312,7 @@ class OrderController extends Controller {
 
                                 if ($product_data['order_product_details']->alias_name != "") {
                                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
-                                    $total_quantity = $total_quantity + $product_data['quantity'];
+                                    $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                                 }
                             }
                             $str .= "\nVIKAS ASSOCIATES";
@@ -1587,7 +1587,7 @@ class OrderController extends Controller {
                 if (count((array)$temp_array) > 0) {
                     foreach ($temp_array as $key => $t) {
                         if ($t['from'] == $products->from && $t['product_id'] == $products->product_category_id && $products->unit_id == $t['unit']) {
-                            $total_qty = $t['total_quantity'] + $products['quantity'];
+                            $total_qty = (float)$t['total_quantity'] + (float)$products['quantity'];
                             $temp_array[$key]['total_pending_quantity'] = $total_qty;
                             $temp_array[$key]['total_quantity'] = $total_qty;
                             $add_pendings = 1;
@@ -1611,7 +1611,7 @@ class OrderController extends Controller {
                     $temp['id'] = $id;
                     $temp['from'] = $list_id;
                     $temp['product_id'] = $array1['product_id'];
-                    $temp['total_pending_quantity'] = ($quantity - $array1['total_quantity']);
+                    $temp['total_pending_quantity'] = ((float)$quantity - (float)$array1['total_quantity']);
                     $temp['unit'] = $array1['unit'];
                     $temp['order_quantity'] = $quantity;
                     $temp['total_quantity'] = $array1['quantity'];
@@ -1720,7 +1720,7 @@ class OrderController extends Controller {
                         'updated_at' => $updated_at
                     ];
                     $total_qty = $total_qty + $product_data['quantity'];
-                    $present_shipping = $present_shipping + $product_data['present_shipping'];
+                    $present_shipping = (float)$present_shipping + (float)$product_data['present_shipping'];
 //                    AllOrderProducts::create($order_products);
                 }
                 if ($product_data['name'] != "" && $product_data['order'] == '') {
@@ -1858,40 +1858,40 @@ class OrderController extends Controller {
                         }*/
 
                         if ($dopv->unit_id == 1) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
                         } elseif ($dopv->unit_id == 2) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
                         } elseif ($dopv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
                             } else {
-                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity * $product_size->weight);
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight * $dopv->length;
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
                         }
                         elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight) * ($dopv->length/305);
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
                         }
                     }
                     else{
                         if ($dopv->unit_id == 1) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
                         } elseif ($dopv->unit_id == 2) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight;
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
                         } elseif ($dopv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity / $product_size->standard_length ) * $product_size->weight;
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
                             } else {
-                                $delivery_order_quantity = $delivery_order_quantity + ($dopv->quantity * $product_size->weight);
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
                             }
                         }
                         elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * $product_size->weight * $dopv->length;
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
                         }
                         elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity * ($product_size->weight) * ($dopv->length/305);
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
                         }
                     }
                 }
@@ -1916,41 +1916,41 @@ class OrderController extends Controller {
                         }*/
 
                         if ($opv->unit_id == 1) {
-                            $order_quantity = $order_quantity + $opv->quantity;
+                            $order_quantity = (float)$order_quantity + (float)$opv->quantity;
                         } elseif ($opv->unit_id == 2) {
-                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                            $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                         } elseif ($opv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                                $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
                             } else {
-                                $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                                $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                             }
                         }
                         elseif($opv->unit_id == 4) {
-                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight * $opv->length;
+                            $order_quantity = (float)$order_quantity + (float)$opv->quantity * (float)$product_size->weight * (float)$opv->length;
                         }
                         elseif($opv->unit_id == 5){
-                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight) * ($opv->length/305);
+                            $order_quantity = (float)$order_quantity + (float)$opv->quantity * ((float)$product_size->weight) * ((float)$opv->length/305);
                         }
                     }
                     else{
                         if ($opv->unit_id == 1) {
-                            $order_quantity = $order_quantity + $opv->quantity;
+                            $order_quantity = (float)$order_quantity + (float)$opv->quantity;
                         } elseif ($opv->unit_id == 2) {
-                            $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                            $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                         } elseif ($opv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $order_quantity = $order_quantity + (($opv->quantity / $product_size->standard_length ) * $product_size->weight);
+                                $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
                             } else {
-                                $order_quantity = $order_quantity + ($opv->quantity * $product_size->weight);
+                                $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                                 // dd($order_quantity);
                             }
                         }
                         elseif($opv->unit_id == 4) {
-                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight * $opv->length;
+                            $order_quantity = (float)$order_quantity + (float)$opv->quantity * (float)$product_size->weight * (float)$opv->length;
                         }
                         elseif($opv->unit_id == 5){
-                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight) * ($opv->length/305);
+                            $order_quantity = (float)$order_quantity + (float)$opv->quantity * ((float)$product_size->weight) * ((float)$opv->length/305);
                         }
                         // echo $delivery_order_quantity."-->".$order_quantity."<--;<br>";
                     }
