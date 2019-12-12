@@ -118,9 +118,9 @@
                 }else{
                     $loading_vat = 0;
                 }
-                $loading_vat_amount = (float)($allorder->loading_charge * $loading_vat) / 100;
-                $freight_vat_amount = (float)($allorder->freight * $loading_vat) / 100;
-                $discount_vat_amount = (float)($allorder->discount * $loading_vat) / 100;
+                $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
                 $final_vat_amount = 0; 
                 $final_total_amt = 0;
             ?>
@@ -239,7 +239,7 @@
                                     <td class="lable">Total</td>
                                     <td class="total-count">
                                     <?php 
-                                    $with_total = $final_total_amt + $loading_charge + $allorder->freight + $allorder->discount; 
+                                    $with_total = (float)$final_total_amt + (float)$loading_charge + (float)$allorder->freight + (float)$allorder->discount; 
                                     ?>
                                     {{ round($with_total, 2) }}</td>
                                 </tr>

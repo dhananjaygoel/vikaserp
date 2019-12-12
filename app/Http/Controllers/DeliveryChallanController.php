@@ -1556,7 +1556,7 @@ class DeliveryChallanController extends Controller {
                     $list = explode("/", $temp->serial_number);
                     $serial_numbers[] = chop(chop($list[count((array)$list) - 1], "P"), "A");
                     $pri_id = max($serial_numbers);
-                    $number = $pri_id + 1;
+                    $number = (int)$pri_id + 1;
                 }
             }
             if ($update_delivery_challan->serial_number == "") {
