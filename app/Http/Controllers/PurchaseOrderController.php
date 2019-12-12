@@ -188,9 +188,13 @@ class PurchaseOrderController extends Controller {
         $sms_flag = 0;
         if (Session::has('forms_purchase_order')) {
             $session_array = Session::get('forms_purchase_order');
-            if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('flash_message', 'This purchase order is already saved. Please refresh the page');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
+                    if(Session::has('flash_message') == 'Purchase order details successfully added.'){
+                        return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully added.');
+                    }else{
+                        return Redirect::back()->with('flash_message', 'This purchase order is already saved. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_purchase_order', $session_array);
