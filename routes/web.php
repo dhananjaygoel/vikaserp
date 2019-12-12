@@ -361,7 +361,7 @@ Route::group(['middleware' => ['auth']], function() {
     // Route::post('orders', 'OrderController@index');
     Route::post('manual_complete_order', 'OrderController@manual_complete_order');
     Route::get('fetch_order_size', 'ProductsubController@fetch_order_size');
-    Route::any('create_purchase_advice', 'PurchaseOrderController@create_purchase_advice');
+    Route::get('create_purchase_advice/{create_purchase_advice}', 'PurchaseOrderController@create_purchase_advice');
     Route::post('store_advise', 'PurchaseAdviseController@store_advise');
     Route::resource('purchaseorder_advise_challan', 'PurchaseAdviseController@purchaseorder_advise_challan');
     Route::get('get_cities', 'CityController@get_cities');
