@@ -1433,7 +1433,7 @@ class DeliveryOrderController extends Controller {
         if (Session::has('forms_delivery_challan')) {
             $session_array = Session::get('forms_delivery_challan');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     return Redirect::back()->with('validation_message', 'This delivery challan is already saved. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -1591,7 +1591,7 @@ class DeliveryOrderController extends Controller {
             //$input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
 
 
-            $all_vat_share_overhead = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+            $all_vat_share_overhead = number_format($input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
            // $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
             $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
@@ -1605,7 +1605,7 @@ class DeliveryOrderController extends Controller {
         /* all items without VAT */
         elseif ($total_product_count == $total_without_vat_items) {
 
-            $input_data['grand_total'] = number_format((float) $input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+            $input_data['grand_total'] = number_format((float)$input_data['total_price'] + (float)$input_data['loading'] + (float)$input_data['discount'] + (float)$input_data['freight'], 2, '.', '');
             // exit;
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
             $case = 'all_without_vat';
@@ -1616,16 +1616,16 @@ class DeliveryOrderController extends Controller {
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $profile_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
-                $ratio_with_vat = number_format((float) ((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
-                $ratio_without_vat = number_format((float) ((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
-                $ratio_profile = number_format((float) ((($total_profile_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_with_vat = number_format( ((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_without_vat = number_format( ((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_profile = number_format( ((($total_profile_price) * 100) / $input_data['total_price']), 2, '.', '');
             }
 
             $total_overhead = $input_data['loading'] + $input_data['freight'] + $input_data['discount'];
 
             //$vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
-            $without_vat_share_overhead = number_format((float) (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
-            $profile_share_overhead = number_format((float) (($ratio_profile * $total_overhead) / 100), 2, '.', '');
+            $without_vat_share_overhead = number_format( (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
+            $profile_share_overhead = number_format( (($ratio_profile * $total_overhead) / 100), 2, '.', '');
 
 
 //            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
