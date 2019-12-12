@@ -637,8 +637,8 @@ class PurchaseAdviseController extends Controller {
                         }
                     }
                     if (isset($product_data['purchase']) && $product_data['purchase'] == 'purchase_order') {
-                        $total_quantity = $total_quantity + $product_data['quantity'];
-                        $total_present_shipping = $total_present_shipping + $product_data['present_shipping'];
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                        $total_present_shipping = (float)$total_present_shipping + (float)$product_data['present_shipping'];
                     }
                     $add_purchase_advice_products = PurchaseProducts::create($purchase_advice_products);
                 }
