@@ -1428,7 +1428,6 @@ class DeliveryOrderController extends Controller {
         $final_truck_weight = (Input::has('final_truck_weight')) ? Input::get('final_truck_weight') : '0';
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
-            dd(Session::all());
             if ($delivery_order_details->order_status == 'completed') {
                 if(Session::has('success') == 'One Delivery Challan is successfully created.'){
                     return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
