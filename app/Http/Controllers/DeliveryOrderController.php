@@ -165,8 +165,12 @@ class DeliveryOrderController extends Controller {
         if (Session::has('forms_delivery_order')) {
             $session_array = Session::get('forms_delivery_order');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
-                    return Redirect::back()->with('validation_message', 'This delivery order is already saved. Please refresh the page');
+                if (in_array($input_data['form_key'], (array)$session_array)) {
+                    if(Session::has('success') == 'Delivery order details successfully added.'){
+                        return redirect('delivery_order')->with('success', 'Delivery order details successfully added.');
+                    }else{
+                        return Redirect::back()->with('validation_message', 'This delivery order is already saved. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_delivery_order', $session_array);
@@ -1424,8 +1428,13 @@ class DeliveryOrderController extends Controller {
         $final_truck_weight = (Input::has('final_truck_weight')) ? Input::get('final_truck_weight') : '0';
         $delivery_order_details = DeliveryOrder::find($id);
         if (!empty($delivery_order_details)) {
+            dd(Session::all());
             if ($delivery_order_details->order_status == 'completed') {
-                return Redirect::back()->with('validation_message', 'This delivery order is already converted to delivry challan. Please refresh the page');
+                if(Session::has('success') == 'One Delivery Challan is successfully created.'){
+                    return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
+                }else{
+                    return Redirect::back()->with('validation_message', 'This delivery order is already converted to delivry challan. Please refresh the page');
+                }
             }
         }
 
@@ -1438,7 +1447,11 @@ class DeliveryOrderController extends Controller {
             $session_array = Session::get('forms_delivery_challan');
             if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
-                    return Redirect::back()->with('validation_message', 'This delivery challan is already saved. Please refresh the page');
+                    if(Session::has('success') == 'One Delivery Challan is successfully created.'){
+                        return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
+                    }else{
+                        return Redirect::back()->with('validation_message', 'This delivery challan is already saved. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_delivery_challan', $session_array);

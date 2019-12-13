@@ -585,7 +585,11 @@ class DeliveryChallanController extends Controller {
             $session_array = Session::get('forms_edit_delivery_challan');
             if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
-                    return Redirect::back()->with('validation_message', 'This delivery challan is already Updated. Please refresh the page');
+                    if(Session::has('flash_message') == 'Delivery Challan details updated successfuly .'){
+                        return redirect('delivery_challan')->with('flash_message', 'Delivery Challan details updated successfuly .');
+                    }else{
+                        return Redirect::back()->with('validation_message', 'This delivery challan is already Updated. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_delivery_challan', $session_array);
