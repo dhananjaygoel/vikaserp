@@ -449,10 +449,12 @@ public function update_cust_all_inc(){
         $users->role_id = '5';
 
         $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))->count();
-       
+       print_r($already_exists_mobile_number);
         if ($already_exists_mobile_number > 0) {
-            return Redirect::back()->with('error', 'Mobile number is already associated with another account.')->withInput();
+            dd('if');
+            return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
         }
+        dd('out');
         $status = Input::get('status');
 
         $state = States::where('id',Input::get('state'))->first();
