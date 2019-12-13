@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         // $this->call(QuickbookTokenSeeder::class);
-        $this->call(UpdateDocNum::class);
+        $this->call('UpdateDocNum');
     }
 }
