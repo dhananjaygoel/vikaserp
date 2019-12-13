@@ -204,7 +204,7 @@ class CustomerController extends Controller {
      * Store a newly created customer in database.
      */
     public function store(StoreCustomer $request) {
-
+dd('bk');
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
