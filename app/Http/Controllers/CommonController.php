@@ -97,10 +97,37 @@ class CommonController extends Controller {
        ));
     }
 
-
     function refresh_token(){
         require_once base_path('quickbook/vendor/autoload.php');
         $quickbook = App\QuickbookToken::find(2);
+        $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
+        $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
+        $accessTokenValue = $accessTokenObj->getAccessToken();
+        $refreshTokenValue = $accessTokenObj->getRefreshToken();
+        App\QuickbookToken::where('id',$quickbook->id)->update(['access_token'=>$accessTokenValue,'refresh_token'=>$refreshTokenValue]);
+    }
+
+    function getTokenWihtoutGST(){
+
+        require_once base_path('quickbook/vendor/autoload.php');
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(1);
+        return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => $quickbook->client,
+            'ClientSecret' => $quickbook->secret,
+            'accessTokenKey' =>  $quickbook->access_token,
+            'refreshTokenKey' => $quickbook->refresh_token,
+            'QBORealmID' => "9130347492555586",
+            'baseUrl' => "Production",
+            'minorVersion'=>34
+        ));
+
+    }
+    function refresh_token_Wihtout_GST(){
+        require_once base_path('quickbook/vendor/autoload.php');
+        // $quickbook = App\QuickbookToken::first();
+        $quickbook = App\QuickbookToken::find(1);
         $oauth2LoginHelper = new OAuth2LoginHelper($quickbook->client,$quickbook->secret);
         $accessTokenObj = $oauth2LoginHelper->refreshAccessTokenWithRefreshToken($quickbook->refresh_token);
         $accessTokenValue = $accessTokenObj->getAccessToken();
@@ -122,7 +149,69 @@ class CommonController extends Controller {
         }
     }
 
-
+    public function update_cust_plus_gst(){
+        set_time_limit(0);
+        $this->refresh_token();
+        $dataService = $this->getToken();
+        $error = $dataService->getLastError();
+        if ($error) {
+            $this->refresh_token();
+            $dataService = $this->getToken();
+        }
+        $sr = 1;
+        $updateCust = App\Customer::all();
+        foreach($updateCust as $cust){
+            $cust->update(['quickbook_customer_id' => null]);
+        }
+        $cust = "select count(*) from Customer";
+        $count = $dataService->Query($cust);
+        for($i = 1; $i<=$count; $i+=1000){
+            $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
+            $det = $dataService->Query($cust_det);
+            // dd($det);
+            foreach($det as $key => $cust_id){
+                if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
+                    App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_customer_id'=>$cust_id->Id]);
+                    echo $sr.".\n";
+                    echo nl2br($cust_id->Id."\n");
+                    $sr++;
+                }
+            }
+        }
+    }
+    
+    public function update_cust_all_inc(){
+        set_time_limit(0);
+        $this->refresh_token_Wihtout_GST();
+        $dataService = $this->getTokenWihtoutGST();
+        $error = $dataService->getLastError();
+        if ($error) {
+            $this->refresh_token_Wihtout_GST();
+            $dataService = $this->getTokenWihtoutGST();
+        }
+        $sr = 1;
+        $updateCust = App\Customer::all();
+        foreach($updateCust as $cust){
+            $cust->update(['quickbook_a_customer_id' => null]);
+        }
+        $cust = "select count(*) from Customer";
+        $count = $dataService->Query($cust);
+        for($i = 1; $i<=$count; $i+=1000){
+            $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
+            $det = $dataService->Query($cust_det);
+            // dd($det);
+            foreach($det as $key=>$cust_id){
+                // dd($cust_id->Name);
+                if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
+                    App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
+                    echo $sr.".\n";
+                    echo nl2br($cust_id->Id."\n");
+                    $sr++;
+                }
+            }
+        }
+    }
+    
 
     /**
      * Store a newly created customer in database.

@@ -396,8 +396,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('generate_invoice/{id}', 'DeliveryChallanController@generate_invoice');
     Route::get('update_item_plus_gst', 'ProductsubController@update_item_plus_gst');
     Route::get('update_item_all_inc', 'ProductsubController@update_item_all_inc');
-    Route::get('update_cust_plus_gst', 'CustomerController@update_cust_plus_gst');
-    Route::get('update_cust_all_inc', 'CustomerController@update_cust_all_inc');
+    Route::get('update_cust_plus_gst', 'CommonController@update_cust_plus_gst');
+    Route::get('update_cust_all_inc', 'CommonController@update_cust_all_inc');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
