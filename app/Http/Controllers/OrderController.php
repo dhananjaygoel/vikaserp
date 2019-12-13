@@ -1762,7 +1762,7 @@ class OrderController extends Controller {
                         $list = explode("/", $temp->serial_no);
                         $serial_numbers[] = $list[count((array)$list) - 1];
                         $pri_id = max($serial_numbers);
-                        $number = $pri_id + 1;
+                        $number = (int)$pri_id + 1;
                     }
                 }
 
