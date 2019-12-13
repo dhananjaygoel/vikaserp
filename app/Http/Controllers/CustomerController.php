@@ -239,7 +239,7 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328068306",
+            'QBORealmID' => "9130347495075906",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -282,7 +282,7 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328054516",
+            'QBORealmID' => "9130347492555586",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -359,6 +359,10 @@ public function update_cust_plus_gst(){
         $dataService = $this->getToken();
     }
     $sr = 1;
+    $updateCust = App\Customer::all();
+    foreach($updateCust as $cust){
+        $cust->update(['quickbook_customer_id' => null]);
+    }
     $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
     for($i = 1; $i<=$count; $i+=1000){
@@ -386,6 +390,10 @@ public function update_cust_all_inc(){
         $dataService = $this->getTokenWihtoutGST();
     }
     $sr = 1;
+    $updateCust = App\Customer::all();
+    foreach($updateCust as $cust){
+        $cust->update(['quickbook_a_customer_id' => null]);
+    }
     $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
     for($i = 1; $i<=$count; $i+=1000){

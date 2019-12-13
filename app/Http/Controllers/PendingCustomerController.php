@@ -55,7 +55,7 @@ class PendingCustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328068306",
+            'QBORealmID' => "9130347495075906",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -84,7 +84,7 @@ class PendingCustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328054516",
+            'QBORealmID' => "9130347492555586",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));

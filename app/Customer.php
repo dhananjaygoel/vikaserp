@@ -19,7 +19,7 @@ class Customer extends Model {
      */
     protected $table = 'customers';
 
-//    protected $fillable = ['state_id', 'city_id', 'area_name'];
+   protected $fillable = ['quickbook_customer_id', 'quickbook_a_customer_id'];
 
 function getToken(){
     require_once base_path('quickbook/vendor/autoload.php');
@@ -30,7 +30,7 @@ function getToken(){
         'ClientSecret' => $quickbook->secret,
         'accessTokenKey' =>  $quickbook->access_token,
         'refreshTokenKey' => $quickbook->refresh_token,
-        'QBORealmID' => "9130347328068306",
+        'QBORealmID' => "9130347495075906",
         'baseUrl' => "Production",
         'minorVersion'=>34
     ));
@@ -57,7 +57,7 @@ function getTokenWihtoutGST(){
         'ClientSecret' => $quickbook->secret,
         'accessTokenKey' =>  $quickbook->access_token,
         'refreshTokenKey' => $quickbook->refresh_token,
-        'QBORealmID' => "9130347328054516",
+        'QBORealmID' => "9130347492555586",
         'baseUrl' => "Production",
         'minorVersion'=>34
     )); 

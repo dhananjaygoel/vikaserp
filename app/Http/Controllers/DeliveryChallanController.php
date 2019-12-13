@@ -1068,7 +1068,7 @@ class DeliveryChallanController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328054516",
+            'QBORealmID' => "9130347492555586",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1097,7 +1097,7 @@ class DeliveryChallanController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328068306",
+            'QBORealmID' => "9130347495075906",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -1164,10 +1164,10 @@ class DeliveryChallanController extends Controller {
 
                 $invoice = $dataService->Query("select * from Invoice where Id = '".$update_delivery_challan->doc_number."' ");
 
-                $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+                $pdf = $dataService->DownloadPDF($invoice[0],base_path('public/upload/invoice/'));
             }
             else{
-                $pdf = $dataService->DownloadPDF($invoice[0],base_path('upload/invoice/'));
+                $pdf = $dataService->DownloadPDF($invoice[0],base_path('public/upload/invoice/'));
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
 
@@ -1465,7 +1465,8 @@ class DeliveryChallanController extends Controller {
             if(Auth::user()->role_id != 0){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
-            $pdf = $dataService->DownloadPDF($inv,base_path('upload/invoice/'));
+            $pdf = $dataService->DownloadPDF($inv,base_path('public/upload/invoice/'));
+
             $pdfNAme = explode('invoice/',$pdf)[1];
             return redirect()->away(asset('upload/invoice/'.$pdfNAme));
 

@@ -230,7 +230,7 @@ class ProductsubController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328068306",
+            'QBORealmID' => "9130347495075906",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -257,7 +257,7 @@ class ProductsubController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347328054516",
+            'QBORealmID' => "9130347492555586",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -286,6 +286,10 @@ class ProductsubController extends Controller {
             $dataService = $this->getToken();
         }
         $sr = 1;
+        $updateProduct = App\ProductSubCategory::all();
+        foreach($updateProduct as $prod){
+            $prod->update(['quickbook_item_id' => null]);
+        }
         $item1 = "select count(*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
@@ -313,6 +317,10 @@ class ProductsubController extends Controller {
             $dataService = $this->getTokenWihtoutGST();
         }
         $sr = 1;
+        $updateProduct = App\ProductSubCategory::all();
+        foreach($updateProduct as $prod){
+            $prod->update(['quickbook_a_item_id' => null]);
+        }
         $item1 = "select count(*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
