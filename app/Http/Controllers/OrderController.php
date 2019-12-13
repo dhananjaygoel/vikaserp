@@ -549,8 +549,11 @@ class OrderController extends Controller {
             $session_array = Session::get('forms_order');
             if ((count($session_array)) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
-                    // return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
-                     return redirect('orders')->with('flash_message', 'Order details successfully added.');
+                    if(Session::has('flash_message') == 'Order details successfully added.'){
+                        return redirect('orders')->with('flash_message', 'Order details successfully added.');
+                    }else{
+                        return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_order', $session_array);

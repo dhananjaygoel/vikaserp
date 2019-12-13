@@ -140,7 +140,11 @@ class PurchaseChallanController extends Controller {
             $session_array = Session::get('forms_purchase_challan');
             if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
-                    return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                    if(Session::has('success') == 'Challan details successfully added.'){
+                        return redirect('purchase_challan')->with('success', 'Challan details successfully added.');
+                    }else{
+                        return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_purchase_challan', $session_array);

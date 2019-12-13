@@ -504,7 +504,11 @@ class PurchaseOrderController extends Controller {
             $session_array = Session::get('forms_edit_purchase_order');
             if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
-                    return Redirect::back()->with('flash_message_error', 'This purchase order is already updated. Please refresh the page');
+                    if(Session::has('flash_message') == 'Purchase order details successfully updated.'){
+                        return redirect('purchase_orders')->with('flash_message', 'Purchase order details successfully updated.');
+                    }else{
+                        return Redirect::back()->with('flash_message_error', 'This purchase order is already updated. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_purchase_order', $session_array);
