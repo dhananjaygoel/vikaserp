@@ -212,6 +212,16 @@ class CommonController extends Controller {
         }
     }
     
+    public function update_docNumber(){
+        $data = App\DeliveryChallan::all();
+            foreach($data as $prod){
+
+                $prod->update([
+                    'doc_number' => null
+                ]);
+            }
+        echo "Success - Doc Number updated.";
+    }
 
     /**
      * Store a newly created customer in database.

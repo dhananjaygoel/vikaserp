@@ -398,6 +398,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('update_item_all_inc', 'ProductsubController@update_item_all_inc');
     Route::get('update_cust_plus_gst', 'CommonController@update_cust_plus_gst');
     Route::get('update_cust_all_inc', 'CommonController@update_cust_all_inc');
+    Route::get('update_doc_number', 'CommonController@update_docNumber');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
