@@ -42,7 +42,7 @@ use App\CustomerReceiptsDebitedTo;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
-class CustomerController extends Controller {
+class Backup_CustomerController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");

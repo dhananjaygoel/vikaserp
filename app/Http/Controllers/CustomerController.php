@@ -436,7 +436,7 @@ public function update_cust_all_inc(){
     /**
      * Store a newly created customer in database.
      */
-    public function store(StoreCustomer $request) {
+    public function store(Request $request) {
 // dd('hello this is store');
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
@@ -449,12 +449,10 @@ public function update_cust_all_inc(){
         $users->role_id = '5';
 
         $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))->count();
-       print_r($already_exists_mobile_number);
+        
         if ($already_exists_mobile_number > 0) {
-            dd('if');
             return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
         }
-        dd('out');
         $status = Input::get('status');
 
         $state = States::where('id',Input::get('state'))->first();
