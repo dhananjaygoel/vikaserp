@@ -8,7 +8,7 @@ use App\QuickbookToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
+use Input;
 use Illuminate\Support\Facades\Redirect;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2LoginHelper;
 
