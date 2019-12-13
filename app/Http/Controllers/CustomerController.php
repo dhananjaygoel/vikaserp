@@ -350,6 +350,7 @@ class CustomerController extends Controller {
 
 
 public function update_cust_plus_gst(){
+    dd('hey');
     set_time_limit(0);
     $this->refresh_token();
     $dataService = $this->getToken();
