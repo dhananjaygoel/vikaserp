@@ -394,7 +394,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('print_delivery_order/{id}', 'DeliveryOrderController@print_delivery_order');
     Route::get('print_delivery_challan/{id}', 'DeliveryChallanController@print_delivery_challan');
     Route::get('generate_invoice/{id}', 'DeliveryChallanController@generate_invoice');
-   
+    Route::any('update_item_plus_gst', 'ProductsubController@update_item_plus_gst');
+    Route::any('update_item_all_inc', 'ProductsubController@update_item_all_inc');
+    Route::any('update_cust_plus_gst', 'CustomerController@update_cust_plus_gst');
+    Route::any('update_cust_all_inc', 'CustomerController@update_cust_all_inc');
     Route::get('place_order/{id}', 'InquiryController@place_order');
     Route::post('store_order/{id}', 'InquiryController@store_place_order');
     Route::post('export_sales_daybook', 'SalesDaybookController@export_sales_daybook');
@@ -470,11 +473,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('make_approved', 'WelcomeController@make_approved');
     Route::get('get_set_labours', 'WelcomeController@get_set_labours');
 });
-Route::any('update_item_plus_gst', 'ProductsubController@update_item_plus_gst');
-Route::any('update_item_all_inc', 'ProductsubController@update_item_all_inc');
-Route::any('update_cust_plus_gst', 'CustomerController@update_cust_plus_gst');
-Route::any('update_cust_all_inc', 'CustomerController@update_cust_all_inc');
-
 Route::get('export/{type}', 'WelcomeController@exportExcel');
 Route::get('get_server_data', 'WelcomeController@get_server_data');
 Route::get('delete_order_data/{table}/{col}/{cvalue}', 'WelcomeController@delete_order_data');
