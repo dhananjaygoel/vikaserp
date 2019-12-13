@@ -350,7 +350,6 @@ class CustomerController extends Controller {
 
 
 public function update_cust_plus_gst(){
-    dd('hey');
     set_time_limit(0);
     $this->refresh_token();
     $dataService = $this->getToken();
@@ -360,6 +359,10 @@ public function update_cust_plus_gst(){
         $dataService = $this->getToken();
     }
     $sr = 1;
+    $updateCust = App\Customer::all();
+    foreach($updateCust as $cust){
+        $cust->update(['quickbook_customer_id' => null]);
+    }
     $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
     for($i = 1; $i<=$count; $i+=1000){
@@ -387,6 +390,10 @@ public function update_cust_all_inc(){
         $dataService = $this->getTokenWihtoutGST();
     }
     $sr = 1;
+    $updateCust = App\Customer::all();
+    foreach($updateCust as $cust){
+        $cust->update(['quickbook_a_customer_id' => null]);
+    }
     $cust = "select count(*) from Customer";
     $count = $dataService->Query($cust);
     for($i = 1; $i<=$count; $i+=1000){
