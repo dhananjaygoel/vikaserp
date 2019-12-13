@@ -286,10 +286,6 @@ class ProductsubController extends Controller {
             $dataService = $this->getToken();
         }
         $sr = 1;
-        $updateProduct = App\ProductSubCategory::all();
-        foreach($updateProduct as $prod){
-            $prod->update(['quickbook_item_id' => null]);
-        }
         $item1 = "select count(*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
@@ -317,10 +313,6 @@ class ProductsubController extends Controller {
             $dataService = $this->getTokenWihtoutGST();
         }
         $sr = 1;
-        $updateProduct = App\ProductSubCategory::all();
-        foreach($updateProduct as $prod){
-            $prod->update(['quickbook_a_item_id' => null]);
-        }
         $item1 = "select count(*) from Item";
         $count = $dataService->Query($item1);
         for($i = 1; $i<=$count; $i+=1000){
