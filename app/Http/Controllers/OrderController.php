@@ -902,7 +902,11 @@ class OrderController extends Controller {
             $session_array = Session::get('forms_edit_order');
             if (count((array)$session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
-                    return Redirect::back()->with('flash_message', 'This order is already updated. Please refresh the page');
+                    if(Session::has('flash_message') == 'Order details successfully modified.'){
+                        return redirect('orders')->with('flash_message', 'Order details successfully modified.');
+                    }else{
+                        return Redirect::back()->with('flash_message', 'This order is already updated. Please refresh the page');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_order', $session_array);
