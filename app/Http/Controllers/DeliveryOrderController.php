@@ -1430,7 +1430,7 @@ class DeliveryOrderController extends Controller {
         if (!empty($delivery_order_details)) {
             if ($delivery_order_details->order_status == 'completed') {
                 if(Session::has('success') == 'One Delivery Challan is successfully created.'){
-                    return redirect('delivery_order' . $parameters)->with('success', 'One Delivery Challan is successfully created.');
+                    return redirect('delivery_order')->with('success', 'One Delivery Challan is successfully created.');
                 }else{
                     return Redirect::back()->with('validation_message', 'This delivery order is already converted to delivry challan. Please refresh the page');
                 }
