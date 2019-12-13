@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Security;
 use Validator;
-use Illuminate\Support\Facades\Input;
+use Input;
 use Auth;
 use App\User;
 use Illuminate\Support\Facades\Redirect;
