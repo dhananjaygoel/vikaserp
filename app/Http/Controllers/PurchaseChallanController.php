@@ -139,7 +139,7 @@ class PurchaseChallanController extends Controller {
         if (Session::has('forms_purchase_challan')) {
             $session_array = Session::get('forms_purchase_challan');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     return Redirect::back()->with('flash_message', 'This order is already saved. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -328,19 +328,19 @@ class PurchaseChallanController extends Controller {
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     if ($product_data['unit']->id == 2) {
-                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 3) {
-                        $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 4) {
-                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * $product_data->length);
                     }
                     if ($product_data['unit']->id == 5) {
-                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                     }
                 }
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
@@ -370,19 +370,19 @@ class PurchaseChallanController extends Controller {
                 foreach ($input_data as $product_data) {
                     $product = ProductSubCategory::find($product_data->product_category_id);
                     if ($product_data['unit']->id == 1) {
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     if ($product_data['unit']->id == 2) {
-                        $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 3) {
-                        $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 4) {
-                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * $product_data->length);
                     }
                     if ($product_data['unit']->id == 5) {
-                        $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                     }
                 }
                 $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
@@ -590,19 +590,19 @@ class PurchaseChallanController extends Controller {
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         if ($product_data['unit']->id == 1) {
-                            $total_quantity = $total_quantity + $product_data->quantity;
+                            $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                         }
                         if ($product_data['unit']->id == 2) {
-                            $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                            $total_quantity = (float)$total_quantity + (float)$product_data->quantity * (float)$product->weight;
                         }
                         if ($product_data['unit']->id == 3) {
-                            $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                            $total_quantity = (float)$total_quantity + (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
                         }
                         if ($product_data['unit']->id == 4) {
-                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
+                            $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * $product_data->length);
                         }
                         if ($product_data['unit']->id == 5) {
-                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
+                            $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                         }
                     }
                     $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
@@ -633,19 +633,19 @@ class PurchaseChallanController extends Controller {
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         if ($product_data['unit']->id == 1) {
-                            $total_quantity = $total_quantity + $product_data->quantity;
+                            $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                         }
                         if ($product_data['unit']->id == 2) {
-                            $total_quantity = $total_quantity + $product_data->quantity * $product->weight;
+                            $total_quantity = (float)$total_quantity + (float)$product_data->quantity * (float)$product->weight;
                         }
                         if ($product_data['unit']->id == 3) {
-                            $total_quantity = $total_quantity + ($product_data->quantity / $product->standard_length ) * $product->weight;
+                            $total_quantity = (float)$total_quantity + (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
                         }
                         if ($product_data['unit']->id == 4) {
-                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * $product_data->length);
+                            $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * $product_data->length);
                         }
                         if ($product_data['unit']->id == 5) {
-                            $total_quantity = $total_quantity + ($product_data->quantity * $product->weight * ($product_data->length/305));
+                            $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                         }
                     }
                     $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number

@@ -508,7 +508,7 @@ class DeliveryOrderController extends Controller {
 
 
                     $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
 
                 $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
@@ -536,7 +536,7 @@ class DeliveryOrderController extends Controller {
 
 
                     $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
 
                 $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
@@ -1206,9 +1206,9 @@ class DeliveryOrderController extends Controller {
              $sum =0;
               foreach($trucklist as $truck){
 
-                  $sum = $sum + $truck->final_truck_weight;
+                  $sum = (float)$sum + (float)$truck->final_truck_weight;
               }
-              $final_weight = $total_avg + $empty_truck_weight;
+              $final_weight = (float)$total_avg +(float)$empty_truck_weight;
                $update_delivery = DeliveryOrder::where('id',$id)->update([
                  'final_truck_weight'=>$final_weight,
               ]);
@@ -1522,44 +1522,44 @@ class DeliveryOrderController extends Controller {
 
                         //$profile_vat_amount = $input_data['vat_percentage'];
 
-                        $product_price = $product['price'] * $product['actual_quantity'];
+                        $product_price = (float)$product['price'] * (float)$product['actual_quantity'];
 
                         if(isset($input_data['vat_percentage'])){
-                            $prod_vat_price = ($product_price * $profile_vat_amount)/100;
+                            $prod_vat_price = ((float)$product_price * (float)$profile_vat_amount)/100;
                         }
                         else{
-                            $prod_vat_price = ($product_price * 0)/100;
+                            $prod_vat_price = ((float)$product_price * 0)/100;
                         }
 
 
 
-                        $product_price = $product_price + $prod_vat_price;
-                        $total_profile_price = $total_profile_price + $product_price;
+                        $product_price = (float)$product_price + (float)$prod_vat_price;
+                        $total_profile_price = (float)$total_profile_price + (float)$product_price;
 
                         $total_profile_items ++;
                         $profile_product[$counter_profile++] = $product;
 
                     }else{
 
-                        $product_price = $product['price'] * $product['actual_quantity'];
+                        $product_price = (float)$product['price'] * (float)$product['actual_quantity'];
 //                        $total_profile_price = $total_profile_price + $product_price;
 
                         $total_without_vat_items ++;
                         $without_vat_product[$counter_without_vat++] = $product;
-                        $total_actual_quantity_without_vat = $total_actual_quantity_without_vat + $product['actual_quantity'];
-                        $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
+                        $total_actual_quantity_without_vat = (float)$total_actual_quantity_without_vat + (float)$product['actual_quantity'];
+                        $total_without_vat_price = (float)$total_without_vat_price + ((float)$product['price'] * (float)$product['actual_quantity']);
                     }
                 }
                 else if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
                     $total_vat_items ++;
                     $vat_product[$counter_vat++] = $product;
-                    $total_actual_quantity_vat = $total_actual_quantity_vat + $product['actual_quantity'];
-                    $total_vat_price = $total_vat_price + ($product['price'] * $product['actual_quantity']);
+                    $total_actual_quantity_vat = (float)$total_actual_quantity_vat + (float)$product['actual_quantity'];
+                    $total_vat_price = (float)$total_vat_price + ((float)$product['price'] * (float)$product['actual_quantity']);
                 } else {
                     $total_without_vat_items ++;
                     $without_vat_product[$counter_without_vat++] = $product;
-                    $total_actual_quantity_without_vat = $total_actual_quantity_without_vat + $product['actual_quantity'];
-                    $total_without_vat_price = $total_without_vat_price + ($product['price'] * $product['actual_quantity']);
+                    $total_actual_quantity_without_vat = (float)$total_actual_quantity_without_vat + (float)$product['actual_quantity'];
+                    $total_without_vat_price = (float)$total_without_vat_price + ((float)$product['price'] * (float)$product['actual_quantity']);
                 }
             }
         }
@@ -1573,11 +1573,11 @@ class DeliveryOrderController extends Controller {
         if ($total_product_count == $total_profile_items) {
             $case = 'all_profile';
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $profile_vat_amount;
-            $all_vat_share_overhead = number_format((float) $total_profile_price + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+            $all_vat_share_overhead = number_format((float)$total_profile_price + (float)$input_data['loading'] + (float)$input_data['discount'] + (float)$input_data['freight'], 2, '.', '');
 //            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
             $all_vat_on_overhead_count = 0;
 
-            $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
+            $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)$input_data['round_off'], 2);
 
             if($delivery_order_details->vat_percentage != 0){
                 $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
@@ -1591,11 +1591,11 @@ class DeliveryOrderController extends Controller {
             //$input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'];
 
 
-            $all_vat_share_overhead = number_format($input_data['total_price'] + $input_data['loading'] + $input_data['discount'] + $input_data['freight'], 2, '.', '');
+            $all_vat_share_overhead = number_format((float)$input_data['total_price'] + (float)$input_data['loading'] + (float)$input_data['discount'] + (float)$input_data['freight'], 2, '.', '');
            // $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
             $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
-            $input_data['grand_total'] = $input_data['vat_total'] = round($all_vat_share_overhead + $all_vat_on_overhead_count + $input_data['round_off'], 2);
+            $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)$input_data['round_off'], 2);
 
             if($delivery_order_details->vat_percentage != 0){
                 $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
@@ -1616,16 +1616,16 @@ class DeliveryOrderController extends Controller {
             $case = 'all_mixed';
             $vat_input_data = $without_vat_input_data = $profile_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
-                $ratio_with_vat = number_format( ((($total_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
-                $ratio_without_vat = number_format( ((($total_without_vat_price) * 100) / $input_data['total_price']), 2, '.', '');
-                $ratio_profile = number_format( ((($total_profile_price) * 100) / $input_data['total_price']), 2, '.', '');
+                $ratio_with_vat = number_format( ((((float)$total_vat_price) * 100) / (float)$input_data['total_price']), 2, '.', '');
+                $ratio_without_vat = number_format( ((((float)$total_without_vat_price) * 100) / (float)$input_data['total_price']), 2, '.', '');
+                $ratio_profile = number_format( ((((float)$total_profile_price) * 100) / (float)$input_data['total_price']), 2, '.', '');
             }
 
             $total_overhead = (float)$input_data['loading'] + (float)$input_data['freight'] + (float)$input_data['discount'];
 
             //$vat_share_overhead = number_format((float) (($ratio_with_vat * $total_overhead) / 100), 2, '.', '');
-            $without_vat_share_overhead = number_format( (($ratio_without_vat * $total_overhead) / 100), 2, '.', '');
-            $profile_share_overhead = number_format( (($ratio_profile * $total_overhead) / 100), 2, '.', '');
+            $without_vat_share_overhead = number_format( (((float)$ratio_without_vat * (float)$total_overhead) / 100), 2, '.', '');
+            $profile_share_overhead = number_format( (((float)$ratio_profile * (float)$total_overhead) / 100), 2, '.', '');
 
 
 //            $vat_on_price_count = number_format((float) (($total_vat_price * $input_data['vat_percentage']) / 100), 2, '.', '');
@@ -1777,19 +1777,19 @@ class DeliveryOrderController extends Controller {
         if (isset($delivery_data['delivery_product'])) {
             foreach ($delivery_data['delivery_product'] as $key => $do_product_details) {
                 if ($do_product_details->unit_id == 1) {
-                    $order_qty = $order_qty + $do_product_details->quantity;
+                    $order_qty = (float)$order_qty + (float)$do_product_details->quantity;
                 }
                 if ($do_product_details->unit_id == 2) {
-                    $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight);
+                    $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight);
                 }
                 if ($do_product_details->unit_id == 3) {
-                    $order_qty = $order_qty + (($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * $do_product_details->product_sub_category->weight);
+                    $order_qty = (float)$order_qty + ((float)($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * (float)$do_product_details->product_sub_category->weight);
                 }
                 if ($do_product_details->unit_id == 4) {
-                    $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight * $do_product_details->length);
+                    $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight * (float)$do_product_details->length);
                 }
                 if ($do_product_details->unit_id == 5) {
-                    $order_qty = $order_qty + ($do_product_details->quantity * $do_product_details->product_sub_category->weight * ($do_product_details->length/305));
+                    $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight * (float)($do_product_details->length/305));
                 }
             }
             $delivery_data->total_quantity = round($order_qty / 1000, 2);
@@ -1840,7 +1840,7 @@ class DeliveryOrderController extends Controller {
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been created as follows\n";
                     foreach ($input_data as $product_data) {
                         $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
@@ -1862,7 +1862,7 @@ class DeliveryOrderController extends Controller {
                     $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created DO for " . $customer->owner_name . " as follows\n";
                     foreach ($input_data as $product_data) {
                         $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
@@ -1982,8 +1982,8 @@ class DeliveryOrderController extends Controller {
                             //$product_size = ProductSubCategory::find($popv->product_category_id);
 
                             if ($popv->unit_id == 1) {
-                                $delivery_order_quantity = $delivery_order_quantity + $popv->quantity;
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + $popv->present_shipping;
+                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
+                                $delivery_order_present_shipping = (float)$delivery_order_present_shipping + (float)$popv->present_shipping;
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
@@ -2000,19 +2000,19 @@ class DeliveryOrderController extends Controller {
                                 }
                                 if (isset($prd_details) && $popv->parent>0) {
                                     if ($is_slice == 0)
-                                        $pending_order_temp = $prd_details->quantity - $popv->quantity;
+                                        $pending_order_temp = (float)$prd_details->quantity - (float)$popv->quantity;
                                     else
-                                        $pending_order_temp = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                        $pending_order_temp = (float)$prd_details->quantity - (float)$popv->quantity - (float)$total_old_shipping;
 
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
-                                        $pending_order = $pending_order + $pending_order_temp;
+                                        $pending_order = (float)$pending_order + (float)$pending_order_temp;
                                     }
                                 }
                             } elseif ($popv->unit_id == 2) {
-                                $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight);
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight);
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight);
+                                $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)$popv->present_shipping * (float)$product_size->weight);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
@@ -2031,22 +2031,22 @@ class DeliveryOrderController extends Controller {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
-                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity;
                                         else
-                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity - $total_old_shipping;
                                     }
-                                    $pending_order_temp = ($remaining * $product_size->weight);
+                                    $pending_order_temp = ((float)$remaining * (float)$product_size->weight);
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
-                                        $pending_order = $pending_order + $pending_order_temp;
+                                        $pending_order = (float)$pending_order + (float)$pending_order_temp;
                                     }
                                 }
                             } elseif ($popv->unit_id == 3) {
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                    $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                                    $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)($popv->present_shipping / $product_size->standard_length ) * (float)$product_size->weight);
 
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -2067,23 +2067,23 @@ class DeliveryOrderController extends Controller {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
-                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity;
                                         else
-                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity - (float)$total_old_shipping;
                                     }
 
 
-                                    $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+                                    $pending_order_temp = ((float)($remaining / $product_size->standard_length ) * (float)$product_size->weight);
 
                                     if ($pending_order == 0) {
-                                        $pending_order = $pending_order_temp;
+                                        $pending_order = (float)$pending_order_temp;
                                     } else {
-                                        $pending_order = $pending_order + $pending_order_temp;
+                                        $pending_order = (float)$pending_order + (float)$pending_order_temp;
                                     }
                                 }
                             } elseif ($popv->unit_id == 4) {
-                                $delivery_order_quantity = $delivery_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight * $popv->length);
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight * (float)$popv->length);
+                                $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)$popv->present_shipping * (float)$product_size->weight * (float)$popv->length);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
@@ -2103,23 +2103,23 @@ class DeliveryOrderController extends Controller {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
-                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity;
                                         else
-                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity - (float)$total_old_shipping;
                                     }
-                                    $pending_order_temp = ($remaining * $product_size->weight * $popv->length);
+                                    $pending_order_temp = ((float)$remaining * (float)$product_size->weight * (float)$popv->length);
                                     if ($pending_order == 0) {
-                                        $pending_order = $pending_order_temp;
+                                        $pending_order = (float)$pending_order_temp;
                                     } else {
-                                        $pending_order = $pending_order + $pending_order_temp;
+                                        $pending_order = (float)$pending_order + (float)$pending_order_temp;
                                     }
                                 }
                             }
                             elseif ($popv->unit_id == 5){
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                $delivery_order_quantity = $delivery_order_quantity + ($product_size->weight * $popv->quantity * ($popv->length/305));
-                                $delivery_order_present_shipping = $delivery_order_present_shipping + ($popv->present_shipping * $product_size->weight *  ($popv->length/305));
+                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$product_size->weight * (float)$popv->quantity * (float)($popv->length/305));
+                                $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)$popv->present_shipping * (float)$product_size->weight *  (float)($popv->length/305));
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
                                         $prd_details = $track_order_product;
@@ -2139,17 +2139,17 @@ class DeliveryOrderController extends Controller {
                                     $remaining = 0;
                                     if ($prd_details->quantity > $popv->quantity) {
                                         if ($is_slice == 0)
-                                            $remaining = $prd_details->quantity - $popv->quantity;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity;
                                         else
-                                            $remaining = $prd_details->quantity - $popv->quantity - $total_old_shipping;
+                                            $remaining = (float)$prd_details->quantity - (float)$popv->quantity - (float)$total_old_shipping;
                                     }
 
-                                    $pending_order_temp = ($remaining * $product_size->weight * ($popv->length/305));
+                                    $pending_order_temp = ((float)$remaining * (float)$product_size->weight * (float)($popv->length/305));
 
                                     if ($pending_order == 0) {
                                         $pending_order = $pending_order_temp;
                                     } else {
-                                        $pending_order = $pending_order + $pending_order_temp;
+                                        $pending_order = (float)$pending_order + (float)$pending_order_temp;
                                     }
                                 }
                             }

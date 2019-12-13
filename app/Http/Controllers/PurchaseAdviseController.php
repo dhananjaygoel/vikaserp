@@ -428,7 +428,7 @@ class PurchaseAdviseController extends Controller {
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
@@ -452,7 +452,7 @@ class PurchaseAdviseController extends Controller {
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has logged Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
@@ -777,7 +777,7 @@ class PurchaseAdviseController extends Controller {
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows\n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
 
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
@@ -802,7 +802,7 @@ class PurchaseAdviseController extends Controller {
                 $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created Purchase Advise for " . $customer->owner_name . " \n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                    $total_quantity = $total_quantity + $product_data->quantity;
+                    $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
@@ -857,19 +857,19 @@ class PurchaseAdviseController extends Controller {
                         //$product_size = ProductSubCategory::find($popv->product_category_id);
 
                         if ($popv->unit_id == 1) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)$popv->quantity;
                         }
                         if ($popv->unit_id == 2) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * (float)$product_size->weight);
                         }
                         if ($popv->unit_id == 3) {
-                            $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                            $purchase_order_quantity = (float)$purchase_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
                         }
                         if ($popv->unit_id == 4) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * $popv->length);
                         }
                         if ($popv->unit_id == 5) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * (float)($popv->length/305));
                         }
                     }
                 }
@@ -901,19 +901,19 @@ class PurchaseAdviseController extends Controller {
                     $product_size = $poapv['product_sub_category'];
                     //$product_size = ProductSubCategory::find($poapv->product_category_id);
                     if ($poapv->unit_id == 1) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity;
+                        $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)$poapv->quantity;
                     }
                     if ($poapv->unit_id == 2) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + $poapv->quantity * $product_size->weight;
+                        $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)$poapv->quantity * (float)$product_size->weight;
                     }
                     if ($poapv->unit_id == 3) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity / $product_size->standard_length ) * $product_size->weight;
+                        $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)($poapv->quantity / $product_size->standard_length ) * (float)$product_size->weight;
                     }
                     if ($poapv->unit_id == 4) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity * $product_size->weight * $poapv->length);
+                        $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)($poapv->quantity * $product_size->weight * $poapv->length);
                     }
                     if ($poapv->unit_id == 5) {
-                        $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($poapv->quantity * $product_size->weight * ($poapv->length/305));
+                        $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)($poapv->quantity * $product_size->weight * (float)($poapv->length/305));
                     }
                 }
             }
@@ -923,19 +923,19 @@ class PurchaseAdviseController extends Controller {
                     $product_size = $popv['product_sub_category'];
                     //$product_size = ProductSubCategory::find($popv->product_category_id);
                     if ($popv->unit_id == 1) {
-                        $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                        $purchase_order_quantity = (float)$purchase_order_quantity + (float)$popv->quantity;
                     }
                     if ($popv->unit_id == 2) {
-                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                        $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight);
                     }
                     if ($popv->unit_id == 3) {
-                        $purchase_order_quantity = $purchase_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
+                        $purchase_order_quantity = (float)$purchase_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
                     }
                     if ($popv->unit_id == 4) {
-                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
+                        $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * $popv->length);
                     }
                     if ($popv->unit_id == 5) {
-                        $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
+                        $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * (float)($popv->length/305));
                     }
                 }
             }
@@ -943,7 +943,7 @@ class PurchaseAdviseController extends Controller {
             if ($purchase_order_advise_quantity >= $purchase_order_quantity) {
                 $purchase_orders[$key]['pending_quantity'] = 0;
             } else {
-                $purchase_orders[$key]['pending_quantity'] = ($purchase_order_quantity - $purchase_order_advise_quantity);
+                $purchase_orders[$key]['pending_quantity'] = (float)($purchase_order_quantity - $purchase_order_advise_quantity);
             }
 
             if ($purchase_orders[$key]['pending_quantity'] == 0) {

@@ -422,20 +422,20 @@ class DeliveryChallanController extends Controller {
 
                     if (isset($product_data)) {
                         if ($product_data->unit_id == 1) {
-                            $total_quantity = $total_quantity + $product_data->actual_quantity;
+                            $total_quantity = (float)$total_quantity + (float)$product_data->actual_quantity;
                         }
                         if ($product_data->unit_id == 2) {
-                            $total_quantity = $total_quantity + $product_data->actual_quantity * $product_size->weight;
+                            $total_quantity = (float)$total_quantity + (float)$product_data->actual_quantity * (float)$product_size->weight;
                         }
                         if ($product_data->unit_id == 3) {
-                            $total_quantity = $total_quantity + ($product_data->actual_quantity / $product_size->standard_length ) * $product_size->weight;
+                            $total_quantity = (float)$total_quantity + (float)($product_data->actual_quantity / $product_size->standard_length ) * (float)$product_size->weight;
                         }
                         if ($product_data->unit_id == 4) {
-                            $total_quantity = $total_quantity + ($product_data->actual_quantity * $product_size->weight  * $product_data->length);
+                            $total_quantity = (float)$total_quantity + (float)($product_data->actual_quantity * $product_size->weight  * $product_data->length);
                             // dd($product_data->actual_quantity.'*'.$product_size->weight.'*'.$product_data->length);
                         }
                         if ($product_data->unit_id == 5) {
-                            $total_quantity = $total_quantity + ($product_data->actual_quantity * $product_size->weight * ($product_data->length/305));
+                            $total_quantity = (float)$total_quantity + ((float)$product_data->actual_quantity * (float)$product_size->weight * (float)($product_data->length/305));
                         }
                     } else {
                         $result['send_message'] = "Error";
@@ -451,7 +451,7 @@ class DeliveryChallanController extends Controller {
                     $allorders[$key]['total_quantity_pending'] = 0;
                 } else {
 
-                    $allorders[$key]['total_quantity_pending'] = $order_quantity - $order_quantity_do;
+                    $allorders[$key]['total_quantity_pending'] = (float)$order_quantity - (float)$order_quantity_do;
 
 //                    $product_for_order = $order['order_products'];
 //                    $product_for_order_do = $order['delivery_order_products'];
@@ -584,7 +584,7 @@ class DeliveryChallanController extends Controller {
         if (Session::has('forms_edit_delivery_challan')) {
             $session_array = Session::get('forms_edit_delivery_challan');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     return Redirect::back()->with('validation_message', 'This delivery challan is already Updated. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -628,7 +628,7 @@ class DeliveryChallanController extends Controller {
         }
 
         if (isset($delivery_challan->vat_percentage) && $delivery_challan->vat_percentage > 0) {
-            $input_data['grand_total'] = $input_data['grand_total'] + ($input_data['grand_total'] * $delivery_challan->vat_percentage / 100);
+            $input_data['grand_total'] = (float)$input_data['grand_total'] + (float)($input_data['grand_total'] * $delivery_challan->vat_percentage / 100);
 
             $input_data['grand_total'] = number_format((float) $input_data['grand_total'], 2, '.', '');
         }
@@ -856,7 +856,7 @@ class DeliveryChallanController extends Controller {
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                             ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
@@ -1492,7 +1492,7 @@ class DeliveryChallanController extends Controller {
                 if ($delivery_challan_products->vat_percentage > 0) {
                     $vat_applicable = 1;
                     if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
-                        $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                        $total_vat_amount = (float)$total_vat_amount + ((float)($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
                     }
                 }
             }
@@ -1526,13 +1526,13 @@ class DeliveryChallanController extends Controller {
 
                     if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
                         $profile_present = 1;
-                        $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                        $total_vat_amount = (float)$total_vat_amount + ((float)($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
                     }
                     else{
                         if($delivery_challan_products->vat_percentage > 0){
                             $vat_applicable = 1;
                             if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
-                                $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                                $total_vat_amount = (float)$total_vat_amount + ((float)($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
                             }
                         }
                     }
@@ -1540,7 +1540,7 @@ class DeliveryChallanController extends Controller {
                 elseif ($delivery_challan_products->vat_percentage > 0) {
                         $vat_applicable = 1;
                         if ($delivery_challan_products->vat_percentage != '' && $delivery_challan_products->vat_percentage > 0) {
-                            $total_vat_amount = $total_vat_amount + (($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
+                            $total_vat_amount = (float)$total_vat_amount + ((float)($delivery_challan_products->present_shipping * $delivery_challan_products->price * $delivery_challan_products->vat_percentage) / 100);
                         }
                     }
                 }
@@ -1688,7 +1688,7 @@ class DeliveryChallanController extends Controller {
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                             ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
@@ -1751,7 +1751,7 @@ class DeliveryChallanController extends Controller {
                 $temp_var = $delivery_challan_products['order_product_all_details']->alias_name;
             }
             if (isset($temp_var)) {
-                $amont = $delivery_challan_products->actual_quantity * $delivery_challan_products->price;
+                $amont = (float)$delivery_challan_products->actual_quantity * (float)$delivery_challan_products->price;
 
 
                 if (in_array($temp_var, $hsn_list)) {
@@ -1762,14 +1762,14 @@ class DeliveryChallanController extends Controller {
                             $final_amount = $value['amount']+$amont;
                             if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
                                 if($delivery_challan_products->vat_percentage == 1){
-                                    $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
+                                    $vat_amount = (float)$value['vat_amount']+(float)($amont * $update_delivery_challan->vat_percentage / 100);
                                 }
                                 else{
                                     $vat_amount = $value['vat_amount'];
                                 }
                             }
                             else{
-                                $vat_amount = $value['vat_amount']+($amont * $update_delivery_challan->vat_percentage / 100);
+                                $vat_amount = (float)$value['vat_amount']+(float)($amont * $update_delivery_challan->vat_percentage / 100);
                             }
 
                             $hsn_data[$key] = [
@@ -1790,7 +1790,7 @@ class DeliveryChallanController extends Controller {
                                 'vat_percentage' => $update_delivery_challan->vat_percentage,
                                 'actual_quantity' => $delivery_challan_products->actual_quantity,
                                 'amount' => $amont,
-                                'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
+                                'vat_amount' => (float)$amont * (float)$update_delivery_challan->vat_percentage / 100,
                             ];
                         }else{
                             $hsn_data[] = [
@@ -1809,7 +1809,7 @@ class DeliveryChallanController extends Controller {
                             'vat_percentage' => $update_delivery_challan->vat_percentage,
                             'actual_quantity' => $delivery_challan_products->actual_quantity,
                             'amount' => $amont,
-                            'vat_amount' => $amont * $update_delivery_challan->vat_percentage / 100,
+                            'vat_amount' => (float)$amont * (float)$update_delivery_challan->vat_percentage / 100,
                         ];
                     }
                 }

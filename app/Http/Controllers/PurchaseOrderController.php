@@ -311,7 +311,7 @@ class PurchaseOrderController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                     }
                 }
 
@@ -338,7 +338,7 @@ class PurchaseOrderController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                     }
                 }
 
@@ -503,7 +503,7 @@ class PurchaseOrderController extends Controller {
         if (Session::has('forms_edit_purchase_order')) {
             $session_array = Session::get('forms_edit_purchase_order');
             if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], $session_array)) {
+                if (in_array($input_data['form_key'], (array)$session_array)) {
                     return Redirect::back()->with('flash_message_error', 'This purchase order is already updated. Please refresh the page');
                 } else {
                     array_push($session_array, $input_data['form_key']);
@@ -612,7 +612,7 @@ class PurchaseOrderController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                     }
                 }
                 $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
@@ -638,7 +638,7 @@ class PurchaseOrderController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = $total_quantity + $product_data['quantity'];
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                     }
                 }
                 $str .= " material will be dispatched by " . date("j F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
@@ -985,19 +985,19 @@ class PurchaseOrderController extends Controller {
                     foreach ($purchase_advice['purchase_products'] as $prod) {
                         $product_size = $prod['product_sub_category'];
                         if ($prod->unit_id == 1) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity;
+                            $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)$prod->quantity;
                         }
                         if ($prod->unit_id == 2) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + $prod->quantity * $product_size->weight;
+                            $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)$prod->quantity * (float)$product_size->weight;
                         }
                         if ($prod->unit_id == 3) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity / $product_size->standard_length ) * $product_size->weight;
+                            $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)($prod->quantity / $product_size->standard_length ) * (float)$product_size->weight;
                         }
                         if ($prod->unit_id == 4) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity * $product_size->weight * $prod->length);
+                            $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)($prod->quantity * $product_size->weight * $prod->length);
                         }
                         if ($prod->unit_id == 5) {
-                            $purchase_order_advise_quantity = $purchase_order_advise_quantity + ($prod->quantity * $product_size->weight * ($prod->length/305));
+                            $purchase_order_advise_quantity = (float)$purchase_order_advise_quantity + (float)($prod->quantity * $product_size->weight * (float)($prod->length/305));
                         }
                     }
                 }
@@ -1018,42 +1018,42 @@ class PurchaseOrderController extends Controller {
                     // }
                     // else{
                         if ($popv->unit_id == 1) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)$popv->quantity;
                         }
                         elseif ($popv->unit_id == 2) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight;
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)$popv->quantity * (float)$product_size->weight;
                         }
                         elseif ($popv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity / $product_size->standard_length ) * $product_size->weight;
+                                $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight;
                             } else {
-                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                                $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight);
                             }
                         }
                         elseif ($popv->unit_id == 4) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * $popv->length);
                         }
                         elseif ($popv->unit_id == 5) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * (float)($popv->length/305));
                         }
                     }
                     else{
                         if ($popv->unit_id == 1) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity;
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)$popv->quantity;
                         } elseif ($popv->unit_id == 2) {
-                            $purchase_order_quantity = $purchase_order_quantity + $popv->quantity * $product_size->weight;
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)$popv->quantity * (float)$product_size->weight;
                         } elseif ($popv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity / $product_size->standard_length ) * $product_size->weight;
+                                $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight;
                             } else {
-                                $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight);
+                                $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight);
                             }
                         }
                         elseif($popv->unit_id == 4) {
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * $popv->length);
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * $popv->length);
                         }
                         elseif($popv->unit_id == 5){
-                            $purchase_order_quantity = $purchase_order_quantity + ($popv->quantity * $product_size->weight * ($popv->length/305));
+                            $purchase_order_quantity = (float)$purchase_order_quantity + (float)($popv->quantity * $product_size->weight * (float)($popv->length/305));
                         }
                     }
 
