@@ -1414,13 +1414,12 @@ class DeliveryChallanController extends Controller {
                 ],
                 "ShipAddr"=> [
                     "City"=> $state->area_name,
-                    "CountrySubDivisionCode"=> $local['state_name']
+                    "CountrySubDivisionCode"=> $local->state_name
                 ]
                 // "DocNumber"=>$update_delivery_challan->serial_number,
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
 
-dd($theResourceObj);
             $inv = $dataService->add($theResourceObj);
             $error = $dataService->getLastError();
             if ($error) {
