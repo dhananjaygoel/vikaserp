@@ -1189,10 +1189,12 @@ class DeliveryChallanController extends Controller {
                 $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
                 $local = \App\States::where('id',$state->state_id)->first();
                 $local_state = $local->local_state;
-                if(isset($local->state_name)){
+                if((isset($local->state_name)) && (isset($state->area_name))){
                     $state_value = $local->state_name;
+                    $city_value = $state->area_name;
                 }else{
                     $state_value = 'Maharashtra';
+                    $city_value = 'NA';
                 }
 
                 if($hsn){
@@ -1418,8 +1420,8 @@ class DeliveryChallanController extends Controller {
                     "value" => $quickbook_customer_id
                 ],
                 "ShipAddr"=> [
-                    "City"=> $state->area_name,
-                    "CountrySubDivisionCode"=> $state_value
+                    "City"=>  $city_value,
+                    "CountrySubDivisionCode"=> $state_value,
                 ]
                 // "DocNumber"=>$update_delivery_challan->serial_number,
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
