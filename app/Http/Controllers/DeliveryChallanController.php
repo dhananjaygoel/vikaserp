@@ -1249,9 +1249,7 @@ class DeliveryChallanController extends Controller {
                             "TaxCodeRef" => [
                                 "value" => $TaxCodeRef
                             ],
-                            "TaxClassificationRef" => [
-                                "value" => $del_products->order_product_all_details->hsn_code
-                            ],
+                            "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
                         ]
                     ];
                 }else{
@@ -1271,9 +1269,7 @@ class DeliveryChallanController extends Controller {
                             "TaxCodeRef" => [
                                 "value" => 9
                             ],
-                            "TaxClassificationRef" => [
-                                "value" => $del_products->order_product_all_details->hsn_code
-                            ],
+                            "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
                         ]
                     ];
                 }
@@ -1312,7 +1308,6 @@ class DeliveryChallanController extends Controller {
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-
                                 "name" => $frieghtname,
                                 "value" => $freight_id
                                // "name" => "Services",
@@ -1380,7 +1375,6 @@ class DeliveryChallanController extends Controller {
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-
                                 "name" => $discountname,
                                  "value" => $discount_a_id
                             ],
@@ -1419,16 +1413,14 @@ class DeliveryChallanController extends Controller {
           // print_R($customer_details);
             $theResourceObj = Invoice::create([
                 "Line" => $line,
-                "CustomerRef"=> [
-                    "name"=> $tally_name,
+                "CustomerRef" => [
+                    "name" => $tally_name,
                     "value" => $quickbook_customer_id
                 ],
-                "ShipAddr"=> [
-                    "City"=>  $city_value,
-                    "CountrySubDivisionCode"=> $state_value,
+                "ShipAddr" => [
+                    "City" =>  $city_value,
+                    "CountrySubDivisionCode" => $state_value,
                 ]
-                // "DocNumber"=>$update_delivery_challan->serial_number,
-                // 'GlobalTaxCalculationEnum'=>'NotApplicable'
             ]);
 
             $inv = $dataService->add($theResourceObj);
