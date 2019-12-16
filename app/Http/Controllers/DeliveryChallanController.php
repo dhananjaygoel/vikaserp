@@ -1249,7 +1249,9 @@ class DeliveryChallanController extends Controller {
                             "TaxCodeRef" => [
                                 "value" => $TaxCodeRef
                             ],
-                            "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code,
+                            "TaxClassificationRef" => [
+                                "value" => $del_products->order_product_all_details->hsn_code
+                            ],
                         ]
                     ];
                 }else{
@@ -1269,7 +1271,9 @@ class DeliveryChallanController extends Controller {
                             "TaxCodeRef" => [
                                 "value" => 9
                             ],
-                            "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
+                            "TaxClassificationRef" => [
+                                "value" => $del_products->order_product_all_details->hsn_code
+                            ],
                         ]
                     ];
                 }
@@ -1399,7 +1403,7 @@ class DeliveryChallanController extends Controller {
             } */
 
 
-             $custom_query = "select * from Customer where CompanyName='".$update_delivery_challan->customer->company_name."'";
+             $custom_query = "select * from Customer where DisplayName='".$update_delivery_challan->customer->tally_name."'";
             //  $custom_query = "select * from Customer maxresults 2";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
