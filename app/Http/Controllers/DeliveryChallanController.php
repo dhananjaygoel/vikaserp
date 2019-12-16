@@ -1189,7 +1189,6 @@ class DeliveryChallanController extends Controller {
                 $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
                 $local = \App\States::where('id',$state->state_id)->first();
                 $local_state = $local->local_state;
-                dd($local);
 
                 if($hsn){
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
@@ -1415,7 +1414,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 "ShipAddr"=> [
                     "City"=> $state->area_name,
-                    "CountrySubDivisionCode"=> $local->state_name
+                    "CountrySubDivisionCode"=> $local['state_name']
                 ]
                 // "DocNumber"=>$update_delivery_challan->serial_number,
                 // 'GlobalTaxCalculationEnum'=>'NotApplicable'
