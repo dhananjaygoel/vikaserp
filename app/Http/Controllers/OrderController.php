@@ -513,7 +513,7 @@ class OrderController extends Controller {
 //            return redirect('orders')->with('flash_message', 'Order does not exist.');
 //         }
 
-           if (count($order) < 1) {
+           if (count((array)$order) < 1) {
                return redirect('order')->with('flash_message', 'Order does not exist.');
            }
         }
