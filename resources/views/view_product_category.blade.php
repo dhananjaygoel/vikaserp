@@ -14,7 +14,7 @@
                     <h1 class="pull-left"> View Product Category</h1>
                     @if ( Auth::user()->role_id == 0 )         
                     <div class="pull-right top-page-ui">
-                        <a href="{{ URL::action('ProductController@edit',['id'=>$product_cat->id]) }}" class="btn btn-primary pull-right">
+                        <a href="{{ URL::action('ProductController@edit',['product_category'=>$product_cat->id]) }}" class="btn btn-primary pull-right">
                             Edit Product Category
                         </a>
                     </div>
