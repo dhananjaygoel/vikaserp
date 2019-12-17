@@ -9,7 +9,7 @@ use App\Territory;
 use App\DeliveryLocation;
 use App\TerritoryLocation;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Input;
+use Input;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 
