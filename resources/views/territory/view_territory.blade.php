@@ -12,7 +12,8 @@
                 <div class="filter-block">
                     <h1 class="pull-left">View Territory</h1>
                     <div class="pull-right top-page-ui">                             
-                        <a href="{{URL::action('TerritoryController@edit', ['id' => $territory->id])}}" class="btn btn-primary pull-right">
+                        <!-- <a href="{{URL::action('TerritoryController@edit', ['id' => $territory->id])}}" class="btn btn-primary pull-right"> -->
+                        <a href="{{url('territory/'.$territory->id.'/edit')}}" class="btn btn-primary pull-right">
                             Edit Territory
                         </a>                        
                     </div>

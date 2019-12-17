@@ -269,6 +269,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('bulk_set_price', 'CustomerController@bulk_set_price');
     Route::post('save_all_set_price', 'CustomerController@save_all_set_price');
     Route::resource('territory', 'TerritoryController');
+    Route::get('territory/{id}/edit', 'TerritoryController@edit');
     Route::get('inventory_report', 'InventoryController@inventoryReport');
     Route::get('inventory_price_list', 'InventoryController@inventoryPriceList');
     Route::get('due-payment', 'CustomerController@get_customers_list');
