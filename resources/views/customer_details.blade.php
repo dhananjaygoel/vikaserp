@@ -96,7 +96,7 @@
                                         <td><span>Credit Period(Days):</span> {{($customer->credit_period != '')?$customer->credit_period:'N/A' }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Relationship Manager:</span> {{isset($customer['manager']->first_name)?$customer['manager']->first_name: 'N'}}{{isset($customer['manager']->last_name)?'&nbsp;'.$customer['manager']->last_name: '/A'}}</td>
+                                        <td><span>Relationship Manager:</span> {{isset($customer['manager']->first_name)?$customer['manager']->first_name: 'N'}}{{isset($customer['manager']->last_name)?' '.$customer['manager']->last_name: '/A'}}</td>
                                     </tr>
 
                                     @if(sizeof($customer['customerproduct']) > 0)
