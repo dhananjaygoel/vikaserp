@@ -447,81 +447,73 @@ public function update_cust_all_inc(){
         $users->first_name = Input::get('owner_name');
 
         $users->role_id = '5';
-
-        $already_exists_mobile_number = Customer::where('phone_number1', '=', Input::get('phone_number1'))->count();
-        
-        if ($already_exists_mobile_number > 0) {
-            return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
-        }
-        $status = Input::get('status');
-
-        $state = States::where('id',Input::get('state'))->first();
-        $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
-
-        $Qdata = [
-            "GivenName"=>  Input::get('owner_name'),
-            "FullyQualifiedName"=> Input::get('tally_name'),
-            "CompanyName"=>  Input::get('company_name'),
-            "DisplayName"=>  Input::get('tally_name'),
-            "PrimaryEmailAddr" => [
-                "Address" => Input::get('email')
-            ],
-            "PrimaryPhone"=>  [
-                "FreeFormNumber"=>  Input::get('phone_number1')
-            ],
-            "BillAddr"=> [
-                  "Country"=> "India",
-                  "CountrySubDivisionCode"=> $state->state_name,
-                  "City"=> $city->city_name,
-                  "PostalCode"=> Input::get('zip'),
-                  "Line1" => Input::get('address1'),
-                  "Line2" => Input::get('address2'),
-            ],
-        ];
-        $inclusivecustomerid ="";
-        $gstcustomerid = "";
-        $dataService = $this->getTokenWihtoutGST();
-        // $newCustomerObj = Vendor::create($Qdata);
-        $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
-        // dd($newCustomerObj);
-        $newcus = $dataService->add($newCustomerObj);
-        $error = $dataService->getLastError();
-        if ($error) {
-            $this->refresh_token_Wihtout_GST();
-            $dataService = $this->getTokenWihtoutGST();
-        }
-        else{
-            $inclusivecustomerid =  $newcus->Id;
-        }
-        $nextdataservice = $this->getToken();
-        $newcustoinclusive = $nextdataservice->add($newCustomerObj);
-        $error1 = $nextdataservice->getLastError();
-        if ($error1) {
-            $this->refresh_token();
-            $dataService = $this->getToken();
-        }
-        else{
-            $gstcustomerid =  $newcustoinclusive->Id;
-        }
-        $customer->quickbook_a_customer_id  = $inclusivecustomerid;
-        $customer->quickbook_customer_id  = $gstcustomerid;
-
-       /*if(isset($status) && Input::get('status') == 'yes'){
-            $res_q = $this->quickbook_create_supplier($Qdata);
-            if($res_q['status']){
-                $customer->quickbook_supplier_id = $res_q['message']->Id;
+        $validator = Validator::make(Input::all(), Customer::$customers_rules);
+        if ($validator->passes()) {
+            if(Input::get('phone_number1') != ""){
+                $already_exists_mobile_number = Customer::where('phone_number1', Input::get('phone_number1'))->count();
+                if ($already_exists_mobile_number > 0) {
+                    return Redirect::back()->with('error', 'Mobile number is already associated with another account.');
+                }
             }
-        } else{
-            $res = $this->quickbook_create_customer($Qdata);
-            if($res['status']){
-                $customer->quickbook_customer_id = $res['message']->Id;
+            $status = Input::get('status');
+
+            $state = States::where('id',Input::get('state'))->first();
+            $city = City::where('id',Input::get('city'))->where('state_id',Input::get('state'))->first();
+
+            $Qdata = [
+                "GivenName"=>  Input::get('owner_name'),
+                "FullyQualifiedName"=> Input::get('tally_name'),
+                "CompanyName"=>  Input::get('company_name'),
+                "DisplayName"=>  Input::get('tally_name'),
+                "PrimaryEmailAddr" => [
+                    "Address" => Input::get('email')
+                ],
+                "PrimaryPhone"=>  [
+                    "FreeFormNumber"=>  Input::get('phone_number1')
+                ],
+                "BillAddr"=> [
+                    "Country"=> "India",
+                    "CountrySubDivisionCode"=> $state->state_name,
+                    "City"=> $city->city_name,
+                    "PostalCode"=> Input::get('zip'),
+                    "Line1" => Input::get('address1'),
+                    "Line2" => Input::get('address2'),
+                ],
+            ];
+            $inclusivecustomerid ="";
+            $gstcustomerid = "";
+            $dataService = $this->getTokenWihtoutGST();
+            // $newCustomerObj = Vendor::create($Qdata);
+            $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
+            // dd($newCustomerObj);
+            $newcus = $dataService->add($newCustomerObj);
+            $error = $dataService->getLastError();
+            if ($error) {
+                $this->refresh_token_Wihtout_GST();
+                $dataService = $this->getTokenWihtoutGST();
+            }
+            else{
+                $inclusivecustomerid =  $newcus->Id;
+            }
+            $nextdataservice = $this->getToken();
+            $newcustoinclusive = $nextdataservice->add($newCustomerObj);
+            $error1 = $nextdataservice->getLastError();
+            if ($error1) {
+                $this->refresh_token();
+                $dataService = $this->getToken();
+            }
+            else{
+                $gstcustomerid =  $newcustoinclusive->Id;
+            }
+            $customer->quickbook_a_customer_id  = $inclusivecustomerid;
+            $customer->quickbook_customer_id  = $gstcustomerid;
+
+        /*if(isset($status) && Input::get('status') == 'yes'){
                 $res_q = $this->quickbook_create_supplier($Qdata);
                 if($res_q['status']){
                     $customer->quickbook_supplier_id = $res_q['message']->Id;
                 }
-            }
-            else{
-                $this->refresh_token();
+            } else{
                 $res = $this->quickbook_create_customer($Qdata);
                 if($res['status']){
                     $customer->quickbook_customer_id = $res['message']->Id;
@@ -530,24 +522,24 @@ public function update_cust_all_inc(){
                         $customer->quickbook_supplier_id = $res_q['message']->Id;
                     }
                 }
+                else{
+                    $this->refresh_token();
+                    $res = $this->quickbook_create_customer($Qdata);
+                    if($res['status']){
+                        $customer->quickbook_customer_id = $res['message']->Id;
+                        $res_q = $this->quickbook_create_supplier($Qdata);
+                        if($res_q['status']){
+                            $customer->quickbook_supplier_id = $res_q['message']->Id;
+                        }
+                    }
+                }
             }
-        }
-        if(isset($status) && Input::get('status') == 'yes'){
-            $res_q = $this->quickbook_create_a_supplier($Qdata);
-            if($res_q['status']){
-                $customer->quickbook_a_supplier_id = $res_q['message']->Id;
-            }
-        } else{
-            $res = $this->quickbook_create_a_customer($Qdata);
-            if($res['status']){
-                $customer->quickbook_a_customer_id = $res['message']->Id;
+            if(isset($status) && Input::get('status') == 'yes'){
                 $res_q = $this->quickbook_create_a_supplier($Qdata);
                 if($res_q['status']){
                     $customer->quickbook_a_supplier_id = $res_q['message']->Id;
                 }
-            }
-            else{
-                $this->refresh_token_all();
+            } else{
                 $res = $this->quickbook_create_a_customer($Qdata);
                 if($res['status']){
                     $customer->quickbook_a_customer_id = $res['message']->Id;
@@ -556,99 +548,148 @@ public function update_cust_all_inc(){
                         $customer->quickbook_a_supplier_id = $res_q['message']->Id;
                     }
                 }
-            }
-        }*/
-        if (Input::has('status') && Input::get('status') != "") {
-            $customer->is_supplier = Input::get('status');
-        }
-        if (Input::has('company_name') && Input::get('company_name') != "") {
-            $customer->company_name = Input::get('company_name', false);
-        }
-        if (Input::has('gstin_number') && Input::get('gstin_number') != "") {
-            $customer->gstin_number = Input::get('gstin_number');
-        }
-        if (Input::has('contact_person') && Input::get('contact_person') != "") {
-            $customer->contact_person = Input::get('contact_person', false);
-        }
-        if (Input::has('address1') && Input::get('address1') != "") {
-            $customer->address1 = Input::get('address1', false);
-        }
-        if (Input::has('address2') && Input::get('address2') != "") {
-            $customer->address2 = Input::get('address2', false);
-        }
-        $customer->city = Input::get('city');
-        $customer->state = Input::get('state');
-        if (Input::has('zip') && Input::get('zip') != "") {
-            $customer->zip = Input::get('zip', false);
-        }
-        if (Input::has('email') && Input::get('email') != "") {
-            $customer->email = Input::get('email', false);
-            $users->email = Input::get('email', false);
-        }
-        $customer->tally_name = Input::get('tally_name');
-        $customer->phone_number1 = Input::get('phone_number1');
-        $users->mobile_number = Input::get('phone_number1');
-
-
-        if (Input::has('phone_number2') && Input::get('phone_number2') != "") {
-            $customer->phone_number2 = Input::get('phone_number2', false);
-            $users->phone_number = Input::get('phone_number2', false);
-        }
-        if (Input::has('username') && Input::get('username') != "") {
-            $customer->username = Input::get('username', false);
-        }
-        if (Input::has('credit_period') && Input::get('credit_period') != "") {
-            $customer->credit_period = Input::get('credit_period');
-        } else {
-            $customer->credit_period = 0;
-        }
-
-        if (Input::has('relationship_manager') && Input::get('relationship_manager') != "") {
-            $customer->relationship_manager = Input::get('relationship_manager');
-        }
-        
-        $customer->delivery_location_id = Input::get('delivery_location', false);
-
-        if (Input::has('password') && Input::get('password') != '') {
-            $customer->password = Hash::make(Input::get('password'));
-            $users->password = Hash::make(Input::get('password'));
-        }
-        $customer->customer_status = 'permanent';
-
-        if ($customer->save() && $users->save()) {
-            $product_category_id = Input::get('product_category_id');
-            if (isset($product_category_id)) {
-                foreach ($product_category_id as $key => $value) {
-                    if (Input::get('product_differrence')[$key] != '') {
-                        $product_difference = new CustomerProductDifference();
-                        $product_difference->product_category_id = $value;
-                        $product_difference->customer_id = $customer->id;
-                        $product_difference->difference_amount = Input::get('product_differrence')[$key];
-                        $product_difference->save();
+                else{
+                    $this->refresh_token_all();
+                    $res = $this->quickbook_create_a_customer($Qdata);
+                    if($res['status']){
+                        $customer->quickbook_a_customer_id = $res['message']->Id;
+                        $res_q = $this->quickbook_create_a_supplier($Qdata);
+                        if($res_q['status']){
+                            $customer->quickbook_a_supplier_id = $res_q['message']->Id;
+                        }
                     }
                 }
+            }*/
+            if (Input::has('status') && Input::get('status') != "") {
+                $customer->is_supplier = Input::get('status');
+            }
+            if (Input::has('company_name') && Input::get('company_name') != "") {
+                $customer->company_name = Input::get('company_name', false);
+            }
+            if (Input::has('gstin_number') && Input::get('gstin_number') != "") {
+                $customer->gstin_number = Input::get('gstin_number');
+            }
+            if (Input::has('contact_person') && Input::get('contact_person') != "") {
+                $customer->contact_person = Input::get('contact_person', false);
+            }
+            if (Input::has('address1') && Input::get('address1') != "") {
+                $customer->address1 = Input::get('address1', false);
+            }
+            if (Input::has('address2') && Input::get('address2') != "") {
+                $customer->address2 = Input::get('address2', false);
+            }
+            $customer->city = Input::get('city');
+            $customer->state = Input::get('state');
+            if (Input::has('zip') && Input::get('zip') != "") {
+                $customer->zip = Input::get('zip', false);
+            }
+            if (Input::has('email') && Input::get('email') != "") {
+                $customer->email = Input::get('email', false);
+                $users->email = Input::get('email', false);
+            }
+            $customer->tally_name = Input::get('tally_name');
+            $customer->phone_number1 = Input::get('phone_number1');
+            $users->mobile_number = Input::get('phone_number1');
+
+
+            if (Input::has('phone_number2') && Input::get('phone_number2') != "") {
+                $customer->phone_number2 = Input::get('phone_number2', false);
+                $users->phone_number = Input::get('phone_number2', false);
+            }
+            if (Input::has('username') && Input::get('username') != "") {
+                $customer->username = Input::get('username', false);
+            }
+            if (Input::has('credit_period') && Input::get('credit_period') != "") {
+                $customer->credit_period = Input::get('credit_period');
+            } else {
+                $customer->credit_period = 0;
             }
 
-            $customer_id = $customer->id;
+            if (Input::has('relationship_manager') && Input::get('relationship_manager') != "") {
+                $customer->relationship_manager = Input::get('relationship_manager');
+            }
+            
+            $customer->delivery_location_id = Input::get('delivery_location', false);
+
+            if (Input::has('password') && Input::get('password') != '') {
+                $customer->password = Hash::make(Input::get('password'));
+                $users->password = Hash::make(Input::get('password'));
+            }
+            $customer->customer_status = 'permanent';
+
+            if ($customer->save() && $users->save()) {
+                $product_category_id = Input::get('product_category_id');
+                if (isset($product_category_id)) {
+                    foreach ($product_category_id as $key => $value) {
+                        if (Input::get('product_differrence')[$key] != '') {
+                            $product_difference = new CustomerProductDifference();
+                            $product_difference->product_category_id = $value;
+                            $product_difference->customer_id = $customer->id;
+                            $product_difference->difference_amount = Input::get('product_differrence')[$key];
+                            $product_difference->save();
+                        }
+                    }
+                }
+
+                $customer_id = $customer->id;
 
 
-            /*
-              | ----------------------
-              | SEND SMS TO ALL ADMINS
-              | ----------------------
-             */
-            $input = Input::all();
-            $admins = User::where('role_id', '=', 4)->get();
-            $customer = Customer::with('manager')->find($customer_id);
+                /*
+                | ----------------------
+                | SEND SMS TO ALL ADMINS
+                | ----------------------
+                */
+                $input = Input::all();
+                $admins = User::where('role_id', '=', 4)->get();
+                $customer = Customer::with('manager')->find($customer_id);
 
-            if (count((array)$admins) > 0) {
-                foreach ($admins as $key => $admin) {
-                    $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
+                if (count((array)$admins) > 0) {
+                    foreach ($admins as $key => $admin) {
+                        $product_type = ProductType::find($request->input('product_type'));
+                        $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
+                        if (App::environment('development')) {
+                            $phone_number = Config::get('smsdata.send_sms_to');
+                        } else {
+                            $phone_number = $admin->mobile_number;
+                        }
+                        $msg = urlencode($str);
+                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                        if (SEND_SMS === true) {
+                            $ch = curl_init($url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_scraped_page = curl_exec($ch);
+                            curl_close($ch);
+                        }
+                    }
+                }
+
+                if (count((array)$customer) > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
+
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
-                        $phone_number = $admin->mobile_number;
+                        $phone_number = $customer->phone_number1;
+                    }
+
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+
+                if (count((array)$customer['manager']) > 0) {
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
+
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
@@ -659,55 +700,20 @@ public function update_cust_all_inc(){
                         curl_close($ch);
                     }
                 }
+
+                //         update sync table
+                $tables = ['customers', 'users'];
+                $ec = new WelcomeController();
+                $ec->set_updated_date_to_sync_table($tables);
+                /* end code */
+
+                return redirect('customers')->with('success', 'Customer Successfully added');
+            } else {
+                return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
             }
-
-            if (count((array)$customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
-
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer->phone_number1;
-                }
-
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-
-            if (count((array)$customer['manager']) > 0) {
-                $str = "Dear " . $customer['manager']->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new customer as " . Input::get('owner_name') . " kindly check. \nVIKAS ASSOCIATES";
-
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $customer['manager']->mobile_number;
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-
-            //         update sync table
-            $tables = ['customers', 'users'];
-            $ec = new WelcomeController();
-            $ec->set_updated_date_to_sync_table($tables);
-            /* end code */
-
-            return redirect('customers')->with('success', 'Customer Successfully added');
-        } else {
-            return Redirect::back()->withInput()->with('error', 'Some error occoured while saving customer');
+        }else{
+            $error_msg = $validator->messages();
+            return Redirect::back()->withInput()->withErrors($validator);
         }
     }
 
