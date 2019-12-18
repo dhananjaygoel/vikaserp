@@ -264,7 +264,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('delivery_difference', 'DeliveryLocationController@delivery_difference');
     Route::resource('customers', 'CustomerController');
     Route::get('get_city', 'CustomerController@get_city');
-    Route::resource('set_price', 'CustomerController@set_price');
+    Route::any('set_price/{id}', 'CustomerController@set_price');
     Route::resource('update_set_price', 'CustomerController@update_set_price');
     Route::get('bulk_set_price', 'CustomerController@bulk_set_price');
     Route::post('save_all_set_price', 'CustomerController@save_all_set_price');
