@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Event;
 use Memcached;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
+use Twilio\Rest\Client;
 
 class InquiryController extends Controller {
 
@@ -162,7 +163,7 @@ class InquiryController extends Controller {
     public function store(InquiryRequest $request) {
 
         $input_data = Input::all();
-        $sms_flag = 0;
+        $sms_flag = 1;
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
             if (count((array)$session_array) > 0) {
@@ -272,9 +273,10 @@ class InquiryController extends Controller {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count((array)$customer) > 0) {
+            $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+            if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M Y") . "\nYour inquiry has been logged for following:\n ";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
@@ -313,6 +315,21 @@ class InquiryController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                
+                // whatsapp testing code starts here
+                    $sid = 'AC405803610638a694e57432bf99043d49';
+                    $token = '7aec8d8780e37097db9f63b1ef55d915';
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918275187271",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
+                    print($message->sid);
+                // whatsapp testing code endse here
+
             }
 
             if (count((array)$customer['manager']) > 0) {
