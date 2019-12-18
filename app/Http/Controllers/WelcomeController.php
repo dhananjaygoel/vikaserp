@@ -44,6 +44,7 @@ use App\LoadedBy;
 use App\DeliveryChallan;
 use App\PurchaseChallan;
 use App\DeliveryChallanLoadedBy;
+use Twilio\TwiML\MessagingResponse;
 
 class WelcomeController extends Controller {
     /*
@@ -244,6 +245,23 @@ class WelcomeController extends Controller {
 //curl_close ($ch);
 //echo $server_output;
     }
+
+
+    public function send_reply(Request $request){
+        // require_once "vendor/autoload.php";
+
+        // Set the content-type to XML to send back TwiML from the PHP Helper Library
+        // header("content-type: text/xml");
+
+        $response = new MessagingResponse();
+        $response->message(
+            "Hey there! I'm using the Twilio PHP library to respond!"
+        );
+
+        echo $response;
+    }
+
+
 
     public function getToken(){
         require_once base_path('quickbook/vendor/autoload.php');

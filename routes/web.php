@@ -279,6 +279,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('vehicle-list', 'UsersController@get_do_vehicle_list');
     Route::get('pa-vehicle-list', 'UsersController@get_pa_vehicle_list');
     Route::get('reset_inventory', 'InventoryController@reset_minimal_and_opening');
+    Route::any('sendReply', 'WelcomeController@send_reply');
 
     Route::resource('pending_customers', 'PendingCustomerController');
     Route::resource('customer_manager', 'CustomerManagerController');
