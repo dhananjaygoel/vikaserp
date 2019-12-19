@@ -1984,14 +1984,14 @@ class DeliveryOrderController extends Controller {
 
     function checkpending_quantity($delivery_orders) {
 
-        if (count((array)$delivery_orders) > 0) {
+        if (count($delivery_orders) > 0) {
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
                 $delivery_order_present_shipping = 0;
                 $pending_order_temp = 0;
                 $pending_order = 0;
 //                dd($del_order['track_order_product']);
-                if (count((array)$del_order['delivery_product']) > 0) {
+                if (count($del_order['delivery_product']) > 0) {
                     foreach ($del_order['delivery_product'] as $popk => $popv) {
 
                         if (isset($popv)) {

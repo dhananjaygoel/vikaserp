@@ -297,7 +297,7 @@ class OrderController extends Controller {
 
 
     public function index(PlaceOrderRequest $request) {
-        ini_set('memory_limit','128M');
+        ini_set('memory_limit','256M');
 
         // $data['order_filter']=Input::get();
         if (Auth::user()->hasOldPassword()) {
@@ -450,36 +450,36 @@ class OrderController extends Controller {
 
 
         $all_territories = Territory::get();
-        if (Input::has('export_data')) {
-            $data = Input::all();
-            $is_approved = 'yes';
-            if ($data['order_status'] == 'pending') {
-                $order_status = 'pending';
-                $excel_sheet_name = 'Pending';
-                $excel_name = 'Order-Pending-' . date('dmyhis');
-            } elseif ($data['order_status'] == 'completed') {
-                $order_status = 'completed';
-                $excel_sheet_name = 'Completed';
-                $excel_name = 'Order-Completed-' . date('dmyhis');
-            } elseif ($data['order_status'] == 'approval') {
-                $is_approved = 'no';
-                $order_status = 'pending';
-                $excel_sheet_name = 'Approval';
-                $excel_name = 'Order-Pending-Approval' . date('dmyhis');
-            } elseif ($data['order_status'] == 'cancelled') {
-                $order_status = 'cancelled';
-                $excel_sheet_name = 'Cancelled';
-                $excel_name = 'Order-Cancelled-' . date('dmyhis');
-            }
-            $units = Units::all();
-            $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
-            $customers = Customer::orderBy('tally_name', 'ASC')->get();
-            Excel::create($excel_name, function($excel) use($allorders, $units, $delivery_location, $customers, $excel_sheet_name) {
-                $excel->sheet('Order-' . $excel_sheet_name, function($sheet) use($allorders, $units, $delivery_location, $customers) {
-                    $sheet->loadView('excelView.order', array('order_objects' => $allorders, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
-                });
-            })->export('xls');
-        }
+        // if (Input::has('export_data')) {
+        //     $data = Input::all();
+        //     $is_approved = 'yes';
+        //     if ($data['order_status'] == 'pending') {
+        //         $order_status = 'pending';
+        //         $excel_sheet_name = 'Pending';
+        //         $excel_name = 'Order-Pending-' . date('dmyhis');
+        //     } elseif ($data['order_status'] == 'completed') {
+        //         $order_status = 'completed';
+        //         $excel_sheet_name = 'Completed';
+        //         $excel_name = 'Order-Completed-' . date('dmyhis');
+        //     } elseif ($data['order_status'] == 'approval') {
+        //         $is_approved = 'no';
+        //         $order_status = 'pending';
+        //         $excel_sheet_name = 'Approval';
+        //         $excel_name = 'Order-Pending-Approval' . date('dmyhis');
+        //     } elseif ($data['order_status'] == 'cancelled') {
+        //         $order_status = 'cancelled';
+        //         $excel_sheet_name = 'Cancelled';
+        //         $excel_name = 'Order-Cancelled-' . date('dmyhis');
+        //     }
+        //     $units = Units::all();
+        //     $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        //     $customers = Customer::orderBy('tally_name', 'ASC')->get();
+            // Excel::create($excel_name, function($excel) use($allorders, $units, $delivery_location, $customers, $excel_sheet_name) {
+            //     $excel->sheet('Order-' . $excel_sheet_name, function($sheet) use($allorders, $units, $delivery_location, $customers) {
+            //         $sheet->loadView('excelView.order', array('order_objects' => $allorders, 'units' => $units, 'delivery_location' => $delivery_location, 'customers' => $customers));
+            //     });
+            // })->export('xls');
+        // }
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
@@ -1820,16 +1820,11 @@ class OrderController extends Controller {
             $order_quantity = 0;
             $delivery_order_quantity = 0;
 
-
             /* new */
             $delivery_order_products = (array)NULL;
-            if (isset($order['delivery_orders']) && count((array)$order['delivery_orders'])) {
+            if (isset($order['delivery_orders']) && count($order['delivery_orders'])) {
                 $delivery_order_products = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->where('order_type', '=', 'delivery_order')->get();
             }
-
-
-
-
 
             /* new */
             /* old */
@@ -1841,7 +1836,7 @@ class OrderController extends Controller {
             // }
             /* old */
 
-            if (count((array)$delivery_order_products) > 0) {
+            if (count($delivery_order_products) > 0) {
                 // echo "in del;";
                 // dd($delivery_order_products);
 
@@ -1903,7 +1898,7 @@ class OrderController extends Controller {
                     }
                 }
             }
-            if (count((array)$order['all_order_products']) > 0) {
+            if (count($order['all_order_products']) > 0) {
 
                 foreach ($order['all_order_products'] as $opk => $opv) {
                     /* new */
