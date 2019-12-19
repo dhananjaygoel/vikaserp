@@ -93,7 +93,7 @@
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Product differences have been successfully updated.
                         </div>
-                        @if(sizeof((array)$product_sub_cat) != 0)
+                        @if(sizeof($product_sub_cat) != 0)
                         <div class="table-responsive">
                             <form method="POST" id="save_all_product_sizes">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}" id="_token">

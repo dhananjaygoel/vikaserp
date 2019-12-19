@@ -131,7 +131,7 @@ class InventoryController extends Controller {
                 ->paginate(50);
         $inventory_newlist->setPath('inventory');
 
-        if (count((array)$inventory_newlist)) {
+        if (count($inventory_newlist)) {
 
             foreach ($inventory_newlist as $product_categoriy) {
                 $product_category_ids[] = $product_categoriy->product_sub_category_id;
