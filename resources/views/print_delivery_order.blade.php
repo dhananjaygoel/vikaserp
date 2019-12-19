@@ -107,12 +107,18 @@
                                 $is_gst = true;
                                 $hsn_det = \App\Hsn::where('hsn_code',$hsn_code)->first();
                                 $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
-                                // print_r($hsn_code);
+                                // echo '<pre>';print_r($gst_det);exit;
+                                // print_R($local_state);
                             }
                             ?>
                             @if(isset($is_gst) && $is_gst == true)
                                 @if($local_state)
-                                    {{isset($gst_det->sgst)?$gst_det->sgst:0 + isset($gst_det->cgst)?$gst_det->cgst:0}} %
+                                <?php   $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                        $gst_value = $sgst + $cgst;
+                                        // print_r($gst_value);
+                                 ?>
+                                    {{$gst_value}} %
                                 @else
                                     {{isset($gst_det->igst)?$gst_det->igst:0}} %
                                 @endif
