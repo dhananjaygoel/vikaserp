@@ -43,10 +43,10 @@ class ThicknessController extends Controller {
 	{
 		$thick = $request->input('thickness');
 		$diff = $request->input('difference');
-        // $this->validate($request, [
-        //     'thickness' => 'required|integer|unique:thickness,thickness'. ($thick ? ",$thick" : ''),
-        //     'difference' => 'required|integer',($diff ? ",$diff" : ''),
-		// ]);
+        $this->validate($request, [
+            'thickness' => 'required|integer',
+            'difference' => 'required|integer',
+		]);
 		if(Thickness::where('thickness','=',$thick)->where('diffrence','=',$diff)->count() > 0)
 		{
 			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
@@ -102,10 +102,10 @@ class ThicknessController extends Controller {
 		}
 		$thick = $request->input('thickness');
 		$diff = $request->input('difference');
-        // $this->validate($request, [
-        //     'thickness' => 'required|integer|unique:thickness,thickness',
-        //     'difference' => 'required|integer',
-        // ]);
+        $this->validate($request, [
+            'thickness' => 'required|integer',
+            'difference' => 'required|integer',
+        ]);
 		if(Thickness::where('thickness',$thick)->where('diffrence',$diff)->count() == 0)
 		{
        		Thickness::where('id',$id)->update([
