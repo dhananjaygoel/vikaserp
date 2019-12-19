@@ -276,11 +276,11 @@ class InquiryController extends Controller {
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M Y") . "\nYour inquiry has been logged for following:\n ";
+                $str = "Dear " . $customer->owner_name . "\nOn Dated " . date("j M Y") . "\nYour inquiry has been logged for following products:\n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
-                       $str1=  $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                       $str .= $product_data['name'] . " - " . $product_data['quantity'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
@@ -300,7 +300,7 @@ class InquiryController extends Controller {
                     }
                 }
 
-                $str .= " prices and availability will be contacted shortly \nVIKAS ASSOCIATES";
+                $str .= "Total quantity is ".$total_quantity.", prices and availability will be contacted shortly \nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -317,6 +317,7 @@ class InquiryController extends Controller {
                 }
                 
                 // whatsapp testing code starts here
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
                     $sid = 'AC405803610638a694e57432bf99043d49';
                     $token = '7aec8d8780e37097db9f63b1ef55d915';
                     $twilio = new Client($sid, $token);
@@ -327,7 +328,22 @@ class InquiryController extends Controller {
                             "from" => "whatsapp:+14155238886"
                         ]
                     );
+                    // $message = $twilio->messages
+                    // ->create("whatsapp:+919975003940",
+                    //     [
+                    //         "body" => $str,
+                    //         "from" => "whatsapp:+14155238886"
+                    //     ]
+                    // );
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918087847284",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
                     print($message->sid);
+                }
                 // whatsapp testing code endse here
 
             }
@@ -894,7 +910,7 @@ class InquiryController extends Controller {
      * find the product list base on the user inputs
      */
 
-//    public function fetch_products() {
+//    public function fetch_products_old() {
 //
 ////        $delivery_location = Input::get('delivery_location');
 //        $term = Input::get();
@@ -1064,32 +1080,32 @@ class InquiryController extends Controller {
                     $cust = 0;
                     if ($customer_id > 0) {
                         $customer = CustomerProductDifference::where('customer_id', $customer_id)->where('product_category_id', $product['product_category']->id)->first();
-                        if (count((array)$customer) > 0) {
+                        if (count($customer) > 0) {
                             $cust = $customer->difference_amount;
                         }
                     }
                     if($discount!="" && $discount>0 ){
                         if($discount_type=='discount'){
                             if($discount_unit=='fixed'){
-                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference - (float)$discount;
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
                             }elseif($discount_unit=='percent'){
-                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference - (((float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference)*(float)$discount/100);
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
                             }
                         }
                         elseif($discount_type=='premium'){
                             if($discount_unit=='fixed'){
-                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference + (float)$discount;
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
                             }elseif($discount_unit=='percent'){
-                                $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference + (((float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference)*(float)$discount/100);
+                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
                             }
                         }
                     }else{
-                        $product_price = (float)$product['product_category']->price + (float)$cust + (float)$location_diff + (float)$product->difference;
+                        $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference;
                     }
                     $data_array[] = [
                         'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
                         'id' => $product->id,
-                        'product_price' => $product_price,
+                        'product_price' => round($product_price,2),
                         'type_id'=>$product['product_category']['product_type']->id
                     ];
                 }
@@ -1237,7 +1253,7 @@ class InquiryController extends Controller {
                     $data_array[] = [
                         'value' => $product->alias_name,
                         'id' => $product->id,
-                        'product_price' => $product['product_category']->price + $cust + Input::get('location_difference') + $product->difference,
+                        'product_price' => round(($product['product_category']->price + $cust + Input::get('location_difference') + $product->difference),2),
                         'type_id'=>$product['product_category']->product_type_id
                     ];
                 }

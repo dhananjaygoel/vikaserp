@@ -314,6 +314,10 @@
                                 <label for="inquiry_remark">Remark</label>
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
+                            <div class="checkbox customer_select_order">
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
+                            </div>
 <!--                            <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>
                             <hr>-->
                             <div>
