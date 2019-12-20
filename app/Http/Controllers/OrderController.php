@@ -408,17 +408,17 @@ class OrderController extends Controller {
         }
         if (Input::has('flag') && Input::get('flag') == 'true') {
             if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders.delivery_product')->orderBy('flaged', 'desc')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
             }
             if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
+                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders.delivery_product')->orderBy('flaged', 'desc')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         } else {
             if (Auth::user()->role_id <> 5) {
-                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby', 'delivery_orders')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
+                $allorders = $q->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'createdby', 'delivery_orders.delivery_product')->orderBy('updated_at', 'desc')->paginate(20); // included `delivery_orders`
             }
             if (Auth::user()->role_id == 5) {
-                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
+                $allorders = $q->where('customer_id', '=', $cust->id)->with('all_order_products', 'customer', 'delivery_location', 'order_cancelled', 'delivery_orders.delivery_product')->orderBy('created_at', 'desc')->paginate(20); // included `delivery_orders`
             }
         }
         $users = User::all();
@@ -1815,108 +1815,41 @@ class OrderController extends Controller {
      */
 
     function checkpending_quantity($allorders) {
-
         foreach ($allorders as $key => $order) {
             $order_quantity = 0;
             $delivery_order_quantity = 0;
-
-            /* new */
-            $delivery_order_products = (array)NULL;
-            if (isset($order['delivery_orders']) && count($order['delivery_orders'])) {
-                $delivery_order_products = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->where('order_type', '=', 'delivery_order')->get();
-            }
-
-            /* new */
-            /* old */
-            // $delievry_order_details = DeliveryOrder::where('order_id', '=', $order->id)->first();
-            // if (!empty($delievry_order_details)) {
-            //     $delivery_order_products = AllOrderProducts::where('from', '=', $delievry_order_details->order_id)->where('order_type', '=', 'delivery_order')->get();
-            // } else {
-            //     $delivery_order_products = NULL;
-            // }
-            /* old */
-
+            $delivery_order_products = $order['delivery_orders'];
             if (count($delivery_order_products) > 0) {
-                // echo "in del;";
-                // dd($delivery_order_products);
-
-                foreach ($delivery_order_products as $dopk => $dopv) {
-                    //new
-                    $product_size = $dopv['product_sub_category'];
-                    //new
-                    /* old */
-
-                    //$product_size = ProductSubCategory::find($dopv->product_category_id);
-
-                    /* old */
-//                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
-                    $productsubcat = App\ProductCategory::find($product_size->product_category_id);
-                    if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
-                        /*if($product_size->length_unit == "ft"){
-                            $delivery_order_quantity = $dopv->quantity * $product_size->weight * length;
-                        }
-                        else{
-                            $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305)*(length/305);
-                        }*/
-
-                        if ($dopv->unit_id == 1) {
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
-                        } elseif ($dopv->unit_id == 2) {
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
-                        } elseif ($dopv->unit_id == 3) {
-                            if ($product_size->standard_length) {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
-                            } else {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
+                foreach ($delivery_order_products as $doprod) {
+                    if(isset($doprod['all_order_products'])){
+                        foreach($doprod['all_order_products'] as $dopv){
+                            $product_size = $dopv['product_sub_category'];
+                            if ($dopv->unit_id == 1) {
+                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
+                            } elseif ($dopv->unit_id == 2) {
+                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
+                            } elseif ($dopv->unit_id == 3) {
+                                if ($product_size->standard_length) {
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
+                                } else {
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
+                                }
                             }
-                        }
-                        elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
-                        }
-                        elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
-                        }
-                    }
-                    else{
-                        if ($dopv->unit_id == 1) {
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
-                        } elseif ($dopv->unit_id == 2) {
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
-                        } elseif ($dopv->unit_id == 3) {
-                            if ($product_size->standard_length) {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
-                            } else {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
+                            elseif($dopv->unit_id == 4) {
+                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
                             }
-                        }
-                        elseif($dopv->unit_id == 4) {
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
-                        }
-                        elseif($dopv->unit_id == 5){
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
+                            elseif($dopv->unit_id == 5){
+                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
+                            }
                         }
                     }
                 }
             }
             if (count($order['all_order_products']) > 0) {
-
                 foreach ($order['all_order_products'] as $opk => $opv) {
-                    /* new */
-                    if (isset($opv['product_sub_category'])) {
-                        $product_size = $opv['product_sub_category'];
-                    } else {
-                        $product_size = ProductSubCategory::find($opv->product_category_id);
-                    }
-
+                    $product_size = $opv['product_sub_category'];
                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
-                        /*if($product_size->length_unit == "ft"){
-                            $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
-                        }
-                        else{
-                            $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
-                        }*/
-
                         if ($opv->unit_id == 1) {
                             $order_quantity = (float)$order_quantity + (float)$opv->quantity;
                         } elseif ($opv->unit_id == 2) {
@@ -1934,7 +1867,7 @@ class OrderController extends Controller {
                         elseif($opv->unit_id == 5){
                             $order_quantity = (float)$order_quantity + (float)$opv->quantity * ((float)$product_size->weight) * ((float)$opv->length/305);
                         }
-                    }
+                    } 
                     else{
                         if ($opv->unit_id == 1) {
                             $order_quantity = (float)$order_quantity + (float)$opv->quantity;
@@ -1945,7 +1878,6 @@ class OrderController extends Controller {
                                 $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
                             } else {
                                 $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
-                                // dd($order_quantity);
                             }
                         }
                         elseif($opv->unit_id == 4) {
@@ -1954,26 +1886,151 @@ class OrderController extends Controller {
                         elseif($opv->unit_id == 5){
                             $order_quantity = (float)$order_quantity + (float)$opv->quantity * ((float)$product_size->weight) * ((float)$opv->length/305);
                         }
-                        // echo $delivery_order_quantity."-->".$order_quantity."<--;<br>";
                     }
-
-                    /* new */
-                    /* old */
-                    //$product_size = ProductSubCategory::find($opv->product_category_id);
-//                    $order_quantity = $order_quantity + $opv->quantity;
-
-                    /* old */
-
                 }
             }
-
-           // $pr_s_c = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
             $allorders[$key]['total_quantity'] = $order_quantity;
-
         }
         return $allorders;
     }
+
+
+
+
+//                     //new
+//                     $product_size = $dopv['product_sub_category'];
+//                     //new
+//                     /* old */
+
+//                     //$product_size = ProductSubCategory::find($dopv->product_category_id);
+
+//                     /* old */
+// //                   $delivery_order_quantity = $delivery_order_quantity + $dopv->quantity;
+//                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
+//                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
+//                         /*if($product_size->length_unit == "ft"){
+//                             $delivery_order_quantity = $dopv->quantity * $product_size->weight * length;
+//                         }
+//                         else{
+//                             $delivery_order_quantity = $dopv->quantity * ($product_size->weight/305)*(length/305);
+//                         }*/
+
+//                         if ($dopv->unit_id == 1) {
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
+//                         } elseif ($dopv->unit_id == 2) {
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
+//                         } elseif ($dopv->unit_id == 3) {
+//                             if ($product_size->standard_length) {
+//                                 $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
+//                             } else {
+//                                 $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
+//                             }
+//                         }
+//                         elseif($dopv->unit_id == 4) {
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
+//                         }
+//                         elseif($dopv->unit_id == 5){
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
+//                         }
+//                     }
+//                     else{
+//                         if ($dopv->unit_id == 1) {
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity;
+//                         } elseif ($dopv->unit_id == 2) {
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
+//                         } elseif ($dopv->unit_id == 3) {
+//                             if ($product_size->standard_length) {
+//                                 $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
+//                             } else {
+//                                 $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
+//                             }
+//                         }
+//                         elseif($dopv->unit_id == 4) {
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight * (float)$dopv->length;
+//                         }
+//                         elseif($dopv->unit_id == 5){
+//                             $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * ((float)$product_size->weight) * ((float)$dopv->length/305);
+//                         }
+//                     }
+//                 }
+//             }
+//             if (count($order['all_order_products']) > 0) {
+
+//                 foreach ($order['all_order_products'] as $opk => $opv) {
+//                     /* new */
+//                     if (isset($opv['product_sub_category'])) {
+//                         $product_size = $opv['product_sub_category'];
+//                     } else {
+//                         $product_size = ProductSubCategory::find($opv->product_category_id);
+//                     }
+
+//                     $productsubcat = App\ProductCategory::find($product_size->product_category_id);
+//                     if($productsubcat->product_type_id == 3 && $product_size->length_unit != ""){
+//                         /*if($product_size->length_unit == "ft"){
+//                             $order_quantity = $order_quantity + $opv->quantity * $product_size->weight;
+//                         }
+//                         else{
+//                             $order_quantity = $order_quantity + $opv->quantity * ($product_size->weight/305);
+//                         }*/
+
+//                         if ($opv->unit_id == 1) {
+//                             $order_quantity = (float)$order_quantity + (float)$opv->quantity;
+//                         } elseif ($opv->unit_id == 2) {
+//                             $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
+//                         } elseif ($opv->unit_id == 3) {
+//                             if ($product_size->standard_length) {
+//                                 $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
+//                             } else {
+//                                 $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
+//                             }
+//                         }
+//                         elseif($opv->unit_id == 4) {
+//                             $order_quantity = (float)$order_quantity + (float)$opv->quantity * (float)$product_size->weight * (float)$opv->length;
+//                         }
+//                         elseif($opv->unit_id == 5){
+//                             $order_quantity = (float)$order_quantity + (float)$opv->quantity * ((float)$product_size->weight) * ((float)$opv->length/305);
+//                         }
+//                     }
+//                     else{
+//                         if ($opv->unit_id == 1) {
+//                             $order_quantity = (float)$order_quantity + (float)$opv->quantity;
+//                         } elseif ($opv->unit_id == 2) {
+//                             $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
+//                         } elseif ($opv->unit_id == 3) {
+//                             if ($product_size->standard_length) {
+//                                 $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
+//                             } else {
+//                                 $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
+//                                 // dd($order_quantity);
+//                             }
+//                         }
+//                         elseif($opv->unit_id == 4) {
+//                             $order_quantity = (float)$order_quantity + (float)$opv->quantity * (float)$product_size->weight * (float)$opv->length;
+//                         }
+//                         elseif($opv->unit_id == 5){
+//                             $order_quantity = (float)$order_quantity + (float)$opv->quantity * ((float)$product_size->weight) * ((float)$opv->length/305);
+//                         }
+//                         // echo $delivery_order_quantity."-->".$order_quantity."<--;<br>";
+//                     }
+
+//                     /* new */
+//                     /* old */
+//                     //$product_size = ProductSubCategory::find($opv->product_category_id);
+// //                    $order_quantity = $order_quantity + $opv->quantity;
+
+//                     /* old */
+
+//                 }
+//             }
+
+//            // $pr_s_c = AllOrderProducts::with('product_sub_category')->where('from', '=', $order->id)->get();
+//             $allorders[$key]['pending_quantity'] = ($delivery_order_quantity >= $order_quantity) ? 0 : ($order_quantity - $delivery_order_quantity);
+//             $allorders[$key]['total_quantity'] = $order_quantity;
+
+//         }
+//         return $allorders;
+//     }
 
     /*
      * Functioanlity: Get size from product name
