@@ -2186,7 +2186,7 @@ class OrderController extends Controller {
                 ->where('is_approved', 'no')
                 ->get();
 
-        if (count((array)$is_approve)) {
+        if (count($is_approve)) {
             return Redirect::to('orders')->withInput()->with('error', 'Order have to be approved by Admin.');
         }
 
