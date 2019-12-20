@@ -301,20 +301,19 @@ class InquiryController extends Controller {
                 }
 
                 $str .= "Total quantity is ".$total_quantity.", prices and availability will be contacted shortly \nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
-                    // $phone_number = $customer->phone_number1;
-                    $phone_number = Config::get('smsdata.send_sms_to');
+                    $phone_number = $customer->phone_number1;
+                    // $phone_number = Config::get('smsdata.send_sms_to');
                 }
-// dd($phone_number);
+dd($phone_number);
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
                 if (SEND_SMS === true) {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
-                    dd($url);
                     curl_close($ch);
                 }
                 
