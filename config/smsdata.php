@@ -1,11 +1,11 @@
 <?php
 
 return [
-    // 'profile_id' => '20085313',
-    // 'password' => 'its1782',
-    // 'sender_id' => 'VikasPipes',
-    // 'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
-    // 'send' => true,
+    'profile_id' => '20085313',
+    'password' => 'Its1782',
+    'sender_id' => 'VikasPipes',
+    'url' => 'http://bulksmspune.mobi/sendurlcomma.aspx',
+    'send' => true,
 //    'send_sms_to' => '9373312962', // Changed on 02-09-2015
 //    'send_sms_to' => '9158344455', // Previous upto 02-09-2015
 //    'send_sms_to' => '9975755595', //testing 02-09-2015
@@ -17,17 +17,10 @@ return [
 //      'send_sms_to' => '8983886688', //Changed on 25-11-2015
 //    'send_sms_to' => '9975003940', //testing api on 19-01-17
     // 'send_sms_to' => '2069701155', //testing api on 19-01-17
-    // 'send_sms_to' => '9429786848', //testing api on 19-01-17
-//     'send_sms_to' => '8697193215', //testing api on 19-01-17
-//     'emailData' => array(
-// //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
-//         'email' => 'abhimanipal@gmail.com',
-//         'name' => 'Abhishekh'
-//     )
-
-    'apiKey'=> 'VawIU2LJQUG3bQkVIteMLw==',
-    // 'url'=> 'https://platform.clickatell.com/messages/http/send',
-    'url'=> 'https://platform.clickatell.com/messages',
-    'send' => true,
-    'send_sms_to'=> '+918275187271'
+    'send_sms_to' => '8275187271', //testing api on 19-01-17
+    'emailData' => array(
+//        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
+        'email' => 'rakshiya.siddiqui@alphalogiclimited.com',
+        'name' => 'Rakshiya'
+    )
 ];
