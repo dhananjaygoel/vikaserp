@@ -2226,8 +2226,13 @@ class DeliveryChallanController extends Controller {
     // }
 
     public function exportDeliveryChallanBasedOnStatus() {
-        
-        return Excel::download(new DCExport, 'DeliveryChallan-Pending.xls');
+        $data = Input::all();
+        if ($data['delivery_order_status'] == 'pending') {
+            $excel_name = '-Pending-' . date('dmyhis');
+        } elseif ($data['delivery_order_status'] == 'completed') {
+            $excel_name = '-Completed-' . date('dmyhis');
+        }
+        return Excel::download(new DCExport, 'DeliveryChallan'.$excel_name.'.xls');
     }
 
     function checkpending_quantity1($delivery_orders) {
