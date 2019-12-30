@@ -578,7 +578,7 @@ class DeliveryChallanController extends Controller {
         // echo '<pre>';
         // print_r($tasked);
         // exit;
-        $sms_flag = 0;
+        $sms_flag = 1;
         if (!isset($input_data['grand_total']) || $input_data['grand_total'] == '') {
             return Redirect::back()->with('validation_message', 'No Value Updated. Please update something');
         }
@@ -853,8 +853,9 @@ class DeliveryChallanController extends Controller {
 
             $customer_id = $allorder->customer_id;
             $customer = Customer::with('manager')->find($customer_id);
+            $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($sms_flag == 1) {
-                if (count((array)$customer) > 0) {
+                if ($cust_count > 0) {
 
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been edited as follows ";
@@ -870,19 +871,35 @@ class DeliveryChallanController extends Controller {
                             ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
