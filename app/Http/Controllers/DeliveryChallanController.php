@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use QuickBooksOnline\API\Data\IPPSalesItemLineDetail;
 use QuickBooksOnline\API\Data\IPPTaxLineDetail;
+use Twilio\Rest\Client;
 
 class DeliveryChallanController extends Controller {
 
@@ -1685,11 +1686,13 @@ class DeliveryChallanController extends Controller {
         }
         /**/
         $send_sms = Input::get('send_sms');
+        $send_whatsapp = Input::get('send_whatsapp');
         if ($sms_flag == 1) {
-            if ($send_sms == 'true') {
+            // if ($send_sms == 'true') {
                 $customer_id = $allorder->customer_id;
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count((array)$customer) > 0) {
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been dispatched as follows ";
                     foreach ($input_data as $product_data) {
@@ -1698,10 +1701,10 @@ class DeliveryChallanController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Drv No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
+                            ",\n Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                            ",\n Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ",\n Amount " . $allorder->grand_price .
+                            ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
                     if (App::environment('development')) {
@@ -1711,12 +1714,27 @@ class DeliveryChallanController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && $send_sms == 'true') {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if($send_whatsapp == "true"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
@@ -1737,7 +1755,7 @@ class DeliveryChallanController extends Controller {
                         curl_close($ch);
                     }
                 }
-            }
+            // }
         }
         //         update sync table
         $tables = ['delivery_challan', 'all_order_products'];

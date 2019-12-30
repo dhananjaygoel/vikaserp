@@ -449,8 +449,12 @@
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
                         <!--<button type="button" class="btn btn-primary btn_inquiry_to_order_sms" id="add_inquiry_to_order_sendSMS" >Save and Send SMS</button>-->
-                        <div class="checkbox">
+                        <!-- <div class="checkbox">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
+                        </div> -->
+                        <div class="checkbox customer_select_order">
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
                         </div>
                         <hr>
                         <div>

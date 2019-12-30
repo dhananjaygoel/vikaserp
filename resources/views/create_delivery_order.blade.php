@@ -324,6 +324,10 @@
                             </div>
                         </div>
                         <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
+                        <div class="checkbox customer_select_order">
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
+                        </div>
                         <hr>
                         <div >
                             <button type="submit" class="btn btn-primary form_button_footer btn_order_to_delorder" id="final-submit">Submit</button>

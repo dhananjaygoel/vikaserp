@@ -842,14 +842,20 @@ $('.print_delivery_order').click(function () {
     $('.print_delivery_order').text('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
+    var send_whatsapp = '';
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
 
+    if ($("#checkwhatsapp").is(':checked'))
+        send_whatsapp = true;  // checked
+    else
+        send_whatsapp = false;  // unchecked
+
     $.ajax({
         type: "GET",
-        data: {empty_truck_weight:empty_truck_weight,vehicle_number:vehicle_number,customer_type:customer_type},
+        data: {send_whatsapp:send_whatsapp,empty_truck_weight:empty_truck_weight,vehicle_number:vehicle_number,customer_type:customer_type},
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');
@@ -887,12 +893,20 @@ $('.print_delivery_challan').click(function () {
     $('.print_delivery_challan').html('Please wait..').prop('disabled', 'disabled');
     var base_url = $('#baseurl').attr('name');
     var send_sms = '';
+    var send_whatsapp = '';
     if ($("#checksms").is(':checked'))
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
+
+    if ($("#checkwhatsapp").is(':checked'))
+        send_whatsapp = true;  // checked
+    else
+        send_whatsapp = false;  // unchecked
+
     $.ajax({
         type: "GET",
+        data: {send_whatsapp:send_whatsapp},
         url: base_url + '/print_delivery_challan/' + $('#print_delivery_challan').val() + '?send_sms=' + send_sms,
         success: function (data) {
             $('#print_challan').modal('hide');

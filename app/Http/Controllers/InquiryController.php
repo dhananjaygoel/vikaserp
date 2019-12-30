@@ -308,7 +308,7 @@ class InquiryController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
@@ -334,14 +334,14 @@ class InquiryController extends Controller {
                     //         "from" => "whatsapp:+14155238886"
                     //     ]
                     // );
-                    $message = $twilio->messages
-                    ->create("whatsapp:+918087847284",
-                        [
-                            "body" => $str,
-                            "from" => "whatsapp:+14155238886"
-                        ]
-                    );
-                    print($message->sid);
+                    // $message = $twilio->messages
+                    // ->create("whatsapp:+918087847284",
+                    //     [
+                    //         "body" => $str,
+                    //         "from" => "whatsapp:+14155238886"
+                    //     ]
+                    // );
+                    // print($message->sid);
                 }
                 // whatsapp testing code endse here
 
@@ -357,7 +357,7 @@ class InquiryController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
@@ -432,7 +432,7 @@ class InquiryController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
@@ -448,7 +448,7 @@ class InquiryController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
@@ -517,13 +517,17 @@ class InquiryController extends Controller {
         $input_data = Input::all();
         // print_r($input_data['product']);
         // exit;
-        $sms_flag = 0;
+        $sms_flag = 1;
         if (Session::has('forms_edit_inquiry')) {
             $session_array = Session::get('forms_edit_inquiry');
-            if (count((array)$session_array) > 0) {
-                if (in_array($input_data['form_key'], (array)$session_array)) {
-                    // return Redirect::back()->with('flash_message_error', 'This inquiry is already updated. Please refresh the page');
-                    return Redirect::back()->with('flash_message', 'Inquiry updated successfully');
+            if (count($session_array) > 0) {
+                if (in_array($input_data['form_key'], $session_array)) {
+                    if(Session::has('flash_success_message') == 'Inquiry details successfully modified.'){
+                        return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully modified.');
+                    }else{
+                    return Redirect::back()->with('flash_message_error', 'This inquiry is already updated. Please refresh the page');
+                    // return Redirect::back()->with('flash_message', 'Inquiry updated successfully');
+                    }
                 } else {
                     array_push($session_array, $input_data['form_key']);
                     Session::put('forms_edit_inquiry', $session_array);
@@ -675,7 +679,8 @@ class InquiryController extends Controller {
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count((array)$customer) > 0) {
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items.";
                     foreach ($input_data['product'] as $product_data) {
@@ -685,19 +690,38 @@ class InquiryController extends Controller {
                         }
                     }
                     $str .= "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
+
+            
 
                     if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
@@ -708,7 +732,7 @@ class InquiryController extends Controller {
                         }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true) {
+                        if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                             $ch = curl_init($url);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
@@ -719,7 +743,8 @@ class InquiryController extends Controller {
 //            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             } else {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count((array)$customer) > 0) {
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
                     $total_quantity = '';
                     $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for foll.";
                     foreach ($input_data['product'] as $product_data) {
@@ -729,19 +754,35 @@ class InquiryController extends Controller {
                         }
                     }
                     $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
 
                     if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
@@ -752,7 +793,7 @@ class InquiryController extends Controller {
                         }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true) {
+                        if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                             $ch = curl_init($url);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
@@ -811,14 +852,14 @@ class InquiryController extends Controller {
                         }
                     }
                     $str .= "\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
@@ -834,7 +875,7 @@ class InquiryController extends Controller {
                         }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true) {
+                        if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                             $ch = curl_init($url);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
@@ -1355,14 +1396,15 @@ class InquiryController extends Controller {
                     ->first();
 
             $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->where('inquiry_status', '<>', 'Completed')->Where('customer_id', '=', $cust->id)->first();
+            $inquiry_count = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->where('inquiry_status', '<>', 'Completed')->Where('customer_id', '=', $cust->id)->count();
         }
 
         if (Auth::user()->role_id <> 5) {
             $inquiry = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->where('inquiry_status', '<>', 'Completed')->first();
+            $inquiry_count = Inquiry::where('id', '=', $id)->with('inquiry_products.unit', 'inquiry_products.inquiry_product_details', 'customer', 'createdby')->where('inquiry_status', '<>', 'Completed')->count();
         }
 
-
-        if (count((array)$inquiry) < 1) {
+        if ($inquiry_count < 1) {
             return redirect('inquiry')->with('flash_message', 'Please select other inquiry, order is generated for this inquiry.');
         }
         // echo '<pre>';
@@ -1383,7 +1425,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
-        $sms_flag = 0;
+        $sms_flag = 1;
         $inquiry = Inquiry::find($id);
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
@@ -1521,7 +1563,8 @@ class InquiryController extends Controller {
 //      if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count((array)$customer) > 0) {
+            $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+            if ($cust_count > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour order has been logged for following \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -1546,7 +1589,7 @@ class InquiryController extends Controller {
                     }
                 }
                 $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
@@ -1554,12 +1597,27 @@ class InquiryController extends Controller {
                 $msg = urlencode($str);
 //                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                // whatsapp code starts here
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $sid = 'AC405803610638a694e57432bf99043d49';
+                    $token = '7aec8d8780e37097db9f63b1ef55d915';
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918275187271",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
+                    // print($message->sid);
+                }
+                // whatsapp testing code endse here
             }
             if (count((array)$customer['manager']) > 0) {
                 $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . " '" . round($total_quantity, 2) . "'. Kindly check. Vikas Associates";
@@ -1572,7 +1630,7 @@ class InquiryController extends Controller {
 //                $url = SMS_URL . "?user = " . PROFILE_ID . "&pwd = " . PASS . "&senderid = " . SENDER_ID . "&mobileno = " . $phone_number . "&msgtext = " . $msg . "&smstype = 0";
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
 
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);

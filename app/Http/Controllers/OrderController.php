@@ -34,6 +34,7 @@ use Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Territory;
 use App\TerritoryLocation;
+use Twilio\Rest\Client;
 
 class OrderController extends Controller {
 
@@ -544,11 +545,12 @@ class OrderController extends Controller {
     public function store(PlaceOrderRequest $request) {
 
         $input_data = Input::all();
-        $sms_flag = 0;
+        $sms_flag = 1;
         if (Session::has('forms_order')) {
             $session_array = Session::get('forms_order');
+            // dd($session_array);
             if ((count($session_array)) > 0) {
-                if (in_array($input_data['form_key'], (array)$session_array)) {
+                if (in_array($input_data['form_key'], $session_array)) {
                     if(Session::has('flash_message') == 'Order details successfully added.'){
                         return redirect('orders')->with('flash_message', 'Order details successfully added.');
                     }else{
@@ -708,7 +710,8 @@ class OrderController extends Controller {
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
-            if (count((array)$customer) > 0) {
+            $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+            if ($cust_count > 0) {
                 $total_quantity = '';
                 $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been created as following \n";
                 foreach ($input_data['product'] as $product_data) {
@@ -733,18 +736,31 @@ class OrderController extends Controller {
                     }
                 }
                 $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
+                }
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $sid = 'AC405803610638a694e57432bf99043d49';
+                    $token = '7aec8d8780e37097db9f63b1ef55d915';
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918275187271",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
+                    // print($message->sid);
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
@@ -755,7 +771,7 @@ class OrderController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
@@ -900,10 +916,10 @@ class OrderController extends Controller {
     public function update($id, PlaceOrderRequest $request) {
 
         $input_data = Input::all();
-        $sms_flag = 0;
+        $sms_flag = 1;
         if (Session::has('forms_edit_order')) {
             $session_array = Session::get('forms_edit_order');
-            if (count((array)$session_array) > 0) {
+            if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
                     if(Session::has('flash_message') == 'Order details successfully modified.'){
                         return redirect('orders')->with('flash_message', 'Order details successfully modified.');
@@ -1083,7 +1099,8 @@ class OrderController extends Controller {
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count((array)$customer) > 0) {
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nAdmin has approved your order for following items\n";
                     foreach ($input_data['product'] as $product_data) {
@@ -1109,19 +1126,37 @@ class OrderController extends Controller {
                         }
                     }
                     $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
+
                     if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has approved an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
@@ -1142,7 +1177,8 @@ class OrderController extends Controller {
 //            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             } else {
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count((array)$customer) > 0) {
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been edited and changed as following \n";
                     foreach ($input_data['product'] as $product_data) {
@@ -1167,19 +1203,36 @@ class OrderController extends Controller {
                         }
                     }
                     $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
+
                     if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited and changed an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
@@ -1189,7 +1242,7 @@ class OrderController extends Controller {
                         }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true) {
+                        if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                             $ch = curl_init($url);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
@@ -1782,6 +1835,70 @@ class OrderController extends Controller {
             if ($present_shipping == $total_qty || $present_shipping >= $total_qty) {
                 Order::where('id', '=', $id)->update(array('order_status' => 'completed'));
             }
+            $sms_flag = 1;
+            //send sms
+            $customer_id = $input_data['customer_id'];
+            if ($sms_flag == 1) {
+                $customer = Customer::with('manager')->find($customer_id);
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
+                    $total_quantity = '';
+                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour order has been successfully converted to Delivery order for following items.";
+                    foreach ($input_data['product'] as $product_data) {
+                        if ($product_data['name'] != "") {
+                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                        }
+                    }
+                    $str .= "\nVIKAS ASSOCIATES";
+                    if (App::environment('local')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer->phone_number1;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
+                }
+                if (count((array)$customer['manager']) > 0) {
+                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has been conerted an order to delivery order for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
+            //send sms ends
 
             /* inventory code */
             $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $delivery_order_id)->where('order_type', 'delivery_order')->get();

@@ -525,8 +525,12 @@
                             <label for="order_remark">Remark:</label>
                             <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{$order->remarks}}</textarea>
                         </div>
-                        <div class="checkbox customer_select" style="display: none">
+                        <!-- <div class="checkbox customer_select" style="display: none">
                             <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
+                        </div> -->
+                        <div class="checkbox customer_select_order">
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
                         </div>
                         <?php if (!isset($is_approval['way'])) { ?>
 <!--                            <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_edit_order_sms" id="edit_order_sendSMS" >Save and Send SMS</button>

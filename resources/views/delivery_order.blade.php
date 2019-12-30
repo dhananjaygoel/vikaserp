@@ -455,7 +455,8 @@
                                                     <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
                                                 </div>
                                                 <div class="checkbox col-md-12">
-                                                    <label><input type="checkbox" id="checksms" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
+                                                    <label style="margin-right:10px;"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                                    <label><input type="checkbox" id="checksms" value="" checked><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <hr>

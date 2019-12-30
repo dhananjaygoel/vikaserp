@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\File;
 use App\Repositories\DropboxStorageRepository;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
+use Twilio\Rest\Client;
 
 class DeliveryOrderController extends Controller {
     /*
@@ -124,14 +125,17 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->orderBy('created_at', 'desc');
         }
-//        $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
+        // print_r(date("Y-m-d h:i:s a", time()));
+    //    $delivery_data = $q->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')->paginate(20);
         $delivery_data = $q
                 ->whereHas('delivery_product',function($query){
                     $query->where('present_shipping','>', '0');
                 })->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')
                 ->paginate(20);
 
-        //dd($delivery_data->toArray());
+        // print(date("Y-m-d h:i:s a", time()));
+        // print($delivery_data['track_do_product']);
+        // dd($delivery_data->toArray());
 
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
@@ -332,10 +336,10 @@ class DeliveryOrderController extends Controller {
 
         $input_data = Input::all();
 
-        $sms_flag = 0;
+        $sms_flag = 1;
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
-            if (count((array)$session_array) > 0) {
+            if (count($session_array) > 0) {
                 if (in_array($input_data['form_key'], (array)$session_array)) {
                     if(Session::has('success') == 'Delivery order details successfully updated.'){
                         return redirect('delivery_order')->with('success', 'Delivery order details successfully updated.');
@@ -346,10 +350,11 @@ class DeliveryOrderController extends Controller {
                     //  $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
                     // return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
 
-                } else {
-                    array_push($session_array, $input_data['form_key']);
-                    Session::put('forms_edit_delivery_order', $session_array);
-                }
+                } 
+                // else {
+                //     array_push($session_array, $input_data['form_key']);
+                //     Session::put('forms_edit_delivery_order', $session_array);
+                // }
             }
         } else {
             $forms_array = [];
@@ -508,8 +513,9 @@ class DeliveryOrderController extends Controller {
         $total_quantity = 0;
         $customer_id = $delivery_order->customer_id;
         $customer = Customer::with('manager')->find($customer_id);
+        $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
         if ($sms_flag == 1) {
-            if (count((array)$customer) > 0) {
+            if ($cust_count > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
@@ -523,19 +529,35 @@ class DeliveryOrderController extends Controller {
                 $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
 
 
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                // whatsapp code starts here
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $sid = 'AC405803610638a694e57432bf99043d49';
+                    $token = '7aec8d8780e37097db9f63b1ef55d915';
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918275187271",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
+                    
+                    // print($message->sid);
+                }
+                // whatsapp testing code endse here
             }
             if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
@@ -558,7 +580,7 @@ class DeliveryOrderController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
@@ -1769,7 +1791,7 @@ class DeliveryOrderController extends Controller {
         }
 
         $current_date = date("m/d/");
-        $sms_flag = 0;
+        $sms_flag = 1;
         set_time_limit(0);
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
@@ -1848,13 +1870,15 @@ class DeliveryOrderController extends Controller {
         /**/
 
         $send_sms = Input::get('send_sms');
+        $send_whatsapp = Input::get('send_whatsapp');
         if ($sms_flag == 1) {
-            if ($send_sms == 'true') {
+            // if ($send_sms == 'true' ) {
                 $customer_id = $delivery_data->customer_id;
                 $customer = Customer::with('manager')->find($customer_id);
-                if (count((array)$customer) > 0) {
+                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+                if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been created as follows\n";
+                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been printed as follows\n";
                     foreach ($input_data as $product_data) {
                         $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
@@ -1867,12 +1891,28 @@ class DeliveryOrderController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && $send_sms == 'true') {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if($send_whatsapp == "true"){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
@@ -1897,7 +1937,7 @@ class DeliveryOrderController extends Controller {
                         curl_close($ch);
                     }
                 }
-            }
+        // }
         }
 // dd(getcwd());
         // Storage::put("/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
@@ -1983,7 +2023,7 @@ class DeliveryOrderController extends Controller {
      */
 
     function checkpending_quantity($delivery_orders) {
-
+// print_r(date("Y-m-d h:i:s a", time()));
         if (count($delivery_orders) > 0) {
             foreach ($delivery_orders as $key => $del_order) {
                 $delivery_order_quantity = 0;
@@ -2185,6 +2225,7 @@ class DeliveryOrderController extends Controller {
                 $delivery_orders[$key]['pending_order'] = ($pending_order < 0 ? 0 : $pending_order);
             }
         }
+        // dd(date("Y-m-d h:i:s a", time()));
         return $delivery_orders;
     }
 
