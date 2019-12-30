@@ -462,10 +462,14 @@ use Illuminate\Support\Facades\Session;
                                 <label for="inquiry_remark">Remark:</label>
                                 <textarea class="form-control" id="inquiry_remark" name="purchase_order_remark" rows="3"></textarea>
                             </div>
-                            <div>
+                            <!-- <div>
                                 <div class="checkbox">
                                     <label><input type="checkbox" value="" name="send_email"><span class="checksms">Send Email to Party</span></label>
                                 </div>
+                            </div> -->
+                            <div class="checkbox">
+                                <label style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes"><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                <label><input type="checkbox" name="send_msg" value="yes"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                             </div>
                             <hr>
                             <!--<div>-->

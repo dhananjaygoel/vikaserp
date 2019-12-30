@@ -471,10 +471,13 @@
                         <label for="inquiry_remark">Remark</label>
                         <textarea class="form-control" id="inquiry_remark" name="purchase_order_remark"  rows="3">{{$purchase_order->remarks}}</textarea>
                     </div>
-                    <div class="checkbox">
+                    <!-- <div class="checkbox">
                         <label><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email to Party</span></label>
+                    </div> -->
+                    <div class="checkbox">
+                        <label style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes"><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                        <label><input type="checkbox" name="send_msg" value="yes"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                     </div>
-                    
                     <div>
                         <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" >Save and Send SMS</button>-->
                         <!--<input type="button" title="SMS would be sent to Party" class="btn btn-primary smstooltip" id="sendSMSEditPurchaseOrder" value="Save and Send SMS">-->

@@ -29,6 +29,7 @@ use Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Labour;
 use App\LoadedBy;
+use Twilio\Rest\Client;
 
 class PurchaseAdviseController extends Controller {
 
@@ -328,12 +329,12 @@ class PurchaseAdviseController extends Controller {
     public function update($id) {
 
         $input_data = Input::all();
-        $sms_flag = 0;
+        $sms_flag = 1;
         
         if (Session::has('forms_edit_purchase_advise')) {
             $session_array = Session::get('forms_edit_purchase_advise');
             if (count($session_array) > 0) {
-                if (in_array($input_data['form_key'], (array)$session_array)) {
+                if (in_array($input_data['form_key'], $session_array)) {
                     if(Session::has('success') == 'Purchase advise updated successfully'){
                         return redirect('purchaseorder_advise')->with('success', 'Purchase advise updated successfully');
                     }else{
@@ -426,8 +427,9 @@ class PurchaseAdviseController extends Controller {
 
         $customer_id = $purchase_advise->supplier_id;
         $customer = Customer::with('manager')->find($customer_id);
+        $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
         if ($sms_flag == 1) {
-            if (count((array)$customer) > 0) {
+            if ($cust_count > 0) {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour Purchase Advise has been edited as follows ";
                 foreach ($input_data as $product_data) {
@@ -435,7 +437,7 @@ class PurchaseAdviseController extends Controller {
                     $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
 //                    $phone_number = $customer->phone_number1;
@@ -444,12 +446,28 @@ class PurchaseAdviseController extends Controller {
 
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                // whatsapp code starts here
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $sid = 'AC405803610638a694e57432bf99043d49';
+                    $token = '7aec8d8780e37097db9f63b1ef55d915';
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918275187271",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
+                    
+                    // print($message->sid);
+                }
+                // whatsapp testing code endse here
             }
             if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
@@ -760,7 +778,7 @@ class PurchaseAdviseController extends Controller {
         }
 
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
-        $sms_flag = 0;
+        $sms_flag = 1;
 
         /*
          * ------------------- ------------------------
@@ -777,19 +795,21 @@ class PurchaseAdviseController extends Controller {
         /**/
 
         $send_sms = Input::get('send_sms');
-        if ($send_sms == 'true' && $sms_flag == 1) {
+        $send_whatsapp = Input::get('send_whatsapp');
+        if ($sms_flag == 1) {
             $customer_id = $purchase_advise->supplier_id;
             $customer = Customer::with('manager')->find($customer_id);
-            if (count((array)$customer) > 0) {
+            $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+            if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase Advise has been created as follows\n";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour purchase Advise has been printed as follows\n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                     $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
 
                 $str .= " Vehicle No. " . $purchase_advise->vehicle_number . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
@@ -797,12 +817,28 @@ class PurchaseAdviseController extends Controller {
 
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && $send_sms == 'true') {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                // whatsapp code starts here
+                if($send_whatsapp == 'true'){
+                    $sid = 'AC405803610638a694e57432bf99043d49';
+                    $token = '7aec8d8780e37097db9f63b1ef55d915';
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio->messages
+                    ->create("whatsapp:+918275187271",
+                        [
+                            "body" => $str,
+                            "from" => "whatsapp:+14155238886"
+                        ]
+                    );
+                    
+                    // print($message->sid);
+                }
+                // whatsapp testing code endse here
             }
 
             if (count((array)$customer['manager']) > 0) {

@@ -1351,7 +1351,7 @@ $('.manual_complete_purchase_order_submit').click(function () {
     /*Manual complete purchase form data*/
     $data = $form.serialize();
     /*Manual complete purchase from url*/
-    url = $form.attr('action');
+    var url = $form.attr('action');
     var posting = $.post(url, {formData: $data});
     posting.done(function (data) {
         if (data['message'] == 'success') {

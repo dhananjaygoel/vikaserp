@@ -1078,8 +1078,13 @@ $('.print_purchase_challan').click(function () {
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
+    if ($("#checkwhatsapp").is(':checked'))
+        send_whatsapp = true;  // checked
+    else
+        send_whatsapp = false;  // unchecked
     $.ajax({
         type: "GET",
+        data: {send_whatsapp:send_whatsapp},
         url: base_url + '/print_purchase_challan/' + $('#purchase_challan_id').val() + '?send_sms=' + send_sms,
         success: function (data) {
             var printWindow = window.open(data);
@@ -1123,11 +1128,15 @@ $('.print_purchase_advise').click(function () {
         send_sms = true;  // checked
     else
         send_sms = false;  // unchecked
+    if ($("#checkwhatsapp").is(':checked'))
+        send_whatsapp = true;  // checked
+    else
+        send_whatsapp = false;  // unchecked
     if (id != 0) {
 
         $.ajax({
             type: "GET",
-            data: {vehicle_number:vehicle_number},
+            data: {send_whatsapp:send_whatsapp,vehicle_number:vehicle_number},
             url: base_url + '/print_purchase_advise/' + id + '?send_sms=' + send_sms,
             success: function (data) {
                 var printWindow = window.open(data);

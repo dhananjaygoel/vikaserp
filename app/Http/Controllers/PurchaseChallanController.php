@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\DeliveryChallanLoadedBy;
+use Twilio\Rest\Client;
 
 class PurchaseChallanController extends Controller {
 
@@ -544,7 +545,7 @@ class PurchaseChallanController extends Controller {
     public function print_purchase_challan($id) {
 
         //$current_date = date("m/d");
-        $sms_flag = 0;
+        $sms_flag = 1;
 
        /* $pr_c = PurchaseChallan::where('id','=',$id)->with('purchase_order_single')->first();
         $vat_status = $pr_c->purchase_order_single->vat_percentage;
@@ -584,8 +585,9 @@ class PurchaseChallanController extends Controller {
         /**/
 
         $send_sms = Input::get('send_sms');
+        $send_whatsapp = Input::get('send_whatsapp');
         if ($sms_flag == 1) {
-            if ($send_sms == 'true') {
+            // if ($send_sms == 'true') {
                 $customer_id = $purchase_challan->supplier_id;
                 $customer = Customer::with('manager')->find($customer_id);
                 if (count((array)$customer) > 0) {
@@ -610,11 +612,11 @@ class PurchaseChallanController extends Controller {
                         }
                     }
                     $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
-                            . ", Quantity. " . round($input_data->sum('quantity'), 2)
-                            . ", Amount " . $purchase_challan->grand_total
-                            . ", Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                            . ",\n Quantity. " . round($input_data->sum('quantity'), 2)
+                            . ",\n Amount " . $purchase_challan->grand_total
+                            . ",\n Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                             . ".\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
@@ -623,12 +625,28 @@ class PurchaseChallanController extends Controller {
 
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && $send_sms == 'true') {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if($send_whatsapp == 'true'){
+                        $sid = 'AC405803610638a694e57432bf99043d49';
+                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $twilio = new Client($sid, $token);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+918275187271",
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                        
+                        // print($message->sid);
+                    }
+                    // whatsapp testing code endse here
                 }
 
                 if (count((array)$customer['manager']) > 0) {
@@ -673,7 +691,7 @@ class PurchaseChallanController extends Controller {
                         curl_close($ch);
                     }
                 }
-            }
+            // }
         }
         //         update sync table
         $tables = ['customers', 'purchase_challan', 'all_purchase_products'];
