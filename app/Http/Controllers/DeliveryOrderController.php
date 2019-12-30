@@ -1884,7 +1884,7 @@ class DeliveryOrderController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;

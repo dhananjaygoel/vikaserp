@@ -1707,7 +1707,7 @@ class DeliveryChallanController extends Controller {
                             ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
-                    if (App::environment('development')) {
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
