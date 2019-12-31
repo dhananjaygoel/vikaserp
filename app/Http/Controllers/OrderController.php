@@ -117,14 +117,35 @@ class OrderController extends Controller {
 
         $roleid = Auth::user()->role_id;
         if($roleid == 0 || $roleid == 2){
-          if(($delivery_data->del_supervisor =='') || ($delivery_data->del_supervisor != $del_supervisor)){
-            $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
-                 'del_supervisor'=>$request->del_supervisor,
-              ]);
-              echo "success";
-          } else{
-            echo "failed";
-       }
+            if(($delivery_data->del_supervisor =='') || ($delivery_data->del_supervisor != $del_supervisor)){
+                $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
+                    'del_supervisor'=>$request->del_supervisor,
+                ]);
+                  
+                $user = User::find($del_supervisor);
+                if($user){
+                    if (App::environment('local')) {
+                        $mobile_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $mobile_number = $user->mobile_number;
+                    }
+                    // echo $mobile_number;
+                    $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+
+                echo "success";
+
+            } else{
+                echo "failed";
+            }
 
         }
 
@@ -167,6 +188,26 @@ class OrderController extends Controller {
                 ]);
 
                 echo "success";
+
+                $user = User::find($del_boy);
+                if($user){
+                    if (App::environment('local')) {
+                        $mobile_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $mobile_number = $user->mobile_number;
+                    }
+                    // echo $mobile_number;
+                    $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name;
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+
                 $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
                                  ->where('del_boy',$request->del_boy)
                                 //  ->where('del_supervisor',Auth::id())
