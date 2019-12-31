@@ -1719,8 +1719,15 @@ var qtyPieces = '<option value = "1">1</option>'+
                             var term = ui.item.value;
                            if(ui.item.type_id == 3 || ui.item.id == 3 )
                            {
-                                   $('#units_'+id).val('');
+                                //    $('#units_'+id).val('');
                                    $('#length_'+id).attr('disabled', false);
+                                   $('#unit_'+id+'_0').attr('style', 'display: block;');
+                                   $('#unit_'+id+'_0').attr('selected',true);
+                                   $('#unit_'+id+'_1').attr('selected',false);
+                                   $('#unit_'+id+'_2').attr('selected',false);
+                                   $('#unit_'+id+'_3').attr('selected',false);
+                                   $('#unit_'+id+'_4').attr('selected',false);
+                                   $('#unit_'+id+'_5').attr('selected',false);
                                    $('#unit_'+id+'_1').hide();
                                    $('#unit_'+id+'_2').hide();
                                    $('#unit_'+id+'_3').hide();
@@ -1738,15 +1745,29 @@ var qtyPieces = '<option value = "1">1</option>'+
                                 if(ui.item.type_id == 1 || ui.item.id == 1){
                                     var value = ui.item.value;
                                     var product_name = value.substr(value.length - 7);
-                                    
                                     if(product_name == 'GI Pipe'){
+                                        $('#unit_'+id+'_0').attr('selected',false);
+                                        $('#unit_'+id+'_1').attr('selected',false);
+                                        $('#unit_'+id+'_2').attr('selected',false);
+                                        $('#unit_'+id+'_4').attr('selected',false);
+                                        $('#unit_'+id+'_5').attr('selected',false);
                                         $('#unit_'+id+'_0').attr('style', 'display:none;');
                                         $('#unit_'+id+'_3').attr('selected',true);
                                     } else{
+                                        $('#unit_'+id+'_0').attr('selected',false);
+                                        $('#unit_'+id+'_2').attr('selected',false);
+                                        $('#unit_'+id+'_3').attr('selected',false);
+                                        $('#unit_'+id+'_4').attr('selected',false);
+                                        $('#unit_'+id+'_5').attr('selected',false);
                                         $('#unit_'+id+'_0').attr('style', 'display:none;');
                                         $('#unit_'+id+'_1').attr('selected',true);
                                     }
                                 } else {
+                                    $('#unit_'+id+'_0').attr('selected',false);
+                                    $('#unit_'+id+'_2').attr('selected',false);
+                                    $('#unit_'+id+'_3').attr('selected',false);
+                                    $('#unit_'+id+'_4').attr('selected',false);
+                                    $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
                                     $('#unit_'+id+'_1').attr('selected',true);
                                 }
@@ -2004,19 +2025,26 @@ var qtyPieces = '<option value = "1">1</option>'+
                        
                        if(ui.item.type_id == 3 || ui.item.id == 3 )
                        {
-                               $('#units_'+id).val('');
-                               $('#length_'+id).attr('disabled', false);
-                               $('#unit_'+id+'_1').hide();
-                               $('#unit_'+id+'_2').hide();
-                               $('#unit_'+id+'_3').hide(); 
-                               $('#unit_'+id+'_4').show();
-                               $('#unit_'+id+'_5').show();
-                               if($('#unit_'+id+'_4').length == 0){
-                                  $("#units_"+id).append($('<option>', {selected: true, value: '',text: '--Select--',id: 'unit_'+id+'_0'}));
-                                  $("#units_"+id).append($('<option>', { value: 4,text: 'ft',id: 'unit_'+id+'_4'}));
-                                  $("#units_"+id).append($('<option>', { value: 5,text: 'mm',id: 'unit_'+id+'_5'}));
-                                  $('#units_'+id).trigger('change');   
-                              }
+                            //    $('#units_'+id).val('');
+                            $('#length_'+id).attr('disabled', false);
+                            $('#unit_'+id+'_0').attr('style', 'display: block;');
+                            $('#unit_'+id+'_0').attr('selected',true);
+                            $('#unit_'+id+'_1').attr('selected',false);
+                            $('#unit_'+id+'_2').attr('selected',false);
+                            $('#unit_'+id+'_3').attr('selected',false);
+                            $('#unit_'+id+'_4').attr('selected',false);
+                            $('#unit_'+id+'_5').attr('selected',false);
+                            $('#unit_'+id+'_1').hide();
+                            $('#unit_'+id+'_2').hide();
+                            $('#unit_'+id+'_3').hide(); 
+                            $('#unit_'+id+'_4').show();
+                            $('#unit_'+id+'_5').show();
+                            if($('#unit_'+id+'_4').length == 0){
+                                $("#units_"+id).append($('<option>', {selected: true, value: '',text: '--Select--',id: 'unit_'+id+'_0'}));
+                                $("#units_"+id).append($('<option>', { value: 4,text: 'ft',id: 'unit_'+id+'_4'}));
+                                $("#units_"+id).append($('<option>', { value: 5,text: 'mm',id: 'unit_'+id+'_5'}));
+                                $('#units_'+id).trigger('change');   
+                            }
                        }
                        else
                        { 
@@ -2025,13 +2053,28 @@ var qtyPieces = '<option value = "1">1</option>'+
                                 var product_name = value.substr(value.length - 7);
                                 
                                 if(product_name == 'GI Pipe'){
+                                    $('#unit_'+id+'_0').attr('selected',false);
+                                    $('#unit_'+id+'_1').attr('selected',false);
+                                    $('#unit_'+id+'_2').attr('selected',false);
+                                    $('#unit_'+id+'_4').attr('selected',false);
+                                    $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
                                     $('#unit_'+id+'_3').attr('selected',true);
                                 } else{
+                                    $('#unit_'+id+'_0').attr('selected',false);
+                                    $('#unit_'+id+'_2').attr('selected',false);
+                                    $('#unit_'+id+'_3').attr('selected',false);
+                                    $('#unit_'+id+'_4').attr('selected',false);
+                                    $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
                                     $('#unit_'+id+'_1').attr('selected',true);
                                 }
                             } else {
+                                $('#unit_'+id+'_0').attr('selected',false);
+                                $('#unit_'+id+'_2').attr('selected',false);
+                                $('#unit_'+id+'_3').attr('selected',false);
+                                $('#unit_'+id+'_4').attr('selected',false);
+                                $('#unit_'+id+'_5').attr('selected',false);
                                 $('#unit_'+id+'_0').attr('style', 'display:none;');
                                 $('#unit_'+id+'_1').attr('selected',true);
                             }
