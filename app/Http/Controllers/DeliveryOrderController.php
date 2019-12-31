@@ -38,6 +38,7 @@ use App\Repositories\DropboxStorageRepository;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
+use App\User;
 
 class DeliveryOrderController extends Controller {
     /*
@@ -1318,6 +1319,47 @@ class DeliveryOrderController extends Controller {
                              }
                          }
 
+         }
+         $do_det = DeliveryOrder::where('id',$id)->first();
+         if(isset($do_det) && !empty($do_det->final_truck_weight)){
+            $user = User::find($do_det->created_by);
+            //  Confirmation msg to Admin who created the delivery order
+            if($user){
+                if (App::environment('local')) {
+                    $mobile_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $mobile_number = $user->mobile_number;
+                }
+                $str = "Order No #".$do_det->serial_no." has been loaded successfully.\nVIKAS ASSOCIATES";
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+            if(isset($do_det->del_supervisor) && !empty($do_det->del_supervisor)){
+                $del_user = User::find($do_det->del_supervisor);
+                //  Confirmation msg to Supervisor who assigned the order to del_boy
+                if($del_user){
+                    if (App::environment('local')) {
+                        $mobile_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $mobile_number = $del_user->mobile_number;
+                    }
+                    $str = "Order No #".$do_det->serial_no." has been loaded successfully.\nVIKAS ASSOCIATES";
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true) {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                }
+            }
          }
          $parameter = Session::get('parameters');
          $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
