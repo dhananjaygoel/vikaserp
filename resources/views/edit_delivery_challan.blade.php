@@ -131,7 +131,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input type='text' id="poduct_length_{{$key}}" class="form-control" placeholder="Length" name="product[{{$key}}][length]" value="{{ $product->length}}" type="hidden" >
+                                                    <input type='text' id="poduct_length_{{$key}}" <?php if($product->unit_id == 1 || $product->unit_id == 2 && $product->unit_id == 3){echo 'disabled';}  ?> class="form-control" placeholder="Length" name="product[{{$key}}][length]" value="{{ $product->length}}" type="hidden" >
                                                 </div>
                                             </td>
 
