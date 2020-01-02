@@ -2505,8 +2505,8 @@ class DeliveryOrderController extends Controller {
         $roleid = $request->role_id;
         $delivery_boy = $request->delivery_boy;
         $date = new Carbon\Carbon;
-        $date->modify('-115 minutes');
-        $formatted_date = $date->format('Y-m-d H:i:s');
+        // $date->modify('-115 minutes');
+        $formatted_date = $date->format('Y-m-d 00:00:00');
         // dd($formatted_date);
 
         if($roleid == 0 || $roleid == 8 ){
@@ -2515,7 +2515,7 @@ class DeliveryOrderController extends Controller {
                 $all = \App\User::where('role_id',9)
                             ->orderBy('id', 'DESC')
                             ->get();
-                $new = \App\User::where('role_id',9)->where('is_active',1)->where('updated_at','>',$formatted_date)
+                $new = \App\User::where('role_id',9)->where('updated_at','>',$formatted_date)
                             ->orderBy('id', 'DESC')
                             ->get();
             } 
@@ -2525,7 +2525,7 @@ class DeliveryOrderController extends Controller {
             $all = \App\User::where('role_id',9)
                             ->orderBy('id', 'DESC')
                             ->get();
-            $new = \App\User::where('role_id',9)->where('is_active',1)->where('updated_at','>',$formatted_date)
+            $new = \App\User::where('role_id',9)->where('updated_at','>',$formatted_date)
                         ->orderBy('id', 'DESC')
                         ->get();
         }
@@ -2537,16 +2537,15 @@ class DeliveryOrderController extends Controller {
         $roleid = $request->role_id;
         $supervisor_id = $request->supervisor_id;
         $date = new Carbon\Carbon;
-        $date->modify('-115 minutes');
-        $formatted_date = $date->format('Y-m-d H:i:s');
-
+        // $date->modify('-115 minutes');
+        $formatted_date = $date->format('Y-m-d 00:00:00');
         if($roleid == 0 || $roleid == 2 ){
             if($roleid == 0) {
                 $type = "del_supervisor";
                 $all = \App\User::where('role_id',8)
                             ->orderBy('id', 'DESC')
                             ->get();
-                $new = \App\User::where('role_id',8)->where('is_active',1)->where('updated_at','>',$formatted_date)
+                $new = \App\User::where('role_id',8)->where('updated_at','>',$formatted_date)
                             ->orderBy('id', 'DESC')
                             ->get();
             } 
@@ -2557,7 +2556,7 @@ class DeliveryOrderController extends Controller {
             $all = \App\User::where('role_id',8)
                             ->orderBy('id', 'DESC')
                             ->get();
-            $new = \App\User::where('role_id',8)->where('is_active',1)->where('updated_at','>',$formatted_date)
+            $new = \App\User::where('role_id',8)->where('updated_at','>',$formatted_date)
                         ->orderBy('id', 'DESC')
                         ->get();
         }
