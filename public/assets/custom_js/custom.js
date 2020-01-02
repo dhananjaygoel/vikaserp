@@ -3781,6 +3781,7 @@ $(".assign_load1").click(function(e){
             });
             $.each(data[1], function(i, m){
                 $('#opt'+m.id).attr('style','color: green;');
+                $('#opt'+m.id).text($('#opt'+m.id).text()+' (Available)');
             });
         }
     });
@@ -3815,6 +3816,7 @@ $(".assign_load").click(function(e){
                 });
                 $.each(data[1], function(i, m){
                     $('#opt'+m.id).attr('style','color: green;');
+                    $('#opt'+m.id).text($('#opt'+m.id).text()+' (Available)');
                 });
             }
         });
