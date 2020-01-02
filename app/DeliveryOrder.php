@@ -32,7 +32,7 @@ class DeliveryOrder extends Model implements AuthenticatableContract, CanResetPa
     }
     
     public function track_do_product() {
-        return $this->hasMany('App\AllOrderProducts', 'from', 'order_id')->where('product_category_id', '>', '0');
+        return $this->hasMany('App\AllOrderProducts', 'order_id', 'order_id')->where('product_category_id', '>', '0');
     }
     
     public function track_order_product() {
