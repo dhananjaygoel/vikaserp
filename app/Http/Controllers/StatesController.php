@@ -101,7 +101,7 @@ class StatesController extends Controller {
             $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name'),'local_state' => Input::get('local_state')]);
             return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully modified.');
         }
-        return redirect('states')->with('flash_success_message', 'State name already exists.');
+        return redirect('states')->with('flash_error_message', 'State name already exists.');
     }
 
     /**
