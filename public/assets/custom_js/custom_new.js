@@ -1717,17 +1717,18 @@ var qtyPieces = '<option value = "1">1</option>'+
                 //         	var i = $('#units_' + id).val();
         //                    console.log(event);
                             var term = ui.item.value;
-                           if(ui.item.type_id == 3 || ui.item.id == 3 )
+                           if((ui.item.type_id == 3 || ui.item.id == 3) && ui.item.value != '<-- Back' )
                            {
-                                //    $('#units_'+id).val('');
                                    $('#length_'+id).attr('disabled', false);
+                                   $('#unit_'+id+'_0').attr('disabled', false);
                                    $('#unit_'+id+'_0').attr('style', 'display: block;');
                                    $('#unit_'+id+'_0').attr('selected',true);
-                                   $('#unit_'+id+'_1').attr('selected',false);
-                                   $('#unit_'+id+'_2').attr('selected',false);
-                                   $('#unit_'+id+'_3').attr('selected',false);
+                                //    $('#unit_'+id+'_1').attr('selected',false);
+                                //    $('#unit_'+id+'_2').attr('selected',false);
+                                //    $('#unit_'+id+'_3').attr('selected',false);
                                    $('#unit_'+id+'_4').attr('selected',false);
                                    $('#unit_'+id+'_5').attr('selected',false);
+                                   $('#units_'+id).trigger('change');
                                    $('#unit_'+id+'_1').hide();
                                    $('#unit_'+id+'_2').hide();
                                    $('#unit_'+id+'_3').hide();
@@ -1742,34 +1743,43 @@ var qtyPieces = '<option value = "1">1</option>'+
                            }
                            else
                            {
-                                if(ui.item.type_id == 1 || ui.item.id == 1){
+                                if((ui.item.type_id == 1 || ui.item.value == 'Pipe') && ui.item.value != '<-- Back'){
+                                    if(ui.item.product_cat_id == 80){
+                                        var product_cat = 80;
+                                    }else{
+                                        var product_cat = 0;
+                                    }
                                     var value = ui.item.value;
                                     var product_name = value.substr(value.length - 7);
-                                    if(product_name == 'GI Pipe'){
+                                    if((product_name == 'GI Pipe' || product_cat == 80) && ui.item.type_id == 1){
+                                        $('#unit_'+id+'_0').attr('style', 'display:none;');
                                         $('#unit_'+id+'_0').attr('selected',false);
                                         $('#unit_'+id+'_1').attr('selected',false);
                                         $('#unit_'+id+'_2').attr('selected',false);
-                                        $('#unit_'+id+'_4').attr('selected',false);
-                                        $('#unit_'+id+'_5').attr('selected',false);
-                                        $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                        // $('#unit_'+id+'_4').attr('selected',false);
+                                        // $('#unit_'+id+'_5').attr('selected',false);
                                         $('#unit_'+id+'_3').attr('selected',true);
-                                    } else{
+                                        $('#units_'+id).trigger('change');
+                                    } 
+                                    else{
+                                        $('#unit_'+id+'_0').attr('style', 'display:none;');
                                         $('#unit_'+id+'_0').attr('selected',false);
                                         $('#unit_'+id+'_2').attr('selected',false);
                                         $('#unit_'+id+'_3').attr('selected',false);
-                                        $('#unit_'+id+'_4').attr('selected',false);
-                                        $('#unit_'+id+'_5').attr('selected',false);
-                                        $('#unit_'+id+'_0').attr('style', 'display:none;');
                                         $('#unit_'+id+'_1').attr('selected',true);
+                                        $('#units_'+id).trigger('change');
                                     }
-                                } else {
+                                } 
+                                if((ui.item.type_id == 2 || ui.item.value == 'Structure') && ui.item.value != '<-- Back') {
+                                    $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                    $('#unit_'+id+'_0').attr('disabled', true);
                                     $('#unit_'+id+'_0').attr('selected',false);
                                     $('#unit_'+id+'_2').attr('selected',false);
                                     $('#unit_'+id+'_3').attr('selected',false);
-                                    $('#unit_'+id+'_4').attr('selected',false);
-                                    $('#unit_'+id+'_5').attr('selected',false);
-                                    $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                    // $('#unit_'+id+'_4').attr('selected',false);
+                                    // $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_1').attr('selected',true);
+                                    $('#units_'+id).trigger('change');
                                 }
                                    $('#length_'+id).attr('disabled', true);
                                    $('#unit_'+id+'_1').show();
@@ -2023,10 +2033,11 @@ var qtyPieces = '<option value = "1">1</option>'+
                     autocompleteselect: function (event, ui) {
                        // console.log(ui);
                        
-                       if(ui.item.type_id == 3 || ui.item.id == 3 )
+                       if((ui.item.type_id == 3 || ui.item.id == 3) && ui.item.value != '<-- Back' )
                        {
                             //    $('#units_'+id).val('');
                             $('#length_'+id).attr('disabled', false);
+                            $('#unit_'+id+'_0').attr('disabled', false);
                             $('#unit_'+id+'_0').attr('style', 'display: block;');
                             $('#unit_'+id+'_0').attr('selected',true);
                             $('#unit_'+id+'_1').attr('selected',false);
@@ -2034,6 +2045,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                             $('#unit_'+id+'_3').attr('selected',false);
                             $('#unit_'+id+'_4').attr('selected',false);
                             $('#unit_'+id+'_5').attr('selected',false);
+                            $('#units_'+id).trigger('change');
                             $('#unit_'+id+'_1').hide();
                             $('#unit_'+id+'_2').hide();
                             $('#unit_'+id+'_3').hide(); 
@@ -2048,35 +2060,43 @@ var qtyPieces = '<option value = "1">1</option>'+
                        }
                        else
                        { 
-                            if(ui.item.type_id == 1 || ui.item.id == 1){
+                            if((ui.item.type_id == 1 || ui.item.value == 'Pipe') && ui.item.value != '<-- Back'){
+                                if(ui.item.product_cat_id == 80){
+                                    var product_cat = 80;
+                                }else{
+                                    var product_cat = 0;
+                                }
                                 var value = ui.item.value;
                                 var product_name = value.substr(value.length - 7);
                                 
-                                if(product_name == 'GI Pipe'){
+                                if((product_name == 'GI Pipe' || product_cat == 80) && ui.item.type_id == 1){
+                                    $('#unit_'+id+'_0').attr('style', 'display:none;');
                                     $('#unit_'+id+'_0').attr('selected',false);
                                     $('#unit_'+id+'_1').attr('selected',false);
                                     $('#unit_'+id+'_2').attr('selected',false);
-                                    $('#unit_'+id+'_4').attr('selected',false);
-                                    $('#unit_'+id+'_5').attr('selected',false);
+                                    // $('#unit_'+id+'_4').attr('selected',false);
+                                    // $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
                                     $('#unit_'+id+'_3').attr('selected',true);
                                 } else{
                                     $('#unit_'+id+'_0').attr('selected',false);
                                     $('#unit_'+id+'_2').attr('selected',false);
                                     $('#unit_'+id+'_3').attr('selected',false);
-                                    $('#unit_'+id+'_4').attr('selected',false);
-                                    $('#unit_'+id+'_5').attr('selected',false);
+                                    // $('#unit_'+id+'_4').attr('selected',false);
+                                    // $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
                                     $('#unit_'+id+'_1').attr('selected',true);
+                                    $('#units_'+id).trigger('change');
                                 }
                             } else {
                                 $('#unit_'+id+'_0').attr('selected',false);
                                 $('#unit_'+id+'_2').attr('selected',false);
                                 $('#unit_'+id+'_3').attr('selected',false);
-                                $('#unit_'+id+'_4').attr('selected',false);
-                                $('#unit_'+id+'_5').attr('selected',false);
+                                // $('#unit_'+id+'_4').attr('selected',false);
+                                // $('#unit_'+id+'_5').attr('selected',false);
                                 $('#unit_'+id+'_0').attr('style', 'display:none;');
                                 $('#unit_'+id+'_1').attr('selected',true);
+                                $('#units_'+id).trigger('change');
                             }
                             //    $('#units_'+id).val('');
                                $('#length_'+id).attr('disabled', true);
