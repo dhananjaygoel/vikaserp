@@ -33,7 +33,7 @@
                         </div>
                         @endif
                         @if (Session::has('flash_message'))
-                        <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
+                        <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="id" value="{{$city->id}}">
