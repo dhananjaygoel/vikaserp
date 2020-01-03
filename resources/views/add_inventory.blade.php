@@ -85,8 +85,12 @@
                         <br/>
                         <div class="table-responsive">
                             <table class="table">
+                            <?php
+                                $k = ($inventory_list->currentPage() - 1 ) * $inventory_list->perPage() + 1;
+                            ?>
                                 <thead class="inventory_table_head">
                                     <tr>
+                                        <th><span>#</span></th>
                                         <th class="opening"><span>Alias Name</span></th>
                                         <th class="opening"><span>Minimal</span></th>
                                         <th class="inventory-size"><span>Opening</span></th>
@@ -118,6 +122,7 @@
                                         @if((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))
                                         @if($inventory->minimal < $total)
                                         <tr class="smallinput datadisplay_{{$inventory->id}}">
+                                            <td>{{$k++}}</td>
                                             <td>{{$inventory->product_sub_category->alias_name}}</td>
                                             @if(auth()->user()->role_id == 0)
                                             <td class="{{ ($inventory->minimal < $total) ?'minimum_reach': '' }}">
@@ -155,6 +160,7 @@
                                         @endif
                                         @else
                                         <tr class="smallinput datadisplay_{{isset($inventory->id) ? $inventory->id:''}}">
+                                            <td>{{$k++}}</td>
                                             <td>{{isset($inventory->product_sub_category->alias_name) ? $inventory->product_sub_category->alias_name:''}}</td>
 
                                             @if(auth()->user()->role_id == 0)

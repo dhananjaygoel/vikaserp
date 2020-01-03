@@ -101,16 +101,16 @@
 .delete_completed_heading input{
     height: 13px !important;
 }
-.smallinput td:nth-child(1){
+.smallinput td:nth-child(2){
     width: 20% !important;
 }
 .minimum_reach{
     background-color: rgba(255,0,0,0.2);
 }
-.smallinput td:nth-child(2){
+.smallinput td:nth-child(3){
     width: 10% !important;
 }
-.smallinput td:nth-child(3){
+.smallinput td:nth-child(4){
     width: 10% !important;
 }
 .inventory_update, .inventory_update_max, .inventory_update_min{
