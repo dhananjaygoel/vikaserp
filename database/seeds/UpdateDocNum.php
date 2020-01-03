@@ -20,5 +20,6 @@ class UpdateDocNum extends Seeder
         //     ]);
         // }
         DB::table('loaded_bies')->where('first_name','Raxit')->where('last_name','Test')->delete();
+        DB::table('labours')->where('first_name','Raxit')->where('last_name','Test')->delete();
     }
 }
