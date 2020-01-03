@@ -321,7 +321,7 @@ class InquiryController extends Controller {
                     $token = '7aec8d8780e37097db9f63b1ef55d915';
                     $twilio = new Client($sid, $token);
                     $message = $twilio->messages
-                    ->create("whatsapp:+918275187271",
+                    ->create("whatsapp:".$phone_number,
                         [
                             "body" => $str,
                             "from" => "whatsapp:+14155238886"
@@ -710,7 +710,7 @@ class InquiryController extends Controller {
                         $token = '7aec8d8780e37097db9f63b1ef55d915';
                         $twilio = new Client($sid, $token);
                         $message = $twilio->messages
-                        ->create("whatsapp:+918275187271",
+                        ->create("whatsapp:".$phone_number,
                             [
                                 "body" => $str,
                                 "from" => "whatsapp:+14155238886"
@@ -773,7 +773,7 @@ class InquiryController extends Controller {
                         $token = '7aec8d8780e37097db9f63b1ef55d915';
                         $twilio = new Client($sid, $token);
                         $message = $twilio->messages
-                        ->create("whatsapp:+918275187271",
+                        ->create("whatsapp:".$phone_number,
                             [
                                 "body" => $str,
                                 "from" => "whatsapp:+14155238886"
@@ -1234,6 +1234,7 @@ class InquiryController extends Controller {
                             'id' => $product['ids'],
                             'level' => '3',
                             'product_price' => '',
+                            'product_cat_id' => $product->product_category_id,
                             'type_id'=>$product['product_category']->product_type_id
                         ];
                     }
@@ -1273,6 +1274,7 @@ class InquiryController extends Controller {
                             'id' => $product['id'],
                             'level' => '4',
                             'product_price' => '',
+                            'product_cat_id' => $product->product_category_id,
                             'type_id'=>$product['product_category']->product_type_id
                         ];
                     }
@@ -1293,6 +1295,7 @@ class InquiryController extends Controller {
                     $data_array[] = [
                         'value' => $product->alias_name,
                         'id' => $product->id,
+                        'product_cat_id' => $product->product_category_id,
                         'product_price' => round(($product['product_category']->price + $cust + Input::get('location_difference') + $product->difference),2),
                         'type_id'=>$product['product_category']->product_type_id
                     ];
@@ -1609,7 +1612,7 @@ class InquiryController extends Controller {
                     $token = '7aec8d8780e37097db9f63b1ef55d915';
                     $twilio = new Client($sid, $token);
                     $message = $twilio->messages
-                    ->create("whatsapp:+918275187271",
+                    ->create("whatsapp:".$phone_number,
                         [
                             "body" => $str,
                             "from" => "whatsapp:+14155238886"

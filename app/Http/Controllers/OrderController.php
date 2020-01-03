@@ -795,7 +795,7 @@ class OrderController extends Controller {
                     $token = '7aec8d8780e37097db9f63b1ef55d915';
                     $twilio = new Client($sid, $token);
                     $message = $twilio->messages
-                    ->create("whatsapp:+918275187271",
+                    ->create("whatsapp:".$phone_number,
                         [
                             "body" => $str,
                             "from" => "whatsapp:+14155238886"
@@ -1187,7 +1187,7 @@ class OrderController extends Controller {
                         $token = '7aec8d8780e37097db9f63b1ef55d915';
                         $twilio = new Client($sid, $token);
                         $message = $twilio->messages
-                        ->create("whatsapp:+918275187271",
+                        ->create("whatsapp:".$phone_number,
                             [
                                 "body" => $str,
                                 "from" => "whatsapp:+14155238886"
@@ -1263,7 +1263,7 @@ class OrderController extends Controller {
                         $token = '7aec8d8780e37097db9f63b1ef55d915';
                         $twilio = new Client($sid, $token);
                         $message = $twilio->messages
-                        ->create("whatsapp:+918275187271",
+                        ->create("whatsapp:".$phone_number,
                             [
                                 "body" => $str,
                                 "from" => "whatsapp:+14155238886"
@@ -1911,7 +1911,7 @@ class OrderController extends Controller {
                         $token = '7aec8d8780e37097db9f63b1ef55d915';
                         $twilio = new Client($sid, $token);
                         $message = $twilio->messages
-                        ->create("whatsapp:+918275187271",
+                        ->create("whatsapp:".$phone_number,
                             [
                                 "body" => $str,
                                 "from" => "whatsapp:+14155238886"
