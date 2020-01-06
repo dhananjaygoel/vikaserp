@@ -251,7 +251,7 @@ class PendingCustomerController extends Controller {
                 $customer_exist['customer_delivery_order'] = 1;
 
                 if ($customer_exist['customer_inquiry'] == 1) {
-                    $cust_msg .= ", Delievry Order";
+                    $cust_msg .= ", Delivery Order";
                 } elseif ($customer_exist['customer_order'] == 1) {
                     $cust_msg .= ", Delivery Order";
                 } else {
