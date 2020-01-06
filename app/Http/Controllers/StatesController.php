@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
+use Validator;
 
 class StatesController extends Controller {
 
@@ -55,9 +56,23 @@ class StatesController extends Controller {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
 
-        $this->validate($staterequest, [
-            'state_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
-        ]);
+        $input = $staterequest->input();
+        Validator::extend('without_spaces', function($attr, $value){
+            return preg_match('/^\S*$/u', $value);
+        });
+
+        $message = array('state_name.without_spaces' => 'Please enter the name without spaces.');
+
+        $rules = ['state_name' => 'required|without_spaces|regex:/^[A-Za-z\s-_]+$/'];
+
+        $validator = Validator::make($input, $rules, $message);
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
+        // $this->validate($staterequest, [
+        //     'state_name' => 'required|without_spaces|regex:/^[A-Za-z\s-_]+$/',
+        // ]);
 
         $add_states = States::create([
                     'state_name' => $staterequest->input('state_name'),
@@ -92,14 +107,29 @@ class StatesController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('states')->with('error', 'You do not have permission.');
         }
-        $this->validate($request, [
-            'state_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
-        ]);
+        // $this->validate($request, [
+        //     'state_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+        // ]);
+
+        $input = $request->input();
+        Validator::extend('without_spaces', function($attr, $value){
+            return preg_match('/^\S*$/u', $value);
+        });
+
+        $message = array('state_name.without_spaces' => 'Please enter the name without spaces.');
+
+        $rules = ['state_name' => 'required|without_spaces|regex:/^[A-Za-z\s-_]+$/'];
+
+        $validator = Validator::make($input, $rules, $message);
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
 
         $check_state_exists = States::where('state_name', '=', $request->input('state_name'))->where('id', '!=', $id)->count();
         if ($check_state_exists == 0) {
             $affectedRows = States::where('id', '=', $id)->update(['state_name' => Input::get('state_name'),'local_state' => Input::get('local_state')]);
-            return redirect('states/' . $id . '/edit')->with('flash_message', 'State details successfully modified.');
+            return redirect('states')->with('flash_message', 'State details successfully modified.');
         }
         return redirect('states')->with('flash_error_message', 'State name already exists.');
     }
