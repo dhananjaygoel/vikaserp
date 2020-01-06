@@ -1057,7 +1057,7 @@ class OrderController extends Controller {
             'supplier_id' => $supplier_id,
             'customer_id' => $customer_id,
 //            'created_by' => Auth::id(),
-            'delivery_location_id' => $input_data['add_inquiry_location'],
+            'delivery_location_id' => $input_data['add_order_location'],
          //   'vat_percentage' => $input_data['vat_percentage'],
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['order_remark'],
@@ -1065,7 +1065,7 @@ class OrderController extends Controller {
             'discount_unit' => $input_data['discount_unit'],
             'discount' => $input_data['discount'],
         ]);
-        if ($input_data['add_inquiry_location'] == 'other') {
+        if ($input_data['add_order_location'] == 'other') {
             $update_order = $order->update([
                 'other_location' => $input_data['other_location_name'],
                 'location_difference' => $input_data['location_difference']
