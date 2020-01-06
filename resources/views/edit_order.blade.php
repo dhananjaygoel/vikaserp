@@ -190,7 +190,7 @@
                             <div class="form-group">
                                 <div class="col-md-4">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
-                                    <select class="form-control focus_on_enter" name="add_inquiry_location" id="add_order_location" tabindex="2" >
+                                    <select class="form-control focus_on_enter" name="add_order_location" id="add_order_location" tabindex="2" >
                                         <option value="0">Delivery Location</option>
                                         @foreach($delivery_location as $location)
                                         <option value="{{$location->id}}" {{($order->delivery_location_id == $location->id)?'selected':''}} data-location-difference="{{$location->difference}}">{{$location->area_name}}</option>
