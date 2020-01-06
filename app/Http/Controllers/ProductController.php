@@ -77,12 +77,14 @@ class ProductController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
-            'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+            'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/
+            
+            ',
             'hsn_code' => 'required'
         ]);
         if (Session::has('forms_product_category')) {
             $session_array = Session::get('forms_product_category');
-            if (count((array)$session_array) > 0) {
+            if (count($session_array) > 0) {
                 if (in_array($request->form_key, $session_array)) {
                     return Redirect::back()->with('flash_message', 'This product category is already saved. Please refresh the page');
                 } else {
@@ -99,43 +101,49 @@ class ProductController extends Controller {
         foreach($hsn as $hsn_code){
             $gst = $hsn_code->gst;
         }
-        $product_category = new ProductCategory();
-        $product_category->product_type_id = $request->input('product_type');
-        $product_category->product_category_name = $request->input('product_category_name');
-        $product_category->price = $request->input('price');
-        $product_category->gst = $gst;
-        $product_category->hsn_code = explode(':',$request->input('hsn_code'))[0];
-        $product_category->hsn_desc = $request->input('hsn_desc');
-        $product_category->save();
-
+        if(ProductCategory::where('product_category_name','=',$request->input('product_category_name'))->where('product_type_id','=',$request->input('product_type'))->count() > 0)
+		{
+			return redirect('product_category')->with('wrong', 'The product category name with product type has already been taken.');
+		}
+		else
+		{
+            $product_category = new ProductCategory();
+            $product_category->product_type_id = $request->input('product_type');
+            $product_category->product_category_name = $request->input('product_category_name');
+            $product_category->price = $request->input('price');
+            $product_category->gst = $gst;
+            $product_category->hsn_code = explode(':',$request->input('hsn_code'))[0];
+            $product_category->hsn_desc = $request->input('hsn_desc');
+            $product_category->save();
+        }
         /*
          * ------------------- ---------------------------
          * SEND SMS TO ALL ADMINS FOR NEW PRODUCT CATEGORY
          * -----------------------------------------------
          */
-        $input = Input::all();
-        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-            $admins = User::where('role_id', '=', 0)->get();
-            if (count((array)$admins) > 0) {
-                foreach ($admins as $key => $admin) {
-                    $product_type = ProductType::find($request->input('product_type'));
-                    $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $admin->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                }
-            }
-        }
+        // $input = Input::all();
+        // if (isset($input['sendsms']) && $input['sendsms'] == "true") {
+        //     $admins = User::where('role_id', '=', 0)->get();
+        //     if (count((array)$admins) > 0) {
+        //         foreach ($admins as $key => $admin) {
+        //             $product_type = ProductType::find($request->input('product_type'));
+        //             $str = "Dear " . $admin->first_name . "\n" . "DT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created a new product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
+        //             if (App::environment('development')) {
+        //                 $phone_number = Config::get('smsdata.send_sms_to');
+        //             } else {
+        //                 $phone_number = $admin->mobile_number;
+        //             }
+        //             $msg = urlencode($str);
+        //             $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+        //             if (SEND_SMS === true) {
+        //                 $ch = curl_init($url);
+        //                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //                 $curl_scraped_page = curl_exec($ch);
+        //                 curl_close($ch);
+        //             }
+        //         }
+        //     }
+        // }
         return redirect('product_category')->with('success', 'Product category successfully added.');
     }
 
