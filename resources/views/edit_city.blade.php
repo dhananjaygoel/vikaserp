@@ -41,7 +41,7 @@
                             <label for="state">State<span class="mandatory">*</span></label>
                             <select name="state" class="form-control">
                                 @foreach($states as $state)
-                                <option value="{{$state->id}}">{{$state->state_name}}</option>
+                                <option value="{{$state->id}}" {{($city->state_id == $state->id)?'selected':''}}>{{$state->state_name}}</option>
                                 @endforeach
                             </select>
                         </div>
