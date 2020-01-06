@@ -1148,11 +1148,11 @@ public function update_cust_all_inc(){
                 $customer_exist['customer_delivery_order'] = 1;
 
                 if ($customer_exist['customer_inquiry'] == 1) {
-                    $cust_msg .= ", Delievry Order";
+                    $cust_msg .= ", Delivery Order";
                 } elseif ($customer_exist['customer_order'] == 1) {
-                    $cust_msg .= ", Delievry Order";
+                    $cust_msg .= ", Delivery Order";
                 } else {
-                    $cust_msg .= "Delievry Order";
+                    $cust_msg .= "Delivery Order";
                 }
                 $cust_flag = 1;
             }
@@ -1160,13 +1160,13 @@ public function update_cust_all_inc(){
             if (($customer_delivery_challan) > 0) {
                 $customer_exist['customer_delivery_challan'] = 1;
                 if ($customer_exist['customer_inquiry'] == 1) {
-                    $cust_msg .= ", Delievry Challan";
+                    $cust_msg .= ", Delivery Challan";
                 } elseif ($customer_exist['customer_order'] == 1) {
-                    $cust_msg .= ", Delievry Challan";
+                    $cust_msg .= ", Delivery Challan";
                 } elseif ($customer_exist['customer_delivery_order'] == 1) {
-                    $cust_msg .= ", Delievry Challan";
+                    $cust_msg .= ", Delivery Challan";
                 } else {
-                    $cust_msg .= "Delievry Challan";
+                    $cust_msg .= "Delivery Challan";
                 }
                 $cust_flag = 1;
             }
