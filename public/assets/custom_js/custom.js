@@ -2040,6 +2040,14 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
             $('#product_price_' + i).addClass('error_validation');
             status_form = 1;
         }
+        if (($('#length_' + i).val() == "" || $('#length_' + i).val() == 0 ) && $('#length_' + i).is(':enabled')) {
+            $('#length_' + i).addClass('error_validation');
+            status_form = 1;
+        }else{$('#length_' + i).removeClass('error_validation');}
+        if ($('#units_' + i).val() == "") {
+            $('#units_' + i).addClass('error_validation');
+            status_form = 1;
+        }else{$('#units_' + i).removeClass('error_validation');}
     }
 
 

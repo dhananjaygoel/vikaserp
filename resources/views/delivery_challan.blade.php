@@ -166,7 +166,7 @@
                                             </a>
                                             @endif
                                             <?php
-                                                $is_allinc = 0;
+                                                $is_allinc = 1;
                                                 foreach ($challan->delivery_challan_products as $dchallanp){
                                                     if(isset($dchallanp->vat_percentage) && $dchallanp->vat_percentage != "" && $dchallanp->vat_percentage > 0){
                                                         $is_allinc = 1;

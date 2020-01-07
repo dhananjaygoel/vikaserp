@@ -131,11 +131,11 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    <input type='text' id="poduct_length_{{$key}}" <?php if($product->unit_id == 1 || $product->unit_id == 2 && $product->unit_id == 3){echo 'disabled';}  ?> class="form-control" placeholder="Length" name="product[{{$key}}][length]" value="{{ $product->length}}" type="hidden" >
+                                                    <input type='text' id="length_{{$key}}" class="form-control" placeholder="Length" name="product[{{$key}}][length]" value="{{ isset($product->length)?$product->length:'0' }}" onkeypress=" return numbersOnly(this, event, true, true);" {{(isset($product->length) && ($product->length > 0))?'enable':'disabled'}} type="tel" >
                                                 </div>
                                             </td>
 
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">{{ $product->present_shipping}}
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
                                                 </div>
@@ -153,15 +153,32 @@
                                                     <input class="vat_chkbox" type="hidden" value="{{($product->vat_percentage>0)?'1':'0'}}" name="product[{{$key}}][vat_percentage_value]" value="yes" id = "product_vat_percentage_value_{{$key}}">
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-2">
                                                 <div class="form-group ">
-                                                    @foreach($units as $unit)
+                                                    <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}">
+                                                        <!-- <option value='' id = 'unit_{{$key}}_0' <?php if (!isset($product->unit_id)) { ?>selected="selected"<?php } ?>>--Select--</option> -->
+                                                            <?php if (isset($product->unit_id) and (($product->unit_id==1) or ($product->unit_id==2) or ($product->unit_id==3))) { ?>
+                                                        <option value=1 id = 'unit_{{$key}}_1' <?php if (isset($product->unit_id) and ($product->unit_id==1)) { ?> selected="selected"<?php } ?> >KG</option>
+                                                        <option value=2 id = 'unit_{{$key}}_2' <?php if (isset($product->unit_id) and ($product->unit_id==2)) { ?> selected="selected"<?php } ?> >Pieces</option>
+                                                        <option value=3 id = 'unit_{{$key}}_3' <?php if (isset($product->unit_id) and ($product->unit_id==3)) { ?> selected="selected"<?php } ?> >Meter</option>
+                                                            <?php } elseif (isset($product->unit_id) and (($product->unit_id==4) or ($product->unit_id==5))) { ?>
+                                                        <option value=4 id = 'unit_{{$key}}_4' <?php if (isset($product->unit_id) and ($product->unit_id==4)) { ?> selected="selected"<?php } ?>>ft</option>
+                                                        <option value=5 id = 'unit_{{$key}}_5' <?php if (isset($product->unit_id) and ($product->unit_id==5)) { ?> selected="selected"<?php } ?>>mm</option>
+                                                            <?php }else{ ?>
+                                                        <option value=1 id = 'unit_{{$key}}_1'>KG</option>
+                                                        <option value=2 id = 'unit_{{$key}}_2'>Pieces</option>
+                                                        <option value=3 id = 'unit_{{$key}}_3'>Meter</option>
+                                                        <option value=4 id = 'unit_{{$key}}_4'>ft</option>
+                                                        <option value=5 id = 'unit_{{$key}}_5'>mm</option>
+                                                            <?php } ?>
+                                                    </select>
+                                                    <!-- @foreach($units as $unit)
                                                     @if($unit->id == $product->unit_id)
                                                     <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
                                                     {{$unit->unit_name}}
                                                     <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
                                                     @endif
-                                                    @endforeach
+                                                    @endforeach -->
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
