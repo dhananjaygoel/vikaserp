@@ -1719,6 +1719,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                             var term = ui.item.value;
                            if((ui.item.type_id == 3 || ui.item.id == 3) && ui.item.value != '<-- Back' )
                            {
+                                $('#units_'+id).val('');
                                    $('#length_'+id).attr('disabled', false);
                                    $('#unit_'+id+'_0').attr('disabled', false);
                                    $('#unit_'+id+'_0').attr('style', 'display: block;');
@@ -2038,7 +2039,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                        
                        if((ui.item.type_id == 3 || ui.item.id == 3) && ui.item.value != '<-- Back' )
                        {
-                            //    $('#units_'+id).val('');
+                            $('#units_'+id).val('');
                             $('#length_'+id).attr('disabled', false);
                             $('#unit_'+id+'_0').attr('disabled', false);
                             $('#unit_'+id+'_0').attr('style', 'display: block;');
