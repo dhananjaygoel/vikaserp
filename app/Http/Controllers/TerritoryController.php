@@ -120,7 +120,7 @@ class TerritoryController extends Controller {
         $message = array('territory_name.required' => 'Territory Name is required',
             'location.required' => 'Location is required');
 
-        $rules = ['territory_name' => 'required',
+        $rules = ['territory_name' => 'required|unique:territories,teritory_name',
             'location' => 'required'];
 
         $validator = Validator::make($input, $rules, $message);
