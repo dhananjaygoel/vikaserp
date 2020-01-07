@@ -1758,16 +1758,18 @@ var qtyPieces = '<option value = "1">1</option>'+
                                         $('#unit_'+id+'_2').attr('selected',false);
                                         // $('#unit_'+id+'_4').attr('selected',false);
                                         // $('#unit_'+id+'_5').attr('selected',false);
+                                        $('#units_'+id).val('3');
                                         $('#unit_'+id+'_3').attr('selected',true);
-                                        $('#units_'+id).trigger('change');
+                                        // $('#units_'+id).trigger('change');
                                     } 
                                     else{
-                                        $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                        $('#units_'+id).val('1');
+                                        $('#unit_'+id+'_1').attr('selected',true);
                                         $('#unit_'+id+'_0').attr('selected',false);
                                         $('#unit_'+id+'_2').attr('selected',false);
                                         $('#unit_'+id+'_3').attr('selected',false);
-                                        $('#unit_'+id+'_1').attr('selected',true);
-                                        $('#units_'+id).trigger('change');
+                                        $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                        // $('#units_'+id).trigger('change');
                                     }
                                 } 
                                 if((ui.item.type_id == 2 || ui.item.value == 'Structure') && ui.item.value != '<-- Back') {
@@ -1778,6 +1780,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                                     $('#unit_'+id+'_3').attr('selected',false);
                                     // $('#unit_'+id+'_4').attr('selected',false);
                                     // $('#unit_'+id+'_5').attr('selected',false);
+                                    $('#units_'+id).val('1');
                                     $('#unit_'+id+'_1').attr('selected',true);
                                     $('#units_'+id).trigger('change');
                                 }
@@ -2077,6 +2080,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                                     // $('#unit_'+id+'_4').attr('selected',false);
                                     // $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                    $('#units_'+id).val('3');
                                     $('#unit_'+id+'_3').attr('selected',true);
                                 } else{
                                     $('#unit_'+id+'_0').attr('selected',false);
@@ -2085,6 +2089,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                                     // $('#unit_'+id+'_4').attr('selected',false);
                                     // $('#unit_'+id+'_5').attr('selected',false);
                                     $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                    $('#units_'+id).val('1');
                                     $('#unit_'+id+'_1').attr('selected',true);
                                     $('#units_'+id).trigger('change');
                                 }
@@ -2095,6 +2100,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                                 // $('#unit_'+id+'_4').attr('selected',false);
                                 // $('#unit_'+id+'_5').attr('selected',false);
                                 $('#unit_'+id+'_0').attr('style', 'display:none;');
+                                $('#units_'+id).val('1');
                                 $('#unit_'+id+'_1').attr('selected',true);
                                 $('#units_'+id).trigger('change');
                             }
