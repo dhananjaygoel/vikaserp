@@ -60,12 +60,13 @@ class StatesController extends Controller {
         Validator::extend('without_spaces', function($attr, $value){
             return preg_match('/^\S*$/u', $value);
         });
+        $trimmed_array = array_map('trim', $input);
 
         $message = array('state_name.without_spaces' => 'Please enter the name without spaces.');
 
-        $rules = ['state_name' => 'required|without_spaces|regex:/^[A-Za-z\s-_]+$/'];
+        $rules = ['state_name' => 'required|regex:/^[A-Za-z\s-_]+$/|unique:state,state_name'];
 
-        $validator = Validator::make($input, $rules, $message);
+        $validator = Validator::make($trimmed_array, $rules, $message);
         
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
@@ -115,10 +116,11 @@ class StatesController extends Controller {
         Validator::extend('without_spaces', function($attr, $value){
             return preg_match('/^\S*$/u', $value);
         });
+        $trimmed_array = array_map('trim', $input);
 
         $message = array('state_name.without_spaces' => 'Please enter the name without spaces.');
 
-        $rules = ['state_name' => 'required|without_spaces|regex:/^[A-Za-z\s-_]+$/'];
+        $rules = ['state_name' => 'required|regex:/^[A-Za-z\s-_]+$/|unique:state,state_name'];
 
         $validator = Validator::make($input, $rules, $message);
         
