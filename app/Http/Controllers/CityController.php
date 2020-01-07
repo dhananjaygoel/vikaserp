@@ -92,7 +92,7 @@ class CityController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }
-        $check_city_exists = City::where('city_name', '=', $request->input('city_name'))->where('id', '!=', $id)->count();
+        $check_city_exists = City::where('city_name', '=', $request->input('city_name'))->where('state_id','=',$request->input('state'))->where('id', '!=', $id)->count();
         if ($check_city_exists == 0) {
             $affectedRows = City::where('id', '=', $id)->update([
                 'state_id' => $request->input('state'),

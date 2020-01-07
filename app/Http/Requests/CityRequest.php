@@ -22,7 +22,7 @@ class CityRequest extends Request {
      */
     public function rules() {
         return [
-            'city_name' => 'required|unique:city',
+            'city_name' => 'required|unique:city,state_id',
             'state' => 'required'
         ];
     }
