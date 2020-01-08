@@ -103,7 +103,7 @@ class ProductController extends Controller {
         }
         if(ProductCategory::where('product_category_name','=',$request->input('product_category_name'))->where('product_type_id','=',$request->input('product_type'))->count() > 0)
 		{
-			return redirect('product_category')->with('wrong', 'The product category name with product type has already been taken.');
+			return redirect('product_category/create')->with('wrong', 'The product category name with product type has already been taken.');
 		}
 		else
 		{
