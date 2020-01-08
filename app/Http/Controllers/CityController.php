@@ -62,10 +62,15 @@ class CityController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('city')->with('error', 'You do not have permission.');
         }
-        $add_city = City::create([
-                    'city_name' => $request->input('city_name'),
-                    'state_id' => $request->input('state')
-        ]);
+        if(City::where('city_name',$request->input('city_name'))->where('state_id',$request->input('state'))->count() > 0)
+        {
+            return redirect('city')->with('flash_message', 'City name already exists in that state.');
+        } else {
+            $add_city = City::create([
+                        'city_name' => $request->input('city_name'),
+                        'state_id' => $request->input('state')
+            ]);
+        }
         $id = DB::getPdo()->lastInsertId();
         return redirect('city')->with('flash_success_message', 'City details successfully added.');
     }
