@@ -21,6 +21,12 @@
                 <div class="main-box">
                    
                     <div class="main-box-body clearfix">
+                    @if (Session::has('wrong'))
+                        <div class="alert alert-danger alert-success1">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            {{Session::get('wrong')}}
+                        </div>
+                    @endif
                          @if (Session::has('flash_message'))
         <div id="flash_error" class="alert alert-warning no_data_msg_container">{{ Session::get('flash_message') }}</div>
         @endif
