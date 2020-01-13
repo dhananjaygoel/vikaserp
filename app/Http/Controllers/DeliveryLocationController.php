@@ -83,7 +83,7 @@ class DeliveryLocationController extends Controller {
         }
         $delivery_location = DeliveryLocation::find($id);
         $states = States::orderBy('state_name', 'ASC')->get();
-        $cities = City::orderBy('city_name', 'ASC')->get();
+        $cities = City::where('state_id', $delivery_location->state_id)->orderBy('city_name', 'ASC')->get();
         return view('edit_delivery_location', compact('cities', 'states', 'delivery_location'));
     }
 
