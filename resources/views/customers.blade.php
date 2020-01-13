@@ -12,9 +12,20 @@
                 <div class="filter-block">
                     <h1 class="pull-left">Customers</h1>
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    <a href="{{url('excel_export_customer')}}" class="btn btn-primary pull-right">
-                        <i class="fa fa-plus-circle fa-lg"></i> Download List
-                    </a>
+                    <input type="hidden" id="customer_filter" name="customer_filter" value= "<?php if(Input::get('customer_filter') == 'customer'){echo 'customer';}else{echo 'supplier';} ?>">
+                    <form method="GET" id="exportcustomerbasedonstatus" action="{{URL::action('WelcomeController@excel_export_customer')}}">
+                        <?php if (Input::get('customer_filter') == 'customer') {?>
+                            <input type="hidden" id="customer_filter" name="customer_filter" value='customer'>
+                        <?php } elseif(Input::get('customer_filter') == 'supplier') {?>
+                            <input type="hidden" id="customer_filter" name="customer_filter" value='supplier'>
+                        <?php } ?>
+                        <input type="hidden" class="form-control" name="search" id="search" value="{{Request::get('search')}}">
+
+                        <input type="submit" name="export_data" value="Download List" class="btn btn-primary pull-right" >
+                        <!-- <a href="{{url('excel_export_customer')}}" class="btn btn-primary pull-right">
+                            <i class="fa fa-plus-circle fa-lg"></i> Download List
+                        </a> -->
+                    </form>
                     <a href="{{url('excel_import_customer')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Import Customer
                     </a>

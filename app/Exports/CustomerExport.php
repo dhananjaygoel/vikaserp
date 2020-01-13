@@ -22,7 +22,13 @@ class CustomerExport implements FromView, ShouldAutoSize
 
     public function view(): View
     {
-        $allcustomers = Customer::where('customer_status', 'permanent')->with('states', 'getcity', 'deliverylocation', 'manager')->get();
+        $customer_filter = Input::get('customer_filter');
+        if($customer_filter == "supplier"){
+            $value = 'no';
+        } else {
+            $value = '';
+        }
+        $allcustomers = Customer::where('customer_status', 'permanent')->where('is_supplier', $value)->with('states', 'getcity', 'deliverylocation', 'manager')->get();
         return view('excelView.customer', array('allcustomers' => $allcustomers));
 
     }
