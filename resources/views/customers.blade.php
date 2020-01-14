@@ -211,7 +211,11 @@
                         @else
                         <div class="clearfix"> &nbsp;</div>
                         <div class="alert alert-info alert-dismissible" role="alert">
-                            <strong> Currently No customers found </strong>
+                        <?php if (Input::get('customer_filter') == 'customer') { ?>
+                            <strong> Currently No Customers found. </strong>
+                        <?php } elseif (Input::get('customer_filter') == 'supplier') { ?>
+                            <strong> Currently No Suppliers found. </strong>
+                        <?php } ?>
                         </div>
                         @endif
                     </div>                      
