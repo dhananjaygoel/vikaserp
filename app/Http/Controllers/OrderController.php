@@ -436,7 +436,8 @@ class OrderController extends Controller {
         $product_category_id = 0;
         if (isset($data['size_filter']) && $data['size_filter'] != '') {
             $size = $data['size_filter'];
-            $subquerytest = ProductSubCategory::select('id')->where('size', '=', $size)->first();
+            $result = explode(' - ',$size);
+            $subquerytest = ProductSubCategory::select('id')->where('size', '=', $result[0])->where('alias_name','=',$result[1])->first();
             if (isset($subquerytest)) {
                 $product_category_id = $subquerytest->id;
                 $q->whereHas('all_order_products.product_sub_category', function($query) use ($product_category_id) {

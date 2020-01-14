@@ -2752,7 +2752,7 @@ $("#order_size").autocomplete({
     },
     select: function (event, ui) {
         $("#order_size").val(ui.item.value);
-        $("#order_size_temp").val(ui.item.id);
+        $("#order_size_temp").val(ui.item.value);
     },
     close: function (event, ui) {
         $(this).closest("form").submit();
