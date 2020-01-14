@@ -40,26 +40,57 @@ class OrderExport implements FromView, ShouldAutoSize
             $is_approved = 'yes';
             $order_status = 'cancelled';
         }
+        if (isset($data['fulfilled_filter']) && $data['fulfilled_filter'] != '') {
+            if ($data['fulfilled_filter'] == '0') {
+                $fulfilled_filter = 'warehouse';
+            }
+            if ($data['fulfilled_filter'] == 'all') {
+                $fulfilled_filter = 'supplier';
+            }
+        } else {
+            $fulfilled_filter = null;
+        }
 
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
             if (Auth::user()->role_id <> 5) {
                 if ($date1 == $date2) {
-                    $order_objects = Order::where('order_status', $order_status)
-                            ->where('is_approved',$is_approved)
-                            ->where('updated_at', 'like', $date1 . '%')
-                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
+                    if(!empty($fulfilled_filter)) {
+                        $order_objects = Order::where('order_status', $order_status)
+                                        ->where('is_approved',$is_approved)
+                                        ->where('updated_at', 'like', $date1 . '%')
+                                        ->where('order_source', '=', $fulfilled_filter)
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    } else {
+                        $order_objects = Order::where('order_status', $order_status)
+                                        ->where('is_approved',$is_approved)
+                                        ->where('updated_at', 'like', $date1 . '%')
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    }
                 } else {
-                    $order_objects = Order::where('order_status', $order_status)
-                            ->where('is_approved', '=', $is_approved)
-                            ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
+                    if(!empty($fulfilled_filter)) {
+                        $order_objects = Order::where('order_status', $order_status)
+                                        ->where('is_approved', '=', $is_approved)
+                                        ->where('updated_at', '>=', $date1)
+                                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                        ->where('order_source', '=', $fulfilled_filter)
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    } else {
+                        $order_objects = Order::where('order_status', $order_status)
+                                        ->where('is_approved', '=', $is_approved)
+                                        ->where('updated_at', '>=', $date1)
+                                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    }
                 }
             }
             if (Auth::user()->role_id == 5) {
@@ -69,29 +100,56 @@ class OrderExport implements FromView, ShouldAutoSize
                         ->first();
 
                 if ($date1 == $date2) {
-                    $order_objects = Order::where('updated_at', 'like', $date1 . '%')
-                            ->where('customer_id', '=', $cust->id)
-                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
+                    if(!empty($fulfilled_filter)) {
+                        $order_objects = Order::where('updated_at', 'like', $date1 . '%')
+                                        ->where('customer_id', '=', $cust->id)
+                                        ->where('order_source', '=', $fulfilled_filter)
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    } else {
+                        $order_objects = Order::where('updated_at', 'like', $date1 . '%')
+                                        ->where('customer_id', '=', $cust->id)
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    }
                 } else {
-                    $order_objects = Order::where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                            ->where('customer_id', '=', $cust->id)
-                            ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
+                    if(!empty($fulfilled_filter)) {
+                        $order_objects = Order::where('updated_at', '>=', $date1)
+                                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                        ->where('customer_id', '=', $cust->id)
+                                        ->where('order_source', '=', $fulfilled_filter)
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    } else {
+                        $order_objects = Order::where('updated_at', '>=', $date1)
+                                        ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                                        ->where('customer_id', '=', $cust->id)
+                                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+                    }
                 }
             }
         } else {
 
             if (Auth::user()->role_id <> 5) {
-
-                $order_objects = Order::where('order_status', $order_status)
-                        ->where('is_approved', '=', $is_approved)
-                        ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+                if(!empty($fulfilled_filter)) {
+                    $order_objects = Order::where('order_status', $order_status)
+                                    ->where('is_approved', '=', $is_approved)
+                                    ->where('order_source', '=', $fulfilled_filter)
+                                    ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                } else {
+                    $order_objects = Order::where('order_status', $order_status)
+                                    ->where('is_approved', '=', $is_approved)
+                                    ->with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                }
             }
 
             if (Auth::user()->role_id == 5) {
@@ -100,16 +158,22 @@ class OrderExport implements FromView, ShouldAutoSize
                         ->where('email', '=', Auth::user()->email)
                         ->first();
 
-
-                $order_objects = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
-                        ->where('customer_id', '=', $cust->id)
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-
-                $excel_sheet_name = 'Order';
-                $excel_name = 'Order-' . date('dmyhis');
+                if(!empty($fulfilled_filter)) {
+                    $order_objects = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                    ->where('customer_id', '=', $cust->id)
+                                    ->where('order_source', '=', $fulfilled_filter)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                } else {
+                    $order_objects = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'createdby')
+                                    ->where('customer_id', '=', $cust->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                }
             }
         }
+        $excel_sheet_name = 'Order';
+        $excel_name = 'Order-' . date('dmyhis');
 
         if (count((array)$order_objects) == 0) {
             return redirect::back()->with('flash_message', 'Order does not exist.');

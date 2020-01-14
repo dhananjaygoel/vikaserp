@@ -64,10 +64,10 @@
                             @else
                             <input type="hidden" name="order_status" value="pending">
                             @endif
+
                             @if(Input::has('territory_filter'))
                             <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}">
-                            @else
-
+                            @endif
                             @if(Input::has('order_filter'))
                             <input type="hidden" name="order_filter" value="{{Input::get('order_filter')}}">
                             @endif
@@ -83,10 +83,6 @@
                             @if(Input::has('size_filter'))
                             <input type="hidden" name="size_filter" value="{{Input::get('size_filter')}}">
                             @endif
-
-
-                            @endif
-
 
                             <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                         </form>
@@ -117,8 +113,7 @@
 
                             @if(Input::has('territory_filter'))
                             <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}">
-
-                            @else
+                            @endif
                             @if(Input::has('order_filter'))
                             <input type="hidden" name="order_filter1" value="{{Input::get('order_filter')}}">
                             @endif
@@ -135,7 +130,6 @@
                             <input type="hidden" name="size_filter" value="{{Input::get('size_filter')}}">
                             @endif
 
-                            @endif
 
                             <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right">
                         </form>
