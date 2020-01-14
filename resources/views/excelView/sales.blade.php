@@ -69,6 +69,7 @@
         </tr>
         <?php
         $VchNo = 1;
+        if($allorders != null){
         foreach ($allorders as $key => $value) { ?>
                 <tr>
                     <td style="height:16px;">{{ $value['invoice_no'] }}</td>    
@@ -89,6 +90,7 @@
                 </tr>
             <?php
             $VchNo++;
+        }
         }
         ?>
 
