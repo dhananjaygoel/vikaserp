@@ -66,6 +66,11 @@
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
                         ?>>
+                        <?php if (isset($_GET['order_for_filter']) && $_GET['order_for_filter'] == 'direct') { ?>
+                            <input type="hidden" name="order_for" value="direct">
+                        <?php } elseif(isset($_GET['order_for_filter']) && $_GET['order_for_filter'] == 'warehouse') { ?>
+                            <input type="hidden" name="order_for" value="warehouse">
+                        <?php } ?>
                         @if(sizeof($purchase_orders)!=0 && ($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' ))
                         <input type="hidden" name="order_status" value="pending">
                         @elseif(sizeof($purchase_orders)!=0 && $qstring_sort_type_order=='completed')
