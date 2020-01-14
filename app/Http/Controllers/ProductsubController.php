@@ -801,6 +801,19 @@ class ProductsubController extends Controller {
     public function update_difference() {
         ProductSubCategory::where('id', Input::get('id'))->update(array('difference' => Input::get('difference')));
 
+        $productsubcat = ProductSubCategory::find(Input::get('id'));
+        $productcat = ProductCategory::find($productsubcat->product_category_id);
+        $sign = substr( Input::get('difference'), 0, 1);
+        if($sign == '-'){
+            $todays_price = $productcat->price - substr(Input::get('difference'),1);
+        } else {
+            $todays_price = $productcat->price + Input::get('difference');
+        }
+        $total_price = $todays_price + Input::get('difference');
+        $arr = array('todays_price' => round($todays_price,2), 'total_price' => round($total_price,2));
+        echo json_encode($arr);
+
+        // echo $todays_price|$total_price;
         /*
          * ------------------- -----------------------
          * SEND SMS TO ALL ADMINS FOR NEW PRODUCT SIZE

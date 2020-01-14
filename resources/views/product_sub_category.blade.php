@@ -144,7 +144,7 @@
                                             <td>{{ $produ_sub->weight }} KG</td>
                                             <td>{{ $produ_sub->standard_length }}</td>
 
-                                            <td>
+                                            <td id="todays_price_{{$i}}">
                                                 <?php
                                                 $sign = substr($produ_sub->difference, 0, 1);
                                                 ?>
@@ -167,7 +167,7 @@
                                                         <?php $price_diff = $produ_sub->difference; ?>
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
-                                                        <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_difference(this);" >
+                                                        <input class="btn btn-primary" type="button" class="form-control" id="save_diff_{{$i}}" value="save" onclick="update_difference(this);" >
                                                     </div>
                                                 </div>
                                                 @else
@@ -175,8 +175,8 @@
                                                 <?php $price_diff = $produ_sub->difference; ?>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <label>{{ $produ_sub->difference + $prod_diff}}</label>
+                                            <td id="total_price_{{$i}}">
+                                                {{ $produ_sub->difference + $prod_diff}}
                                             </td>
                                             @if( Auth::user()->role_id == 0 )
                                             <td>

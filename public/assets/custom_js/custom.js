@@ -3054,12 +3054,16 @@ function update_difference(e) {
     var difference = $(e).parent().parent().children().find("input[type=tel]").val();
     var id = $(e).parent().parent().children().find("input[type=hidden]").val();
     var token = $('#_token').val();
+    var button_id = $(e).attr('id').substr(-1);
     $.ajax({
         type: 'post',
         url: baseurl + '/update_difference',
         data: {difference: difference, id: id, _token: token},
+        dataType: 'json',
         success: function (data) {
 //            $('.custom_alert_success').fadeOut(5000);
+            $('#todays_price_'+button_id).html(data['todays_price']);
+            $('#total_price_'+button_id).html(data['total_price']);
             $('.alert-success1').show();
             $('html, body').animate({
                 scrollTop: $('.navbar-brand').offset().top
