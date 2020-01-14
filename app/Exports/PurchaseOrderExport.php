@@ -146,7 +146,6 @@ class PurchaseOrderExport implements FromView, ShouldAutoSize
                 }
             }
         } else {
-
             if (Auth::user()->role_id <> 5) {
                 if ($data['order_for'] == 'direct') {
                     $order_objects = PurchaseOrder::where('order_status', $order_status)
