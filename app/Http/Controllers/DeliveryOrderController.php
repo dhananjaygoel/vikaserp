@@ -2515,7 +2515,7 @@ class DeliveryOrderController extends Controller {
                 $all = \App\User::where('role_id',9)
                             ->orderBy('id', 'DESC')
                             ->get();
-                $new = \App\User::where('role_id',9)->where('updated_at','>',$formatted_date)
+                $new = \App\User::where('role_id',9)->where('is_active',1)->where('updated_at','>',$formatted_date)
                             ->orderBy('id', 'DESC')
                             ->get();
             } 
@@ -2525,7 +2525,7 @@ class DeliveryOrderController extends Controller {
             $all = \App\User::where('role_id',9)
                             ->orderBy('id', 'DESC')
                             ->get();
-            $new = \App\User::where('role_id',9)->where('updated_at','>',$formatted_date)
+            $new = \App\User::where('role_id',9)->where('is_active',1)->where('updated_at','>',$formatted_date)
                         ->orderBy('id', 'DESC')
                         ->get();
         }
@@ -2545,7 +2545,7 @@ class DeliveryOrderController extends Controller {
                 $all = \App\User::where('role_id',8)
                             ->orderBy('id', 'DESC')
                             ->get();
-                $new = \App\User::where('role_id',8)->where('updated_at','>',$formatted_date)
+                $new = \App\User::where('role_id',8)->where('is_active',1)->where('updated_at','>',$formatted_date)
                             ->orderBy('id', 'DESC')
                             ->get();
             } 
@@ -2556,7 +2556,7 @@ class DeliveryOrderController extends Controller {
             $all = \App\User::where('role_id',8)
                             ->orderBy('id', 'DESC')
                             ->get();
-            $new = \App\User::where('role_id',8)->where('updated_at','>',$formatted_date)
+            $new = \App\User::where('role_id',8)->where('is_active',1)->where('updated_at','>',$formatted_date)
                         ->orderBy('id', 'DESC')
                         ->get();
         }

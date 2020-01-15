@@ -51,7 +51,7 @@ class DashboardController extends Controller {
         }
 
         if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9 || Auth::user()->role_id == 3){
-            User::where('id',Auth::user()->id)->update(['is_active'=>1]);
+            User::where('id',Auth::user()->id)->update(['is_active'=>'1']);
             return Redirect::to('delivery_order');
         }
 
