@@ -32,6 +32,7 @@
                                     </div>
                                     <div class="form-group  col-md-2  pull-right">
                                         <select class="form-control" name="product_filter" onchange="this.form.submit()">
+                                        <?php if(Input::get('product_filter')){$prod_filter = Input::get('product_filter');} else{$prod_filter = null;}?>
                                             <option value="" selected="">--Product category--</option>
                                             @foreach($product_type as $prod_type)
                                             <option <?php if (Input::get('product_filter') == $prod_type->id) echo 'selected="selected"'; ?> value="{{$prod_type->id}}"> {{$prod_type->name}}</option>
@@ -263,6 +264,7 @@
                             @if($product_sub_cat->lastPage() > 1)
                             <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
                                 <form class="form-inline" method="GET" action="{{url('product_sub_category')}}" id="filter_search">
+                                <input type="hidden" name="product_filter" value="{{(!empty($prod_filter)) ? $prod_filter : '' }}"/>
                                     <div class="form-group">
                                         <label for="exampleInputName2"><b>Go To</b></label>
                                         &nbsp;
