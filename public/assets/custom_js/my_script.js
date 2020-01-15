@@ -880,10 +880,14 @@ function print_delivery_challan(challan_id,allinc) {
     $('#print_delivery_challan').val(challan_id);
     if(allinc){
         $("#checksms").prop("disabled", false);
+        $("#checkwhatsapp").prop("disabled", false);
         $('#checksms_span').attr('data-original-title','SMS would be sent to Party');
     }
     else{
         $("#checksms").prop("disabled", true);
+        $("#checkwhatsapp").prop("disabled", true);
+        $("#checksms").prop("checked", false);
+        $("#checkwhatsapp").prop("checked", false);
         $('#checksms_span').attr('data-original-title','Sending SMS not allowed');
     }
 }

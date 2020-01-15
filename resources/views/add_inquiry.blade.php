@@ -249,7 +249,7 @@
                                                     <td class="col-md-1">
                                                         <div class="form-group inquiry_vat_chkbox">
                                                             <!--<input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage">-->
-                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes">
+                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes" onchange="check_vat();">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-3">
@@ -314,9 +314,10 @@
                                 <label for="inquiry_remark">Remark</label>
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
+                            
                             <div class="checkbox customer_select_order">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
-                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                             </div>
 <!--                            <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>
                             <hr>-->

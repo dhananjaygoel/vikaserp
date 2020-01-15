@@ -352,7 +352,7 @@
                                                     <td class="col-md-1">
                                                         <div class="form-group inquiry_vat_chkbox">
                                                             <!--<input type="text" class="form-control" id="vat_percentage_{{$i}}" name="product[{{$i}}][vat_percentage]" placeholder="Vat percentage" value = "{{(isset($session_data['product'][$i]['vat_percentage'])) ?$session_data['product'][$i]['vat_percentage'] : ''}}">-->
-                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes">
+                                                            <input class="vat_chkbox" type="checkbox" name="product[{{$i}}][vat_percentage]" value="yes" onchange="check_vat();">
                                                         </div>
                                                     </td>
                                                     <td class="col-md-3">
@@ -423,8 +423,8 @@
                                 <label class="marginsms"><input type="checkbox" name="send_email" value=""><span class="checksms">Send Email</span></label>
                             </div> -->
                             <div class="checkbox customer_select_order">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
-                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                             </div>
                             <div>
                                 <!-- <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip btn_add_order_sms" id="add_order_sendSMS" >Save and Send SMS</button>-->

@@ -1978,6 +1978,19 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
 
 });
 
+function check_vat(){
+    var tot_products = $(".add_product_row:visible").length;
+    var atLeastOneIsChecked = $('.vat_chkbox:checkbox:checked').length > 0;
+    // console.log($('.vat_chkbox:checkbox:checked').length);
+    if(atLeastOneIsChecked == true){
+        $('#send_whatsapp').prop("checked",true);
+        $('#send_msg').prop("checked",true);
+    } else{
+        $('#send_whatsapp').prop("checked",false);
+        $('#send_msg').prop("checked",false);
+    }
+}
+
 $('body').delegate(".btn_edit_delivery_challan", "click", function () {
     if ($("#challan_vehicle_number").val() == "") {
         $('#challan_vehicle_number').addClass('error_validation');

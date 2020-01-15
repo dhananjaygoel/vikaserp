@@ -1083,7 +1083,7 @@ var qtyPieces = '<option value = "1">1</option>'+
             '</td>' +
             '<td class="col-md-1">' +
             '<div class="form-group inquiry_vat_chkbox">' +
-            '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" value="yes">' +
+            '<input type="checkbox" class="vat_chkbox" id="chk_vat_'+current_row_count+'" disabled name="product[' + current_row_count + '][vat_percentage]" value="yes" onchange="check_vat();">' +
             '</div>' +
             '</td>' +
             '<td class="col-md-3">' +
@@ -1211,7 +1211,7 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</td>' +
         '<td class="col-md-1">' +
         '<div class="form-group inquiry_vat_chkbox">' +
-        '<input type="checkbox" class="vat_chkbox" name="product[' + current_row_count + '][vat_percentage]" value="yes">' +
+        '<input type="checkbox" class="vat_chkbox" id="chk_vat_'+current_row_count+'" disabled name="product[' + current_row_count + '][vat_percentage]" value="yes" onchange="check_vat();">' +
         '<input id="pending_qunatity_value_' + current_row_count + '" class="form-control text-center" name="product[' + current_row_count + '][pending_quantity]" value="" type="hidden">' +
         '</div>' +
         '</td>' +
@@ -1717,6 +1717,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                 //         	var i = $('#units_' + id).val();
         //                    console.log(event);
                             var term = ui.item.value;
+                            $('#chk_vat_'+id).attr('disabled', false);
                            if((ui.item.type_id == 3 || ui.item.id == 3) && ui.item.value != '<-- Back' )
                            {
                                     $('#units_'+id).text('--Select--');
@@ -2036,7 +2037,7 @@ var qtyPieces = '<option value = "1">1</option>'+
                 this._on(this.input, {
                     autocompleteselect: function (event, ui) {
                        // console.log(ui);
-                       
+                       $('#chk_vat_'+id).attr('disabled', false);
                        if((ui.item.type_id == 3 || ui.item.id == 3) && ui.item.value != '<-- Back' )
                        {
                             $('#units_'+id).text('--Select--');

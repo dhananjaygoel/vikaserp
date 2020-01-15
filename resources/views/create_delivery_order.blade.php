@@ -215,7 +215,7 @@
                                             <td class="col-md-1 ">
                                                 <div class="form-group inquiry_vat_chkbox">
 <!--                                                    <input type="text" class="form-control" value="{{$product->vat_percentage}}" id="product_price_{{$key}}" name="product[{{$key}}][vat_percentage]">--> 
-                                                    <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+                                                    <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes" onchange="check_vat();">
                                                         </div>
                                                 </div>
                                             </td>
@@ -325,8 +325,8 @@
                         </div>
                         <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                         <div class="checkbox customer_select_order">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
-                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes" ><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                         </div>
                         <hr>
                         <div >

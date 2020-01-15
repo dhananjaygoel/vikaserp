@@ -275,7 +275,7 @@
                                                                     </span>
                                                                 </a>-->
 
-                                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}},1)">
+                                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}})">
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -403,11 +403,11 @@
                                         </div>
                                         <div class="checkbox">
                                             <label style="margin-right:10px;">
-                                                <input type="checkbox" value="" id="checkwhatsapp" checked>
+                                                <input type="checkbox" value="" id="checkwhatsapp">
                                                 <span title="Whatsapp message would be sent to Party" id="checksms_span" class="checksms smstooltip">Send Whatsapp</span>
                                             </label>
                                             <label>
-                                                <input type="checkbox" value="" id="checksms" checked>
+                                                <input type="checkbox" value="" id="checksms">
                                                 <span title="SMS would be sent to Party" id="checksms_span" class="checksms smstooltip">Send SMS</span>
                                             </label>
                                         </div>

@@ -368,7 +368,7 @@
                                                 <td class="col-md-2">
                                                     <div class="form-group inquiry_vat_chkbox">
                                                         <!--<input type="text" class="form-control" id="vat_percentage_{{$key}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat percentage" value="{{$product->vat_percentage}}">-->
-                                                        <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+                                                        <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes" onchange="check_vat();">
                                                     </div>
                                                 </td>
                                                 <td class="col-md-4">
@@ -473,8 +473,8 @@
                             <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3">{{$inquiry->remarks}}</textarea>
                         </div>
                         <div class="checkbox customer_select_order">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
-                                <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
+                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label>
+                                <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                             </div>
                         <?php // if(!isset($is_approval['way'])){ ?>
 <!--                        <button type="button" class="btn btn-primary btn_edit_inquiry_sms" id="edit_inquiry_sendSMS" >Save and Send SMS</button>-->
