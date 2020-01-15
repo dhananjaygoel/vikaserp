@@ -688,7 +688,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -794,7 +794,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -928,7 +928,7 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 0; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1007,7 +1007,7 @@ $('body').delegate(".btn_edit_inquiry, .btn_edit_inquiry_sms", "click", function
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 0; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1128,7 +1128,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1268,7 +1268,7 @@ $('body').delegate(".btn_add_order, .btn_add_order_sms", "click", function () {
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1398,7 +1398,7 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 0; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1491,7 +1491,7 @@ $('body').delegate(".btn_edit_order, .btn_edit_order_sms", "click", function () 
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 0; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1599,7 +1599,7 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
             if ($("#present_shipping_" + i).val() == 0) {
                 present_shippein_zero_count++;
             }
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1710,7 +1710,7 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
             if ($("#present_shipping_" + i).val() == 0) {
                 present_shippein_zero_count++;
             }
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -1822,7 +1822,7 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "") {
@@ -1914,7 +1914,7 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "") {
@@ -2394,7 +2394,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
         if ($("#present_shipping_" + i).val() == 0) {
             present_shippein_zero_count++;
         }
-        if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+        if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
             j++;
         } else {
             if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -2555,7 +2555,7 @@ $('body').delegate(".btn_inquiry_to_order, .btn_inquiry_to_order_sms", "click", 
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 0; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -2649,7 +2649,7 @@ $('body').delegate(".btn_inquiry_to_order, .btn_inquiry_to_order_sms", "click", 
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 0; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") && ($("#quantity_" + i).val() == "")) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
