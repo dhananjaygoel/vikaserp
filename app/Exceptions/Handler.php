@@ -34,6 +34,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            app('sentry')->captureException($exception);
+        }
+    
         parent::report($exception);
     }
 
@@ -46,6 +50,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof TokenMismatchException) {
+            return redirect($request->fullUrl())->with('csrf_error', "Opps! Seems you couldn't submit form for a longtime. Please try again");
+        }
+        /* end */
+        if ($this->isHttpException($exception)) {
+            return $this->renderHttpException($exception);
+        }
+
         return parent::render($request, $exception);
     }
 }
