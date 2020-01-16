@@ -66,7 +66,7 @@ class DashboardController extends Controller {
             return Redirect::to('bulk-delete');
         }
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2 && Auth::user()->role_id == 4) {
             return Redirect::to('customers');
         }
         if (Auth::user()->role_id == 6) {
