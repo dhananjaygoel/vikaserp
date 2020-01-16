@@ -558,4 +558,4 @@ Route::get('remove_test_labour','WelcomeController@remove_test_labour');
 
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index');
+// Route::get('/dashboard', 'DashboardController@index');
