@@ -28,95 +28,48 @@ class DOExport implements FromView, ShouldAutoSize
         $data = Input::all();
         set_time_limit(0);
         ini_set('max_execution_time', 1000);
+        $delivery_order_objects = 0;
+        $q = DeliveryOrder::query();
+
         if ($data['delivery_order_status'] == 'Inprocess') {
-            $delivery_order_status = 'pending';
-            $excel_sheet_name = 'Inprocess';
-            $excel_name = 'DeliveryOrder-InProcess-' . date('dmyhis');
+            $q->where('order_status', 'pending');
+            // $delivery_order_status = 'pending';
+            // $excel_sheet_name = 'Inprocess';
+            // $excel_name = 'DeliveryOrder-InProcess-' . date('dmyhis');
         } elseif ($data['delivery_order_status'] == 'Delivered') {
-            $delivery_order_status = 'completed';
-            $excel_sheet_name = 'Delivered';
-            $excel_name = 'DeliveryOrder-Delivered-' . date('dmyhis');
+            $q->where('order_status', 'completed');
+            // $delivery_order_status = 'completed';
+            // $excel_sheet_name = 'Delivered';
+            // $excel_name = 'DeliveryOrder-Delivered-' . date('dmyhis');
         }
         if (Auth::user()->role_id == 9){
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->where('updated_at', 'like', $date1 . '%')
-                            ->where('del_boy', Auth::user()->id)
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                } else {
-                    $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                            ->where('del_boy', Auth::user()->id)
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                }
+            $q->where('del_boy', Auth::user()->id);
+       }
+        if (Auth::user()->role_id == 8){
+            $q->where('del_supervisor', Auth::user()->id);
+       }
+       $search_dates = [];
+        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+
+            $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
+
+            $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
+            if ($date1 == $date2) {
+                $q->where('created_at', 'like', $date1 . '%');
             } else {
-                $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                        ->where('del_boy', Auth::user()->id)
-                        ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
+                $q->where('created_at', '>=', $date1);
+                $q->where('created_at', '<=', $date2 . ' 23:59:59');
             }
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
         }
-        elseif (Auth::user()->role_id == 8){
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->where('updated_at', 'like', $date1 . '%')
-                            ->where('del_supervisor', Auth::user()->id)
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                } else {
-                    $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                            ->where('del_supervisor', Auth::user()->id)
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                }
-            } else {
-                $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                        ->where('del_supervisor', Auth::user()->id)
-                        ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-            }
-        }else {
-            if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
-                $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
-                $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-                if ($date1 == $date2) {
-                    $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->where('updated_at', 'like', $date1 . '%')
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                } else {
-                    $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                            ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                            ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                }
-            } else {
-                $delivery_order_objects = DeliveryOrder::where('order_status', $delivery_order_status)
-                        ->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-            }
-        }
+
+        $delivery_order_objects = $q->with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')
+        ->orderBy('created_at', 'desc')
+        ->get();
+        
         if (count((array)$delivery_order_objects) == 0) {
             return redirect::back()->with('error', 'No data found');
         } else {
