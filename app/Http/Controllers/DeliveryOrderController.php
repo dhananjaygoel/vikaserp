@@ -813,7 +813,7 @@ class DeliveryOrderController extends Controller {
         } else {
             $delivery_challan->discount_vat_percentage = 0;
         }
-        $delivery_challan->grand_price = $input_data['grand_total'];
+        $delivery_challan->grand_price = $input_data['grand_price_gst'];
         $delivery_challan->remarks = trim($input_data['challan_remark']);
         $delivery_challan->challan_status = "Pending";
         if ($refid != NULL) {
@@ -1558,6 +1558,15 @@ class DeliveryOrderController extends Controller {
         $total_actual_quantity_profile = 0;
         $profile_vat_amount = 0;
         $case = array();
+        $final_vat_amount = 0;
+        $profile_sgst = 0;
+        $profile_cgst = 0;
+        $profile_igst = 0;
+        $profile_vat = 0;
+        $loading_vat = 0;
+        $loading_vat_amount = 0;
+        $freight_vat_amount = 0;
+        $discount_vat_amount = 0;
 
         foreach ($input_data['product'] as $product) {
             $product_id = $product['id'];
@@ -1587,13 +1596,20 @@ class DeliveryOrderController extends Controller {
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
 
+                        $product_price = (float)$product['price'] * (float)$product['actual_quantity'];
+
                         if($product_cat->hsn_code && $delivery_order_details->vat_percentage == 0 ){
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                             $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
                             if($local_state){
-                                $profile_vat_amount = isset($gst_det->cgst)?$gst_det->cgst:'' + isset($gst_det->sgst)?$gst_det->sgst:'';
+                                $profile_sgst = $product_price * (isset($gst_det->sgst)?$gst_det->sgst:'')/100;
+                                $profile_cgst = $product_price * (isset($gst_det->cgst)?$gst_det->cgst:'')/100;
+                                $profile_vat = round($profile_sgst,2) + round($profile_cgst,2);
+                                $profile_vat_amount = (isset($gst_det->cgst)?$gst_det->cgst:'') + (isset($gst_det->sgst)?$gst_det->sgst:'');
                             }
                             else{
+                                $profile_igst = $product_price * (isset($gst_det->igst)?$gst_det->igst:'')/100;
+                                $profile_vat = round($profile_igst,2);
                                 $profile_vat_amount = isset($gst_det->igst)?$gst_det->igst:'';
                             }
                         }
@@ -1603,7 +1619,7 @@ class DeliveryOrderController extends Controller {
 
                         //$profile_vat_amount = $input_data['vat_percentage'];
 
-                        $product_price = (float)$product['price'] * (float)$product['actual_quantity'];
+                       
 
                         if(isset($input_data['vat_percentage'])){
                             $prod_vat_price = ((float)$product_price * (float)$profile_vat_amount)/100;
@@ -1612,7 +1628,8 @@ class DeliveryOrderController extends Controller {
                             $prod_vat_price = ((float)$product_price * 0)/100;
                         }
 
-
+                        $final_vat_amount += $profile_vat;
+                        $loading_vat = 18;
 
                         $product_price = (float)$product_price + (float)$prod_vat_price;
                         $total_profile_price = (float)$total_profile_price + (float)$product_price;
@@ -1645,7 +1662,15 @@ class DeliveryOrderController extends Controller {
             }
         }
 
+        if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
+            $loading_vat_amount = ((float)$input_data['loading'] * (float)$loading_vat) / 100;
+            $freight_vat_amount = ((float)$input_data['freight'] * (float)$loading_vat) / 100;
+            $discount_vat_amount = ((float)$input_data['discount'] * (float)$loading_vat) / 100;
+        }
 
+        $input_data['grand_price_gst'] = $input_data['vat_total'] + $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+        // dd($input_data['grand_price_gst']);
+// dd($input_data);
         //dd($total_product_count. " ". $total_profile_items);
         //dd("asdsa");
 
