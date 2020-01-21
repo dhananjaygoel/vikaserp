@@ -1093,7 +1093,14 @@ var qtyPieces = '<option value = "1">1</option>'+
             '</td>' +
             '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
             '</tr>';
-            $("#add_product_table").children("tbody").append(html);
+            var last_row_id =  $("#add_product_table").children("tbody").children("tr:last").attr("id");
+            var row_id_val = last_row_id.substr(-1);
+            var last_row = $("#add_product_table").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+            var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+            if(is_null != ""){
+                $("#add_product_table").children("tbody").append(html);
+            }
+            // $("#add_product_table").children("tbody").append(html);
             var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
             '<td class="col-md-3">' +
             '<div class="form-group searchproduct">' +
@@ -1227,7 +1234,15 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</td>' +
         '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
         '</tr>';
-        $("#add_product_table_delivery_order").children("tbody").append(html);
+        var last_row_id =  $("#add_product_table_delivery_order").children("tbody").children("tr:last").attr("id");
+        var row_id_val = last_row_id.substr(-1);
+        var last_row = $("#add_product_table_delivery_order").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+        var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+        if(is_null != ""){
+            $("#add_product_table_delivery_order").children("tbody").append(html);
+        }
+        
+        // $("#add_product_table_delivery_order").children("tbody").append(html);
         $('#add_product_name_'+current_row_count).focus();            
 
     });   
@@ -1290,7 +1305,14 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</td>' +
         '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
         '</tr>';
-        $("#add_product_table_delivery_challan").children("tbody").append(html);
+        var last_row_id =  $("#add_product_table_delivery_challan").children("tbody").children("tr:last").attr("id");
+        var row_id_val = last_row_id.substr(-1);
+        var last_row = $("#add_product_table_delivery_challan").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+        var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+        if(is_null != ""){
+            $("#add_product_table_delivery_challan").children("tbody").append(html);
+        }
+        // $("#add_product_table_delivery_challan").children("tbody").append(html);
     
     }); 
 
@@ -1360,7 +1382,14 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</td>' +
         '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
         '</tr>';
-        $("#add_product_table").children("tbody").append(html);
+        var last_row_id =  $("#add_product_table").children("tbody").children("tr:last").attr("id");
+        var row_id_val = last_row_id.substr(-1);
+        var last_row = $("#add_product_table").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+        var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+        if(is_null != ""){
+            $("#add_product_table").children("tbody").append(html);
+        }
+        // $("#add_product_table").children("tbody").append(html);
         var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
         '<td class="col-md-3">' +
         '<div class="form-group searchproduct">' +
@@ -1494,7 +1523,14 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</div>' +
         '</td>' +
         '</tr>';
-        $("#create_purchase_advise_table").children("tbody").append(html);
+        var last_row_id =  $("#create_purchase_advise_table").children("tbody").children("tr:last").attr("id");
+        var row_id_val = last_row_id.substr(-1);
+        var last_row = $("#create_purchase_advise_table").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+        var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+        if(is_null != ""){
+            $("#create_purchase_advise_table").children("tbody").append(html);
+        }
+        // $("#create_purchase_advise_table").children("tbody").append(html);
         $('#add_product_name_'+current_row_count).focus();
         $('#product_all_'+current_row_count).focus();           
     });
@@ -1547,7 +1583,14 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</div>' +
         '</td>' +
         '</tr>';
-        $("#add_product_table_purchase").children("tbody").append(html);
+        var last_row_id =  $("#add_product_table_purchase").children("tbody").children("tr:last").attr("id");
+        var row_id_val = last_row_id.substr(-1);
+        var last_row = $("#add_product_table_purchase").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+        var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+        if(is_null != ""){
+            $("#add_product_table_purchase").children("tbody").append(html);
+        }
+        // $("#add_product_table_purchase").children("tbody").append(html);
     });
 
     //  --------------------------------------Dynamic purchase order product name--------------------------------------------- 
@@ -1633,7 +1676,14 @@ var qtyPieces = '<option value = "1">1</option>'+
         '</td>' +
         '<input type="hidden" name="product[' + current_row_count + '][order]" value="">' +
         '</tr>';
-        $("#add_product_table").children("tbody").append(html);
+        var last_row_id =  $("#add_product_table").children("tbody").children("tr:last").attr("id");
+        var row_id_val = last_row_id.substr(-1);
+        var last_row = $("#add_product_table").children("tbody").children("tr:last");                                                                                                                                                                                                                                          
+        var is_null = last_row.find("input[id=add_product_id_"+row_id_val+"]").val();                                                                                                                                                                                                                                                                                                                                    
+        if(is_null != ""){
+            $("#add_product_table").children("tbody").append(html);
+        }
+        // $("#add_product_table").children("tbody").append(html);
         var purchase_html = '<tr id="add_row_' + current_row_count + '" class="add_product_row" data-row-id="' + current_row_count + '">' +
         '<td class="col-md-3">' +
         '<div class="form-group searchproduct">' +
