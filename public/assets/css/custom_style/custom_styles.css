@@ -166,7 +166,7 @@
 }
 .search_form{
     float: left !important;
-    width: 87%;
+    width: 85%;
 }
 .export_form.export_dc_form{
     float: left !important;
@@ -197,13 +197,13 @@
 }
 .orders_search_wrapper,.delivery_challan_search_form_wrapper{
     float: right !important;
-    width: 45%;
+    width: 50%;
 }
 .orders_search_wrapper{
     margin-bottom: 10px;
 }
 .sales_book_search_form_wrapper{
-    width: 68% !important;   
+    width: 78% !important;   
 }
 
 .mb0 {margin-bottom: 0px;}

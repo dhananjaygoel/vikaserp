@@ -51,7 +51,7 @@
                                 <div class="col-md-12 pull-right">
                                     @if( Auth::user()->role_id == 0 )
                                     <div class="col-md-3 form-group pull-right">
-                                        <input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer" style="margin-top: -28%;">
+                                        <input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer" style="margin-top: -3.5%; position: fixed;">
                                     </div>
                                     @endif
                                     <div class="form-group col-md-3  pull-right">

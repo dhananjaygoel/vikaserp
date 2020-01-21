@@ -41,7 +41,7 @@
                             <br>
                         </div>
                     </form>
-                    <div class="search_form_wrapper delivery_challan_search_form_wrapper">
+                    <div class="search_form_wrapper delivery_challan_search_form_wrapper" style="display: flex;">
                         <form class="search_form" method="GET" action="{{URL::action('DeliveryChallanController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                             if (Input::get('export_from_date') != "") {

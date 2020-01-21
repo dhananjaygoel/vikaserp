@@ -42,7 +42,7 @@
                         @endif
                     </div>                        
                     <div class="col-lg-8">
-                        <form class="search_form" method="GET" action="{{URL::action('OrderController@index')}}">
+                        <form class="search_form" style="display: flex;" method="GET" action="{{URL::action('OrderController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                             if (Input::get('export_from_date') != "") {
                                 echo "value='" . Input::get('export_from_date') . "'";
