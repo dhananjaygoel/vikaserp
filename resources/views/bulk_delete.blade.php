@@ -25,6 +25,12 @@ use Illuminate\Support\Facades\Session;
                         @if(isset($msg)&&(!empty($msg)))
                         <div id="flash_error" class="alert alert-success no_data_msg_container">{{ucfirst(str_replace('_',' ',$msg))}}</div>
                         @endif
+                        @if(Session::has('msg'))
+                        <div id="flash_error" class="alert alert-success no_data_msg_container">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            {{ucfirst(str_replace('_',' ', Session::get('msg')))}}
+                        </div>
+                        @endif
                         <form id="bulk_delete_form" name="" method="GET" action="{{URL::action('BulkDeleteController@show_result')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             @if (count($errors->all()) > 0)

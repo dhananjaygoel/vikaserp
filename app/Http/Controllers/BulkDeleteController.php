@@ -920,7 +920,7 @@ class BulkDeleteController extends Controller {
         }
         $bulk_searched_result = 'bulk_searched_result';
         if (count((array)$delete_seletected_module) > 0) {
-            return redirect('bulk-delete?select_module=' . $module . '&expected_date=' . $expected_date)->with('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg');
+            return redirect('bulk-delete?select_module=' . $module . '&expected_date=' . $expected_date)->with('msg', $msg);
         } else {
             return view('bulk_delete', compact('result_data', 'result_temp', 'bulk_searched_result', 'head', 'module', 'expected_date', 'tr_id', 'msg'));
         }
