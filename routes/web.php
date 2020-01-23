@@ -410,6 +410,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('change_unsettled_amount', 'CustomerController@change_unsettled_amount');
     Route::get('pass_journal_entry', 'CustomerController@pass_journal_entry');
 
+    Route::get('export_product_hsn', 'ProductsubController@exporthsncode');
 //  Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
     Route::get('export_product_size', 'ProductsubController@exportProductSize');
     Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');

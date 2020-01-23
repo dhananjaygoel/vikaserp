@@ -239,7 +239,7 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347495075906",
+            'QBORealmID' => "9130347764354476",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -282,7 +282,7 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130347492555586",
+            'QBORealmID' => "9130347764339246",
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -381,6 +381,7 @@ public function update_cust_plus_gst(){
 }
 
 public function update_cust_all_inc(){
+    dd('ki');
     set_time_limit(0);
     $this->refresh_token_Wihtout_GST();
     $dataService = $this->getTokenWihtoutGST();
@@ -395,6 +396,7 @@ public function update_cust_all_inc(){
         $cust->update(['quickbook_a_customer_id' => null]);
     }
     $cust = "select count(*) from Customer";
+    dd($cust);
     $count = $dataService->Query($cust);
     for($i = 1; $i<=$count; $i+=1000){
         $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
@@ -403,7 +405,7 @@ public function update_cust_all_inc(){
         foreach($det as $key=>$cust_id){
             // dd($cust_id->Name);
             if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
-                App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
+                App\Customer::where('tally_name',$cust_id->DisplayName)->update(['quickbook_a_customer_id'=>$cust_id->Id]);
                 echo $sr.".\n";
                 echo nl2br($cust_id->Id."\n");
                 $sr++;

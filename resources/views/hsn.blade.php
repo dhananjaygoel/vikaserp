@@ -30,7 +30,7 @@
                         <div class="main-box-body main_contents clearfix">
                             @if(sizeof($hsn) ==0)
                                 <div class="alert alert-info no_data_msg_container">
-                                    Currently HSN percent available.
+                                    Currently HSN codes are not available.
                                 </div>
 
                             @else

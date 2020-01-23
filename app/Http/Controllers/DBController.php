@@ -198,25 +198,26 @@ class DBController extends Controller {
     
     function update_hsn_test() {
         
-            App\ProductCategory::where('product_type_id',1)->update(['hsn_code' => '7210']);
-
-            App\ProductCategory::where('product_type_id',2)->update(['hsn_code' => '7310']);
-        
-            App\ProductCategory::where('product_type_id',3)->update(['hsn_code' => '7410']);
-
-            $hsnresults = App\Hsn::orderBy('hsn_code', 'asc')->get();
-            foreach ($hsnresults as $hsnresult) {
-                App\ProductCategory::where('hsn_code',$hsnresult->hsn_code)->update(['gst'=>$hsnresult->gst,'hsn_desc' =>$hsnresult->hsn_desc ]);
-            }
-
-            $prod_cat = App\ProductCategory::select('id','hsn_code')->distinct()->get();
-            // dd($prod_cat);
-            foreach($prod_cat as $cat){
-                App\ProductSubCategory::where('product_category_id',$cat->id)->update(['hsn_code' => $cat->hsn_code]);
-            }
+        $prod_subcat = App\ProductSubCategory::select('product_category_id','hsn_code')->distinct('product_category_id')->get();
+        foreach($prod_subcat as $key => $cat){
+            App\ProductCategory::where('id',$cat['product_category_id'])->update([ 'hsn_code' => $cat['hsn_code'], 'gst' => 18 ]);
+        }
+        $hsn = App\ProductCategory::select('hsn_code','gst')->distinct('hsn_code')->get();
+        foreach($hsn as $key => $hsn_code){
+            App\Hsn::insert(array(
+                'hsn_code' => $hsn_code['hsn_code'],
+                'hsn_desc' => '',
+                'gst' => $hsn_code['gst']
+            ));
+        }
+        // $prod_cat = App\ProductCategory::select('product_category_name','id')->get();
+        // foreach( $prod_cat as $cat_name){
+        //     App\ProductCategory::where('id',$cat_name['id'])->update([ 'hsn_desc' => $cat_name['product_category_name'] ]);
+        //     // dd($cat_name['product_category_name']);
+        // }
             return redirect('process')->with('success', 'HSN successfully updated.');
 
-     }
+    }
 
      function updatethickness(){
            if (Input::hasFile('excel_file')) {

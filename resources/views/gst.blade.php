@@ -30,7 +30,7 @@
                         <div class="main-box-body main_contents clearfix">
                             @if(sizeof($gst) ==0)
                                 <div class="alert alert-info no_data_msg_container">
-                                    Currently GST percent available.
+                                    Currently GST percentage are not available.
                                 </div>
 
                             @else

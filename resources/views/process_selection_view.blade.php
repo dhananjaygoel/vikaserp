@@ -13,12 +13,12 @@
                     <h1 class="pull-left">Select Process</h1>
                 </div>
             </div>
-            <!-- <div class="col-lg-6">
+            <div class="col-lg-6">
                 <div class="breadcrumb"></div>
                     <a href="{{URL::action('DBController@update_hsn_test')}}"  class="btn btn-info pull-right">
                           <i class="fa fa-refresh fa-lg"></i> Update HSN
                     </a>
-            </div> -->
+            </div>
         </div>
         @if(Session::has('success'))
          <div class="alert alert-success alert-dismissible" role="alert">
