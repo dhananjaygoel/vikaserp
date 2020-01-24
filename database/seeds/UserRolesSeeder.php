@@ -4,6 +4,12 @@ use Illuminate\Database\Seeder;
 
 class UserRolesSeeder extends Seeder {
 
+    /**
+     * Run the database seeds.
+     *
+     * @return void user_roles
+     */
+
     public function run() {
         DB::table('user_roles')->truncate();
         DB::table('user_roles')->insert(

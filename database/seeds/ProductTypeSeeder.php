@@ -1,9 +1,14 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ProductTypeSeeder extends Seeder {
+
+    /**
+     * Run the database seeds.
+     *
+     * @return void product_type
+     */
 
     public function run() {
         DB::table('product_type')->truncate();

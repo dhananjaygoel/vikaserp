@@ -4,6 +4,12 @@ use Illuminate\Database\Seeder;
 
 class UnitsSeeder extends Seeder {
 
+    /**
+     * Run the database seeds.
+     *
+     * @return void unit
+     */
+
     public function run() {
         DB::table('unit')->truncate();
         DB::table('unit')->insert(

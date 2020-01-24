@@ -9,6 +9,7 @@ class QuickbookTokenSeeder extends Seeder
      *
      * @return void
      */
+    
     public function run()
     {
         DB::table('quickbook_token')->truncate();
