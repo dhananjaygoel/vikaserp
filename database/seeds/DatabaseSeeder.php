@@ -11,9 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call('UserRolesSeeder');
-        $this->call('UnitsSeeder');
-        $this->call('ProductTypeSeeder');
+        $this->call(UserRolesSeeder::class);
+        $this->call(UnitsSeeder::class);
+        $this->call(ProductTypeSeeder::class);
         $this->call(QuickbookTokenSeeder::class);
         $this->call('UpdateDocNum');
     }
