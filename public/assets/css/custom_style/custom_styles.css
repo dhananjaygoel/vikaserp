@@ -166,7 +166,8 @@
 }
 .search_form{
     float: left !important;
-    width: 85%;
+    width: 89%;
+    margin-right: 10px;
 }
 .export_form.export_dc_form{
     float: left !important;
@@ -203,7 +204,7 @@
     margin-bottom: 10px;
 }
 .sales_book_search_form_wrapper{
-    width: 78% !important;   
+    width: 89% !important;   
 }
 
 .mb0 {margin-bottom: 0px;}
