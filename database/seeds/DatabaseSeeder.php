@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('UserRolesSeeder');
         $this->call('UnitsSeeder');
+        $this->call('ProductTypeSeeder');
         $this->call(QuickbookTokenSeeder::class);
         $this->call('UpdateDocNum');
     }
