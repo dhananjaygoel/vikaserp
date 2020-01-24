@@ -66,6 +66,9 @@
                             echo "value='" . Input::get('export_to_date') . "'";
                         }
                         ?>>
+                        <?php if (isset($_GET['pending_purchase_order'])) { ?>
+                        <input type="hidden" class="form-control" id="user_filter" name="pending_purchase_order" value="{{Input::get('pending_purchase_order')}}">
+                        <?php } ?>
                         <?php if (isset($_GET['order_for_filter']) && $_GET['order_for_filter'] == 'direct') { ?>
                             <input type="hidden" name="order_for" value="direct">
                         <?php } elseif(isset($_GET['order_for_filter']) && $_GET['order_for_filter'] == 'warehouse') { ?>

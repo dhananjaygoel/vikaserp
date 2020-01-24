@@ -26,172 +26,52 @@ class PurchaseOrderExport implements FromView, ShouldAutoSize
     public function view() : View
     {
         $data = Input::all();
-        if ($data['order_status'] == 'pending') {
-            $order_status = 'pending';
-        } elseif ($data['order_status'] == 'completed') {
-            $order_status = 'completed';
-        } elseif ($data['order_status'] == 'cancelled') {
-            $order_status = 'canceled';
+        $q = PurchaseOrder::query();
+
+        if ((isset($data['pending_purchase_order'])) && $data['pending_purchase_order'] != '') {
+            $q->where('supplier_id', '=', $data['pending_purchase_order'])->get();
+        }
+        if ((isset($data['order_for'])) && $data['order_for'] == 'warehouse') {
+            $q->where('order_for', '=', 0)->get();
+        } elseif ((isset($data['order_for'])) && $data['order_for'] == 'direct') {
+            $q->where('order_for', '!=', 0)->get();
+        }
+        if ((isset($data['order_status'])) && $data['order_status'] != '') {
+            $q = $q->where('order_status', '=', $data['order_status']);
+        } else {
+            $q = $q->where('order_status', '=', 'pending');
         }
 
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
+            dd($data["export_from_date"]);
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
             $date2 = \DateTime::createFromFormat('m-d-Y', $data["export_to_date"])->format('Y-m-d');
-            if (Auth::user()->role_id <> 5) {
-                if ($data['order_for'] == 'direct') {
-                    if ($date1 == $date2) {
-                        $order_objects = PurchaseOrder::where('order_status', $order_status)
-                                ->where('updated_at', 'like', $date1 . '%')
-                                ->where('order_for', '!=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    } else {
-                        $order_objects = PurchaseOrder::where('order_status', $order_status)
-                                ->where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                ->where('order_for', '!=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    }
-                } elseif ($data['order_for'] == 'warehouse') {
-                    if ($date1 == $date2) {
-                        $order_objects = PurchaseOrder::where('order_status', $order_status)
-                                ->where('updated_at', 'like', $date1 . '%')
-                                ->where('order_for', '=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    } else {
-                        $order_objects = PurchaseOrder::where('order_status', $order_status)
-                                ->where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                ->where('order_for', '=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    }
-                } else {
-                    if ($date1 == $date2) {
-                        $order_objects = PurchaseOrder::where('order_status', $order_status)
-                                ->where('updated_at', 'like', $date1 . '%')
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    } else {
-                        $order_objects = PurchaseOrder::where('order_status', $order_status)
-                                ->where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    }
-                }
+            if ($date1 == $date2) {
+                $q->where('updated_at', 'like', $date1 . '%');
+            } else {
+                $q->where('updated_at', '>=', $date1);
+                $q->where('updated_at', '<=', $date2 . ' 23:59:59');
             }
-            if (Auth::user()->role_id == 5) {
-                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
+            $search_dates = [
+                'export_from_date' => $data["export_from_date"],
+                'export_to_date' => $data["export_to_date"]
+            ];
+        }
+
+        if (Auth::user()->role_id <> 5) {
+        $order_objects = $q->orderBy('created_at', 'desc')
+        ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+        ->get();
+        } elseif(Auth::user()->role_id == 5) {
+            $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                         ->where('phone_number1', '=', Auth::user()->mobile_number)
                         ->where('email', '=', Auth::user()->email)
                         ->first();
-                if ($data['order_for'] == 'direct') {
-                    if ($date1 == $date2) {
-                        $order_objects = PurchaseOrder::where('updated_at', 'like', $date1 . '%')
-                                ->where('customer_id', '=', $cust->id)
-                                ->where('order_for', '!=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    } else {
-                        $order_objects = PurchaseOrder::where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                ->where('customer_id', '=', $cust->id)
-                                ->where('order_for', '!=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    }
-                } elseif ($data['order_for'] == 'warehouse') {
-                    if ($date1 == $date2) {
-                        $order_objects = PurchaseOrder::where('updated_at', 'like', $date1 . '%')
-                                ->where('customer_id', '=', $cust->id)
-                                ->where('order_for', '=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    } else {
-                        $order_objects = PurchaseOrder::where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                ->where('customer_id', '=', $cust->id)
-                                ->where('order_for', '=', 0)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    }
-                } else {
-                    if ($date1 == $date2) {
-                        $order_objects = PurchaseOrder::where('updated_at', 'like', $date1 . '%')
-                                ->where('customer_id', '=', $cust->id)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    } else {
-                        $order_objects = PurchaseOrder::where('updated_at', '>=', $date1)
-                                ->where('updated_at', '<=', $date2 . ' 23:59:59')
-                                ->where('customer_id', '=', $cust->id)
-                                ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-                    }
-                }
-            }
-        } else {
-            if (Auth::user()->role_id <> 5) {
-                if ($data['order_for'] == 'direct') {
-                    $order_objects = PurchaseOrder::where('order_status', $order_status)
-                            ->where('order_for', '!=', 0)
-                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                } elseif ($data['order_for'] == 'warehouse') {
-                    $order_objects = PurchaseOrder::where('order_status', $order_status)
-                            ->where('order_for', '=', 0)
-                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                            ->orderBy('created_at', 'desc')
-                            ->get();   
-                } else {
-                    $order_objects = PurchaseOrder::where('order_status', $order_status)
-                            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                }
-            }
-
-            if (Auth::user()->role_id == 5) {
-                $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
-                        ->where('phone_number1', '=', Auth::user()->mobile_number)
-                        ->where('email', '=', Auth::user()->email)
-                        ->first();
-
-                if ($data['order_for'] == 'direct') {
-                    $order_objects = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                            ->where('customer_id', '=', $cust->id)
-                            ->where('order_for', '!=', 0)
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                } elseif ($data['order_for'] == 'warehouse') {
-                    $order_objects = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                            ->where('customer_id', '=', $cust->id)
-                            ->where('order_for', '=', 0)
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                } else {
-                    $order_objects = PurchaseOrder::with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-                            ->where('customer_id', '=', $cust->id)
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-                }
-            }
+                        
+            $order_objects = $q->orderBy('created_at', 'desc')
+            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+            ->where('customer_id', '=', $cust->id)
+            ->get(); 
         }
 
         $excel_sheet_name = 'Purchase-Order';
