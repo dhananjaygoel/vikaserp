@@ -203,12 +203,29 @@ class DBController extends Controller {
             App\ProductCategory::where('id',$cat['product_category_id'])->update([ 'hsn_code' => $cat['hsn_code'], 'gst' => 18 ]);
         }
         $hsn = App\ProductCategory::select('hsn_code','gst')->distinct('hsn_code')->get();
+        DB::table('hsn')->truncate();
         foreach($hsn as $key => $hsn_code){
-            App\Hsn::insert(array(
-                'hsn_code' => $hsn_code['hsn_code'],
-                'hsn_desc' => '',
-                'gst' => $hsn_code['gst']
-            ));
+            if($hsn_code['hsn_code'] != ''){
+                $hsn_result = Hsn::where('hsn_code', $hsn_code['hsn_code'])->count();
+                if($hsn_result == 0){
+                    App\Hsn::insert(array(
+                        'hsn_code' => $hsn_code['hsn_code'],
+                        'hsn_desc' => '',
+                        'gst' => $hsn_code['gst']
+                    ));
+                }
+            }
+        }
+        $thickness = App\ProductSubCategory::select('thickness','difference')->distinct('thickness','difference')->where('thickness','!=',0)->get();
+        DB::table('thickness')->truncate();
+        foreach($thickness as $thick){
+            $thick_result = Thickness::where('thickness', $thick['thickness'])->where('diffrence', $thick['difference'])->count();
+            if($thick_result == 0){
+                Thickness::insert(array(
+                    'thickness' => $thick['thickness'],
+                    'diffrence' => $thick['difference']
+                ));
+            }
         }
         // $prod_cat = App\ProductCategory::select('product_category_name','id')->get();
         // foreach( $prod_cat as $cat_name){
