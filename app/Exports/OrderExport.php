@@ -8,6 +8,7 @@ use App\Customer;
 use App\Units;
 use App\TerritoryLocation;
 use App\DeliveryLocation;
+use App\ProductSubCategory;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Input;
 use Illuminate\Contracts\View\View;
