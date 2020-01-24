@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UserRolesSeeder::class);
+        $this->call(UnitsSeeder::class);
         $this->call(QuickbookTokenSeeder::class);
         $this->call('UpdateDocNum');
     }
