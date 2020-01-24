@@ -40,7 +40,7 @@
 
                         <div class="form-group">
                             <label for="state">State Name<span class="mandatory">*</span></label>
-                            <select name="state" class="form-control">
+                            <select name="state" class="form-control" onchange="fetch_city();" id="select_state">
                                 <option value="">Select State</option>
                                 @foreach($states as $state)
                                 @if($state->id == $delivery_location->state_id)
@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group">
                             <label for="city">City Name<span class="mandatory">*</span></label>
-                            <select name="city" class="form-control">
+                            <select name="city" class="form-control" id="select_city">
                                 <option value="">Select City</option>
                                 @foreach($cities as $city)
                                 @if($city->id == $delivery_location->city_id)
