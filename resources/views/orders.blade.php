@@ -27,22 +27,22 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">                        
-                    <div class="col-lg-12">
+                    <div class="col-lg-4">
+                        @if(Auth::user()->role_id != 5)
+                        <form method="GET" action="{{url('/')}}/orders">
+                            <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
+                                <option value="" selected="">Select Territory</option>
+                                @if(isset($all_territories) && !empty($all_territories))
+                                @foreach($all_territories as $territory)
+                                <option value="{{$territory->id}}" @if(Input::get('territory_filter') == $territory->id) selected @endif> {{ucwords($territory->teritory_name)}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </form>
+                        @endif
+                    </div>                        
+                    <div class="col-lg-8">
                         <form class="search_form" style="display: flex;" method="GET" action="{{URL::action('OrderController@index')}}">
-                            <div class="col-lg-6">
-                            @if(Auth::user()->role_id != 5)
-                            <!-- <form method="GET" action="{{url('/')}}/orders"> -->
-                                <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
-                                    <option value="" selected="">Select Territory</option>
-                                    @if(isset($all_territories) && !empty($all_territories))
-                                    @foreach($all_territories as $territory)
-                                    <option value="{{$territory->id}}" @if(Input::get('territory_filter') == $territory->id) selected @endif> {{ucwords($territory->teritory_name)}}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                            <!-- </form> -->
-                            @endif
-                            </div>      
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                             if (Input::get('export_from_date') != "") {
                                 echo "value='" . Input::get('export_from_date') . "'";
@@ -53,6 +53,7 @@
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
                             ?>>
+                            <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}">
                             @if($qstring_sort_type_order=='pending' || $qstring_sort_type_order=='' )
                             <input type="hidden" name="order_status" value="pending">
                             @elseif($qstring_sort_type_order == 'approval')
