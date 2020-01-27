@@ -27,7 +27,7 @@
                     <li class="active"><span>Orders</span></li>
                 </ol>
                 <div class="search_form_wrapper orders_search_wrapper col-lg-12" style="width:70%">                        
-                    <div class="col-lg-4">
+                    <!-- <div class="col-lg-4">
                         @if(Auth::user()->role_id != 5)
                         <form method="GET" action="{{url('/')}}/orders">
                             <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
@@ -40,8 +40,8 @@
                             </select>
                         </form>
                         @endif
-                    </div>                        
-                    <div class="col-lg-8">
+                    </div>                         -->
+                    <div class="col-lg-10">
                         <form class="search_form" style="display: flex;" method="GET" action="{{URL::action('OrderController@index')}}">
                             <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                             if (Input::get('export_from_date') != "") {
@@ -135,11 +135,19 @@
                             <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right">
                         </form>
                     </div>
+                    <div class="pull-right col-lg-2">
+                            @if(Auth::user()->role_id != 3 )
+                            <a href="{{url('orders/create')}}" class="btn btn-primary">
+                                <i class="fa fa-plus-circle fa-lg"></i> Place Order
+                            </a>
+                            @endif
+                        </div>
                 </div>
                 <input type="hidden" id="module" value="order">
                 <div class="filter-block">
                     <form action="{{url('orders')}}" method="GET" id="orderForm">
                         <h1 class="pull-left">Orders</h1>
+                        
                         <input type="hidden" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                             if (Input::get('export_from_date') != "") {
                                 echo "value='" . Input::get('export_from_date') . "'";
@@ -150,14 +158,9 @@
                                 echo "value='" . Input::get('export_to_date') . "'";
                             }
                             ?>>
-                        <div class="pull-right">
-                            @if(Auth::user()->role_id != 3 )
-                            <a href="{{url('orders/create')}}" class="btn btn-primary">
-                                <i class="fa fa-plus-circle fa-lg"></i> Place Order
-                            </a>
-                            @endif
-                        </div>
-                        <div class="col-md-2 pull-right" style="padding: 0;">
+                        
+                        
+                        <div class="col-md-1 pull-right" style="padding: 0;">
                             @if(Auth::user()->role_id <> 5)
                             <select class="form-control" id="user_filter3" name="order_filter" onchange="this.form.submit();">
                                 <option <?php if ($qstring_sort_type_order == 'pending') echo 'selected=""'; ?> value="pending">Pending</option>
@@ -172,6 +175,20 @@
                             }
                             ?>
                         </div>
+                        <div class="col-lg-2 pull-right">
+                            @if(Auth::user()->role_id != 5)
+                            <!-- <form method="GET" action="{{url('/')}}/orders"> -->
+                                <select class="form-control" id="user_filter3" name="territory_filter" onchange="this.form.submit();">
+                                    <option value="" selected="">Select Territory</option>
+                                    @if(isset($all_territories) && !empty($all_territories))
+                                    @foreach($all_territories as $territory)
+                                    <option value="{{$territory->id}}" <?php if(Input::get('territory_filter') == $territory->id) echo 'selected=""'; ?>> {{ucwords($territory->teritory_name)}}</option>
+                                    @endforeach
+                                    @endif
+                                </select>
+                            <!-- </form> -->
+                            @endif
+                        </div>  
                         <div class="col-md-2 pull-right">
                             @if(Auth::user()->role_id <> 5)
                             <select class="form-control" id="user_filter3" name="party_filter" onchange="this.form.submit();">
@@ -216,7 +233,7 @@
                             </span>
                             @endif
                         </div>
-                        <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}"/>
+                        <!-- <input type="hidden" name="territory_filter" value="{{Input::get('territory_filter')}}"/> -->
                     </form>
                 </div>
             </div>
