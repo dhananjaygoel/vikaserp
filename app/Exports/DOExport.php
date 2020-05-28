@@ -49,7 +49,8 @@ class DOExport implements FromView, ShouldAutoSize
             $q->where('del_supervisor', Auth::user()->id);
        }
        $search_dates = [];
-        if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
+
+        if ((isset($data["export_from_date"]) && $data["export_from_date"] != "") && (isset($data["export_to_date"]) && $data["export_to_date"] != "")) {
 
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
 
