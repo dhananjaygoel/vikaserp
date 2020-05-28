@@ -1,6 +1,11 @@
 @extends('layouts.master')
 @section('title','Inventory')
 @section('content')
+<style>
+    @media only screen and (max-width : 1024px)  { 
+        .inventoryExport { display: none !important;}
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -40,7 +45,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer">Export Inventory List</a>
+                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer inventoryExport ">Export Inventory List</a>
                                         <!-- <input type="hidden" id="export-data-field" name="export_data" value="" class="btn btn-primary form_button_footer"> -->
                                         <!-- <a class="btn btn-primary" id="export-inventory-list">Export Inventory List</a>                                         -->
                                         @if(auth()->user()->role_id == 0)

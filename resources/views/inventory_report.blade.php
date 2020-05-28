@@ -69,7 +69,7 @@
                                 Currently no inventory have been added.
                             </div>
                             @else 
-                            <div class="table-responsive report-table-content">
+                            <div class="table-responsive report-table-content" style="width: 100%;">
                                 <table id="day-wise" class="table table-bordered text-center complex-data-table">
                                     <tbody>
                                         <tr style="width:50px; height:50px;">
