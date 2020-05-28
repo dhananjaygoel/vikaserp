@@ -62,7 +62,6 @@ class ProductsubController extends Controller {
     }
 
     public function index() {
-
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -119,7 +118,7 @@ class ProductsubController extends Controller {
         //     exit();
         }
 
-        $product_sub_cat = $q->orderBy('id', 'DESC')->paginate(20);
+        $product_sub_cat = $q->orderBy('alias_name', 'ASC')->paginate(20);
 
         $filter = array(Input::get('product_size'), Input::get('search_text'), Input::get('product_filter'));
         $product_sub_cat->setPath('product_sub_category');

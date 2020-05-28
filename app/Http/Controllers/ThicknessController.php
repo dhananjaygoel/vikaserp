@@ -19,7 +19,9 @@ class ThicknessController extends Controller {
 	 */
 	public function index()
 	{
-	    $thickness = Thickness::orderBy('id','DESC')->paginate(10);
+
+	    $thickness = Thickness::orderBy('thickness','ASC')->paginate(10);
+
         return view('thickness', compact('thickness'));
 	}
 
