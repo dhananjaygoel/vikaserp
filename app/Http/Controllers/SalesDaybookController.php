@@ -35,6 +35,7 @@ class SalesDaybookController extends Controller {
      */
     public function index() {
         $data = Input::all();
+        $search_dates = '';
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -77,6 +78,7 @@ class SalesDaybookController extends Controller {
 
     public function daily_pro_forma_invoice(){
         $data = Input::all();
+        $search_dates = '';
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
