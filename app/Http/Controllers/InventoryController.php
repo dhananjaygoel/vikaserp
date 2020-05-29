@@ -676,8 +676,10 @@ class InventoryController extends Controller {
 
         $data = Input::all();
         $data_dup = Input::all();
-        $token = array_pull($data, '_token');
-        $currentpage = array_pull($data, 'pagenumber');
+        $token = $data['_token'];
+        unset($data['_token']);
+        $currentpage = $data['pagenumber'];
+        unset($data['pagenumber']);
         $i = 1;
         $j = 1;
         foreach ($data as $key => $value) {

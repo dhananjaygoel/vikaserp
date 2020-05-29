@@ -34,11 +34,16 @@
 .pwd .pwdr{
     width: 41%;
 }
+@media only screen and (max-width : 1024px)  { 
+        .inventoryExport {
+            display: flow-root;
+        }
+    }
 </style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">   
-            <div class="col-lg-12">
+            <div class="col-lg-12 inventoryExport">
                 <h1 class="pull-left">Inventory Price List</h1>
                 <div class="form-group pull-right">
                     <div class="col-md-12">
