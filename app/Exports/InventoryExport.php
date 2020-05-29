@@ -51,7 +51,10 @@ class InventoryExport implements FromView, ShouldAutoSize
             $virtual_qty = ($inventory->physical_closing_qty + $inventory->pending_purchase_order_qty + $inventory->pending_purchase_advise_qty) - ($inventory->pending_sales_order_qty + $inventory->pending_delivery_order_qty);
             array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
         }
-
-        return view('excelView.inventory', array('inventorys' => $inventorys,'virtual_stock_qty' => $virtual_stock_qty));
+        if (count((array)$inventorys) == 0) {
+            return redirect::back()->with('error', 'No data found');
+        } else {
+            return view('excelView.inventory', array('inventorys' => $inventorys,'virtual_stock_qty' => $virtual_stock_qty));
+        }
     }
 }

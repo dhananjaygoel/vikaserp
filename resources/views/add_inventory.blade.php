@@ -18,8 +18,8 @@
                     <h1 class="pull-left">Inventory</h1>
                     <div class="row col-md-10 pull-right top-page-ui">
                         <div class="filter-block productsub_filter">
-                            <form method="GET" action="{{url('inventory')}}" id="filter_search">
-                                <div class="col-md-12">
+                            <div class="col-md-12">
+                                <form method="GET" action="{{url('inventory')}}" id="filter_search">
                                     <div class="form-group col-md-2">
                                         <input class="form-control" placeholder="Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
                                         <!--                                        <a onclick="this.form.submit();" style="cursor: pointer;">
@@ -38,22 +38,28 @@
                                             @foreach($product_category as $category)
                                             @if((Input::has('product_category_filter')) && (Input::get('product_category_filter')!=''))
                                             <option value="{{$category->id}}" {{($category->id==Input::get('product_category_filter'))?'selected':''}} >{{$category->product_category_name}}</option>
-                                            @else                                        
+                                            @else                        
                                             <option value="{{$category->id}}">{{$category->product_category_name}}</option>
                                             @endif
                                             @endforeach
                                         </select>
                                     </div>
+                                </form>
+                                <form action="{{URL::action('InventoryController@export_inventory')}}">
                                     <div class="form-group col-md-4">
-                                        <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer ">Export Inventory List</a>
+                                        <input type="hidden" id="search_inventory" name="search_inventory"  value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}">
+                                        <input type="hidden" name="inventory_filter" value="{{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'minimal' : 'all'}}">
+                                        <input type="hidden" name="product_category_filter" value="{{Input::get('product_category_filter')}}">
+                                        <input type="submit" class="btn btn-primary form_button_footer " value="Export Inventory List">
+                                        <!-- <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer ">Export Inventory List</a> -->
                                         <!-- <input type="hidden" id="export-data-field" name="export_data" value="" class="btn btn-primary form_button_footer"> -->
                                         <!-- <a class="btn btn-primary" id="export-inventory-list">Export Inventory List</a>                                         -->
                                         @if(auth()->user()->role_id == 0)
                                         <a class="btn btn-primary save_all_inventory">Save all</a>
                                         @endif
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>                
