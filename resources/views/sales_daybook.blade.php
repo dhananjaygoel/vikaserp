@@ -17,8 +17,8 @@
                             <a class="btn btn-primary form_button_footer print_sales_order_daybook" >Print</a>
                         </div>
                         @endif
-                        <div class="search_form_wrapper sales_book_search_form_wrapper pull-right">
-                            <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@index')}}">
+                        <div class="search_form_wrapper sales_book_search_form_wrapper pull-right" style="display: flex;">
+                            <form class="search_form" method="GET" action="{{URL::action('SalesDaybookController@index')}}" style="display: flex;">
                                 <input type="text" placeholder="From" name="export_from_date" class="form-control export_from_date" id="export_from_date" <?php
                                 if (Input::get('export_from_date') != "") {
                                     echo "value='" . Input::get('export_from_date') . "'";
