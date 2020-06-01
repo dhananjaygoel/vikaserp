@@ -111,7 +111,7 @@
                                             ?>
                                             @foreach($allorders as $challan)
 
-                                                <?php $price = 0;$lb_arr = []; $lbr_arr=[];
+                                                <?php $total_amount=0;$total_price = 0;$lb_arr = []; $lbr_arr=[];
 
 
                                                 ?>
@@ -211,11 +211,21 @@
                                                         echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
                                                         ?>
                                                     </td>
-                                                    @foreach($challan['delivery_challan_products'] as $prod)
-                                                    <?php $amnt = ($prod->quantity * $prod->price); $price = $price + $amnt; ?>
+                                                    @foreach($challan['delivery_challan_products'] as $product)
+                                                    <?php //$amnt = ($prod->quantity * $prod->price); $price = $price + $amnt; ?>
+                                                    <?php
+                                                        $amount = (float)$product->actual_quantity * (float)$product->price;
+                                                        $total_amount = round($amount + $total_amount, 2);
+                                                        $igst = 0;
+                                                        $total_gst_amount = ((float)$amount * (float)$igst) / 100;
+                                                        $total_vat_amount = round($total_gst_amount,2);
+                                                        $total_price += ($total_vat_amount);
+                                                        $total = (float)$total_amount + (float)$challan->freight + (float)$challan->loading_charge + (float)$challan->discount;
+                                                        // dd($total);
+                                                    ?>
                                                     @endforeach
                                                     <!-- <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td> -->
-                                                    <td>{{ $amnt }}</td>
+                                                    <td>{{ $total }}</td>
                                                     <td >{{$challan->bill_number}}</td>
                                                     <td>
                                                         @if((strlen(trim($challan->remarks))) > 50)
