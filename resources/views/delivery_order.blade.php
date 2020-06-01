@@ -256,7 +256,11 @@
                                                     $test = \App\User::where('id',$data_delivery_boy)->get();
                                                     ?>
                                                     @foreach($test as $user)<?php
-                                                    $opt = $user->first_name.' '.$user->last_name;
+                                                    if(empty($user) && $user = ''){
+                                                        $opt = 'Assign';
+                                                    }else{
+                                                        $opt = $user->first_name.' '.$user->last_name;
+                                                    }
                                                     ?>
                                                     @endforeach
                                                 <?php
