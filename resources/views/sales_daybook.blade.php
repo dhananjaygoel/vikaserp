@@ -110,7 +110,7 @@
                                         $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                         ?>
                                         @foreach($allorders as $challan)
-                                        <?php $lb_arr = []; $lbr_arr=[];?>
+                                        <?php $price = 0;$lb_arr = []; $lbr_arr=[];?>
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
                                             <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
@@ -203,7 +203,12 @@
                                                 echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
                                                 ?>
                                             </td>
-                                            <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td>
+
+                                            @foreach($challan['delivery_challan_products'] as $prod)
+                                            <?php $amnt = ($prod->quantity * $prod->price); $price = $price + $amnt; ?>
+                                            @endforeach
+                                            <!-- <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td> -->
+                                            <td>{{ $amnt }}</td>
                                             <td >{{$challan->bill_number}}</td>
                                             <td>
                                                 @if((strlen(trim($challan->remarks))) > 50)

@@ -111,7 +111,7 @@
                                             ?>
                                             @foreach($allorders as $challan)
 
-                                                <?php $lb_arr = []; $lbr_arr=[];
+                                                <?php $price = 0;$lb_arr = []; $lbr_arr=[];
 
 
                                                 ?>
@@ -211,7 +211,11 @@
                                                         echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
                                                         ?>
                                                     </td>
-                                                    <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td>
+                                                    @foreach($challan['delivery_challan_products'] as $prod)
+                                                    <?php $amnt = ($prod->quantity * $prod->price); $price = $price + $amnt; ?>
+                                                    @endforeach
+                                                    <!-- <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td> -->
+                                                    <td>{{ $amnt }}</td>
                                                     <td >{{$challan->bill_number}}</td>
                                                     <td>
                                                         @if((strlen(trim($challan->remarks))) > 50)
