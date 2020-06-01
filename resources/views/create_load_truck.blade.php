@@ -175,7 +175,12 @@
                          else{
                              $total_avg = " ";
                          }
-                        $owner_name =$info->users->first_name .' '.$info->users->last_name;
+                        if(empty($info->users)){
+                            // dd($delivery_data);
+                            $owner_name = '';
+                        }else{
+                            $owner_name =$info->users->first_name .' '.$info->users->last_name;
+                        }
                         if(!empty($timevalue[$info->del_boy])){
                             $datevalue = $timevalue[$info->del_boy];
                         }
