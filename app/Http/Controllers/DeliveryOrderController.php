@@ -1969,10 +1969,10 @@ class DeliveryOrderController extends Controller {
                     // whatsapp code starts here
                     if($send_whatsapp == "true"){
                         // $sid = env('TWILIO_SID');
-                        $sid = config('app.twilio_sid');
-                        $token = env('TWILIO_TOKEN');
+                        $sid = TWILIO_SID;
+                        $token = TWILIO_TOKEN;
                         dd($sid);
-                        $twilio = new Client($sid, $token);
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
                             ->create("whatsapp:".$phone_number,
