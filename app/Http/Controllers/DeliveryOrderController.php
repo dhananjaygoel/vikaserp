@@ -338,7 +338,7 @@ class DeliveryOrderController extends Controller {
 
 
         $input_data = Input::all();
-
+        $whatsapp_error = '';
         $sms_flag = 1;
         if (Session::has('forms_edit_delivery_order')) {
             $session_array = Session::get('forms_edit_delivery_order');
@@ -547,18 +547,18 @@ class DeliveryOrderController extends Controller {
                 }
                 // whatsapp code starts here
                 if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $sid = 'AC405803610638a694e57432bf99043d49';
-                    $token = '7aec8d8780e37097db9f63b1ef55d915';
-                    $twilio = new Client($sid, $token);
-                    $message = $twilio->messages
-                    ->create("whatsapp:".$phone_number,
-                        [
-                            "body" => $str,
-                            "from" => "whatsapp:+14155238886"
-                        ]
-                    );
-                    
-                    // print($message->sid);
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:".$phone_number,
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                        );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
                 }
                 // whatsapp testing code endse here
             }
@@ -601,7 +601,7 @@ class DeliveryOrderController extends Controller {
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
         DeliveryOrder::where('id',$id)->update(['is_editable'=>1]);
-        return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated.');
+        return redirect('delivery_order' . $parameters)->with('success', 'Delivery order details successfully updated'.$whatsapp_error);
     }
 
     /**
@@ -1969,7 +1969,6 @@ class DeliveryOrderController extends Controller {
                     // whatsapp code starts here
                     if($send_whatsapp == "true"){
                         // $sid = env('TWILIO_SID');
-                        
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
@@ -1981,7 +1980,7 @@ class DeliveryOrderController extends Controller {
                                 );
                         }catch(\Exception $e){
                             // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                            return redirect()->back()->withError("The phone number is not valid,can't print and send whatsapp message");
+                            // return redirect()->back()->withError("The phone number is not valid,can't print and send whatsapp message");
                         }
                     }
                     // whatsapp testing code endse here
