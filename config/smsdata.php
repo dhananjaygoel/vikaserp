@@ -16,11 +16,13 @@ return [
 //    'send_sms_to' => '9822232962', //Changed on 30-10-2015 --
 //      'send_sms_to' => '8983886688', //Changed on 25-11-2015
 //    'send_sms_to' => '9975003940', //testing api on 19-01-17
-    'send_sms_to' => '8208647831', //testing api on 19-01-17
+    'send_sms_to' => '8275187271', //testing api on 19-01-17
     // 'send_sms_to' => '8275187271', //testing api on 19-01-17
     'emailData' => array(
 //        'email' => 'deepakw@agstechnologies.com', 'abhimanipal@gmail.com',
         'email' => 'rakshiya.siddiqui@alphalogiclimited.com',
         'name' => 'Rakshiya'
-    )
+    ),
+    'twilio_sid' => 'AC405803610638a694e57432bf99043d49',
+    'twilio_token' => '7aec8d8780e37097db9f63b1ef55d915'
 ];
