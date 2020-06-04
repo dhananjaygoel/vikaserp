@@ -1856,7 +1856,7 @@ class DeliveryOrderController extends Controller {
         if (Input::has('customer_type')) {
             $customer_type = Input::get('customer_type');
         }
-
+        $whatsapp_error = '';
         $current_date = date("m/d/");
         $sms_flag = 1;
         set_time_limit(0);
@@ -1909,7 +1909,7 @@ class DeliveryOrderController extends Controller {
         $pdf->loadHTML('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
-            'customer_type' => $customer_type,
+            'customer_type' => $customer_type
 //            'delivery_locations' => $delivery_locations,
 //            'customers' => $customers
         ]);
@@ -1966,18 +1966,21 @@ class DeliveryOrderController extends Controller {
                     }
                     // whatsapp code starts here
                     if($send_whatsapp == "true"){
-                        $sid = 'AC405803610638a694e57432bf99043d49';
-                        $token = '7aec8d8780e37097db9f63b1ef55d915';
+                        $sid = env('TWILIO_SID');
+                        $token = env('TWILIO_TOKEN');
                         $twilio = new Client($sid, $token);
-                        $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
-                            [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
-                            ]
-                        );
-                        
-                        // print($message->sid);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:".$phone_number,
+                                [
+                                    "body" => $str,
+                                    "from" => "whatsapp:+14155238886"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                            return redirect()->back()->withError("The phone number is not valid,can't print and send whatsapp message");
+                        }
                     }
                     // whatsapp testing code endse here
                 }
