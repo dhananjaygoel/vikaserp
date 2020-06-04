@@ -1966,8 +1966,8 @@ class DeliveryOrderController extends Controller {
                     }
                     // whatsapp code starts here
                     if($send_whatsapp == "true"){
-                        $sid = env('sid','TWILIO_SID');
-                        $token = env('token','TWILIO_TOKEN');
+                        $sid = env('TWILIO_SID');
+                        $token = env('TWILIO_TOKEN');
                         dd($token);
                         $twilio = new Client($sid, $token);
                         try{
