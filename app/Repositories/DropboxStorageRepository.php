@@ -21,7 +21,7 @@ class DropboxStorageRepository {
 //    }
     
     public function __construct() {
-        $client = new DropboxClient('MU7AdbbalnAAAAAAAAAAF0PyVT1KnpH6dehU6kjgnEntKUAdQDRauQJ2zHcVZbUN');        
+        $client = new DropboxClient('VOmdSJUA5LAAAAAAAAAAELnce6EbnbXViL_TCT3i_b9kZVT3cKow9Wt-GBj8-sRm');        
         $this->adapter = new DropboxAdapter($client);
     }
 

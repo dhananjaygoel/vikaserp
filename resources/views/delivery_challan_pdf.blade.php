@@ -108,9 +108,9 @@
                 $i = 1;
                 $total_price = 0;
 //                $total_qty = 0;
-                $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
-                $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
-                $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
+                $loading_vat_amount = isset($allorder->loading_charge) && isset($allorder->loading_vat_percentage)?($allorder->loading_charge * $allorder->loading_vat_percentage) / 100:0;
+                $freight_vat_amount = isset($allorder->freight) && isset($allorder->freight_vat_percentage)?($allorder->freight * $allorder->freight_vat_percentage) / 100:0;
+                $discount_vat_amount = (!empty($allorder->discount))?($allorder->discount * $allorder->discount_vat_percentage) / 100:0;
                 $final_vat_amount = 0; 
                 $final_total_amt = 0;
             ?>
@@ -215,7 +215,7 @@
                                     <td class="lable">Total</td>
                                     <td class="total-count">
                                     <?php 
-                                    $with_total = $final_total_amt + $loading_charge + $allorder->freight + $allorder->discount; 
+                                    $with_total = $final_total_amt + $loading_charge + $allorder->freight + (!empty($allorder->discount))?$allorder->discount:0; 
                                     ?>
                                     {{ round($with_total, 2) }}</td>
                                 </tr>

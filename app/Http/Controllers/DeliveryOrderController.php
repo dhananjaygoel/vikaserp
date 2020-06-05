@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\DOExport;
 use App\Labour;
+use View;
 use Carbon;
 use App\LoadedBy;
 use App\DeliveryChallanLoadedBy;
@@ -1841,7 +1842,7 @@ class DeliveryOrderController extends Controller {
      * as well as send the sms to the customer
      */
 
-    public function print_delivery_order($id/*, DropboxStorageRepository $connection*/) {
+    public function print_delivery_order($id, DropboxStorageRepository $connection) {
 
         if (Input::has('empty_truck_weight')) {
             $empty_truck_weight = Input::get('empty_truck_weight');
@@ -1877,7 +1878,7 @@ class DeliveryOrderController extends Controller {
             }
         }
 
-        $date_letter = 'DO/' . $current_date . "" . $number;
+        // $date_letter = 'DO/' . $current_date . "" . $number;
         // DeliveryOrder:: where('id', $id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
 //        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
@@ -1908,13 +1909,19 @@ class DeliveryOrderController extends Controller {
 //        $delivery_locations = DeliveryLocation::all();
 //        $customers = Customer::all();
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML('print_delivery_order', [
+        $viewhtml = View::make('print_delivery_order', [
             'delivery_data' => $delivery_data,
             'units' => $units,
             'customer_type' => $customer_type
-//            'delivery_locations' => $delivery_locations,
-//            'customers' => $customers
-        ]);
+            ])->render();
+        $pdf->loadHTML($viewhtml);
+//         $pdf->loadHTML('print_delivery_order', [
+//             'delivery_data' => $delivery_data,
+//             'units' => $units,
+//             'customer_type' => $customer_type
+// //            'delivery_locations' => $delivery_locations,
+// //            'customers' => $customers
+//         ]);
 
         /* inventory code */
         $product_categories = AllOrderProducts::select('product_category_id')->where('order_id', $id)->where('order_type', 'delivery_order')->get();
@@ -2019,7 +2026,7 @@ class DeliveryOrderController extends Controller {
         $pdf->save(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf');
         chmod(getcwd() . "/upload/invoices/do/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
 
-        //$connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+        $connection->getConnection()->put('Delivery Order/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
 //        $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

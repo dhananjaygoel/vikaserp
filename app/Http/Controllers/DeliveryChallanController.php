@@ -1497,7 +1497,7 @@ class DeliveryChallanController extends Controller {
     }
 
 
-    public function print_delivery_challan($id/*, DropboxStorageRepository $connection*/) {
+    public function print_delivery_challan($id, DropboxStorageRepository $connection) {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $sms_flag = 0;
@@ -1523,16 +1523,23 @@ class DeliveryChallanController extends Controller {
             }
 
             $date_letter = $update_delivery_challan->serial_number;
-
-            $pdf = App::make('dompdf.wrapper');
-            $pdf->loadHTML('delivery_challan_pdf', [
+            $viewhtml = View::make('delivery_challan_pdf', [
                 'allorder' => $allorder,
-                'total_vat_amount' => $total_vat_amount,
-            ]);
+                'total_vat_amount' => $total_vat_amount
+                ])->render();
+                
+            $pdf = App::make('dompdf.wrapper');
+            // $pdf->loadHTML('delivery_challan_pdf', [
+            //     'allorder' => $allorder,
+            //     'total_vat_amount' => $total_vat_amount
+            // ]);
+            $pdf->loadHTML($viewhtml);
 
            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+
+           $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
         } else {
             $vat_applicable = 0;
@@ -1660,17 +1667,24 @@ class DeliveryChallanController extends Controller {
 //                $convert_value = $this->convert_number($allorder->grand_price);
 //            }
 //            $allorder['convert_value'] = $convert_value;
+            
+            $viewhtml = View::make('delivery_challan_pdf', [
+                'allorder' => $allorder,
+                'total_vat_amount' => $total_vat_amount]
+                )->render();
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadHTML('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
             ]);
-
+            $pdf->loadHTML($viewhtml);
 
 
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
         }
 
