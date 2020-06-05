@@ -226,8 +226,7 @@
                                         <!--<td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>-->
                                         <!--<td class="text-center">{{ (round($challan->vat_percentage, 2)<>'')? round($challan->vat_percentage, 2):0}}</td>-->
                                         <td class="text-center">
-                                            @if($challan['delivery_order']->vehicle_number == '')
-                                            @elseif(isset($challan['delivery_order']->vehicle_number) && $challan['delivery_order']->vehicle_number != '')
+                                            if(isset($challan['delivery_order']->vehicle_number) && $challan['delivery_order']->vehicle_number != '')
                                             {{$challan['delivery_order']->vehicle_number}}
                                             @endif
                                         </td>
