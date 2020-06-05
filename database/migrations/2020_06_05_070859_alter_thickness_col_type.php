@@ -14,7 +14,7 @@ class AlterThicknessColType extends Migration
     public function up()
     {
         Schema::table('thickness', function ($table) {
-            $table->integer('thickness')->change();
+            $table->integer('thickness')->charset(null)->change();
         });
     }
 
