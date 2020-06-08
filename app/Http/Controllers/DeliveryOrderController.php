@@ -1605,8 +1605,8 @@ class DeliveryOrderController extends Controller {
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                             $gst_det = \App\Gst::where('gst',isset($hsn_det->gst)?$hsn_det->gst:'')->first();
                             if($local_state){
-                                $profile_sgst = $product_price * (isset($gst_det->sgst)?$gst_det->sgst:'')/100;
-                                $profile_cgst = $product_price * (isset($gst_det->cgst)?$gst_det->cgst:'')/100;
+                                $profile_sgst = (float)$product_price * (isset($gst_det->sgst)?$gst_det->sgst:0)/100;
+                                $profile_cgst = (float)$product_price * (isset($gst_det->cgst)?$gst_det->cgst:0)/100;
                                 $profile_vat = round($profile_sgst,2) + round($profile_cgst,2);
                                 $profile_vat_amount = (isset($gst_det->cgst)?$gst_det->cgst:'') + (isset($gst_det->sgst)?$gst_det->sgst:'');
                             }
