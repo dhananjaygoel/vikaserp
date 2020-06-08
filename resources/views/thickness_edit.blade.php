@@ -42,13 +42,13 @@
 
                             <div class="form-group">
                                 <label for="state_name">Thickness<span class="mandatory">*</span></label>
-                                <input id="state_name" class="form-control" placeholder="Thickness" name="thickness" value="{{$state->thickness}}" type="number">
+                                <input id="state_name" class="form-control" placeholder="Thickness" name="thickness" value="{{$state->thickness}}" type="number" step="0.01">
                             </div>
 
 
                             <div class="form-group">
                                 <label for="difference">Difference<span class="mandatory">*</span></label>
-                                <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{$state->diffrence}}" type="number">
+                                <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{$state->diffrence}}" type="number" step="0.01">
                             </div>
 
                             <hr>

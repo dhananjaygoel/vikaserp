@@ -36,13 +36,13 @@
 
                                 <div class="form-group">
                                     <label for="state_name">Thickness<span class="mandatory">*</span></label>
-                                    <input id="state_name" class="form-control" placeholder="Thickness" name="thickness" value="{{Input::old('thickness')}}" type="number">
+                                    <input id="state_name" class="form-control" placeholder="Thickness" name="thickness" value="{{Input::old('thickness')}}" type="number" step="0.01">
                                 </div>
 
 
                                 <div class="form-group">
                                     <label for="difference">Difference<span class="mandatory">*</span></label>
-                                    <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{Input::old('difference')}}" type="number">
+                                    <input id="difference" class="form-control" placeholder="Difference" name="difference" value="{{Input::old('difference')}}" type="number" step="0.01">
                                 </div>
 
                                 <hr/>
