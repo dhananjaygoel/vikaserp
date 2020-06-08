@@ -1731,10 +1731,10 @@ class DeliveryChallanController extends Controller {
 //                    $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ",\n Drv No. " . $allorder['delivery_order']->driver_contact_no .
+                    $str .= $s = " Vehicle No. " . isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"" .
+                            ",\n Drv No. " . isset($allorder['delivery_order']->driver_contact_no)?$allorder['delivery_order']->driver_contact_no:"" .
                             ",\n Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ",\n Amount " . $allorder->grand_price .
+                            ",\n Amount " . isset($allorder->grand_price)?$allorder->grand_price:"" .
                             ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
