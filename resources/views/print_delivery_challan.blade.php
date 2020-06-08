@@ -156,7 +156,7 @@
                             }
                         }
                         else{
-                            $gst = $allorder['delivery_order']->vat_percentage;
+                            $gst = isset( $allorder['delivery_order']->vat_percentage)?$allorder['delivery_order']->vat_percentage:0;
                         }
                         ?>
                         @if((isset($prod->vat_percentage) && $prod->vat_percentage>0) && empty($allorder['delivery_order']->vat_percentage))

@@ -1673,10 +1673,10 @@ class DeliveryChallanController extends Controller {
                 'total_vat_amount' => $total_vat_amount]
                 )->render();
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadHTML('delivery_challan_pdf', [
-                'allorder' => $allorder,
-                'total_vat_amount' => $total_vat_amount
-            ]);
+            // $pdf->loadHTML('delivery_challan_pdf', [
+            //     'allorder' => $allorder,
+            //     'total_vat_amount' => $total_vat_amount
+            // ]);
             $pdf->loadHTML($viewhtml);
 
 
