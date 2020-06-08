@@ -137,11 +137,11 @@
                                 $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
                                 $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
                                 if($local_state == 1){
-                                    $sgst = $gst_det->sgst;
-                                    $cgst = $gst_det->cgst;
+                                    $sgst = (float)$gst_det->sgst;
+                                    $cgst = (float)$gst_det->cgst;
                                 }
                                 else{
-                                    $igst = $gst_det->igst;
+                                    $igst = (float)$gst_det->igst;
                                 }
                             }
                         }
@@ -159,19 +159,34 @@
                         @else
                             <td>{{$gst}}</td>
                         @endif
-                        <td><?php echo $rate = $prod->price; ?></td>
-                        <td><?php $total_price = $rate * $prod->actual_quantity; 
-                            $final_total_amt += $total_price;
+                        <td><?php echo $rate = (float)$prod->price; ?></td>
+                        <td><?php $total_price = (float)$rate * (float)$prod->actual_quantity; 
+                            $final_total_amt += (float)$total_price;
                             ?>
-                            {{ ($rate * $prod->actual_quantity) }}</td>
+                            {{ ($rate * (float)$prod->actual_quantity) }}</td>
                     </tr>
                 </tbody>
                 <?php
-                $total_pr = $sgst + $cgst + $igst + $gst;
+                // $total_pr = (float)$sgst + (float)$cgst + (float)$igst + (float)$gst;
                 
-                $total_vat_amount = ($total_price * $total_pr) / 100;
+                if((isset($prod->vat_percentage) && $prod->vat_percentage > 0) && empty($allorder['delivery_order']->vat_percentage)){
+                    if($local_state == 1){
+                        $total_sgst_amount = ((float)$total_price * (float)$sgst) / 100;
+                        $total_cgst_amount = ((float)$total_price * (float)$cgst) / 100;
+                        $total_vat_amount1 = (round((float)$total_sgst_amount,2) + round((float)$total_cgst_amount,2));
+                    } else {
+                        $total_igst_amount = ((float)$total_price * (float)$igst) / 100;
+                        $total_vat_amount1 = round((float)$total_igst_amount,2);
+                    }
+                } else{
+                    $total_gst_amount = ((float)$total_price * (float)$gst) / 100;
+                    $total_vat_amount1 = round((float)$total_gst_amount,2);
+                }
+                // $total_vat_amount1 = ($total_price * $total_pr) / 100;
+                $total_vat_amount = $total_vat_amount1;
                 // $total_price += $total_price;
-                $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                // $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
+                $final_vat_amount += ($total_vat_amount);
 
                 ?>
                 @endif
@@ -215,7 +230,7 @@
                                     <td class="lable">Total</td>
                                     <td class="total-count">
                                     <?php 
-                                    $with_total = $final_total_amt + $loading_charge + $allorder->freight + (!empty($allorder->discount))?$allorder->discount:0; 
+                                    $with_total = (float)$final_total_amt + (float)$loading_charge + (float)$allorder->freight + (!empty($allorder->discount))?(float)$allorder->discount:0; 
                                     ?>
                                     {{ round($with_total, 2) }}</td>
                                 </tr>
@@ -233,7 +248,8 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = $final_vat_amount;
+                                        // $vat = $final_vat_amount;
+                                        $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                                     ?>
                                     {{ round($vat,5) }}</td>
                                 </tr>
@@ -264,7 +280,7 @@
                                             $grand_price = $grand_price + $allorder->discount;
                                         }
                                     ?>
-                                    {{ round($grand_price + $final_vat_amount, 2) }}</td>
+                                    {{ round($grand_price + $vat, 2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
