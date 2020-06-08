@@ -47,7 +47,7 @@
                     <th>Date: {{date('F d, Y')}}</th>
                 </tr>
                 <tr>
-                    <th>Delivery @: {{($allorder->delivery_order->delivery_location_id!=0) ? $allorder->delivery_order->location->area_name : $allorder->delivery_order->other_location }}</th>
+                    <th>Delivery @: {{isset($allorder->delivery_order->delivery_location_id)&&($allorder->delivery_order->delivery_location_id!=0) ? $allorder->delivery_order->location->area_name : $allorder->delivery_order->other_location }}</th>
                     <th>Challan Serial: {{ $allorder->serial_number }}</th>
                 </tr>
                 <tr>
