@@ -77,9 +77,9 @@
             // $state = \App\Customer::where('id',$cust_id)->first()->state;
             // $local_state = App\States::where('id',$state)->first()->local_state;
             $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
-            $state = \App\DeliveryLocation::where('id',$loc_id->delivery_location_id)->first();
-            $local = \App\States::where('id',$state->state_id)->first();
-            $local_state = $local->local_state;
+            $state = \App\DeliveryLocation::where('id',isset($loc_id->delivery_location_id)?$loc_id->delivery_location_id:0)->first();
+            $local = \App\States::where('id',isset($state->state_id)?$state->state_id:0)->first();
+            $local_state = isset($local->local_state)?$local->local_state:0;
             ?>
 
         <table class="user-invoice-data">
