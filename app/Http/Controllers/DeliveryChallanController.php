@@ -1718,7 +1718,7 @@ class DeliveryChallanController extends Controller {
         /**/
         $send_sms = Input::get('send_sms');
         $send_whatsapp = Input::get('send_whatsapp');
-        if ($sms_flag == 1) {
+        if ($sms_flag == 1 && ($send_sms == 'true' || $send_whatsapp == 'true')) {
             // if ($send_sms == 'true') {
                 $customer_id = $allorder->customer_id;
                 $customer = Customer::with('manager')->find($customer_id);
