@@ -47,6 +47,8 @@ class DeliveryChallanController extends Controller {
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
+        define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
+        define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
         $this->middleware('validIP');
     }
 
@@ -964,7 +966,7 @@ class DeliveryChallanController extends Controller {
 
         DeliveryChallan::where('id',$id)->update(['is_editable'=>1]);
         if($tasked == 'del_ch') {
-            return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
+            return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly '.$whatsapp_error);
         } else {
             return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly'.$whatsapp_error);
         }
@@ -1763,7 +1765,7 @@ class DeliveryChallanController extends Controller {
                                 ]
                             );
                         }catch(\Exception $e){
-                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                            // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                         }
                     }
                     // whatsapp testing code endse here
