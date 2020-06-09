@@ -13,13 +13,13 @@
 
                     <div class="clearfix">
                         <h1 class="pull-left">GST</h1>
-                        @if( Auth::user()->role_id == 0  )
+                        <!-- @if( Auth::user()->role_id == 0  )
                             <div class="pull-right top-page-ui">
                                 <a href="{{URL::action('GstController@create')}}" class="btn btn-primary pull-right">
                                     <i class="fa fa-plus-circle fa-lg"></i> Add GST Percent
                                 </a>
                             </div>
-                        @endif
+                        @endif -->
                     </div>
                 </div>
             </div>
@@ -48,9 +48,9 @@
                                             <th>SGST</th>
                                             <th>CGST</th>
                                             <th>IGST</th>
-                                            @if( Auth::user()->role_id == 0 )
+                                            <!-- @if( Auth::user()->role_id == 0 )
                                                 <th class="text-center">Actions</th>
-                                            @endif
+                                            @endif -->
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -61,7 +61,7 @@
                                                 <td>{{$gsts->sgst}} </td>
                                                 <td>{{$gsts->cgst}} </td>
                                                 <td>{{$gsts->igst}} </td>
-                                                @if( Auth::user()->role_id == 0 )
+                                                <!-- @if( Auth::user()->role_id == 0 )
                                                     <td class="text-center">
                                                         <a href="{{ Url::action('GstController@edit', ['gst' => $gsts->id]) }}" class="table-link">
                                                             <span class="fa-stack">
@@ -76,7 +76,7 @@
                                                         </span>
                                                         </a>
                                                     </td>
-                                                @endif
+                                                @endif -->
                                             </tr>
 
                                             <div class="modal fade" id="delete_states_modal_{{$gsts->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
