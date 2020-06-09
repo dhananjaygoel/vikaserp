@@ -886,18 +886,18 @@ class DeliveryChallanController extends Controller {
                     }
                     // whatsapp code starts here
                     if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        $sid = 'AC405803610638a694e57432bf99043d49';
-                        $token = '7aec8d8780e37097db9f63b1ef55d915';
-                        $twilio = new Client($sid, $token);
-                        $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
-                            [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
-                            ]
-                        );
-                        
-                        // print($message->sid);
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:".$phone_number,
+                                [
+                                    "body" => $str,
+                                    "from" => "whatsapp:+14155238886"
+                                ]
+                            );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
                     }
                     // whatsapp testing code endse here
                 }
@@ -966,7 +966,7 @@ class DeliveryChallanController extends Controller {
         if($tasked == 'del_ch') {
             return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
         } else {
-            return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly .');
+            return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly'.$whatsapp_error);
         }
     }
 
@@ -1753,17 +1753,18 @@ class DeliveryChallanController extends Controller {
                     }
                     // whatsapp code starts here
                     if($send_whatsapp == "true"){
-                        $sid = 'AC405803610638a694e57432bf99043d49';
-                        $token = '7aec8d8780e37097db9f63b1ef55d915';
-                        $twilio = new Client($sid, $token);
-                        $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
-                            [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
-                            ]
-                        );
-                        // print($message->sid);
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:".$phone_number,
+                                [
+                                    "body" => $str,
+                                    "from" => "whatsapp:+14155238886"
+                                ]
+                            );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
                     }
                     // whatsapp testing code endse here
                 }
