@@ -45,6 +45,8 @@ class InquiryController extends Controller {
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
+        define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
+        define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
         $this->middleware('validIP', ['except' => ['create', 'store', 'fetch_existing_customer', 'fetch_products']]);
     }
 
@@ -139,6 +141,7 @@ class InquiryController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $units = Units::all();
+        $inquiry = [];
         if (Auth::user()->role_id == 5) {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
@@ -164,6 +167,7 @@ class InquiryController extends Controller {
 
         $input_data = Input::all();
         $sms_flag = 1;
+        $whatsapp_error = '';
         if (Session::has('forms_inquiry')) {
             $session_array = Session::get('forms_inquiry');
             if (count((array)$session_array) > 0) {
@@ -236,7 +240,7 @@ class InquiryController extends Controller {
         $add_inquiry->inquiry_status = "Pending";
         if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5)
             $add_inquiry->is_approved = 'yes';
-        $add_inquiry->save();
+        // $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -256,7 +260,7 @@ class InquiryController extends Controller {
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
                 ];
-                InquiryProducts::create($inquiry_products);
+                // InquiryProducts::create($inquiry_products);
 
                 if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
                     $sms_flag = 1;
@@ -317,31 +321,21 @@ class InquiryController extends Controller {
                 
                 // whatsapp testing code starts here
                 if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $sid = 'AC405803610638a694e57432bf99043d49';
-                    $token = '7aec8d8780e37097db9f63b1ef55d915';
-                    $twilio = new Client($sid, $token);
-                    $message = $twilio->messages
-                    ->create("whatsapp:".$phone_number,
-                        [
-                            "body" => $str,
-                            "from" => "whatsapp:+14155238886"
-                        ]
-                    );
-                    // $message = $twilio->messages
-                    // ->create("whatsapp:+919975003940",
-                    //     [
-                    //         "body" => $str,
-                    //         "from" => "whatsapp:+14155238886"
-                    //     ]
-                    // );
-                    // $message = $twilio->messages
-                    // ->create("whatsapp:+918087847284",
-                    //     [
-                    //         "body" => $str,
-                    //         "from" => "whatsapp:+14155238886"
-                    //     ]
-                    // );
-                    // print($message->sid);
+                    // $sid = env('TWILIO_SID');
+                    
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:".$phone_number,
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                            );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
+                    
                 }
                 // whatsapp testing code endse here
 
@@ -372,7 +366,7 @@ class InquiryController extends Controller {
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
 
-        return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added.');
+        return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added'.$whatsapp_error);
     }
 
     /**
@@ -518,6 +512,7 @@ class InquiryController extends Controller {
         // print_r($input_data['product']);
         // exit;
         $sms_flag = 1;
+        $whatsapp_error = '';
         if (Session::has('forms_edit_inquiry')) {
             $session_array = Session::get('forms_edit_inquiry');
             if (count($session_array) > 0) {
@@ -706,18 +701,19 @@ class InquiryController extends Controller {
 
                     // whatsapp code starts here
                     if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        $sid = 'AC405803610638a694e57432bf99043d49';
-                        $token = '7aec8d8780e37097db9f63b1ef55d915';
-                        $twilio = new Client($sid, $token);
-                        $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
-                            [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
-                            ]
-                        );
-                        
-                        // print($message->sid);
+                       
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:".$phone_number,
+                                [
+                                    "body" => $str,
+                                    "from" => "whatsapp:+14155238886"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
                     }
                     // whatsapp testing code endse here
 
@@ -769,18 +765,19 @@ class InquiryController extends Controller {
                     }
                     // whatsapp code starts here
                     if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        $sid = 'AC405803610638a694e57432bf99043d49';
-                        $token = '7aec8d8780e37097db9f63b1ef55d915';
-                        $twilio = new Client($sid, $token);
-                        $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
-                            [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
-                            ]
-                        );
-                        
-                        // print($message->sid);
+
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:".$phone_number,
+                                [
+                                    "body" => $str,
+                                    "from" => "whatsapp:+14155238886"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
                     }
                     // whatsapp testing code endse here
 
@@ -812,7 +809,7 @@ class InquiryController extends Controller {
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
-        return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry details successfully modified.');
+        return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry details successfully modified'.$whatsapp_error);
     }
 
     /**
@@ -823,7 +820,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
-
+        $whatsapp_error = '';
         $inquiry_filter=Input::get('inquiry_sort_type')!=""?Input::get('inquiry_sort_type'):"";
 
         if (Input::has('inquiry_id') && Input::has('password') && (Hash::check(Input::get('password'), Auth::user()->password))) {
@@ -865,7 +862,23 @@ class InquiryController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
-
+                     // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:".$phone_number,
+                                [
+                                    "body" => $str,
+                                    "from" => "whatsapp:+14155238886"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
+                    }
+                    // whatsapp testing code endse here
                     if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has rejected an inquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
@@ -890,7 +903,7 @@ class InquiryController extends Controller {
 
             $parameter = Session::get('parameters');
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-            return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry deleted successfully.');
+            return redirect('inquiry' . $parameters)->with('flash_success_message', 'Inquiry deleted successfully'.$whatsapp_error);
         } else {
             return redirect()->action('InquiryController@index',['inquiry_filter' => $inquiry_filter])->with('flash_message', 'Please enter correct password.');
             //return redirect('inquiry')->with('flash_message', 'Please enter valid password.');
@@ -1608,17 +1621,20 @@ class InquiryController extends Controller {
                 }
                 // whatsapp code starts here
                 if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $sid = 'AC405803610638a694e57432bf99043d49';
-                    $token = '7aec8d8780e37097db9f63b1ef55d915';
-                    $twilio = new Client($sid, $token);
-                    $message = $twilio->messages
-                    ->create("whatsapp:".$phone_number,
-                        [
-                            "body" => $str,
-                            "from" => "whatsapp:+14155238886"
-                        ]
-                    );
-                    // print($message->sid);
+                    
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:".$phone_number,
+                            [
+                                "body" => $str,
+                                "from" => "whatsapp:+14155238886"
+                            ]
+                            );
+                    }catch(\Exception $e){
+                        return redirect()->back()->withError("The phone number is not valid,can't send whatsapp message");
+                        // return redirect('inquiry')->with('flash_success_message', "Inquiry details added successfully :: Whatsapp Error: Invalid Number");
+                    }
                 }
                 // whatsapp testing code endse here
             }
