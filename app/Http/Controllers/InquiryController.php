@@ -240,7 +240,7 @@ class InquiryController extends Controller {
         $add_inquiry->inquiry_status = "Pending";
         if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5)
             $add_inquiry->is_approved = 'yes';
-        // $add_inquiry->save();
+        $add_inquiry->save();
         $inquiry_id = $add_inquiry->id;
         $inquiry_products = array();
         foreach ($input_data['product'] as $product_data) {
@@ -260,7 +260,7 @@ class InquiryController extends Controller {
                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark']
                 ];
-                // InquiryProducts::create($inquiry_products);
+                InquiryProducts::create($inquiry_products);
 
                 if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') {
                     $sms_flag = 1;
