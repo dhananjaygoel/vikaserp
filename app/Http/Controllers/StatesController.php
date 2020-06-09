@@ -120,7 +120,7 @@ class StatesController extends Controller {
 
         $message = array('state_name.without_spaces' => 'Please enter the name without spaces.');
 
-        $rules = ['state_name' => 'required|regex:/^[A-Za-z\s-_]+$/|unique:state,state_name'];
+        $rules = ['state_name' => 'required|regex:/^[A-Za-z\s-_]+$/'];
 
         $validator = Validator::make($input, $rules, $message);
         
