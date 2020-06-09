@@ -22,10 +22,17 @@
                         <a href="{{URL::action('TerritoryController@create')}}" title="Add New Territory" class="btn btn-primary pull-right territory-top-list">
                             <i class="fa fa-plus-circle fa-lg"></i> Add New Territory
                         </a>
-                        <a href="{{url('excel_export_territory')}}" class="btn btn-primary pull-right territory-top-list">
-                            <i class="fa fa-plus-circle fa-lg"></i> Download List
-                        </a>
                     </div>
+                    <form method="GET" action="{{url('excel_export_territory')}}" id="filter_search" >
+                        <div class="pull-right">
+                            <input type="hidden" name="search" id="search" value="{{Request::get('search')}}">
+                            <input type="submit" name="export_data" value="Download List" class="btn btn-primary pull-right territory-top-list" >
+                            <!-- <a href="{{url('excel_export_territory')}}" class="btn btn-primary pull-right territory-top-list">
+                                <i class="fa fa-plus-circle fa-lg"></i> Download List
+                            </a> -->
+                        
+                        </div>
+                    </form>
                     @endif
                     <form method="GET" id="searchCustomerForm">
                         <div class="input-group col-md-3 pull-right territory-top-list">

@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Input;
 use App\Territory;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -20,7 +21,13 @@ class TerritoryExport implements FromView, ShouldAutoSize
 
     public function view(): View
     {
-        $allterritory = \App\Territory::orderBy('created_at', 'DESC')->get();
+        $data = Input::all();
+        if ($data['search'] != '') {
+            $term = '%' . Input::get('search') . '%';
+            $allterritory = Territory::where('teritory_name', 'like', $term)->orderBy('created_at', 'DESC')->get();
+        } else {
+            $allterritory = Territory::orderBy('created_at', 'DESC')->get();
+        }
         return view('excelView.territory', array('allterritory' => $allterritory));
     }
 }
