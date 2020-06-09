@@ -69,9 +69,79 @@ class SalesDaybookController extends Controller {
                             ->where('serial_number', 'like', '%P%')
                             ->orderBy('updated_at', 'desc')->Paginate(20);
         }
+
+        if (count((array)$allorders) > 0) {
+            foreach ($allorders as $key => $order) {
+                // dd($order);
+                $order_quantity = 0;
+                $total_quantity = 0;
+                $order_quantity_do = 0;
+                $order_quantity_o = 0;
+                $order_quantity_pending = 0;
+                $product_for_order_do_pending = 0;
+                $previous_dc_quantity = 0;
+                $previous_dc_quantity_parent = 0;
+
+
+                if (count((array)$order['delivery_challan_products']) > 0) {
+                    $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
+                }
+                if (count((array)$order['delivery_challan_products']) > 0) {
+                    $actual_quantity = $order['delivery_challan_products']->sum('actual_quantity');
+                }
+                if (count((array)$order['delivery_order_products']) > 0) {
+                    $order_quantity_do = $order['delivery_order_products']->sum('quantity');
+                }
+                if (count((array)$order['order_products']) > 0) {
+                    $order_quantity_o = $order['order_products']->sum('quantity');
+                }
+
+                foreach ($order['delivery_challan_products'] as $product_data) {
+
+                    $product_size = $product_data['product_sub_category'];
+
+                    if (isset($product_data)) {
+                        if ($product_data->unit_id == 1) {
+                            $total_quantity = (float)$total_quantity + (float)$product_data->actual_quantity;
+                        }
+                        if ($product_data->unit_id == 2) {
+                            $total_quantity = (float)$total_quantity + (float)$product_data->actual_quantity * (float)$product_size->weight;
+                        }
+                        if ($product_data->unit_id == 3) {
+                            $total_quantity = (float)$total_quantity + (float)($product_data->actual_quantity / $product_size->standard_length ) * (float)$product_size->weight;
+                        }
+                        if ($product_data->unit_id == 4) {
+                            $total_quantity = (float)$total_quantity + (float)($product_data->actual_quantity * $product_size->weight  * $product_data->length);
+                            // dd($product_data->actual_quantity.'*'.$product_size->weight.'*'.$product_data->length);
+                        }
+                        if ($product_data->unit_id == 5) {
+                            $total_quantity = (float)$total_quantity + ((float)$product_data->actual_quantity * (float)$product_size->weight * (float)($product_data->length/305));
+                        }
+                    } else {
+                        $result['send_message'] = "Error";
+                        $result['reasons'] = "Order not found.";
+//                            return json_encode($result);
+                    }
+                }
+
+                $allorders[$key]['total_quantity'] = $order_quantity;
+                $allorders[$key]['actual_quantity'] = $total_quantity;
+
+                if (($order_quantity == $order_quantity_do) && ($order_quantity_do == $order_quantity_o)) {
+                    $allorders[$key]['total_quantity_pending'] = 0;
+                } else {
+
+                    $allorders[$key]['total_quantity_pending'] = (float)$order_quantity - (float)$order_quantity_do;
+
+//                    $product_for_order = $order['order_products'];
+//                    $product_for_order_do = $order['delivery_order_products'];
+                }
+            }
+        }
         $supplier = Customer::all();
         $challan_date = array('challan_date' => Input::get('challan_date'));
         $allorders->setPath('sales_daybook');
+
         return view('sales_daybook', compact('allorders', 'challan_date', 'supplier', 'search_dates'));
     }
 

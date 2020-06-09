@@ -110,6 +110,28 @@
                                         $k = ($allorders->currentPage() - 1 ) * $allorders->perPage() + 1;
                                         ?>
                                         @foreach($allorders as $challan)
+                                        <?php $total_amount = 0; ?>
+                                    <?php
+                                        $cust_id = $challan->customer_id;
+                                        $order_id = $challan->order_id;
+                                        $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
+                                        $state = \App\DeliveryLocation::where('id',isset($loc_id->delivery_location_id)?$loc_id->delivery_location_id:0)->first();
+                                        $local = \App\States::where('id',isset($state->state_id)?$state->state_id:0)->first();
+                                        $local_state = isset($local->local_state)?$local->local_state:0;
+                                        $i = 1;
+                                        $total_price = 0;
+                                        $total_vat = 0;
+                                        if(isset($challan['all_order_products'][0]->vat_percentage) && $challan['all_order_products'][0]->vat_percentage > 0){
+                                            $loading_vat = 18;
+                                        }else{
+                                            $loading_vat = 0;
+                                        }
+                                        $loading_vat_amount = ((float)$challan->loading_charge * (float)$loading_vat) / 100;
+                                        $freight_vat_amount = ((float)$challan->freight * (float)$loading_vat) / 100;
+                                        $discount_vat_amount = ((float)$challan->discount * (float)$loading_vat) / 100;
+                                        $final_vat_amount = 0; 
+                                        $final_total_amt = 0;
+                                    ?>
                                         <?php $total_amount=0;$total_price = 0;$price = 0;$lb_arr = []; $lbr_arr=[];?>
                                         <tr class="add_product_row">
                                             @if( Auth::user()->role_id == 0 )
@@ -180,9 +202,9 @@
                                                 @endif
                                                 {{count((array)$lbr_arr)}}                                                
                                             </td> -->
-                                            <td>
+                                            <td>{{ (round($challan->actual_quantity, 2)>0)? round($challan->actual_quantity, 2)  :0 }}
                                                 <?php
-                                                $total_qunatity = 0;
+                                                //$total_qunatity = 0;
 //                                                foreach ($challan["delivery_challan_products"] as $products) {
 //                                                    if ($products['unit']->id == 1) {
 //                                                        $total_qunatity += $products->quantity;
@@ -200,7 +222,7 @@
 //                                                }else{
 //                                                    echo round(0,2);
 //                                                }
-                                                echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
+                                                //echo round($challan['delivery_challan_products']->sum('actual_quantity'), 2);
                                                 ?>
                                             </td>
 
@@ -209,16 +231,61 @@
                                             <?php
                                                 $amount = (float)$product->actual_quantity * (float)$product->price;
                                                 $total_amount = round($amount + $total_amount, 2);
+                                                $productsub = \App\ProductSubCategory::where('id',$product['product_category_id'])->first();
+                                                $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
+                                                $sgst = 0;
+                                                $cgst = 0;
                                                 $igst = 0;
-                                                $total_gst_amount = ((float)$amount * (float)$igst) / 100;
-                                                $total_vat_amount = round($total_gst_amount,2);
+                                                $rate = (float)$product->price;
+                                                $is_gst = false;
+                                                if(isset($product->vat_percentage) && $product->vat_percentage > 0){
+                                                    if($product_cat->hsn_code){
+                                                        
+                                                        $is_gst = true;
+                                                        $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                                                        if(isset($hsn_det->gst))
+                                                        $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                                                        if($local_state == 1){
+                                                            $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                                            $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                                        }
+                                                        else{
+                                                            $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                                        }
+                                                    }
+                                                }
+                                                else{
+                                                    $igst = 0;
+                                                }
+                                                if(isset($product->vat_percentage) && $product->vat_percentage > 0){
+                                                    if($local_state == 1){
+                                                        $total_sgst_amount = ((float)$amount * (float)$sgst) / 100;
+                                                        $total_cgst_amount = ((float)$amount * (float)$cgst) / 100;
+                                                        $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                                    } else {
+                                                        $total_igst_amount = ((float)$amount * (float)$igst) / 100;
+                                                        $total_vat_amount1 = round($total_igst_amount,2);
+                                                    }
+                                                } else{
+                                                    $total_gst_amount = ((float)$amount * (float)$igst) / 100;
+                                                    $total_vat_amount1 = round($total_gst_amount,2);
+                                                }
+                                                $total_vat_amount = $total_vat_amount1;
                                                 $total_price += ($total_vat_amount);
-                                                $total = (float)$total_amount + (float)$challan->freight + (float)$challan->loading_charge + (float)$challan->discount;
-                                                // dd($total);
+                                                
                                             ?>
                                             @endforeach
+
                                             <!-- <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td> -->
-                                            <td>{{ $total }}</td>
+                                            <td>
+                                            <?php 
+                                                $total = (float)$total_amount + (float)$challan->freight + (float)$challan->loading_charge + (float)$challan->discount;
+                                                $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                                                $tot = $total + $total_vat;
+
+                                            ?>
+                                            {{round($tot,2)}}
+                                            </td>
                                             <td >{{$challan->bill_number}}</td>
                                             <td>
                                                 @if((strlen(trim($challan->remarks))) > 50)
