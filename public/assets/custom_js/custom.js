@@ -775,7 +775,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
         CheckBoxArray = [];
         $("input:checkbox[class='vat_chkbox']:checked").each(function () {
             CheckBoxArray.push($(this).val());
-            if ($('#vat_percentage').val() == "" | $('#vat_percentage').val() == "0") {
+            if ($('#vat_percentage').val() == "" || $('#vat_percentage').val() == "0") {
                 $('#vat_percentage').addClass('error_validation');
                 status_form = 1;
             } else {
@@ -794,7 +794,7 @@ $('body').delegate(".btn_add_inquiry, .btn_add_inquiry_sms", "click", function (
         var tot_products = $(".add_product_row").length;
         var j = 0;
         for (i = 1; i <= tot_products; i++) {
-            if (($("#add_product_id_" + i).val() == "") ($("#chk_vat_" + i).attr('disabled',true))) {
+            if (($("#add_product_id_" + i).val() == "") && ($("#chk_vat_" + i).attr('disabled',true))) {
                 j++;
             } else {
                 if ($("#add_product_id_" + i).val() == "" || $('#add_product_name_' + i).val() == "") {
@@ -4053,4 +4053,34 @@ $(document).on("click", "#truck_load", function () {
      // $(".modal-body #product_detail_table").val( product_detail_table );
      // $(".modal-body #labour_pipe").val( labour_pipe );
      // $(".modal-body #labour_structure").val( labour_structure );
+});
+
+
+var el = document.querySelector('.notification');
+
+document.querySelector('button').addEventListener('click', function(){
+    var count = Number(el.getAttribute('data-count')) || 0;
+    el.setAttribute('data-count', count + 1);
+    el.classList.remove('notify');
+    el.offsetWidth = el.offsetWidth;
+    el.classList.add('notify');
+    if(count === 0){
+        el.classList.add('show-count');
+    }
+}, false);
+
+
+$('body').delegate("#submit_supervisor, #submit_delboy", "click", function () {
+    e.preventDefault();
+    alert("hey");
+            $.ajax({
+                type: 'GET',
+                url: url + '/supervisor_count',
+                data: {
+                },
+                success: function (data) {
+                    // alert(data);
+                    $('notification').attr('data-count',data);
+                }
+            });
 });
