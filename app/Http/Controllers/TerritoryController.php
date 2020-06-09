@@ -120,7 +120,7 @@ class TerritoryController extends Controller {
         $message = array('territory_name.required' => 'Territory Name is required',
             'location.required' => 'Location is required');
 
-        $rules = ['territory_name' => 'required|unique:territories,teritory_name',
+        $rules = ['territory_name' => 'required',
             'location' => 'required'];
 
         $validator = Validator::make($input, $rules, $message);
@@ -128,6 +128,12 @@ class TerritoryController extends Controller {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
         $territory = Territory::find($id);
+
+        $check_territory_exists = Territory::where('teritory_name', '=', $request->input('territory_name'))->where('id', '!=', $id)->count();
+        if ($check_territory_exists != 0) {
+            return redirect('territory')->with('flash_message', 'Territory details already exists.');
+        }
+
         $territory->teritory_name = $request->input('territory_name');
 
 
