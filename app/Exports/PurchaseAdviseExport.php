@@ -46,7 +46,8 @@ class PurchaseAdviseExport implements FromView, ShouldAutoSize
                             ->get();
                 } else {
                     $order_objects = PurchaseAdvise::where('advice_status','=', $order_status)
-                            ->whereBetween('updated_at', [$date1,$date2])
+                            ->where('updated_at', '>=', $date1)
+                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
