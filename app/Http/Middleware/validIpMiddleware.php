@@ -19,6 +19,7 @@ class validIpMiddleware {
     public function handle($request, Closure $next) {
 
         $ip = Security::all();
+        $ip_array = [];
         if (count((array)$ip) > 0) {
             foreach ($ip as $key => $value) {
                 $ip_array[$key] = $value->ip_address;
