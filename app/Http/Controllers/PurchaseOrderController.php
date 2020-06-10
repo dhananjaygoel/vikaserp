@@ -49,7 +49,7 @@ class PurchaseOrderController extends Controller {
             $excel_name = '-Pending-' . date('dmyhis');
         } elseif ($data['order_status'] == 'completed') {
             $excel_name = '-Completed-' . date('dmyhis');
-        } elseif ($data['order_status'] == 'cancelled') {
+        } elseif ($data['order_status'] == 'canceled') {
             $excel_name = '-Cancelled-' . date('dmyhis');
         }
         return Excel::download(new PurchaseOrderExport, 'Purchase-Order'.$excel_name.'.xls');

@@ -46,8 +46,8 @@
                         <input type="hidden" name="order_status" value="pending">
                         @elseif($qstring_sort_type_order == 'completed')
                         <input type="hidden" name="order_status" value="completed">
-                        @elseif($qstring_sort_type_order == 'cancelled')
-                        <input type="hidden" name="order_status" value="cancelled">
+                        @elseif($qstring_sort_type_order == 'canceled')
+                        <input type="hidden" name="order_status" value="canceled">
                         @else
                         <input type="hidden" name="order_status" value="pending">
                         @endif
@@ -79,7 +79,7 @@
                         @elseif(sizeof($purchase_orders)!=0 && $qstring_sort_type_order=='completed')
                         <input type="hidden" name="order_status" value="completed">
                         @elseif($qstring_sort_type_order=='canceled')
-                        <input type="hidden" name="order_status" value="cancelled">
+                        <input type="hidden" name="order_status" value="canceled">
                         @else
                         <input type="hidden" name="order_status" value="pending">
                         @endif
@@ -132,7 +132,7 @@
 
                                             <option value="pending" <?php if ($qstring_sort_type_order == "pending") echo "selected=''"; ?>>Pending</option>
                                             <option value="completed" <?php if ($qstring_sort_type_order == "completed") echo "selected=''"; ?>>Completed</option>
-                                            <option value="canceled" <?php if ($qstring_sort_type_order == "canceled") echo "selected=''"; ?>>Canceled</option>
+                                            <option value="canceled" <?php if ($qstring_sort_type_order == "canceled") echo "selected=''"; ?>>Cancelled</option>
                                         </select>
 
                                         <?php
