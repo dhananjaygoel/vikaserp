@@ -303,13 +303,13 @@
                                             
                                         </tr>
                                        <?php $key = 1; $actualsum =0; $actualtotal =0;?>
-                                       @if(!$truck_load_prodcut_id->isEmpty())<?php 
-                                        $truck_product_id = $truck_load_prodcut_id['0']['attributes']['product_id'];
-                                        $truck_procudcts = unserialize($truck_product_id);
-                                        $explodetruck_prodcuts = explode(',',$truck_procudcts); ?>
+                                       <!-- @if(!$truck_load_prodcut_id->isEmpty())<?php 
+                                        // $truck_product_id = $truck_load_prodcut_id['0']['attributes']['product_id'];
+                                        // $truck_procudcts = unserialize($truck_product_id);
+                                        // $explodetruck_prodcuts = explode(',',$truck_procudcts); ?>
                                         @else
-                                              <?php $explodetruck_prodcuts = array(); ?>
-                                        @endif
+                                              <?php //$explodetruck_prodcuts = array(); ?>
+                                        @endif -->
 
                                             @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
