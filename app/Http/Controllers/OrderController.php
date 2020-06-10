@@ -183,7 +183,7 @@ class OrderController extends Controller {
         $del_boy = $request->del_boy;
 
         $roleid = Auth::user()->role_id;
-       if($roleid == 0 || $roleid == 8){
+       if($roleid == 0 || $roleid == 8 || $roleid == 9 ){
             if(($delivery_data->del_boy =='') || ($delivery_data->del_boy != $del_boy)){
                 $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                     'del_boy'=>$request->del_boy,
