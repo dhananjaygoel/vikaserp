@@ -567,7 +567,7 @@ class DeliveryChallanController extends Controller {
         $product_type = $this->check_product_type($allorder);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
-        return view('edit_delivery_challan', compact('allorder', 'price_delivery_order', 'data','units', 'delivery_locations', 'product_type'));
+        return view('edit_delivery_challan', compact('allorder', 'data','units', 'delivery_locations', 'product_type'));
     }
 
     /**
