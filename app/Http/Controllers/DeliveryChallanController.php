@@ -581,6 +581,7 @@ class DeliveryChallanController extends Controller {
         // print_r($tasked);
         // exit;
         $sms_flag = 1;
+        $whatsapp_error = '';
         if (!isset($input_data['grand_total']) || $input_data['grand_total'] == '') {
             return Redirect::back()->with('validation_message', 'No Value Updated. Please update something');
         }
