@@ -36,8 +36,8 @@
 
                                     ?>
                                     <select class="form-control" id="advice_status" name="advice_status" onchange="this.form.submit()">
-                                        <option <?php if ($qstring_sort_type_order == 'in_process') echo 'selected=""'; ?> value="in_process">Inprocess</option>
-                                        <option <?php if ($qstring_sort_type_order == 'delivered') echo 'selected=""'; ?> value="delivered">Delivered</option>
+                                        <option <?php if (($qstring_sort_type_order == 'In_process') || ($qstring_sort_type_order == 'in_process'))echo 'selected=""'; ?> value="in_process">Inprocess</option>
+                                        <option <?php if (($qstring_sort_type_order == 'Delivered') || ($qstring_sort_type_order == 'delivered')) echo 'selected=""'; ?> value="delivered">Delivered</option>
 
                                     </select>
                                     <?php
@@ -89,7 +89,7 @@
                                 <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
                                 @elseif(isset($qstring_sort_type_order) && $qstring_sort_type_order =='delivered' )
                                 <input type="hidden" name="purchaseaAdviseFilter" value="Delivered">
-                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='in_process')
+                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='In_process')
                                 <input type="hidden" name="purchaseaAdviseFilter" value="In_process">
                                 @else
                                 <input type="hidden" name="purchaseaAdviseFilter" value="In_process">

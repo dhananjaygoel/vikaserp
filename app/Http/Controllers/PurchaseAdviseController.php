@@ -78,9 +78,9 @@ class PurchaseAdviseController extends Controller {
         }
 
         if (isset($qstring_sort_type_order) && ($qstring_sort_type_order != "")) {
-            if ($qstring_sort_type_order == 'in_process') {
+            if ($qstring_sort_type_order == 'in_process' || $qstring_sort_type_order == 'In_process') {
                 $q->where('advice_status', 'in_process');
-            } elseif ($qstring_sort_type_order == 'delivered') {
+            } elseif ($qstring_sort_type_order == 'delivered' || $qstring_sort_type_order == 'Delivered') {
                 $q->where('advice_status', 'delivered');
             }
         } else {
@@ -120,12 +120,10 @@ class PurchaseAdviseController extends Controller {
 
     public function exportPurchaseAdviseBasedOnStatus() {
         $data = Input::all();
-        if ($data['purchaseaAdviseFilter'] == 'In_process') {
+        if ($data['purchaseaAdviseFilter'] == 'In_process' || $data['purchaseaAdviseFilter'] == 'In_process') {
             $excel_name = '-Pending-' . date('dmyhis');
-        } elseif ($data['purchaseaAdviseFilter'] == 'Delivered') {
+        } elseif ($data['purchaseaAdviseFilter'] == 'Delivered' || $data['purchaseaAdviseFilter'] == 'delivered') {
             $excel_name = '-Completed-' . date('dmyhis');
-        } elseif ($data['purchaseaAdviseFilter'] == 'cancelled') {
-            $excel_name = '-Cancelled-' . date('dmyhis');
         }
 
         return Excel::download(new PurchaseAdviseExport, 'Purchase-Advise'.$excel_name.'.xls');

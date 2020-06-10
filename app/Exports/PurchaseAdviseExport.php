@@ -27,12 +27,10 @@ class PurchaseAdviseExport implements FromView, ShouldAutoSize
     {
         $data = Input::all();
         set_time_limit(0);
-        if ($data['purchaseaAdviseFilter'] == 'In_process') {
+        if ($data['purchaseaAdviseFilter'] == 'In_process' || $data['purchaseaAdviseFilter'] == 'in_process') {
             $order_status = 'in_process';
-        } elseif ($data['purchaseaAdviseFilter'] == 'Delivered') {
+        } elseif ($data['purchaseaAdviseFilter'] == 'Delivered' || $data['purchaseaAdviseFilter'] == 'delivered') {
             $order_status = 'delivered';
-        } elseif ($data['purchaseaAdviseFilter'] == 'cancelled') {
-            $order_status = 'cancelled';
         }
 
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
@@ -41,15 +39,14 @@ class PurchaseAdviseExport implements FromView, ShouldAutoSize
             if (Auth::user()->role_id <> 5) {
 
                 if ($date1 == $date2) {
-                    $order_objects = PurchaseAdvise::where('advice_status', $order_status)
+                    $order_objects = PurchaseAdvise::where('advice_status','=', $order_status)
                             ->where('updated_at', 'like', $date1 . '%')
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
                 } else {
-                    $order_objects = PurchaseAdvise::where('advice_status', $order_status)
-                            ->where('updated_at', '>=', $date1)
-                            ->where('updated_at', '<=', $date2 . ' 23:59:59')
+                    $order_objects = PurchaseAdvise::where('advice_status','=', $order_status)
+                            ->whereBetween('updated_at', [$date1,$date2])
                             ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'supplier')
                             ->orderBy('created_at', 'desc')
                             ->get();
