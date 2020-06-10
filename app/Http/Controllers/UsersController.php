@@ -228,6 +228,7 @@ class UsersController extends Controller {
                                                  ->orderBy('updated_at', 'desc')->paginate(20);
         }
 //        dd($pa_vehicle_list);
+        $pa_vehicle_list = [];
         $do_vehicle_list->setPath('vehicle-list');
 //        $pa_vehicle_list->setPath('vehicle-list');
 
