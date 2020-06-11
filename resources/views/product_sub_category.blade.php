@@ -16,10 +16,23 @@
                             <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
                                 <div class="col-md-12 pull-right">
                                     @if( Auth::user()->role_id == 0 )
-                                    <div class="col-md-3 form-group pull-right">
+                                    <div class="col-md-4 form-group pull-right">
                                         <a href="{{URL::action('ProductsubController@create')}}" class="btn btn-primary pull-right">
                                             <i class="fa fa-plus-circle fa-lg" style="cursor: pointer;"></i> Add Product Size
                                         </a>
+                                        <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
+                                            
+                                            @if( Auth::user()->role_id == 0 )
+                                            <div class="pull-right">
+                                                <input value="{{Input::get('product_size')}}" id="product_size"  name="product_size" type="hidden">
+                                                <input value="{{Input::get('product_filter')}}" name="product_filter" type="hidden" >
+                                                <input value="{{Input::get('search_text')}}" name="search_text" type="hidden" >
+                                                
+                                                <input type="submit"  name="export_data" value="Export" class="btn btn-primary" style="margin-right:30px;">
+                                            </div>
+                                            @endif
+                                           
+                                        </form>
                                         <!--<a href="{{url('export_product_size')}}" class="btn btn-primary form_button_footer">Export</a>-->
                                          <!--<input type="submit"  name="export_data" value="Export" class="btn btn-primary form_button_footer">-->
                                     </div>
@@ -47,7 +60,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
+                            <!-- <form method="GET" action="{{URL::action('ProductsubController@index')}}" id="filter_search" >
                                 <div class="col-md-12 pull-right">
                                     @if( Auth::user()->role_id == 0 )
                                     <div class="col-md-3 form-group pull-right">
@@ -67,7 +80,7 @@
 
                                     </div>
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                     </div>
                 </div>
