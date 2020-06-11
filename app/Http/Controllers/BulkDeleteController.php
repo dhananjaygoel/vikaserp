@@ -45,7 +45,9 @@ class BulkDeleteController extends Controller {
 
     public function show_result() {
 
-
+        $result_temp = [];
+        $head = [];
+        $tr_id = [];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 10 ) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
@@ -915,7 +917,7 @@ class BulkDeleteController extends Controller {
         } else {
             $msg = '';
         }
-        if (isset($result_temp)) {
+        if (isset($result_temp) && !empty($result_temp)) {
             $result_temp->setPath('bulk-delete');
         }
         $bulk_searched_result = 'bulk_searched_result';

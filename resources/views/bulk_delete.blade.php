@@ -105,7 +105,7 @@ use Illuminate\Support\Facades\Session;
                                             <input type="submit" class="btn btn-primary" value="Search">
                                         </div>
                                     </div>
-                                    @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())
+                                    @if(isset($result_temp) && !empty($result_temp) && $result_temp->count())
                                     <input id="is_delete_all" type="hidden" name="is_delete_all" value="">
                                     <div class="form-group col-md-2 targetdate">
                                         <label for="date"></label>
@@ -155,7 +155,7 @@ use Illuminate\Support\Facades\Session;
                     </div>
                     @endif
 
-                    @if(isset($result_temp) && !$result_temp->isEmpty() && $result_temp->count())
+                    @if(isset($result_temp) && !empty($result_temp) && $result_temp->count())
                     <div class="table-responsive">
                         <table id="table-example" class="table table-hover">
                             <thead>
