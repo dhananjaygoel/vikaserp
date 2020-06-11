@@ -796,7 +796,7 @@ public function update_cust_all_inc(){
                 $customer->is_supplier = Input::get('status');
             // }
 
-            if (Input::has('owner_name')) {
+            if (Input::has('owner_name') && !empty($users)) {
                 $users->first_name = Input::get('owner_name');
             }
 
