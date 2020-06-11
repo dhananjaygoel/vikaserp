@@ -1006,8 +1006,10 @@ public function update_cust_all_inc(){
                     //end all inclusive
             }
             // dd($customer);
-
-            if ($customer->save() && (!empty($users)?$users->save():'')) {
+            if(!empty($users)){
+                $users->save();
+            }
+            if ($customer->save()) {
                 $product_category_id = Input::get('product_category_id');
                 if (isset($product_category_id)) {
                     foreach ($product_category_id as $key => $value) {
