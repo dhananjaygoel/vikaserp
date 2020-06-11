@@ -1866,17 +1866,17 @@ class DeliveryOrderController extends Controller {
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
 
-        if (count((array)$do) <= 0) {
-            $number = '1';
-        } else {
-            $serial_numbers = [];
-            foreach ($do as $temp) {
-                $list = explode("/", $temp->serial_no);
-                $serial_numbers[] = $list[count((array)$list) - 1];
-                $pri_id = max($serial_numbers);
-                $number = $pri_id + 1;
-            }
-        }
+        // if (count((array)$do) <= 0) {
+        //     $number = '1';
+        // } else {
+        //     $serial_numbers = [];
+        //     foreach ($do as $temp) {
+        //         $list = explode("/", $temp->serial_no);
+        //         $serial_numbers[] = $list[count((array)$list) - 1];
+        //         $pri_id = max($serial_numbers);
+        //         $number = $pri_id + 1;
+        //     }
+        // }
 
         // $date_letter = 'DO/' . $current_date . "" . $number;
         // DeliveryOrder:: where('id', $id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
