@@ -767,7 +767,7 @@ public function update_cust_all_inc(){
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $validator = Validator::make(Input::all(), Customer::$customers_rules);
-        // dd(Input::get('status'));
+        // dd(Input::all());
 
         if ($validator->passes()) {
             $customer = Customer::find($id);
@@ -781,12 +781,11 @@ public function update_cust_all_inc(){
 
     //
             $users = User::where('role_id', '=', '5')
+                    ->where('first_name', '=', $customer->owner_name)
                     ->where('email', '=', $customer->email)
                     ->where('mobile_number', '=', $customer->phone_number1)
                     ->where('phone_number', '=', $customer->phone_number2)
-                    ->where('created_at', '=', $customer->created_at)
                     ->first();
-
 
             if (count((array)$customer) < 1 && count((array)$users) < 1) {
                 return redirect('customers/')->with('error', 'Trying to access an invalid customer');
