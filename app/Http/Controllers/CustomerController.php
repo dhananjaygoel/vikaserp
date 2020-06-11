@@ -800,8 +800,11 @@ public function update_cust_all_inc(){
                 $users->first_name = Input::get('owner_name');
             }
 
-
-            $users->role_id = '5';
+            if (!empty($users)) {
+                $users->role_id = '5';
+                $users->email = Input::get('email');
+                $users->mobile_number = Input::get('phone_number1');
+            }
 
             if (Input::has('company_name')) {
                 $customer->company_name = Input::get('company_name');
@@ -825,17 +828,19 @@ public function update_cust_all_inc(){
             }
     //        if (Input::has('email')) {
             $customer->email = Input::get('email');
-            $users->email = Input::get('email');
+            
     //        }
 
             $customer->tally_name = Input::get('tally_name');
             $customer->tally_category = Input::get('tally_category');
             $customer->tally_sub_category = Input::get('tally_sub_category');
             $customer->phone_number1 = Input::get('phone_number1');
-            $users->mobile_number = Input::get('phone_number1');
+            
             if (Input::has('phone_number2')) {
                 $customer->phone_number2 = Input::get('phone_number2');
-                $users->phone_number = Input::get('phone_number2');
+                if (!empty($users)) {
+                    $users->phone_number = Input::get('phone_number2');
+                }
             }
             if (Input::has('vat_tin_number')) {
                 $customer->vat_tin_number = Input::get('vat_tin_number');
@@ -857,7 +862,9 @@ public function update_cust_all_inc(){
 
             if (Input::has('password') && Input::get('password') != '') {
                 $customer->password = Hash::make(Input::get('password'));
-                $users->password = Hash::make(Input::get('password'));
+                if (!empty($users)) {
+                    $users->password = Hash::make(Input::get('password'));
+                }
             }
 
             $state = States::where('id',Input::get('state'))->first();
@@ -999,7 +1006,8 @@ public function update_cust_all_inc(){
                     //end all inclusive
             }
             // dd($customer);
-            if ($customer->save() && $users->save()) {
+
+            if ($customer->save() && (!empty($users)?$users->save():'')) {
                 $product_category_id = Input::get('product_category_id');
                 if (isset($product_category_id)) {
                     foreach ($product_category_id as $key => $value) {
