@@ -1437,11 +1437,11 @@ class DeliveryChallanController extends Controller {
                 "CustomerRef" => [
                     "name" => $tally_name,
                     "value" => $quickbook_customer_id
-                ],
-                "ShipAddr" => [
-                    "City" =>  (!empty($city_value)?$city_value:'NA'),
-                    "CountrySubDivisionCode" => (!empty($state_value)?$state_value:'MH'),
                 ]
+                // "ShipAddr" => [
+                //     "City" =>  (!empty($city_value)?$city_value:'NA'),
+                //     "CountrySubDivisionCode" => (!empty($state_value)?$state_value:'MH'),
+                // ]
             ]);
 
             $inv = $dataService->add($theResourceObj);
