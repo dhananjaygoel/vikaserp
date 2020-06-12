@@ -1214,7 +1214,7 @@ class DeliveryChallanController extends Controller {
                     $state_value = $local->state_name;
                     $city_value = $state->area_name;
                 }else{
-                    $state_value = 'Maharashtra';
+                    $state_value = 'MH';
                     $city_value = 'NA';
                 }
 
@@ -1440,7 +1440,7 @@ class DeliveryChallanController extends Controller {
                 ],
                 "ShipAddr" => [
                     "City" =>  (!empty($city_value)?$city_value:'NA'),
-                    "CountrySubDivisionCode" => (!empty($state_value)?$state_value:'Maharashtra'),
+                    "CountrySubDivisionCode" => (!empty($state_value)?$state_value:'MH'),
                 ]
             ]);
 
