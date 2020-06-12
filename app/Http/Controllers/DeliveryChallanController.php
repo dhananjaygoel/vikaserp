@@ -1217,7 +1217,7 @@ class DeliveryChallanController extends Controller {
                     $state_value = 'MH';
                     $city_value = 'NA';
                 }
-dd($update_delivery_challan);
+
                 if($hsn){
                     $gst = App\Gst::where('gst',$hsn->gst)->first();
                     if($gst){
