@@ -1422,7 +1422,7 @@ class DeliveryChallanController extends Controller {
             //  $custom_query = "select * from Customer maxresults 2";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
-        //    dd($customer_details);
+            //    dd($customer_details);
              if(!empty($customer_details)){
                     $quickbook_customer_id = $customer_details[0]->Id;
                 }
@@ -1439,8 +1439,8 @@ class DeliveryChallanController extends Controller {
                     "value" => $quickbook_customer_id
                 ],
                 "ShipAddr" => [
-                    "City" =>  $city_value,
-                    "CountrySubDivisionCode" => $state_value,
+                    "City" =>  (!empty($city_value)?$city_value:'NA'),
+                    "CountrySubDivisionCode" => (!empty($state_value)?$state_value:'Maharashtra'),
                 ]
             ]);
 
