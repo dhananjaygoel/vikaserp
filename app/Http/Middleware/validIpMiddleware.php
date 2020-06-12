@@ -43,7 +43,7 @@ class validIpMiddleware {
             else
                 $ipaddress = 'UNKNOWN';
                 
-dd($_SERVER['REMOTE_ADDR']);
+dd($request->ip());
             // if (!in_array($ipaddress, $ip_array)) {
     
             //     return response()->json(["you don't have permission to access this application."]);
