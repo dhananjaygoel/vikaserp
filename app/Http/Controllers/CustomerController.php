@@ -417,7 +417,7 @@ public function update_cust_all_inc(){
     /**
      * Show the form for creating a new customer.
      */
-    public function create() {dd($_SERVER['SERVER_ADDR']);
+    public function create() {
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
