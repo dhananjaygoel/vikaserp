@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitsSeeder::class);
         $this->call(ProductTypeSeeder::class);
         $this->call(QuickbookTokenSeeder::class);
-        $this->call('AddAdminUserSeeder');
+        $this->call(AddAdminUserSeeder::class);
         // $this->call('UpdateDocNum');
     }
 }
