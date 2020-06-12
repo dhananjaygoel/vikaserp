@@ -25,6 +25,8 @@ class validIpMiddleware {
                 $ip_array[$key] = $value->ip_address;
             }
 
+            
+
             $ipaddress = '';
             if (getenv('HTTP_CLIENT_IP'))
                 $ipaddress = getenv('HTTP_CLIENT_IP');
@@ -40,9 +42,18 @@ class validIpMiddleware {
                 $ipaddress = getenv('REMOTE_ADDR');
             else
                 $ipaddress = 'UNKNOWN';
+                
+dd($_SERVER['REMOTE_ADDR']);
+            // if (!in_array($ipaddress, $ip_array)) {
+    
+            //     return response()->json(["you don't have permission to access this application."]);
+            // }
+        
+           
             if ($ipaddress != 'UNKNOWN') {
                 //  && Auth::user()->role_id != 2
-                if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7) {
+                // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id = 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
+                if (!in_array('127.0.0.1', $ip_array) && Auth::user()->role_id = 0) {
                     return redirect('dashboard');
                 }
 
