@@ -42,7 +42,8 @@ class validIpMiddleware {
                 $ipaddress = 'UNKNOWN';
             if ($ipaddress != 'UNKNOWN') {
                 //  && Auth::user()->role_id != 2
-                if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7) {
+                // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id = 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
+                if (!in_array($ipaddress, $ip_array) && Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
                     return redirect('dashboard');
                 }
 
