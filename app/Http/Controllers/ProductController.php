@@ -208,7 +208,7 @@ class ProductController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
-            'product_category_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
+            'product_category_name' => 'required|regex:/^[A-Za-z\s-]+$/',
             'hsn_code' => 'required'
         ]);
 
