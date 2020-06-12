@@ -1210,7 +1210,7 @@ class DeliveryChallanController extends Controller {
                 $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
                 $local = \App\States::where('id',(isset($state->state_id)?$state->state_id:0))->first();
                 $local_state = isset($local->local_state)?$local->local_state:0;
-                if((isset($local->state_name)) && (isset($state->area_name))){
+                if((!empty($local->state_name)) && (!empty($state->area_name))){
                     $state_value = $local->state_name;
                     $city_value = $state->area_name;
                 }else{
