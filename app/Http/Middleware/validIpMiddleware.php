@@ -40,7 +40,6 @@ class validIpMiddleware {
                 $ipaddress = getenv('REMOTE_ADDR');
             else
                 $ipaddress = 'UNKNOWN';
-                dd($ipaddress);
             if ($ipaddress != 'UNKNOWN') {
                 //  && Auth::user()->role_id != 2
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id = 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
