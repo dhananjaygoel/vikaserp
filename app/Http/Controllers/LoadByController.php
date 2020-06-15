@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Input;
 use App\Order;
 use App\Inquiry;
 use App\LoadedBy;
@@ -15,7 +16,6 @@ use App\DeliveryChallanLoadedBy;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\DashboardController;
