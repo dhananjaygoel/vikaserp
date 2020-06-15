@@ -49,6 +49,8 @@ class validIpMiddleware {
                     return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
                     return redirect('bulk-delete');
+                }else if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
+                    return $next($request);
                 }
                 else{
                     // return redirect('logout')->with('error','You are not autherized to login :: Invalid IP Address');
