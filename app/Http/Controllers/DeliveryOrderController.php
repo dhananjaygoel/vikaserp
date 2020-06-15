@@ -1724,6 +1724,9 @@ class DeliveryOrderController extends Controller {
         /* all items with and without VAT */
         else {
             $case = 'all_mixed';
+            $ratio_without_vat = 0;
+            $ratio_with_vat = 0;
+            $ratio_profile = 0;
             $vat_input_data = $without_vat_input_data = $profile_input_data = $input_data;
             if ($input_data['total_price'] <> 0) {
                 $ratio_with_vat = number_format( ((((float)$total_vat_price) * 100) / (float)$input_data['total_price']), 2, '.', '');
