@@ -26,6 +26,7 @@ class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        $this->middleware('validIP');
 
 //        if (Config::get('rollbar.send') === true) {
 //            $config = array(
@@ -42,6 +43,10 @@ class DashboardController extends Controller {
       | Counts of total customer in the system
       | Counts of total Inquiries
      */
+
+    public function ipvalid_dashboard(){
+        return view('dashboard_ipvalid');
+    }
 
     public function index() {
         // dd(Auth::user()->id);
@@ -66,7 +71,7 @@ class DashboardController extends Controller {
             return Redirect::to('bulk-delete');
         }
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2) {
+        if (Auth::user()->role_id == 4) {
             return Redirect::to('customers');
         }
         if (Auth::user()->role_id == 6) {
