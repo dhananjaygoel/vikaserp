@@ -56,7 +56,7 @@
             // print_r($ip_array);
             // exit;
             ?>
-            @if(in_array($ipaddress, $ip_array))
+            @if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0)
         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
         <div class="row">
             <!--            <div class="col-lg-3 col-sm-6 col-xs-12">
