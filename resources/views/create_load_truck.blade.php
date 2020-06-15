@@ -462,7 +462,7 @@
                                    
                                     <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
                                   
-                                    <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
+                                    <a href="{{URL::action('DeliveryOrderController@index')}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
                                 <div class="clearfix"></div>
                                 {!! Form::close() !!}
