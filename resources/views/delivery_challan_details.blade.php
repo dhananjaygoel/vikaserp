@@ -447,7 +447,7 @@
                         @endif
                         @if($allorder->order_id > 0)
                         <div class="form-group">
-                            <label for="orderby"><b class="challan">Order By: </b></label> {{$allorder->order_details->createdby->first_name." ".$allorder->order_details->createdby->last_name}}
+                            <label for="orderby"><b class="challan">Order By: </b></label> {{(isset($allorder->order_details->createdby->first_name)?$allorder->order_details->createdby->first_name:"")." ".(isset($allorder->order_details->createdby->last_name)?$allorder->order_details->createdby->last_name:"")}}
                         </div>
                         <hr>
                         <div class="form-group">
