@@ -256,7 +256,7 @@
                     @endif
                     @endif
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0)
-                    @if(Auth::user()->role_id <> 5 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                     <li class="<?php
                     if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*') || Request::is('*purchase_estimate*')) {
                         echo 'active';
@@ -324,7 +324,7 @@
                     </li>
                     @endif
                     @endif
-                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*') || Request::is('*thickness*')) {
@@ -356,7 +356,7 @@
                     </li>
                     @endif
                     @endif
-                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*states*') || Request::is('*city*') || Request::is('*unit*') || Request::is('*location*')) {
