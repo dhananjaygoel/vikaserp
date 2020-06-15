@@ -143,7 +143,7 @@
                     </li>
                     @endif
                     @endif
-                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 )
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('customers*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Customers">
                         <a href="{{url('customers')}}">
@@ -324,7 +324,7 @@
                     </li>
                     @endif
                     @endif
-                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+                    @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
                     @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*') || Request::is('*thickness*')) {
