@@ -6,6 +6,7 @@ use App\Exports\InquiryExport;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 Use Cache;
+use App\Security;
 use Illuminate\Http\Request;
 use App\Customer;
 use Input;
@@ -365,6 +366,33 @@ class InquiryController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
+
+        $ip = Security::all();
+        $ip_array = [];
+        if (count((array)$ip) > 0) {
+            foreach ($ip as $key => $value) {
+                $ip_array[$key] = $value->ip_address;
+            }
+
+            $ipaddress = '';
+            if (getenv('HTTP_CLIENT_IP'))
+                $ipaddress = getenv('HTTP_CLIENT_IP');
+            else if (getenv('HTTP_X_FORWARDED_FOR'))
+                $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+            else if (getenv('HTTP_X_FORWARDED'))
+                $ipaddress = getenv('HTTP_X_FORWARDED');
+            else if (getenv('HTTP_FORWARDED_FOR'))
+                $ipaddress = getenv('HTTP_FORWARDED_FOR');
+            else if (getenv('HTTP_FORWARDED'))
+                $ipaddress = getenv('HTTP_FORWARDED');
+            else if (getenv('REMOTE_ADDR'))
+                $ipaddress = getenv('REMOTE_ADDR');
+            else
+                $ipaddress = 'UNKNOWN';
+        }    
+        if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
+            return redirect('dashboard')->with('flash_success_message', 'Inquiry details successfully added'.$whatsapp_error);
+        }
 
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added'.$whatsapp_error);
     }
@@ -1738,6 +1766,29 @@ class InquiryController extends Controller {
         $parameter = Session::get('parameters');
         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
 
+        $ip = Security::all();
+        $ip_array = [];
+        if (count((array)$ip) > 0) {
+            foreach ($ip as $key => $value) {
+                $ip_array[$key] = $value->ip_address;
+            }
+
+            $ipaddress = '';
+            if (getenv('HTTP_CLIENT_IP'))
+                $ipaddress = getenv('HTTP_CLIENT_IP');
+            else if (getenv('HTTP_X_FORWARDED_FOR'))
+                $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+            else if (getenv('HTTP_X_FORWARDED'))
+                $ipaddress = getenv('HTTP_X_FORWARDED');
+            else if (getenv('HTTP_FORWARDED_FOR'))
+                $ipaddress = getenv('HTTP_FORWARDED_FOR');
+            else if (getenv('HTTP_FORWARDED'))
+                $ipaddress = getenv('HTTP_FORWARDED');
+            else if (getenv('REMOTE_ADDR'))
+                $ipaddress = getenv('REMOTE_ADDR');
+            else
+                $ipaddress = 'UNKNOWN';
+        }    
         return redirect('inquiry' . $parameters)->with('flash_success_message', 'One Order successfully generated for Inquiry.');
     }
 

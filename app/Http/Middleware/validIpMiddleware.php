@@ -42,7 +42,6 @@ class validIpMiddleware {
                 $ipaddress = 'UNKNOWN';
 
             if ($ipaddress != 'UNKNOWN') {
-                //  && Auth::user()->role_id != 2
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
                 if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){
                     // return redirect('dashboard');
@@ -53,18 +52,8 @@ class validIpMiddleware {
                     return $next($request);
                 }
                 else{
-                    // return redirect('logout')->with('error','You are not autherized to login :: Invalid IP Address');
                     return redirect()->back()->with(['error'=>'you are not autherized.']);
                 }
-                // else if(Auth::user()->role_id == 2){
-                //     return redirect('dashboard_ipvalid');
-                // }else{
-                //     return false;
-                // }
-
-                // if(Auth::user()->role_id == 10){
-                //     return redirect('bulk-delete');
-                // }
             }
         }
         return $next($request);

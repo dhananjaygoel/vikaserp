@@ -28,6 +28,9 @@
                 </div>
             </div>
         </div>
+        @if (Session::has('flash_success_message'))
+        <div id="flash_success_message" class="alert alert-success no_data_msg_container">{{ Session::get('flash_success_message') }}</div>
+        @endif
         <?php
             $ipaddress = '';
             if (getenv('HTTP_CLIENT_IP'))
