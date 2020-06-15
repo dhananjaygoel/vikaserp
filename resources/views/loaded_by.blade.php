@@ -69,13 +69,13 @@
                                     <td>{{$loader->last_name}}</td>
                                     <td>{{$loader->phone_number}} </td>
                                     <td class="text-center">
-                                        <a href="{{URL::action('LoadByController@show',['id'=> $loader->id])}}" class="table-link" title="View">
+                                        <a href="{{URL::action('LoadByController@show',['loaded_by'=> $loader->id])}}" class="table-link" title="View">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                             </span>
                                         </a>
-                                        <a href="{{URL::action('LoadByController@edit',['id'=> $loader->id])}}" class="table-link" title="Edit">
+                                        <a href="{{URL::action('LoadByController@edit',['loaded_by'=> $loader->id])}}" class="table-link" title="Edit">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
