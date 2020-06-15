@@ -162,6 +162,7 @@ class CommonController extends Controller {
         $updateCust = App\Customer::all();
         foreach($updateCust as $cust){
             $cust->update(['quickbook_customer_id' => null]);
+            // $cust->update(['company_name' => str_replace('  ',' ',$cust->company_name)]);
         }
         $cust = "select count(*) from Customer";
         $count = $dataService->Query($cust);
@@ -171,10 +172,13 @@ class CommonController extends Controller {
             // dd($det);
             foreach($det as $key => $cust_id){
                 if(isset($cust_id->DisplayName) && $cust_id->DisplayName != ''){
-                    App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_customer_id'=>$cust_id->Id]);
+                    $update_customer = App\Customer::where('company_name',$cust_id->CompanyName)->update(['quickbook_customer_id'=>$cust_id->Id]);
+                    if($update_customer == 0){
                     echo $sr.".\n";
-                    echo nl2br($cust_id->Id."\n");
+                    echo nl2br($cust_id->Id." => ".$cust_id->CompanyName."\n");
                     $sr++;
+                    }
+                    
                 }
             }
         }
@@ -193,6 +197,7 @@ class CommonController extends Controller {
         $updateCust = App\Customer::all();
         foreach($updateCust as $cust){
             $cust->update(['quickbook_a_customer_id' => null]);
+            $cust->update(['company_name' => str_replace('  ',' ',$cust->company_name)]);
         }
         $cust = "select count(*) from Customer";
         $count = $dataService->Query($cust);
