@@ -51,7 +51,8 @@ class validIpMiddleware {
                     return redirect('bulk-delete');
                 }
                 else{
-                    return redirect('logout')->with('errors','You are not autherized to login :: Invalid IP Address');
+                    // return redirect('logout')->with('error','You are not autherized to login :: Invalid IP Address');
+                    return redirect()->back()->with(['error'=>'you are not autherized.']);
                 }
                 // else if(Auth::user()->role_id == 2){
                 //     return redirect('dashboard_ipvalid');
