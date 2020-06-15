@@ -56,6 +56,7 @@ class DeliveryOrderController extends Controller {
         define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
         define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
         $this->middleware('auth');
+        $this->middleware('validIP');
     }
 
     /**
