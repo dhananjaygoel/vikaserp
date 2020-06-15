@@ -51,7 +51,7 @@ class validIpMiddleware {
                     return redirect('bulk-delete');
                 }
                 else{
-                    return redirect('login');
+                    return redirect('logout');
                 }
                 // else if(Auth::user()->role_id == 2){
                 //     return redirect('dashboard_ipvalid');
