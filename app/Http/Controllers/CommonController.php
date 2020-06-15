@@ -167,7 +167,7 @@ class CommonController extends Controller {
         $cust = "select count(*) from Customer";
         $count = $dataService->Query($cust);
         for($i = 1; $i<=$count; $i+=1000){
-            $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
+            $cust_det = "select * from Customer order by Id asc startposition $i maxresults 1000";
             $det = $dataService->Query($cust_det);
             // dd($det);
             foreach($det as $key => $cust_id){
@@ -202,7 +202,7 @@ class CommonController extends Controller {
         $cust = "select count(*) from Customer";
         $count = $dataService->Query($cust);
         for($i = 1; $i<=$count; $i+=1000){
-            $cust_det = "select * from Customer order by Id asc startposition $i maxresults $count";
+            $cust_det = "select * from Customer order by Id asc startposition $i maxresults 1000";
             $det = $dataService->Query($cust_det);
             // dd($det);
             foreach($det as $key=>$cust_id){
