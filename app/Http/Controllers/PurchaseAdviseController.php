@@ -755,7 +755,7 @@ class PurchaseAdviseController extends Controller {
         }
         $current_date = date("/m/d/");
         $pr_a = PurchaseAdvise::where('id','=',$id)->with('purchase_order_single')->first();
-        $vat_status = $pr_a->purchase_order_single->vat_percentage;
+        $vat_status = (isset($pr_a->purchase_order_single->vat_percentage)?$pr_a->purchase_order_single->vat_percentage:0);
 
         if($vat_status == "" OR $vat_status == null){
             $date_letter = 'PA' . $current_date . $id."A";
