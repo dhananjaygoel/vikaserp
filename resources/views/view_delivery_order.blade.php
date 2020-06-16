@@ -16,7 +16,7 @@
                         @if($delivery_data->order_status == 'pending')
                         @if($delivery_data->serial_no == "")
                         @if(Auth::user()->role_id == 0)
-                        <a href="{{URL::action('DeliveryOrderController@edit',['id'=>$delivery_data->id])}}" class="btn btn-primary pull-right">
+                        <a href="{{URL::action('DeliveryOrderController@edit',['delivery_order'=>$delivery_data->id])}}" class="btn btn-primary pull-right">
                             Edit Delivery Order
                         </a>
                         @endif
