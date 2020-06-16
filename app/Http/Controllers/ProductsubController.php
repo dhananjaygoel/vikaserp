@@ -48,13 +48,16 @@ class ProductsubController extends Controller {
      */
 
     public function exportProductSize() {
-        $product_size_list = ProductSubCategory::with('product_category', 'product_unit')->get();
-        Excel::create('Product Sizes', function($excel) use($product_size_list) {
-            $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
-                $sheet->loadView('excelView.productsize', array('product_size_list' => $product_size_list));
-            });
-        })->export('xls');
-        exit();
+        
+        return Excel::download(new ProductSizeExport, 'Product-Sizes-List.xls');
+
+        // $product_size_list = ProductSubCategory::with('product_category', 'product_unit')->get();
+        // Excel::create('Product Sizes', function($excel) use($product_size_list) {
+        //     $excel->sheet('Product-Sizes-List', function($sheet) use($product_size_list) {
+        //         $sheet->loadView('excelView.productsize', array('product_size_list' => $product_size_list));
+        //     });
+        // })->export('xls');
+        // exit();
     }
 
     public function exporthsncode() {
@@ -107,7 +110,7 @@ class ProductsubController extends Controller {
 
         if (Input::has('export_data') && Input::get('export_data') == 'Export') {
 
-            return Excel::download(new ProductSizeExport, 'Product-Sizes-List.xls');
+            // return Excel::download(new ProductSizeExport, 'Product-Sizes-List.xls');
         //    set_time_limit(0);
         //     $product_size_list = $q->orderBy('id', 'asc')->get();
         //     Excel::create('Product Sizes', function($excel) use($product_size_list) {

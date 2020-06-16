@@ -412,7 +412,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('export_product_hsn', 'ProductsubController@exporthsncode');
 //  Route::post('export_purchase_orders', 'PurchaseOrderController@export_purchase_orders');
-    Route::get('export_product_size', 'ProductsubController@exportProductSize');
+    Route::any('export_product_size', 'ProductsubController@exportProductSize');
     Route::any('print_sales_order_daybook', 'SalesDaybookController@print_sales_order_daybook');
     Route::any('print_daily_proforma', 'SalesDaybookController@print_daily_proforma');
     Route::post('get_product_weight', 'ProductsubController@get_product_weight');
