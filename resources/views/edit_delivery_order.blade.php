@@ -408,7 +408,7 @@
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group ">
-                                                            <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);">
+                                                            <select class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" onchange="unitType(this);" disabled>
                                                             <?php if($product->unit_id == 1 || $product->unit_id == 2 || $product->unit_id == 3) { ?>
                                                                 <option value=1 id = 'unit_{{$key}}_1' {{($product->unit_id == 1)?'selected':''}}>KG</option>
                                                                 <option value=2 id = 'unit_{{$key}}_2' {{($product->unit_id == 2)?'selected':''}}>Pieces</option>
@@ -425,16 +425,16 @@
                                                     <div class = "form-group">
                                                         <div class = "form-group length_list_{{$key}}">
                                                             <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" 
-                                                                   value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?>>
+                                                                   value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?> disabled>
                                                     </div>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}} >
-                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel">
+                                                        <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel" disabled>
                                                     </div>
                                                     <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
-                                                        <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);">
+                                                        <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);" disabled>
                                                             <?php for ($n = 50; $n <= 15000; $n++) { ?>
                                                                 <option {{($product->quantity == $n)?'selected':''}} value = "{{$n}}">{{$n}}</option>
                                                                 <?php
@@ -444,7 +444,7 @@
                                                         </select>
                                                     </div>
                                                     <div class = "form-group pieces_list_{{$key}}" {{($product->unit_id=='2')?'':'style=display:none'}}>
-                                                        <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);">
+                                                        <select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_{{$key}}" onchange="setQty(this);" disabled>
                                                             <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                                 <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                                 <?php
@@ -454,7 +454,7 @@
                                                         </select>
                                                     </div>
                                                     <div class = "form-group ff_list_{{$key}}" {{($product->unit_id=='4')?'':'style=display:none'}}>
-                                                        <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);">
+                                                        <select class = "form-control ff_list " name = "ff_list" id = "ff_list_{{$key}}" onchange="setQty(this);" disabled>
                                                             <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                             <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                             <?php
@@ -465,7 +465,7 @@
                                                     </div>
 
                                                     <div class = "form-group mm_list_{{$key}}" {{($product->unit_id=='5')?'':'style=display:none'}}>
-                                                        <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);">
+                                                        <select class = "form-control mm_list " name = "mm_list" id = "mm_list_{{$key}}" onchange="setQty(this);" disabled>
                                                             <?php for ($z = 1; $z <= 1000; $z++) { ?>
                                                             <option {{($product->quantity == $z)?'selected':''}} value = "{{$z}}">{{$z}}</option>
                                                             <?php
@@ -479,20 +479,20 @@
                                                 </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                              <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">                                                            
+                                                              <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});" disabled>                                                            
                                                         </div>                                                        
                                                     </td>
                                                     
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                            <input  type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price">
+                                                            <input  type="tel" class="form-control" id="product_price_{{$key}}" onkeypress=" return numbersOnly(this,event,true,true);" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" disabled>
                                                         </div>
                                                         
                                                     </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group inquiry_vat_chkbox">
 
-                                                            <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes" onchange="check_vat();">
+                                                            <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes" onchange="check_vat();" disabled>
 
                                                         </div>
                                                     </td>
