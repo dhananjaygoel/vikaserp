@@ -49,7 +49,11 @@ class validIpMiddleware {
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
                     return redirect('bulk-delete');
                 }else if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
-                    return $next($request);
+                    if($_SERVER['REQUEST_URI'] == '/dashboard' || $request->is('inquiry/*') || $request->is('orders/*') || $request->is('fetch_existing_customer*') || $request->is('fetch_products*')){
+                        return $next($request);
+                    }else{
+                        return redirect()->back()->with(['error'=>'you are not autherized.']);
+                    }
                 }
                 else{
                     return redirect()->back()->with(['error'=>'you are not autherized.']);
