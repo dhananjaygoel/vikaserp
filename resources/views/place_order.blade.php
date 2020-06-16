@@ -37,17 +37,18 @@
                         @if (Session::has('flash_message'))
                         <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                         @endif
+                        <?php $role_id = (isset($inquiry['createdby']->role_id)?$inquiry['createdby']->role_id:0); ?>
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <input type="hidden" name="inquiry_id" value="{{$inquiry->id}}">                                                        
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" name="customer_id" value="{{$inquiry['customer']->id}}" id="hidden_cutomer_id">
                         <div class="radio">
                             <input checked="" value="warehouse" id="warehouse_radio" name="status" type="radio">
-                            @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                            @if(Auth::user()->role_id <> 5 & $role_id <> 5)
                             <label for="warehouse_radio">Warehouse</label>
                             @endif
                             <input  value="supplier" id="supplier_radio" name="status" type="radio">
-                            @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                            @if(Auth::user()->role_id <> 5 & $role_id <> 5)
                             <label for="supplier_radio">Supplier</label>
                             @endif
                         </div>
@@ -72,11 +73,11 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $role_id <> 5)
                                 <label for ="optionsRadios1">Existing</label>
                                 @endif
                                 <input checked="" value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
@@ -124,26 +125,26 @@
                             <label>Customer<span class="mandatory">*</span></label>
                             <div class="radio">
                                 <input checked="" value="existing_customer" id="optionsRadios1" name="customer_status" type="radio" onchange="show_hide_customer('Permanent');">
-                                @if(Auth::user()->role_id <> 5  & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5  & $role_id <> 5)
                                 <label for="optionsRadios1">Existing</label>
                                 @endif
                                 <input  value="new_customer" id="optionsRadios2" name="customer_status" type="radio" onchange="show_hide_customer('Pending');">
-                                @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                @if(Auth::user()->role_id <> 5 & $role_id <> 5)
                                 <label for="optionsRadios2">New</label>
                                 @endif
                             </div>
                             <div class="customer_select" >
                                 <div class="col-md-4">
                                     <div class="form-group searchproduct">
-                                        @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id <> 5)
+                                        @if(Auth::user()->role_id <> 5 & $role_id <> 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name" tabindex="1" >
                                         @endif
 
-                                        @if(Auth::user()->role_id == 5 & $inquiry['createdby']->role_id == 5)
+                                        @if(Auth::user()->role_id == 5 & $role_id == 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
 
-                                        @if(Auth::user()->role_id <> 5 & $inquiry['createdby']->role_id == 5)
+                                        @if(Auth::user()->role_id <> 5 & $role_id == 5)
                                         <input class="form-control focus_on_enter" placeholder="Enter Tally Name " type="text" value="{{$inquiry['customer']->tally_name}}" id="existing_customer_name1"  disabled="" tabindex="1" >
                                         @endif
 

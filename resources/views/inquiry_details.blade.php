@@ -141,7 +141,7 @@
                                         </tr>
                                         <tr>
                                             
-                                            <td><span>Created By: </span>{{$inquiry['createdby']->first_name}} {{$inquiry['createdby']->last_name}}</td>
+                                            <td><span>Created By: </span>{{(isset($inquiry['createdby']->first_name)?$inquiry['createdby']->first_name:'')}} {{(isset($inquiry['createdby']->last_name)?$inquiry['createdby']->last_name:'')}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
