@@ -179,9 +179,9 @@ class DBController extends Controller {
             for($key = 1; $key<=$endkey; $key++ ){
                 // echo '<pre>';
                 // print_r($newdata[$key]);
-                App\ProductCategory::where('product_category_name',$newdata[$key][0])->update(['hsn_code'=>$newdata[$key][9]]);
+                App\ProductCategory::where('product_category_name',$newdata[$key][1])->update(['hsn_code'=>$newdata[$key][0], 'gst' => $newdata[$key][2]]);
 
-                App\ProductSubCategory::where('alias_name',$newdata[$key][3])->update(['hsn_code'=>$newdata[$key][9]]);
+                // App\ProductSubCategory::where('alias_name',$newdata[$key][3])->update(['hsn_code'=>$newdata[$key][0]]);
             }
             $hsnresults = App\Hsn::orderBy('hsn_code', 'asc')->get();
             foreach ($hsnresults as $hsnresult) {
@@ -198,9 +198,10 @@ class DBController extends Controller {
     
     function update_hsn_test() {
         
-        $prod_subcat = App\ProductSubCategory::select('product_category_id','hsn_code')->distinct('product_category_id')->get();
-        foreach($prod_subcat as $key => $cat){
-            App\ProductCategory::where('id',$cat['product_category_id'])->update([ 'hsn_code' => $cat['hsn_code'], 'gst' => 18 ]);
+        $prod_cat = App\ProductCategory::select('id','hsn_code')->distinct('id')->get();
+        // $prod_subcat = App\ProductSubCategory::select('product_category_id','hsn_code')->distinct('product_category_id')->get();
+        foreach($prod_cat as $key => $cat){
+            App\ProductSubCategory::where('product_category_id',$cat['id'])->update([ 'hsn_code' => $cat['hsn_code'] ]);
         }
         $hsn = App\ProductCategory::select('hsn_code','gst')->distinct('hsn_code')->get();
         DB::table('hsn')->truncate();
