@@ -57,7 +57,9 @@ class PurchaseOrderExport implements FromView, ShouldAutoSize
                 'export_to_date' => $data["export_to_date"]
             ];
         }
-
+        if (Auth::user()->role_id > 1) {
+            $q->where('is_view_all', '=', 1);
+        }
         if (Auth::user()->role_id <> 5) {
         $order_objects = $q->orderBy('created_at', 'desc')
         ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
