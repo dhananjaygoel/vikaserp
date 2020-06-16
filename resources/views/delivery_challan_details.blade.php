@@ -464,7 +464,7 @@
                         </div><hr>
                         @endif
                         <div class="form-group">
-                            <label for="deliveryorderby"><b class="challan">Delivery Challan By: </b></label> {{$allorder->user->first_name." ".$allorder->user->last_name}}
+                            <label for="deliveryorderby"><b class="challan">Delivery Challan By: </b></label> {{(isset($allorder->user->first_name)?$allorder->user->first_name:"")." ".(isset($allorder->user->last_name)?$allorder->user->last_name:"")}}
                         </div>
                         <hr>
                         <div class="form-group">
