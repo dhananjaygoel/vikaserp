@@ -91,6 +91,8 @@ class PurchaseOrderController extends Controller {
 
         if ((isset($data['order_status'])) && $data['order_status'] != '') {
             $q = $q->where('order_status', '=', $data['order_status']);
+        } else if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
+            $q = $q->where('order_status', '=', $data['order_filter']);
         } else {
             $q = $q->where('order_status', '=', 'pending');
         }
