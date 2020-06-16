@@ -1,12 +1,38 @@
 @extends('layouts.master')
 @section('title','Add Inquiry')
 @section('content')
+<?php 
+    // dd($ip);
+    $ip_array = [];
+    if (!empty($ip)) {
+        foreach ($ip as $key => $value) {
+            $ip_array[$key] = $value->ip_address;
+        }
+
+        $ipaddress = '';
+        if (getenv('HTTP_CLIENT_IP'))
+            $ipaddress = getenv('HTTP_CLIENT_IP');
+        else if (getenv('HTTP_X_FORWARDED_FOR'))
+            $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+        else if (getenv('HTTP_X_FORWARDED'))
+            $ipaddress = getenv('HTTP_X_FORWARDED');
+        else if (getenv('HTTP_FORWARDED_FOR'))
+            $ipaddress = getenv('HTTP_FORWARDED_FOR');
+        else if (getenv('HTTP_FORWARDED'))
+            $ipaddress = getenv('HTTP_FORWARDED');
+        else if (getenv('REMOTE_ADDR'))
+            $ipaddress = getenv('REMOTE_ADDR');
+        else
+            $ipaddress = 'UNKNOWN';
+    }   
+     
+?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li><a href="{{url('inquiry')}}">Inquiry</a></li>
+                    <li style="<?php if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){ echo 'display:none;'; }else {echo ""; }?>"><a href="{{url('inquiry')}}">Inquiry</a></li>
                     <li class="active"><span>Add Inquiry</span></li>
                 </ol>
                 <div class="clearfix"><h1 class="pull-left"></h1></div>

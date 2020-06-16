@@ -155,10 +155,10 @@ class InquiryController extends Controller {
                 return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
             }
         }
-
+        $ip = Security::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        return view('add_inquiry', compact('customers', 'units', 'inquiry', 'delivery_locations'));
+        return view('add_inquiry', compact('customers', 'units', 'ip', 'inquiry', 'delivery_locations'));
     }
 
     /**

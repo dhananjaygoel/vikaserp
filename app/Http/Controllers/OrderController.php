@@ -564,11 +564,11 @@ class OrderController extends Controller {
                return redirect('order')->with('flash_message', 'Order does not exist.');
            }
         }
-
+        $ip = Security::all();
         $units = Units::all();
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        return View::make('add_orders', compact('customers', 'order', 'units', 'delivery_locations'));
+        return View::make('add_orders', compact('customers', 'order', 'units', 'ip', 'delivery_locations'));
     }
 
     /**
