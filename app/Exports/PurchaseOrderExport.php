@@ -41,6 +41,9 @@ class PurchaseOrderExport implements FromView, ShouldAutoSize
         } else {
             $q = $q->where('order_status', '=', 'pending');
         }
+        if (Auth::user()->role_id > 1) {
+            $q->where('is_view_all', '=', 1);
+        }
 
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             // dd($data["export_from_date"]);
@@ -57,13 +60,11 @@ class PurchaseOrderExport implements FromView, ShouldAutoSize
                 'export_to_date' => $data["export_to_date"]
             ];
         }
-        if (Auth::user()->role_id > 1) {
-            $q->where('is_view_all', '=', 1);
-        }
+        
         if (Auth::user()->role_id <> 5) {
-        $order_objects = $q->orderBy('created_at', 'desc')
-        ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
-        ->get();
+            $order_objects = $q->orderBy('created_at', 'desc')
+            ->with('purchase_products.unit', 'purchase_products.purchase_product_details', 'customer')
+            ->get();
         } elseif(Auth::user()->role_id == 5) {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                         ->where('phone_number1', '=', Auth::user()->mobile_number)

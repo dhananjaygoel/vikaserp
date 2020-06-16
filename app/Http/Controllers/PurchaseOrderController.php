@@ -89,8 +89,8 @@ class PurchaseOrderController extends Controller {
             $q->where('order_for', '!=', 0)->get();
         }
 
-        if ((isset($data['order_filter'])) && $data['order_filter'] != '') {
-            $q = $q->where('order_status', '=', $data['order_filter']);
+        if ((isset($data['order_status'])) && $data['order_status'] != '') {
+            $q = $q->where('order_status', '=', $data['order_status']);
         } else {
             $q = $q->where('order_status', '=', 'pending');
         }
@@ -120,11 +120,11 @@ class PurchaseOrderController extends Controller {
                 $qstring_sort_type_order = "";
             }
         }
-        if (Auth::user()->role_id < 2) {
-            if ((isset($data['order_status'])) && $data['order_status'] != '') {
-                $q = $q->where('order_status', '=', $data['order_status']);
-            }
-        }
+        // if (Auth::user()->role_id < 2) {
+        //     if ((isset($data['order_status'])) && $data['order_status'] != '') {
+        //         $q = $q->where('order_status', '=', $data['order_status']);
+        //     }
+        // }
 
 
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
