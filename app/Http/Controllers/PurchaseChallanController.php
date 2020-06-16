@@ -566,6 +566,7 @@ class PurchaseChallanController extends Controller {
 
         /* inventory code */
         $product_categories = PurchaseProducts::select('product_category_id')->where('purchase_order_id', $id)->where('order_type', 'purchase_challan')->get();
+        $product_category_ids = [];
         foreach ($product_categories as $product_categoriy) {
             $product_category_ids[] = $product_categoriy->product_category_id;
         }
