@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TerritoryExport;
+use App\Exports\LoadedByExport;
 use App\Exports\CustomerExport;
 use App\Imports\CustomerImport;
 use App\Http\Requests;
@@ -1146,12 +1147,14 @@ class WelcomeController extends Controller {
 
     public function excel_export_loaded_by() {
 
-        $all_loaded_bies = LoadedBy::orderBy('created_at', 'DESC')->get();
-        Excel::create('Loaded By List', function($excel) use($all_loaded_bies) {
-            $excel->sheet('Loaded By List', function($sheet) use($all_loaded_bies) {
-                $sheet->loadView('excelView.loaded_by', array('all_loaded_bies' => $all_loaded_bies));
-            });
-        })->export('xls');
+        return Excel::download(new LoadedByExport, 'LoadedBy List.xls');
+
+        // $all_loaded_bies = LoadedBy::orderBy('created_at', 'DESC')->get();
+        // Excel::create('Loaded By List', function($excel) use($all_loaded_bies) {
+        //     $excel->sheet('Loaded By List', function($sheet) use($all_loaded_bies) {
+        //         $sheet->loadView('excelView.loaded_by', array('all_loaded_bies' => $all_loaded_bies));
+        //     });
+        // })->export('xls');
     }
 
     /**

@@ -15,9 +15,13 @@
                     <a href="{{URL::action('LoadByController@create')}}"  title="Add Loaded By" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Loaded By
                     </a>
-                    <a href="{{url('excel_export_loaded_by')}}" class="btn btn-primary pull-right">
-                        <i class="fa fa-plus-circle fa-lg"></i> Download List
-                    </a>
+                    <form method="GET" action="{{url('excel_export_loaded_by')}}">
+                        <input type="hidden" name="search" id="search" value="{{Request::get('search')}}">
+                        <input type="submit" name="export_data" value="Download List" class="btn btn-primary pull-right" >
+                        <!-- <a href="{{url('excel_export_loaded_by')}}" class="btn btn-primary pull-right">
+                            <i class="fa fa-plus-circle fa-lg"></i> Download List
+                        </a> -->
+                    </form>
                     @endif
                     <form method="GET" id="searchCustomerForm">
                         <div class="input-group col-md-3 pull-right">
