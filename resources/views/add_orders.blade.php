@@ -459,7 +459,8 @@
                             <div>
                                 <input type="hidden" name="total_products" id="total_products" value="{{isset($existig_product)?$existig_product:10}}">
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_order">Submit</button>
-                                <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>
+                                <!-- <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a> -->
+                                <a href="<?php if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){ echo "/dashboard";}else{ echo "/orders";}?>" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>
