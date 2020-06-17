@@ -20,9 +20,13 @@
                     <a href="{{url('performance/labours/create')}}" class="btn btn-primary pull-right">
                         <i class="fa fa-plus-circle fa-lg"></i> Add Labour
                     </a>
-                    <a href="{{url('excel_export_labours')}}" class="btn btn-primary pull-right">
-                        <i class="fa fa-plus-circle fa-lg"></i> Download List
+                    <form method="GET" action="{{url('excel_export_labours')}}">
+                        <input type="hidden" name="search" id="search" value="{{Request::get('search')}}">
+                        <input type="submit" name="export_data" value="Download List" class="btn btn-primary pull-right" >
+                        <!-- <a href="{{url('excel_export_labours')}}" class="btn btn-primary pull-right">
+                            <i class="fa fa-plus-circle fa-lg"></i> Download List -->
                     </a>
+                    </form>
                     @endif
                    
                     <form method="GET" id="searchCustomerForm">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TerritoryExport;
+use App\Exports\LoboursExport;
 use App\Exports\LoadedByExport;
 use App\Exports\CustomerExport;
 use App\Imports\CustomerImport;
@@ -1125,12 +1126,14 @@ class WelcomeController extends Controller {
 
     public function excel_export_labours() {
 
-        $alllabours = \App\Labour::get();
-        Excel::create('Labours List', function($excel) use($alllabours) {
-            $excel->sheet('Labours List', function($sheet) use($alllabours) {
-                $sheet->loadView('excelView.labours', array('alllabours' => $alllabours));
-            });
-        })->export('xls');
+        return Excel::download(new LoboursExport, 'Labours List.xls');
+
+        // $alllabours = \App\Labour::get();
+        // Excel::create('Labours List', function($excel) use($alllabours) {
+        //     $excel->sheet('Labours List', function($sheet) use($alllabours) {
+        //         $sheet->loadView('excelView.labours', array('alllabours' => $alllabours));
+        //     });
+        // })->export('xls');
     }
 
     public function excel_export_territory() {
