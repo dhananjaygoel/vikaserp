@@ -79,6 +79,7 @@
                 $i = 1;
                 $total_qty = 0;
                 $total_price = 0;
+                $final_total_amt = 0;
             ?>
                 @foreach($purchase_challan['all_purchase_products'] as $prod)
                 <tbody>
@@ -87,12 +88,13 @@
                         <td>{{ $prod['purchase_product_details']->alias_name }}</td>
                         <td>{{ $prod->actual_pieces}}</td>
                         <td>{{ $prod->quantity }}</td>
-                        <td>{{ $prod->price }}</td>
-                        <td>{{ $prod->price * $prod->quantity }}</td>
+                        <td>{{ ((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) }}</td>
+                        <td>{{ ((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) * $prod->quantity }}</td>
                     </tr>
                 </tbody>
-                <?php
-                $total_price = $total_price + ($prod->price * $prod->quantity);
+                <?php 
+                $total_price = (float)$total_price + (float)(((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) * $prod->quantity);
+                $final_total_amt += (float)$total_price;
                 ?>
                 @endforeach
         </table>
@@ -110,7 +112,7 @@
                             <tbody>
                                 <tr>
                                     <td class="lable">Total</td>
-                                    <td class="total-count">{{ $total_price }}</td>
+                                    <td class="total-count">{{ round($final_total_amt, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Freight</td>
@@ -125,7 +127,10 @@
                                 <tr>
                                     <td class="lable">Total</td>
                                     <td class="total-count">
-                                    {{ round($total_price + $purchase_challan->freight + $purchase_challan->discount, 2) }}</td>
+                                    <?php 
+                                        $total = $final_total_amt + $purchase_challan->freight + $purchase_challan->discount;
+                                    ?>
+                                    {{ round($final_total_amt + $purchase_challan->freight + $purchase_challan->discount, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">GST</td>
@@ -135,12 +140,16 @@
                                 <tr>
                                     <td class="lable">Round Off</td>
                                     <td class="total-count">
-                                    {{ ($purchase_challan->round_off != "") ? round($purchase_challan->round_off,2) : 0 }}</td>
+                                    <?php 
+                                        $vat = ($total * (($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0) / 100 );
+                                        $roundoff = $vat + $total;
+                                    ?>
+                                    {{ round($roundoff,2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">GT</td>
                                     <td class="total-count">
-                                    {{ round($purchase_challan->grand_total, 2)}}</td>
+                                    {{ round($roundoff,2) }}</td>
                                 </tr>
                             </tbody>
                         </table>

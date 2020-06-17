@@ -141,11 +141,11 @@
                                         <td> {{$product_data['unit']->unit_name}} </td>
                                         <td> {{isset($product_data->length)?$product_data->length:'0'}} </td>
                                         <td> {{$product_data->present_shipping}}</td>
-                                        <td> {{$product_data->price}}</td>
+                                        <td> {{((isset($product_data->price) && $product_data->price != '0.00') ? $product_data->price : $product_data['purchase_product_details']->product_category['price'])}}</td>
                                         <td>
                                             <?php
                                             $total_quantity += $product_data->quantity;
-                                            $amount = $product_data->quantity * $product_data->price;
+                                            $amount = $product_data->quantity * ((isset($product_data->price) && $product_data->price != '0.00') ? $product_data->price : $product_data['purchase_product_details']->product_category['price']);
                                             echo $amount;
                                             $total_amount = $total_amount + $amount;
                                             ?>
