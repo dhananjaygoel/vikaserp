@@ -54,10 +54,10 @@
             @endif
             
             <td style="height:16px;">{{(isset($order['all_purchase_products'][0]['purchase_product_details']->alias_name)?$order['all_purchase_products'][0]['purchase_product_details']->alias_name:"")}}</td>
-            <td style="height:16px;">{{$order['all_purchase_products'][0]->quantity}}</td>
+            <td style="height:16px;">{{(isset($order['all_purchase_products'][0]->quantity)?$order['all_purchase_products'][0]->quantity:"")}}</td>
             <td style="height:16px;">
                 @foreach($units as $unit)
-                {{($unit->id == $order['all_purchase_products'][0]->unit_id)? $unit->unit_name:''}}
+                {{($unit->id == (isset($order['all_purchase_products'][0]->unit_id)?$order['all_purchase_products'][0]->unit_id:0))? $unit->unit_name:''}}
                 @endforeach
             </td>
             <td style="height:16px;">{{$order['all_purchase_products'][0]->price}}</td>
