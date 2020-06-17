@@ -306,10 +306,12 @@ class ProductsubController extends Controller {
             foreach($det as $key=>$item_id){
                 // dd($item_id->Name);
                 if(isset($item_id->Name) && $item_id->Name != ''){
-                    App\ProductSubCategory::where('alias_name',$item_id->Name)->update(['quickbook_item_id'=>$item_id->Id]);
-                    echo $sr.".\n";
-                    echo nl2br($item_id->Id."\n");
-                    $sr++;
+                    $update_item = App\ProductSubCategory::where('alias_name',$item_id->Name)->update(['quickbook_item_id'=>$item_id->Id]);
+                    if($update_item == 0){
+                        echo $sr.".\n";
+                        echo nl2br($item_id->Id." -- ".$item_id->Name."\n");
+                        $sr++;
+                    }
                 }
             }
         }
@@ -337,11 +339,12 @@ class ProductsubController extends Controller {
             foreach($det as $key=>$item_id){
                 // dd($item_id->Name);
                 if(isset($item_id->Name) && $item_id->Name != ''){
-                    App\ProductSubCategory::where('alias_name',$item_id->Name)->update(['quickbook_a_item_id'=>$item_id->Id]);
-                    // $count++;
-                    echo $sr.".\n";
-                    echo nl2br($item_id->Id."\n");
-                    $sr++;
+                    $update_item = App\ProductSubCategory::where('alias_name',$item_id->Name)->update(['quickbook_a_item_id'=>$item_id->Id]);
+                    if($update_item == 0){
+                        echo $sr.".\n";
+                        echo nl2br($item_id->Id." -- ".$item_id->Name."\n");
+                        $sr++;
+                    }
                 }
             }
         }
