@@ -1214,8 +1214,8 @@ class DeliveryChallanController extends Controller {
                     $state_value = $local->state_name;
                     $city_value = $state->area_name;
                 }else{
-                    $state_value = 'MH';
-                    $city_value = 'NA';
+                    $state_value = 'Maharashtra';
+                    $city_value = 'Pune';
                 }
 
                 if($hsn){
@@ -1300,11 +1300,13 @@ class DeliveryChallanController extends Controller {
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;
+                $owner_name = $update_delivery_challan->customer->owner_name;
             }
             else
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_customer_id;
                 $tally_name = $update_delivery_challan->customer->tally_name;
+                $owner_name = $update_delivery_challan->customer->owner_name;
             }
             if($update_delivery_challan->freight>0){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
@@ -1418,7 +1420,7 @@ class DeliveryChallanController extends Controller {
             } */
 
 
-             $custom_query = "select * from Customer where DisplayName='".$update_delivery_challan->customer->tally_name."'";
+             $custom_query = "select * from Customer where CompanyName='".$update_delivery_challan->customer->company_name."'";
             //  $custom_query = "select * from Customer maxresults 2";
              //echo $custom_query;
             $customer_details = $dataService->Query($custom_query);
@@ -1435,7 +1437,7 @@ class DeliveryChallanController extends Controller {
             $theResourceObj = Invoice::create([
                 "Line" => $line,
                 "CustomerRef" => [
-                    "name" => $tally_name,
+                    "name" => $owner_name,
                     "value" => $quickbook_customer_id
                 ],
                 "ShipAddr" => [
