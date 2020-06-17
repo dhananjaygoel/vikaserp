@@ -1123,7 +1123,7 @@ function numbersOnly(Sender, evt, isFloat, isNegative) {
 
 function validateAlpha(id){
     var textInput = id.value;    
-    textInput = textInput.replace(/[^A-Za-z]/g, "");    
+    textInput = textInput.replace(/[^A-Za-z\s-]/g, "");
     document.getElementById(id.id).value = textInput;
 } 
 
