@@ -53,7 +53,7 @@
             <td style="height:16px;">{{$order->location_difference}}</td>
             @endif
             
-            <td style="height:16px;">{{$order['all_purchase_products'][0]['purchase_product_details']->alias_name}}</td>
+            <td style="height:16px;">{{$order['all_purchase_products']->purchase_product_details->alias_name}}</td>
             <td style="height:16px;">{{$order['all_purchase_products'][0]->quantity}}</td>
             <td style="height:16px;">
                 @foreach($units as $unit)
