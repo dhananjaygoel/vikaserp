@@ -1612,9 +1612,9 @@ class DeliveryOrderController extends Controller {
                                 $profile_vat_amount = (isset($gst_det->cgst)?$gst_det->cgst:0) + (isset($gst_det->sgst)?$gst_det->sgst:0);
                             }
                             else{
-                                $profile_igst = $product_price * (isset($gst_det->igst)?$gst_det->igst:'')/100;
+                                $profile_igst = $product_price * (isset($gst_det->igst)?$gst_det->igst:0)/100;
                                 $profile_vat = round($profile_igst,2);
-                                $profile_vat_amount = isset($gst_det->igst)?$gst_det->igst:'';
+                                $profile_vat_amount = isset($gst_det->igst)?$gst_det->igst:0;
                             }
                         }
                         else{

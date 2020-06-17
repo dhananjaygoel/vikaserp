@@ -229,15 +229,15 @@
                                             @foreach($challan['delivery_challan_products'] as $product)
                                             <?php //$amnt = ($prod->quantity * $prod->price); $price = $price + $amnt; ?>
                                             <?php
-                                                $amount = (float)$product->actual_quantity * (float)$product->price;
-                                                $total_amount = round($amount + $total_amount, 2);
                                                 $productsub = \App\ProductSubCategory::where('id',$product['product_category_id'])->first();
                                                 $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
                                                 $sgst = 0;
                                                 $cgst = 0;
                                                 $igst = 0;
-                                                $rate = (float)$product->price;
+                                                $rate = (float)((isset($product->price) && $product->price != '0.00') ? $product->price : $product['product_sub_category']->product_category['price']);
                                                 $is_gst = false;
+                                                $amount = (float)$product->actual_quantity * (float)$rate;
+                                                $total_amount = round($amount + $total_amount, 2);
                                                 if(isset($product->vat_percentage) && $product->vat_percentage > 0){
                                                     if($product_cat->hsn_code){
                                                         

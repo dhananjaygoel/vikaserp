@@ -181,7 +181,7 @@
 
 
                                         <td class="col-md-1">
-                                            <div class="form-group">{{isset($product->price)?$product->price:''}}</div>
+                                            <div class="form-group">{{(isset($product->price) && $product->price != '0.00')?$product->price:$product['order_product_details']->product_category['price']}}</div>
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group">

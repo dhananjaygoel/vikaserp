@@ -151,7 +151,7 @@
                                     $cgst = (float)$gst_det->cgst;
                                 }
                                 else{
-                                    $igst = (float)$gst_det->igst;
+                                    $igst = (float)(isset($gst_det->igst)?$gst_det->igst:0);
                                 }
                             }
                         }
@@ -169,7 +169,7 @@
                         @else
                             <td>{{$gst}}</td>
                         @endif
-                        <td><?php echo $rate = (float)$prod->price; ?></td>
+                        <td><?php echo $rate = (float)(isset($prod->price) && $prod->price !=0) ? $prod->price : $prod['order_product_all_details']->product_category['price']; ?></td>
                         <td><?php $total_price = (float)$rate * (float)$prod->actual_quantity; 
                             $final_total_amt += (float)$total_price;
                             ?>

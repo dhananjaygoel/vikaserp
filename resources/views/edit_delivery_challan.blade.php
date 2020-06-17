@@ -142,7 +142,7 @@
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price({{$key}})">
+                                                    <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{(isset($product->price) && $product->price != '0.00')?$product->price:$product['order_product_details']->product_category['price']}}" name="product[{{$key}}][price]" placeholder="Price" onkeypress=" return numbersOnly(this, event, true, true);" onblur="fetch_price({{$key}})">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">

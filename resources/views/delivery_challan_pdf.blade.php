@@ -141,7 +141,7 @@
                                     $cgst = (float)$gst_det->cgst;
                                 }
                                 else{
-                                    $igst = (float)$gst_det->igst;
+                                    $igst = (float)(isset($gst_det->igst)?$gst_det->igst:0);
                                 }
                             }
                         }
