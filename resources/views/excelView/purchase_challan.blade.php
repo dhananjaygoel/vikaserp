@@ -60,9 +60,9 @@
                 {{($unit->id == (isset($order['all_purchase_products'][0]->unit_id)?$order['all_purchase_products'][0]->unit_id:0))? $unit->unit_name:''}}
                 @endforeach
             </td>
-            <td style="height:16px;">{{$order['all_purchase_products'][0]->price}}</td>
+            <td style="height:16px;">{{(isset($order['all_purchase_products'][0]->price)?$order['all_purchase_products'][0]->price:"")}}</td>
             <td style="height:16px;">{{$order->vat_percentage}}</td>
-            <td style="height:16px;">{{$order['all_purchase_products'][0]->remarks}}</td>
+            <td style="height:16px;">{{(isset($order['all_purchase_products'][0]->remarks)?$order['all_purchase_products'][0]->remarks:"")}}</td>
             <?php $product = isset($order['all_purchase_products']) && isset($order['all_purchase_products'][0]) ? $order['all_purchase_products'][0]['all_purchase_products'] : ''; ?>
 <!--            @if(isset($product) && $product!='' && $product->order_type =='purchase_advice')
             <td>{{$product->alias_name}}</td>
