@@ -23,13 +23,15 @@ class InquiryExport implements FromView, ShouldAutoSize
     public function view(): View
     {
         $inquiry = Input::all();
-        if ($inquiry['inquiry_status'] == 'Pending') {
+        $inquiry_status = '';
+        $is_approval = '';
+        if ($inquiry['inquiry_status'] == 'Pending' || $inquiry['inquiry_status'] == 'pending') {
             $inquiry_status = 'pending';
             $is_approval = 'yes';
-        } elseif ($inquiry['inquiry_status'] == 'Completed') {
+        } elseif ($inquiry['inquiry_status'] == 'Completed' || $inquiry['inquiry_status'] == 'completed') {
             $inquiry_status = 'completed';
             $is_approval = 'yes';
-        } elseif ($inquiry['inquiry_status'] == 'Pending_Approval') {
+        } elseif ($inquiry['inquiry_status'] == 'Pending_Approval' || $inquiry['inquiry_status'] == 'pending_approval') {
             $inquiry_status = 'pending';
             $is_approval = 'no';
         }

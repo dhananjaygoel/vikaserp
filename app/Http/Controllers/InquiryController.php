@@ -1796,9 +1796,10 @@ class InquiryController extends Controller {
 
     public function exportinquiryBasedOnStatus() {
         $inquiry = Input::all();
+        $excel_name = '';
             if ($inquiry['inquiry_status'] == 'Pending') {
                 $excel_name = '-Pending-' . date('dmyhis');
-            } elseif ($inquiry['inquiry_status'] == 'Completed') {
+            } elseif ($inquiry['inquiry_status'] == 'completed' || $inquiry['inquiry_status'] == 'Completed') {
                 $excel_name = '-Completed-' . date('dmyhis');
             } elseif ($inquiry['inquiry_status'] == 'Pending_Approval') {
                 $excel_name = '-Pending_Approval-' . date('dmyhis');
