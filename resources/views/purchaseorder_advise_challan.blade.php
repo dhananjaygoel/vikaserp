@@ -64,18 +64,18 @@
                             <input type="hidden" name="created_by" value="{{$purchase_advise->created_by }}"/>
                         </label>
                     </div>                    
-                    @if($purchase_advise['purchase_order'][0]->discount > 0)
+                    @if((isset($purchase_advise['purchase_order'][0]->discount)) && $purchase_advise['purchase_order'][0]->discount > 0)
                         <div class="form-group">
                             <label><b>Discount/Premium :</b> </label>
-                            {{$purchase_advise['purchase_order'][0]->discount_type}}                             
+                            {{isset($purchase_advise['purchase_order'][0]->discount_type)?$purchase_advise['purchase_order'][0]->discount_type:''}}
                         </div>
                         <div class="form-group">                                    
                                 <label><b>Fixed/Percentage :</b> </label>
-                                {{$purchase_advise['purchase_order'][0]->discount_unit}}                                
+                                {{isset($purchase_advise['purchase_order'][0]->discount_unit)?$purchase_advise['purchase_order'][0]->discount_unit:''}}
                         </div>
                         <div class="form-group">                                    
                                 <label><b>Amount :</b> </label>
-                                {{$purchase_advise['purchase_order'][0]->discount}}                                
+                                {{isset($purchase_advise['purchase_order'][0]->discount)?$purchase_advise['purchase_order'][0]->discount:''}}
                         </div>
                     @else
                         <div class="form-group">                                
