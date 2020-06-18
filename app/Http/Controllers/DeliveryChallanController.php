@@ -1257,7 +1257,7 @@ class DeliveryChallanController extends Controller {
                     $line[] = [
                         // "HSN/SAC" => $del_products->hsn_code,
                         "Description" => $del_products->order_product_all_details->product_category->product_type->name,
-                        "Amount" => $del_products->quantity * $del_products->price,
+                        "Amount" => $del_products->quantity * ((isset($del_products->price) && $del_products->price != '0.00') ? $del_products->price : $del_products->order_product_all_details->product_category->price),
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
@@ -1265,7 +1265,7 @@ class DeliveryChallanController extends Controller {
                                 "value" => $quickbook_item_id
                             ],
                             // "UQCId" => $del_products->unit_id,
-                            "UnitPrice" => $del_products->price,
+                            "UnitPrice" => ((isset($del_products->price) && $del_products->price != '0.00') ? $del_products->price : $del_products->order_product_all_details->product_category->price),
                             "Qty" => $del_products->quantity,
                             "TaxCodeRef" => [
                                 "value" => $TaxCodeRef
@@ -1277,7 +1277,7 @@ class DeliveryChallanController extends Controller {
                     $line[] = [
                         // "HSN/SAC" => $del_products->hsn_code,
                         "Description" => $del_products->order_product_all_details->product_category->product_type->name,
-                        "Amount" => $del_products->quantity * $del_products->price,
+                        "Amount" => $del_products->quantity * ((isset($del_products->price) && $del_products->price != '0.00') ? $del_products->price : $del_products->order_product_all_details->product_category->price),
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
@@ -1285,7 +1285,7 @@ class DeliveryChallanController extends Controller {
                                 "value" => $quickbook_item_id
                             ],
                             // "UQCId" => $del_products->unit_id,
-                            "UnitPrice" => $del_products->price,
+                            "UnitPrice" => ((isset($del_products->price) && $del_products->price != '0.00') ? $del_products->price : $del_products->order_product_all_details->product_category->price),
                             "Qty" => $del_products->quantity,
                             "TaxCodeRef" => [
                                 "value" => 9
