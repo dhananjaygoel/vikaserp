@@ -122,6 +122,8 @@
                                             $lb_arr = [];
                                             $lbr_arr = [];
                                             $total_gst_amount = 0;
+                                            $freight_vat = 0;
+                                            $discount_vat = 0;
                                             ?>
                                             @foreach($daybook['all_purchase_products'] as $total)
                                             <?php
@@ -194,9 +196,14 @@
                                                 
                                                     if(isset($daybook->vat_percentage) && !empty($daybook->vat_percentage)){
                                                         $total_gst_amount = ((float)$total_amount * (float)$daybook->vat_percentage) / 100;
+                                                        if((isset($purchase_challan->freight) && $purchase_challan->freight != '')){
+                                                            $freight_vat = $purchase_challan->freight * $purchase_challan->vat_percentage / 100;
+                                                        }else if((isset($purchase_challan->discount) && $purchase_challan->discount != '')){
+                                                            $discount_vat = $purchase_challan->discount * $purchase_challan->vat_percentage / 100;
+                                                        }
                                                     }
                                                     
-                                                    $grand_total = $total_gst_amount + $total_amount + (isset($daybook->freight)?$daybook->freight:0) + (isset($daybook->discount)?$daybook->discount:0) ;
+                                                    $grand_total = $total_gst_amount + $total_amount + (isset($daybook->freight)?$daybook->freight:0) + (isset($daybook->discount)?$daybook->discount:0) + $freight_vat + $discount_vat ;
                                                 ?>
                                                 <td>{{ round($grand_total,2) }}</td>
                                                 <td>{{ $daybook->bill_number }}</td>
