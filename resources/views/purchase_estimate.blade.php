@@ -77,7 +77,7 @@
                                     <div class="table-responsive">
                                         <form action="{{url('delete_all_daybook_estimate')}}" method="POST">
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                            <table id="table-example" class="table table-hover">
+                                            <table id="table-example" class="table table-hover" style="table-layout: fixed;">
                                                 <thead>
                                                 <?php $i = 1; ?>
                                                 <tr>
@@ -112,7 +112,7 @@
                                                     @endif
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody style="word-wrap:break-word;">
 
                                                 @foreach($purchase_daybook as $daybook)
                                                     <?php
