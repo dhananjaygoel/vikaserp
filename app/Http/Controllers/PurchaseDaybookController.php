@@ -49,6 +49,7 @@ class PurchaseDaybookController extends Controller {
                         ->where('order_status', 'completed')
                         ->where('updated_at', 'like', $date1 . '%')
                          ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                         ->orWhere('vat_percentage','>','0')
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
             } else {
@@ -56,6 +57,7 @@ class PurchaseDaybookController extends Controller {
                         ->where('order_status', 'completed')
                         ->where('updated_at', '>=', $date1)
                        ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                       ->orWhere('vat_percentage','>','0')
                         ->where('updated_at', '<=', $date2.' 23:59:59')                        
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
@@ -64,6 +66,7 @@ class PurchaseDaybookController extends Controller {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                         ->where('order_status', 'completed')
                         ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                        ->orWhere('vat_percentage','>','0')
                         ->orderBy('updated_at', 'desc')
                         ->Paginate(20);
         }        
@@ -92,6 +95,7 @@ class PurchaseDaybookController extends Controller {
                     ->where('order_status', 'completed')
                     ->where('updated_at', 'like', $date1 . '%')
                     ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->orWhere('vat_percentage','')
                     ->orderBy('updated_at', 'desc')
                     ->Paginate(20);
             } else {
@@ -100,6 +104,7 @@ class PurchaseDaybookController extends Controller {
                     ->where('order_status', 'completed')
                     ->where('updated_at', '>=', $date1)
                     ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->orWhere('vat_percentage','')
                     ->where('updated_at', '<=', $date2.' 23:59:59')
                     ->orderBy('updated_at', 'desc')
                     ->Paginate(20);
@@ -109,6 +114,7 @@ class PurchaseDaybookController extends Controller {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours','all_purchase_products.purchase_product_details')
                 ->where('order_status', 'completed')
                 ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                ->orWhere('vat_percentage','')
                 ->orderBy('updated_at', 'desc')
                 ->Paginate(20);
         }
