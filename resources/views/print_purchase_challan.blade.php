@@ -144,12 +144,14 @@
                                     <td class="total-count">
                                     <?php 
                                         if((isset($purchase_challan->vat_percentage) && $purchase_challan->vat_percentage != '')){
-                                            if((isset($purchase_challan->freight) && $purchase_challan->freight != '')){
+                                            if((isset($purchase_challan->freight) && $purchase_challan->freight != '0.00')){
                                                 $freight_vat = $purchase_challan->freight * $purchase_challan->vat_percentage / 100;
-                                            }else if((isset($purchase_challan->discount) && $purchase_challan->discount != '')){
+                                            }
+                                            if((isset($purchase_challan->discount) && $purchase_challan->discount != '0.00')){
                                                 $discount_vat = $purchase_challan->discount * $purchase_challan->vat_percentage / 100;
                                             }
                                         }
+                                        
                                         $vat = ($total * (($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0) / 100 );
                                         $roundoff = $vat + $total + $freight_vat + $discount_vat;
                                     ?>

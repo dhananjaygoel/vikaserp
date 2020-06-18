@@ -198,7 +198,8 @@
                                                         $total_gst_amount = ((float)$total_amount * (float)$daybook->vat_percentage) / 100;
                                                         if((isset($purchase_challan->freight) && $purchase_challan->freight != '')){
                                                             $freight_vat = $purchase_challan->freight * $purchase_challan->vat_percentage / 100;
-                                                        }else if((isset($purchase_challan->discount) && $purchase_challan->discount != '')){
+                                                        }
+                                                        if((isset($purchase_challan->discount) && $purchase_challan->discount != '')){
                                                             $discount_vat = $purchase_challan->discount * $purchase_challan->vat_percentage / 100;
                                                         }
                                                     }
