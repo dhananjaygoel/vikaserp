@@ -226,7 +226,7 @@
                     <div class="form-group">
                         <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
                     </div>
-                    @if(isset($purchase_advise['purchase_order']) && $purchase_advise['purchase_order'][0]->order_for == 0)
+                    @if(isset($purchase_advise['purchase_order'][0]->order_for) && $purchase_advise['purchase_order'][0]->order_for == 0)
                         <div class="form-group">
                             <label for="loadedby"><b class="challan">Unloaded By</b><span class="mandatory">*</span></label>
     <!--                        <input id="loadedby" class="form-control" placeholder="Unloaded By" name="unloaded_by" value="1" type="hidden">-->
