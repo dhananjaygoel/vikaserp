@@ -1555,11 +1555,12 @@ class OrderController extends Controller {
             return redirect('orders')->with('error', 'You do not have permission.');
         }
         $sms_flag = 0;
+        $product_category_ids = [];
         $formFields = Input::get('formData');
         parse_str($formFields, $input);
-        $order_id = $input['order_id'];
-        $reason_type = $input['reason_type'];
-        $reason = $input['reason'];
+        $order_id = isset($input['order_id'])?$input['order_id']:'';
+        $reason_type = isset($input['reason_type'])?$input['reason_type']:'';
+        $reason = isset($input['reason'])?$input['reason']:'';
 
         /* inventory code */
 //        $calc = new WelcomeController();
@@ -1574,9 +1575,11 @@ class OrderController extends Controller {
         $order = Order::with('all_order_products.order_product_details', 'all_order_products.unit', 'customer')->find($order_id);
 
         /* check for vat/gst items */
-        foreach ($order['all_order_products'] as $product_data) {
-            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] <> '0.00') {
-                $sms_flag = 1;
+        if(isset($order['all_order_products'])){
+            foreach ($order['all_order_products'] as $product_data) {
+                if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] <> '0.00') {
+                    $sms_flag = 1;
+                }
             }
         }
         /**/

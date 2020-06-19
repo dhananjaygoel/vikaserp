@@ -576,10 +576,10 @@
                                         <td>{{($order["customer"]->tally_name != "")? $order["customer"]->tally_name : $order["customer"]->owner_name}}</td>
                                         <td>{{ round($order['total_quantity'], 2) }}</td>
                                         <td>{{$order['customer']['phone_number1']}}</td>
-                                        @if($order['delivery_location']['area_name'] !="")
+                                        @if(isset($order['delivery_location']['area_name']) && $order['delivery_location']['area_name'] != "")
                                         <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
-                                        @elseif($order['delivery_location']['area_name'] =="")
-                                        <td class="text-center">{{$order['other_location']}}</td>
+                                        @elseif(isset($order['delivery_location']['area_name']) && $order['delivery_location']['area_name'] == "")
+                                        <td class="text-center">{{isset($order['other_location'])?$order['other_location']:''}}</td>
                                         @endif
                                         <td>
                                             <?php
