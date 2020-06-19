@@ -18,6 +18,7 @@ class PasswordController extends Controller {
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
         $this->middleware('auth');
+        $this->middleware('validIP');
     }
 
     public function getInfo() {
