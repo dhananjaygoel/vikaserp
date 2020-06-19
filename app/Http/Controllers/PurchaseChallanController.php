@@ -192,8 +192,9 @@ class PurchaseChallanController extends Controller {
 
         $challan_id = DB::getPdo()->lastInsertId();
 
-        $pr_c = PurchaseChallan::where('id','=',$challan_id)->with('purchase_order_single')->first();
-        $vat_status = ((isset($pr_c->purchase_order_single->vat_percentage) && $pr_c->purchase_order_single->vat_percentage != "") ?$pr_c->purchase_order_single->vat_percentage:0);
+        // $pr_c = PurchaseChallan::where('id','=',$challan_id)->with('purchase_order_single')->first();
+        
+        $vat_status = ((isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != "") ? $input_data['vat_percentage'] : 0 );
         if($vat_status == 0 ){
             $date_letter = 'PC/' . $current_date . "/" . $challan_id.'A';
         }
