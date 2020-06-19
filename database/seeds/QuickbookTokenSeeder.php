@@ -32,6 +32,5 @@ class QuickbookTokenSeeder extends Seeder
                         'refresh_token' => 'AB11601277570V5T7r3loCI1p08aFK5DXZjPKALGrJlHPo0JQ3'
                     )
         ));
-        dd('success');
     }
 }
