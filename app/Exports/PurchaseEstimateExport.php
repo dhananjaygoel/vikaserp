@@ -34,14 +34,24 @@ class PurchaseEstimateExport implements FromView, ShouldAutoSize
             if ($date1 == $date2) {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                     ->where('order_status', 'completed')
-                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->where(function($query) {
+                        $v = "A";
+                        $query
+                        ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                        ->orWhere('vat_percentage','');
+                    })
                     ->where('updated_at', 'like', $date1 . '%')
                     ->orderBy('updated_at', 'desc')
                     ->get();
             } else {
                 $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                     ->where('order_status', 'completed')
-                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->where(function($query) {
+                        $v = "A";
+                        $query
+                        ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                        ->orWhere('vat_percentage','');
+                    })
                     ->where('updated_at', '>=', $date1)
                     ->where('updated_at', '<=', $date2.' 23:59:59')
                     ->orderBy('updated_at', 'desc')
@@ -50,7 +60,12 @@ class PurchaseEstimateExport implements FromView, ShouldAutoSize
         } else {
             $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier.states', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
-                ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                ->where(function($query) {
+                    $v = "A";
+                    $query
+                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->orWhere('vat_percentage','');
+                })
                 ->orderBy('updated_at', 'desc')
                 ->get();
         }
