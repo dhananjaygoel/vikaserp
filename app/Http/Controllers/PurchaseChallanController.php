@@ -194,7 +194,7 @@ class PurchaseChallanController extends Controller {
 
         $pr_c = PurchaseChallan::where('id','=',$challan_id)->with('purchase_order_single')->first();
         $vat_status = ((isset($pr_c->purchase_order_single->vat_percentage) && $pr_c->purchase_order_single->vat_percentage != "") ?$pr_c->purchase_order_single->vat_percentage:0);
-        if($vat_status == 0 OR $vat_status == null){
+        if($vat_status == 0 ){
             $date_letter = 'PC/' . $current_date . "/" . $challan_id.'A';
         }
         else{
