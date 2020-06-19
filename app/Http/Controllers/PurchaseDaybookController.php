@@ -336,7 +336,12 @@ class PurchaseDaybookController extends Controller {
         $title='Purchase Daybook';
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier','challan_loaded_by','challan_labours', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
-                 ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                ->where(function($query) {
+                    $v = "P";
+                    $query
+                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->orWhere('vat_percentage','');
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
 
@@ -348,7 +353,12 @@ class PurchaseDaybookController extends Controller {
          $title='Purchase Estimate';
         $purchase_daybook = PurchaseChallan::with('purchase_advice', 'orderedby', 'supplier', 'challan_loaded_by','challan_labours', 'all_purchase_products.purchase_product_details', 'delivery_location')
                 ->where('order_status', 'completed')
-                 ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                ->where(function($query) {
+                    $v = "A";
+                    $query
+                    ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
+                    ->orWhere('vat_percentage','');
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
 
