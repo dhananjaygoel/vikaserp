@@ -39,11 +39,11 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @if($purchase_advise['purchase_order'][0]->order_for == 0)
+                                    @if(isset($purchase_advise['purchase_order'][0]->order_for) && $purchase_advise['purchase_order'][0]->order_for == 0)
                                         <tr><td><span><b>Order For: </b></span> Warehouse</td></tr>
-                                    @elseif($purchase_advise['purchase_order'][0]->order_for != 0)                                        
+                                    @elseif(isset($purchase_advise['purchase_order'][0]->order_for) && $purchase_advise['purchase_order'][0]->order_for != 0)                                        
                                         @foreach($customers as $customer)
-                                        @if($customer->id == $purchase_advise['purchase_order'][0]->order_for)
+                                        @if($customer->id == (isset($purchase_advise['purchase_order'][0]->order_for)?$purchase_advise['purchase_order'][0]->order_for:0))
                                         <tr>
                                             <td>
                                                 <span><b>Order For:</b></span>
@@ -63,24 +63,24 @@
                                         <td><span>Credit Period(Days): </span> {{$purchase_advise['supplier']->credit_period}}</td>
                                     </tr>
                                     <?php // dd($purchase_advise['purchase_order'][0]->discount); ?>
-                                    @if($purchase_advise['purchase_order'][0]->discount > 0)
+                                    @if(isset($purchase_advise['purchase_order'][0]->discount) && $purchase_advise['purchase_order'][0]->discount > 0)
                                         <tr>
                                             <td>
                                                 <span><b>Discount/Premium :</b> </span>
-                                                {{$purchase_advise['purchase_order'][0]->discount_type}}
+                                                {{isset($purchase_advise['purchase_order'][0]->discount_type) ? $purchase_advise['purchase_order'][0]->discount_type : ''}}
                                             </td>                                            
                                         </tr>
                                         <tr>
                                             <td>
                                                 <span><b>Fixed/Percentage :</b> </span>
-                                                {{$purchase_advise['purchase_order'][0]->discount_unit}}
+                                                {{isset($purchase_advise['purchase_order'][0]->discount_unit) ? $purchase_advise['purchase_order'][0]->discount_unit : ''}}
                                             </td>
                                             
                                         </tr>
                                         <tr>
                                             <td>
                                                 <span><b>Amount :</b> </span> 
-                                                {{$purchase_advise['purchase_order'][0]->discount}}
+                                                {{isset($purchase_advise['purchase_order'][0]->discount) ? $purchase_advise['purchase_order'][0]->discount : ''}}
                                             </td>
                                             
                                         </tr>
