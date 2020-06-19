@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('CronForUpdateInventory')
+        $schedule->command('daily:update_inventory')
                  ->dailyAt('19:00');
     }
 

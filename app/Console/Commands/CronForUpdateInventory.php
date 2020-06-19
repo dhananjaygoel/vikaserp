@@ -13,7 +13,7 @@ class CronForUpdateInventory extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'daily:update_inventory';
 
     /**
      * The console command description.
