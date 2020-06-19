@@ -251,6 +251,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('old-password-reset', 'APIsController@getOldPasswordReset');
     Route::resource('security', 'SecurityController');
     Route::get('dashboard', 'DashboardController@index');
+    Route::get('ip_invalid', 'DashboardController@ipvalid_dashboard');
     Route::get('home', 'DashboardController@homeredirect');
     Route::get('graph-inquiry', 'DashboardController@graph_inquiry');
     Route::post('graph-order', 'DashboardController@graph_order');

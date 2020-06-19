@@ -26,7 +26,7 @@ class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
-        $this->middleware('validIP');
+        // $this->middleware('validIP');
 
 //        if (Config::get('rollbar.send') === true) {
 //            $config = array(

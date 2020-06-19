@@ -56,7 +56,7 @@ class validIpMiddleware {
                     }
                 }
                 else{
-                    return redirect()->back()->with(['error'=>'you are not autherized.']);
+                    return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
                 }
             }
         }
