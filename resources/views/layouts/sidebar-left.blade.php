@@ -459,7 +459,8 @@
                         </a>
                     </li>
                     @endif
-                    @if(Auth::user()->role_id == 0 OR Auth::user()->role_id == 10)
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 10)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('bulk-delete') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Bulk Delete">
                         <a href="{{url('bulk-delete')}}">
                             <i class="fa fa-trash-o"></i>
@@ -467,6 +468,7 @@
                             <span class="label label-info label-circle pull-right"></span>
                         </a>
                     </li>
+                    @endif
                     @endif
                     @endif
                     @endif
