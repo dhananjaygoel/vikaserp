@@ -1040,7 +1040,7 @@ class DeliveryOrderController extends Controller {
         if(!empty($inputprodut)){
             $productids = array();
             foreach($inputprodut as $truckprod){
-                if($truckprod['actual_pieces'] >0){
+                if($truckprod['actual_pieces'] >= 0){
                     $productids[] = $truckprod['id'];
                 }
             }
@@ -1101,7 +1101,7 @@ class DeliveryOrderController extends Controller {
                                 foreach($inputprodut as $truckprod){
                                     $product_id = $truckprod['id'];
                                     $actual_pieces = $truckprod['actual_pieces'];
-                                    if($actual_pieces >0){
+                                    if($actual_pieces >= 0){
                                         if(!(in_array($product_id,$explodetruck_prodcuts))){
                                             $secproductids[] = $product_id;
                                          }
@@ -1231,7 +1231,7 @@ class DeliveryOrderController extends Controller {
         }
          $count = count((array)$products_data);
          $productlist = AllOrderProducts::where('order_id', '=', $id)
-                      ->where('actual_pieces', '>', 0)
+                      ->where('actual_pieces', '>=', 0)
                       ->where('order_type', '=', 'delivery_order')
               ->get();
          $productlistcount = $productlist->count();
@@ -1244,7 +1244,14 @@ class DeliveryOrderController extends Controller {
 
                   $sum = (float)$sum + (float)$truck->final_truck_weight;
               }
-              $final_weight = (float)$total_avg +(float)$empty_truck_weight;
+              
+            if((Auth::user()->role_id == 0 || Auth::user()->role_id == 8) && (Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 )){
+                $final_weight = Input::get('final_truck_weight_load');
+            }else if(isset($truck_weight) && $truck_weight != ''){
+                $final_weight = $truck_weight;
+            }else {
+                $final_weight = (float)$total_avg +(float)$empty_truck_weight;
+            }
                $update_delivery = DeliveryOrder::where('id',$id)->update([
                  'final_truck_weight'=>$final_weight,
               ]);
@@ -1372,15 +1379,7 @@ class DeliveryOrderController extends Controller {
          if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
             if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
                 if(!($truck_weight<$empty_truck_weight)) {
-                    // if($action ==''){
-                        return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
-                    // }
-                    // elseif($action == 'Save'){
-                    //     return Redirect::back()->with('validation_message', 'Product loaded.');
-                    // }
-                    // else{
-                    //     return Redirect::back()->with('validation_message', 'Truck loaded. Please refresh the page');
-                    // }
+                    return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
                 }
                 else{
                     return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');

@@ -3642,13 +3642,13 @@ $("button").click(function() {
     var status_form = 0;
     if(fired_button == 'Save' + i) {
             // alert(button_id);
-            if ($("#actual_pieces_" + i).val() == "" || $("#actual_pieces_" + i).val() == 0) {
+            if ($("#actual_pieces_" + i).val() == "" || $("#actual_pieces_" + i).val() < 0) {
                 $('#actual_pieces_' + i).addClass('error_validation');
                 status_form = 1;
             } else {
                 $('#actual_pieces_' + i).removeClass('error_validation');
             }
-            if ($("#average_weight_" + i).val() == "" || $("#average_weight_" + i).val() == 0) {
+            if ($("#average_weight_" + i).val() == "" || $("#average_weight_" + i).val() < 0) {
                 $('#average_weight_' + i).addClass('error_validation');
                 status_form = 1;
             } else {
