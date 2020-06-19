@@ -80,6 +80,9 @@
                                             <table id="table-example" class="table table-hover" style="table-layout: fixed;">
                                                 <thead>
                                                 <?php $i = 1; ?>
+                                                <?php
+                                                    $k = ($purchase_daybook->currentPage() - 1 ) * $purchase_daybook->perPage() + 1;
+                                                ?>
                                                 <tr>
                                                     <th class="cb">
                                                         @if(Auth::user()->role_id == 0)
@@ -140,7 +143,7 @@
                                                             @if(Auth::user()->role_id == 0)
                                                                 <input type="checkbox" name="daybook[]" id="daybook[]" value="{{ $daybook->id }}" />
                                                             @endif
-                                                            <span class="cbt">{{ $i++ }}</span>
+                                                            <span class="cbt">{{ $k++ }}</span>
                                                         </td>
 
                                                         <td>{{ date("m-d-Y", strtotime($daybook->updated_at)) }}</td>
