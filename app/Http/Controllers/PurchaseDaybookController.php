@@ -340,7 +340,7 @@ class PurchaseDaybookController extends Controller {
                     $v = "P";
                     $query
                     ->whereRaw('SUBSTRING(serial_number, -1)="'.$v.'"')
-                    ->orWhere('vat_percentage','');
+                    ->orWhere('vat_percentage','>','0');
                 })
                 ->orderBy('created_at', 'desc')
                 ->get();
