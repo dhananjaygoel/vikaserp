@@ -580,6 +580,8 @@
                                         <td class="text-center">{{$order['delivery_location']['area_name']}}</td>
                                         @elseif(isset($order['delivery_location']['area_name']) && $order['delivery_location']['area_name'] == "")
                                         <td class="text-center">{{isset($order['other_location'])?$order['other_location']:''}}</td>
+                                        @else
+                                        <td class="text-center"></td>
                                         @endif
                                         <td>
                                             <?php
