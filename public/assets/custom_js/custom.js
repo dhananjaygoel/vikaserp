@@ -2786,7 +2786,7 @@ $("#search_text").autocomplete({
 //        at: "left top"
     },
     source: function (request, response) {
-        $("#search_text").addClass('loadinggif');
+        // $("#search_text").addClass('loadinggif');
         $.ajax({
             url: baseurl + '/fetch_product_name',
             data: {"term": request.term},
