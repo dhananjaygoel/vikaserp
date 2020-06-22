@@ -291,7 +291,7 @@ class OrderController extends Controller {
                     $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS == true) {
+                    if (SEND_SMS === true) {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
