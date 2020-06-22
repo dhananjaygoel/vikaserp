@@ -47,6 +47,7 @@
                                         </td>
                                     </tr>
                                     @endif
+                                    @if(Auth::user()->role_id == 0)
                                     <tr>
                                         <td><span>Order For:</span>
                                             @if($delivery_data['customer']->owner_name != "" && $delivery_data['customer']->tally_name != "")
@@ -57,6 +58,7 @@
                                         </td>
                                     </tr>                                    
                                     <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
+                                    @endif
                                     <tr>
                                         <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
                                     </tr>
@@ -65,9 +67,11 @@
                                             {{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
                                         </td>
                                     </tr>
+                                    @if(Auth::user()->role_id == 0)
                                     <tr>
                                         <td><span>Mobile Number: </span>{{$delivery_data['customer']->phone_number1}}</td>
                                     </tr>
+                                    @endif
                                     <tr>
                                         <td>
                                             <span>Delivery Location: </span>
