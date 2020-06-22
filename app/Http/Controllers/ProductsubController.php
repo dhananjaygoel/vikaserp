@@ -882,6 +882,7 @@ class ProductsubController extends Controller {
 
     public function fetch_product_size() {
         $term = '%' . Input::get('term') . '%';
+        $data_array = [];
         $product = ProductSubCategory::where('size', 'like', $term)
                 ->orWhere('alias_name', 'like', $term)->orderBy('size', 'desc')->orderBy('alias_name', 'desc')
                 ->get();
@@ -903,6 +904,7 @@ class ProductsubController extends Controller {
 
     public function fetch_product_name() {
         $term = '%' . Input::get('term') . '%';
+        $data_array = [];
         $product = ProductCategory::where('product_category_name', 'like', $term)->get();
         if (count((array)$product) > 0) {
             foreach ($product as $prod) {
