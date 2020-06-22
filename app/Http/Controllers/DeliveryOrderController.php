@@ -555,7 +555,7 @@ class DeliveryOrderController extends Controller {
                         ->create("whatsapp:".$phone_number,
                             [
                                 "body" => $str,
-                                "from" => "whatsapp:+14155238886"
+                                "from" => "whatsapp:+13344012472"
                             ]
                         );
                     }catch(\Exception $e){
@@ -1985,7 +1985,7 @@ class DeliveryOrderController extends Controller {
                             ->create("whatsapp:".$phone_number,
                                 [
                                     "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
