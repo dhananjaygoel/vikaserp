@@ -616,7 +616,7 @@
                 </div>
                 <?php }}?>
                 <div class="form-group">
-                    <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
+                    <input type="button" value="Save" id="submit_supervisor" onclick="loaded_assign()" class="btn btn-sm btn-primary">
 
                 </div>
 
@@ -708,7 +708,7 @@
                 </div>
                 <?php }}?>
                 <div class="form-group">
-                    <input type="button" value="Save" id="submit_3" onclick="loaded_assign1()" class="btn btn-sm btn-primary">
+                    <input type="button" value="Save" id="submit_delboy" onclick="loaded_assign1()" class="btn btn-sm btn-primary">
 
                 </div>
 

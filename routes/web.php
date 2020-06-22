@@ -308,6 +308,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('save_empty_truck', 'DeliveryOrderController@save_empty_truck');
     Route::get('save_truck_weight', 'DeliveryOrderController@save_truck_weight');
     Route::post('loaded_assign', 'OrderController@loaded_assign');
+    Route::get('load_notification', 'OrderController@load_notification');
+    Route::get('read_notification', 'OrderController@read_notification');
+    Route::get('supervisor_count', 'OrderController@supervisor_count');
     Route::post('loaded_assign1', 'OrderController@loaded_assign1');
     Route::get('del_boy_reload', 'DeliveryOrderController@del_boy_reload');
     Route::get('supervisor_reload', 'DeliveryOrderController@supervisor_reload');

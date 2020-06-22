@@ -3858,7 +3858,7 @@ function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();
     var del_supervisor =$(".modal-body #del_supervisor").val(); 
-  
+
     var token = $('#_token').val();
     if(del_supervisor){
         
@@ -4070,17 +4070,31 @@ document.querySelector('button').addEventListener('click', function(){
 }, false);
 
 
-$('body').delegate("#submit_supervisor, #submit_delboy", "click", function () {
-    e.preventDefault();
-    alert("hey");
-            $.ajax({
-                type: 'GET',
-                url: url + '/supervisor_count',
-                data: {
-                },
-                success: function (data) {
-                    // alert(data);
-                    $('notification').attr('data-count',data);
-                }
-            });
-});
+// $('body').delegate("#submit_supervisor, #submit_delboy", "click", function (e) {
+//     setTimeout(function(){get_fb();}, 2000);
+    // e.preventDefault();
+    // alert("hey");
+    //         $.ajax({
+    //             type: 'GET',
+    //             url: url + '/supervisor_count',
+    //             data: {
+    //             },
+    //             success: function (data) {
+    //                 $('.notification').attr('data-count',data);
+    //             }
+    //         });
+// });
+
+function get_fb(){
+    
+    var feedback = $.ajax({
+        type: 'GET',
+        url: url + '/supervisor_count'
+        }).success(function (data) {
+            $('.notification').attr('data-count',data);
+            // alert(data);
+            setTimeout(function(){get_fb();}, 2000);
+            
+        })
+}
+
