@@ -128,7 +128,7 @@ class InquiryController extends Controller {
         $inquiries->setPath('inquiry');
 
 
-       // dd($inquiries->toArray());
+       dd($inquiries);
 
         return view('inquiry', compact('inquiries'));
     }
