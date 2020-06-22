@@ -57,7 +57,9 @@
                                             @endif
                                         </td>
                                     </tr>                                    
-                                    <tr><td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td></tr>
+                                    <tr>
+                                        <td><span>Contact Person: </span>{{ $delivery_data['customer']->contact_person }}</td>
+                                    </tr>
                                     @endif
                                     <tr>
                                         <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
