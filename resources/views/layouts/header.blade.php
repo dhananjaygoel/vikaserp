@@ -234,7 +234,7 @@ if (count((array)$ip) > 0) {
     </div>
 </header>
 <script type="text/javascript">
-
+if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){
 function get_fb(){
     var feedback = $.ajax({
         type: 'GET',
@@ -243,7 +243,8 @@ function get_fb(){
             $('.notification').attr('data-count',data);
             // alert(data);
         })
-}      
+}
+}
 
 function notification_msg(){
     var del_boy =$("#user").val();
@@ -297,7 +298,7 @@ function read_notification(id){
             notif_id:notif_id
         },
         success: function(data){
-            alert(data);
+            // alert(data);
         }
     });
 }
