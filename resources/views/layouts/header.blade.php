@@ -251,6 +251,7 @@ function get_fb(){
 <?php
 }
 ?>
+
 function notification_msg(){
     var del_boy =$("#user").val();
     var baseurl = $('#baseurl').attr('name');
