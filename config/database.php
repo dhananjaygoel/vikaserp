@@ -16,7 +16,7 @@ return [
     */
 
     // 'default' => env('DB_CONNECTION', 'mysql'),
-    'default' => (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "v.vikaserp.in" ? env('DB_CONNECTION', 'mysql') : env('DB_STAGING_CONNECTION', 'mysql1')),
+    'default' => (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "v.vikaserp.in" ? env('DB_PROD_CONNECTION', 'mysql1') : env('DB_CONNECTION', 'mysql')),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,12 +67,12 @@ return [
         'mysql1' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_STAGING_HOST', '127.0.0.1'),
-            'port' => env('DB_STAGING_PORT', '3306'),
-            'database' => env('DB_STAGING_DATABASE', 'forge'),
-            'username' => env('DB_STAGING_USERNAME', 'forge'),
-            'password' => env('DB_STAGING_PASSWORD', ''),
-            'unix_socket' => env('DB_STAGING_SOCKET', ''),
+            'host' => env('DB_PROD_HOST', '127.0.0.1'),
+            'port' => env('DB_PROD_PORT', '3306'),
+            'database' => env('DB_PROD_DATABASE', 'forge'),
+            'username' => env('DB_PROD_USERNAME', 'forge'),
+            'password' => env('DB_PROD_PASSWORD', ''),
+            'unix_socket' => env('DB_PROD_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
