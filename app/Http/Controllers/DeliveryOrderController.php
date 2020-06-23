@@ -99,7 +99,7 @@ class DeliveryOrderController extends Controller {
         } else {
             $q->where('order_status', 'pending');
         }
-        if (Auth::user()->role_id == 9){
+        if (Auth::user()->role_id == 9 || Auth::user()->role_id == 8){
              $q->where('del_boy', Auth::user()->id);
         }
          if (Auth::user()->role_id == 8){
