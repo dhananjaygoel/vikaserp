@@ -49,6 +49,7 @@ class DashboardController extends Controller {
     }
 
     public function index() {
+        dd($_SERVER['HTTP_HOST']);
         // dd(Auth::user()->id);
         // exit;
         if (Auth::user()->hasOldPassword()) {
