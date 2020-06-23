@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
-if(isset($_SERVER['HTTP_HOST'])){
-    dd("if - ".$_SERVER['HTTP_HOST']);
-}else{
-    dd("else - ".$_SERVER['HTTP_HOST']);
-}
+
 return [
 
     /*
