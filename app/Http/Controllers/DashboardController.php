@@ -49,11 +49,6 @@ class DashboardController extends Controller {
     }
 
     public function index() {
-        if(isset($_SERVER['HTTP_HOST'])){
-            dd("if - ".$_SERVER['HTTP_HOST']);
-        }else{
-            dd("else - ".$_SERVER['HTTP_HOST']);
-        }
         // dd(Auth::user()->id);
         // exit;
         if (Auth::user()->hasOldPassword()) {
