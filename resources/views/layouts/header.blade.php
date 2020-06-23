@@ -147,6 +147,7 @@ if (count((array)$ip) > 0) {
             <div class="nav-no-collapse pull-right" id="header-nav">
                 <ul class="nav navbar-nav pull-right">
                 @if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0)
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9)
                     <li class="dropdown notify-dropdown">
                         
                     <?php 
@@ -216,6 +217,7 @@ if (count((array)$ip) > 0) {
                     @endif
                     </li>
                     @endif
+                @endif
                     <li class="dropdown profile-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{asset('assets/img/samples/scarlet-159.png')}}" alt=""/>
