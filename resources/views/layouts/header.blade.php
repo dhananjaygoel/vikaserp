@@ -96,6 +96,8 @@
     }
 }
 <?php 
+$notif = '';
+$count = 0;
 $ip = App\Security::all();
 $ip_array = [];
 if (count((array)$ip) > 0) {
