@@ -2551,29 +2551,29 @@ class DeliveryOrderController extends Controller {
         if($roleid == 0 || $roleid == 8 ){
             if($roleid == 0) {
                 $type = "del_boy";
-                $all = \App\User::where('role_id',9)
+                $all = \App\User::whereIn('role_id',[8,9])
                             ->orderBy('id', 'DESC')
                             ->get();
-                $new = \App\User::where('role_id',9)->where('is_active',"1")->where('updated_at','>',$formatted_date)
+                $new = \App\User::whereIn('role_id',[8,9])->where('is_active',"1")->where('updated_at','>',$formatted_date)
                             ->orderBy('id', 'DESC')
                             ->get();
             } 
         }
         if($roleid == 8) {
             $type = "del_boy";
-            $all = \App\User::where('role_id',9)
+            $all = \App\User::whereIn('role_id',[8,9])
                             ->orderBy('id', 'DESC')
                             ->get();
-            $new = \App\User::where('role_id',9)->where('is_active',"1")->where('updated_at','>',$formatted_date)
+            $new = \App\User::whereIn('role_id',[8,9])->where('is_active',"1")->where('updated_at','>',$formatted_date)
                         ->orderBy('id', 'DESC')
                         ->get();
         }
         if($roleid == 9) {
             $type = "del_boy";
-            $all = \App\User::where('role_id',9)
+            $all = \App\User::whereIn('role_id',[8,9])
                             ->orderBy('id', 'DESC')
                             ->get();
-            $new = \App\User::where('role_id',9)->where('is_active',"1")->where('updated_at','>',$formatted_date)
+            $new = \App\User::whereIn('role_id',[8,9])->where('is_active',"1")->where('updated_at','>',$formatted_date)
                         ->orderBy('id', 'DESC')
                         ->get();
         }
