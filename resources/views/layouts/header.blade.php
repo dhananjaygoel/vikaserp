@@ -236,7 +236,9 @@ if (count((array)$ip) > 0) {
     </div>
 </header>
 <script type="text/javascript">
-if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){
+<?php 
+if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){ 
+?>
 function get_fb(){
     var feedback = $.ajax({
         type: 'GET',
@@ -246,8 +248,9 @@ function get_fb(){
             // alert(data);
         })
 }
+<?php
 }
-
+?>
 function notification_msg(){
     var del_boy =$("#user").val();
     var baseurl = $('#baseurl').attr('name');
