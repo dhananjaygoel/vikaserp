@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Str;
-
+if(isset($_SERVER['HTTP_HOST'])){
+    dd("if - ".$_SERVER['HTTP_HOST']);
+}else{
+    dd("else - ".$_SERVER['HTTP_HOST']);
+}
 return [
 
     /*
@@ -16,7 +20,7 @@ return [
     */
 
     // 'default' => env('DB_CONNECTION', 'mysql'),
-    'default' => (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'staging.vikaserp.in' ? env('DB_CONNECTION', 'mysql1') : env('DB_CONNECTION', 'mysql')),
+    'default' => (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == 'vikaserp.in' ? env('DB_CONNECTION', 'mysql') : env('DB_CONNECTION', 'mysql1')),
 
     /*
     |--------------------------------------------------------------------------
