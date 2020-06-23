@@ -95,6 +95,31 @@
         transform: rotate(0deg);
     }
 }
+<?php 
+$ip = App\Security::all();
+$ip_array = [];
+if (count((array)$ip) > 0) {
+    foreach ($ip as $key => $value) {
+        $ip_array[$key] = $value->ip_address;
+    }
+
+    $ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if (getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if (getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if (getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if (getenv('HTTP_FORWARDED'))
+        $ipaddress = getenv('HTTP_FORWARDED');
+    else if (getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+}    
+?>
 </style>
 <header class="navbar" id="header-navbar">
     <div class="container">
@@ -118,6 +143,7 @@
             </div>
             <div class="nav-no-collapse pull-right" id="header-nav">
                 <ul class="nav navbar-nav pull-right">
+                @if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0)
                     <li class="dropdown notify-dropdown">
                         
                     <?php 
@@ -125,7 +151,7 @@
                             $notif = DB::table('notifications')->whereNotIn('id',function($query){
                                 $query->select('notification_id')->from('notification_read_status')
                                 ->where('read_by',Auth::user()->id);
-                            })->orderBy('id', 'DESC')->get();
+                            })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
                             $count = DB::table('notifications')->whereNotIn('id',function($query){
                                 $query->select('notification_id')->from('notification_read_status')
                                 ->where('read_by',Auth::user()->id);
@@ -134,7 +160,7 @@
                             $notif = DB::table('notifications')->whereNotIn('id',function($query){
                                 $query->select('notification_id')->from('notification_read_status')
                                 ->where('read_by',Auth::user()->id);
-                            })->where('assigned_to',Auth::user()->id)->orderBy('id', 'DESC')->get();
+                            })->where('assigned_to',Auth::user()->id)->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
                             $count = DB::table('notifications')->whereNotIn('id',function($query){
                                 $query->select('notification_id')->from('notification_read_status')
                                 ->where('read_by',Auth::user()->id);
@@ -172,7 +198,7 @@
                                     
                                     </div>
                                     <div class="notify_msg" style="width:230px;">
-                                        <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">21/06/2020, 15:00</small></div>
+                                        <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">{{date('d-m-Y h:i A', strtotime($notify->created_at))}}</small></div>
                                         <div class="msg_body" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                                             <input type="hidden" id="notif_id" value="{{$notify->id}}">  
                                             <a href="{{URL::action('DeliveryOrderController@show',['delivery_order' => $notify->order_id])}}" data-original-title="{{$notify->msg}}" onclick="return read_notification($notify->order_id);">{{$notify->msg}}</a>
@@ -186,6 +212,7 @@
                         </ul>
                     @endif
                     </li>
+                    @endif
                     <li class="dropdown profile-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{asset('assets/img/samples/scarlet-159.png')}}" alt=""/>
@@ -235,7 +262,7 @@ function notification_msg(){
                                 
                      +'           </div>'
                      +'           <div class="notify_msg" style="width:230px;">'
-                     +'               <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">21/06/2020, 15:00</small></div>'
+                     +'               <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">'+setTimeTo12Hr(element.created_at)+'</small></div>'
                      +'               <div class="msg_body" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'
                      +'                   <input type="hidden" id="notif_id" value="'+element.id+'">'
                      +'                   <a href="'+baseurl+'/delivery_order/'+element.order_id+'" data-original-title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
@@ -246,6 +273,14 @@ function notification_msg(){
             $("#notify_id").html(view);
         }
     });
+}
+function setTimeTo12Hr(dateTime){
+	const timeString = dateTime.split(" ")[1];
+    const dateString = dateTime.split(" ")[0];
+	const timeString12hr = new Date('1970-01-01T' + timeString + 'Z')
+								.toLocaleTimeString({},{timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'});
+	var newDateTime=dateString.split("-")[2]+"-"+dateString.split("-")[1]+"-"+dateString.split("-")[0]+" "+timeString12hr;
+	return newDateTime;
 }
 function read_notification(id){
     // alert(id);
