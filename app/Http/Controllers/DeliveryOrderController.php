@@ -103,8 +103,13 @@ class DeliveryOrderController extends Controller {
              $q->where('del_boy', Auth::user()->id);
         }
          if (Auth::user()->role_id == 8){
-             $q->where('del_supervisor', Auth::user()->id);
-             $q->where('del_boy', Auth::user()->id);
+            $q->where(function($query) {
+                $query
+                ->where('del_supervisor', Auth::user()->id)
+                ->orWhere('del_boy', Auth::user()->id);
+            });
+            //  $q->where('del_supervisor', Auth::user()->id);
+            //  $q->where('del_boy', Auth::user()->id);
         }
         $search_dates = [];
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
