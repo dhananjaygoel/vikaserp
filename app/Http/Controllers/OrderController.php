@@ -200,7 +200,7 @@ class OrderController extends Controller {
                         $mobile_number = $user->mobile_number;
                     }
                     // echo $mobile_number;
-                    $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
+                    $str = "Order #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
@@ -288,7 +288,7 @@ class OrderController extends Controller {
                         $mobile_number = $user->mobile_number;
                     }
                     // echo $mobile_number;
-                    $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
+                    $str = "Order #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
