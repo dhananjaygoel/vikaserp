@@ -3775,7 +3775,6 @@ $("button").click(function() {
                             $('.alert-success-truck-weight').hide();
                         }, 5000);
                         var select_data = $('#labour_select_'+delboy_id+'_'+truck_sequence).html();
-                        // alert(select_data);
                         $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
                         $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
                         truck_sequence++;
