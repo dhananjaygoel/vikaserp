@@ -34,12 +34,12 @@ class InventoryReportExport implements FromView, ShouldAutoSize
         $product_type = $product_last[0]->product_type_id;
         if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('thickness') as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
                     array_push($thickness_array, $sub_cat->thickness);
                 }
             }
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
                 if (!in_array($sub_cat->size, $size_array)) {
                     array_push($size_array, $sub_cat->size);
                 }
