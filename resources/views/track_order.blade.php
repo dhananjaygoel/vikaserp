@@ -188,7 +188,7 @@
                                         </td>
                                         <td>{{$delivery_order_details->created_at->format('d/m/Y')}}</td>
                                         <td class="text-center">
-                                            <a href="{{URL::action('DeliveryOrderController@show',['id'=> $delivery_order_details->id])}}" class="table-link" title="view">
+                                            <a href="{{URL::action('DeliveryOrderController@show',['delivery_order'=> $delivery_order_details->id])}}" class="table-link" title="view">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
