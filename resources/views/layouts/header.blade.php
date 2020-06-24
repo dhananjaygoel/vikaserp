@@ -205,7 +205,7 @@ if (count((array)$ip) > 0) {
                                         <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">{{date('d-m-Y h:i A', strtotime($notify->created_at))}}</small></div>
                                         <div class="msg_body" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                                             <input type="hidden" id="notif_id" value="{{$notify->id}}">  
-                                            <a href="{{URL::action('DeliveryOrderController@show',['delivery_order' => $notify->order_id])}}" data-original-title="{{$notify->msg}}" onclick="return read_notification($notify->order_id);">{{$notify->msg}}</a>
+                                            <a href="{{url('create_load_truck/'.$notify->order_id)}}" title="{{$notify->msg}}" onclick="return read_notification($notify->order_id);">{{$notify->msg}}</a>
                                         </div>
                                     </div>
                                 </li>
@@ -275,7 +275,7 @@ function notification_msg(){
                      +'               <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">'+setTimeTo12Hr(element.created_at)+'</small></div>'
                      +'               <div class="msg_body" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'
                      +'                   <input type="hidden" id="notif_id" value="'+element.id+'">'
-                     +'                   <a href="'+baseurl+'/delivery_order/'+element.order_id+'" data-original-title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
+                     +'                   <a href="'+baseurl+'/create_load_truck/'+element.order_id+'" title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
                      +'               </div>'
                      +'           </div>'
                      +'       </li>';
