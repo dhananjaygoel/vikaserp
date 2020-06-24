@@ -752,6 +752,7 @@ class DeliveryOrderController extends Controller {
 
     public function create_load_truck($id = "") {
 
+        
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
@@ -1444,47 +1445,67 @@ class DeliveryOrderController extends Controller {
     public function save_truck_weight(Request $request) {
 
         $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
-        // dd($truck_weight);
+        // dd(Input::all());
         $delivery_id = Input::get('delivery_id');
         $delboy_id = Input::get('delboy_id');
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
-            $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$delivery_id)->where('userid', '=', $delboy_id)->first();
-            if(empty($delivery_anothertruckdata)){
-                $loadetrucks[] = [
-                'deliver_id' => $delivery_id,
-                'final_truck_weight' => $truck_weight,
-                'userid' => $delboy_id,
-                'updated_at' => date("Y-m-d H:i:s"),
+            // $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$delivery_id)->where('userid', '=', $delboy_id)->first();
+            // if(empty($delivery_anothertruckdata)){
+            //     $loadetrucks[] = [
+            //     'deliver_id' => $delivery_id,
+            //     'final_truck_weight' => $truck_weight,
+            //     'userid' => $delboy_id,
+            //     'updated_at' => date("Y-m-d H:i:s"),
 
-            ];
+            // ];
 
-            LoadTrucks::insert($loadetrucks);
+            // LoadTrucks::insert($loadetrucks);
 
-            LoadDelboy::where('delivery_id', '=', $delivery_id)
-                    ->where('del_boy', '=', Auth::id())
-                    ->where('assigned_status', 1)
-                    ->update(array(
-                    'updated_at' => date("Y-m-d H:i:s")));
+            // LoadDelboy::where('delivery_id', '=', $delivery_id)
+            //         ->where('del_boy', '=', Auth::id())
+            //         ->where('assigned_status', 1)
+            //         ->update(array(
+            //         'updated_at' => date("Y-m-d H:i:s")));
 
-            }
+            // }
+            // if($truck_weight != 0 ) {
+            // LoadTrucks::where('deliver_id', '=', $delivery_id)
+            //             ->where('userid', '=', $delboy_id)
+            //             ->update(array(
+            //                 'final_truck_weight' => $truck_weight,
+            //             'userid' => $delboy_id,
+            //             'updated_at' => date("Y-m-d H:i:s"),
+            //             ));
+            // LoadDelboy::where('delivery_id', '=', $delivery_id)
+            //             ->where('del_boy', '=', Auth::id())
+            //             ->where('assigned_status', 1)
+            //             ->update(array(
+            //             'updated_at' => date("Y-m-d H:i:s"),
+            //             ));
+
+            // }
             if($truck_weight != 0 ) {
-            LoadTrucks::where('deliver_id', '=', $delivery_id)
-                        ->where('userid', '=', $delboy_id)
-                        ->update(array(
-                            'final_truck_weight' => $truck_weight,
-                        'userid' => $delboy_id,
-                        'updated_at' => date("Y-m-d H:i:s"),
-                        ));
-            LoadDelboy::where('delivery_id', '=', $delivery_id)
+                $loadetrucks[] = [
+                    'deliver_id' => $delivery_id,
+                    'final_truck_weight' => $truck_weight,
+                    'userid' => $delboy_id,
+                    'role_id' => Auth::user()->role_id,
+                    'updated_at' => date("Y-m-d H:i:s"),
+    
+                ];
+    
+                LoadTrucks::insert($loadetrucks);
+    
+                LoadDelboy::where('delivery_id', '=', $delivery_id)
                         ->where('del_boy', '=', Auth::id())
                         ->where('assigned_status', 1)
                         ->update(array(
-                        'updated_at' => date("Y-m-d H:i:s"),
-                        ));
-
-            }
+                        'updated_at' => date("Y-m-d H:i:s")));
+    
+                }
             echo "success";
+            // echo json_encode(array("success",$labours));
         } else{
             echo "failed";
         }

@@ -98,7 +98,7 @@
                         @endif
                         <hr>
                         <div class="form-group row">
-                            <span class="col-md-2">Empty Truck Weight(Kg):</span> 
+                            <span class="col-md-2" style="padding-top:6px;">Empty Truck Weight(Kg):</span> 
                             @if(isset($delivery_data->empty_truck_weight))
                             @if($delivery_data->empty_truck_weight > 0)
                             
@@ -118,29 +118,21 @@
                         <div class="form-group row">
                         @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                             @if($delivery_data->final_truck_weight > 0)
-                                <span class="col-md-2">Final Truck Weight(Kg):</span>
+                                <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
                                 <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:170px;">
                             @else
-                                <span class="col-md-2">Final Truck Weight(Kg):</span>
+                                <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
                                 <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:170px;">
                             @endif
                         @else 
-                            <span class="col-md-2">Final Truck Weight(Kg):</span>
+                            <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
                             <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="<?php isset($delivery_data->final_truck_weight) && $delivery_data->final_truck_weight>0? print $delivery_data->final_truck_weight:''?>" readonly="readonly" style="width:170px;">
                         @endif 
-            </div>
+                        </div>
+                        <hr>
             <?php
-              $truckinformation =json_decode($truckdetails);
-              
-              if(!empty($truckinformation)){
-                $truckvalue = array();
-                foreach($truckinformation as $truck_info){
-                  
-                  $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
-                  $timevalue[$truck_info->userid] = $truck_info->updated_at;
-                }
-              }
-
+                $load_truck = json_encode($truck_load_prodcut_id);
+                
                 $delboy = json_decode($delboys);
 
                 $load_labour = json_decode($load_labours);
@@ -151,91 +143,15 @@
                 }
                 
                 $total_avg = 0;
-              ?>
-
-                @if ($delivery_data->del_boy != "")
-                         
-                    @foreach($delboy as $key => $info) 
-                        <?php
-                        if($key ==0){
-                            $labelkey = "1";
-                        }
-                        else{
-                            $labelkey = $key+1;
-                        }
-                        if(!empty($truckvalue[$info->del_boy])){
-                            $tvalue = $truckvalue[$info->del_boy];
-                        }
-                        else{
-                        $tvalue =0;
-                        }
-                         if($delivery_data->final_truck_weight > 0){
-                             $total_avg = $delivery_data->final_truck_weight - $delivery_data->empty_truck_weight;
-                         }
-                         else{
-                             $total_avg = " ";
-                         }
-                        if(empty($info->users)){
-                            // dd($delivery_data);
-                            $owner_name = '';
-                        }else{
-                            $owner_name =$info->users->first_name .' '.$info->users->last_name;
-                        }
-                        if(!empty($timevalue[$info->del_boy])){
-                            $datevalue = $timevalue[$info->del_boy];
-                        }
-                        if(isset($ar) && !empty($ar)){
-                            $lbr_id = isset($ar[$info->del_boy])?$ar[$info->del_boy]:null;
-                        }
-                        $time = date('h:i a', strtotime(isset($datevalue)?$datevalue:'00:00:00'));
-                        $date = date('d/m/Y', strtotime(isset($datevalue)?$datevalue:'01/01/0000'));
-                        $label = '';
-                        if($time == '12:00 am' || $tvalue == 0){
-                            $label = "N/A";
-                        }else{
-                        $label = isset($info->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
-                        }
-                        ?>
-                        <div class ="row form-group">
-                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$labelkey}}(Kg):</span>
-            
-                        @if($info->del_boy == Auth::id() || Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                        
-                         <span><input type="text" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control " name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
-                         <button type="button" value="truck_weight_save" id="btn_truck_weight{{$info->del_boy}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
-                         <select id="labour_select{{$info->del_boy}}" name="labour[{{$info->del_boy}}][]" class="form-control labour_select" multiple="multiple">
-                                @if(isset($labours))
-                                    @foreach ($labours as $labour)
-                                            <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
-                                    @endforeach
-                                @endif
-                            </select></span>
-                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                <span style="padding-top:8px;"><?php print isset($label)?$label:'' ?></span>
-                            @else
-                                <span style="padding-top:8px;"><?php isset($tvalue) && $tvalue>0 ? print isset($label)?$label:'' : ''?></span>
-                            @endif
-                        </div>
-                         @else
-                            @if($tvalue == 0 )
-                                <span> <input type="text" readonly="readonly" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
-                                </span><span style="padding-top:8px;"> N/A </span>
-                            @else
-                                <span> <input type="text" readonly="readonly" name="truck_weight{{$info->del_boy}}" value="{{$tvalue}}" id="truck_weight{{$info->del_boy}}" class="form-control" name="truck_weight{{$info->del_boy}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" > 
-                                </span><span style="padding-top:8px;">  {{$label}}</span>
-                            @endif
-                            </div>
-                        @endif  
-                        
-                    @endforeach
-                @else
-                    <?php
+              
                     $truckinfo =json_decode($truckdetails);
+                    // dd($truckinfo);
                     if(isset($truckinfo) && !empty($truckinfo)){
                         $truckvalue = array();
                         foreach($truckinfo as $truck_info){
                           
                           $truckvalue[$truck_info->userid] = $truck_info->final_truck_weight;
+                          $timevalue[$truck_info->userid] = $truck_info->updated_at;
                         }
                         
                       
@@ -248,27 +164,96 @@
                     if(isset($ar) && !empty($ar)){
                         $lbr_id = isset($ar[Auth::id()])?$ar[Auth::id()]:null;
                     }
-                    
+                    $i=1;
                     ?>
+                    <div class="add_truck_weight">
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                    <div class ="row form-group">
-                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight (Kg):</span>
-                        <span><input type="text" name="truck_weight" value="{{$tvalue}}" id="truck_weight{{Auth::id()}}" class="form-control " name="truck_weight{{Auth::id()}}" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                        <button type="button" value="truck_weight_save" id="btn_truck_weight{{Auth::id()}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
-                            <select id="labour_select{{Auth::id()}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
-                                @if(isset($labours))
-                                    @foreach ($labours as $labour)
-                                        <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        @if($tvalue == 0 )
-                        <span style="padding-top:8px;">N/A </span></div>
-                        @endif
+                        @foreach($truckinfo as $truck_value)
+                        <?php
+                            $users = App\User::where('id',$truck_value->userid)->first();
+                            // dd($user_value);
+                            if(empty($users)){
+                                $owner_name = '';
+                            }else{
+                                $owner_name =(isset($users->first_name)?$users->first_name:'') .' '.(isset($users->last_name)?$users->last_name:'');
+                            }
+                            $time = date('h:i a', strtotime(isset($truck_value->updated_at)?$truck_value->updated_at:'00:00:00'));
+                            $date = date('d/m/Y', strtotime(isset($truck_value->updated_at)?$truck_value->updated_at:'01/01/0000'));
+                            $label = '';
+                            if($time == '12:00 am' || $truck_value->final_truck_weight == 0){
+                                $label = "N/A";
+                            }else{
+                            $label = isset($truck_value->updated_at)?" Loaded by ".$owner_name." at ".$time ." on ".$date:" Loaded by ".$owner_name;
+                            }
+                        ?>
+                            <div class ="row form-group truck_weight_save">
+                                <ul style="list-style-type: none;padding: 0;">
+                                    <li>
+                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                    <span><input readonly="readonly" type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                    <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
+                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                            @if(isset($labours))
+                                                @foreach ($labours as $labour)
+                                                    <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    @if($truck_value->final_truck_weight != 0 )
+                                    <span style="padding-top:8px;"><?php isset($truck_value->final_truck_weight) && $truck_value->final_truck_weight>0 ? print isset($label)?$label:'' : ''?></span>
+                                    @endif
+                                    </li>
+                                </ul>
+                            </div>
+                        
+                            <?php $i++;?>
+                        @endforeach
+ 
+                    @elseif(Auth::user()->role_id ==9)
+                    
+                        @foreach($truck_load_prodcut_id as $truck_value)
+                            <div class ="row form-group truck_weight_save">
+                                <ul style="list-style-type: none;padding: 0;">
+                                    <li>
+                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                    <span><input readonly="readonly" type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                    <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
+                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                            @if(isset($labours))
+                                                @foreach ($labours as $labour)
+                                                    <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    @if($tvalue == 0 )
+                                    <span style="padding-top:8px;">N/A </span>
+                                    @endif
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <?php $i++;?>
+                        @endforeach
                     @endif
+                        <div class ="row form-group truck_weight_save">
+                            <ul id="truck" style="list-style-type: none;padding: 0;">
+                                <li>
+                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                    <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                    <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
+                                    <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                        @if(isset($labours))
+                                            @foreach ($labours as $labour)
+                                                <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 
-                
-                @endif  
+                  
                         <hr>
                         <div class="form-group underline">Product Details</div>
                         <div class="inquiry_table col-md-12">
