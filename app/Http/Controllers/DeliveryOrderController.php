@@ -1073,8 +1073,11 @@ class DeliveryOrderController extends Controller {
         if ($delivery_order_details->del_boy != ""){
              foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
                 $variable = 'truck_weight'.$info;
-                 $truck_weight = (Input::has($variable)) ? Input::get($variable) : '0';
+                 $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
                   $delboy = Auth::id();
+                  foreach($truck_weight_array as $truck_weight_value){
+                      $truck_weight = $truck_weight_value;
+                  }
                   $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
                      ->where('userid', '=', $delboy)
                      ->first();
@@ -1265,14 +1268,17 @@ class DeliveryOrderController extends Controller {
 
          }
          if ($delivery_order_details->del_boy == ""){
-         $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
+            $variable = 'truck_weight'.Auth::id();
+            $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
+        //  $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
          $delboy = Auth::id();
+         foreach($truck_weight_array as $truck_weight_value){
          $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
                          if(empty($delivery_anothertruckdata)){
                              $loadetrucks[] = [
                                 'deliver_id' => $id,
                                 'empty_truck_weight' =>  $empty_truck_weight,
-                                'final_truck_weight' => $truck_weight,
+                                'final_truck_weight' => $truck_weight_value,
                                 'product_id'  =>$serialize,
                                 'userid' => $delboy,
                                 'updated_at' => date("Y-m-d H:i:s"),
@@ -1287,16 +1293,17 @@ class DeliveryOrderController extends Controller {
                                     ->update(array(
                                     'updated_at' => date("Y-m-d H:i:s")));
                          }
-                         if($truck_weight != 0 ) {
+                         if($truck_weight_value != 0 ) {
                             $delivery_productdata = LoadTrucks::where('deliver_id',$id)
                                                     ->where('userid', '=', $delboy)
+                                                    ->where('final_truck_weight',$truck_weight_value)
                                                     ->first();
-
+                            if(empty($delivery_productdata)){
                             LoadTrucks:: where('deliver_id', '=', $id)
                                         ->where('userid', '=', $delboy)
                                         ->update(array(
                                             'empty_truck_weight' => $empty_truck_weight,
-                                            'final_truck_weight' => $truck_weight,
+                                            'final_truck_weight' => $truck_weight_value,
                                             'product_id'  =>$serialize,
                                         'userid' => $delboy,
                                         'updated_at' => date("Y-m-d H:i:s"),
@@ -1307,7 +1314,10 @@ class DeliveryOrderController extends Controller {
                                         ->update(array(
                                         'updated_at' => date("Y-m-d H:i:s"),
                                         ));
-                         }
+                            }
+                            $truck_weight = $delivery_productdata->final_truck_weight;
+                        }
+                        }
 
                          $labour = (Input::has('labour')) ? Input::get('labour') : '';
                          if(!empty($labour)){
