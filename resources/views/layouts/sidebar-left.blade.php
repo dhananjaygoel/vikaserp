@@ -166,7 +166,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 )
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
                     <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inquiry">
                         <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
@@ -177,7 +177,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 ||  Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
                     <li class="<?php
                     if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')|| Request::is('*daily_pro_forma_invoice*')) {
                         echo 'active';
