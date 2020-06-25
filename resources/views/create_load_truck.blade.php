@@ -209,6 +209,7 @@
                         
                             <?php $i++;?>
                         @endforeach
+                        <?php $i--;?>
                         @else
                         <div class ="row form-group truck_weight_save">
                             <ul id="truck" style="list-style-type: none;padding: 0;">
@@ -253,6 +254,7 @@
                             
                             <?php $i++;?>
                         @endforeach
+                        <?php $i--;?>
                         @else
                         <div class ="row form-group truck_weight_save">
                             <ul id="truck" style="list-style-type: none;padding: 0;">
