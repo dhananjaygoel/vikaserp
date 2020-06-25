@@ -3818,7 +3818,7 @@ $("body").on('click',"button", function() {
 
             $('.add_truck_weight').append(html);
             $('#labour_select_'+delboy_id+'_'+truck_sequence).html(select_data);
-            $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('SelectedIndex',1);
+            $('#labour_select_'+delboy_id+'_'+truck_sequence+ ' option:Selected').prop('selected',false);
             $('.labour_select').multiselect({
                 nonSelectedText: 'Please Select Labour',
                 includeSelectAllOption: true,
