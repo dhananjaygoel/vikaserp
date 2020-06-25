@@ -1040,6 +1040,7 @@ class DeliveryOrderController extends Controller {
        public function store_load_truck($id) {
          $input_data = Input::all();
         //  dd($input_data);
+        $delboy = Auth::id();
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
         $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
@@ -1069,15 +1070,17 @@ class DeliveryOrderController extends Controller {
          $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
          //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
          $delivery_order_details = DeliveryOrder::find($id);
-
-        if ($delivery_order_details->del_boy != ""){
+        $truck_weight = 0;
+        if ($delivery_order_details->del_boy != "" && $delivery_order_details->del_boy == Auth::id()){
              foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
                 $variable = 'truck_weight'.$info;
-                 $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
-                  $delboy = Auth::id();
-                  foreach($truck_weight_array as $truck_weight_value){
-                      $truck_weight = $truck_weight_value;
-                  }
+                $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
+                
+                if(isset($truck_weight_array) && $truck_weight_array != 0){
+                    foreach($truck_weight_array as $truck_weight_value){
+                        $truck_weight = $truck_weight_value;
+                    }
+                }
                   $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
                      ->where('userid', '=', $delboy)
                      ->first();
@@ -1221,57 +1224,12 @@ class DeliveryOrderController extends Controller {
                 'empty_truck_weight'=>$empty_truck_weight,
             ]);
         }
-          $products_data = $_POST['product'];
-        foreach($products_data as $pkey =>$product_info){
-            $actual_pieces = $product_info['actual_pieces'];
-            $average_weight = $product_info['average_weight'];
-            $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
-            $productid =$product_info['order'];
-            if(!empty($actual_pieces)&& !empty($average_weight)){
-                $update_product_details = AllOrderProducts::where('id',$productid)->update([
-                 'actual_pieces'=>$actual_pieces,
-                 'actual_quantity'=>$average_weight,
-              ]);
-            }
-            if(!empty($vat_percentage) && $vat_percentage == 'yes'){
-                $update_product_details = AllOrderProducts::where('id',$productid)->update([
-                    'vat_percentage'=> 1 ,
-                ]);
-            }
-        }
-         $count = count((array)$products_data);
-         $productlist = AllOrderProducts::where('order_id', '=', $id)
-                      ->where('actual_pieces', '>=', 0)
-                      ->where('order_type', '=', 'delivery_order')
-              ->get();
-         $productlistcount = $productlist->count();
-         $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
-
-         if($productlistcount ==$count){
-
-             $sum =0;
-              foreach($trucklist as $truck){
-
-                  $sum = (float)$sum + (float)$truck->final_truck_weight;
-              }
-              
-            if((Auth::user()->role_id == 0 || Auth::user()->role_id == 8) && (Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 )){
-                $final_weight = Input::get('final_truck_weight_load');
-            }else if(isset($truck_weight) && $truck_weight != ''){
-                $final_weight = $truck_weight;
-            }else {
-                $final_weight = (float)$total_avg +(float)$empty_truck_weight;
-            }
-               $update_delivery = DeliveryOrder::where('id',$id)->update([
-                 'final_truck_weight'=>$final_weight,
-              ]);
-
-         }
-         if ($delivery_order_details->del_boy == ""){
+          
+         if ($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 8){
             $variable = 'truck_weight'.Auth::id();
             $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
         //  $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
-         $delboy = Auth::id();
+            if(isset($truck_weight_array) && $truck_weight_array != 0){
          foreach($truck_weight_array as $truck_weight_value){
          $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
                          if(empty($delivery_anothertruckdata)){
@@ -1318,6 +1276,7 @@ class DeliveryOrderController extends Controller {
                             $truck_weight = $delivery_productdata->final_truck_weight;
                         }
                         }
+                    }
 
                          $labour = (Input::has('labour')) ? Input::get('labour') : '';
                          if(!empty($labour)){
@@ -1348,6 +1307,54 @@ class DeliveryOrderController extends Controller {
                          }
 
          }
+         $products_data = $_POST['product'];
+        foreach($products_data as $pkey =>$product_info){
+            $actual_pieces = $product_info['actual_pieces'];
+            $average_weight = $product_info['average_weight'];
+            $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
+            $productid =$product_info['order'];
+            if(!empty($actual_pieces)&& !empty($average_weight)){
+                $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                 'actual_pieces'=>$actual_pieces,
+                 'actual_quantity'=>$average_weight,
+              ]);
+            }
+            if(!empty($vat_percentage) && $vat_percentage == 'yes'){
+                $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                    'vat_percentage'=> 1 ,
+                ]);
+            }
+        }
+         
+         $count = count((array)$products_data);
+         $productlist = AllOrderProducts::where('order_id', '=', $id)
+                      ->where('actual_pieces', '>=', 0)
+                      ->where('order_type', '=', 'delivery_order')
+              ->get();
+         $productlistcount = $productlist->count();
+         $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
+
+         
+         if($productlistcount ==$count){
+
+            $sum =0;
+             foreach($trucklist as $truck){
+
+                 $sum = (float)$sum + (float)$truck->final_truck_weight;
+             }
+             
+           if((Auth::user()->role_id == 0 || Auth::user()->role_id == 8) && (Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 )){
+               $final_weight = Input::get('final_truck_weight_load');
+           }else if(isset($truck_weight) && $truck_weight != ''){
+               $final_weight = $truck_weight;
+           }else {
+               $final_weight = (float)$total_avg +(float)$empty_truck_weight;
+           }
+              $update_delivery = DeliveryOrder::where('id',$id)->update([
+                'final_truck_weight'=>$final_weight,
+             ]);
+
+        }
          $do_det = DeliveryOrder::where('id',$id)->first();
          if(isset($do_det) && !empty($do_det->final_truck_weight)){
             $user = User::find($do_det->created_by);
