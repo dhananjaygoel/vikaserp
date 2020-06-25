@@ -3774,27 +3774,10 @@ $("button").click(function() {
                         setTimeout(function(){
                             $('.alert-success-truck-weight').hide();
                         }, 5000);
-                        var select_data = $('#labour_select_'+delboy_id+'_'+truck_sequence).html();
+                       
                         $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
                         $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
-                        truck_sequence++;
-                        var html = '<div class ="row form-group truck_weight_save">'+
-                                '<ul style="list-style-type: none;padding: 0;">'+
-                                '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (Kg):</span>'+
-                                '<span><input type="text" name="truck_weight_'+delboy_id+'_'+truck_sequence+'" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>'+
-                                '<button type="button" value="truck_weight_save" id="btn_truck_weight_'+delboy_id+'_'+truck_sequence+'" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>'+
-                                '<select id="labour_select_'+delboy_id+'_'+truck_sequence+'" name="labour['+delboy_id+'][]" class="form-control labour_select" multiple="multiple">'+
-                                '</select>'+
-                                '</li></ul></div>';
 
-                        $('.add_truck_weight').append(html);
-                        $('#labour_select_'+delboy_id+'_'+truck_sequence).html(select_data);
-                        $('.labour_select').multiselect({
-                            nonSelectedText: 'Please Select Labour',
-                            includeSelectAllOption: true,
-                            enableFiltering: true,
-                            buttonWidth: '300px'
-                        });
                             window.onbeforeunload = null;
                             // return false;
                     }else {
@@ -3802,6 +3785,47 @@ $("button").click(function() {
                     }
                 } 
             })
+        }
+    }
+    if(fired_button == 'add_truck_weight') {
+        var textinput = $(this).attr('id');
+        var arr = textinput.split('_');
+        var delboy_id  = arr[3];
+        var truck_sequence = arr[4];
+        // alert(delboy_id+truck_sequence);
+
+        var select_data = $('#labour_select_'+delboy_id+'_'+truck_sequence).html();
+        if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
+            $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
+        }
+        if (status_form == 1) {
+            $('html, body').animate({
+                scrollTop: $('.breadcrumb').offset().top
+            }, 1000);
+            return false;
+        } else {
+            truck_sequence++;
+            var html = '<div class ="row form-group truck_weight_save">'+
+                    '<ul style="list-style-type: none;padding: 0;">'+
+                    '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (Kg):</span>'+
+                    '<span><input type="text" name="truck_weight_'+delboy_id+'_'+truck_sequence+'" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>'+
+                    '<button type="button" value="truck_weight_save" id="btn_truck_weight_'+delboy_id+'_'+truck_sequence+'" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>'+
+                    '<select id="labour_select_'+delboy_id+'_'+truck_sequence+'" name="labour['+delboy_id+'][]" class="form-control labour_select" multiple="multiple">'+
+                    '</select>'+
+                    '</li></ul></div>';
+
+            $('.add_truck_weight').append(html);
+            $('#labour_select_'+delboy_id+'_'+truck_sequence).html(select_data);
+            $('.labour_select').multiselect({
+                nonSelectedText: 'Please Select Labour',
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                buttonWidth: '300px'
+            });
+            $(this).attr('id','add_truck_weight_'+delboy_id+'_'+truck_sequence);
         }
     }
 });

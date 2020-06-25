@@ -168,6 +168,7 @@
                     ?>
                     <div class="add_truck_weight">
                     @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                        @if(!empty($truckinfo))
                         @foreach($truckinfo as $truck_value)
                         <?php
                             $users = App\User::where('id',$truck_value->userid)->first();
@@ -208,9 +209,27 @@
                         
                             <?php $i++;?>
                         @endforeach
+                        @else
+                        <div class ="row form-group truck_weight_save">
+                            <ul id="truck" style="list-style-type: none;padding: 0;">
+                                <li>
+                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                    <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                    <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Save</button>
+                                    <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                        @if(isset($labours))
+                                            @foreach ($labours as $labour)
+                                                <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        @endif
  
                     @elseif(Auth::user()->role_id ==9)
-                    
+                            @if(!empty($truck_load_prodcut_id))
                         @foreach($truck_load_prodcut_id as $truck_value)
                             <div class ="row form-group truck_weight_save">
                                 <ul style="list-style-type: none;padding: 0;">
@@ -234,7 +253,7 @@
                             
                             <?php $i++;?>
                         @endforeach
-                    @endif
+                        @else
                         <div class ="row form-group truck_weight_save">
                             <ul id="truck" style="list-style-type: none;padding: 0;">
                                 <li>
@@ -251,7 +270,11 @@
                                 </li>
                             </ul>
                         </div>
+                        @endif
+                    @endif
+                       
                     </div>
+                    <button type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
                     
                         <hr>
                         <div class="form-group underline">Product Details</div>
