@@ -3633,11 +3633,10 @@ function fetch_actual_qty() {
 
 $('div.valid_test').delay(3000).slideUp(300);
 
-$("button").click(function() {
+$("body").on('click',"button", function() {
     var fired_button = $(this).val();
-    // alert(fired_button);
     var button_id = fired_button.substr(4);
-    // alert(button_id);
+
     var i = button_id;
     var status_form = 0;
     if(fired_button == 'Save' + i) {
@@ -3819,6 +3818,7 @@ $("button").click(function() {
 
             $('.add_truck_weight').append(html);
             $('#labour_select_'+delboy_id+'_'+truck_sequence).html(select_data);
+            $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('SelectedIndex',1);
             $('.labour_select').multiselect({
                 nonSelectedText: 'Please Select Labour',
                 includeSelectAllOption: true,
