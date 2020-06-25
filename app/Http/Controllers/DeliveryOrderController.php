@@ -1257,15 +1257,26 @@ class DeliveryOrderController extends Controller {
                                                     ->where('final_truck_weight',$truck_weight_value)
                                                     ->first();
                             if(empty($delivery_productdata)){
-                            LoadTrucks:: where('deliver_id', '=', $id)
-                                        ->where('userid', '=', $delboy)
-                                        ->update(array(
-                                            'empty_truck_weight' => $empty_truck_weight,
-                                            'final_truck_weight' => $truck_weight_value,
-                                            'product_id'  =>$serialize,
-                                        'userid' => $delboy,
-                                        'updated_at' => date("Y-m-d H:i:s"),
-                                        ));
+                                $loadetrucks[] = [
+                                    'deliver_id' => $id,
+                                    'empty_truck_weight' =>  $empty_truck_weight,
+                                    'final_truck_weight' => $truck_weight_value,
+                                    'product_id'  =>$serialize,
+                                    'userid' => $delboy,
+                                    'updated_at' => date("Y-m-d H:i:s"),
+    
+                               ];
+    
+                              LoadTrucks::insert($loadetrucks);
+                            // LoadTrucks:: where('deliver_id', '=', $id)
+                            //             ->where('userid', '=', $delboy)
+                            //             ->update(array(
+                            //                 'empty_truck_weight' => $empty_truck_weight,
+                            //                 'final_truck_weight' => $truck_weight_value,
+                            //                 'product_id'  =>$serialize,
+                            //             'userid' => $delboy,
+                            //             'updated_at' => date("Y-m-d H:i:s"),
+                            //             ));
                             LoadDelboy::where('delivery_id', '=', $id)
                                         ->where('del_boy', '=', $delboy)
                                         ->where('assigned_status', 1)
@@ -1273,7 +1284,7 @@ class DeliveryOrderController extends Controller {
                                         'updated_at' => date("Y-m-d H:i:s"),
                                         ));
                             }
-                            $truck_weight = $delivery_productdata->final_truck_weight;
+                            $truck_weight = $truck_weight_value;
                         }
                         }
                     }
