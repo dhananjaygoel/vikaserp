@@ -275,6 +275,7 @@ class InquiryController extends Controller {
           |--------------------------------------------------
          */
         $input = Input::all();
+        $product_string = '';
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
@@ -285,6 +286,7 @@ class InquiryController extends Controller {
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
+                        $product_string .= $product_data['name'] . " - " . $product_data['quantity'] ." , ";
                        $str .= $product_data['name'] . " - " . $product_data['quantity'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -323,14 +325,18 @@ class InquiryController extends Controller {
                 // whatsapp testing code starts here
                 if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
                     // $sid = env('TWILIO_SID');
-                    
+
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
+                        ->create("whatsapp:+91".$phone_number,
                             [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
+                                "body" => 'Dear '.$customer->owner_name.', Date - '.date("j M Y").'
+                                Your order has been logged as following,
+                                '.$product_string.'
+                                material will be dispatched by given date
+                                VIKAS ASSOCIATES',
+                                "from" => "whatsapp:+13344012472"
                             ]
                             );
                     }catch(\Exception $e){
