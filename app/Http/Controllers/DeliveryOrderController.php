@@ -1047,76 +1047,74 @@ class DeliveryOrderController extends Controller {
     /*
      * save create load truck form details for the challan
      */
-       public function store_load_truck($id) {
-         $input_data = Input::all();
+    public function store_load_truck($id) {
+        $input_data = Input::all();
         //  dd($input_data);
         $delboy = Auth::id();
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
-        $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
-        $truck_product_ids = "";
-        if(!empty($inputprodut)){
-            $productids = array();
-            foreach($inputprodut as $truckprod){
-                if($truckprod['actual_pieces'] >= 0){
-                    $productids[] = $truckprod['id'];
-                }
-            }
-            if(!empty($productids)){
-                $truck_product_ids = implode(',',$productids);
-
-            }
-            else{
-                $truck_product_ids = "";
-            }
-        }
-        if(!empty($truck_product_ids)){
-            $serialize = serialize($truck_product_ids);
-        }
-        else{
-            $serialize = "";
-        }
-         $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
-         $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
-         //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
-         $delivery_order_details = DeliveryOrder::find($id);
-        $truck_weight = 0;
-        if ($delivery_order_details->del_boy != "" && $delivery_order_details->del_boy == Auth::id()){
-             foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
-                $variable = 'truck_weight'.$info;
-                $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
-                
-                if(isset($truck_weight_array) && $truck_weight_array != 0){
-                    foreach($truck_weight_array as $truck_weight_value){
-                        $truck_weight = $truck_weight_value;
+            $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
+            $truck_product_ids = "";
+            if(!empty($inputprodut)){
+                $productids = array();
+                foreach($inputprodut as $truckprod){
+                    if($truckprod['actual_pieces'] >= 0){
+                        $productids[] = $truckprod['id'];
                     }
                 }
-                  $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
-                     ->where('userid', '=', $delboy)
-                     ->first();
-                 if(empty($delivery_truckdata) ){
-                    if($truck_weight !=0){
-                         $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
-                         if(empty($delivery_anothertruckdata)){
-                             $loadetrucks[] = [
-                                'deliver_id' => $id,
-                                'empty_truck_weight' =>  $empty_truck_weight,
-                                'final_truck_weight' => $truck_weight,
-                                'product_id'  =>$serialize,
-                                'userid' => $delboy,
-                                'updated_at' => date("Y-m-d H:i:s"),
+                if(!empty($productids)){
+                    $truck_product_ids = implode(',',$productids);
 
-                           ];
+                }
+                else{
+                    $truck_product_ids = "";
+                }
+            }
+            if(!empty($truck_product_ids)){
+                $serialize = serialize($truck_product_ids);
+            }
+            else{
+                $serialize = "";
+            }
+            $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
+            $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
+            //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
+            $delivery_order_details = DeliveryOrder::find($id);
+            $truck_weight = 0;
+            if ($delivery_order_details->del_boy != "" && $delivery_order_details->del_boy == Auth::id()){
+                foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
+                    $variable = 'truck_weight'.$info;
+                    $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
+                    
+                    if(isset($truck_weight_array) && $truck_weight_array != 0){
+                        foreach($truck_weight_array as $truck_weight_value){
+                            $truck_weight = $truck_weight_value;
+                        }
+                    }
+                    $delivery_truckdata = LoadTrucks::where('deliver_id',$id)
+                        ->where('userid', '=', $delboy)
+                        ->first();
+                    if(empty($delivery_truckdata) ){
+                        if($truck_weight !=0){
+                            $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
+                            if(empty($delivery_anothertruckdata)){
+                                $loadetrucks[] = [
+                                    'deliver_id' => $id,
+                                    'empty_truck_weight' =>  $empty_truck_weight,
+                                    'final_truck_weight' => $truck_weight,
+                                    'product_id'  =>$serialize,
+                                    'userid' => $delboy,
+                                    'updated_at' => date("Y-m-d H:i:s"),
+                                ];
 
-                          LoadTrucks::insert($loadetrucks);
+                                LoadTrucks::insert($loadetrucks);
 
-                          LoadDelboy::where('delivery_id', '=', $id)
-                                    ->where('del_boy', '=', $delboy)
-                                    ->where('assigned_status', 1)
-                                    ->update(array(
-                                    'updated_at' => date("Y-m-d H:i:s")));
-                         }
-                         else{
+                                LoadDelboy::where('delivery_id', '=', $id)
+                                            ->where('del_boy', '=', $delboy)
+                                            ->where('assigned_status', 1)
+                                            ->update(array(
+                                            'updated_at' => date("Y-m-d H:i:s")));
+                            }else{
                                 $delivery_productdata = LoadTrucks::where('deliver_id',$id)->first();
                                 $truck_procudcts = unserialize($delivery_productdata->product_id);
                                 $explodetruck_prodcuts = explode(',',$truck_procudcts);
@@ -1152,257 +1150,215 @@ class DeliveryOrderController extends Controller {
                                     ->where('assigned_status', 1)
                                     ->update(array(
                                     'updated_at' => date("Y-m-d H:i:s")));
-                         }
-                    }
-
-                }
-                else{
-                      if($truck_weight !=0){
-                         $delivery_productdata = LoadTrucks::where('deliver_id',$id)
-                                       ->where('userid', '=', $delboy)
-                                      ->first();
-                         $truck_procudcts = unserialize($delivery_productdata->product_id);
-                         $explodetruck_prodcuts = explode(',',$truck_procudcts);
-                         $secproductids = array();
-                         foreach($inputprodut as $truckprod){
-                            $product_id = $truckprod['id'];
-                            if(in_array($product_id,$explodetruck_prodcuts)){
-                                 $secproductids[] = $product_id;
                             }
+                        }
+                    } else {
+                        if($truck_weight !=0){
+                            $delivery_productdata = LoadTrucks::where('deliver_id',$id)
+                                        ->where('userid', '=', $delboy)
+                                        ->where('final_truck_weight',$truck_weight)
+                                        ->first();
+                            if(empty($delivery_productdata)){
+                                $loadetrucks[] = [
+                                    'deliver_id' => $id,
+                                    'empty_truck_weight' =>  $empty_truck_weight,
+                                    'final_truck_weight' => $truck_weight,
+                                    'product_id'  =>$serialize,
+                                    'userid' => $delboy,
+                                    'updated_at' => date("Y-m-d H:i:s"),
+        
+                                ];
+        
+                                LoadTrucks::insert($loadetrucks);
+                                
+                                LoadDelboy::where('delivery_id', '=', $id)
+                                    ->where('del_boy', '=', $delboy)
+                                    ->where('assigned_status', 1)
+                                    ->update(array(
+                                    'updated_at' => date("Y-m-d H:i:s"),
+                                ));
+                            }
+                        }
+                    }
+                    $labour = (Input::has('labour')) ? Input::get('labour') : '';
+                    if(!empty($labour)){
 
-                         }
-                         if(!empty($secproductids)){
-                            $truck_secproduct_ids = implode(',',$secproductids);
-                            $serialize = serialize($truck_secproduct_ids);
-                         }
-                        else{
-                                $serialize = "";
-                         }
-                    LoadTrucks:: where('deliver_id', '=', $id)
-                        ->where('userid', '=', $delboy)
-                        ->update(array(
-                         'empty_truck_weight' => $empty_truck_weight,
-                         'final_truck_weight' => $truck_weight,
-                         'product_id'  =>$serialize,
-                        'userid' => $delboy,
-                        'updated_at' => date("Y-m-d H:i:s"),
-                    ));
-                    LoadDelboy::where('delivery_id', '=', $id)
-                    ->where('del_boy', '=', $delboy)
-                    ->where('assigned_status', 1)
-                    ->update(array(
-                    'updated_at' => date("Y-m-d H:i:s"),
-                ));
-                  }
-                }
-                $labour = (Input::has('labour')) ? Input::get('labour') : '';
-                if(!empty($labour)){
-
-
-                    $truck_load = LoadTrucks::where('deliver_id', '=', $id)
+                        $truck_load = LoadTrucks::where('deliver_id', '=', $id)
                                     ->where('userid', '=', $delboy)
                                     ->first();
-                    // dd($truck_load);
-                    if(!empty($truck_load)){
-
-                        foreach($labour as $key => $val){
-                            $labour_count = LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->first();
+                    
+                        if(!empty($truck_load)){
+                            foreach($labour as $key => $val){
+                                $labour_count = LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->first();
                                 if(!empty($labour_count)){
                                     LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->delete();
                                 }
-                            foreach($val as $load_val){
-                                // print_r($key);
-
+                                foreach($val as $load_val){
                                     $load_loabour = [
                                         'del_boy_id' => $key,
                                         'labour_id' => $load_val,
                                         'delivery_id' => $id,
                                     ];
                                     LoadLabour::insert($load_loabour);
-
+                                }
                             }
-
                         }
-
                     }
                 }
-             }
-         }
+            }
 
-        if($empty_truck_weight != '' || $empty_truck_weight != '0') {
-            $update_delivery = DeliveryOrder::where('id',$id)->update([
-                'empty_truck_weight'=>$empty_truck_weight,
-            ]);
-        }
+            if($empty_truck_weight != '' || $empty_truck_weight != '0') {
+                $update_delivery = DeliveryOrder::where('id',$id)->update([
+                    'empty_truck_weight'=>$empty_truck_weight,
+                ]);
+            }
           
-         if ($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 8){
-            $variable = 'truck_weight'.Auth::id();
-            $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
-        //  $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
-            if(isset($truck_weight_array) && $truck_weight_array != 0){
-         foreach($truck_weight_array as $truck_weight_value){
-         $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
-                         if(empty($delivery_anothertruckdata)){
-                             $loadetrucks[] = [
-                                'deliver_id' => $id,
-                                'empty_truck_weight' =>  $empty_truck_weight,
-                                'final_truck_weight' => $truck_weight_value,
-                                'product_id'  =>$serialize,
-                                'userid' => $delboy,
-                                'updated_at' => date("Y-m-d H:i:s"),
+            if($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 8){
+                $variable = 'truck_weight'.Auth::id();
+                $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
+                if(isset($truck_weight_array) && $truck_weight_array != 0){
+                    foreach($truck_weight_array as $truck_weight_value){
+                        $truck_weight = $truck_weight_value;
+                    }
+                }
+  
+                $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
+                if(empty($delivery_anothertruckdata)){
+                    $loadetrucks[] = [
+                        'deliver_id' => $id,
+                        'empty_truck_weight' =>  $empty_truck_weight,
+                        'final_truck_weight' => $truck_weight,
+                        'product_id'  =>$serialize,
+                        'userid' => $delboy,
+                        'updated_at' => date("Y-m-d H:i:s"),
 
-                           ];
+                    ];
 
-                          LoadTrucks::insert($loadetrucks);
+                    LoadTrucks::insert($loadetrucks);
 
-                          LoadDelboy::where('delivery_id', '=', $id)
+                    LoadDelboy::where('delivery_id', '=', $id)
+                        ->where('del_boy', '=', $delboy)
+                        ->where('assigned_status', 1)
+                        ->update(array(
+                        'updated_at' => date("Y-m-d H:i:s")
+                    ));
+                }
+                if($truck_weight != 0 ) {
+                    $delivery_productdata = LoadTrucks::where('deliver_id',$id)
+                                            ->where('userid', '=', $delboy)
+                                            ->where('final_truck_weight',$truck_weight)
+                                            ->first();
+                    if(empty($delivery_productdata)){
+                        $loadetrucks[] = [
+                            'deliver_id' => $id,
+                            'empty_truck_weight' =>  $empty_truck_weight,
+                            'final_truck_weight' => $truck_weight,
+                            'product_id'  =>$serialize,
+                            'userid' => $delboy,
+                            'updated_at' => date("Y-m-d H:i:s"),
+
+                        ];
+
+                        LoadTrucks::insert($loadetrucks);
+                        // LoadTrucks:: where('deliver_id', '=', $id)
+                        //             ->where('userid', '=', $delboy)
+                        //             ->update(array(
+                        //                 'empty_truck_weight' => $empty_truck_weight,
+                        //                 'final_truck_weight' => $truck_weight_value,
+                        //                 'product_id'  =>$serialize,
+                        //             'userid' => $delboy,
+                        //             'updated_at' => date("Y-m-d H:i:s"),
+                        //             ));
+                        LoadDelboy::where('delivery_id', '=', $id)
                                     ->where('del_boy', '=', $delboy)
                                     ->where('assigned_status', 1)
                                     ->update(array(
-                                    'updated_at' => date("Y-m-d H:i:s")));
-                         }
-                         if($truck_weight_value != 0 ) {
-                            $delivery_productdata = LoadTrucks::where('deliver_id',$id)
-                                                    ->where('userid', '=', $delboy)
-                                                    ->where('final_truck_weight',$truck_weight_value)
-                                                    ->first();
-                            if(empty($delivery_productdata)){
-                                $loadetrucks[] = [
-                                    'deliver_id' => $id,
-                                    'empty_truck_weight' =>  $empty_truck_weight,
-                                    'final_truck_weight' => $truck_weight_value,
-                                    'product_id'  =>$serialize,
-                                    'userid' => $delboy,
                                     'updated_at' => date("Y-m-d H:i:s"),
-    
-                               ];
-    
-                              LoadTrucks::insert($loadetrucks);
-                            // LoadTrucks:: where('deliver_id', '=', $id)
-                            //             ->where('userid', '=', $delboy)
-                            //             ->update(array(
-                            //                 'empty_truck_weight' => $empty_truck_weight,
-                            //                 'final_truck_weight' => $truck_weight_value,
-                            //                 'product_id'  =>$serialize,
-                            //             'userid' => $delboy,
-                            //             'updated_at' => date("Y-m-d H:i:s"),
-                            //             ));
-                            LoadDelboy::where('delivery_id', '=', $id)
-                                        ->where('del_boy', '=', $delboy)
-                                        ->where('assigned_status', 1)
-                                        ->update(array(
-                                        'updated_at' => date("Y-m-d H:i:s"),
-                                        ));
+                                    ));
+                    }
+                    $truck_weight = $truck_weight;
+                }
+
+                $labour = (Input::has('labour')) ? Input::get('labour') : '';
+                if(!empty($labour)){
+                    $truck_load = LoadTrucks::where('deliver_id', '=', $id)
+                                    ->where('userid', '=', $delboy)
+                                    ->first();
+                             // dd($truck_load);
+                    if(!empty($truck_load)){
+                        foreach($labour as $key => $val){
+                            $labour_count = LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->first();
+                            if(!empty($labour_count)){
+                                LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->delete();
                             }
-                            $truck_weight = $truck_weight_value;
-                        }
+                            foreach($val as $load_val){
+                                $load_loabour = [
+                                    'del_boy_id' => $key,
+                                    'labour_id' => $load_val,
+                                    'delivery_id' => $id,
+                                ];
+                                LoadLabour::insert($load_loabour);
+                            }
                         }
                     }
-
-                         $labour = (Input::has('labour')) ? Input::get('labour') : '';
-                         if(!empty($labour)){
-
-
-                             $truck_load = LoadTrucks::where('deliver_id', '=', $id)
-                                             ->where('userid', '=', $delboy)
-                                             ->first();
-                             // dd($truck_load);
-                             if(!empty($truck_load)){
-                                 foreach($labour as $key => $val){
-                                     $labour_count = LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->first();
-                                         if(!empty($labour_count)){
-                                             LoadLabour::where('delivery_id',$id)->where('del_boy_id',$key)->delete();
-                                         }
-                                     foreach($val as $load_val){
-                                         // print_r($key);
-
-                                             $load_loabour = [
-                                                 'del_boy_id' => $key,
-                                                 'labour_id' => $load_val,
-                                                 'delivery_id' => $id,
-                                             ];
-                                             LoadLabour::insert($load_loabour);
-                                     }
-                                 }
-                             }
-                         }
-
-         }
-         $products_data = $_POST['product'];
-        foreach($products_data as $pkey =>$product_info){
-            $actual_pieces = $product_info['actual_pieces'];
-            $average_weight = $product_info['average_weight'];
-            $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
-            $productid =$product_info['order'];
-            if(!empty($actual_pieces)&& !empty($average_weight)){
-                $update_product_details = AllOrderProducts::where('id',$productid)->update([
-                 'actual_pieces'=>$actual_pieces,
-                 'actual_quantity'=>$average_weight,
-              ]);
-            }
-            if(!empty($vat_percentage) && $vat_percentage == 'yes'){
-                $update_product_details = AllOrderProducts::where('id',$productid)->update([
-                    'vat_percentage'=> 1 ,
-                ]);
-            }
-        }
-         
-         $count = count((array)$products_data);
-         $productlist = AllOrderProducts::where('order_id', '=', $id)
-                      ->where('actual_pieces', '>=', 0)
-                      ->where('order_type', '=', 'delivery_order')
-              ->get();
-         $productlistcount = $productlist->count();
-         $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
-
-         
-         if($productlistcount ==$count){
-
-            $sum =0;
-             foreach($trucklist as $truck){
-                 $sum = (float)$sum + (float)$truck->final_truck_weight;
-             }  
-        //    if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
-        //        $final_weight = Input::get('final_truck_weight_load');
-        //    }else
-            if(isset($truck_weight) && $truck_weight != ''){
-               $final_weight = $truck_weight;
-           }else {
-               $final_weight = (float)$total_avg +(float)$empty_truck_weight;
-           }
-              $update_delivery = DeliveryOrder::where('id',$id)->update([
-                'final_truck_weight'=>$final_weight,
-             ]);
-
-        }
-         $do_det = DeliveryOrder::where('id',$id)->first();
-         if(isset($do_det) && !empty($do_det->final_truck_weight)){
-            $user = User::find($do_det->created_by);
-            //  Confirmation msg to Admin who created the delivery order
-            if($user){
-                if (App::environment('local')) {
-                    $mobile_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $mobile_number = $user->mobile_number;
-                }
-                $str = "Order No #".$do_det->serial_no." has been loaded successfully.\nVIKAS ASSOCIATES";
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
                 }
             }
-            if(isset($do_det->del_supervisor) && !empty($do_det->del_supervisor)){
-                $del_user = User::find($do_det->del_supervisor);
-                //  Confirmation msg to Supervisor who assigned the order to del_boy
-                if($del_user){
+            $products_data = $_POST['product'];
+            foreach($products_data as $pkey =>$product_info){
+                $actual_pieces = $product_info['actual_pieces'];
+                $average_weight = $product_info['average_weight'];
+                $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
+                $productid =$product_info['order'];
+                if(!empty($actual_pieces)&& !empty($average_weight)){
+                    $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                        'actual_pieces'=>$actual_pieces,
+                        'actual_quantity'=>$average_weight,
+                    ]);
+                }
+                if(!empty($vat_percentage) && $vat_percentage == 'yes'){
+                    $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                        'vat_percentage'=> 1 ,
+                    ]);
+                }
+            }
+         
+            $count = count((array)$products_data);
+            $productlist = AllOrderProducts::where('order_id', '=', $id)
+                        ->where('actual_pieces', '>=', 0)
+                        ->where('order_type', '=', 'delivery_order')
+                ->get();
+            $productlistcount = $productlist->count();
+            $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
+
+         
+            if($productlistcount ==$count){
+
+                $sum =0;
+                foreach($trucklist as $truck){
+                    $sum = (float)$sum + (float)$truck->final_truck_weight;
+                }  
+                //    if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
+                //        $final_weight = Input::get('final_truck_weight_load');
+                //    }else
+                if(isset($truck_weight) && $truck_weight != ''){
+                $final_weight = $truck_weight;
+                }else {
+                    $final_weight = (float)$total_avg +(float)$empty_truck_weight;
+                }
+                    $update_delivery = DeliveryOrder::where('id',$id)->update([
+                        'final_truck_weight'=>$final_weight,
+                    ]);
+
+            }
+            $do_det = DeliveryOrder::where('id',$id)->first();
+            if(isset($do_det) && !empty($do_det->final_truck_weight)){
+                $user = User::find($do_det->created_by);
+                //  Confirmation msg to Admin who created the delivery order
+                if($user){
                     if (App::environment('local')) {
                         $mobile_number = Config::get('smsdata.send_sms_to');
                     } else {
-                        $mobile_number = $del_user->mobile_number;
+                        $mobile_number = $user->mobile_number;
                     }
                     $str = "Order No #".$do_det->serial_no." has been loaded successfully.\nVIKAS ASSOCIATES";
                     $msg = urlencode($str);
@@ -1414,36 +1370,55 @@ class DeliveryOrderController extends Controller {
                         curl_close($ch);
                     }
                 }
+                if(isset($do_det->del_supervisor) && !empty($do_det->del_supervisor)){
+                    $del_user = User::find($do_det->del_supervisor);
+                    //  Confirmation msg to Supervisor who assigned the order to del_boy
+                    if($del_user){
+                        if (App::environment('local')) {
+                            $mobile_number = Config::get('smsdata.send_sms_to');
+                        } else {
+                            $mobile_number = $del_user->mobile_number;
+                        }
+                        $str = "Order No #".$do_det->serial_no." has been loaded successfully.\nVIKAS ASSOCIATES";
+                        $msg = urlencode($str);
+                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
+                        if (SEND_SMS === true) {
+                            $ch = curl_init($url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_scraped_page = curl_exec($ch);
+                            curl_close($ch);
+                        }
+                    }
+                }
             }
-         }
-         $parameter = Session::get('parameters');
-         $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
-         $action = Input::get('action');
-         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->count();
-         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
-            if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
-                if(!($truck_weight<$empty_truck_weight)) {
-                    return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+            $parameter = Session::get('parameters');
+            $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
+            $action = Input::get('action');
+            $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->count();
+            if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
+                if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
+                    if(!($truck_weight<$empty_truck_weight)) {
+                        return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+                    }
+                    else{
+                        return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
+                    }
+                }
+                elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight == 0) {
+                    return Redirect::back()->with('validation_message', 'Please fill truck weight.');
                 }
                 else{
-                    return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
+                    return Redirect::back()->with('validation_message', 'Please fill empty truck weight.');
                 }
+            }else {
+                return redirect('delivery_order' . $parameters)->with('success','You are not authorised to this order now.');
             }
-            elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight == 0) {
-                return Redirect::back()->with('validation_message', 'Please fill truck weight.');
-            }
-            else{
-                return Redirect::back()->with('validation_message', 'Please fill empty truck weight.');
-            }
-        }else {
-            return redirect('delivery_order' . $parameters)->with('success','You are not authorised to this order now.');
-        }
         }else {
             return redirect('delivery_order')->with('success','You are not authorised to this order now.');
         }
     }
 
-      public function save_product(Request $request) {
+    public function save_product(Request $request) {
 
         $actual_pieces = Input::get('actual_pieces');
         $average_weight = Input::get('average_weight');
