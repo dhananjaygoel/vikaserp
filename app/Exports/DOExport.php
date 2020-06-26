@@ -50,6 +50,7 @@ class DOExport implements FromView, ShouldAutoSize
        }
         if(isset($data["supervisor_filter"]) && $data["supervisor_filter"] != ''){
             $q->where(function($query) {
+                $data=Input::all();
                 $query
                 ->where('del_supervisor', $data["supervisor_filter"])
                 ->orWhere('del_boy', $data["supervisor_filter"]);
