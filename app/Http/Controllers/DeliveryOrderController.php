@@ -1363,10 +1363,11 @@ class DeliveryOrderController extends Controller {
 
                  $sum = (float)$sum + (float)$truck->final_truck_weight;
              }
-             
-           if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
-               $final_weight = Input::get('final_truck_weight_load');
-           }else if(isset($truck_weight) && $truck_weight != ''){
+            //  dd($truck_weight);  
+        //    if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
+        //        $final_weight = Input::get('final_truck_weight_load');
+        //    }else
+            if(isset($truck_weight) && $truck_weight != ''){
                $final_weight = $truck_weight;
            }else {
                $final_weight = (float)$total_avg +(float)$empty_truck_weight;
