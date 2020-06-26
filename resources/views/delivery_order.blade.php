@@ -160,7 +160,9 @@
                         </div><br/>
                         @endif
                         @if (Session::has('wrong'))
-                        <div class="alert alert-danger alert-success1">{{Session::get('wrong')}}</div>
+                        <div class="alert alert-danger alert-success1">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        {{Session::get('wrong')}}</div>
                         @endif
                         @if(sizeof($delivery_data) != 0)
                         <div class="table-responsive">
