@@ -106,31 +106,31 @@
                     </div>
                     @if(Auth::user()->role_id == 0)
                     <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
-                    @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
-                            <input type="hidden" name="delivery_order_status" value="Delivered">
-                            @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
-                            <input type="hidden" name="delivery_order_status" value="Inprocess">
-                            @else
-                            <input type="hidden" name="delivery_order_status" value="Inprocess">
-                            @endif
-                    <div class="row col-md-12">
-                        <div class="form-group col-md-3  pull-right" style="margin-left:20px;">
-                            <select class="form-control" name="delboy_filter" onchange="this.form.submit()">
-                                <option value="" selected="">--Select Delivery Boy--</option>
-                                @foreach($del_boy as $delivery_boy)
-                                    <option <?php if (Input::get('delboy_filter') == $delivery_boy->id) echo 'selected="selected"'; ?> value="{{$delivery_boy->id}}"> {{$delivery_boy->first_name.' '.$delivery_boy->last_name}}</option>
-                                @endforeach
-                            </select>
+                        @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                                <input type="hidden" name="delivery_order_status" value="Delivered">
+                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                                <input type="hidden" name="delivery_order_status" value="Inprocess">
+                                @else
+                                <input type="hidden" name="delivery_order_status" value="Inprocess">
+                                @endif
+                        <div class="row col-md-12">
+                            <div class="form-group col-md-3  pull-right" style="margin-left:20px;">
+                                <select class="form-control" name="delboy_filter" onchange="this.form.submit()">
+                                    <option value="" selected="">--Select Delivery Boy--</option>
+                                    @foreach($del_boy as $delivery_boy)
+                                        <option <?php if (Input::get('delboy_filter') == $delivery_boy->id) echo 'selected="selected"'; ?> value="{{$delivery_boy->id}}"> {{$delivery_boy->first_name.' '.$delivery_boy->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3  pull-right">
+                                <select class="form-control" name="supervisor_filter" onchange="this.form.submit()">
+                                    <option value="" selected="">--Select Delivery Supervisor--</option>
+                                    @foreach($del_supervisor as $delivery_supervisor)
+                                        <option <?php if (Input::get('supervisor_filter') == $delivery_supervisor->id) echo 'selected="selected"'; ?> value="{{$delivery_supervisor->id}}"> {{$delivery_supervisor->first_name.' '.$delivery_supervisor->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group col-md-3  pull-right">
-                            <select class="form-control" name="supervisor_filter" onchange="this.form.submit()">
-                                <option value="" selected="">--Select Delivery Supervisor--</option>
-                                @foreach($del_supervisor as $delivery_supervisor)
-                                    <option <?php if (Input::get('supervisor_filter') == $delivery_supervisor->id) echo 'selected="selected"'; ?> value="{{$delivery_supervisor->id}}"> {{$delivery_supervisor->first_name.' '.$delivery_supervisor->last_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     </form>
                     @endif
                 </div>
