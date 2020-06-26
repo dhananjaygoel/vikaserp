@@ -1364,7 +1364,7 @@ class DeliveryOrderController extends Controller {
                  $sum = (float)$sum + (float)$truck->final_truck_weight;
              }
              
-           if((Auth::user()->role_id == 0 || Auth::user()->role_id == 8) && (Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 )){
+           if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
                $final_weight = Input::get('final_truck_weight_load');
            }else if(isset($truck_weight) && $truck_weight != ''){
                $final_weight = $truck_weight;
