@@ -762,7 +762,7 @@ class DeliveryOrderController extends Controller {
 
     public function create_load_truck($id = "") {
 
-        
+
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
@@ -1063,7 +1063,7 @@ class DeliveryOrderController extends Controller {
         //  dd($input_data);
         $delboy = Auth::id();
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
-        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
+        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 ) {
             $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
             $truck_product_ids = "";
             if(!empty($inputprodut)){
