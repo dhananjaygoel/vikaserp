@@ -1362,8 +1362,7 @@ class DeliveryOrderController extends Controller {
              foreach($trucklist as $truck){
 
                  $sum = (float)$sum + (float)$truck->final_truck_weight;
-             }
-            //  dd($truck_weight);  
+             }  
         //    if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
         //        $final_weight = Input::get('final_truck_weight_load');
         //    }else
