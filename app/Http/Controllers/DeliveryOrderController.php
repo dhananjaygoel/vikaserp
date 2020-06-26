@@ -111,6 +111,12 @@ class DeliveryOrderController extends Controller {
             //  $q->where('del_supervisor', Auth::user()->id);
             //  $q->where('del_boy', Auth::user()->id);
         }
+        if(isset($data["supervisor_filter"]) && $data["supervisor_filter"] != ''){
+            $q->where('del_supervisor',$data["supervisor_filter"]);
+        }
+        if(isset($data["delboy_filter"]) && $data["delboy_filter"] != ''){
+            $q->where('del_boy',$data["delboy_filter"]);
+        }
         $search_dates = [];
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
 
@@ -151,11 +157,12 @@ class DeliveryOrderController extends Controller {
         $delivery_data = $this->checkpending_quantity($delivery_data);
         //$delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_data->setPath('delivery_order');
-
+        $del_supervisor = User::where('role_id',8)->get();
+        $del_boy = User::where('role_id',9)->get();
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
-        return view('delivery_order', compact('delivery_data', 'search_dates'));
+        return view('delivery_order', compact('delivery_data', 'search_dates','del_supervisor','del_boy'));
     }
 
     /**

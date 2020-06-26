@@ -48,6 +48,12 @@ class DOExport implements FromView, ShouldAutoSize
         if (Auth::user()->role_id == 8){
             $q->where('del_supervisor', Auth::user()->id);
        }
+        if(isset($data["supervisor_filter"]) && $data["supervisor_filter"] != ''){
+        $q->where('del_supervisor',$data["supervisor_filter"]);
+        }
+        if(isset($data["delboy_filter"]) && $data["delboy_filter"] != ''){
+            $q->where('del_boy',$data["delboy_filter"]);
+        }
        $search_dates = [];
 
         if ((isset($data["export_from_date"]) && $data["export_from_date"] != "") && (isset($data["export_to_date"]) && $data["export_to_date"] != "")) {
