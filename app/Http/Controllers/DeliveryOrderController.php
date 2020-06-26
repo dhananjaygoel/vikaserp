@@ -775,6 +775,17 @@ class DeliveryOrderController extends Controller {
         if (empty($delivery_data['customer'])) {
             return redirect('delivery_order')->with('error', 'Inavalid delivery order- User not present.');
         }
+        $error_msg= '';
+        if(Auth::user()->role_id == 8){
+            if($delivery_data->del_supervisor != Auth::id() || $delivery_data->del_boy != Auth::id()){
+                $error_msg = 'Order has been reassigned.';
+            }
+        }
+        if(Auth::user()->role_id == 9){
+            if($delivery_data->del_boy != Auth::id()){
+                $error_msg = 'Order has been reassigned.';
+            }
+        }
         $produc_type = $this->check_product_type($delivery_data);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
@@ -787,7 +798,7 @@ class DeliveryOrderController extends Controller {
         $delboys = LoadDelboy::with('users')->where('delivery_id', '=', $id)->get();
         $truck_load_prodcut_id = LoadTrucks::where('deliver_id', '=', $id)
                          ->where('userid', '=', Auth::id())->get();
-        return view('create_load_truck', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders','load_labours', 'produc_type','truckdetails','delboys','truck_load_prodcut_id'));
+        return view('create_load_truck', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'labours', 'loaders','load_labours', 'produc_type','truckdetails','delboys','truck_load_prodcut_id','error_msg'));
     }
 
     /*
