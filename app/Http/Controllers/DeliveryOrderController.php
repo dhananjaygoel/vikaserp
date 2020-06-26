@@ -778,12 +778,12 @@ class DeliveryOrderController extends Controller {
         $error_msg= '';
         if(Auth::user()->role_id == 8){
             if($delivery_data->del_supervisor != Auth::id() || $delivery_data->del_boy != Auth::id()){
-                $error_msg = 'Order has been reassigned.';
+                return redirect('delivery_order')->with('wrong', 'Order has been reassigned, You can not view.');
             }
         }
         if(Auth::user()->role_id == 9){
             if($delivery_data->del_boy != Auth::id()){
-                $error_msg = 'Order has been reassigned.';
+                return redirect('delivery_order')->with('wrong', 'Order has been reassigned, You can not view.');
             }
         }
         $produc_type = $this->check_product_type($delivery_data);
