@@ -102,7 +102,7 @@ class DeliveryOrderController extends Controller {
         if (Auth::user()->role_id == 9){
              $q->where('del_boy', Auth::user()->id);
         }
-         if (Auth::user()->role_id == 8){
+        if (Auth::user()->role_id == 8){
             $q->where(function($query) {
                 $query
                 ->where('del_supervisor', Auth::user()->id)
