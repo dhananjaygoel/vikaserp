@@ -315,6 +315,7 @@ $(document).ready(function () {
 //    });
 
     $(document).on('change', '#inventory_report_filter', function () {
+        $('#loader').show();
         var product_id = $(this).val();
         var baseurl = $('#baseurl').attr('name');
         var url = baseurl + '/get_inventory_report';
@@ -331,6 +332,7 @@ $(document).ready(function () {
                 $('.report-table-content').html(data.html)
             },
             complete: function () {
+                $('#loader').hide();
             }
         })
     });
