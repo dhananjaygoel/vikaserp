@@ -108,8 +108,6 @@ class DeliveryOrderController extends Controller {
                 ->where('del_supervisor', Auth::user()->id)
                 ->orWhere('del_boy', Auth::user()->id);
             });
-            //  $q->where('del_supervisor', Auth::user()->id);
-            //  $q->where('del_boy', Auth::user()->id);
         }
         if(isset($data["supervisor_filter"]) && $data["supervisor_filter"] != ''){
             $q->where(function($query) {
