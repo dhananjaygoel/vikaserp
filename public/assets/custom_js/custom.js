@@ -3741,6 +3741,11 @@ $("body").on('click',"button", function() {
         var delboy_id  = arr[3];
         var truck_sequence = arr[4];
         var labour = $('#labour_select_'+delboy_id+'_'+truck_sequence).val();
+        if(labour){
+            labour = labour.toString();
+        }else{
+            labour = '';
+        }
         // alert(labour);
 
         if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
@@ -3765,7 +3770,7 @@ $("body").on('click',"button", function() {
                     truck_weight:truck_weight,
                     delivery_id:delivery_id,
                     delboy_id:delboy_id,
-                    labour:labour.toString()
+                    labour:labour
                 },
                 success: function (data) {
                     // alert(data);
