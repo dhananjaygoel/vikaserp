@@ -345,7 +345,7 @@
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
                                     <label for="Freight"><b class="challan">Freight</b></label>
-                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();" readonly="readonly">
+                                    <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                                 </div>
                                 <!--                                <div class="col-md-4">
                                                                     <label for="Loading_frieght_percentage"><b class="challan">Freight Vat Percentage</b></label>
