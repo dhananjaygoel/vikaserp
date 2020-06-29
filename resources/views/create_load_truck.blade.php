@@ -48,7 +48,7 @@
                         @endif
                         <div class="alert alert-danger alert-valid-truck-weight" style="display:none;">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            Please fill valid truck weight.
+                            Please fill valid truck weight greater than empty truck weight.
                         </div>
                         <div class="alert alert-danger alert-empty-truck-weight" style="display:none;">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

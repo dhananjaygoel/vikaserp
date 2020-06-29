@@ -3749,6 +3749,12 @@ $("body").on('click',"button", function() {
         // alert(labour);
         $empty_truck_weight = $("#empty_truck_weight").val();
 
+        if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
+            $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
+        }
         if($empty_truck_weight != '' && $empty_truck_weight != 0){
             if($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() < $empty_truck_weight){
                 $('.alert-valid-truck-weight').show();
@@ -3758,13 +3764,6 @@ $("body").on('click',"button", function() {
             $("#empty_truck_weight").addClass('error_validation');
             $('.alert-empty-truck-weight').show();
             status_form = 1;
-        }
-
-        if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
-            $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
-            status_form = 1;
-        } else {
-            $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
         }
         if (status_form == 1) {
             $('html, body').animate({
