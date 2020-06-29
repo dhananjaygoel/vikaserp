@@ -310,18 +310,20 @@ class DeliveryOrderController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-
+        $print_user = '';
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details', 'user', 'order_details', 'order_details.createdby')->find($id);
         if (count((array)$delivery_data) < 1) {
             return redirect('delivery_order')->with('validation_message', 'Inavalid delivery order.');
         }
 
         $order_data = Order::with('all_order_products')->find($delivery_data->order_id);
-
+        if(isset($delivery_data->printed_by) && $delivery_data->printed_by != ''){
+            $print_user = User::find($delivery_data->printed_by);
+        }
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
-        return view('view_delivery_order', compact('delivery_data', 'units', 'delivery_locations', 'customers', 'order_data'));
+        return view('view_delivery_order', compact('delivery_data', 'print_user', 'units', 'delivery_locations', 'customers', 'order_data'));
     }
 
     /**
@@ -1924,7 +1926,7 @@ class DeliveryOrderController extends Controller {
 
         if (Input::has('empty_truck_weight')) {
             $empty_truck_weight = Input::get('empty_truck_weight');
-            if ($empty_truck_weight != "0" | $empty_truck_weight != "") {
+            if ($empty_truck_weight != "0" || $empty_truck_weight != "") {
                 DeliveryOrder::where('id', $id)->update(['empty_truck_weight' => $empty_truck_weight]);
             }
         }
@@ -1943,7 +1945,10 @@ class DeliveryOrderController extends Controller {
         set_time_limit(0);
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
-
+        DeliveryOrder::where('id', $id)->update([
+            'printed_by' => Auth::id(),
+            'print_time' => date("Y-m-d H:i:s"),
+        ]);
         // if (count((array)$do) <= 0) {
         //     $number = '1';
         // } else {

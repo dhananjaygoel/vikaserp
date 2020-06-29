@@ -233,7 +233,7 @@
                                         @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
-                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
+                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) )
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -394,21 +394,13 @@
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                                 @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
-                                                    <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
+                                                <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                                     </a>
-                                                @else
-                                                <a href="#" class="table-link disabled" title="print" data-toggle="modal" data-target="" id="{{$delivery->id}}" style="opacity: 0.65;cursor: auto;">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                                    </a>
-                                                @endif
+                                                
                                                 @endif
 
                                                 @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
