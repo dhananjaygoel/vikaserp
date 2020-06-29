@@ -46,6 +46,14 @@
                             {{$error_msg}}
                         </div>
                         @endif
+                        <div class="alert alert-danger alert-valid-truck-weight" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Please fill valid truck weight.
+                        </div>
+                        <div class="alert alert-danger alert-empty-truck-weight" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Please fill empty truck weight.
+                        </div>
                         <div class="alert alert-danger alert-truck-weight" style="display:none;">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Please save existing truck weight to add another.
