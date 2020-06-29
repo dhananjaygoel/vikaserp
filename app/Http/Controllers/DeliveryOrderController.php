@@ -1315,7 +1315,7 @@ class DeliveryOrderController extends Controller {
                         $key= $key + 1;
                         $labour_val = 'labour_'.$truck_value.'_'.$key;
                         $labour = (Input::has($labour_val)) ? Input::get($labour_val) : '';
-                        // dd($labour_val);
+                        
                         if(!empty($labour)){
                             foreach($labour as $key => $val){
                                 $truck_load = LoadTrucks::where('deliver_id', '=', $id)
