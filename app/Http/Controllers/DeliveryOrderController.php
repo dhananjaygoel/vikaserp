@@ -1310,8 +1310,6 @@ class DeliveryOrderController extends Controller {
                 }
 
                 // dd(Input::all());
-                // dd($truck_weight_array);
-                
                 if(isset($truck_weight_array) && $truck_weight_array != 0){
                     foreach($truck_weight_array as $key => $truck_value){
                         $key= $key + 1;
