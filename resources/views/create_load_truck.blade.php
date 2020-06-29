@@ -219,7 +219,7 @@
                                     <li>
                                     <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                     <span><input readonly="readonly" type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{$truck_value->userid}}_{{$i}}" class="form-control " name="truck_weight{{$truck_value->userid}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                    <select disabled id="labour_select_{{$truck_value->userid}}_{{$i}}" name="labour_{{$i}}[{{$truck_value->userid}}][]" class="form-control labour_select" multiple="multiple">
+                                    <select disabled id="labour_select_{{$truck_value->userid}}_{{$i}}" name="labour[{{$truck_value->userid}}][]" class="form-control labour_select" multiple="multiple">
                                         @if(isset($labours))
                                             @foreach ($labours as $labour)
                                                 <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
@@ -241,7 +241,7 @@
                                     <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                         <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour_{{$i}}[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                             @if(isset($labours))
                                                 @foreach ($labours as $labour)
                                                     <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
@@ -259,7 +259,7 @@
                                 <li>
                                     <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                     <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                    <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour_{{$i}}[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                    <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                         @if(isset($labours))
                                             @foreach ($labours as $labour)
                                                 <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
@@ -295,7 +295,7 @@
                                         <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                         <span><input readonly="readonly" type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                            <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour_{{$i}}[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                            <select disabled id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                                 @if(isset($labours))
                                                     @foreach ($labours as $labour)
                                                         <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
@@ -317,7 +317,7 @@
                                         <li>
                                             <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                             <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                            <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour_{{$i}}[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                            <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                                 @if(isset($labours))
                                                     @foreach ($labours as $labour)
                                                         <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
@@ -335,7 +335,7 @@
                                     <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                         <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour_{{$i}}[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                             @if(isset($labours))
                                                 @foreach ($labours as $labour)
                                                     <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
