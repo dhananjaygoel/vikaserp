@@ -39,7 +39,7 @@
                                         $date = date('d/m/Y', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'01/01/0000'));
                                     ?>
                                     <tr>
-                                    <td><span><b>Printed By: </b></span> 
+                                        <td><span><b>Printed By: </b></span> 
                                         {{$print_user->first_name.' '.$print_user->last_name.' at '.$time.' on '.$date}}
                                         </td>
                                     </tr>
