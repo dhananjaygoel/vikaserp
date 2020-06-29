@@ -320,6 +320,7 @@ class DeliveryOrderController extends Controller {
         if(isset($delivery_data->printed_by) && $delivery_data->printed_by != ''){
             $print_user = User::find($delivery_data->printed_by);
         }
+        dd($print_user);
         $units = Units::all();
         $delivery_locations = DeliveryLocation::all();
         $customers = Customer::all();
