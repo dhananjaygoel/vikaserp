@@ -3747,6 +3747,18 @@ $("body").on('click',"button", function() {
             labour = '';
         }
         // alert(labour);
+        $empty_truck_weight = $("#empty_truck_weight").val();
+
+        if($empty_truck_weight != '' && $empty_truck_weight != 0){
+            if($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() < $empty_truck_weight){
+                $('.alert-valid-truck-weight').show();
+                status_form = 1;
+            }
+        }else{
+            $("#empty_truck_weight").addClass('error_validation');
+            $('.alert-empty-truck-weight').show();
+            status_form = 1;
+        }
 
         if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
