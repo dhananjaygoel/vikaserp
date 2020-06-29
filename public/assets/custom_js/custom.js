@@ -3760,6 +3760,7 @@ $("body").on('click',"button", function() {
             }, 1000);
             return false;
         } else {
+            $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
             var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
             var delivery_id = $("#delivery_id").val();
             var url = $('#site_url').val();
@@ -3788,6 +3789,7 @@ $("body").on('click',"button", function() {
                             window.onbeforeunload = null;
                             // return false;
                     }else {
+                        $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                         $('.error-success1').show();
                     }
                 } 
