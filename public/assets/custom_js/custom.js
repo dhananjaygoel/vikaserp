@@ -3740,7 +3740,8 @@ $("body").on('click',"button", function() {
         var arr = textinput.split('_');
         var delboy_id  = arr[3];
         var truck_sequence = arr[4];
-        // alert(delboy_id);
+        var labour = $('#labour_select_'+delboy_id+'_'+truck_sequence).val();
+        // alert(labour);
 
         if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
@@ -3764,6 +3765,7 @@ $("body").on('click',"button", function() {
                     truck_weight:truck_weight,
                     delivery_id:delivery_id,
                     delboy_id:delboy_id,
+                    labour:labour.toString()
                 },
                 success: function (data) {
                     // alert(data);
@@ -3775,8 +3777,9 @@ $("body").on('click',"button", function() {
                         }, 5000);
                        
                         $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('readonly',true);
-                        $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).attr('readonly',true);
-
+                        $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
+                        $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
+                        $('.multiselect').prop("disabled",true);
                             window.onbeforeunload = null;
                             // return false;
                     }else {
