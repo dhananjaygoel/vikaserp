@@ -138,7 +138,7 @@
                         </div>
                         <hr>
                         <div class="form-group row final_truck_weight">
-                        @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                        @if(Auth::user()->role_id ==0)
                             @if($delivery_data->final_truck_weight > 0)
                                 <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
                                 <input type="text" class="form-control col-md-2" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:150px;">
