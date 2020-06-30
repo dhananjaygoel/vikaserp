@@ -1101,7 +1101,7 @@ class DeliveryOrderController extends Controller {
             if ($delivery_order_details->del_boy != "" && $delivery_order_details->del_boy == Auth::id()){
                 foreach(explode(',', $delivery_order_details->del_boy) as $key => $info){
                     $variable = 'truck_weight'.$info;
-                    $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
+                    $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : $truck_weight='Invalid';
                     
                     if(isset($truck_weight_array) && $truck_weight_array != 0){
                         foreach($truck_weight_array as $truck_weight_value){
