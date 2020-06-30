@@ -141,7 +141,7 @@
                         @if(Auth::user()->role_id ==0)
                             @if($delivery_data->final_truck_weight > 0)
                                 <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
-                                <input type="text" class="form-control col-md-2" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:150px;">
+                                <input type="text" class="form-control col-md-2" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:150px;" onkeypress=" return numbersOnly(this, event, true, false);" onblur="truck_weight(this)">
                                 <input type='hidden' name='final_weight_edited' id='final_weight_edited' value=''>
                                 <span><button type="button" value="final_truck_weight_save" id="btn_final_truck_weight" class="btn btn-sm btn-primary" style="position: relative;margin-left:2em;">Save</button></span>
                             @else
