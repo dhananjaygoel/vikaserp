@@ -235,7 +235,6 @@
                             </tbody>
                         </table>
                     </td>
-                    
                     <td>
                         <table class="sm-table-data">
                             <tbody>
