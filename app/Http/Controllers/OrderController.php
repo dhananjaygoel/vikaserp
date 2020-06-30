@@ -863,11 +863,11 @@ class OrderController extends Controller {
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #'.$order_id.' has been logged for following products: \n";
+                $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$order_id." has been logged for following products: \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
-                        $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",";
+                        $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -922,7 +922,7 @@ class OrderController extends Controller {
                     // print($message->sid);
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order #".$order_id." for " . $customer->owner_name . ", Kindly check and contact. \nVIKAS ASSOCIATES";
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order #".$order_id." for " . $customer->owner_name . ", ".round($total_quantity,2).", Kindly check and contact. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -944,7 +944,7 @@ class OrderController extends Controller {
                             ->create("whatsapp:+91".$phone_number,
                                 [
                                     "body" => 'Dear '.strtoupper($customer['manager']->first_name).'
-                                    '.Auth::user()->first_name.' has created an order #'.$order_id.' for '. $customer->owner_name .'. Kindly check and contact.
+                                    '.Auth::user()->first_name.' has created an order #'.$order_id.' for '. $customer->owner_name .', '.round($total_quantity,2).'. Kindly check and contact.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
