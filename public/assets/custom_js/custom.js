@@ -3757,7 +3757,7 @@ $("body").on('click',"button", function() {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
         }
         if(empty_truck_weight != '' && empty_truck_weight != 0){
-            if(truck_weight <= empty_truck_weight){
+            if(parseFloat(truck_weight) <= parseFloat(empty_truck_weight)){
                 $('.alert-valid-truck-weight').show();
                 status_form = 1;
             }
