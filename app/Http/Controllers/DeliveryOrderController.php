@@ -1366,7 +1366,7 @@ class DeliveryOrderController extends Controller {
             $productlistcount = $productlist->count();
             $trucklist = LoadTrucks::where('deliver_id', '=', $id)->get();
 
-         
+        //  dd($count);
             if($productlistcount ==$count){
 
                 $sum =0;
@@ -1376,8 +1376,14 @@ class DeliveryOrderController extends Controller {
                 //    if(Input::has('final_truck_weight_load') && Input::get('final_truck_weight_load') != 0 ){
                 //        $final_weight = Input::get('final_truck_weight_load');
                 //    }else
-                if(isset($truck_weight) && $truck_weight != ''){
+                $truck_load = LoadTrucks::where('deliver_id', '=', $id)
+                                        ->where('userid', '=', $delboy)
+                                        ->orderBy('id','DESC')
+                                        ->first();
+                if(isset($truck_weight) && $truck_weight != '' && $truck_weight != 'Invalid'){
                 $final_weight = $truck_weight;
+                }elseif($truck_weight == 'Invalid'){
+                    $final_weight = $truck_load->final_truck_weight;
                 }else {
                     $final_weight = (float)$total_avg +(float)$empty_truck_weight;
                 }
