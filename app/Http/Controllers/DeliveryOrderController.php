@@ -1112,7 +1112,7 @@ class DeliveryOrderController extends Controller {
                         ->where('userid', '=', $delboy)
                         ->first();
                     if(empty($delivery_truckdata) ){
-                        if($truck_weight !=0){
+                        if($truck_weight !=0 && $truck_weight > $empty_truck_weight){
                             $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
                             if(empty($delivery_anothertruckdata)){
                                 $loadetrucks[] = [
@@ -1170,7 +1170,7 @@ class DeliveryOrderController extends Controller {
                             }
                         }
                     } else {
-                        if($truck_weight !=0){
+                        if($truck_weight !=0 && $truck_weight > $empty_truck_weight){
                             $delivery_productdata = LoadTrucks::where('deliver_id',$id)
                                         ->where('userid', '=', $delboy)
                                         ->first();
@@ -1252,7 +1252,7 @@ class DeliveryOrderController extends Controller {
                 }
                 $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
                 if(empty($delivery_anothertruckdata)){
-                    if($truck_weight != 0){
+                    if($truck_weight != 0 && $truck_weight > $empty_truck_weight){
                         $loadetrucks[] = [
                             'deliver_id' => $id,
                             'empty_truck_weight' =>  $empty_truck_weight,
@@ -1273,7 +1273,7 @@ class DeliveryOrderController extends Controller {
                         ));
                     }
                 } else {
-                    if($truck_weight != 0 ) {
+                    if($truck_weight != 0 && $truck_weight > $empty_truck_weight) {
                     
                         $loadetrucks[] = [
                             'deliver_id' => $id,
