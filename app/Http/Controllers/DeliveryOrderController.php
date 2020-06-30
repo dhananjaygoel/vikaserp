@@ -1242,7 +1242,7 @@ class DeliveryOrderController extends Controller {
           
             if($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 8){
                 $variable = 'truck_weight'.Auth::id();
-                $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : '0';
+                $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : $truck_weight='Invalid';
                 if(isset($truck_weight_array) && $truck_weight_array != 0){
                     foreach($truck_weight_array as $key => $truck_weight_value){
                         $truck_weight = $truck_weight_value;
@@ -1250,27 +1250,28 @@ class DeliveryOrderController extends Controller {
                     }
                     $key_value = $key_value + 1;
                 }
-  
                 $delivery_anothertruckdata = LoadTrucks::where('deliver_id',$id)->first();
                 if(empty($delivery_anothertruckdata)){
-                    $loadetrucks[] = [
-                        'deliver_id' => $id,
-                        'empty_truck_weight' =>  $empty_truck_weight,
-                        'final_truck_weight' => $truck_weight,
-                        'product_id'  =>$serialize,
-                        'userid' => $delboy,
-                        'updated_at' => date("Y-m-d H:i:s"),
+                    if($truck_weight != 0){
+                        $loadetrucks[] = [
+                            'deliver_id' => $id,
+                            'empty_truck_weight' =>  $empty_truck_weight,
+                            'final_truck_weight' => $truck_weight,
+                            'product_id'  =>$serialize,
+                            'userid' => $delboy,
+                            'updated_at' => date("Y-m-d H:i:s"),
 
-                    ];
+                        ];
 
-                    LoadTrucks::insert($loadetrucks);
+                        LoadTrucks::insert($loadetrucks);
 
-                    LoadDelboy::where('delivery_id', '=', $id)
-                        ->where('del_boy', '=', $delboy)
-                        ->where('assigned_status', 1)
-                        ->update(array(
-                        'updated_at' => date("Y-m-d H:i:s")
-                    ));
+                        LoadDelboy::where('delivery_id', '=', $id)
+                            ->where('del_boy', '=', $delboy)
+                            ->where('assigned_status', 1)
+                            ->update(array(
+                            'updated_at' => date("Y-m-d H:i:s")
+                        ));
+                    }
                 } else {
                     if($truck_weight != 0 ) {
                     
@@ -1431,7 +1432,7 @@ class DeliveryOrderController extends Controller {
             $action = Input::get('action');
             $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->count();
             if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
-                if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != 0) {
+                if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != '0') {
                     if(!($truck_weight<$empty_truck_weight)) {
                         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
                     }
@@ -1439,7 +1440,7 @@ class DeliveryOrderController extends Controller {
                         return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
                     }
                 }
-                elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight == 0) {
+                elseif(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight == '0') {
                     return Redirect::back()->with('validation_message', 'Please fill truck weight.');
                 }
                 else{

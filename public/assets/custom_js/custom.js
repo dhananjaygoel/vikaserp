@@ -3793,7 +3793,7 @@ $("body").on('click',"button", function() {
                             $('.alert-success-truck-weight').hide();
                         }, 5000);
                        
-                        $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('readonly',true);
+                        $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
                         $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
                         $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
                         $('.multiselect').prop("disabled",true);
