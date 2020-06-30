@@ -1380,7 +1380,7 @@ class DeliveryOrderController extends Controller {
                                         ->where('userid', '=', $delboy)
                                         ->orderBy('id','DESC')
                                         ->first();
-                if(isset($truck_weight) && $truck_weight != '' && $truck_weight != 'Invalid'){
+                if(isset($truck_weight) && $truck_weight != '' && $truck_weight != '0' && $truck_weight != 'Invalid'){
                 $final_weight = $truck_weight;
                 }elseif($truck_weight == 'Invalid'){
                     $final_weight = $truck_load->final_truck_weight;
