@@ -1383,14 +1383,20 @@ class DeliveryOrderController extends Controller {
                 if(isset($truck_weight) && $truck_weight != '' && $truck_weight != '0' && $truck_weight != 'Invalid'){
                 $final_weight = $truck_weight;
                 }elseif($truck_weight == 'Invalid'){
-                    $final_weight = $truck_load->final_truck_weight;
+                    $final_weight = isset($truck_load->final_truck_weight)?$truck_load->final_truck_weight:(float)$total_avg +(float)$empty_truck_weight;;
                 }else {
-                    $final_weight = $truck_load->final_truck_weight;
+                    $final_weight = isset($truck_load->final_truck_weight)?$truck_load->final_truck_weight:(float)$total_avg +(float)$empty_truck_weight;
                     // $final_weight = (float)$total_avg +(float)$empty_truck_weight;
                 }
                     $update_delivery = DeliveryOrder::where('id',$id)->update([
                         'final_truck_weight'=>$final_weight,
                     ]);
+                if(Input::has('final_weight_edited') && Input::get('final_weight_edited') != 0 && Input::get('final_weight_edited') != ""){
+                    $final_weight = Input::get('final_weight_edited');
+                    $update_delivery = DeliveryOrder::where('id',$id)->update([
+                        'final_truck_weight'=>$final_weight,
+                    ]);
+                }
 
             }
             $do_det = DeliveryOrder::where('id',$id)->first();
@@ -1488,6 +1494,24 @@ class DeliveryOrderController extends Controller {
             if($empty_truck_value != '' || $empty_truck_value != '0') {
                 $update_delivery = DeliveryOrder::where('id',$delivery_id)->update([
                     'empty_truck_weight'=>$empty_truck_value,
+                ]);
+
+                echo "success";
+            }
+
+        } else{
+            echo "failed";
+        }
+    }
+    public function save_final_truck(Request $request) {
+
+        $final_truck_weight = (Input::has('final_truck_weight')) ? Input::get('final_truck_weight') : '0';
+        $delivery_id = Input::get('delivery_id');
+        $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
+        if(Auth::user()->role_id == 0) {
+            if($final_truck_weight != '' || $final_truck_weight != '0') {
+                $update_delivery = DeliveryOrder::where('id',$delivery_id)->update([
+                    'final_truck_weight'=>$final_truck_weight,
                 ]);
 
                 echo "success";

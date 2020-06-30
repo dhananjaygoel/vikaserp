@@ -3735,6 +3735,46 @@ $("body").on('click',"button", function() {
             })
         }
     }
+    if(fired_button == 'final_truck_weight_save'){
+        if ($("#final_truck_weight_load").val() == "" || $("#final_truck_weight_load").val() == 0) {
+            $('#final_truck_weight_load').addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#final_truck_weight_load').removeClass('error_validation');
+        }
+        if (status_form == 1) {
+            $('html, body').animate({
+                scrollTop: $('.breadcrumb').offset().top
+            }, 1000);
+            return false;
+        } else {
+            var final_truck_weight = $("#final_truck_weight_load").val();
+            var delivery_id = $("#delivery_id").val();
+            var url = $('#site_url').val();
+            $.ajax({
+                type: 'GET',
+                url: url + '/save_final_truck',
+                data: {
+                    final_truck_weight:final_truck_weight,
+                    delivery_id:delivery_id,
+                },
+                success: function (data) {
+                    // alert(data);
+                    if(data=='success'){
+                        $('.alert-success-final-truck').show();
+                        setTimeout(function(){
+                            $('.alert-success-final-truck').hide();
+                        }, 5000);
+                        $('#final_weight_edited').val(final_truck_weight);
+                        window.onbeforeunload = null;
+                        // return false;
+                    }else {
+                        $('.error-success1').show();
+                    }
+                } 
+            })
+        }
+    }
     if(fired_button == 'truck_weight_save') {
         var textinput = $(this).attr('id');
         var arr = textinput.split('_');

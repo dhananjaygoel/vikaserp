@@ -58,6 +58,10 @@
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Please save existing truck weight to add another.
                         </div>
+                        <div class="alert alert-success alert-success-final-truck" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            Final truck value successfully updated.
+                        </div>
                         <div class="alert alert-success alert-success-empty-truck" style="display:none;">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Empty truck value successfully updated.
@@ -120,27 +124,29 @@
                             @if(isset($delivery_data->empty_truck_weight))
                             @if($delivery_data->empty_truck_weight > 0)
                             
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 10.33%;" maxlength="10" >
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 150px;" maxlength="10" >
                             <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                            
                             @else
-                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                            <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
                             <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                             @endif
                             @else
-                            <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="check_change();">
+                            <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="check_change();">
                             <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                             @endif  
                         </div>
                         <hr>
-                        <div class="form-group row">
+                        <div class="form-group row final_truck_weight">
                         @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                             @if($delivery_data->final_truck_weight > 0)
                                 <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
-                                <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:170px;">
+                                <input type="text" class="form-control col-md-2" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:150px;">
+                                <input type='hidden' name='final_weight_edited' id='final_weight_edited' value=''>
+                                <span><button type="button" value="final_truck_weight_save" id="btn_final_truck_weight" class="btn btn-sm btn-primary" style="position: relative;margin-left:2em;">Save</button></span>
                             @else
                                 <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
-                                <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:170px;">
+                                <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:150px;">
                             @endif
                         @else 
                             <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
