@@ -3799,6 +3799,9 @@ $("body").on('click',"button", function() {
         if(empty_truck_weight != '' && empty_truck_weight != 0){
             if(parseFloat(truck_weight) <= parseFloat(empty_truck_weight)){
                 $('.alert-valid-truck-weight').show();
+                setTimeout(function(){
+                    $('.alert-valid-truck-weight').hide();
+                }, 5000);
                 status_form = 1;
             }
         }else{
