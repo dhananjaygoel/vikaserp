@@ -1385,7 +1385,8 @@ class DeliveryOrderController extends Controller {
                 }elseif($truck_weight == 'Invalid'){
                     $final_weight = $truck_load->final_truck_weight;
                 }else {
-                    $final_weight = (float)$total_avg +(float)$empty_truck_weight;
+                    $final_weight = $truck_load->final_truck_weight;
+                    // $final_weight = (float)$total_avg +(float)$empty_truck_weight;
                 }
                     $update_delivery = DeliveryOrder::where('id',$id)->update([
                         'final_truck_weight'=>$final_weight,
