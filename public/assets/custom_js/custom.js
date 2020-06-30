@@ -3822,7 +3822,7 @@ $("body").on('click',"button", function() {
         } else {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
         }
-        if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).prop('readonly') ) {
+        if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).prop('disabled') ) {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
         } else {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
