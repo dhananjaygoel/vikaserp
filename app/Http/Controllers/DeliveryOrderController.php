@@ -534,22 +534,23 @@ class DeliveryOrderController extends Controller {
         $delivery_order = DeliveryOrder::with('delivery_product')->find($delivery_order->id);
 
         $total_quantity = 0;
+        $product_string = '';
         $customer_id = $delivery_order->customer_id;
         $customer = Customer::with('manager')->find($customer_id);
         $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
         if ($sms_flag == 1) {
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been edited as follows\n";
+                $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour delivery order #'.$delivery_order->id.' has been edited for the following products:\n";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
                     $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
 
-
+                    $product_string .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ", ";
                     $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
                     $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
 
-                $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
+                $str .= "Vehicle No: " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Driver No: " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
 
 
                 if (App::environment('local')) {
@@ -570,9 +571,14 @@ class DeliveryOrderController extends Controller {
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
+                        ->create("whatsapp:+91".$phone_number,
                             [
-                                "body" => $str,
+                                "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                        On Dated '. date("j M, Y") .'
+                                        Your delivery order #'.$delivery_order->id.' has been edited for the following products:
+                                        '.$product_string.'
+                                        Vehicle No:'. (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ', Driver No:'. (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . '.
+                                        VIKAS ASSOCIATES.',
                                 "from" => "whatsapp:+13344012472"
                             ]
                         );
@@ -584,7 +590,7 @@ class DeliveryOrderController extends Controller {
             }
             if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited DO for " . $customer->owner_name . " as follows\n";
+                $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has edited an delivery order #'.$delivery_order->id.' for " . $customer->owner_name . " is as following:\n";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
                     $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
 
@@ -593,7 +599,7 @@ class DeliveryOrderController extends Controller {
                     $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
 
-                $str .= "Vehicle No. " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Drv No. " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
+                $str .= "Vehicle No: " . (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ", Driver No: " . (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . ". \nVIKAS ASSOCIATES";
 
 
                 if (App::environment('development')) {
@@ -609,6 +615,26 @@ class DeliveryOrderController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                 // whatsapp code starts here
+                 if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:+91".$phone_number,
+                            [
+                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                            '. Auth::user()->first_name .' has edited an delivery order #'.$delivery_order->id.' for '. $customer->owner_name .' is as following:
+                                            '.$product_string.'
+                                            Vehicle No:'. (!empty($delivery_order->vehicle_number) ? $delivery_order->vehicle_number : 'N/A') . ', Driver No:'. (!empty($delivery_order->driver_contact_no) ? $delivery_order->driver_contact_no : 'N/A') . '.
+                                            VIKAS ASSOCIATES.',
+                                "from" => "whatsapp:+13344012472"
+                            ]
+                        );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
+                }
+                // whatsapp testing code endse here
             }
         }
 
@@ -2059,7 +2085,7 @@ class DeliveryOrderController extends Controller {
             }
         }
         /**/
-
+        $product_string = '';
         $send_sms = Input::get('send_sms');
         $send_whatsapp = Input::get('send_whatsapp');
         if ($sms_flag == 1) {
@@ -2069,12 +2095,13 @@ class DeliveryOrderController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour DO has been printed as follows\n";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour delivery order #'.$id.' has been printed for following products:\n";
                     foreach ($input_data as $product_data) {
+                        $product_string .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", ";
                         $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
+                    $str .= "Vehicle No: " . (isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:'N/A') . ", Driver No: " . (isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'N/A') . ". \nVIKAS ASSOCIATES";
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -2094,9 +2121,14 @@ class DeliveryOrderController extends Controller {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
+                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                            On Dated '. date("j M, Y") .'
+                                            Your delivery order #'.$id.' has been printed for following products:
+                                            '.$product_string.'
+                                            Vehicle No:'. (isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:'N/A') .', Driver No:'. (isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'N/A') .'
+                                            VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
                                 );
@@ -2109,12 +2141,13 @@ class DeliveryOrderController extends Controller {
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has created DO for " . $customer->owner_name . " as follows\n";
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . "has printed delivery order #". $delivery_data->id." for " . $customer->owner_name . " is as follows:\n";
                     foreach ($input_data as $product_data) {
+                        $product_string .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", ";
                         $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ",\n";
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= "Vehicle No. " . $delivery_data->vehicle_number . ", Drv No. " . $delivery_data->driver_contact_no . ". \nVIKAS ASSOCIATES";
+                    $str .= "Vehicle No: " . (isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:'N/A') . ", Driver No: " . isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'N/A' . ". \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -2129,6 +2162,26 @@ class DeliveryOrderController extends Controller {
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:+91".$phone_number,
+                                [
+                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                            '. Auth::user()->first_name .' has printed delivery order #'. $delivery_data->id.'for '. $customer->owner_name .' is as following
+                                            '.$product_string.'
+                                            Vehicle No:'. (isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:'N/A') .', Driver No:'. isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'N/A' .'
+                                            VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
+                                ]
+                            );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
+                    }
+                    // whatsapp testing code endse here
                 }
         // }
         }
