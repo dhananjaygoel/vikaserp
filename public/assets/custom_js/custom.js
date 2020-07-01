@@ -4217,16 +4217,4 @@ document.querySelector('button').addEventListener('click', function(){
     //         });
 // });
 
-function get_fb(){
-    
-    var feedback = $.ajax({
-        type: 'GET',
-        url: url + '/supervisor_count'
-        }).success(function (data) {
-            $('.notification').attr('data-count',data);
-            // alert(data);
-            setTimeout(function(){get_fb();}, 2000);
-            
-        })
-}
 
