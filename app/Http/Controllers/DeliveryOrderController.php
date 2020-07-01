@@ -1494,7 +1494,6 @@ class DeliveryOrderController extends Controller {
     }
 
     public function save_product(Request $request) {
-
         $actual_pieces = Input::get('actual_pieces');
         $average_weight = Input::get('average_weight');
         $delivery_id = Input::get('delivery_id');
