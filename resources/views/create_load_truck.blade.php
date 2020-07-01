@@ -154,19 +154,19 @@
                         @endif 
                         </div>
                         <hr>
-            <?php
-                $load_truck = json_encode($truck_load_prodcut_id);
-                
-                $delboy = json_decode($delboys);
+                <?php
+                    $load_truck = json_encode($truck_load_prodcut_id);
+                    
+                    $delboy = json_decode($delboys);
 
-                // $load_labour = json_decode($load_labours);
-                // if(!empty($load_labour)){
-                //     foreach($load_labour as $load_lbr){
-                //         $ar[$load_lbr->del_boy_id][$load_lbr->truck_weight_id] = $load_lbr->labour_id;
-                //     }
-                // }
-                
-                $total_avg = 0;
+                    // $load_labour = json_decode($load_labours);
+                    // if(!empty($load_labour)){
+                    //     foreach($load_labour as $load_lbr){
+                    //         $ar[$load_lbr->del_boy_id][$load_lbr->truck_weight_id] = $load_lbr->labour_id;
+                    //     }
+                    // }
+                    
+                    $total_avg = 0;
               
                     $truckinfo =json_decode($truckdetails);
                     // dd($truckinfo);
