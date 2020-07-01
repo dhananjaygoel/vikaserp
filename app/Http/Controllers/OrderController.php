@@ -937,14 +937,14 @@ class OrderController extends Controller {
                         curl_close($ch);
                     }
                     if(SEND_SMS === true && isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    
+                        $cust_qnty = $customer->owner_name .', '.round($total_quantity,2);
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
                             ->create("whatsapp:+91".$phone_number,
                                 [
                                     "body" => 'Dear '.strtoupper($customer['manager']->first_name).'
-                                    '.Auth::user()->first_name.' has created an order #'.$order_id.' for '. $customer->owner_name .', '.round($total_quantity,2).'. Kindly check and contact.
+                                    '.Auth::user()->first_name.' has created an order #'.$order_id.' for '. $cust_qnty.'. Kindly check and contact.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -2212,7 +2212,7 @@ class OrderController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #'.$delivery_order_id.' has been successfully converted to Delivery order for following products:";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$delivery_order_id." has been successfully converted to Delivery order for following products:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
@@ -2258,7 +2258,7 @@ class OrderController extends Controller {
                     // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has converted an order #'.$delivery_order_id.' to delivery order for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has converted an order #".$delivery_order_id." to delivery order for " . $customer->owner_name . ", " . round($total_quantity,2) . " Kindly check and contact.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -2273,14 +2273,14 @@ class OrderController extends Controller {
                         curl_close($ch);
                     }
                     if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        
+                        $cust_qnty = $customer->owner_name . ", " . round($total_quantity,2);
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
                             ->create("whatsapp:+91".$phone_number,
                                 [
                                     "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
-                                    '.strtoupper(Auth::user()->first_name).' has converted an order #'.$delivery_order_id.' to delivery order for {{4}}. Kindly check and contact.
+                                    '.strtoupper(Auth::user()->first_name).' has converted an order #'.$delivery_order_id.' to delivery order for '.$cust_qnty.'. Kindly check and contact.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
