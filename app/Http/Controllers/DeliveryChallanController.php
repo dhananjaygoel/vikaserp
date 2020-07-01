@@ -1918,7 +1918,7 @@ class DeliveryChallanController extends Controller {
                 } else {
                     if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
                         $hsn_list[] = $temp_var;
-                        if($delivery_challan_products->vat_percentage == 1){
+                        if($delivery_challan_products->vat_percentage == '1.00'){
                             $hsn_data[] = [
                                 'id' => $temp_var,
                                 'vat_percentage' => (int)$gst,
