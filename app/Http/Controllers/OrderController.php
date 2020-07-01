@@ -1302,7 +1302,7 @@ class OrderController extends Controller {
          * ----------------------------------
          */
         $input = Input::all();
-
+        $product_string = '';
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
                 $customer = Customer::with('manager')->find($customer_id);
@@ -1414,10 +1414,11 @@ class OrderController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order #'.$id.' has been edited for the following products: \n";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$id." has been edited for the following products: \n";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
+                            $product_string = $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                             if ($product_data['units'] == 1) {
                                 $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -1617,6 +1618,12 @@ class OrderController extends Controller {
                                 if ($product_data['units'] == 3) {
                                     $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                                 }
+                                if ($product_data['units'] == 4) {
+                                    $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
+                                }
+                                if ($product_data['units'] == 5) {
+                                    $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
+                                }
                             }
 
                             /* check for vat/gst items */
@@ -1649,6 +1656,7 @@ class OrderController extends Controller {
                                 $curl_scraped_page = curl_exec($ch);
                                 curl_close($ch);
 
+                                
                                 $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                                 try{
                                     $message = $twilio->messages
@@ -1656,7 +1664,7 @@ class OrderController extends Controller {
                                         [
                                             "body" => 'Dear '.strtoupper($customer->owner_name).'
                                             On Dated '. date("j M, Y") .'
-                                            Admin has rejected your order '.$id.'.
+                                            Admin has rejected your order #'.$id.'.
                                             VIKAS ASSOCIATES.',
                                             "from" => "whatsapp:+13344012472"
                                         ]
@@ -1667,7 +1675,8 @@ class OrderController extends Controller {
 
                             }
                             if (count((array)$customer['manager']) > 0) {
-                                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has rejected an order #'.$id.' for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check and contact. \nVIKAS ASSOCIATES";
+                                $cust_qnty = $customer->owner_name . ', ' . round($total_quantity, 2);
+                                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has rejected an order #".$id." for " . $cust_qnty .". Kindly check and contact. \nVIKAS ASSOCIATES";
                                 if (App::environment('development')) {
                                     $phone_number = Config::get('smsdata.send_sms_to');
                                 } else {
@@ -1687,7 +1696,7 @@ class OrderController extends Controller {
                                         ->create("whatsapp:+91".$phone_number,
                                             [
                                                 "body" => 'Dear '. strtoupper($customer['manager']->first_name) .'
-                                                '.strtoupper(Auth::user()->first_name).' has rejected an order #'.$id.' for '. $customer->owner_name . ', ' . round($total_quantity, 2) .' Kindly check and contact.
+                                                '.strtoupper(Auth::user()->first_name).' has rejected an order #'.$id.' for '. $cust_qnty .' Kindly check and contact.
                                                 VIKAS ASSOCIATES.',
                                                 "from" => "whatsapp:+13344012472"
                                             ]
@@ -1806,14 +1815,20 @@ class OrderController extends Controller {
                 foreach ($order['all_order_products'] as $product_data) {
                     $product_string .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",";
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                    if ($product_data['units'] == 1) {
+                    if ($product_data['unit_id'] == 1) {
                         $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                     }
-                    if ($product_data['units'] == 2) {
+                    if ($product_data['unit_id'] == 2) {
                         $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
                     }
-                    if ($product_data['units'] == 3) {
+                    if ($product_data['unit_id'] == 3) {
                         $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                    }
+                    if ($product_data['unit_id'] == 4) {
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
+                    }
+                    if ($product_data['unit_id'] == 5) {
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                     }
                 }
                 $str .= ".\nVIKAS ASSOCIATES";
