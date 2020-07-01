@@ -231,7 +231,7 @@
                                 ?>
                                 @foreach($allorder['hsn'] as $hsn)
                                 <tr>
-                                    <td>{{$hsn['id']}}</td>
+                                    <td>{{ $hsn['id'] }}</td>
                                     <td>{{ round($hsn['actual_quantity'], 2) }}</td>
                                     <td>{{ round($hsn['amount'], 2) }}</td>
                                     <td>{{ round($hsn['vat_percentage'], 2) }}</td>
