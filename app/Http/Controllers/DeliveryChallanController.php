@@ -917,7 +917,7 @@ class DeliveryChallanController extends Controller {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = $total_quantity + $product_data->quantity;
+                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
                     $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
                             ", Driver No. " . $allorder['delivery_order']->driver_contact_no .
