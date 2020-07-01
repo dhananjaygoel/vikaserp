@@ -1498,6 +1498,7 @@ class DeliveryOrderController extends Controller {
         $actual_pieces = Input::get('actual_pieces');
         $average_weight = Input::get('average_weight');
         $delivery_id = Input::get('delivery_id');
+        $delivery_order_details = DeliveryOrder::find($delivery_id);
         $product_id = Input::get('product_id');
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
