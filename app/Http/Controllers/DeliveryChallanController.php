@@ -852,26 +852,26 @@ class DeliveryChallanController extends Controller {
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 
             $input_data = $allorder['delivery_challan_products'];
-            $send_sms = Input::get('send_sms');
+            $send_sms = Input::get('send_msg');
+            $send_whatsapp = Input::get('send_whatsapp');
             $product_string = '';
             $customer_id = $allorder->customer_id;
             $customer = Customer::with('manager')->find($customer_id);
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($sms_flag == 1) {
-                if ($cust_count > 0) {
-
+                if (count((array)$cust_count) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour delivery challan #'.$id.' has been edited for following products: ";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour delivery challan #".$id." has been edited for following products:\n";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= $s = " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Driver No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
+                    $str .= " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A') .
+                            ", Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .
+                            ", Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ", Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .
                             ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
@@ -882,14 +882,14 @@ class DeliveryChallanController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                    if (SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
                     // whatsapp code starts here
-                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    if(isset($send_whatsapp) && $send_whatsapp == "yes"){
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
@@ -899,7 +899,7 @@ class DeliveryChallanController extends Controller {
                                         On Dated '. date("j M, Y") .'
                                         Your delivery challan #'.$id.' has been edited for following products:
                                         '.$product_string.'
-                                        Vehicle No: '.$allorder['delivery_order']->vehicle_number.', Driver No: '. $allorder['delivery_order']->driver_contact_no .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. $allorder->grand_price .', Due by: '. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
+                                        Vehicle No: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '. (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due by: '. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
                                         VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -912,17 +912,17 @@ class DeliveryChallanController extends Controller {
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has edited delivery challan #'.$id.' for " . $customer->owner_name . " is as follows: " . $s;
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has edited delivery challan #".$id." for " . $customer->owner_name . " is as follows: ";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= " Vehicle No. " . $allorder['delivery_order']->vehicle_number .
-                            ", Driver No. " . $allorder['delivery_order']->driver_contact_no .
-                            ", Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount " . $allorder->grand_price .
+                    $str .= " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A') .
+                            ", Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .
+                            ", Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ", Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .
                             ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
                             "\nVIKAS ASSOCIATES";
 
@@ -933,23 +933,23 @@ class DeliveryChallanController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
                     // whatsapp code starts here
-                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    if(isset($send_whatsapp) && $send_whatsapp == "yes"){
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
                             ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .'
-                                        '.Auth::user()->first_name.' has edited delivery challan #'.$id.' for ' . $customer->owner_name . ' is as follows:
+                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                        '.Auth::user()->first_name.' has edited delivery challan #'.$id.' for ' . $customer->owner_name . ' is as following:
                                         '.$product_string.'
-                                        Vehicle No: '.$allorder['delivery_order']->vehicle_number.', Driver No: '. $allorder['delivery_order']->driver_contact_no .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. $allorder->grand_price .', Due by: '. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
+                                        Vehicle No: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '. (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due by: '. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
                                         VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -1758,19 +1758,19 @@ class DeliveryChallanController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour material has been dispatched as follows ";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$id." has been dispatched for following products:\n";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= $s = " Vehicle No. " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
-                            ",\n Driver No. " . (isset($allorder['delivery_order']->driver_contact_no)?$allorder['delivery_order']->driver_contact_no:"") .
-                            ",\n Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ",\n Amount " . (isset($allorder->grand_price)?$allorder->grand_price:"") .
+                    $str .= $s = " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
+                            ",\n Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:"") .
+                            ",\n Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ",\n Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:"") .
                             ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
+                            "\nVIKAS ASSOCIATES.";
 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1796,7 +1796,7 @@ class DeliveryChallanController extends Controller {
                                             On Dated '. date("j M, Y") .'
                                             Your order #'.$id.' has been dispatched for following products:
                                             '.$product_string.'
-                                            Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"").', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no)?$allorder['delivery_order']->driver_contact_no:"") .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:"") .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
+                                            Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
                                             VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -1816,12 +1816,12 @@ class DeliveryChallanController extends Controller {
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= $s = " Vehicle No. " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
-                            ",\n Driver No. " . (isset($allorder['delivery_order']->driver_contact_no)?$allorder['delivery_order']->driver_contact_no:"") .
-                            ",\n Quantity " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ",\n Amount " . (isset($allorder->grand_price)?$allorder->grand_price:"") .
+                    $str .= $s = " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
+                            ",\n Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:"") .
+                            ",\n Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
+                            ",\n Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:"") .
                             ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
+                            "\nVIKAS ASSOCIATES.";
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1843,10 +1843,10 @@ class DeliveryChallanController extends Controller {
                             $message = $twilio->messages
                             ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).'
+                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
                                            '.Auth::user()->first_name.' has dispatched an order #'.$id.' for '. $customer->owner_name . ' is as following:
                                             '.$product_string.'
-                                            Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"").', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no)?$allorder['delivery_order']->driver_contact_no:"") .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:"") .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
+                                            Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
                                             VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]

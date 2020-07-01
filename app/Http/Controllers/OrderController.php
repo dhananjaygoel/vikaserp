@@ -943,7 +943,7 @@ class OrderController extends Controller {
                             $message = $twilio->messages
                             ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).'
+                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
                                     '.Auth::user()->first_name.' has created an order #'.$order_id.' for '. $cust_qnty.'. Kindly check and contact.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
@@ -1418,7 +1418,7 @@ class OrderController extends Controller {
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
-                            $product_string = $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                             if ($product_data['units'] == 1) {
                                 $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -1463,7 +1463,7 @@ class OrderController extends Controller {
                                     On Dated '. date("j M, Y") .'
                                     Your order #'.$id.' has been edited for the following products:
                                     '.$product_string.'
-                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'
+                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -1476,7 +1476,7 @@ class OrderController extends Controller {
                 }
                     
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited an order #'.$id.' for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check and contact. \nVIKAS ASSOCIATES";
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited an order #".$id." for " . $customer->owner_name . ", " . round($total_quantity, 2) . ". Kindly check and contact. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -1492,14 +1492,14 @@ class OrderController extends Controller {
                     }
                     // whatsapp code starts here
                     if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        
+                        $cust_qnty = $customer->owner_name . ', ' . round($total_quantity, 2);
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
                             ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .'
-                                    '.strtoupper(Auth::user()->first_name).' has edited an order #'.$id.' for '. $customer->owner_name . ', ' . round($total_quantity, 2) .' Kindly check and contact.
+                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                    '.strtoupper(Auth::user()->first_name).' has edited an order #'.$id.' for '. $cust_qnty .'. Kindly check and contact.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -1695,7 +1695,7 @@ class OrderController extends Controller {
                                         $message = $twilio->messages
                                         ->create("whatsapp:+91".$phone_number,
                                             [
-                                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .'
+                                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
                                                 '.strtoupper(Auth::user()->first_name).' has rejected an order #'.$id.' for '. $cust_qnty .' Kindly check and contact.
                                                 VIKAS ASSOCIATES.',
                                                 "from" => "whatsapp:+13344012472"
@@ -1832,7 +1832,7 @@ class OrderController extends Controller {
                         $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
                 }
-                $str .= ".\nVIKAS ASSOCIATES";
+                $str .= "\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1885,7 +1885,7 @@ class OrderController extends Controller {
                         ->create("whatsapp:+91".$phone_number,
                             [
                                 "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
-                                '.strtoupper(Auth::user()->first_name).' has canceled an order #'.$order_id.' for '.strtoupper($customer->owner_name). ' '. round($total_quantity, 2) .' Kindly check and contact.
+                                '.strtoupper(Auth::user()->first_name).' has canceled an order #'.$order_id.' for '.strtoupper($customer->owner_name). ', '. round($total_quantity, 2) .' Kindly check and contact.
                                 VIKAS ASSOCIATES.',
                                 "from" => "whatsapp:+13344012472"
                             ]
@@ -2259,7 +2259,7 @@ class OrderController extends Controller {
                     // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has converted an order #".$delivery_order_id." to delivery order for " . $customer->owner_name . ", " . round($total_quantity,2) . " Kindly check and contact.\nVIKAS ASSOCIATES";
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has converted an order #".$delivery_order_id." to delivery order for " . $customer->owner_name . ", " . round($total_quantity,2) . ". Kindly check and contact.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {

@@ -36,6 +36,8 @@ class PurchaseChallanController extends Controller {
         define('SENDER_ID', Config::get('smsdata.sender_id'));
         define('SMS_URL', Config::get('smsdata.url'));
         define('SEND_SMS', Config::get('smsdata.send'));
+        define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
+        define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
         $this->middleware('validIP');
     }
 
@@ -594,9 +596,12 @@ class PurchaseChallanController extends Controller {
                 $customer = Customer::with('manager')->find($customer_id);
                 if (count((array)$customer) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour material has been delivered as follows ";
+                    $product_string = '';
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour purchase order #".$id." has been dispatched for following products:\n";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
+                        $product_string .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                        $str .= $product_data['purchase_product_details']->alias_name . " - " . $product_data->quantity . " - " . $product_data->price . ",\n";
                         if ($product_data['unit']->id == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                         }
@@ -613,10 +618,10 @@ class PurchaseChallanController extends Controller {
                             $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                         }
                     }
-                    $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
-                            . ",\n Quantity. " . round($input_data->sum('quantity'), 2)
-                            . ",\n Amount " . $purchase_challan->grand_total
-                            . ",\n Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                    $str .= " Vehicle No: " . (isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A')
+                            . ",\n Quantity: " . round($input_data->sum('quantity'), 2)
+                            . ",\n Amount: " . (isset($purchase_challan->grand_total)?$purchase_challan->grand_total:'N/A')
+                            . ",\n Due by: " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                             . ".\nVIKAS ASSOCIATES";
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -634,28 +639,32 @@ class PurchaseChallanController extends Controller {
                         curl_close($ch);
                     }
                     // whatsapp code starts here
-                    if($send_whatsapp == 'true'){
-                        $sid = 'AC405803610638a694e57432bf99043d49';
-                        $token = '7aec8d8780e37097db9f63b1ef55d915';
-                        $twilio = new Client($sid, $token);
+                    if(SEND_SMS === true && $send_whatsapp == 'true'){
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
+                        ->create("whatsapp:+91".$phone_number,
                             [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
+                                "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                On Dated '.date("j M, Y").'
+                                Your purchase order #'.$id.' has been dispatched for following products:
+                                '.$product_string.'
+                                Vehicle No:'.(isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A').', Quantity:'.round($input_data->sum('quantity'), 2).', Amount:'.(isset($purchase_challan->grand_total)?$purchase_challan->grand_total:'N/A').', Due By:'.date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date)).'.
+                                VIKAS ASSOCIATES.',
+                                "from" => "whatsapp:+13344012472"
                             ]
                         );
-                        
-                        // print($message->sid);
                     }
                     // whatsapp testing code endse here
                 }
 
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has delivered for " . $customer->owner_name . " as follows ";
+                    $product_string = '';
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . " has dispatched purchase order #".$id." for " . $customer->owner_name . " is as following:\n";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
+                        $product_string .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
+                        $str .= $product_data['purchase_product_details']->alias_name . " - " . $product_data->quantity . " - " . $product_data->price . ",\n";
                         if ($product_data['unit']->id == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                         }
@@ -672,10 +681,10 @@ class PurchaseChallanController extends Controller {
                             $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                         }
                     }
-                    $str .= " Vehicle No. " . $purchase_challan['purchase_advice']->vehicle_number
-                            . ", Quantity. " . round($input_data->sum('quantity'), 2)
-                            . ", Amount " . $purchase_challan->grand_total
-                            . ", Due by " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
+                    $str .= " Vehicle No: " . (isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A')
+                            . ",\n Quantity: " . round($input_data->sum('quantity'), 2)
+                            . ",\n Amount: " . (isset($purchase_challan->grand_total)?$purchase_challan->grand_total:'N/A')
+                            . ",\n Due by: " . date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))
                             . ".\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -686,11 +695,25 @@ class PurchaseChallanController extends Controller {
 
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && $send_sms == 'true') {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
+                    }
+                    if(SEND_SMS === true && $send_whatsapp == 'true'){
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        $message = $twilio->messages
+                        ->create("whatsapp:+91".$phone_number,
+                            [
+                                "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
+                                '.Auth::user()->first_name.' has dispatched purchase order #'.$id.' for '.$customer->owner_name.' is as following:
+                                '.$product_string.'
+                                Vehicle No:'.(isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A').', Quantity:'.round($input_data->sum('quantity'), 2).', Amount:'.(isset($purchase_challan->grand_total)?$purchase_challan->grand_total:'N/A').', Due By:'.date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date)).'.
+                                VIKAS ASSOCIATES.',
+                                "from" => "whatsapp:+13344012472"
+                            ]
+                        );
                     }
                 }
             // }
