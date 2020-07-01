@@ -1095,7 +1095,7 @@ class DeliveryOrderController extends Controller {
         //  dd($input_data);
         $delboy = Auth::id();
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
-        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
+        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
             $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
             $truck_product_ids = "";
             if(!empty($inputprodut)){
@@ -1266,7 +1266,7 @@ class DeliveryOrderController extends Controller {
                 ]);
             }
           
-            if($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 8){
+            if($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())){
                 $variable = 'truck_weight'.Auth::id();
                 $truck_weight_array = (Input::has($variable)) ? Input::get($variable) : $truck_weight='Invalid';
                 if(isset($truck_weight_array) && $truck_weight_array != 0){
@@ -1470,7 +1470,7 @@ class DeliveryOrderController extends Controller {
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
             $action = Input::get('action');
             $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->count();
-            if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
+            if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
                 if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != '0') {
                     if(!($truck_weight<$empty_truck_weight)) {
                         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
@@ -1515,8 +1515,9 @@ class DeliveryOrderController extends Controller {
 
         $empty_truck_value = (Input::has('empty_truck_value')) ? Input::get('empty_truck_value') : '0';
         $delivery_id = Input::get('delivery_id');
+        $delivery_order_details = DeliveryOrder::find($delivery_id);
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
-        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
+        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
             if($empty_truck_value != '' || $empty_truck_value != '0') {
                 $update_delivery = DeliveryOrder::where('id',$delivery_id)->update([
                     'empty_truck_weight'=>$empty_truck_value,
@@ -1558,9 +1559,10 @@ class DeliveryOrderController extends Controller {
         }
         // dd($labour);
         $delivery_id = Input::get('delivery_id');
+        $delivery_order_details = DeliveryOrder::find($delivery_id);
         $delboy_id = Input::get('delboy_id');
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
-        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || Auth::user()->role_id == 8) {
+        if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
             if($truck_weight != 0 ) {
                 $loadetrucks[] = [
                     'deliver_id' => $delivery_id,
