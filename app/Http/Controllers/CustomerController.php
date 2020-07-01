@@ -465,6 +465,7 @@ public function update_cust_all_inc(){
             if(empty($city)){
                 return Redirect::back()->withInput()->with('error', 'Selected City is not from Selected State.Please refresh the page.');
             }
+            
             $Qdata = [
                 "GivenName"=>  Input::get('owner_name'),
                 "FullyQualifiedName"=> Input::get('tally_name'),
