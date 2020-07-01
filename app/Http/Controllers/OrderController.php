@@ -1360,7 +1360,7 @@ class OrderController extends Controller {
                                     On Dated '. date("j M, Y") .'
                                     Your order #'.$id.' has been edited for the following products:
                                     '.$product_string.'
-                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'
+                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'.
                                     VIKAS ASSOCIATES.',
                                     "from" => "whatsapp:+13344012472"
                                 ]
@@ -1389,14 +1389,14 @@ class OrderController extends Controller {
                         }
                             // whatsapp code starts here
                         if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                            
+                            $cust_qnty = $customer->owner_name . ', ' . round($total_quantity, 2);
                             $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                             try{
                                 $message = $twilio->messages
                                 ->create("whatsapp:+91".$phone_number,
                                     [
                                         "body" => 'Dear '. strtoupper($customer['manager']->first_name) .'
-                                        '.strtoupper(Auth::user()->first_name).' has edited an order #'.$id.' for '. $customer->owner_name . ', ' . round($total_quantity, 2) .' Kindly check and contact.
+                                        '.strtoupper(Auth::user()->first_name).' has edited an order #'.$id.' for '. $cust_qnty .' Kindly check and contact.
                                         VIKAS ASSOCIATES.',
                                         "from" => "whatsapp:+13344012472"
                                     ]
@@ -1813,6 +1813,7 @@ class OrderController extends Controller {
                 $total_quantity = '';
                 $str = "Dear " . $customer->owner_name . "\nOn Dated ". date("j M, Y") ."\n Your order #".$order_id." has been canceled for following products: \n";
                 foreach ($order['all_order_products'] as $product_data) {
+                    $product = ProductSubCategory::find($product_data['id']);
                     $product_string .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",";
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                     if ($product_data['unit_id'] == 1) {
