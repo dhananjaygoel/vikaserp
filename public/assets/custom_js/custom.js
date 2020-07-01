@@ -3917,7 +3917,6 @@ $("body").on('click',"button", function() {
 
 $(".assign_load1").click(function(e){
     e.preventDefault();
-
     var select = $('#del_boy');
     var role_id = $(this).attr('data-role_id');
     var delivery_boy = $(this).attr('data-delivery_boy');
