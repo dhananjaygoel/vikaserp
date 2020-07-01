@@ -490,10 +490,10 @@ $("body").delegate(".empty_truck_weight", "keyup", function (event) {
     truck_weight(event);
 
 });
-$("body").delegate(".final_truck_weight", "keyup", function (event) {
-    truck_weight(event);
+// $("body").delegate(".final_truck_weight", "keyup", function (event) {
+//     truck_weight(event);
 
-});
+// });
 
 
 /**
