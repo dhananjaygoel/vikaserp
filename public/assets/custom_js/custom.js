@@ -3730,6 +3730,9 @@ $("body").on('click',"button", function() {
                         // return false;
                     }else {
                         $('.error-success1').show();
+                        setTimeout(function(){
+                            $('.error-success1').hide();
+                        }, 5000);
                     }
                 } 
             })
@@ -3770,6 +3773,9 @@ $("body").on('click',"button", function() {
                         // return false;
                     }else {
                         $('.error-success1').show();
+                        setTimeout(function(){
+                            $('.error-success1').hide();
+                        }, 5000);
                     }
                 } 
             })
@@ -3845,6 +3851,9 @@ $("body").on('click',"button", function() {
                             // return false;
                     }else {
                         $('.error-success1').show();
+                        setTimeout(function(){
+                            $('.error-success1').hide();
+                        }, 5000);
                         $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                     }
                 } 
