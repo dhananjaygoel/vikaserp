@@ -223,6 +223,12 @@
                                     <td class="label">GST</td>
                                     <td class="label">Total Inc GST</td>
                                 </tr>
+                                <?php
+                                    $gst_percentage=0;
+                                    $total_amount=0;
+                                    $total_qty=0;
+                                    $total_inc_gst=0;
+                                ?>
                                 @foreach($allorder['hsn'] as $hsn)
                                 <tr>
                                     <td>{{$hsn['id']}}</td>
@@ -231,7 +237,20 @@
                                     <td>{{ round($hsn['vat_percentage'], 2) }}</td>
                                     <td>{{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</td>
                                 </tr>
+                                <?php
+                                    $gst_percentage = $hsn['vat_percentage'];
+                                    $total_amount += $hsn['amount'];
+                                    $total_qty += $hsn['actual_quantity'];
+                                    $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
+                                ?>
                                 @endforeach
+                                <tr>
+                                    <td><b>Total</b></td>
+                                    <td><b>{{ round($total_qty, 2) }}</b></td>
+                                    <td><b>{{ round($total_amount, 2) }}</b></td>
+                                    <td><b>{{ round($gst_percentage, 2) }}</b></td>
+                                    <td><b>{{ round($total_inc_gst, 2) }}</b></td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>
