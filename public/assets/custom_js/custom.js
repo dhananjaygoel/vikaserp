@@ -3844,8 +3844,8 @@ $("body").on('click',"button", function() {
                             window.onbeforeunload = null;
                             // return false;
                     }else {
-                        $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                         $('.error-success1').show();
+                        $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                     }
                 } 
             })
