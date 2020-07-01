@@ -1820,16 +1820,16 @@ class OrderController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 2) {
-                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)$product->weight;
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'');
                     }
                     if ($product_data['unit_id'] == 3) {
                         $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
-                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
                     }
                     if ($product_data['unit_id'] == 5) {
-                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
                 }
                 $str .= ".\nVIKAS ASSOCIATES";
