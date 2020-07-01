@@ -1093,6 +1093,7 @@ class DeliveryOrderController extends Controller {
     public function store_load_truck($id) {
         $input_data = Input::all();
         //  dd($input_data);
+        $delivery_order_details = DeliveryOrder::find($id);
         $delboy = Auth::id();
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
