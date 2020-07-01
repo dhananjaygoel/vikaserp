@@ -1879,7 +1879,8 @@ class DeliveryChallanController extends Controller {
             }
             if (isset($temp_var)) {
                 $hsn_detail = App\Hsn::where('hsn_code',$temp_var)->first();
-                
+                $gst = (isset($delivery_challan_products->vat_percentage) && $delivery_challan_products->vat_percentage != '0.00')?$hsn_detail->gst:0;
+
                 if(isset($delivery_challan_products->price) && $delivery_challan_products->price != '0.00'){
                     $price = $delivery_challan_products->price;
                 }else{
@@ -1895,19 +1896,19 @@ class DeliveryChallanController extends Controller {
                             $final_amount = $value['amount']+$amont;
                             if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
                                 if($delivery_challan_products->vat_percentage == 1){
-                                    $vat_amount = (float)$value['vat_amount']+(float)($amont * $hsn_detail->gst / 100);
+                                    $vat_amount = (float)$value['vat_amount']+(float)($amont * $gst / 100);
                                 }
                                 else{
                                     $vat_amount = $value['vat_amount'];
                                 }
                             }
                             else{
-                                $vat_amount = (float)$value['vat_amount']+(float)($amont * $hsn_detail->gst / 100);
+                                $vat_amount = (float)$value['vat_amount']+(float)($amont * $gst / 100);
                             }
 
                             $hsn_data[$key] = [
                                 'id' => $temp_var,
-                                'vat_percentage' => (int)$hsn_detail->gst,
+                                'vat_percentage' => (int)$gst,
                                 'actual_quantity' => $actual_quantity,
                                 'amount' => $final_amount,
                                 'vat_amount' => $vat_amount,
@@ -1920,10 +1921,10 @@ class DeliveryChallanController extends Controller {
                         if($delivery_challan_products->vat_percentage == 1){
                             $hsn_data[] = [
                                 'id' => $temp_var,
-                                'vat_percentage' => (int)$hsn_detail->gst,
+                                'vat_percentage' => (int)$gst,
                                 'actual_quantity' => $delivery_challan_products->actual_quantity,
                                 'amount' => $amont,
-                                'vat_amount' => (float)$amont * (float)$hsn_detail->gst / 100,
+                                'vat_amount' => (float)$amont * (float)$gst / 100,
                             ];
                         }else{
                             $hsn_data[] = [
@@ -1939,10 +1940,10 @@ class DeliveryChallanController extends Controller {
                         $hsn_list[] = $temp_var;
                         $hsn_data[] = [
                             'id' => $temp_var,
-                            'vat_percentage' => (int)$hsn_detail->gst,
+                            'vat_percentage' => (int)$gst,
                             'actual_quantity' => $delivery_challan_products->actual_quantity,
                             'amount' => $amont,
-                            'vat_amount' => (float)$amont * (float)$hsn_detail->gst / 100,
+                            'vat_amount' => (float)$amont * (float)$gst / 100,
                         ];
                     }
                 }
