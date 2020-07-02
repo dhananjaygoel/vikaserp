@@ -1823,7 +1823,7 @@ class OrderController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'');
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)(isset($product->standard_length)?$product->standard_length:'') ) * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
                         $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);

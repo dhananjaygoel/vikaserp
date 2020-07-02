@@ -341,7 +341,7 @@
                                 <textarea class="form-control" id="inquiry_remark" name="inquiry_remark"  rows="3"></textarea>
                             </div>
                             
-                            <div class="checkbox customer_select_order">
+                            <div class="checkbox customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
                                 <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label>
                                 <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                             </div>
