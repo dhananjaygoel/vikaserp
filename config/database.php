@@ -15,8 +15,8 @@ return [
     |
     */
 
-    // 'default' => env('DB_CONNECTION', 'mysql'),
-    'default' => (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "v.vikaserp.in" ? env('DB_PROD_CONNECTION', 'mysql1') : env('DB_CONNECTION', 'mysql')),
+    'default' => env('DB_CONNECTION', 'mysql'),
+    // 'default' => (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == "v.vikaserp.in" ? env('DB_PROD_CONNECTION', 'mysql1') : env('DB_CONNECTION', 'mysql')),
 
     /*
     |--------------------------------------------------------------------------
