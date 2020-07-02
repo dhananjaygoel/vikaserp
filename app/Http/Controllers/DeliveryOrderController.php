@@ -590,11 +590,12 @@ class DeliveryOrderController extends Controller {
             }
             if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
+                $product_string = '';
                 $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has edited an delivery order #".$delivery_order->id." for " . $customer->owner_name . " is as following:\n";
                 foreach ($delivery_order['delivery_product'] as $product_data) {
                     $prod = AllOrderProducts::with('product_sub_category')->find($product_data->id);
 
-
+                    $product_string .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ", ";
                     $str .= $prod['product_sub_category']->alias_name . ' - ' . $prod->quantity . ' - ' . $prod['price'] . ",\n";
                     $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                 }
@@ -2145,6 +2146,7 @@ class DeliveryOrderController extends Controller {
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
+                    $product_string = '';
                     $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has printed delivery order #". $delivery_data->id." for " . $customer->owner_name . " is as following\n";
                     foreach ($input_data as $product_data) {
                         $product_string .= $product_data['order_product_details']->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ", ";

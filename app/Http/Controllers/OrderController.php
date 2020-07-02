@@ -1823,7 +1823,7 @@ class OrderController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'');
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)(isset($product->standard_length)?$product->standard_length:'') ) * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
                         $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -2216,8 +2216,8 @@ class OrderController extends Controller {
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$delivery_order_id." has been successfully converted to Delivery order for following products:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
-                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - '. $product_data['price'] . ', ';
+                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - '. $product_data['price'] . ', ';
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
