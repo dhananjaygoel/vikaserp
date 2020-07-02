@@ -912,6 +912,7 @@ class DeliveryChallanController extends Controller {
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
+                    $product_string = '';
                     $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has edited delivery challan #".$id." for " . $customer->owner_name . " is as follows: ";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
@@ -1809,14 +1810,15 @@ class DeliveryChallanController extends Controller {
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . "  has dispatched an order #".$id." for " . $customer->owner_name . " is as following:\n " . $s;
+                    $product_string = '';
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . "  has dispatched an order #".$id." for " . $customer->owner_name . " is as following:\n ";
                     foreach ($input_data as $product_data) {
                         $product = ProductSubCategory::find($product_data->product_category_id);
                         $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
                     }
-                    $str .= $s = " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
+                    $str .= " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
                             ",\n Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:"") .
                             ",\n Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
                             ",\n Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:"") .

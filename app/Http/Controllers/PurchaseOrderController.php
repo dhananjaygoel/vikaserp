@@ -378,6 +378,7 @@ class PurchaseOrderController extends Controller {
 
             if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
+                $product_string = '';
                 $str = "Dear " . strtoupper($customer['manager']->first_name) . ",\n" . Auth::user()->first_name . "  has logged purchase order #".$purchase_order_id." for " . $customer->owner_name . " is as following:\n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
@@ -710,6 +711,7 @@ class PurchaseOrderController extends Controller {
 
             if (count((array)$customer['manager']) > 0) {
                 $total_quantity = '';
+                $product_string = '';
                 $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . "  has edited purchase order #".$id." for " . $customer->owner_name . " \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {

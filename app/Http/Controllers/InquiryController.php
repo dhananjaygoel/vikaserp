@@ -818,6 +818,7 @@ class InquiryController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
+                    $product_string = '';
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour inquiry #".$id." has been edited for following products:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {

@@ -2216,8 +2216,8 @@ class OrderController extends Controller {
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$delivery_order_id." has been successfully converted to Delivery order for following products:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
-                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - '. $product_data['price'] . ', ';
+                            $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - '. $product_data['price'] . ', ';
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
