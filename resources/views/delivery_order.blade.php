@@ -287,7 +287,7 @@
                                        data-labour_pipe="{{$delivery->labour_pipe}}"
                                        data-labour_structure="{{$delivery->labour_structure}}"
                                        data-toggle="modal" data-target="#myModalassign"
-                                       title="<?php (!empty($data_supervisor_id))? print $opt : print "Assign Delivery-Supervisor" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                       title="<?php (!empty($data_supervisor_id) && !empty($opt))? print $opt : print "Assign Delivery-Supervisor" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
 
                                            @endif
                                           @endif
@@ -319,7 +319,7 @@
                                        data-labour_pipe="{{$delivery->labour_pipe}}"
                                        data-labour_structure="{{$delivery->labour_structure}}"
                                        data-toggle="modal" data-target="#myModalassign1"
-                                       title="<?php (!empty($data_delivery_boy)) ? print $opt : print "Assign Delivery-Boy" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_delivery_boy)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-users fa-stack-3x fa-inverse"></i></button>
+                                       title="<?php (!empty($data_delivery_boy) && !empty($opt)) ? print $opt : print "Assign Delivery-Boy" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_delivery_boy)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-users fa-stack-3x fa-inverse"></i></button>
 
                                            @endif
                                           @endif
