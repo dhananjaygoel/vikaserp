@@ -3835,9 +3835,9 @@ $("body").on('click',"button", function() {
                     labour:labour
                 },
                 success: function (data) {
-                    // alert(data);
-                    if(data=='success'){
-                        
+                    var data = jQuery.parseJSON(data);
+                    if(data[0]=='success'){
+                        // alert(data[0]);
                         $('.alert-success-truck-weight').show();
                         setTimeout(function(){
                             $('.alert-success-truck-weight').hide();
@@ -3847,6 +3847,10 @@ $("body").on('click',"button", function() {
                         $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
                         $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
                         $('.multiselect').prop("disabled",true);
+
+                        if(data[1] != ''){
+                            $('#load_label_'+delboy_id+'_'+truck_sequence).html(data[1]);
+                        }
                             window.onbeforeunload = null;
                             // return false;
                     }else {
@@ -3899,6 +3903,7 @@ $("body").on('click',"button", function() {
                     '<select id="labour_select_'+delboy_id+'_'+truck_sequence+'" name="labour['+delboy_id+'][]" class="form-control labour_select" multiple="multiple">'+
                     '</select>'+
                     '<button type="button" value="truck_weight_save" id="btn_truck_weight_'+delboy_id+'_'+truck_sequence+'" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>'+
+                    '<span id="load_label_'+delboy_id+'_'+truck_sequence+'" style="padding-top:8px;"></span>'+
                     '</li></ul></div>';
 
             $('.add_truck_weight').append(html);

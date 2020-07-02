@@ -1576,48 +1576,61 @@ class DeliveryOrderController extends Controller {
                 ];
     
                 LoadTrucks::insert($loadetrucks);
-    
+                $truck_weight_id = DB::getPdo()->lastInsertId();
+                
                 LoadDelboy::where('delivery_id', '=', $delivery_id)
                         ->where('del_boy', '=', Auth::id())
                         ->where('assigned_status', 1)
                         ->update(array(
                         'updated_at' => date("Y-m-d H:i:s")));
 
-                    if(!empty($labour)){
-                        foreach($labour as $key => $val){
-                            $truck_load = LoadTrucks::where('deliver_id', '=', $delivery_id)
-                                    ->where('userid', '=', Auth::id())
-                                    ->where('final_truck_weight', $truck_weight)
-                                    ->orderBy('id','DESC')
-                                    ->first();
-                            if(!empty($truck_load)){
-                                // $labour_count = LoadLabour::where('delivery_id',$delivery_id)
-                                //     ->where('del_boy_id',Auth::id())
-                                //     ->where('truck_weight_id',$truck_load->id)
-                                //     ->first();
-                                
-                                // if(!empty($labour_count)){
-                                //     LoadLabour::where('delivery_id',$delivery_id)
-                                //         ->where('del_boy_id',Auth::id())
-                                //         ->where('truck_weight_id',$truck_load->id)
-                                //         ->delete();
-                                // }
-                                foreach($val as $load_val){
-                                    $load_loabour = [
-                                        'del_boy_id' => Auth::id(),
-                                        'labour_id' => $load_val,
-                                        'delivery_id' => $delivery_id,
-                                        'truck_weight_id'=> $truck_load->id
-                                    ];
-                                    LoadLabour::insert($load_loabour);
-                                }
+                if(!empty($labour)){
+                    foreach($labour as $key => $val){
+                        $truck_load = LoadTrucks::where('deliver_id', '=', $delivery_id)
+                                ->where('userid', '=', Auth::id())
+                                ->where('final_truck_weight', $truck_weight)
+                                ->orderBy('id','DESC')
+                                ->first();
+                        if(!empty($truck_load)){
+                            // $labour_count = LoadLabour::where('delivery_id',$delivery_id)
+                            //     ->where('del_boy_id',Auth::id())
+                            //     ->where('truck_weight_id',$truck_load->id)
+                            //     ->first();
+                            
+                            // if(!empty($labour_count)){
+                            //     LoadLabour::where('delivery_id',$delivery_id)
+                            //         ->where('del_boy_id',Auth::id())
+                            //         ->where('truck_weight_id',$truck_load->id)
+                            //         ->delete();
+                            // }
+                            foreach($val as $load_val){
+                                $load_loabour = [
+                                    'del_boy_id' => Auth::id(),
+                                    'labour_id' => $load_val,
+                                    'delivery_id' => $delivery_id,
+                                    'truck_weight_id'=> $truck_load->id
+                                ];
+                                LoadLabour::insert($load_loabour);
                             }
                         }
                     }
-    
                 }
-            echo "success";
-            // echo json_encode(array("success",$labours));
+                $truck_details = LoadTrucks::where('id',$truck_weight_id)->first();
+
+                $time = date('h:i a', strtotime(isset($truck_details->updated_at)?$truck_details->updated_at:'00:00:00'));
+                
+                $date = date('d/m/Y', strtotime(isset($truck_details->updated_at)?$truck_details->updated_at:'01/01/0000'));
+                
+                $label = '';
+                if($time == '12:00 am' || $truck_details->final_truck_weight == 0){
+                    $label = "N/A";
+                }else{
+                $label = isset($truck_details->updated_at)?" Loaded by ".Auth::user()->first_name." ".Auth::user()->last_name." at ".$time ." on ".$date : " Loaded by ".Auth::user()->first_name." ".Auth::user()->last_name;
+                }
+    
+            }
+            $msg = "success";
+            echo json_encode(array($msg,$label));
         } else{
             echo "failed";
         }

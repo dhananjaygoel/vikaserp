@@ -242,7 +242,7 @@
                                     </select>
                                     <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{$truck_value->userid}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
                                     @if($truck_value->final_truck_weight != 0 )
-                                    <span style="padding-top:8px;"><?php isset($truck_value->final_truck_weight) && $truck_value->final_truck_weight>0 ? print isset($label)?$label:'' : ''?></span>
+                                    <span id="load_label_{{Auth::id()}}_{{$i}}" style="padding-top:8px;"><?php isset($truck_value->final_truck_weight) && $truck_value->final_truck_weight>0 ? print isset($label)?$label:'' : ''?></span>
                                     @endif
                                     </li>
                                 </ul>
@@ -263,6 +263,7 @@
                                             @endif
                                         </select>
                                         <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                        <span id="load_label_{{Auth::id()}}_{{$i}}" style="padding-top:8px;"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -281,6 +282,7 @@
                                         @endif
                                     </select>
                                     <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                    <span id="load_label_{{Auth::id()}}_{{$i}}" style="padding-top:8px;"></span>
                                 </li>
                             </ul>
                         </div>
