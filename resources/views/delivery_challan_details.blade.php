@@ -191,7 +191,8 @@
                                         <td class="col-md-2">
                                             <div class="form-group">
                                                 <?php
-                                                $amount = (float)$product->actual_quantity * (float)$product->price;
+                                                $price = ((isset($product->price) && $product->price != '0.00')?$product->price:$product['order_product_details']->product_category['price']);
+                                                $amount = (float)$product->actual_quantity * (float)$price;
                                                 $total_amount = round($amount + $total_amount, 2);
                                                 ?>
                                                  <?php
