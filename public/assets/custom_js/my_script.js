@@ -930,9 +930,11 @@ $('.print_delivery_challan').click(function () {
 $('.print_inventory_report_list').click(function () {
 //    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
+    var dropdown_value = $('#inventory_report_dropdown').val();
     var base_url = $('#baseurl').attr('name');
     $.ajax({
         type: "GET",
+        data: {dropdown_value:dropdown_value},
         url: base_url + '/print_inventory_report/' + product_id,
         success: function (data) {
             $('#print_inventory_modal').modal('hide');
