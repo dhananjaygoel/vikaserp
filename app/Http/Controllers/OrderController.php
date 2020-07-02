@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use View;
 use App\Customer;
+use App\SendNotification;
+use App\Notifications\NotifySupervisor;
 use App\Units;
 use App\LoadTrucks;
 use App\LoadDelboy;
@@ -113,6 +115,63 @@ class OrderController extends Controller {
                echo "failed";
           }
      }
+
+     public function supervisor_count(){
+         $count = 0;
+        if(Auth::user()->role_id == 0){
+            // $count = DB::table('notifications')->whereNotIn('id',function($query){
+            //     $query->select('notification_id')->from('notification_read_status')
+            //     ->where('read_by',Auth::user()->id);
+            // })->where('assigned_by','<>',Auth::user()->id)->count();
+        }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+            $count = DB::table('notifications')->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_to',Auth::user()->id)->where('assigned_by','<>',Auth::user()->id)->count();
+        }
+        echo $count;
+    }
+    public function load_notification(){
+        $notif = '';
+        if(Auth::user()->role_id == 0){
+            // $notif = DB::table('notifications')->whereNotIn('id',function($query){
+            //     $query->select('notification_id')->from('notification_read_status')
+            //     ->where('read_by',Auth::user()->id);
+            // })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
+        }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+            $notif = DB::table('notifications')->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_to',Auth::user()->id)->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
+        }
+        echo $notif;
+    }
+    public function read_notification(Request $request){
+
+        $user_notification = SendNotification::whereNotIn('id',function($query){
+            $query->select('notification_id')->from('notification_read_status')
+            ->where('read_by',Auth::user()->id);
+        })
+        ->get();
+
+        if($request->id == 0){
+            if(isset($user_notification) && !empty($user_notification)){
+                foreach($user_notification as $read_notif){
+                    $read_notif = DB::table('notification_read_status')->insert(array(
+                        'read_by'=>Auth::user()->id,
+                        'notification_id'=>$read_notif->id
+                    ));
+                }
+            }
+        }else {
+            $read_notif = DB::table('notification_read_status')->insert(array(
+                'read_by'=>Auth::user()->id,
+                'notification_id'=>$request->notif_id
+            ));
+        }
+        echo 'success';
+    }
+
    public function loaded_assign(Request $request){
         $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
 
@@ -120,11 +179,11 @@ class OrderController extends Controller {
 
         $roleid = Auth::user()->role_id;
         if($roleid == 0 || $roleid == 2){
-            if(($delivery_data->del_supervisor =='') || ($delivery_data->del_supervisor != $del_supervisor)){
+            if(!empty($delivery_data->del_supervisor) || ($delivery_data->del_supervisor != $del_supervisor)){
                 $update_delivery = DeliveryOrder::where('id',$request->delivery_id)->update([
                     'del_supervisor'=>$request->del_supervisor,
                 ]);
-                  
+     
                 $user = User::find($del_supervisor);
                 if($user){
                     if (App::environment('local')) {
@@ -133,7 +192,7 @@ class OrderController extends Controller {
                         $mobile_number = $user->mobile_number;
                     }
                     // echo $mobile_number;
-                    $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
+                    $str = "Order #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
@@ -144,12 +203,33 @@ class OrderController extends Controller {
                     }
                 }
 
-                echo "success";
+                $cust = User::where('id',Auth::user()->id)->first();
+                $supervisor = User::where('id',$del_supervisor)->first();
+                
+                if(isset($cust) && isset($supervisor)){
+                    $staff_fname = isset($cust->first_name)?$cust->first_name:'';
+                    $staff_lname = isset($cust->last_name)?$cust->last_name:'';
+                    $supervisor_fname = isset($supervisor->first_name)?$supervisor->first_name:'';
+                    $supervisor_lname = isset($supervisor->last_name)?$supervisor->last_name:'';
+                }
+              /* Add new Notifications */
+              $notification = new SendNotification();
+              $msg = $staff_fname.' '.$staff_lname.' assigned Order to '.$supervisor_fname.' '.$supervisor_lname;
+              $notification->order_id = $request->delivery_id;
+              $notification->order_type = 'delivery_order';
+              $notification->msg = $msg;
+              $notification->assigned_by = Auth::user()->id;
+              $notification->assigned_to = $request->del_supervisor;
+              $notification->user_read_status = '0';
+              $notification->admin_read_status = '0';
+              $notification->save();
+                /* Notification has been stored */
 
-            } else{
-                echo "failed";
-            }
-
+              echo "success";
+          } else{
+            echo "failed";
+       }
+       
         }
 
         // elseif($roleid ==8){
@@ -200,7 +280,7 @@ class OrderController extends Controller {
                         $mobile_number = $user->mobile_number;
                     }
                     // echo $mobile_number;
-                    $str = "Order No #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
+                    $str = "Order #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
@@ -210,6 +290,27 @@ class OrderController extends Controller {
                         curl_close($ch);
                     }
                 }
+                $cust = User::where('id',Auth::user()->id)->first();
+                $supervisor = User::where('id',$del_boy)->first();
+                // dd($supervisor);
+                if(isset($cust) && isset($supervisor)){
+                    $staff_fname = isset($cust->first_name)?$cust->first_name:'';
+                    $staff_lname = isset($cust->last_name)?$cust->last_name:'';
+                    $supervisor_fname = isset($supervisor->first_name)?$supervisor->first_name:'';
+                    $supervisor_lname = isset($supervisor->last_name)?$supervisor->last_name:'';
+                }
+                /* Add new Notifications */
+                $notification = new SendNotification();
+                $msg = $staff_fname.' '.$staff_lname.' assigned Order to '.$supervisor_fname.' '.$supervisor_lname;
+                $notification->order_id = $request->delivery_id;
+                $notification->order_type = 'delivery_order';
+                $notification->msg = $msg;
+                $notification->assigned_by = Auth::user()->id;
+                $notification->assigned_to = $request->del_boy;
+                $notification->user_read_status = '0';
+                $notification->admin_read_status = '0';
+                $notification->save();
+                /* Notification has been stored */
 
                 $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
                                  ->where('del_boy',$request->del_boy)
@@ -754,16 +855,19 @@ class OrderController extends Controller {
          */
 
         $input = Input::all();
+        $product_string = '';
+        // dd($input);
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been created as following \n";
+                $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$order_id." has been logged for following products: \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
+                        $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
                         $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -782,7 +886,7 @@ class OrderController extends Controller {
                         }
                     }
                 }
-                $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $str .= " Material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -796,15 +900,20 @@ class OrderController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
-                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                if(SEND_SMS === true && isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
                     
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
+                        ->create("whatsapp:+91".$phone_number,
                             [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
+                                "body" => 'Dear '.strtoupper($customer->owner_name).'
+                                On Dated '.date("j M, Y").'
+                                Your order #'.$order_id.' has been logged for following products:
+                                '.$product_string.'
+                                Material will be dispatched by '.date("j M, Y", strtotime($datetime->format('Y-m-d'))).'
+                                VIKAS ASSOCIATES.',
+                                "from" => "whatsapp:+13344012472"
                             ]
                             );
                     }catch(\Exception $e){
@@ -813,7 +922,7 @@ class OrderController extends Controller {
                     // print($message->sid);
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order #".$order_id." for " . $customer->owner_name . ", ".round($total_quantity,2).", Kindly check and contact. \nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -826,6 +935,24 @@ class OrderController extends Controller {
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
+                    }
+                    if(SEND_SMS === true && isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $cust_qnty = $customer->owner_name .', '.round($total_quantity,2);
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:+91".$phone_number,
+                                [
+                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
+                                    '.Auth::user()->first_name.' has created an order #'.$order_id.' for '. $cust_qnty.'. Kindly check and contact.
+                                    VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
+                        // print($message->sid);
                     }
                 }
             }
@@ -1175,16 +1302,18 @@ class OrderController extends Controller {
          * ----------------------------------
          */
         $input = Input::all();
+        $product_string = '';
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
                 $customer = Customer::with('manager')->find($customer_id);
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nAdmin has approved your order for following items\n";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nAdmin has approved your order for following items\n";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",";
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                             if ($product_data['units'] == 1) {
                                 $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -1204,7 +1333,7 @@ class OrderController extends Controller {
                             }
                         }
                     }
-                    $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                    $str .= " Material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -1225,10 +1354,15 @@ class OrderController extends Controller {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                    On Dated '. date("j M, Y") .'
+                                    Your order #'.$id.' has been edited for the following products:
+                                    '.$product_string.'
+                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'.
+                                    VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
@@ -1239,7 +1373,7 @@ class OrderController extends Controller {
                     // whatsapp testing code endse here
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has approved an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
+                        $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited an order #'.$id.' for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check and contact. \nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -1253,6 +1387,25 @@ class OrderController extends Controller {
                             $curl_scraped_page = curl_exec($ch);
                             curl_close($ch);
                         }
+                            // whatsapp code starts here
+                        if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                            $cust_qnty = $customer->owner_name . ', ' . round($total_quantity, 2);
+                            $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                            try{
+                                $message = $twilio->messages
+                                ->create("whatsapp:+91".$phone_number,
+                                    [
+                                        "body" => 'Dear '. strtoupper($customer['manager']->first_name) .'
+                                        '.strtoupper(Auth::user()->first_name).' has edited an order #'.$id.' for '. $cust_qnty .' Kindly check and contact.
+                                        VIKAS ASSOCIATES.',
+                                        "from" => "whatsapp:+13344012472"
+                                    ]
+                                    );
+                            }catch(\Exception $e){
+                                $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                            }
+                        }
+                        // whatsapp testing code endse here
                     }
                 }
 //            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
@@ -1261,10 +1414,11 @@ class OrderController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nYour order has been edited and changed as following \n";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$id." has been edited for the following products: \n";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find($product_data['id']);
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                             if ($product_data['units'] == 1) {
                                 $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -1283,7 +1437,7 @@ class OrderController extends Controller {
                             }
                         }
                     }
-                    $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                    $str .= " Material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -1303,36 +1457,58 @@ class OrderController extends Controller {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                    On Dated '. date("j M, Y") .'
+                                    Your order #'.$id.' has been edited for the following products:
+                                    '.$product_string.'
+                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'.
+                                    VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
                             $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                         }
                         
-                        // print($message->sid);
+                    }
+                }
+                    
+                if (count((array)$customer['manager']) > 0) {
+                    $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited an order #".$id." for " . $customer->owner_name . ", " . round($total_quantity, 2) . ". Kindly check and contact. \nVIKAS ASSOCIATES";
+                    if (App::environment('development')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $customer['manager']->mobile_number;
+                    }
+                    $msg = urlencode($str);
+                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                        $ch = curl_init($url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_scraped_page = curl_exec($ch);
+                        curl_close($ch);
+                    }
+                    // whatsapp code starts here
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $cust_qnty = $customer->owner_name . ', ' . round($total_quantity, 2);
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:+91".$phone_number,
+                                [
+                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                    '.strtoupper(Auth::user()->first_name).' has edited an order #'.$id.' for '. $cust_qnty .'. Kindly check and contact.
+                                    VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
                     }
                     // whatsapp testing code endse here
-
-                    if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited and changed an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
-                        if (App::environment('development')) {
-                            $phone_number = Config::get('smsdata.send_sms_to');
-                        } else {
-                            $phone_number = $customer['manager']->mobile_number;
-                        }
-                        $msg = urlencode($str);
-                        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                            $ch = curl_init($url);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                            $curl_scraped_page = curl_exec($ch);
-                            curl_close($ch);
-                        }
-                    }
                 }
             }
         }
@@ -1396,8 +1572,8 @@ class OrderController extends Controller {
     public function destroy($id) {
 
         $inputData = Input::get('formData');
-        $flag = 0;
-        $sms_flag = 0;
+        $flag = 1;
+        $sms_flag = 1;
         if (empty($inputData)) {
             $formFields = Input::all();
             $flag = 1;
@@ -1418,7 +1594,7 @@ class OrderController extends Controller {
 
             if ($flag == 1) {
 
-                if (Input::has('way') && Input::get('way') == 'reject') {
+                // if (Input::has('way') && Input::get('way') == 'reject') {
 
                     $ord = Order::find($id);
                     $customer = Customer::with('manager')->find($ord->customer_id);
@@ -1442,6 +1618,12 @@ class OrderController extends Controller {
                                 if ($product_data['units'] == 3) {
                                     $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
                                 }
+                                if ($product_data['units'] == 4) {
+                                    $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
+                                }
+                                if ($product_data['units'] == 5) {
+                                    $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
+                                }
                             }
 
                             /* check for vat/gst items */
@@ -1451,11 +1633,11 @@ class OrderController extends Controller {
                             /**/
                         }
                         if ($sms_flag == 1) {
-                            $str = "Dear " . strtoupper($customer->owner_name) . "\nDT " . date("j M, Y") . "\nAdmin has rejected your order for following items \n";
+                            $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nAdmin has rejected your order #".$id." \n";
                             foreach ($input_data as $product_data) {
 
                                 if ($product_data['order_product_details']->alias_name != "") {
-                                    $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
+                                    // $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
                                     $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                                 }
                             }
@@ -1473,9 +1655,28 @@ class OrderController extends Controller {
                                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                                 $curl_scraped_page = curl_exec($ch);
                                 curl_close($ch);
+
+                                
+                                $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                                try{
+                                    $message = $twilio->messages
+                                    ->create("whatsapp:+91".$phone_number,
+                                        [
+                                            "body" => 'Dear '.strtoupper($customer->owner_name).'
+                                            On Dated '. date("j M, Y") .'
+                                            Admin has rejected your order #'.$id.'.
+                                            VIKAS ASSOCIATES.',
+                                            "from" => "whatsapp:+13344012472"
+                                        ]
+                                        );
+                                }catch(\Exception $e){
+                                    $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                                }
+
                             }
                             if (count((array)$customer['manager']) > 0) {
-                                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has edited and changed an order for " . $customer->owner_name . ", " . round($total_quantity, 2) . "'. Kindly check. \nVIKAS ASSOCIATES";
+                                $cust_qnty = $customer->owner_name . ', ' . round($total_quantity, 2);
+                                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has rejected an order #".$id." for " . $cust_qnty .". Kindly check and contact. \nVIKAS ASSOCIATES";
                                 if (App::environment('development')) {
                                     $phone_number = Config::get('smsdata.send_sms_to');
                                 } else {
@@ -1488,11 +1689,26 @@ class OrderController extends Controller {
                                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                                     $curl_scraped_page = curl_exec($ch);
                                     curl_close($ch);
+
+                                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                                    try{
+                                        $message = $twilio->messages
+                                        ->create("whatsapp:+91".$phone_number,
+                                            [
+                                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                                '.strtoupper(Auth::user()->first_name).' has rejected an order #'.$id.' for '. $cust_qnty .' Kindly check and contact.
+                                                VIKAS ASSOCIATES.',
+                                                "from" => "whatsapp:+13344012472"
+                                            ]
+                                            );
+                                    }catch(\Exception $e){
+                                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                                    }
                                 }
                             }
                         }
                     }
-                }
+                // }
 
                 /* inventory code */
 //                $calc = new WelcomeController();
@@ -1554,7 +1770,7 @@ class OrderController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return redirect('orders')->with('error', 'You do not have permission.');
         }
-        $sms_flag = 0;
+        $sms_flag = 1;
         $product_category_ids = [];
         $formFields = Input::get('formData');
         parse_str($formFields, $input);
@@ -1589,17 +1805,34 @@ class OrderController extends Controller {
           | SEND SMS TO CUSTOMER FOR MANUALLY COMPLETING AN ORDER
           | -----------------------------------------------------
          */
-
+        $product_string = '';
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($order['customer']->id);
             if (count((array)$customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\n Your order has been canceled for following \n";
+                $str = "Dear " . $customer->owner_name . "\nOn Dated ". date("j M, Y") ."\n Your order #".$order_id." has been canceled for following products: \n";
                 foreach ($order['all_order_products'] as $product_data) {
+                    $product = ProductSubCategory::find($product_data['id']);
+                    $product_string .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",";
                     $str .= $product_data['order_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
+                    if ($product_data['unit_id'] == 1) {
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                    }
+                    if ($product_data['unit_id'] == 2) {
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'');
+                    }
+                    if ($product_data['unit_id'] == 3) {
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                    }
+                    if ($product_data['unit_id'] == 4) {
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                    }
+                    if ($product_data['unit_id'] == 5) {
+                        $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                    }
                 }
-                $str .= ".\nVIKAS ASSOCIATES";
+                $str .= "\nVIKAS ASSOCIATES";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1612,6 +1845,54 @@ class OrderController extends Controller {
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
+
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:+91".$phone_number,
+                            [
+                                "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                On Dated '. date("j M, Y") .'
+                                Your order #'.$order_id.' has been canceled for following products:
+                                '.$product_string.'
+                                VIKAS ASSOCIATES.',
+                                "from" => "whatsapp:+13344012472"
+                            ]
+                            );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
+                }
+            }
+            if (count((array)$customer['manager']) > 0) {
+                $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . " has canceled an order #".$order_id." for ".strtoupper($customer->owner_name). " ". round($total_quantity, 2) ." Kindly check and contact. \nVIKAS ASSOCIATES";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
+                if (SEND_SMS === true) {
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    $curl_scraped_page = curl_exec($ch);
+                    curl_close($ch);
+
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:+91".$phone_number,
+                            [
+                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                '.strtoupper(Auth::user()->first_name).' has canceled an order #'.$order_id.' for '.strtoupper($customer->owner_name). ', '. round($total_quantity, 2) .' Kindly check and contact.
+                                VIKAS ASSOCIATES.',
+                                "from" => "whatsapp:+13344012472"
+                            ]
+                            );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
                 }
             }
         }
@@ -1924,6 +2205,7 @@ class OrderController extends Controller {
             }
             $sms_flag = 1;
             $whatsapp_error = '';
+            $product_string = '';
             //send sms
             $customer_id = $input_data['customer_id'];
             if ($sms_flag == 1) {
@@ -1931,9 +2213,10 @@ class OrderController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour order has been successfully converted to Delivery order for following items.";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$delivery_order_id." has been successfully converted to Delivery order for following products:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
@@ -1958,10 +2241,14 @@ class OrderController extends Controller {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "body" => 'Dear '.strtoupper($customer->owner_name).'
+                                    On Dated '. date("j M, Y") .'
+                                    Your order #'.$delivery_order_id.' has been successfully converted to delivery order for following products:
+                                    '.$product_string.'
+                                    VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
@@ -1972,7 +2259,7 @@ class OrderController extends Controller {
                     // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has been conerted an order to delivery order for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . strtoupper(Auth::user()->first_name) . " has converted an order #".$delivery_order_id." to delivery order for " . $customer->owner_name . ", " . round($total_quantity,2) . ". Kindly check and contact.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -1985,6 +2272,24 @@ class OrderController extends Controller {
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
+                    }
+                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                        $cust_qnty = $customer->owner_name . ", " . round($total_quantity,2);
+                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                        try{
+                            $message = $twilio->messages
+                            ->create("whatsapp:+91".$phone_number,
+                                [
+                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
+                                    '.strtoupper(Auth::user()->first_name).' has converted an order #'.$delivery_order_id.' to delivery order for '.$cust_qnty.'. Kindly check and contact.
+                                    VIKAS ASSOCIATES.',
+                                    "from" => "whatsapp:+13344012472"
+                                ]
+                                );
+                        }catch(\Exception $e){
+                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                        }
+                        
                     }
                 }
             }

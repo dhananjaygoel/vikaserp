@@ -35,6 +35,12 @@
             .sm-table-data tbody tr td {border-left: 1px solid #ddd;}
             .sm-table-data th, .sm-table-data td {padding: 10px;}
             .total-qty {display: inline-block; margin-bottom: 1.8em;}
+
+            .sm-table-data-left {width: 350px; float: left;margin-top:1em;}
+            .sm-table-data-left tbody tr td {text-align: left;}
+            .sm-table-data-left tbody tr:last-child {border-bottom: 1px solid #ddd;}
+            .sm-table-data-left tbody tr td {border: 1px solid #ddd;}
+            .sm-table-data-left th, .sm-table-data-left td {padding: 10px;}
         </style>
 
         <table class="user-invoice-details">
@@ -208,6 +214,45 @@
                     <td  class="spacing" valign="top">
                         <div>Total Quantity: <span class="total-qty">{{ round($allorder->delivery_challan_products->sum('actual_quantity'), 2) }}</span></div>
                         <div>Remarks: <span class="remarks">{{$allorder->remarks}}</span></div>
+                        <table class="sm-table-data-left">
+                            <tbody>
+                                <tr>
+                                    <td class="lable">HSN CODE</td>
+                                    <td class="label">Qty</td>
+                                    <td class="label">Amount</td>
+                                    <td class="label">GST</td>
+                                    <td class="label">Total Inc GST</td>
+                                </tr>
+                                <?php
+                                    $gst_percentage=0;
+                                    $total_amount=0;
+                                    $total_qty=0;
+                                    $total_inc_gst=0;
+                                ?>
+                                @foreach($allorder['hsn'] as $hsn)
+                                <tr>
+                                    <td>{{ $hsn['id'] }}</td>
+                                    <td>{{ round($hsn['actual_quantity'], 2) }}</td>
+                                    <td>{{ round($hsn['amount'], 2) }}</td>
+                                    <td>{{ round($hsn['vat_percentage'], 2) }}</td>
+                                    <td>{{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</td>
+                                </tr>
+                                <?php
+                                    $gst_percentage = $hsn['vat_percentage'];
+                                    $total_amount += $hsn['amount'];
+                                    $total_qty += $hsn['actual_quantity'];
+                                    $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
+                                ?>
+                                @endforeach
+                                <tr>
+                                    <td><b>Total</b></td>
+                                    <td><b>{{ round($total_qty, 2) }}</b></td>
+                                    <td><b>{{ round($total_amount, 2) }}</b></td>
+                                    <td><b>{{ round($gst_percentage, 2) }}</b></td>
+                                    <td><b>{{ round($total_inc_gst, 2) }}</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
                     <td>
                         <table class="sm-table-data">

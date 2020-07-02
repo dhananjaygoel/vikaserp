@@ -18,6 +18,10 @@
                     <!--<div class="form-group pull-right">-->
                     <h1 class="pull-left">Delivery Orders</h1>
                     <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
+                            @if(Auth::user()->role_id == 0)
+                            <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
+                            <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
+                            @endif
                         <div class=" pull-right col-md-3">
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <?php
@@ -68,6 +72,10 @@
                             @else
                             <input type="hidden" name="delivery_order_status" value="Inprocess">
                             @endif
+                            @if(Auth::user()->role_id == 0)
+                            <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
+                            <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
+                            @endif
                             <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                         </form>
                         <form class="pull-left" method="POST" action="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus')}}">
@@ -89,9 +97,42 @@
                             @else
                             <input type="hidden" name="delivery_order_status" value="Inprocess">
                             @endif
+                            @if(Auth::user()->role_id == 0)
+                            <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
+                            <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
+                            @endif
                             <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
                         </form>
                     </div>
+                    @if(Auth::user()->role_id == 0)
+                    <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
+                        @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                                <input type="hidden" name="delivery_order_status" value="Delivered">
+                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                                <input type="hidden" name="delivery_order_status" value="Inprocess">
+                                @else
+                                <input type="hidden" name="delivery_order_status" value="Inprocess">
+                                @endif
+                        <div class="row col-md-12">
+                            <div class="form-group col-md-3  pull-right" style="margin-left:20px;">
+                                <select class="form-control" name="delboy_filter" onchange="this.form.submit()">
+                                    <option value="" selected="">--Select Delivery Boy--</option>
+                                    @foreach($del_boy as $delivery_boy)
+                                        <option <?php if (Input::get('delboy_filter') == $delivery_boy->id) echo 'selected="selected"'; ?> value="{{$delivery_boy->id}}"> {{$delivery_boy->first_name.' '.$delivery_boy->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3  pull-right">
+                                <select class="form-control" name="supervisor_filter" onchange="this.form.submit()">
+                                    <option value="" selected="">--Select Delivery Supervisor--</option>
+                                    @foreach($del_supervisor as $delivery_supervisor)
+                                        <option <?php if (Input::get('supervisor_filter') == $delivery_supervisor->id) echo 'selected="selected"'; ?> value="{{$delivery_supervisor->id}}"> {{$delivery_supervisor->first_name.' '.$delivery_supervisor->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -119,7 +160,9 @@
                         </div><br/>
                         @endif
                         @if (Session::has('wrong'))
-                        <div class="alert alert-danger alert-success1">{{Session::get('wrong')}}</div>
+                        <div class="alert alert-danger alert-success1">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        {{Session::get('wrong')}}</div>
                         @endif
                         @if(sizeof($delivery_data) != 0)
                         <div class="table-responsive">
@@ -190,7 +233,7 @@
                                         @if( Auth::user()->role_id != 8 && Auth::user()->role_id != 9 )
                                         <td class="text-center">
                                             <!-- $delivery->serial_no != "" -->
-                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
+                                            @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) )
                                             <a href="{{url('create_delivery_challan/'.$delivery->id)}}" class="table-link" title="Delivery challan">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -244,7 +287,7 @@
                                        data-labour_pipe="{{$delivery->labour_pipe}}"
                                        data-labour_structure="{{$delivery->labour_structure}}"
                                        data-toggle="modal" data-target="#myModalassign"
-                                       title="<?php (!empty($opt))? print $opt : print "Assign Delivery-Supervisor" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
+                                       title="<?php (!empty($data_supervisor_id))? print $opt : print "Assign Delivery-Supervisor" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_supervisor_id)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-user fa-stack-3x fa-inverse"></i></button>
 
                                            @endif
                                           @endif
@@ -276,7 +319,7 @@
                                        data-labour_pipe="{{$delivery->labour_pipe}}"
                                        data-labour_structure="{{$delivery->labour_structure}}"
                                        data-toggle="modal" data-target="#myModalassign1"
-                                       title="<?php (!empty($opt)) ? print $opt : print "Assign Delivery-Boy" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_delivery_boy)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-users fa-stack-3x fa-inverse"></i></button>
+                                       title="<?php (!empty($data_delivery_boy)) ? print $opt : print "Assign Delivery-Boy" ?>" type="button"  style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;<?php isset($data_delivery_boy)?print "background: green; border-color: green;":'' ?>"><i class="fa fa-users fa-stack-3x fa-inverse"></i></button>
 
                                            @endif
                                           @endif
@@ -351,21 +394,13 @@
 
                                             @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
                                                 @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                @if(($delivery->final_truck_weight != null && $delivery->final_truck_weight != 0) || ($delivery->empty_truck_weight != null && $delivery->empty_truck_weight != 0) && !empty($delivery->vehicle_number))
-                                                    <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
+                                                <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                                     </a>
-                                                @else
-                                                <a href="#" class="table-link disabled" title="print" data-toggle="modal" data-target="" id="{{$delivery->id}}" style="opacity: 0.65;cursor: auto;">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                                    </a>
-                                                @endif
+                                                
                                                 @endif
 
                                                 @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
@@ -616,7 +651,7 @@
                 </div>
                 <?php }}?>
                 <div class="form-group">
-                    <input type="button" value="Save" id="submit_2" onclick="loaded_assign()" class="btn btn-sm btn-primary">
+                    <input type="button" value="Save" id="submit_supervisor" onclick="loaded_assign()" class="btn btn-sm btn-primary">
 
                 </div>
 
@@ -708,7 +743,7 @@
                 </div>
                 <?php }}?>
                 <div class="form-group">
-                    <input type="button" value="Save" id="submit_3" onclick="loaded_assign1()" class="btn btn-sm btn-primary">
+                    <input type="button" value="Save" id="submit_delboy" onclick="loaded_assign1()" class="btn btn-sm btn-primary">
 
                 </div>
 

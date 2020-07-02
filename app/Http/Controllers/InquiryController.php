@@ -275,16 +275,18 @@ class InquiryController extends Controller {
           |--------------------------------------------------
          */
         $input = Input::all();
+        $product_string = '';
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nOn Dated " . date("j M Y") . "\nYour inquiry has been logged for following products:\n";
+                $str = "Dear " . $customer->owner_name . "\nOn Dated " . date("j M Y") . "\nYour inquiry #".$inquiry_id." has been logged for following products:\n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
+                        $product_string .= $product_data['name'] . " - " . $product_data['quantity'] ." , ";
                        $str .= $product_data['name'] . " - " . $product_data['quantity'] . ",\n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -305,7 +307,7 @@ class InquiryController extends Controller {
                     }
                 }
 
-                $str .= "Total quantity is ".$total_quantity.", prices and availability will be contacted shortly \nVIKAS ASSOCIATES";
+                $str .= "Total quantity is ".$total_quantity.", prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -323,14 +325,19 @@ class InquiryController extends Controller {
                 // whatsapp testing code starts here
                 if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
                     // $sid = env('TWILIO_SID');
-                    
+
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
+                        ->create("whatsapp:+91".$phone_number,
                             [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
+                                "body" => 'Dear '.strtoupper($customer->owner_name).'
+                                    On Dated '.date("j M Y").'
+                                    Your inquiry #'.$inquiry_id.' has been logged for following products:
+                                    '.$product_string.'
+                                    Total quantity is '.$total_quantity.', price and availability will be contacted shortly.
+                                    VIKAS ASSOCIATES',
+                                "from" => "whatsapp:+13344012472"
                             ]
                             );
                     }catch(\Exception $e){
@@ -343,7 +350,7 @@ class InquiryController extends Controller {
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an inquiry for '" . $customer->owner_name . "', '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
+                $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . " has logged an inquiry #".$inquiry_id." for " . $customer->owner_name . ", " . round($total_quantity, 2) . ". Kindly check and contact. Vikas Associates";
 //                $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been logged for following\n ";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -357,6 +364,23 @@ class InquiryController extends Controller {
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
+                }
+                // whatsapp testing code starts here
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:+91".$phone_number,
+                            [
+                                "body" => 'Dear '.strtoupper($customer['manager']->first_name) .',
+                                '. Auth::user()->first_name .' has logged an inquiry #'.$inquiry_id.' for '. $customer->owner_name . ', ' . round($total_quantity, 2) .'. Kindly check and contact
+                                VIKAS ASSOCIATES',
+                                "from" => "whatsapp:+13344012472"
+                            ]
+                            );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
                 }
             }
         }
@@ -698,6 +722,7 @@ class InquiryController extends Controller {
           | SEND SMS TO THE CUSTOMER WITH UPDATED QUOTATIONS
           |------------------------------------------------
          */
+        $product_string = '';
         $input = Input::all();
         if ($sms_flag == 1) {
             if (isset($input['way']) && $input['way'] == "approval") {
@@ -705,9 +730,10 @@ class InquiryController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has approved your inquiry for following items.";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour inquiry #".$id." has been edited for following products:\n";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
@@ -733,10 +759,15 @@ class InquiryController extends Controller {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                    On Dated '. date("j M, Y") .'
+                                    Your inquiry #'.$id.' has been edited for following products:
+                                    '.$product_string.'
+                                    Price and availability will be contacted shortly.
+                                    VIKAS ASSOCIATES',
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
@@ -748,7 +779,7 @@ class InquiryController extends Controller {
             
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has approved an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                        $str = "Dear " . strtoupper($customer['manager']->first_name) . "\nOn Dated " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an inquiry #".$id." for " . $customer->owner_name . ", " . round($total_quantity, 2). ". Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -762,6 +793,23 @@ class InquiryController extends Controller {
                             $curl_scraped_page = curl_exec($ch);
                             curl_close($ch);
                         }
+                        if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                            $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                            try{
+                                $message = $twilio->messages
+                                ->create("whatsapp:+91".$phone_number,
+                                    [
+                                        "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                        '. Auth::user()->first_name .' has edited an inquiry #'.$id.' for '. $customer->owner_name . ", " . round($total_quantity, 2) .'. Kindly check and contact
+                                        VIKAS ASSOCIATES',
+                                        "from" => "whatsapp:+13344012472"
+                                    ]
+                                    );
+                            }catch(\Exception $e){
+                                $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                            }
+                            
+                        }
                     }
                 }
 //            } else if (isset($input['sendsms']) && $input['sendsms'] == "true") {
@@ -770,14 +818,15 @@ class InquiryController extends Controller {
                 $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
                 if ($cust_count > 0) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour inquiry has been edited for foll.";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour inquiry #".$id." has been edited for following products:";
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
+                            $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
-                    $str .= " prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
+                    $str .= " Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -797,10 +846,15 @@ class InquiryController extends Controller {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                    On Dated '. date("j M, Y") .'
+                                    Your inquiry #'.$id.' has been edited for following products:
+                                    '.$product_string.'
+                                    Price and availability will be contacted shortly.
+                                    VIKAS ASSOCIATES',
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
@@ -810,7 +864,7 @@ class InquiryController extends Controller {
                     // whatsapp testing code endse here
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                        $str = "Dear " . strtoupper($customer['manager']->first_name) . "\nOn Dated " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an enquiry #".$id." for " . $customer->owner_name . ", " . round($total_quantity, 2) . " Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -823,6 +877,23 @@ class InquiryController extends Controller {
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
                             curl_close($ch);
+                        }
+                        if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                            $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                            try{
+                                $message = $twilio->messages
+                                ->create("whatsapp:+91".$phone_number,
+                                    [
+                                        "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                        '. Auth::user()->first_name .' has edited an inquiry #'.$id.' for '. $customer->owner_name . ", " . round($total_quantity, 2) .'. Kindly check and contact
+                                        VIKAS ASSOCIATES',
+                                        "from" => "whatsapp:+13344012472"
+                                    ]
+                                    );
+                            }catch(\Exception $e){
+                                $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                            }
+                            
                         }
                     }
                 }
@@ -852,9 +923,9 @@ class InquiryController extends Controller {
         $inquiry_filter=Input::get('inquiry_sort_type')!=""?Input::get('inquiry_sort_type'):"";
 
         if (Input::has('inquiry_id') && Input::has('password') && (Hash::check(Input::get('password'), Auth::user()->password))) {
-            $sms_flag = 0;
+            $sms_flag = 1;
 
-            if (Input::has('way') && Input::get('way') == 'reject') {
+            // if (Input::has('way') && Input::get('way') == 'reject') {
                 $inq = Inquiry::find(Input::get('inquiry_id'));
                 $customer = Customer::with('manager')->find($inq->customer_id);
                 $input_data = InquiryProducts::with('inquiry_product_details')->where('inquiry_id', '=', Input::get('inquiry_id'))->get();
@@ -865,14 +936,15 @@ class InquiryController extends Controller {
                         $sms_flag = 1;
                     }
                 }
+                
                 /**/
                 if (count((array)$customer) > 0 && $sms_flag == 1) {
                     $total_quantity = '';
-                    $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nAdmin has rejected your inquiry for following items.\n";
+                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\n Admin rejected your inquiry #".$inq->id.".\n";
                     foreach ($input_data as $product_data) {
 
                         if ($product_data['inquiry_product_details']->alias_name != "") {
-                            $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
+                            // $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . "\n ";
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
                         }
                     }
@@ -884,31 +956,32 @@ class InquiryController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                    if (SEND_SMS === true) {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
                      // whatsapp code starts here
-                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
                         
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
-                            ->create("whatsapp:".$phone_number,
+                            ->create("whatsapp:+91".$phone_number,
                                 [
-                                    "body" => $str,
-                                    "from" => "whatsapp:+14155238886"
+                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                        On Dated '. date("j M, Y") .'
+                                        Admin rejected your inquiry #'.$inq->id.'
+                                        VIKAS ASSOCIATE',
+                                    "from" => "whatsapp:+13344012472"
                                 ]
                                 );
                         }catch(\Exception $e){
                             $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                         }
-                    }
                     // whatsapp testing code endse here
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear " . $customer['manager']->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has rejected an inquiry for '" . $customer->owner_name . ", '" . $total_quantity . "' Kindly check and contact.\nVIKAS ASSOCIATES";
+                        $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has rejected an inquiry #".$inq->id." for " . $customer->owner_name . ", " . round($total_quantity,2) . " Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -916,15 +989,31 @@ class InquiryController extends Controller {
                         }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                        if (SEND_SMS === true) {
                             $ch = curl_init($url);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
                             curl_close($ch);
                         }
+                        
+                            $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                            try{
+                                $message = $twilio->messages
+                                ->create("whatsapp:+91".$phone_number,
+                                    [
+                                        "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                        '.Auth::user()->first_name.' rejected an inquiry #'.$inq->id.' for '. $customer->owner_name . ', ' . round($total_quantity,2) .' Kindly check and contact
+                                        VIKAS ASSOCIATES',
+                                        "from" => "whatsapp:+13344012472"
+                                    ]
+                                    );
+                            }catch(\Exception $e){
+                                $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                            }
+                        
                     }
                 }
-            }
+            // }
 
             InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
             Inquiry::find(Input::get('inquiry_id'))->delete();
@@ -1598,11 +1687,15 @@ class InquiryController extends Controller {
             $order->is_approved = 'yes';
         }
 
+        $order->save();
+        $order_id = $order->id;
+        $order_products = array();
         /*
          * ------------------- --------------
          * SEND SMS TO CUSTOMER FOR NEW ORDER
          * ----------------------------------
          */
+        $product_string = '';
         $input = Input::all();
 //      if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
@@ -1610,10 +1703,11 @@ class InquiryController extends Controller {
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nYour order has been logged for following \n";
+                $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$order_id." has been logged for following products: \n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product = ProductSubCategory::find($product_data['id']);
+                        $product_string .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
                         $str .= $product->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                         if ($product_data['units'] == 1) {
                             $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -1632,7 +1726,7 @@ class InquiryController extends Controller {
                         }
                     }
                 }
-                $str .= " material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
+                $str .= " Material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1653,10 +1747,15 @@ class InquiryController extends Controller {
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
-                        ->create("whatsapp:".$phone_number,
+                        ->create("whatsapp:+91".$phone_number,
                             [
-                                "body" => $str,
-                                "from" => "whatsapp:+14155238886"
+                                "body" => 'Dear '. strtoupper($customer->owner_name) .'
+                                    On Dated '. date("j M, Y") .'
+                                    Your order #'.$order_id.' has been logged for following products:
+                                    '.$product_string.'
+                                    Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'
+                                    VIKAS ASSOCIATES',
+                                "from" => "whatsapp:+13344012472"
                             ]
                             );
                     }catch(\Exception $e){
@@ -1667,7 +1766,7 @@ class InquiryController extends Controller {
                 // whatsapp testing code endse here
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has created an order for " . $customer->owner_name . " '" . round($total_quantity, 2) . "'. Kindly check. Vikas Associates";
+                $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . " has created an order #".$order_id." for " . $customer->owner_name . " " . round($total_quantity, 2) . ". Kindly check. \nVikas Associates";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1683,13 +1782,28 @@ class InquiryController extends Controller {
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
                 }
+                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
+                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+                    try{
+                        $message = $twilio->messages
+                        ->create("whatsapp:+91".$phone_number,
+                            [
+                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
+                                '. Auth::user()->first_name .' has created an order #'.$order_id.' for '. $customer->owner_name . ', ' . round($total_quantity, 2) .' Kindly check and contact.
+                                VIKAS ASSOCIATES',
+                                "from" => "whatsapp:+13344012472"
+                            ]
+                            );
+                    }catch(\Exception $e){
+                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+                    }
+                    
+                }
             }
         }
 
 
-        $order->save();
-        $order_id = $order->id;
-        $order_products = array();
+        
         // echo '<pre>';
         // print_r($input_data['product']);
         // exit;

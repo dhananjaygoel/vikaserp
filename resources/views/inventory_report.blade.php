@@ -23,6 +23,10 @@
         }
     }
 </style>
+
+<div id="loader" style="display: none; background: none repeat scroll 0 0 rgba(0, 0, 0, 0.59); height: 100%; left: 0; padding: 15% 0; position: fixed; text-align: center; top: 0; width: 100% !important; z-index: 10000;">
+	<img src="/assets/img/loading.gif"/>
+</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">   

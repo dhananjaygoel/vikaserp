@@ -34,12 +34,12 @@ class InventoryReportExport implements FromView, ShouldAutoSize
         $product_type = $product_last[0]->product_type_id;
         if ($product_type == 1 || $product_type == 3) {
             $product_column = "Size";
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('thickness') as $sub_cat) {
                 if (!in_array($sub_cat->thickness, $thickness_array)) {
                     array_push($thickness_array, $sub_cat->thickness);
                 }
             }
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
                 if (!in_array($sub_cat->size, $size_array)) {
                     array_push($size_array, $sub_cat->size);
                 }
@@ -69,10 +69,10 @@ class InventoryReportExport implements FromView, ShouldAutoSize
                     array_push($size_array, $sub_cat->alias_name);
                 }
             }
-            foreach ($size_array as $size) {
+            // foreach ($size_array as $size) {
                 foreach ($thickness_array as $thickness) {
                     foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
-                        if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
+                        // if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
                             $inventory = $sub_cat['product_inventory'];
                             $total_qnty = 0;
                             if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
@@ -80,17 +80,18 @@ class InventoryReportExport implements FromView, ShouldAutoSize
                             } else {
                                 $total_qnty = "-";
                             }
-                            $report_arr[$size][$thickness] = $total_qnty;
-                        }
+                            // $report_arr[$size][$thickness] = $total_qnty;
+                            $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
+                        // }
                     }
                 }
-            }
+            // }
         }
         foreach ($size_array as $size) {
             foreach ($thickness_array as $thickness) {
                 if (isset($report_arr[$size][$thickness])) {
 //                        $final_arr[$size][$thickness] = $report_arr[$size][$thickness];
-                    $final_arr[$size][$thickness] = round($report_arr[$size][$thickness] / 1000, 2);
+                    $final_arr[$size][$thickness] = round((float)$report_arr[$size][$thickness] / 1000, 2);
                 } else {
                     $final_arr[$size][$thickness] = "-";
                 }

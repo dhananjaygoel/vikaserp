@@ -647,7 +647,12 @@ function fetch_actual_quantity() {
 
             actual_pieces = parseFloat($("#actual_pieces_" + i).val());
             average_weight = parseFloat($("#average_weight_" + i).val());
-
+            if(isNaN(actual_pieces)){
+                actual_pieces = 0;
+            }
+            if(isNaN(average_weight)){
+                average_weight = 0;
+            }
             var average_quantity = parseFloat(average_weight).toFixed(2) * parseInt(actual_pieces).toFixed(2);
             total_avg_qty = parseFloat(total_avg_qty).toFixed(2) + parseInt(average_quantity).toFixed(2);
 

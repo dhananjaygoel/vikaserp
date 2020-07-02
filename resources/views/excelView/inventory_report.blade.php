@@ -23,7 +23,7 @@
                        @if(isset($value) && $value!="-")
                             {{$value}}
                        @else
-                            {{$value}}     
+                            0
                        @endif
                     </td>
                     @endforeach                                         
