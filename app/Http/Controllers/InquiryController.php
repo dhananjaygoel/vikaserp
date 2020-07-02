@@ -282,7 +282,7 @@ class InquiryController extends Controller {
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($cust_count > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nOn Dated " . date("j M Y") . "\nYour inquiry #".$inquiry_id."has been logged for following products:\n";
+                $str = "Dear " . $customer->owner_name . "\nOn Dated " . date("j M Y") . "\nYour inquiry #".$inquiry_id." has been logged for following products:\n";
                 foreach ($input_data['product'] as $product_data) {
                     if ($product_data['name'] != "") {
                         $product_size = ProductSubCategory::find($product_data['id']);
