@@ -103,13 +103,15 @@
                                 <label for="city">City<span class="mandatory">*</span></label>
                                 <select class="form-control" id="city"  name="city">
                                     <option value="">--Select City--</option>
-                                    @foreach($cities as $city)
-                                    @if(Input::old('city')!='' && Input::old('city')==$city->id)
-                                    <option selected="" value="{{$city->id}}">{{$city->city_name}}</option> 
-                                    @else
-                                    <option value="{{$city->id}}">{{$city->city_name}}</option>                                    
+                                    @if(isset($cities) && $cities != '')
+                                        @foreach($cities as $city)
+                                            @if(Input::old('city')!='' && Input::old('city')==$city->id)
+                                            <option selected="" value="{{$city->id}}">{{$city->city_name}}</option> 
+                                            @else
+                                            <option value="{{$city->id}}">{{$city->city_name}}</option>                                    
+                                            @endif
+                                        @endforeach
                                     @endif
-                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">

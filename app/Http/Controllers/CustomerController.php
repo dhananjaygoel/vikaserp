@@ -429,8 +429,18 @@ public function update_cust_all_inc(){
         }
         $managers = User::where('role_id', '=', 0)->get();
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
+        
+        if(Session::has('_old_input') && Session::get('_old_input') != ''){
+            $input = Session::get('_old_input');
+        }
+        if(isset($input['state']) && $input['state'] != ''){
+            $cities = City::where('state_id',$input['state'])->orderBy('city_name', 'ASC')->get();
+        }else{
+            // $cities = City::orderBy('city_name', 'ASC')->get();
+            $cities = '';
+        }
         $states = States::orderBy('state_name', 'ASC')->get();
-        $cities = City::orderBy('city_name', 'ASC')->get();
+        
         $product_category = ProductCategory::all();
         return View::make('add_customers', array('managers' => $managers, 'locations' => $locations, 'product_category' => $product_category, 'states' => $states, 'cities' => $cities));
     }
