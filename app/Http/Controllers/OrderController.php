@@ -123,7 +123,7 @@ class OrderController extends Controller {
                 ->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
                 ->where('read_by',Auth::user()->id);
-            })->where('assigned_by','<>',Auth::user()->id)->count();
+            })->where('assigned_by',Auth::user()->id)->count();
         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             $count = DB::table('notifications')->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
@@ -140,12 +140,12 @@ class OrderController extends Controller {
                 ->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
                 ->where('read_by',Auth::user()->id);
-            })->where('assigned_by','<>',Auth::user()->id)->count();
+            })->where('assigned_by',Auth::user()->id)->count();
             $notif = DB::table('notifications')->where('order_type','load_truck')
                 ->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
                 ->where('read_by',Auth::user()->id);
-            })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
+            })->where('assigned_by',Auth::user()->id)->orderBy('id', 'DESC')->get();
         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             $count = DB::table('notifications')->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
