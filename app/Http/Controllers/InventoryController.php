@@ -872,7 +872,7 @@ class InventoryController extends Controller {
                         array_push($thickness_array, $sub_cat->thickness);
                     }
                 }
-                foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy(DB::raw('size.prvid+0')) as $sub_cat) {
                     if (!in_array($sub_cat->size, $size_array)) {
                         array_push($size_array, $sub_cat->size);
                     }
@@ -902,7 +902,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -1035,7 +1035,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -1157,7 +1157,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -1233,7 +1233,7 @@ class InventoryController extends Controller {
         if ($product_type == 2) {
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                 if (!in_array($sub_cat->alias_name, $size_array)) {
                     array_push($size_array, $sub_cat->alias_name);
                 }
@@ -1399,7 +1399,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -1511,7 +1511,7 @@ class InventoryController extends Controller {
         if ($product_type == 2) {
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                 if (!in_array($sub_cat->alias_name, $size_array)) {
                     array_push($size_array, $sub_cat->alias_name);
                 }

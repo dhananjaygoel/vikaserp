@@ -97,7 +97,7 @@ class InventoryReportExport implements FromView, ShouldAutoSize
         if ($product_type == 2) {
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                 if (!in_array($sub_cat->alias_name, $size_array)) {
                     array_push($size_array, $sub_cat->alias_name);
                 }
