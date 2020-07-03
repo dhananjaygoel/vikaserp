@@ -226,7 +226,7 @@ class OrderController extends Controller {
                 }
               /* Add new Notifications */
               $notification = new SendNotification();
-              $msg = $staff_fname.' '.$staff_lname.' Assigned Delivery Order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
+              $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
               $notification->order_id = $request->delivery_id;
               $notification->order_type = 'delivery_order';
               $notification->msg = $msg;
@@ -313,7 +313,7 @@ class OrderController extends Controller {
                 }
                 /* Add new Notifications */
                 $notification = new SendNotification();
-                $msg = $staff_fname.' '.$staff_lname.' Assigned Delivery Order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
+                $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
                 $notification->order_id = $request->delivery_id;
                 $notification->order_type = 'delivery_order';
                 $notification->msg = $msg;
