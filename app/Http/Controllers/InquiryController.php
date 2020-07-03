@@ -307,7 +307,7 @@ class InquiryController extends Controller {
                     }
                 }
 
-                $str .= "Total quantity is ".$total_quantity.", prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
+                $str .= "Total quantity is ".$total_quantity.", price and availability will be contacted shortly. \nVIKAS ASSOCIATES";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -735,7 +735,22 @@ class InquiryController extends Controller {
                         if ($product_data['name'] != "") {
                             $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                            
+                            if ($product_data['units'] == 1) {
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                            }
+                            if ($product_data['units'] == 2) {
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'');
+                            }
+                            if ($product_data['units'] == 3) {
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)(isset($product->standard_length)?$product->standard_length:'') ) * (float)$product->weight;
+                            }
+                            if ($product_data['units'] == 4) {
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                            }
+                            if ($product_data['units'] == 5) {
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                            }
                         }
                     }
                     $str .= "Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
@@ -779,7 +794,7 @@ class InquiryController extends Controller {
             
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear " . strtoupper($customer['manager']->first_name) . "\nOn Dated " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited an inquiry #".$id." for " . $customer->owner_name . ", " . round($total_quantity, 2). ". Kindly check and contact.\nVIKAS ASSOCIATES";
+                        $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has edited an inquiry #".$id." for " . $customer->owner_name . ", " . round($total_quantity, 2). ". Kindly check and contact.\nVIKAS ASSOCIATES";
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
                         } else {
@@ -824,7 +839,22 @@ class InquiryController extends Controller {
                         if ($product_data['name'] != "") {
                             $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
                             $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ', ';
-                            $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                           
+                            if ($product_data['units'] == 1) {
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                            }
+                            if ($product_data['units'] == 2) {
+                                $total_quantity = (float)$total_quantity + (float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'');
+                            }
+                            if ($product_data['units'] == 3) {
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] / (float)(isset($product->standard_length)?$product->standard_length:'') ) * (float)$product->weight;
+                            }
+                            if ($product_data['units'] == 4) {
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                            }
+                            if ($product_data['units'] == 5) {
+                                $total_quantity = (float)$total_quantity + ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                            }
                         }
                     }
                     $str .= " Prices and availability will be contacted shortly. \nVIKAS ASSOCIATES";
