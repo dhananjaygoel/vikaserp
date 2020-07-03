@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    $("#inquiry").addClass('loading_graph');
+    // $("#inquiry").addClass('loading_graph');
     var baseurl = $('#baseurl').attr('name');
     $.ajax({
         type: 'get', url: baseurl + '/graph-inquiry',
@@ -47,7 +47,7 @@ $(document).ready(function () {
 
 
     var baseurl = $('#baseurl').attr('name');
-    $("#order").addClass('loading_graph');
+    // $("#order").addClass('loading_graph');
     $.ajax({
         type: 'post', url: baseurl + '/graph-order',
 //        data: $('#save_all_price').serialize(),
@@ -95,7 +95,7 @@ $(document).ready(function () {
 
     
     var baseurl = $('#baseurl').attr('name');
-    $("#deliverychallan").addClass('loading_graph');
+    // $("#deliverychallan").addClass('loading_graph');
     $.ajax({
         type: 'get', url: baseurl + '/graph-delivery-challan',
 //        data: $('#save_all_price').serialize(),
