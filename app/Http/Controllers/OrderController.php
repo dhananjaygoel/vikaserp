@@ -119,10 +119,10 @@ class OrderController extends Controller {
      public function supervisor_count(){
          $count = 0;
         if(Auth::user()->role_id == 0){
-            // $count = DB::table('notifications')->whereNotIn('id',function($query){
-            //     $query->select('notification_id')->from('notification_read_status')
-            //     ->where('read_by',Auth::user()->id);
-            // })->where('assigned_by','<>',Auth::user()->id)->count();
+            $count = DB::table('notifications')->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_by','<>',Auth::user()->id)->count();
         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             $count = DB::table('notifications')->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
@@ -134,10 +134,10 @@ class OrderController extends Controller {
     public function load_notification(){
         $notif = '';
         if(Auth::user()->role_id == 0){
-            // $notif = DB::table('notifications')->whereNotIn('id',function($query){
-            //     $query->select('notification_id')->from('notification_read_status')
-            //     ->where('read_by',Auth::user()->id);
-            // })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $notif = DB::table('notifications')->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             $notif = DB::table('notifications')->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
