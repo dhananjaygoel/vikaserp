@@ -418,39 +418,39 @@ function notification_msg(){
         },
         success: function (data) {
             // alert(data);
-            var view='';
+            var view ='<div class="notif_bar">'
+                +'          <span>Notifications ({{$count}})</span>'
+                +'          <a href="" class="float-right text-light" onclick="return read_notification(0);">Mark all as read</a>'
+                +'      </div>'
+                +'      <div id="notify_id">'
+                +'          <ul id="notify_id_ul">';
             $.each(data,function(index,element){
                 if(element.order_type == 'load_truck'){
                     var title = 'Truck Loaded';
                 }else if(element.order_type == 'delivery_order'){
                     var title = 'Order Assigned';
                 }
-            view +='<div class="notif_bar">'
-                +'          <span>Notifications ({{$count}})</span>'
-                +'          <a href="" class="float-right text-light" onclick="return read_notification(0);">Mark all as read</a>'
+            view +='<li class="notification_msg notification_navbar">'
+                +'      <div class="notify_icon" >'
+                +'          <span class="icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>'
                 +'      </div>'
-                +'      <div id="notify_id">'
-                +'          <ul id="notify_id_ul">'
-                +'              <li class="notification_msg notification_navbar">'
-                +'                  <div class="notify_icon" >'
-                +'                      <span class="icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>'
-                +'                  </div>'
-                +'                  <div class="notify-content">'
-                +'                      <div class="notify_msg">'
-                +'                          <div class="notify-time">'
-                +'                          <p>Comment</p>'
-                +'                          <span style="margin-left:65px;">'+setTimeTo12Hr(element.created_at)+'<i class="fa fa-circle"></i></span>'
-                +'                      </div>'
-                +'                      <div class="title">'+title+'</div>'
-                +'                      <div class="msg_body">'
-                +'                          <input type="hidden" id="notif_id" value="'+element.id+'">'
-                +'                          <a href="'+baseurl+'/create_load_truck/'+element.order_id+'" title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
-                +'                      </div>'
-                +'                  </div>'
-                +'              </li>'
-                +'          </ul>'
-                +'      </div>';
+                +'      <div class="notify-content">'
+                +'          <div class="notify_msg">'
+                +'              <div class="notify-time">'
+                +'                  <p>Comment</p>'
+                +'                  <span style="margin-left:65px;">'+setTimeTo12Hr(element.created_at)+'<i class="fa fa-circle"></i></span>'
+                +'              </div>'
+                +'              <div class="title">'+title+'</div>'
+                +'              <div class="msg_body">'
+                +'                  <input type="hidden" id="notif_id" value="'+element.id+'">'
+                +'                  <a href="'+baseurl+'/create_load_truck/'+element.order_id+'" title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
+                +'              </div>'
+                +'          </div>'
+                +'      </div>'
+                +' </li>';
             });
+            view += '</ul>'
+                +'<div>';
             $(".notification-nav-right").html(view);
         }
     });
