@@ -119,7 +119,8 @@ class OrderController extends Controller {
      public function supervisor_count(){
          $count = 0;
         if(Auth::user()->role_id == 0){
-            $count = DB::table('notifications')->whereNotIn('id',function($query){
+            $count = DB::table('notifications')->where('order_type','load_truck')
+                ->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
                 ->where('read_by',Auth::user()->id);
             })->where('assigned_by','<>',Auth::user()->id)->count();
@@ -134,7 +135,8 @@ class OrderController extends Controller {
     public function load_notification(){
         $notif = '';
         if(Auth::user()->role_id == 0){
-            $notif = DB::table('notifications')->whereNotIn('id',function($query){
+            $notif = DB::table('notifications')->where('order_type','load_truck')
+                ->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
                 ->where('read_by',Auth::user()->id);
             })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
@@ -214,7 +216,7 @@ class OrderController extends Controller {
                 }
               /* Add new Notifications */
               $notification = new SendNotification();
-              $msg = $staff_fname.' '.$staff_lname.' assigned Order to '.$supervisor_fname.' '.$supervisor_lname;
+              $msg = $staff_fname.' '.$staff_lname.' Assigned Delivery Order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
               $notification->order_id = $request->delivery_id;
               $notification->order_type = 'delivery_order';
               $notification->msg = $msg;
@@ -301,7 +303,7 @@ class OrderController extends Controller {
                 }
                 /* Add new Notifications */
                 $notification = new SendNotification();
-                $msg = $staff_fname.' '.$staff_lname.' assigned Order to '.$supervisor_fname.' '.$supervisor_lname;
+                $msg = $staff_fname.' '.$staff_lname.' Assigned Delivery Order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
                 $notification->order_id = $request->delivery_id;
                 $notification->order_type = 'delivery_order';
                 $notification->msg = $msg;

@@ -4228,6 +4228,12 @@ function get_fb(){
         type: 'GET',
         url: url + '/supervisor_count'
         }).success(function (data) {
+            if(data == 0){
+                $('.notification').removeClass('show-count');
+            }else if(data == 1){
+                $('.notification').addClass('show-count');
+                $('.notification').attr('onclick','return notification_msg();');
+            }
             $('.notification').attr('data-count',data);
             // alert(data);
             setTimeout(function(){get_fb();}, 2000);

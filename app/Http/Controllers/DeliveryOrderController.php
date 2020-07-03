@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SendNotification;
 use App\Exports\DOExport;
 use App\Labour;
 use View;
@@ -1475,6 +1476,24 @@ class DeliveryOrderController extends Controller {
             if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
                 if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != '0') {
                     if(!($truck_weight<$empty_truck_weight)) {
+                        $cust = User::where('id',Auth::user()->id)->first();
+                        
+                        if(isset($cust) && !empty($cust)){
+                            $user_fname = isset($cust->first_name)?$cust->first_name:'';
+                            $user_lname = isset($cust->last_name)?$cust->last_name:'';
+                        }
+                        /* Add new Notifications */
+                            $notification = new SendNotification();
+                            $msg = $user_fname.' '.$user_lname.' has loaded truck for Delivery Order #'.$id;
+                            $notification->order_id = $id;
+                            $notification->order_type = 'load_truck';
+                            $notification->msg = $msg;
+                            $notification->assigned_by = Auth::user()->id;
+                            $notification->assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:0;
+                            $notification->user_read_status = '0';
+                            $notification->admin_read_status = '0';
+                            $notification->save();
+                        /* Notification has been stored */
                         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
                     }
                     else{
