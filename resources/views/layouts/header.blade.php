@@ -419,12 +419,12 @@ function notification_msg(){
         success: function (data) {
             // alert(data);
             var view ='<div class="notif_bar">'
-                +'          <span>Notifications ({{$count}})</span>'
+                +'          <span>Notifications ('+data['count']+')</span>'
                 +'          <a href="" class="float-right text-light" onclick="return read_notification(0);">Mark all as read</a>'
                 +'      </div>'
                 +'      <div id="notify_id">'
                 +'          <ul id="notify_id_ul">';
-            $.each(data,function(index,element){
+            $.each(data['notif'],function(index,element){
                 if(element.order_type == 'load_truck'){
                     var title = 'Truck Loaded';
                 }else if(element.order_type == 'delivery_order'){
