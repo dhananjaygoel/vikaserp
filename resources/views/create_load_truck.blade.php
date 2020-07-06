@@ -196,7 +196,9 @@
                         @foreach($truckinfo as $truck_value)
                         <?php
                             $users = App\User::where('id',$truck_value->userid)->first();
-                            // dd($user_value);
+                            $lbr_id = array();
+                            $ar = array();
+                            //dd($truck_value);
                             if(empty($users)){
                                 $owner_name = '';
                             }else{
@@ -215,38 +217,43 @@
                             $load_labour = App\LoadLabour::where('delivery_id',$truck_value->deliver_id)
                                 ->where('truck_weight_id',$truck_value->id)
                                 ->get();
+                            
                             if(!empty($load_labour)){
                                 foreach($load_labour as $load_lbr){
-                                    if($load_lbr->del_boy_id == $truck_value->userid){
+                                    // if($load_lbr->del_boy_id == $truck_value->userid){
                                         $ar[$load_lbr->truck_weight_id][] = $load_lbr->labour_id;
-                                    }
+                                    // }
                                 }
                             }
+
                             if(isset($ar) && !empty($ar)){
                                 $lbr_id = isset($ar[$load_lbr->truck_weight_id])?$ar[$load_lbr->truck_weight_id]:null;
                             }
                             // echo '<pre>';
-                            // print_r($ar);
+                            // print_r($load_labour);
                         ?>
                             <div class ="row form-group truck_weight_save">
                                 <ul style="list-style-type: none;padding: 0;">
                                     <li>
                                     <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                    <span><input disabled type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{$truck_value->userid}}_{{$i}}" class="form-control " name="truck_weight{{$truck_value->userid}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                    <select disabled id="labour_select_{{$truck_value->userid}}_{{$i}}" name="labour[{{$truck_value->userid}}][]" class="form-control labour_select" multiple="multiple">
+                                    <span id="truck_value_add"><input type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{$truck_value->userid}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);">
+                                    <input type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
+                                    <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}"></span>
+                                    <select id="labour_select_{{$truck_value->userid}}_{{$i}}" name="labour[{{$truck_value->userid}}][]" class="form-control labour_select" multiple="multiple">
                                         @if(isset($labours))
                                             @foreach ($labours as $labour)
                                                 <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                             @endforeach
                                         @endif
                                     </select>
-                                    <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{$truck_value->userid}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                    <button type="button" value="truck_weight_save" id="btn_truck_weight_{{$truck_value->userid}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
                                     @if($truck_value->final_truck_weight != 0 )
                                     <span id="load_label_{{Auth::id()}}_{{$i}}" style="padding-top:8px;"><?php isset($truck_value->final_truck_weight) && $truck_value->final_truck_weight>0 ? print isset($label)?$label:'' : ''?></span>
                                     @endif
                                     </li>
                                 </ul>
                             </div>
+                            
                         
                             <?php $i++;?>
                         @endforeach
@@ -254,7 +261,8 @@
                                 <ul id="truck" style="list-style-type: none;padding: 0;">
                                     <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                        <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                        <span id="truck_value_add"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="0"></span>
                                         <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                             @if(isset($labours))
                                                 @foreach ($labours as $labour)
@@ -273,7 +281,8 @@
                             <ul id="truck" style="list-style-type: none;padding: 0;">
                                 <li>
                                     <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                    <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                    <span id="truck_value_add"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                    <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value=""></span>
                                     <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                         @if(isset($labours))
                                             @foreach ($labours as $labour)
@@ -310,15 +319,17 @@
                                     <ul style="list-style-type: none;padding: 0;">
                                         <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                        <span><input disabled type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
-                                            <select disabled id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
+                                        <span><input type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                        <input type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
+                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}">
+                                            <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                                 @if(isset($labours))
                                                     @foreach ($labours as $labour)
                                                         <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
-                                            <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                            <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
                                         @if($tvalue == 0 )
                                         <span style="padding-top:8px;">N/A </span>
                                         @endif
@@ -333,6 +344,8 @@
                                         <li>
                                             <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                             <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                            <input type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="">
+                                            <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
                                             <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                                 @if(isset($labours))
                                                     @foreach ($labours as $labour)
@@ -351,6 +364,8 @@
                                     <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
                                         <span><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight{{Auth::id()}}[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>
+                                        <!-- <input type="hidden" name="" id="truck_weight" value=""> -->
+                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
                                         <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{Auth::id()}}][]" class="form-control labour_select" multiple="multiple">
                                             @if(isset($labours))
                                                 @foreach ($labours as $labour)
@@ -401,25 +416,41 @@
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)<td><span>Amount</span></td>@endif 
                                             
                                         </tr>
-                                       <?php $key = 1; $actualsum =0; $actualtotal =0;?>
-                                       <!-- @if(!$truck_load_prodcut_id->isEmpty())<?php 
-                                        // $truck_product_id = $truck_load_prodcut_id['0']['attributes']['product_id'];
-                                        // $truck_procudcts = unserialize($truck_product_id);
-                                        // $explodetruck_prodcuts = explode(',',$truck_procudcts); ?>
-                                        @else
-                                              <?php //$explodetruck_prodcuts = array(); ?>
-                                        @endif -->
+                                       <?php $key = 1; $actualsum =0; $actualtotal =0;
+                                            $truck_weight_id = '';
+                                            $actual_quantity_temp = 0;
+                                            $actualsum_temp = 0;
+                                       ?>
+                                        
 
                                             @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
+                                            @if(!$truckdetails->isEmpty())<?php 
+
+                                                
+                                                foreach($truckdetails as $truck_details){
+                                                    
+                                                    $truck_product_id = $truck_details->product_id;
+                                                    $truck_procudcts = unserialize($truck_product_id);
+                                                    $explodetruck_prodcuts = explode(',',$truck_procudcts); 
+                                                    if(in_array($product->product_category_id,$explodetruck_prodcuts)){
+                                                        $truck_weight_id = $truck_details->id;
+                                                    }
+                                                }
+
+                                                ?>
+                                            @else
+                                                <?php $explodetruck_prodcuts = array(); ?>
+                                            @endif
                                         <?php
+                                        
                                         $actual_quantity = $product->actual_pieces * $product->actual_quantity;              
                                         $actualsum =  $actualsum + $actual_quantity;
                                         $total_dc = $product->actual_quantity * $product->price; 
                                         $total_amt = $actual_quantity * $product->price;
                                         
                                         $actualtotal =  $actualtotal + $total_amt;
-
+                                        
                                         // if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8) {
                                         //     if(in_array($product->product_category_id,$explodetruck_prodcuts)){
                                         //         $class = '';
@@ -451,16 +482,18 @@
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" id="product_id{{$key}}" value="{{$product->id}}">
+                                                    <input type="hidden" name="product_{{$key}}_truck_weight_id" id="truck_weight_id_{{$key}}" value="{{isset($truck_weight_id) && $truck_weight_id != ''?$truck_weight_id:''}}">
+                                                    
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="actual_pieces_{{$key}}" <?php print isset($class) ? $class :''; ?> class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{(isset($product->actual_pieces) && $product->actual_pieces >= 0) ? $product->actual_pieces : '' }}" type="tel" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity();" onclick="clear_actual_qty();" >
+                                                    <input id="actual_pieces_{{$key}}" <?php print isset($class) ? $class :''; ?> class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{(isset($product->actual_pieces) && $product->actual_pieces >= 0) ? $product->actual_pieces : '' }}" type="tel" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity_load_truck();" onclick="clear_actual_qty();" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="average_weight_{{$key}}" <?php print isset($class) ? $class :''; ?>  class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{(isset($product->actual_quantity) && $product->actual_quantity >= 0) ? $product->actual_quantity : '' }}" type="tel" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity();" maxlength="10" onclick="clear_actual_qty();">
+                                                    <input id="average_weight_{{$key}}" <?php print isset($class) ? $class :''; ?>  class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{(isset($product->actual_quantity) && $product->actual_quantity >= 0) ? $product->actual_quantity : '' }}" type="tel" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity_load_truck();" maxlength="10" onclick="clear_actual_qty();">
                                                 </div>
                                             </td>
                                             <td>
@@ -572,4 +605,10 @@
             </div>
         </div>
     </div>
-    @stop
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            fetch_average_quantity_load_truck();
+        });
+</script>
+@stop

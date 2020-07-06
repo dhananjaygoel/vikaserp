@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    // fetch_average_quantity_load_truck();
     $('form').attr('autocomplete', 'off');
 
     $("#warehouse_radio").click(function () {
@@ -582,6 +583,139 @@ function fetch_average_quantity_temp() {
                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
             }
         }
+    }
+}
+
+function fetch_average_quantity_load_truck() {
+    var total_avg_qty = 0;
+    var current_row_count = $(".add_product_row").length;
+    var quantity = 0;
+    for (var i = 1; i < current_row_count + 1; i++) {
+        // if (parseFloat($('#product_price_' + i).val())) {
+            quantity = $("#actual_quantity_readonly_" + i).val();
+            if (quantity > 0) {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                    rate = parseFloat($("#average_weight_" + i).val());
+                }
+            } else {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                    quantity = parseFloat($("#actual_pieces_" + i).val());
+                }
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                    rate = parseFloat($("#average_weight_" + i).val());
+                }
+            }            
+            // var rate = $("#product_price_" + i).val();
+
+            var amount = parseFloat(rate.toFixed(2)) * parseInt(quantity.toFixed(2));
+
+            total_avg_qty = total_avg_qty + amount;
+//            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
+
+            if (amount > 0) {
+                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+//                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
+                $('#total_avg_qty').val(total_avg_qty.toFixed(2));
+            }
+            var final_var = $("#actual_pieces_" + current_row_count) .val();
+            if(final_var >0){
+                $('.btn_delorderto_delload_truck').removeClass( "disabled" )
+            }
+        // }
+    }
+    fetch_actual_quantity_load_truck();
+}
+
+function fetch_actual_quantity_load_truck() {
+    var total_avg_qty = 0;
+    var current_row_count = $(".add_product_row").length;
+    // Total_Avg_qty = parseFloat($("#total_avg_qty").val());
+    var empty_truck_weight = parseFloat($("#empty_truck_weight").val());
+    // Total_Actual_qty = parseFloat($("#total_actual_qty_truck").val());
+    var truck_weight_id = 0;
+    
+    Total_Actual_qty_calc = 0;
+    Total_Amount = 0;
+    var average_weight_array =[];
+    var j=1;
+    while(true){
+        var truck_weight_id = $("#truck_weight_"+j).val();
+        if(truck_weight_id==undefined)
+            break;
+        else
+            truck_weight_id = $("#truck_weight_"+j).val().split('_')[1];
+
+        //var Total_Actual_qty = $("#truck_weight_"+truck_weight_id).val();
+        // truck_weight_number = Total_Actual_qty.split('_');
+        var avg_weight=0;
+        for (var i = 1; i < current_row_count + 1; i++) {
+            
+            var truck_weight_id_product= $("#truck_weight_id_"+i).val();
+            if($("#actual_pieces_" + i).val() == undefined || $("#actual_pieces_" + i).val() =='')
+                break;
+                
+            if(truck_weight_id_product==truck_weight_id){
+                var actual_pieces = parseFloat($("#actual_pieces_" + i).val());
+                var average_weight = parseFloat($("#average_weight_" + i).val());
+                var actual_qnty =actual_pieces * average_weight;
+                avg_weight=avg_weight+actual_qnty;
+            }
+        }
+        average_weight_array.push(avg_weight);
+        j++;
+    }
+    for (var i = 1; i < current_row_count + 1; i++) {
+        var truck_weight_id = $("#truck_weight_id_"+i).val();
+        var Total_Actual_qty = $("#truck_weight_"+truck_weight_id).val();
+        if(Total_Actual_qty == undefined)
+        break;
+        var truck_weight_number = Total_Actual_qty.split('_');
+        if(truck_weight_number[1] == '1'){
+            Total_Actual_qty = truck_weight_number[0] - empty_truck_weight;
+            // alert(Total_Actual_qty);
+        }else{
+            var truck_sequence=parseInt(truck_weight_number[1]) ;
+            var prev_truck_sequence = truck_sequence-1;
+            Total_Actual_qty = $("#truck_weight_"+truck_sequence).val().split('_')[0] - $("#truck_weight_"+prev_truck_sequence).val().split('_')[0];
+            //alert(Total_Actual_qty);
+        }
+        total_avg_qty=average_weight_array[truck_weight_number[1]-1];
+        // Total_Actual_qty = truck_weight_number[0];
+        actual_pieces = parseFloat($("#actual_pieces_" + i).val());
+        average_weight = parseFloat($("#average_weight_" + i).val());
+        if(isNaN(actual_pieces)){
+            actual_pieces = 0;
+        }
+        if(isNaN(average_weight)){
+            average_weight = 0;
+        }
+        var average_quantity = parseFloat(average_weight).toFixed(2) * parseInt(actual_pieces).toFixed(2);
+
+        var actual_qty = (parseFloat(average_quantity) / parseFloat(total_avg_qty) * parseFloat(Total_Actual_qty));
+        actual_qty = parseFloat(actual_qty.toFixed(0));
+        if (!isNaN(actual_qty)) {
+            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+            $("#actual_quantity_" + i).val(actual_qty);
+        }
+
+        product_price = parseFloat($("#product_price_" + i).val());
+
+        var amount = actual_qty * parseFloat(product_price);
+        if (amount > 0) {
+            $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+        }
+        Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+        if(!isNaN(parseFloat(amount))){
+            Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
+        }
+    }
+    if(!isNaN(parseFloat(Total_Actual_qty_calc)))
+    $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
+    if(Total_Amount>0){
+        $('#total_price').val(Total_Amount.toFixed(2));
     }
 }
 
