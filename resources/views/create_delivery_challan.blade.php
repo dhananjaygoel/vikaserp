@@ -141,7 +141,7 @@
                                         @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <?php
-                                         $actual_quantity = $product->actual_pieces * $product->actual_quantity;              
+                                         $actual_quantity = isset($product->quantity)?$product->quantity:0;
                                          $actualsum =  $actualsum + $actual_quantity;
                                          $total_dc = $product->actual_quantity * $product->price;   
                                          $actualtotal =  $actualtotal + $total_dc;
@@ -173,7 +173,7 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1 sfdsf">
-                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}}</div></div>
+                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{isset($product->quantity)?$product->quantity:0}}</div></div>
                                                 <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="{{$actual_quantity}}" type="hidden" >
                                                 <!--                                                <div class="form-group">
                                                                                                     <input id="quantity_{{$key}}" type="hidden" value="{{ $product->present_shipping}}" name="product[{{$key}}][quantity]">

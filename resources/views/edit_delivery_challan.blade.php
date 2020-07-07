@@ -613,5 +613,11 @@
         </div>
     </div>
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            grand_total_challan();
+        });
+</script>
 <!-- {{-- @include('autocomplete_tally_product_name') --}} -->
 @endsection
