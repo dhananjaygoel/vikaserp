@@ -3868,14 +3868,13 @@ $("body").on('click',"button", function() {
                         // $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
                         // $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
                         // $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
-                        if(truck_sequence == 1){
-                            if($('#truck_weight_'+truck_weight_id).length){
-                                $('#truck_weight_'+truck_weight_id).val(truck_weight+'_'+truck_sequence);
-                            }else{
-                                var html = '<input type="hidden" name="truck_weight_id[]" id="truck_weight_'+truck_weight_id+'" value="'+truck_weight+'_'+truck_sequence+'">';
-                                $('#truck_value_add').append(html);
-                            }
+                        if($('#truck_weight_'+truck_weight_id).length){
+                            $('#truck_weight_'+truck_weight_id).val(truck_weight+'_'+truck_sequence);
+                        }else{
+                            var html = '<input type="hidden" name="" id="truck_weight_'+truck_weight_id+'" value="'+truck_weight+'_'+truck_sequence+'">';
+                            $('#truck_value_add_'+truck_sequence).append(html);
                         }
+                        
                         $('#truck_weight_id_'+truck_sequence).val(truck_weight_id);
                         $('#truck_weight_'+truck_sequence).val(truck_weight+'_'+truck_weight_id);
                         $('#truck_weight_'+truck_weight_id).val(truck_weight+'_'+truck_sequence);
@@ -3905,6 +3904,8 @@ $("body").on('click',"button", function() {
         var delboy_id  = arr[3];
         var truck_sequence = arr[4];
         // alert(delboy_id+truck_sequence);
+        var empty_truck_weight = $("#empty_truck_weight").val();
+        var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
 
         var select_data = $('#labour_select_'+delboy_id+'_'+truck_sequence).html();
         if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == "" || $("#truck_weight_"+delboy_id+"_"+truck_sequence).val() == 0) {
@@ -3913,15 +3914,18 @@ $("body").on('click',"button", function() {
         } else {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
         }
-        if ($("#truck_weight_"+delboy_id+"_"+truck_sequence).prop('disabled') ) {
-            $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
+        if(empty_truck_weight != '' && empty_truck_weight != 0){
+            if(parseFloat(truck_weight) < parseFloat(empty_truck_weight)){
+                $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+                $('.alert-valid-truck-weight').show();
+                setTimeout(function(){
+                    $('.alert-valid-truck-weight').hide();
+                }, 8000);
+                status_form = 1;
+            }
         } else {
-            $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
-            $('.alert-truck-weight').show();
-            setTimeout(function(){
-                $('.alert-truck-weight').hide();
-            }, 5000);
-            
+            $("#empty_truck_weight").addClass('error_validation');
+            $('.alert-empty-truck-weight').show();
             status_form = 1;
         }
         if (status_form == 1) {
