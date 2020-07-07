@@ -3811,6 +3811,17 @@ $("body").on('click',"button", function() {
         }
         var empty_truck_weight = $("#empty_truck_weight").val();
         var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
+        if($("#truck_weight_"+delboy_id+"_"+(truck_sequence-1)).length){
+            var previous_truck_weight = $("#truck_weight_"+delboy_id+"_"+(truck_sequence-1)).val();
+            if(parseFloat(truck_weight) < parseFloat(previous_truck_weight)){
+                $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+                $('.alert-valid-truck-weight').show();
+                setTimeout(function(){
+                    $('.alert-valid-truck-weight').hide();
+                }, 8000);
+                status_form = 1;
+            }
+        }
 
         if (truck_weight == "" || truck_weight == 0) {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
@@ -3913,6 +3924,17 @@ $("body").on('click',"button", function() {
             status_form = 1;
         } else {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
+        }
+        if($("#truck_weight_"+delboy_id+"_"+(truck_sequence-1)).length){
+            var previous_truck_weight = $("#truck_weight_"+delboy_id+"_"+(truck_sequence-1)).val();
+            if(parseFloat(truck_weight) < parseFloat(previous_truck_weight)){
+                $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+                $('.alert-valid-truck-weight').show();
+                setTimeout(function(){
+                    $('.alert-valid-truck-weight').hide();
+                }, 5000);
+                status_form = 1;
+            }
         }
         if(empty_truck_weight != '' && empty_truck_weight != 0){
             if(parseFloat(truck_weight) < parseFloat(empty_truck_weight)){
