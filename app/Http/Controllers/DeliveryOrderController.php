@@ -1095,6 +1095,7 @@ class DeliveryOrderController extends Controller {
      */
     public function store_load_truck($id) {
         $input_data = Input::all();
+        $products_data = '';
         //  dd($input_data);
         $delivery_order_details = DeliveryOrder::find($id);
         $delboy = Auth::id();
@@ -1102,7 +1103,7 @@ class DeliveryOrderController extends Controller {
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
             $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
-            // dd($inputprodut);
+            //dd($inputprodut);
             $delivery_productdata = LoadTrucks::where('deliver_id',$id)->get();
             // dd($delivery_productdata);
             if(!$delivery_productdata->isEmpty()){
@@ -1119,10 +1120,12 @@ class DeliveryOrderController extends Controller {
                 }
                 // $explodetruck_prodcuts = explode(',',$explodetruck_prodcuts);
             }else{
+                // dd($delivery_productdata);
                 $explodetruck_prodcuts = array();
             }
             $truck_product_ids = "";
             if(!empty($inputprodut)){
+
                 $productids = array();
                 foreach($inputprodut as $truckprod){
                     $product_id = $truckprod['id'];
@@ -1143,6 +1146,7 @@ class DeliveryOrderController extends Controller {
                 else{
                     $truck_product_ids = "";
                 }
+                // dd($truck_product_ids);
             }
             if(!empty($truck_product_ids)){
                 $serialize = serialize($truck_product_ids);
@@ -1163,6 +1167,7 @@ class DeliveryOrderController extends Controller {
                     $truck_weight_ids_array = (Input::has('truck_weight_id')) ? Input::get('truck_weight_id') : $truck_weight='Invalid';
                     for($i=0; $i< sizeof($truck_weight_ids_array) ; $i++){
                         $truck_weight_id = $truck_weight_ids_array[$i];
+                       
                         if($truck_weight_id != 0){
                             $truck_weight_id = explode('_',$truck_weight_id);
                             // $truck_weight = $truck_weight_id[0];
@@ -1210,6 +1215,7 @@ class DeliveryOrderController extends Controller {
                                 }
                             }
                         }else if($truck_weight_array[$i] != 0){
+
                             $truck_weight = $truck_weight_array[$i];
                             if($truck_weight > $empty_truck_weight){
                                 $loadetrucks[] = [
@@ -1274,21 +1280,49 @@ class DeliveryOrderController extends Controller {
 
                 $truck_weight_ids_array = (Input::has('truck_weight_id')) ? Input::get('truck_weight_id') : $truck_weight='Invalid';
                 for($i=0; $i< sizeof($truck_weight_ids_array) ; $i++){
-                //foreach($truck_weight_ids_array as $key => $truck_weight_id){
                     $truck_weight_id=$truck_weight_ids_array[$i];
-                    //dd($truck_weight_id);
                     if($truck_weight_id != 0){
                         $truck_weight_id = explode('_',$truck_weight_id);
-                        $truck_weight = $truck_weight_id[0];
+                        $truck_weight = $truck_weight_array[$i];
                         $truck_id = $truck_weight_id[1];
                         if($truck_weight > $empty_truck_weight){
                             $delivery_anothertruckdata = LoadTrucks::where('id',$truck_id)->first();
                             if(!empty($delivery_anothertruckdata)){
-                                LoadTrucks::where('id', '=', $truck_weight_id)
+                                LoadTrucks::where('id', '=', $truck_id)
                                     ->where('deliver_id', '=', $id)
                                     ->update(array(
                                         'final_truck_weight' => $truck_weight
                                 ));
+                            }
+                            $labour = (Input::has('labour')) ? Input::get('labour') : '';
+                            if(!empty($labour)){
+                                foreach($labour as $key => $val){
+                                    if($key == $i+1){
+                                        $truck_load = LoadTrucks::where('deliver_id', '=', $id)
+                                                ->where('id', '=', $truck_id)
+                                                ->first();
+                                        if(!empty($truck_load)){
+                                            $labour_count = LoadLabour::where('delivery_id',$id)
+                                                ->where('truck_weight_id',$truck_id)
+                                                ->first();
+                                            
+                                            if(!empty($labour_count)){
+                                                LoadLabour::where('delivery_id',$id)
+                                                    ->where('truck_weight_id',$truck_id)
+                                                    ->delete();
+                                            }
+                                            foreach($val as $load_val){
+                                                $load_loabour = [
+                                                    'del_boy_id' => Auth::id(),
+                                                    'labour_id' => $load_val,
+                                                    'delivery_id' => $id,
+                                                    'truck_weight_id'=> $truck_id
+                                                ];
+                                                LoadLabour::insert($load_loabour);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }else if($truck_weight_array[$i] != 0){
@@ -1311,6 +1345,22 @@ class DeliveryOrderController extends Controller {
                                 ->update(array(
                                 'updated_at' => date("Y-m-d H:i:s")
                             ));
+                            $labour = (Input::has('labour')) ? Input::get('labour') : '';
+                            if(!empty($labour)){
+                                foreach($labour as $key => $val){
+                                    if($key == $i+1){
+                                        foreach($val as $load_val){
+                                            $load_loabour = [
+                                                'del_boy_id' => Auth::id(),
+                                                'labour_id' => $load_val,
+                                                'delivery_id' => $id,
+                                                'truck_weight_id'=> $truck_weight_id
+                                            ];
+                                            LoadLabour::insert($load_loabour);
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                     }else{
@@ -1318,16 +1368,18 @@ class DeliveryOrderController extends Controller {
                     }
                 }
             }
-            $products_data = $_POST['product'];
+            $products_data = $input_data['product'];
             foreach($products_data as $pkey =>$product_info){
                 $actual_pieces = $product_info['actual_pieces'];
                 $average_weight = $product_info['average_weight'];
+                $actual_quantity = $product_info['actual_quantity'];
                 $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
                 $productid =$product_info['order'];
                 if(!empty($actual_pieces)&& !empty($average_weight)){
                     $update_product_details = AllOrderProducts::where('id',$productid)->update([
                         'actual_pieces'=>$actual_pieces,
                         'actual_quantity'=>$average_weight,
+                        'quantity'=>$actual_quantity,
                     ]);
                 }
                 if(!empty($vat_percentage) && $vat_percentage == 'yes'){
