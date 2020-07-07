@@ -836,15 +836,15 @@ function fetch_actual_quantity() {
             var current_row_count = $(".add_product_row").length;
             actual_qty = actual_qty + parseFloat(diffreancce);
 
-            $("#actual_quantity_readonly_" + current_row_count).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
-            $("#actual_quantity_" + current_row_count).val(actual_qty.toFixed(0));
+            // $("#actual_quantity_readonly_" + current_row_count).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+            // $("#actual_quantity_" + current_row_count).val(actual_qty.toFixed(0));
 
             product_price = parseFloat($("#product_price_" + current_row_count).val());
 
             var amount = actual_qty * parseFloat(product_price);
             var all_toatl_after_calc = 0;
-            $("#amount_" + current_row_count).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
-            $('#total_actual_quantity_calc').val(parseFloat(aq) + parseFloat(diffreancce));
+            // $("#amount_" + current_row_count).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+            // $('#total_actual_quantity_calc').val(parseFloat(aq) + parseFloat(diffreancce));
             for (var i = 1; i <= current_row_count; i++) {
                 all_toatl_after_calc = parseFloat(all_toatl_after_calc) + (parseFloat($("#actual_quantity_" + i).val()) * parseFloat($("#product_price_" + i).val()));
             }
@@ -949,9 +949,12 @@ function grand_total_challan() {
 //    total_price = total_price.toFixed(2);
 
 //    total_l_d_f
+    var empty_truck_weight = $("#empty_truck_weight").val();
+    var final_truck_weight = $("#final_truck_weight").val();
+    var actual_qnty_total = (final_truck_weight - empty_truck_weight);
     $("#total_price").val(total_price_products.toFixed(2));
-    $("#total_actual_quantity").val(total_actual_quantity.toFixed(2));
-    $("#total_actual_quantity1").val(total_actual_quantity.toFixed(2));
+    $("#total_actual_quantity").val(actual_qnty_total.toFixed(2));
+    $("#total_actual_quantity1").val(actual_qnty_total.toFixed(2));
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
