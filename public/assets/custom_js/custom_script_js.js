@@ -712,8 +712,10 @@ function fetch_actual_quantity_load_truck() {
             Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
         }
     }
-    if(!isNaN(parseFloat(Total_Actual_qty_calc)))
-    $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
+    if(!isNaN(parseFloat(Total_Actual_qty_calc))){
+        $('#total_actual_quantity_calc').val(Total_Actual_qty_calc.toFixed(0));
+        $('#total_actual_qty_truck').val(Total_Actual_qty_calc.toFixed(0));
+    }
     if(Total_Amount>0){
         $('#total_price').val(Total_Amount.toFixed(2));
     }

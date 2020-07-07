@@ -299,14 +299,13 @@
  
                     @elseif(Auth::user()->role_id ==9)
                     
-                        @if(isset($truck_load_prodcut_id) && (!$truck_load_prodcut_id->isEmpty()))
-                            @foreach($truck_load_prodcut_id as $truck_value)
+                        @if(isset($truckinfo) && (!empty($truckinfo)))
+                            @foreach($truckinfo as $truck_value)
                             <?php 
                                 $lbr_id = array();
                                 $ar = array();
                                 $load_labour = App\LoadLabour::where('delivery_id',$truck_value->deliver_id)
                                     ->where('truck_weight_id',$truck_value->id)
-                                    ->where('del_boy_id',Auth::id())
                                     ->get();
                                 if(!empty($load_labour)){
                                     foreach($load_labour as $load_lbr){
@@ -316,22 +315,30 @@
                                 if(isset($ar) && !empty($ar)){
                                     $lbr_id = isset($ar[$load_lbr->truck_weight_id])?$ar[$load_lbr->truck_weight_id]:null;
                                 }
+                                if($truck_value->userid != Auth::id()){
+                                    $class = ' disabled ';
+                                }else{
+                                    $class = '';
+                                }
+
+                            // echo '<pre>';
+                            // print_r($truck_value);
                             ?>
                                 <div class ="row form-group truck_weight_save">
                                     <ul style="list-style-type: none;padding: 0;">
                                         <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                        <span id="truck_value_add_{{$i}}"><input type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
-                                        <input type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
-                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}"></span>
-                                            <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
+                                        <span id="truck_value_add_{{$i}}"><input <?php isset($class)?print $class:''?>type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                        <input <?php isset($class)?print $class:''?> type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
+                                        <input <?php isset($class)?print $class:''?> type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}"></span>
+                                            <select <?php isset($class)?print $class:''?> id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
                                                 @if(isset($labours))
                                                     @foreach ($labours as $labour)
                                                         <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
-                                            <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                            <button <?php isset($class)?print $class:''?> type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
                                         @if($tvalue == 0 )
                                         <span style="padding-top:8px;">N/A </span>
                                         @endif
@@ -417,7 +424,7 @@
                                             
                                         </tr>
                                        <?php $key = 1; $actualsum =0; $actualtotal =0;
-                                            $truck_weight_id = '';
+                                            
                                             $actual_quantity_temp = 0;
                                             $actualsum_temp = 0;
                                        ?>
@@ -427,9 +434,8 @@
                                         @if($product->order_type =='delivery_order')
                                             @if(!$truckdetails->isEmpty())<?php 
 
-                                                
+                                                $truck_weight_id = '';
                                                 foreach($truckdetails as $truck_details){
-                                                    
                                                     $truck_product_id = $truck_details->product_id;
                                                     $truck_procudcts = unserialize($truck_product_id);
                                                     $explodetruck_prodcuts = explode(',',$truck_procudcts); 
@@ -437,7 +443,8 @@
                                                         $truck_weight_id = $truck_details->id;
                                                     }
                                                 }
-
+                                                // echo '<pre>';
+                                                // print_r($truck_weight_id);
                                                 ?>
                                             @else
                                                 <?php $explodetruck_prodcuts = array(); ?>

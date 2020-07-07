@@ -3867,7 +3867,6 @@ $("body").on('click',"button", function() {
                     var data = jQuery.parseJSON(data);
                     if(data[2] != ''){
                         truck_weight_id = data[2];
-                        console.log(data[2]);
                     }
                     if(data[0]=='success'){
                         // alert(data[0]);
@@ -3953,15 +3952,16 @@ $("body").on('click',"button", function() {
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
-            }, 1000);
+            }, 3000);
             return false;
         } else {
             truck_sequence++;
             var html = '<div class ="row form-group truck_weight_save">'+
                     '<ul style="list-style-type: none;padding: 0;">'+
                     '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (Kg):</span>'+
-                    '<span><input type="text" name="truck_weight'+delboy_id+'[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" ></span>'+
-                    '<select id="labour_select_'+delboy_id+'_'+truck_sequence+'" name="labour['+delboy_id+'][]" class="form-control labour_select" multiple="multiple">'+
+                    '<span id="truck_value_add_'+truck_sequence+'"><input type="text" name="truck_weight[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >'+
+                    '<input type="hidden" name="truck_weight_id[]" id="truck_weight_'+truck_sequence+'" value=""></span>'+
+                    '<select id="labour_select_'+delboy_id+'_'+truck_sequence+'" name="labour['+truck_sequence+'][]" class="form-control labour_select" multiple="multiple">'+
                     '</select>'+
                     '<button type="button" value="truck_weight_save" id="btn_truck_weight_'+delboy_id+'_'+truck_sequence+'" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>'+
                     '<span id="load_label_'+delboy_id+'_'+truck_sequence+'" style="padding-top:8px;"></span>'+
