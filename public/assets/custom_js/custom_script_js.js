@@ -700,7 +700,6 @@ function fetch_actual_quantity_load_truck() {
             $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
             $("#actual_quantity_" + i).val(actual_qty);
         }
-
         product_price = parseFloat($("#product_price_" + i).val());
 
         var amount = actual_qty * parseFloat(product_price);
