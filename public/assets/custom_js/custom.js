@@ -3884,8 +3884,18 @@ $("body").on('click',"button", function() {
                             var html = '<input type="hidden" name="" id="truck_weight_'+truck_weight_id+'" value="'+truck_weight+'_'+truck_sequence+'">';
                             $('#truck_value_add_'+truck_sequence).append(html);
                         }
-                        
-                        $('#truck_weight_id_'+truck_sequence).val(truck_weight_id);
+                        if(data[3] != ''){
+                            var current_row_count = $(".add_product_row").length;
+                            var product_ids = data[3].split(',');
+                            $.each(product_ids, function(i, element){
+                                for (var i = 1; i < current_row_count + 1; i++) {
+                                    if($('#add_product_id_'+i).val() == element){
+                                        $('#truck_weight_id_'+i).val(truck_weight_id);
+                                    }
+                                }
+                            });
+                        }
+                        // $('#truck_weight_id_'+truck_sequence).val(truck_weight_id);
                         $('#truck_weight_'+truck_sequence).val(truck_weight+'_'+truck_weight_id);
                         $('#truck_weight_'+truck_weight_id).val(truck_weight+'_'+truck_sequence);
                         // $('.multiselect').prop("disabled",true);
