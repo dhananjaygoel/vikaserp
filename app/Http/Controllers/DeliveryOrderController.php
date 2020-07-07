@@ -359,6 +359,7 @@ class DeliveryOrderController extends Controller {
 
 
         $input_data = Input::all();
+        // dd($input_data);
         $whatsapp_error = '';
         $sms_flag = 1;
         if (Session::has('forms_edit_delivery_order')) {
@@ -479,7 +480,7 @@ class DeliveryOrderController extends Controller {
                     'unit_id' => isset($product_data['units'])? $product_data['units'] :'1' ,
                    'from'=> $order_id,
                      'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
-                     'length' => isset($product_data['length'])? $product_data['length']:'',
+                    //  'length' => isset($product_data['length'])? $product_data['length']:'',
                      'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
                      'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
                      'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
