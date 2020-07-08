@@ -1618,7 +1618,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             $existing_prod = LoadTrucks::where('deliver_id',$delivery_id)->where('id',$truck_weight_id)->first();
-            if(!($existing_prod->isEmpty())){
+            if(!empty($existing_prod)){
                 $existing_prod_ids = $existing_prod->product_id;
             }
             if(!empty($existing_prod_ids)){
