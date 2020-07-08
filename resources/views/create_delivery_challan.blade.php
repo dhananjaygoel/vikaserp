@@ -357,7 +357,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="RoundOff"><b class="challan">Round Off</b></label>
-                                    <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                                    <input id="round_off1" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                                 </div>
                                 <div class="form-group" style="display: none">
                                     <label for="Grand_total"><b class="challan">Grand Total : </b>
