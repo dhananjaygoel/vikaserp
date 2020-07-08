@@ -590,22 +590,27 @@ function fetch_average_quantity_load_truck() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
     var quantity = 0;
+    var rate = 0;
     for (var i = 1; i < current_row_count + 1; i++) {
         // if (parseFloat($('#product_price_' + i).val())) {
             quantity = $("#actual_quantity_readonly_" + i).val();
             if (quantity > 0) {
-                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != 0) {
                     quantity = parseFloat($("#actual_pieces_" + i).val());
                 }
-                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != '') {
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() != 0) {
                     rate = parseFloat($("#average_weight_" + i).val());
                 }
             } else {
-                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_pieces_" + i).val() != 0) {
                     quantity = parseFloat($("#actual_pieces_" + i).val());
+                }else{
+                    quantity = 0;
                 }
-                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 || $("#actual_quantity_readonly_" + i).val() == '') {
+                if ($("#average_weight_" + i).val() > 0 && $("#average_weight_" + i).val() != 0 ) {
                     rate = parseFloat($("#average_weight_" + i).val());
+                }else{
+                    rate = 0;
                 }
             }            
             // var rate = $("#product_price_" + i).val();
@@ -999,7 +1004,7 @@ function grand_total_challan() {
     $("#round_off").val(round_off.toFixed(2));
     $('#grand_total').val(grand_total.toFixed(2));
     $("#total_l_d_f").html("<span class='text-center'>" + grand_total.toFixed(0) + "</span>");
-    
+
 }
 
 /**
