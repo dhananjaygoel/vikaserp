@@ -136,11 +136,13 @@
                                             <td><span>Length</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-                                        <?php $key = 1; $actualsum =0; $actualtotal =0;
+                                        <?php $key = 1; $actualsum =0; $actualtotal =0; $total_average_qnty=0;
                                         ?>
                                         @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                         <?php
+                                         $average_quantity = $product->actual_pieces * $product->actual_quantity; 
+                                         $total_average_qnty = $total_average_qnty + $average_quantity;
                                          $actual_quantity = isset($product->quantity)?$product->quantity:0;
                                          $actualsum =  $actualsum + $actual_quantity;
                                          $total_dc = $product->actual_quantity * $product->price;   
@@ -169,7 +171,7 @@
                                             <td class="col-md-1">
                                                 <!--                                                <div class="form-group">
                                                                                                     <input type="text" class="form-control" name="average_quantity" id="average_quantity" readonly="readonly">-->
-                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}}</div></div>
+                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$average_quantity}}</div></div>
                                                 </div>
                                             </td>
                                             <td class="col-md-1 sfdsf">
@@ -264,7 +266,7 @@
                             &nbsp;&nbsp;
                             <label for="total_avg_qty">
                                 <b class="challan">Total Avg Quantity*</b>
-                                <input type="text" value ="{{$actualsum}}" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly">
+                                <input type="text" value ="{{$total_average_qnty}}" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="readonly">
                                 <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
                                 </div>
                                 <div class="form-group">    

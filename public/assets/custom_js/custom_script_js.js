@@ -976,20 +976,29 @@ function grand_total_challan() {
 //    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
     total_price = parseFloat(total_price.toFixed(2));
     var vat_val = 0;
-    $("#total_l_d_f").html("<span class='text-center'>" + total_price + "</span>");
+    
     if (parseFloat($('#vat_percentage').val()) > 0) {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
     }
+    if(parseFloat($('#gst_total').val()) > 0){
+        vat_val = parseFloat($('#gst_total').val());
+    }
+
     var vat_total = parseFloat(total_price) + parseFloat(vat_val.toFixed(2));
     vat_total = vat_total.toFixed(2);
     $("#vat_tot_val").val(vat_total);
-    var round_off = 0;
-    if ($('#round_off').val() != '') {
-        round_off = parseFloat($("#round_off").val());
-    }
-    var grand_total = parseFloat(vat_total) + parseFloat(round_off.toFixed(2));
+    
+    // if ($('#round_off').val() != '') {
+    //     round_off = parseFloat($("#round_off").val());
+    // }
+    var grand_total = parseFloat(vat_total);
+
+    var round_off = grand_total.toFixed(0) - parseFloat(vat_total);
+
+    $("#round_off").val(round_off.toFixed(2));
     $('#grand_total').val(grand_total.toFixed(2));
+    $("#total_l_d_f").html("<span class='text-center'>" + grand_total.toFixed(0) + "</span>");
 }
 
 /**
