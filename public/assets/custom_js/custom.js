@@ -3811,10 +3811,23 @@ $("body").on('click',"button", function() {
         }
         var empty_truck_weight = $("#empty_truck_weight").val();
         var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
-        if($("#truck_weight_"+delboy_id+"_"+(truck_sequence-1)).length){
-            var previous_truck_weight = $("#truck_weight_"+delboy_id+"_"+(truck_sequence-1)).val();
+        if($("#truck_weight_"+(parseInt(truck_sequence) - 1)+"_readonly").length){
+            var previous_truck_weight = $("#truck_weight_"+(parseInt(truck_sequence) - 1)+"_readonly").val();
             if(parseFloat(truck_weight) < parseFloat(previous_truck_weight)){
                 $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+                $('.alert-valid-truck-weight').show();
+                setTimeout(function(){
+                    $('.alert-valid-truck-weight').hide();
+                }, 8000);
+                status_form = 1;
+            }
+        }
+        var next_truck_sequence = parseInt(truck_sequence) + 1;
+        if($("#truck_weight_"+next_truck_sequence+"_readonly").length){
+            var next_truck_weight = $("#truck_weight_"+next_truck_sequence+"_readonly").val();
+            if(parseFloat(truck_weight) > parseFloat(next_truck_weight)){
+                $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+                $('.alert-valid-truck-weight').html('Please fill valid truck weight smaller than next truck weight.');
                 $('.alert-valid-truck-weight').show();
                 setTimeout(function(){
                     $('.alert-valid-truck-weight').hide();
@@ -3896,6 +3909,7 @@ $("body").on('click',"button", function() {
                             });
                         }
                         // $('#truck_weight_id_'+truck_sequence).val(truck_weight_id);
+                        $('#truck_weight_'+truck_sequence+'_readonly').val(truck_weight);
                         $('#truck_weight_'+truck_sequence).val(truck_weight+'_'+truck_weight_id);
                         $('#truck_weight_'+truck_weight_id).val(truck_weight+'_'+truck_sequence);
                         // $('.multiselect').prop("disabled",true);
