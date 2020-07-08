@@ -1483,14 +1483,22 @@ class DeliveryOrderController extends Controller {
                             $user_fname = isset($cust->first_name)?$cust->first_name:'';
                             $user_lname = isset($cust->last_name)?$cust->last_name:'';
                         }
+                        $del_order_notif = App\SendNotification::where('order_type','supervisor_assigned')
+                                            ->where('order_id',$id)
+                                            ->orderBy('id','DESC')
+                                            ->first();
+                        $assigned_to = 0;
+                        if (Auth::user()->role_id == 9){
+                            $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:0;
+                        }
                         /* Add new Notifications */
                             $notification = new SendNotification();
                             $msg = $user_fname.' '.$user_lname.' has loaded truck for Delivery Order #'.$id;
                             $notification->order_id = $id;
                             $notification->order_type = 'load_truck';
                             $notification->msg = $msg;
-                            $notification->assigned_by = Auth::user()->id;
-                            $notification->assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:0;
+                            $notification->assigned_by = isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:0;
+                            $notification->assigned_to = $assigned_to;
                             $notification->user_read_status = '0';
                             $notification->admin_read_status = '0';
                             $notification->save();

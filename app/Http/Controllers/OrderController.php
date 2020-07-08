@@ -228,7 +228,7 @@ class OrderController extends Controller {
               $notification = new SendNotification();
               $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
               $notification->order_id = $request->delivery_id;
-              $notification->order_type = 'delivery_order';
+              $notification->order_type = 'supervisor_assigned';
               $notification->msg = $msg;
               $notification->assigned_by = Auth::user()->id;
               $notification->assigned_to = $request->del_supervisor;
@@ -315,7 +315,7 @@ class OrderController extends Controller {
                 $notification = new SendNotification();
                 $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
                 $notification->order_id = $request->delivery_id;
-                $notification->order_type = 'delivery_order';
+                $notification->order_type = 'delboy_assigned';
                 $notification->msg = $msg;
                 $notification->assigned_by = Auth::user()->id;
                 $notification->assigned_to = $request->del_boy;

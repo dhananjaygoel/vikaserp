@@ -427,7 +427,7 @@ function notification_msg(){
             $.each(data['notif'],function(index,element){
                 if(element.order_type == 'load_truck'){
                     var title = 'Truck Loaded';
-                }else if(element.order_type == 'delivery_order'){
+                }else if(element.order_type == 'delivery_order' || element.order_type == 'supervisor_assigned' || element.order_type == 'delboy_assigned'){
                     var title = 'Order Assigned';
                 }
             view +='<li class="notification_msg notification_navbar">'
