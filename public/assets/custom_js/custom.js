@@ -3658,6 +3658,7 @@ $("body").on('click',"button", function() {
                 //     scrollTop: $('.breadcrumb').offset().top
                 // }, 1000);
                 $('.alert-success2').show();
+
                 setTimeout(function(){
                     $('.alert-success2').hide();
                 }, 5000);
@@ -3687,7 +3688,7 @@ $("body").on('click',"button", function() {
                         setTimeout(function(){
                             $('.alert-success1').hide();
                         }, 5000);
-                        fetch_actual_qty();
+                        fetch_average_quantity_load_truck();
                         window.onbeforeunload = null;
                     }else {
                         $('.error-success1').show();
