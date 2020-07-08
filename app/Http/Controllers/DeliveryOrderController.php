@@ -1617,6 +1617,11 @@ class DeliveryOrderController extends Controller {
                     }
                 }
             }
+            $existing_prod = LoadTrucks::where('deliver_id',$delivery_id)->where('id',$truck_weight_id)->first();
+            $existing_prod_ids = $existing_prod->product_id;
+            if(!empty($existing_prod_ids)){
+                $productids[] = unserialize($existing_prod_ids);
+            }
             if(!empty($productids)){
                 $truck_product_ids = implode(',',$productids);
 
@@ -1631,7 +1636,6 @@ class DeliveryOrderController extends Controller {
         else{
             $serialize = "";
         }
-        // dd($truck_product_ids);
         
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
