@@ -949,12 +949,10 @@ function grand_total_challan() {
 //    total_price = total_price.toFixed(2);
 
 //    total_l_d_f
-    var empty_truck_weight = $("#empty_truck_weight").val();
-    var final_truck_weight = $("#final_truck_weight").val();
-    var actual_qnty_total = (final_truck_weight - empty_truck_weight);
     $("#total_price").val(total_price_products.toFixed(2));
-    $("#total_actual_quantity").val(actual_qnty_total.toFixed(2));
-    $("#total_actual_quantity1").val(actual_qnty_total.toFixed(2));
+    $("#total_actual_quantity").val(total_actual_quantity.toFixed(2));
+    $("#total_actual_quantity1").val(total_actual_quantity.toFixed(2));
+
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
