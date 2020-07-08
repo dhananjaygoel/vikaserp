@@ -311,7 +311,8 @@
                                     <td class="lable">Round Off</td>
                                     <td class="total-count">
                                     <?php
-                                        $roundoff = $vat;
+                                        $roundoff = $vat + $with_total;
+                                        $roundoff = round($roundoff,0) - $roundoff;
                                     ?>
                                     {{ round($roundoff,2) }}</td>
                                 </tr>
@@ -334,7 +335,7 @@
                                             $grand_price = $grand_price + $allorder->discount;
                                         }
                                     ?>
-                                    {{ round($grand_price + $vat, 2) }}</td>
+                                    {{ round($grand_price + $vat, 0) }}</td>
                                 </tr>
                             </tbody>
                         </table>
