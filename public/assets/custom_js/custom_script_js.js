@@ -883,6 +883,7 @@ function grand_total_challan() {
     var current_row_count = $(".add_product_row").length;
     var total_price_products = 0;
     var total_actual_quantity = 0;
+    var vat_total = 0;
 //    var loading_vat_percentage = $('#loading_vat_percentage').val();
 //    var freight_vat_percentage = $('#freight_vat_percentage').val();
 //    var discount_vat_percentage = $('#discount_vat_percentage').val();
@@ -898,13 +899,15 @@ function grand_total_challan() {
 //            if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
 //                quantity = parseFloat($("#actual_pieces_" + i).val());
 //            }
-//            var vat_percentage = $("#product_vatpercentage_" + i).val();
-//            if (vat_percentage == '') {
-//                vat_percentage = 0;
-//            }
+          
             var amount = parseFloat(parseFloat($('#product_price_' + i).val()) * quantity);
             total_price_products = total_price_products + amount;
             total_actual_quantity = total_actual_quantity + quantity;
+
+            var vat_percentage = $("#product_vat_percentage_value_" + i).val();
+            if (vat_percentage != "" && vat_percentage > 0)  {
+                vat_total =  vat_total + (amount * vat_percentage / 100);
+            }
         }
     }
     var vat_val = 0;
@@ -917,6 +920,7 @@ function grand_total_challan() {
             loading_charge = parseFloat($("#loading_charge").val());
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(loading_charge.toFixed(2));
+            vat_total = vat_total + (loading_charge * vat_percentage / 100);
         }
 //        if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
 //            var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
@@ -937,6 +941,7 @@ function grand_total_challan() {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(discount_value);
+            vat_total = vat_total + (discount_value * vat_percentage / 100);
         }
 //        if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
 //            var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
@@ -954,10 +959,7 @@ function grand_total_challan() {
 //    total_price = total_price.toFixed(2);
 
 //    total_l_d_f
-    $("#total_price").val(total_price_products.toFixed(2));
-    $("#total_actual_quantity").val(total_actual_quantity.toFixed(2));
-    $("#total_actual_quantity1").val(total_actual_quantity.toFixed(2));
-
+    
 
     var freight_value = 0;
     if ($("#freight_value").length > 0) {
@@ -965,6 +967,7 @@ function grand_total_challan() {
             freight_value = parseFloat($("#freight_value").val());
             $("#freight_value").val(freight_value.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(freight_value);
+            vat_total = vat_total + (freight_value * vat_percentage / 100);
         }
 //        if (parseFloat(freight_vat_percentage) > 0 && parseFloat(freight_value) > 0) {
 //            var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
@@ -982,12 +985,17 @@ function grand_total_challan() {
     total_price = parseFloat(total_price.toFixed(2));
     var vat_val = 0;
     
+    $("#total_price").val(total_price.toFixed(2));
+    $("#total_actual_quantity").val(total_actual_quantity.toFixed(2));
+    $("#total_actual_quantity1").val(total_actual_quantity.toFixed(2));
+
     if (parseFloat($('#vat_percentage').val()) > 0) {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")
     }
-    if(parseFloat($('#gst_total').val()) > 0){
-        vat_val = parseFloat($('#gst_total').val());
+    if(vat_total > 0){
+        $('#gst_total').val(vat_total.toFixed(2));
+        vat_val = parseFloat(vat_total.toFixed(2));
     }
 
     var vat_total = parseFloat(total_price) + parseFloat(vat_val.toFixed(2));

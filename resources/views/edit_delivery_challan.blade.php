@@ -1,6 +1,12 @@
+
 @extends('layouts.master')
 @section('title','Edit Delivery Challan')
 @section('content')
+<style>
+    input[type="checkbox"][readonly] {
+        pointer-events: none;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -151,14 +157,17 @@
                                                     if($local_state == 1){
                                                         $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
                                                         $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                                        $gst = isset($gst_det->gst)?$gst_det->gst:0;
                                                     }
                                                     else{
                                                         $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                                        $gst = isset($gst_det->gst)?$gst_det->gst:0;
                                                     }
                                                 }
                                             }
                                             else{
                                                 $igst = 0;
+                                                $gst = 0;
                                             }
                                             if(isset($product->vat_percentage) && $product->vat_percentage > 0){
                                                 if($local_state == 1){
@@ -220,9 +229,9 @@
                                             <td class="col-md-1">
                                                 <div class="form-group inquiry_vat_chkbox">
                                                     <!--<input type="text" class="form-control" id="product_vatpercentage_{{$key}}" value="{{$product->vat_percentage}}" name="product[{{$key}}][vat_percentage]" placeholder="Vat Percenatge" onblur="fetch_price({{$key}})">-->
-                                                    <input class="vat_chkbox" disabled="" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
+                                                    <input class="vat_chkbox" tab-index="-1" readonly type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
 
-                                                    <input class="vat_chkbox" type="hidden" value="{{($product->vat_percentage>0)?'1':'0'}}" name="product[{{$key}}][vat_percentage_value]" value="yes" id = "product_vat_percentage_value_{{$key}}">
+                                                    <input class="vat_chkbox" type="hidden" value="{{$gst}}" name="product[{{$key}}][vat_percentage_value]" id = "product_vat_percentage_value_{{$key}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">

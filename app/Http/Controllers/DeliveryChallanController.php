@@ -707,14 +707,14 @@ class DeliveryChallanController extends Controller {
                         'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['actual_quantity'],
                         'price' => $product_data['price'],
-                        'vat_percentage' => (isset($product_data['vat_percentage_value']) && $product_data['vat_percentage_value'] == '1') ? 1 : 0,
+                        'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'from' => $input_data['order_id'],
                         'parent' => $input_data['order'],
                     ];
                     AllOrderProducts::create($order_products);
                 }
                 /* check for vat/gst items */
-                if (isset($product_data['vat_percentage_value']) && $product_data['vat_percentage_value'] == '1') {
+                if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == '1') {
                     $sms_flag = 1;
                 }
                 /**/
