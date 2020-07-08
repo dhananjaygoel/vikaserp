@@ -999,6 +999,7 @@ function grand_total_challan() {
     $("#round_off").val(round_off.toFixed(2));
     $('#grand_total').val(grand_total.toFixed(2));
     $("#total_l_d_f").html("<span class='text-center'>" + grand_total.toFixed(0) + "</span>");
+    
 }
 
 /**
