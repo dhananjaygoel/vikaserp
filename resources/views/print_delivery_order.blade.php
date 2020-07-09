@@ -71,11 +71,13 @@
                 <tr>
                     <td>Sr.</td>
                     <td>Size</td>
+                    <td>Length</td>
                     <td>Qty</td>
                     <td>Unit</td>
                     <td>Pcs</td>
                     <td>Present Shipping</td>
                     <td>GST</td>
+                    <td>Remarks</td>
                 </tr>
             </thead>
             <tbody>
@@ -86,6 +88,7 @@
                 <tr>
                     <td>{{ $i++ }}</td>
                     <td>{{ isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:'' }}</td>
+                    <td>{{ isset($product->length)?$product->length:0 }}</td>
                     <td>{{ isset($product->quantity)?$product->quantity:'' }}</td>
                     <td>@foreach($units as $u)
                         @if($product->unit_id == $u->id)
@@ -129,6 +132,7 @@
                                 @if($product->vat_percentage > 0){{$delivery_data->vat_percentage}}@else{{"0"}}@endif{{"%"}}
                             <?php } ?>
                     </td>
+                    <td>{{ isset($product->remarks)?$product->remarks:'' }}</td>
                 </tr>
                 @endif
                 @endforeach

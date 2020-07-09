@@ -1,5 +1,161 @@
 <style>
 /* Notifications */
+.navbar-nav > li > .dropdown-menu:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+    position: absolute;
+    top: -9px;
+    left: auto;
+    right: 13px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    opacity: 1;
+    overflow: visible;
+    visibility: visible;
+}
+
+.navbar-nav .open .notification-nav-right {
+  left: auto; right: 0; width:350px;
+}
+
+.notification-nav-right .notif_bar {
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 14px;
+  border-bottom: 1px solid #d5d5d5;
+}
+
+.notification-nav-right .notif_bar a {
+  color: #344644;
+  font-size: 12px; 
+}
+
+.notification-nav-right .notif_bar span {
+  font-weight: 600; color:#000000a6;
+}
+
+#notify_id {
+  overflow-y: scroll;
+    min-height: 100px;
+    max-height: 270px;
+}
+
+#notify_id ul {padding-left: 0px;}
+#notify_id ul li {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+#notify_id ul li .notify_icon {
+  display: flex;
+  width: 40px;
+  font-size: 30px;
+  height: 40px;
+  color: #3498db;
+  margin-right: 10px;
+}
+
+#notify_id ul li .notify_icon .icon {
+  background-color: #3498db;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+#notify_id ul li .notify_icon .icon i {font-size: 22px;}
+
+#notify_id ul li .notify-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+#notify_id ul li .notify_msg {
+  width: 100%;
+  padding-right: 8px;
+}
+
+#notify_id ul li .notify_msg .title {
+  color: #000000a6;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 170px;
+}
+
+#notify_id ul li .notify_msg .msg_body {
+  color: #333;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 220px;
+}
+
+#notify_id ul li .notify_msg .msg_body a {
+  color: #999;
+}
+
+#notify_id ul li .notify-content .notify-time {
+  font-size: 12px;
+  color: #999;
+  display: flex;
+  height: 15px;
+}
+
+#notify_id ul li .notify-content .notify-time i {
+  color: #2ecc71;
+  font-size: 9px;
+  top: 3px;
+  margin-left: 5px;
+  margin-bottom:0px
+}
+
+.blank-notification {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-items: center;
+  text-align: center;
+  margin: 2em auto;
+}
+
+.blank-notification i {
+  font-size: 28px;
+  color: #999;
+  -webkit-animation: ring 4s .7s ease-in-out;
+  -webkit-transform-origin: 50% 4px;
+  -moz-animation: ring 4s .7s ease-in-out;
+  -moz-transform-origin: 50% 4px;
+  animation: ring 4s .7s ease-in-out;
+  transform-origin: 50% 4px;
+}
+
+.blank-notification p.title {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 1em auto 5px auto;
+}
+
+.blank-notification p {
+  color: #999;
+  font-size: 14px;
+}
+
+
+
 
 .notification {
     display: inline-block;
@@ -95,6 +251,7 @@
         transform: rotate(0deg);
     }
 }
+</style>
 <?php 
 $notif = '';
 $count = 0;
@@ -123,7 +280,6 @@ if (count((array)$ip) > 0) {
         $ipaddress = 'UNKNOWN';
 }    
 ?>
-</style>
 <header class="navbar" id="header-navbar">
     <div class="container">
         <a href="{{url('/')}}" id="logo" class="navbar-brand">
@@ -152,14 +308,16 @@ if (count((array)$ip) > 0) {
                         
                     <?php 
                         if(Auth::user()->role_id == 0){
-                            // $notif = DB::table('notifications')->whereNotIn('id',function($query){
-                            //     $query->select('notification_id')->from('notification_read_status')
-                            //     ->where('read_by',Auth::user()->id);
-                            // })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
-                            // $count = DB::table('notifications')->whereNotIn('id',function($query){
-                            //     $query->select('notification_id')->from('notification_read_status')
-                            //     ->where('read_by',Auth::user()->id);
-                            // })->where('assigned_by','<>',Auth::user()->id)->count();
+                            $notif = DB::table('notifications')->where('order_type','load_truck')
+                                ->whereNotIn('id',function($query){
+                                $query->select('notification_id')->from('notification_read_status')
+                                ->where('read_by',Auth::user()->id);
+                            })->where('assigned_by',Auth::user()->id)->orderBy('id', 'DESC')->get();
+                            $count = DB::table('notifications')->where('order_type','load_truck')
+                                ->whereNotIn('id',function($query){
+                                $query->select('notification_id')->from('notification_read_status')
+                                ->where('read_by',Auth::user()->id);
+                            })->where('assigned_by',Auth::user()->id)->count();
                         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
                             $notif = DB::table('notifications')->whereNotIn('id',function($query){
                                 $query->select('notification_id')->from('notification_read_status')
@@ -174,44 +332,48 @@ if (count((array)$ip) > 0) {
                     ?>
                     @if($count == 0)
                     <a href="#" class="dropdown-toggle notification" data-toggle="dropdown" ></a>
-                        <ul class="dropdown-menu" style="height:200px;width:300px;right:0;left:auto;">
-                        <div class="notif_bar">
-                                <span style="padding:5px;">Notifications ({{$count}})</span>
+                        <ul class="dropdown-menu navbar_right notification-nav-right">
+                            <div class="notif_bar">
+                                <span>Notifications ({{$count}})</span>
                             </div>
-                            <div style="text-align:center">
-                                <i class="fa fa-bell-o" aria-hidden="true" style="font-size:4em;color:#3498db;padding:18px 0"></i>
-                            </div>
-                            <div style="text-align:center">
-                                <li style="font-size:2em;">No Notifications</li>
-                                <li style="font-size:15px;">You currently have no new notifications.</li>
+                            <div class="blank-notification">
+                                <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                <p class="title">No Notifications</p>
+                                <p>You currently have no new notifications.</p>
                             </div>
                         </ul>
                     @else
                         <a href="#" class="dropdown-toggle notification show-count" data-count="{{$count}}" data-toggle="dropdown" onclick="return notification_msg();"></a>
                         <!-- <div class="notification" aria-hidden="true"></div> -->
-                        <ul class="dropdown-menu navbar_right" style="right:0;left:auto;width:300px;padding:0">
-                            <div class="notif_bar">
-                                <span style="padding:5px;">Notifications ({{$count}})</span>
-                                <a href="" class="float-right text-light" style="font-size:12px;padding-left:60px;" onclick="return read_notification(0);">Mark all as read</a>
+                        <ul class="dropdown-menu navbar_right notification-nav-right">
+                            <!-- <div class="notif_bar">
+                                <span>Notifications ({{$count}})</span>
+                                <a href="" class="float-right text-light" onclick="return read_notification(0);">Mark all as read</a>
                             </div>
-                            <div id="notify_id" style="overflow-y: scroll;min-height:100px;max-height:270px;">
-                                @foreach($notif as $notify)
-                                <li class="notification_msg notification_navbar" style="padding:10px 10px;display:flex;align-items:center;">
-                                    <div class="notify_icon" style="display:flex;width: 40px;font-size: 30px;height: 45px;color:#3498db;">
-                                        <span class="icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                                    
-                                    </div>
-                                    <div class="notify_msg" style="width:230px;">
-                                        <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">{{date('d-m-Y h:i A', strtotime($notify->created_at))}}</small></div>
-                                        <div class="msg_body" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                            <input type="hidden" id="notif_id" value="{{$notify->id}}">  
-                                            <a href="{{url('create_load_truck/'.$notify->order_id)}}" title="{{$notify->msg}}" onclick="return read_notification($notify->order_id);">{{$notify->msg}}</a>
+                            <div id="notify_id">
+                                <ul id="notify_id_ul">
+                                    @foreach($notif as $notify)
+                                    <li class="notification_msg notification_navbar">
+                                        <div class="notify_icon">
+                                            <span class="icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>
                                         </div>
-                                    </div>
-                                </li>
-                                
-                                @endforeach
-                            </div>
+                                        <div class="notify-content">
+                                            <div class="notify_msg">
+                                                <div class="notify-time">
+                                                    <p>Comment</p>
+                                                    <span style="margin-left:65px;">{{date('d-m-Y h:i A', strtotime($notify->created_at))}}<i class="fa fa-circle"></i></span>
+                                                </div>
+                                                <div class="title">Order Assigned</div>
+                                                <div class="msg_body">
+                                                    <input type="hidden" id="notif_id" value="{{$notify->id}}">  
+                                                    <a href="{{url('create_load_truck/'.$notify->order_id)}}" title="{{$notify->msg}}" onclick="return read_notification($notify->order_id);">{{$notify->msg}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div> -->
                             <!-- <li>Notify here 2</li> -->
                         </ul>
                     @endif
@@ -239,15 +401,7 @@ if (count((array)$ip) > 0) {
 <?php 
 if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){ 
 ?>
-function get_fb(){
-    var feedback = $.ajax({
-        type: 'GET',
-        url: url + '/supervisor_count'
-        }).success(function (data) {
-            $('.notification').attr('data-count',data);
-            // alert(data);
-        })
-}
+setTimeout(function(){get_fb();}, 2000);
 <?php
 }
 ?>
@@ -264,23 +418,40 @@ function notification_msg(){
         },
         success: function (data) {
             // alert(data);
-            var view='';
-            $.each(data,function(index,element){
-            view +='<li class="notification_msg navbar_right" style="padding:10px 10px;display:flex;align-items:center;">'
-                     +'           <div class="notify_icon" style="display:flex;width: 40px;font-size: 30px;height: 45px;color:#3498db;">'
-                     +'               <span class="icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>'
-                                
-                     +'           </div>'
-                     +'           <div class="notify_msg" style="width:230px;">'
-                     +'               <div class="title" style="color:#000;font-weight:600;font-size:13px;">Order assigned<small class="date"style="float:right;font-size:8px;">'+setTimeTo12Hr(element.created_at)+'</small></div>'
-                     +'               <div class="msg_body" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'
-                     +'                   <input type="hidden" id="notif_id" value="'+element.id+'">'
-                     +'                   <a href="'+baseurl+'/create_load_truck/'+element.order_id+'" title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
-                     +'               </div>'
-                     +'           </div>'
-                     +'       </li>';
+            var view ='<div class="notif_bar">'
+                +'          <span>Notifications ('+data['count']+')</span>'
+                +'          <a href="" class="float-right text-light" onclick="return read_notification(0);">Mark all as read</a>'
+                +'      </div>'
+                +'      <div id="notify_id">'
+                +'          <ul id="notify_id_ul">';
+            $.each(data['notif'],function(index,element){
+                if(element.order_type == 'load_truck'){
+                    var title = 'Truck Loaded';
+                }else if(element.order_type == 'delivery_order' || element.order_type == 'supervisor_assigned' || element.order_type == 'delboy_assigned'){
+                    var title = 'Order Assigned';
+                }
+            view +='<li class="notification_msg notification_navbar">'
+                +'      <div class="notify_icon" >'
+                +'          <span class="icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>'
+                +'      </div>'
+                +'      <div class="notify-content">'
+                +'          <div class="notify_msg">'
+                +'              <div class="notify-time">'
+                +'                  <p>Comment</p>'
+                +'                  <span style="margin-left:65px;">'+setTimeTo12Hr(element.created_at)+'<i class="fa fa-circle"></i></span>'
+                +'              </div>'
+                +'              <div class="title">'+title+'</div>'
+                +'              <div class="msg_body">'
+                +'                  <input type="hidden" id="notif_id" value="'+element.id+'">'
+                +'                  <a href="'+baseurl+'/create_load_truck/'+element.order_id+'" title="'+element.msg+'" onclick="return read_notification('+element.order_id+');">'+element.msg+'</a>'
+                +'              </div>'
+                +'          </div>'
+                +'      </div>'
+                +' </li>';
             });
-            $("#notify_id").html(view);
+            view += '</ul>'
+                +'<div>';
+            $(".notification-nav-right").html(view);
         }
     });
 }
@@ -289,7 +460,9 @@ function setTimeTo12Hr(dateTime){
     const dateString = dateTime.split(" ")[0];
 	const timeString12hr = new Date('1970-01-01T' + timeString + 'Z')
 								.toLocaleTimeString({},{timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'});
-	var newDateTime=dateString.split("-")[2]+"-"+dateString.split("-")[1]+"-"+dateString.split("-")[0]+" "+timeString12hr;
+    var newDateTime=dateString.split("-")[2]+"-"+dateString.split("-")[1]+"-"+dateString.split("-")[0]+" "+timeString12hr;
+	// var newDateTime=timeString12hr;
+    
 	return newDateTime;
 }
 function read_notification(id){
@@ -309,5 +482,5 @@ function read_notification(id){
     });
 }
 
-setTimeout(function(){get_fb();}, 2000);
+
 </script>

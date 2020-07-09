@@ -46,9 +46,21 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-md-2 pull-right">
+                    <form method="GET" action="javascript:;">
+                        <select class="form-control" id="inventory_report_dropdown" name="inventory_report_dropdown">
+                            <option value="opening">Opening</option>
+                            <option value="physical_closing">Physical Closing</option>
+                            <option value="pending_sales_order">Pending Sales Order</option>
+                            <option value="pending_delivery_order">Pending Delivery Order</option>
+                            <option value="pending_purchase_advice">Pending Purchase Advice</option>
+                        </select>
+                    </form>
+                </div>
                 <form class="pull-right" method="POST" action="{{URL::action('InventoryController@exportinventoryReport')}}">
                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                     <input type="hidden" id="export_product_id" name="product_id" value="<?php echo $product_id; ?>">
+                    <input type="hidden" id="export_dropdown_filter" name="dropdown_filter" value="<?php echo $dropdown_filter; ?>">
                     <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
                 </form>
                 <a href="" id="print-inventory-report" data-toggle="modal" data-target="#print_inventory_modal" class="btn btn-primary pull-right" data-id="<?php echo $product_id; ?>" style=" margin-right: 8px !important;">

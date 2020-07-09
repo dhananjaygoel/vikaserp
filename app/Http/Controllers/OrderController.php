@@ -119,10 +119,11 @@ class OrderController extends Controller {
      public function supervisor_count(){
          $count = 0;
         if(Auth::user()->role_id == 0){
-            // $count = DB::table('notifications')->whereNotIn('id',function($query){
-            //     $query->select('notification_id')->from('notification_read_status')
-            //     ->where('read_by',Auth::user()->id);
-            // })->where('assigned_by','<>',Auth::user()->id)->count();
+            $count = DB::table('notifications')->where('order_type','load_truck')
+                ->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_by',Auth::user()->id)->count();
         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             $count = DB::table('notifications')->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
@@ -133,18 +134,29 @@ class OrderController extends Controller {
     }
     public function load_notification(){
         $notif = '';
+        $count = 0;
         if(Auth::user()->role_id == 0){
-            // $notif = DB::table('notifications')->whereNotIn('id',function($query){
-            //     $query->select('notification_id')->from('notification_read_status')
-            //     ->where('read_by',Auth::user()->id);
-            // })->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $count = DB::table('notifications')->where('order_type','load_truck')
+                ->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_by',Auth::user()->id)->count();
+            $notif = DB::table('notifications')->where('order_type','load_truck')
+                ->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_by',Auth::user()->id)->orderBy('id', 'DESC')->get();
         }elseif(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+            $count = DB::table('notifications')->whereNotIn('id',function($query){
+                $query->select('notification_id')->from('notification_read_status')
+                ->where('read_by',Auth::user()->id);
+            })->where('assigned_to',Auth::user()->id)->where('assigned_by','<>',Auth::user()->id)->count();
             $notif = DB::table('notifications')->whereNotIn('id',function($query){
                 $query->select('notification_id')->from('notification_read_status')
                 ->where('read_by',Auth::user()->id);
             })->where('assigned_to',Auth::user()->id)->where('assigned_by','<>',Auth::user()->id)->orderBy('id', 'DESC')->get();
         }
-        echo $notif;
+        echo json_encode(array('count' =>$count,'notif'=>$notif));
     }
     public function read_notification(Request $request){
 
@@ -214,9 +226,9 @@ class OrderController extends Controller {
                 }
               /* Add new Notifications */
               $notification = new SendNotification();
-              $msg = $staff_fname.' '.$staff_lname.' assigned Order to '.$supervisor_fname.' '.$supervisor_lname;
+              $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
               $notification->order_id = $request->delivery_id;
-              $notification->order_type = 'delivery_order';
+              $notification->order_type = 'supervisor_assigned';
               $notification->msg = $msg;
               $notification->assigned_by = Auth::user()->id;
               $notification->assigned_to = $request->del_supervisor;
@@ -301,9 +313,9 @@ class OrderController extends Controller {
                 }
                 /* Add new Notifications */
                 $notification = new SendNotification();
-                $msg = $staff_fname.' '.$staff_lname.' assigned Order to '.$supervisor_fname.' '.$supervisor_lname;
+                $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
                 $notification->order_id = $request->delivery_id;
-                $notification->order_type = 'delivery_order';
+                $notification->order_type = 'delboy_assigned';
                 $notification->msg = $msg;
                 $notification->assigned_by = Auth::user()->id;
                 $notification->assigned_to = $request->del_boy;

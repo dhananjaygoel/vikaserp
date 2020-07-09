@@ -317,6 +317,7 @@ $(document).ready(function () {
     $(document).on('change', '#inventory_report_filter', function () {
         $('#loader').show();
         var product_id = $(this).val();
+        var dropdown_value = $('#inventory_report_dropdown').val();
         var baseurl = $('#baseurl').attr('name');
         var url = baseurl + '/get_inventory_report';
         $.ajax({
@@ -324,9 +325,37 @@ $(document).ready(function () {
             type: 'get',
             data: {
                 product_id: product_id,
+                dropdown_value : dropdown_value
             },
             success: function (data) {
                 $('#export_product_id').val(product_id);
+                $('#export_dropdown_filter').val(dropdown_value);
+                $('#print-inventory-report').data("id", product_id);
+                $('#print-inventory-report').attr("data-id", product_id);
+                $('.report-table-content').html(data.html)
+            },
+            complete: function () {
+                $('#loader').hide();
+            }
+        })
+    });
+
+    $(document).on('change', '#inventory_report_dropdown', function () {
+        $('#loader').show();
+        var product_id = $('#inventory_report_filter').val();
+        var dropdown_value = $(this).val();
+        var baseurl = $('#baseurl').attr('name');
+        var url = baseurl + '/get_inventory_report';
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                product_id: product_id,
+                dropdown_value : dropdown_value
+            },
+            success: function (data) {
+                $('#export_product_id').val(product_id);
+                $('#export_dropdown_filter').val(dropdown_value);
                 $('#print-inventory-report').data("id", product_id);
                 $('#print-inventory-report').attr("data-id", product_id);
                 $('.report-table-content').html(data.html)

@@ -217,29 +217,29 @@
 .complex-data-table .text-bold  {font-weight: bold;}
 
 
-.loading {    
+/* .loading {    
     background-color: #ffffff;
-    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+    background-image: url("https://loadinggif.com/images/image-selection/3.gif");
     background-size: 25px 25px;
     background-position:right center;
     background-repeat: no-repeat;
-}  
+}   */
 
 
-.loading {    
+/* .loading {    
     background-color: #ffffff;
-    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+    background-image: url("https://loadinggif.com/images/image-selection/3.gif");
     background-size: 25px 25px;
     background-position:right center;
     background-repeat: no-repeat;
-}  
+}   */
 
-.loading_graph {    
-    background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+/* .loading_graph {    
+    background-image: url("https://loadinggif.com/images/image-selection/3.gif");
     background-size: 45px 45px;
     background-position:center;
     background-repeat: no-repeat;
-} 
+}  */
 
 button.multiselect.dropdown-toggle.btn.btn-default {
     background: transparent;

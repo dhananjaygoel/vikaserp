@@ -862,6 +862,7 @@ class InventoryController extends Controller {
             $thickness_array = [];
             $report_arr = [];
             $final_arr = [];
+            $dropdown_filter = '';
             $product_id = $product_last[0]->id;
             $product_type = $product_last[0]->product_type_id;
             if ($product_type == 1 || $product_type == 3) {
@@ -871,7 +872,7 @@ class InventoryController extends Controller {
                         array_push($thickness_array, $sub_cat->thickness);
                     }
                 }
-                foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy(DB::raw('size.prvid+0')) as $sub_cat) {
                     if (!in_array($sub_cat->size, $size_array)) {
                         array_push($size_array, $sub_cat->size);
                     }
@@ -882,8 +883,13 @@ class InventoryController extends Controller {
                             if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
                                 $inventory = $sub_cat['product_inventory'];
                                 $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                // if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                //     $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                // } else {
+                                //     $total_qnty = "-";
+                                // }
+                                if (isset($inventory->opening_qty)) {
+                                    $total_qnty = $inventory->opening_qty;
                                 } else {
                                     $total_qnty = "-";
                                 }
@@ -896,7 +902,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -907,8 +913,13 @@ class InventoryController extends Controller {
                             if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
                                 $inventory = $sub_cat['product_inventory'];
                                 $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                // if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                //     $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                // } else {
+                                //     $total_qnty = "-";
+                                // }
+                                if (isset($inventory->opening_qty)) {
+                                    $total_qnty = $inventory->opening_qty;
                                 } else {
                                     $total_qnty = "-";
                                 }
@@ -932,6 +943,7 @@ class InventoryController extends Controller {
             $report_arr = $final_arr;
             return view('inventory_report')->with('product_cat', $product_cat)
                             ->with('product_id', $product_id)
+                            ->with('dropdown_filter', $dropdown_filter)
                             ->with('product_last', $product_last)
                             ->with('thickness_array', $thickness_array)
                             ->with('report_arr', $report_arr)
@@ -947,6 +959,10 @@ class InventoryController extends Controller {
 
     public function getInventoryReport(Request $request) { // Autocomplate
         $product_id = $request->input('product_id');
+        $dropdown_filter = '';
+        if(Input::has('dropdown_value') && Input::get('dropdown_value') != ''){
+            $dropdown_filter = Input::get('dropdown_value');
+        }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
             $size_array = [];
@@ -973,10 +989,42 @@ class InventoryController extends Controller {
                             if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
                                 $inventory = $sub_cat['product_inventory'];
                                 $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                                } else {
-                                    $total_qnty = "-";
+                                if(isset($dropdown_filter) && $dropdown_filter == 'physical_closing'){
+                                    if (isset($inventory->physical_closing_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'opening'){
+                                    if (isset($inventory->opening_qty)) {
+                                        $total_qnty = $inventory->opening_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_sales_order'){
+                                    if (isset($inventory->pending_sales_order_qty)) {
+                                        $total_qnty = $inventory->pending_sales_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_delivery_order'){
+                                    if (isset($inventory->pending_delivery_order_qty)) {
+                                        $total_qnty = $inventory->pending_delivery_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_purchase_advice'){
+                                    if (isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }else{
+                                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
                                 }
                                 $report_arr[$size][$thickness] = $total_qnty;
                             }
@@ -987,7 +1035,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -998,10 +1046,42 @@ class InventoryController extends Controller {
                             // if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
                                 $inventory = $sub_cat['product_inventory'];
                                 $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                                } else {
-                                    $total_qnty = "-";
+                                if(isset($dropdown_filter) && $dropdown_filter == 'physical_closing'){
+                                    if (isset($inventory->physical_closing_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'opening'){
+                                    if (isset($inventory->opening_qty)) {
+                                        $total_qnty = $inventory->opening_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_sales_order'){
+                                    if (isset($inventory->pending_sales_order_qty)) {
+                                        $total_qnty = $inventory->pending_sales_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_delivery_order'){
+                                    if (isset($inventory->pending_delivery_order_qty)) {
+                                        $total_qnty = $inventory->pending_delivery_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_purchase_advice'){
+                                    if (isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }else{
+                                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
                                 }
                                 // $report_arr[$size][$thickness] = $total_qnty;
                                 $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
@@ -1023,6 +1103,7 @@ class InventoryController extends Controller {
             // sort($thickness_array);
             $report_arr = $final_arr;
         $html = view('_inventory_report')->with('product_cat', $product_cat)
+                ->with('dropdown_filter', $dropdown_filter)
                 ->with('product_last', $product_last)
                 ->with('thickness_array', $thickness_array)
                 ->with('report_arr', $report_arr)
@@ -1076,7 +1157,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -1152,7 +1233,7 @@ class InventoryController extends Controller {
         if ($product_type == 2) {
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                 if (!in_array($sub_cat->alias_name, $size_array)) {
                     array_push($size_array, $sub_cat->alias_name);
                 }
@@ -1244,8 +1325,9 @@ class InventoryController extends Controller {
         // })->export('xls');
     }
 
-    public function print_inventory_report($id, DropboxStorageRepository $connection) {
+    public function print_inventory_report(Request $request, $id, DropboxStorageRepository $connection) {
         $product_id = $id;
+        $dropdown_filter = (Input::has('dropdown_value')?Input::get('dropdown_value'):'');
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
          $size_array = [];
             $thickness_array = [];
@@ -1271,10 +1353,42 @@ class InventoryController extends Controller {
                             if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
                                 $inventory = $sub_cat['product_inventory'];
                                 $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                                } else {
-                                    $total_qnty = "-";
+                                if(isset($dropdown_filter) && $dropdown_filter == 'physical_closing'){
+                                    if (isset($inventory->physical_closing_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'opening'){
+                                    if (isset($inventory->opening_qty)) {
+                                        $total_qnty = $inventory->opening_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_sales_order'){
+                                    if (isset($inventory->pending_sales_order_qty)) {
+                                        $total_qnty = $inventory->pending_sales_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_delivery_order'){
+                                    if (isset($inventory->pending_delivery_order_qty)) {
+                                        $total_qnty = $inventory->pending_delivery_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_purchase_advice'){
+                                    if (isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }else{
+                                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
                                 }
                                 $report_arr[$size][$thickness] = $total_qnty;
                             }
@@ -1285,7 +1399,7 @@ class InventoryController extends Controller {
             if ($product_type == 2) {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
-                foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                     if (!in_array($sub_cat->alias_name, $size_array)) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
@@ -1296,10 +1410,42 @@ class InventoryController extends Controller {
                             // if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
                                 $inventory = $sub_cat['product_inventory'];
                                 $total_qnty = 0;
-                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                                } else {
-                                    $total_qnty = "-";
+                                if(isset($dropdown_filter) && $dropdown_filter == 'physical_closing'){
+                                    if (isset($inventory->physical_closing_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'opening'){
+                                    if (isset($inventory->opening_qty)) {
+                                        $total_qnty = $inventory->opening_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_sales_order'){
+                                    if (isset($inventory->pending_sales_order_qty)) {
+                                        $total_qnty = $inventory->pending_sales_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_delivery_order'){
+                                    if (isset($inventory->pending_delivery_order_qty)) {
+                                        $total_qnty = $inventory->pending_delivery_order_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_purchase_advice'){
+                                    if (isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
+                                }else{
+                                    if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                        $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                    } else {
+                                        $total_qnty = "-";
+                                    }
                                 }
                                 // $report_arr[$size][$thickness] = $total_qnty;
                                 $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;
@@ -1365,7 +1511,7 @@ class InventoryController extends Controller {
         if ($product_type == 2) {
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                 if (!in_array($sub_cat->alias_name, $size_array)) {
                     array_push($size_array, $sub_cat->alias_name);
                 }

@@ -707,14 +707,14 @@ class DeliveryChallanController extends Controller {
                         'quantity' => $product_data['actual_quantity'],
                         'present_shipping' => $product_data['actual_quantity'],
                         'price' => $product_data['price'],
-                        'vat_percentage' => (isset($product_data['vat_percentage_value']) && $product_data['vat_percentage_value'] == '1') ? 1 : 0,
+                        'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                         'from' => $input_data['order_id'],
                         'parent' => $input_data['order'],
                     ];
                     AllOrderProducts::create($order_products);
                 }
                 /* check for vat/gst items */
-                if (isset($product_data['vat_percentage_value']) && $product_data['vat_percentage_value'] == '1') {
+                if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == '1') {
                     $sms_flag = 1;
                 }
                 /**/
@@ -1799,10 +1799,12 @@ class DeliveryChallanController extends Controller {
                                             '.$product_string.'
                                             Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
                                             VIKAS ASSOCIATES.',
+                                    "mediaUrl" => ["/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . ".pdf".$invoiceFile],
                                     "from" => "whatsapp:+13344012472"
                                 ]
                             );
                         }catch(\Exception $e){
+                            dd($e);
                             // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                         }
                     }

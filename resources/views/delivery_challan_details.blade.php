@@ -421,15 +421,15 @@
                             ?> {{round($total_vat,5)}}</label>
                         </div>
                         <hr/>
-                        <div class="form-group">
-                            <label for="total"><b class="challan">Round Off: </b>
-                            <?php $roundoff = $total_vat; ?> {{round($roundoff,2)}}</label>
-                        </div>
-                        <hr/>
                         @endif
                         <div class="form-group">
+                            <label for="total"><b class="challan">Round Off: </b>
+                            <?php $tot = $total + $total_vat; $roundoff = round($tot,0) - $tot; ?> {{round($roundoff,2)}}</label>
+                        </div>
+                        <hr/>
+                        <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b>
-                            <?php $tot = $total + $total_vat; ?> {{round($tot,2)}}</label>
+                            <?php $tot = $total + $total_vat; ?> {{round($tot,0)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">

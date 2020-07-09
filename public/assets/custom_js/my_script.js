@@ -927,26 +927,41 @@ $('.print_delivery_challan').click(function () {
     });
 });
 
-$('.print_inventory_report_list').click(function () {
+$('.print_inventory_report_list').click(function (event) {
+    event.preventDefault();
 //    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
+    var dropdown_value = $('#inventory_report_dropdown').val();
     var base_url = $('#baseurl').attr('name');
-    $.ajax({
-        type: "GET",
-        url: base_url + '/print_inventory_report/' + product_id,
-        success: function (data) {
-            $('#print_inventory_modal').modal('hide');
-            var printWindow = window.open(data);
-            // var printWindow = window.open('', '');
-            printWindow.document.write(data);
-            printWindow.print();
-            printWindow.close();
-            printWindow.onunload = function () {
+    var tbl=$("#day-wise").html();
+    var newdata='<html>    <head>        <title>Delivery Order</title>        <meta charset="windows-1252">        <meta name="viewport" content="width=device-width, initial-scale=1.0">        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>    </head>    <body><style>.crossout{    /width: 120px;/   min-width: 150px;   min-width: 150px;   width: 150px;   background-image: linear-gradient(to bottom left,  transparent calc(50% - 1px), #DDDDDD, transparent calc(50% + 1px));}.thickness-head{   float: right;   margin-top: -10px;}.size-head{    float: left;    margin-top: 20px;}.table {    margin-bottom: 6px !important;}.table-bordered {    border: 1px solid #ddd;}.table {    margin-bottom: 20px;    max-width: 100%;    width: 100%;}.text-center {    text-align: center;}.table-bordered {    border: 1px solid #ddd;}.table {    margin-bottom: 20px;    max-width: 100%;    width: 100%;}.text-center {    text-align: center;}table {    background-color: transparent;}table {    border-collapse: collapse;    border-spacing: 0;}.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {    border-top: 1px solid #ddd;    line-height: 1.42857;    padding: 8px;    vertical-align: top;}</style><table id="day-wise" class="table table-bordered text-center complex-data-table">'+ tbl +'</table></body></html>';
+    var printWindow = window.open(newdata);
+    // var printWindow = window.open('', '');
+    printWindow.document.write(newdata);
+    printWindow.print();
+    printWindow.close();
+    printWindow.onunload = function () {
 //                location.reload();
-            };
-//             window.location.reload();
-        }
-    });
+    };
+//     $.ajax({
+//         type: "GET",
+//         data: {dropdown_value:dropdown_value},
+//         url: base_url + '/print_inventory_report/' + product_id,
+//         success: function (data) {
+//             $('#print_inventory_modal').modal('hide');
+//             var tbl=$("#day-wise").html();
+//             var newdata='<html>    <head>        <title>Delivery Order</title>        <meta charset="windows-1252">        <meta name="viewport" content="width=device-width, initial-scale=1.0">        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>    </head>    <body><style>.crossout{    /width: 120px;/   min-width: 150px;   min-width: 150px;   width: 150px;   background-image: linear-gradient(to bottom left,  transparent calc(50% - 1px), #DDDDDD, transparent calc(50% + 1px));}.thickness-head{   float: right;   margin-top: -10px;}.size-head{    float: left;    margin-top: 20px;}.table {    margin-bottom: 6px !important;}.table-bordered {    border: 1px solid #ddd;}.table {    margin-bottom: 20px;    max-width: 100%;    width: 100%;}.text-center {    text-align: center;}.table-bordered {    border: 1px solid #ddd;}.table {    margin-bottom: 20px;    max-width: 100%;    width: 100%;}.text-center {    text-align: center;}table {    background-color: transparent;}table {    border-collapse: collapse;    border-spacing: 0;}.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {    border-top: 1px solid #ddd;    line-height: 1.42857;    padding: 8px;    vertical-align: top;}</style><table id="day-wise" class="table table-bordered text-center complex-data-table">'+ tbl +'</table></body></html>';
+//             var printWindow = window.open(newdata);
+//             // var printWindow = window.open('', '');
+//             printWindow.document.write(newdata);
+//             printWindow.print();
+//             printWindow.close();
+//             printWindow.onunload = function () {
+// //                location.reload();
+//             };
+// //             window.location.reload();
+//         }
+//     });
 });
 
 $('.print_account_customers').click(function () {

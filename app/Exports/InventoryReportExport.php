@@ -24,6 +24,7 @@ class InventoryReportExport implements FromView, ShouldAutoSize
         
         $request = Input::all();
         $product_id = $request['product_id'];
+        $dropdown_filter = $request['dropdown_filter'];
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
         $size_array = [];
@@ -50,10 +51,42 @@ class InventoryReportExport implements FromView, ShouldAutoSize
                         if ($sub_cat->thickness == $thickness && $size == $sub_cat->size) {
                             $inventory = $sub_cat['product_inventory'];
                             $total_qnty = 0;
-                            if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                            } else {
-                                $total_qnty = "-";
+                            if(isset($dropdown_filter) && $dropdown_filter == 'physical_closing'){
+                                if (isset($inventory->physical_closing_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'opening'){
+                                if (isset($inventory->opening_qty)) {
+                                    $total_qnty = $inventory->opening_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_sales_order'){
+                                if (isset($inventory->pending_sales_order_qty)) {
+                                    $total_qnty = $inventory->pending_sales_order_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_delivery_order'){
+                                if (isset($inventory->pending_delivery_order_qty)) {
+                                    $total_qnty = $inventory->pending_delivery_order_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_purchase_advice'){
+                                if (isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }else{
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
                             }
                             $report_arr[$size][$thickness] = $total_qnty;
                         }
@@ -64,7 +97,7 @@ class InventoryReportExport implements FromView, ShouldAutoSize
         if ($product_type == 2) {
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
-            foreach ($product_last[0]['product_sub_categories'] as $sub_cat) {
+            foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
                 if (!in_array($sub_cat->alias_name, $size_array)) {
                     array_push($size_array, $sub_cat->alias_name);
                 }
@@ -75,10 +108,42 @@ class InventoryReportExport implements FromView, ShouldAutoSize
                         // if ($sub_cat->thickness == $thickness && $size == $sub_cat->alias_name) {
                             $inventory = $sub_cat['product_inventory'];
                             $total_qnty = 0;
-                            if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
-                                $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
-                            } else {
-                                $total_qnty = "-";
+                            if(isset($dropdown_filter) && $dropdown_filter == 'physical_closing'){
+                                if (isset($inventory->physical_closing_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'opening'){
+                                if (isset($inventory->opening_qty)) {
+                                    $total_qnty = $inventory->opening_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_sales_order'){
+                                if (isset($inventory->pending_sales_order_qty)) {
+                                    $total_qnty = $inventory->pending_sales_order_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_delivery_order'){
+                                if (isset($inventory->pending_delivery_order_qty)) {
+                                    $total_qnty = $inventory->pending_delivery_order_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }elseif(isset($dropdown_filter) && $dropdown_filter == 'pending_purchase_advice'){
+                                if (isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
+                            }else{
+                                if (isset($inventory->physical_closing_qty) && isset($inventory->pending_purchase_advise_qty)) {
+                                    $total_qnty = $inventory->physical_closing_qty + $inventory->pending_purchase_advise_qty;
+                                } else {
+                                    $total_qnty = "-";
+                                }
                             }
                             // $report_arr[$size][$thickness] = $total_qnty;
                             $report_arr[$sub_cat->alias_name][$thickness] = $total_qnty;

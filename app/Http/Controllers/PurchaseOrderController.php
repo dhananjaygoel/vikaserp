@@ -1002,11 +1002,10 @@ class PurchaseOrderController extends Controller {
                 }
                 if (count((array)$customer['manager']) > 0) {
                     $total_quantity = '';
-                    $product_string = '';
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n". Auth::user()->first_name ." has canceled the purchase order #".$purchase_order_id." for " . $customer->owner_name . " \n";
+                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n". Auth::user()->first_name ." has canceled the purchase order #".$purchase_order_id." for " . $customer->owner_name .", ".round($total_quantity,2). " \n";
                     foreach ($purchase_order['purchase_products'] as $product_data) {
-                        $product_string .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
-                        $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
+                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+                        // $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
                     }
                     $str .= ".\nKindly check and contact.\nVIKAS ASSOCIATES";
                     if (App::environment('development')) {
@@ -1028,7 +1027,7 @@ class PurchaseOrderController extends Controller {
                         ->create("whatsapp:+91".$phone_number,
                             [
                                 "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
-                                '.Auth::user()->first_name .' has canceled the purchase order #'.$purchase_order_id.' for ' . $customer->owner_name.'
+                                '.Auth::user()->first_name .' has canceled the purchase order #'.$purchase_order_id.' for ' . $customer->owner_name.', '.round($total_quantity,2).'
                                 Kindly check and contact.
                                 VIKAS ASSOCIATES',
                                 "from" => "whatsapp:+13344012472"
