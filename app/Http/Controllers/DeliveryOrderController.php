@@ -1172,9 +1172,10 @@ class DeliveryOrderController extends Controller {
                             $truck_weight_id = explode('_',$truck_weight_id);
                             // $truck_weight = $truck_weight_id[0];
                             $truck_weight = $truck_weight_array[$i];
+                            $next_truck_weight = isset($truck_weight_array[$i+1])?$truck_weight_array[$i+1]:PHP_FLOAT_MAX;
+                            $previous_truck_weight = isset($truck_weight_array[$i-1])?$truck_weight_array[$i-1]:$empty_truck_weight;
                             $truck_id = $truck_weight_id[1];
-                            
-                            if($truck_weight > $empty_truck_weight){
+                            if($truck_weight >= $previous_truck_weight && $truck_weight <= $next_truck_weight){
                                 $delivery_anothertruckdata = LoadTrucks::where('id',$truck_id)->first();
                                 if(!empty($delivery_anothertruckdata)){
                                     LoadTrucks::where('id', '=', $truck_id)
@@ -1213,6 +1214,8 @@ class DeliveryOrderController extends Controller {
                                         }
                                     }
                                 }
+                            }else{
+                                return Redirect::back()->with('validation_message', 'Please fill valid truck weight smaller/greater than next/previuos truck weight.');
                             }
                         }else if($truck_weight_array[$i] != 0){
 
@@ -1284,8 +1287,10 @@ class DeliveryOrderController extends Controller {
                     if($truck_weight_id != 0){
                         $truck_weight_id = explode('_',$truck_weight_id);
                         $truck_weight = $truck_weight_array[$i];
+                        $next_truck_weight = isset($truck_weight_array[$i+1])?$truck_weight_array[$i+1]:PHP_FLOAT_MAX;
+                        $previous_truck_weight = isset($truck_weight_array[$i-1])?$truck_weight_array[$i-1]:$empty_truck_weight;
                         $truck_id = $truck_weight_id[1];
-                        if($truck_weight > $empty_truck_weight){
+                        if($truck_weight >= $previous_truck_weight && $truck_weight <= $next_truck_weight){
                             $delivery_anothertruckdata = LoadTrucks::where('id',$truck_id)->first();
                             if(!empty($delivery_anothertruckdata)){
                                 LoadTrucks::where('id', '=', $truck_id)
@@ -1324,6 +1329,8 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                             }
+                        }else{
+                            return Redirect::back()->with('validation_message', 'Please fill valid truck weight smaller/greater than next/previuos truck weight.');
                         }
                     }else if($truck_weight_array[$i] != 0){
                         $truck_weight = $truck_weight_array[$i];

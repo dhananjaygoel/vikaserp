@@ -319,9 +319,11 @@
                                     $lbr_id = isset($ar[$load_lbr->truck_weight_id])?$ar[$load_lbr->truck_weight_id]:null;
                                 }
                                 if($truck_value->userid != Auth::id()){
-                                    $class = ' disabled ';
+                                    $class = " readonly='readonly' ";
+                                    $buttonClass = " disabled ";
                                 }else{
                                     $class = '';
+                                    $buttonClass = "";
                                 }
 
                             // echo '<pre>';
@@ -335,14 +337,14 @@
                                         <input <?php isset($class)?print $class:''?> type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
                                         <input <?php isset($class)?print $class:''?> type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}">
                                         <input type="hidden" id="truck_weight_{{$i}}_readonly" value="{{$truck_value->final_truck_weight}}"></span>
-                                            <select <?php isset($class)?print $class:''?> id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
+                                            <select <?php isset($class)?print $buttonClass:''?> id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
                                                 @if(isset($labours))
                                                     @foreach ($labours as $labour)
                                                         <option value="{{$labour->id}}" <?php if(isset($lbr_id) && in_array($labour->id,$lbr_id)) echo 'selected="selected"'; ?> >{{$labour->first_name}} {{$labour->last_name}}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
-                                            <button <?php isset($class)?print $class:''?> type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                            <button <?php isset($class)?print $buttonClass:''?> type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
                                         @if($tvalue == 0 )
                                         <span style="padding-top:8px;">N/A </span>
                                         @endif
@@ -605,7 +607,7 @@
                                     
                                     
                                    
-                                    <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck">Submit</button>
+                                    <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck" >Submit</button>
                                   
                                     <a href="{{URL::action('DeliveryOrderController@index')}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
