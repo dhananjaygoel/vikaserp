@@ -1490,6 +1490,7 @@ class DeliveryOrderController extends Controller {
                             $user_fname = isset($cust->first_name)?$cust->first_name:'';
                             $user_lname = isset($cust->last_name)?$cust->last_name:'';
                         }
+                        $del_order = '';
                         $del_order_notif = App\SendNotification::where('order_type','supervisor_assigned')
                                             ->where('order_id',$id)
                                             ->orderBy('id','DESC')
@@ -1509,7 +1510,7 @@ class DeliveryOrderController extends Controller {
                             $notification->order_id = $id;
                             $notification->order_type = 'load_truck';
                             $notification->msg = $msg;
-                            $notification->assigned_by = isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:$del_order->assigned_by;
+                            $notification->assigned_by = (isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:isset($del_order->assigned_by)?$del_order->assigned_by:0);
                             $notification->assigned_to = $assigned_to;
                             $notification->user_read_status = '0';
                             $notification->admin_read_status = '0';
