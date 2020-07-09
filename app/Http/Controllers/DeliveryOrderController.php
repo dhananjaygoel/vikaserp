@@ -1218,9 +1218,9 @@ class DeliveryOrderController extends Controller {
                                 return Redirect::back()->with('validation_message', 'Please fill valid truck weight smaller/greater than next/previuos truck weight.');
                             }
                         }else if($truck_weight_array[$i] != 0){
-
+                            $previous_truck_weight = isset($truck_weight_array[$i-1])?$truck_weight_array[$i-1]:$empty_truck_weight;
                             $truck_weight = $truck_weight_array[$i];
-                            if($truck_weight > $empty_truck_weight){
+                            if($truck_weight > $previous_truck_weight){
                                 $loadetrucks[] = [
                                     'deliver_id' => $id,
                                     'empty_truck_weight' =>  $empty_truck_weight,
@@ -1334,7 +1334,8 @@ class DeliveryOrderController extends Controller {
                         }
                     }else if($truck_weight_array[$i] != 0){
                         $truck_weight = $truck_weight_array[$i];
-                        if($truck_weight > $empty_truck_weight){
+                        $previous_truck_weight = isset($truck_weight_array[$i-1])?$truck_weight_array[$i-1]:$empty_truck_weight;
+                        if($truck_weight >= $previous_truck_weight){
                             $loadetrucks[] = [
                                 'deliver_id' => $id,
                                 'empty_truck_weight' =>  $empty_truck_weight,
@@ -1346,6 +1347,7 @@ class DeliveryOrderController extends Controller {
                             ];
 
                             LoadTrucks::insert($loadetrucks);
+                            $truck_weight_id = DB::getPdo()->lastInsertId();
                             LoadDelboy::where('delivery_id', '=', $id)
                                 ->where('del_boy', '=', $delboy)
                                 ->where('assigned_status', 1)
