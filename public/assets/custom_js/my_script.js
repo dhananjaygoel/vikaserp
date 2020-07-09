@@ -928,7 +928,7 @@ $('.print_delivery_challan').click(function () {
 });
 
 $('.print_inventory_report_list').click(function (event) {
-    event.preventDefault();
+    // event.preventDefault();
 //    $('.print_inventory_report_list').html('Please wait..').prop('disabled', 'disabled');
     var product_id = $(this).data('id');
     var dropdown_value = $('#inventory_report_dropdown').val();
@@ -941,7 +941,7 @@ $('.print_inventory_report_list').click(function (event) {
     printWindow.print();
     printWindow.close();
     printWindow.onunload = function () {
-        $('#print_inventory_modal').hide();
+        $('#print_inventory_modal').modal('hide');
             //    location.reload();
     };
 //     $.ajax({
