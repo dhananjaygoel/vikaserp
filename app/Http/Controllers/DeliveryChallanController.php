@@ -1589,7 +1589,6 @@ class DeliveryChallanController extends Controller {
                 );
             }catch(\Exception $e){
                 dd($e);
-                // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
             }
         
 
