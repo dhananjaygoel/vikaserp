@@ -1496,7 +1496,7 @@ class DeliveryOrderController extends Controller {
                                             ->orderBy('id','DESC')
                                             ->first();
                         $load_delboy = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->first();
-                        // dd($load_delboy->del_boy);
+                        dd($del_order_notif->assigned_by);
                         $assigned_to = 0;
                         if (Auth::user()->role_id == 9 || (isset($load_delboy) && $load_delboy->del_boy == Auth::user()->id && $load_delboy->del_supervisor != Auth::user()->id )){
                             $del_order = App\SendNotification::where('order_id',$id)
@@ -1504,13 +1504,20 @@ class DeliveryOrderController extends Controller {
                                             ->first();
                             $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:$del_order->assigned_by;
                         }
+                        if(isset($del_order_notif->assigned_by) && $del_order_notif->assigned_by != ''){
+                            $assigned_by = $del_order_notif->assigned_by;
+                        }else if(isset($del_order->assigned_by) && $del_order->assigned_by != ''){
+                            $assigned_by = $del_order->assigned_by;
+                        }else{
+                            $assigned_by = 0;
+                        }
                         /* Add new Notifications */
                             $notification = new SendNotification();
                             $msg = $user_fname.' '.$user_lname.' has loaded truck for Delivery Order #'.$id;
                             $notification->order_id = $id;
                             $notification->order_type = 'load_truck';
                             $notification->msg = $msg;
-                            $notification->assigned_by = (isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:isset($del_order->assigned_by)?$del_order->assigned_by:0);
+                            $notification->assigned_by = $assigned_by;
                             $notification->assigned_to = $assigned_to;
                             $notification->user_read_status = '0';
                             $notification->admin_read_status = '0';
