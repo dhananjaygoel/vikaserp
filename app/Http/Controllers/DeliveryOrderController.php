@@ -1509,7 +1509,7 @@ class DeliveryOrderController extends Controller {
                             $notification->order_id = $id;
                             $notification->order_type = 'load_truck';
                             $notification->msg = $msg;
-                            $notification->assigned_by = isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:$del_order->assigned_by;
+                            $notification->assigned_by = (isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:isset($del_order->assigned_by)?$del_order->assigned_by:0);
                             $notification->assigned_to = $assigned_to;
                             $notification->user_read_status = '0';
                             $notification->admin_read_status = '0';
