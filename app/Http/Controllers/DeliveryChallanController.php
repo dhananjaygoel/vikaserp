@@ -1580,12 +1580,9 @@ class DeliveryChallanController extends Controller {
                 $message = $twilio->messages
                 ->create("whatsapp:+918275187271",
                     [
-                        "body" => 'Dear XYZ
-                                On Dated '. date("j M, Y") .'
-                                Your order #'.$id.' has been dispatched for following products:
-                                abc - pqr,
-                                Vehicle Number: 123, Driver No: N/A, Quantity: 580, Amount: 2000, Due By:'. date("j F, Y") .'
-                                VIKAS ASSOCIATES.',
+                        "body" => 'Dear Rakshiya,
+                        Admin has created an order #123 for PQR Kindly check and contact.
+                        VIKAS ASSOCIATES',
                         "mediaUrl" => ["https://staging.vikaserp.in/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . ".pdf"],
                         "from" => "whatsapp:+13344012472"
                     ]
