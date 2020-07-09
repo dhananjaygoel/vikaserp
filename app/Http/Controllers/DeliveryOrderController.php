@@ -1490,6 +1490,7 @@ class DeliveryOrderController extends Controller {
                             $user_fname = isset($cust->first_name)?$cust->first_name:'';
                             $user_lname = isset($cust->last_name)?$cust->last_name:'';
                         }
+                        $del_order = '';
                         $del_order_notif = App\SendNotification::where('order_type','supervisor_assigned')
                                             ->where('order_id',$id)
                                             ->orderBy('id','DESC')
