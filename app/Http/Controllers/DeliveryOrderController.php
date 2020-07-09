@@ -1498,7 +1498,7 @@ class DeliveryOrderController extends Controller {
                         // dd($load_delboy->del_boy);
                         $assigned_to = 0;
                         if (Auth::user()->role_id == 9 || (isset($load_delboy) && $load_delboy->del_boy == Auth::user()->id && $load_delboy->del_supervisor != Auth::user()->id )){
-                            $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:0;
+                            $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:$load_delboy->del_supervisor;
                         }
                         /* Add new Notifications */
                             $notification = new SendNotification();
@@ -1506,7 +1506,7 @@ class DeliveryOrderController extends Controller {
                             $notification->order_id = $id;
                             $notification->order_type = 'load_truck';
                             $notification->msg = $msg;
-                            $notification->assigned_by = isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:0;
+                            $notification->assigned_by = isset($del_order_notif->assigned_by)?$del_order_notif->assigned_by:$load_delboy->del_supervisor;
                             $notification->assigned_to = $assigned_to;
                             $notification->user_read_status = '0';
                             $notification->admin_read_status = '0';
