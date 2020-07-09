@@ -872,7 +872,7 @@ class InventoryController extends Controller {
                         array_push($thickness_array, $sub_cat->thickness);
                     }
                 }
-                foreach ($product_last[0]['product_sub_categories']->sortBy(DB::raw('size.prvid+0')) as $sub_cat) {
+                foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
                     if (!in_array($sub_cat->size, $size_array)) {
                         array_push($size_array, $sub_cat->size);
                     }
