@@ -941,7 +941,8 @@ $('.print_inventory_report_list').click(function (event) {
     printWindow.print();
     printWindow.close();
     printWindow.onunload = function () {
-               location.reload();
+        $('#print_inventory_modal').hide();
+            //    location.reload();
     };
 //     $.ajax({
 //         type: "GET",
