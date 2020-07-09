@@ -1496,7 +1496,7 @@ class DeliveryOrderController extends Controller {
                                             ->orderBy('id','DESC')
                                             ->first();
                         $load_delboy = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->first();
-                        dd($del_order_notif->assigned_by);
+                        
                         $assigned_to = 0;
                         if (Auth::user()->role_id == 9 || (isset($load_delboy) && $load_delboy->del_boy == Auth::user()->id && $load_delboy->del_supervisor != Auth::user()->id )){
                             $del_order = App\SendNotification::where('order_id',$id)
