@@ -1573,21 +1573,6 @@ class DeliveryChallanController extends Controller {
            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
 
            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-           
-          
-            $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-            try{
-                $message = $twilio->messages
-                ->create("whatsapp:+918275187271",
-                    [
-                        "mediaUrl" => ["https://staging.vikaserp.in/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . ".pdf"],
-                        "from" => "whatsapp:+13344012472"
-                    ]
-                );
-            }catch(\Exception $e){
-                dd($e);
-            }
-        
 
         } else {
             $vat_applicable = 0;
