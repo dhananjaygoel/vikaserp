@@ -1799,12 +1799,11 @@ class DeliveryChallanController extends Controller {
                                             '.$product_string.'
                                             Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
                                             VIKAS ASSOCIATES.',
-                                    "mediaUrl" => ["/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . ".pdf".$invoiceFile],
                                     "from" => "whatsapp:+13344012472"
                                 ]
                             );
                         }catch(\Exception $e){
-                            dd($e);
+                            // dd($e);
                             // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                         }
                     }
