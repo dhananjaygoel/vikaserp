@@ -405,7 +405,6 @@ if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){
 $(document).ready(function () {
 setTimeout(function(){get_fb();}, 2000);
 });
-}
 <?php
 }
 ?>
