@@ -228,7 +228,7 @@
                                     </tr>
                                     @endif
                                     <?php 
-                                        $grand_total = 0;
+                                        $grand_total = $total;
                                         $roundoff = 0;
                                         if($purchase_challan->vat_percentage>0){
                                             $grand_total = ($total * (float)$purchase_challan->vat_percentage / 100);
