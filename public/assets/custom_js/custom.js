@@ -3794,7 +3794,6 @@ $("body").on('click',"button", function() {
         }else{
             labour = '';
         }
-
         var empty_truck_weight = $("#empty_truck_weight").val();
         var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
         var truck_value = $('#truck_weight_'+truck_sequence).val();
