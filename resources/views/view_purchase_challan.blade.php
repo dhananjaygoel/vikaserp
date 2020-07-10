@@ -227,11 +227,20 @@
                                         <td><span>Plus GST: </span>No</td>
                                     </tr>
                                     @endif
+                                    <?php 
+                                        $grand_total = $total;
+                                        $roundoff = 0;
+                                        if($purchase_challan->vat_percentage>0){
+                                            $grand_total = ($total * (float)$purchase_challan->vat_percentage / 100);
+                                        }
+                                        $roundoff = round($grand_total,0) - $grand_total;
+                                        
+                                    ?>
                                     <tr>
-                                        <td><span>Round Off: </span>{{ $purchase_challan->round_off }}</td>
+                                        <td><span>Round Off: </span>{{ round($roundoff,2) }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Grand Total: </span>{{$purchase_challan->grand_total}}</td>
+                                        <td><span>Grand Total: </span>{{round($grand_total,0)}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>
