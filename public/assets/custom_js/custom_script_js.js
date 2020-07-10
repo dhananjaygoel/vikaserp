@@ -1070,9 +1070,9 @@ function purchase_challan_calculation() {
     var grand_total = vat_total;
     if ($('#round_off').val() != '') {
         round_off = $("#round_off").val();
-        grand_total += parseFloat(round_off).toFixed(2);
+        // grand_total = parseFloat(grand_total).toFixed(2) + parseFloat(round_off).toFixed(2);
     }
-    $("#grand_total").html('' + grand_total);
+    $("#grand_total").html('' + parseFloat(grand_total).toFixed(0));
     $("#grand_total_val").val(grand_total);
     //round up value for the textbox
     round_off = parseFloat(round_off).toFixed(2);
