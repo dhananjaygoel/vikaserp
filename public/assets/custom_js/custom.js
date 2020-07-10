@@ -3802,7 +3802,7 @@ $("body").on('click',"button", function() {
         }
         var current_row_count = $(".add_product_row").length;
         for (var i = 1; i < current_row_count + 1; i++) {
-            product_ids.push($('#add_product_id_'+i).val()+'-'+$('#actual_pieces_'+i).val());
+            product_ids.push($('#product_id'+i).val()+'-'+$('#actual_pieces_'+i).val());
             // product_ids['actual_pieces'].push($('#actual_pieces'+i).val());
         }
         if(product_ids){
@@ -3903,7 +3903,7 @@ $("body").on('click',"button", function() {
                             var product_ids = data[3].split(',');
                             $.each(product_ids, function(i, element){
                                 for (var i = 1; i < current_row_count + 1; i++) {
-                                    if($('#add_product_id_'+i).val() == element){
+                                    if($('#product_id'+i).val() == element){
                                         $('#truck_weight_id_'+i).val(truck_weight_id);
                                     }
                                 }
@@ -3918,7 +3918,7 @@ $("body").on('click',"button", function() {
                         if(data[1] != ''){
                             $('#load_label_'+delboy_id+'_'+truck_sequence).html(data[1]);
                         }
-                        $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
+                        // $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                         fetch_average_quantity_load_truck();
                             window.onbeforeunload = null;
                             // return false;
@@ -3984,7 +3984,7 @@ $("body").on('click',"button", function() {
             var html = '<div class ="row form-group truck_weight_save">'+
                     '<ul style="list-style-type: none;padding: 0;">'+
                     '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (Kg):</span>'+
-                    '<span id="truck_value_add_'+truck_sequence+'"><input type="text" name="truck_weight[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >'+
+                    '<span id="truck_value_add_'+truck_sequence+'"><input type="text" name="truck_weight[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save('+truck_sequence+','+delboy_id+');" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save('+truck_sequence+','+delboy_id+');">'+
                     '<input type="hidden" name="truck_weight_id[]" id="truck_weight_'+truck_sequence+'" value=""></span>'+
                     '<select id="labour_select_'+truck_sequence+'" name="labour['+truck_sequence+'][]" class="form-control labour_select" multiple="multiple">'+
                     '</select>'+
@@ -4005,6 +4005,10 @@ $("body").on('click',"button", function() {
         }
     }
 });
+
+function enable_save(truck_sequence,delboy_id){
+    $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
+}
 
 $(".assign_load1").click(function(e){
     e.preventDefault();
