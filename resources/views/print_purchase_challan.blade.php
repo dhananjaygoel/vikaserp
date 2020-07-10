@@ -152,14 +152,15 @@
                                             }
                                         }
                                         $vat = ($total_price * (($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0) / 100 );
-                                        $roundoff = (float)$vat + (float)$total + $freight_vat + $discount_vat;
+                                        $grand_total = (float)$vat + (float)$total + $freight_vat + $discount_vat;
+                                        $roundoff = round($grand_total,0) - $grand_total;
                                     ?>
                                     {{ round($roundoff, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">GT</td>
                                     <td class="total-count">
-                                    {{ round($roundoff, 2) }}</td>
+                                    {{ round($grand_total, 0) }}</td>
                                 </tr>
                             </tbody>
                         </table>
