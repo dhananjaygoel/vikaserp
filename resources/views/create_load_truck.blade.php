@@ -283,7 +283,7 @@
                             <ul id="truck" style="list-style-type: none;padding: 0;">
                                 <li>
                                     <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                    <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                    <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{$truck_value->userid}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{$truck_value->userid}});">
                                     <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
                                     <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
                                     <select id="labour_select_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
@@ -378,7 +378,7 @@
                                 <ul id="truck" style="list-style-type: none;padding: 0;">
                                     <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                        <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                        <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{$truck_value->userid}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{$truck_value->userid}});">
                                         <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
                                         <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
                                         <select id="labour_select_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
