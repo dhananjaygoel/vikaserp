@@ -129,9 +129,9 @@
 
 
 
-                        <div >
+                        <!-- <div >
                             <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>
-                        </div>
+                        </div> -->
                         <hr>
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
