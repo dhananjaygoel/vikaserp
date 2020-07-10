@@ -1323,6 +1323,22 @@ class DeliveryChallanController extends Controller {
                     ];
                 }
              }
+             $loading_item = ProductSubCategory::where('alias_name','Roundoff')->first();
+             $loading_id=$loading_item->quickbook_item_id;
+             $tax = 9;
+             $line[] = [
+                "Amount" => $update_delivery_challan->round_off,
+                "DetailType" => "SalesItemLineDetail",
+                "SalesItemLineDetail" => [
+                    "ItemRef" => [
+                        "name" => "Roundoff",
+                        "value" => $loading_id
+                    ],
+                    "TaxCodeRef"=>[
+                        "value" => $tax
+                    ],
+                ]
+            ];
 
             if($del_products->vat_percentage==0)
             {
@@ -1370,7 +1386,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            if($update_delivery_challan->loading_charge>0){
+            if($update_delivery_challan->loading_charge>0){ 
                 // $TaxCodeRef = 26;
                 $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
                 if($del_products->vat_percentage==0){
