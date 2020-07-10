@@ -132,7 +132,7 @@
                         <!-- <div >
                             <button type="button" class="btn btn-primary " id="sendSMS" >Send SMS</button>
                         </div> -->
-                        <hr>
+                        <hr> 
                         <div>
                             <button type="submit" class="btn btn-primary form_button_footer" >Submit</button>
                             <a href="{{url('/')}}/product_sub_category" class="btn btn-default form_button_footer">Back</a>
