@@ -401,7 +401,24 @@ if (count((array)$ip) > 0) {
 <?php 
 if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){ 
 ?>
+function get_fb(){
+    url = '';
+    var feedback = $.ajax({
+        type: 'GET',
+        url: url + '/supervisor_count'
+        }).success(function (data) {
+            if(data == 0){
+                $('.notification').removeClass('show-count');
+            }else if(data == 1){
+                $('.notification').addClass('show-count');
+                $('.notification').attr('onclick','return notification_msg();');
+            }
+            $('.notification').attr('data-count',data);
+            // alert(data);
+        })
+        
 setTimeout(function(){get_fb();}, 2000);
+}
 <?php
 }
 ?>
