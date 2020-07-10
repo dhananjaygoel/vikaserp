@@ -416,6 +416,7 @@ function get_fb(){
             $('.notification').attr('data-count',data);
             // alert(data);
         })
+        
 setTimeout(function(){get_fb();}, 2000);
 }
 <?php
