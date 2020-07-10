@@ -221,36 +221,6 @@ class ProductController extends Controller {
         );
         ProductCategory::where('id', $id)->update($product_data);
 
-        /*
-         * ------------------- ---------------------------
-         * SEND SMS TO ALL ADMINS FOR UPDATE PRODUCT CATEGORY
-         * -----------------------------------------------
-         */
-
-        $admins = User::where('role_id', '=', 0)->get();
-
-        if (count((array)$admins) > 0) {
-            foreach ($admins as $key => $admin) {
-                $product_type = ProductType::find($request->input('product_type'));
-                $str = "Dear " . $admin->first_name . "\nDT " . date("j M, Y") . "\n" . Auth::user()->first_name . " has edited a product category as " . $request->input('product_category_name') . " under " . $product_type->name . " kindly check.\nVIKAS ASSOCIATES";
-//                $str = "Dear " ;
-                if (App::environment('development')) {
-                    $phone_number = Config::get('smsdata.send_sms_to');
-                } else {
-                    $phone_number = $admin->mobile_number;
-
-                }
-                $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
-                }
-            }
-        }
-
         return redirect('product_category')->with('success', 'Product category successfully updated.');
     }
 
