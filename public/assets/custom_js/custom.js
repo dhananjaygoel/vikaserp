@@ -3856,7 +3856,6 @@ $("body").on('click',"button", function() {
                 status_form = 1;
             }
         }
-        
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
