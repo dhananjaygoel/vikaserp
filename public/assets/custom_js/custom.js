@@ -3810,6 +3810,26 @@ $("body").on('click',"button", function() {
         }else{
             product_ids = '';
         }
+        
+        if (truck_weight == "" || truck_weight == 0) {
+            $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
+            status_form = 1;
+        } else {
+            $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
+        }
+        if(empty_truck_weight != '' && empty_truck_weight != 0){
+            if(parseFloat(truck_weight) < parseFloat(empty_truck_weight)){
+                $('.alert-valid-truck-weight').show();
+                setTimeout(function(){
+                    $('.alert-valid-truck-weight').hide();
+                }, 5000);
+                status_form = 1;
+            }
+        }else{
+            $("#empty_truck_weight").addClass('error_validation');
+            $('.alert-empty-truck-weight').show();
+            status_form = 1;
+        }
         var empty_truck_weight = $("#empty_truck_weight").val();
         var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
         if($("#truck_weight_"+(parseInt(truck_sequence) - 1)+"_readonly").length){
@@ -3836,26 +3856,7 @@ $("body").on('click',"button", function() {
                 status_form = 1;
             }
         }
-
-        if (truck_weight == "" || truck_weight == 0) {
-            $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
-            status_form = 1;
-        } else {
-            $('#truck_weight_'+delboy_id+"_"+truck_sequence).removeClass('error_validation');
-        }
-        if(empty_truck_weight != '' && empty_truck_weight != 0){
-            if(parseFloat(truck_weight) < parseFloat(empty_truck_weight)){
-                $('.alert-valid-truck-weight').show();
-                setTimeout(function(){
-                    $('.alert-valid-truck-weight').hide();
-                }, 5000);
-                status_form = 1;
-            }
-        }else{
-            $("#empty_truck_weight").addClass('error_validation');
-            $('.alert-empty-truck-weight').show();
-            status_form = 1;
-        }
+        
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
