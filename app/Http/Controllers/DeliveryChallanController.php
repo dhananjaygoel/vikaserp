@@ -1233,6 +1233,7 @@ class DeliveryChallanController extends Controller {
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 0;
+                $grand_total = 0;
                 $hsncode = $del_products->order_product_all_details->hsn_code;
                 $hsn = Hsn::where('hsn_code',$hsncode)->first();
                 $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
@@ -1323,22 +1324,6 @@ class DeliveryChallanController extends Controller {
                     ];
                 }
              }
-             $loading_item = ProductSubCategory::where('alias_name','Roundoff')->first();
-             $loading_id=$loading_item->quickbook_item_id;
-             $tax = 9;
-             $line[] = [
-                "Amount" => $update_delivery_challan->round_off,
-                "DetailType" => "SalesItemLineDetail",
-                "SalesItemLineDetail" => [
-                    "ItemRef" => [
-                        "name" => "Roundoff",
-                        "value" => $loading_id
-                    ],
-                    "TaxCodeRef"=>[
-                        "value" => $tax
-                    ],
-                ]
-            ];
 
             if($del_products->vat_percentage==0)
             {
@@ -1451,6 +1436,24 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
+            $loading_item = ProductSubCategory::where('alias_name','Roundoff')->first();
+             $loading_id=$loading_item->quickbook_item_id;
+             $tax = 9;
+             $grand_total = $update_delivery_challan->grand_price;
+             $roundoff = round($grand_total,0) - $grand_total;
+             $line[] = [
+                "Amount" => round($roundoff,2),
+                "DetailType" => "SalesItemLineDetail",
+                "SalesItemLineDetail" => [
+                    "ItemRef" => [
+                        "name" => "Roundoff",
+                        "value" => $loading_id
+                    ],
+                    "TaxCodeRef"=>[
+                        "value" => $tax
+                    ],
+                ]
+            ];
            /* if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
