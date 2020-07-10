@@ -258,7 +258,7 @@
                         
                             <?php $i++;?>
                         @endforeach
-                            <div class ="row form-group truck_weight_save">
+                            <!-- <div class ="row form-group truck_weight_save">
                                 <ul id="truck" style="list-style-type: none;padding: 0;">
                                     <li>
                                         <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
@@ -276,8 +276,8 @@
                                         <span id="load_label_{{Auth::id()}}_{{$i}}" style="padding-top:8px;"></span>
                                     </li>
                                 </ul>
-                            </div>
-                        <?php //$i--;?>
+                            </div> -->
+                        <?php $i--;?>
                         @else
                         <div class ="row form-group truck_weight_save">
                             <ul id="truck" style="list-style-type: none;padding: 0;">
@@ -354,7 +354,7 @@
                                 
                                 <?php $i++;?>
                             @endforeach
-                                <div class ="row form-group truck_weight_save">
+                                <!-- <div class ="row form-group truck_weight_save">
                                     <ul id="truck" style="list-style-type: none;padding: 0;">
                                         <li>
                                             <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
@@ -371,7 +371,7 @@
                                             <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
                             <?php //$i--;?>
                         @else
                             <div class ="row form-group truck_weight_save">
