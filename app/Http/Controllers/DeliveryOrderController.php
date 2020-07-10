@@ -1486,45 +1486,6 @@ class DeliveryOrderController extends Controller {
             if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
                 if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != '0') {
                     if(!($truck_weight<$empty_truck_weight)) {
-                        $cust = User::where('id',Auth::user()->id)->first();
-                        
-                        if(isset($cust) && !empty($cust)){
-                            $user_fname = isset($cust->first_name)?$cust->first_name:'';
-                            $user_lname = isset($cust->last_name)?$cust->last_name:'';
-                        }
-                        $del_order = '';
-                        $del_order_notif = App\SendNotification::where('order_type','supervisor_assigned')
-                                            ->where('order_id',$id)
-                                            ->orderBy('id','DESC')
-                                            ->first();
-                        $load_delboy = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', $delboy)->where('assigned_status', 1)->first();
-                        
-                        $assigned_to = 0;
-                        if (Auth::user()->role_id == 9 || (isset($load_delboy) && $load_delboy->del_boy == Auth::user()->id && $load_delboy->del_supervisor != Auth::user()->id )){
-                            $del_order = App\SendNotification::where('order_id',$id)
-                                            ->orderBy('id','ASC')
-                                            ->first();
-                            $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:$del_order->assigned_by;
-                        }
-                        if(isset($del_order_notif->assigned_by) && $del_order_notif->assigned_by != ''){
-                            $assigned_by = $del_order_notif->assigned_by;
-                        }else if(isset($del_order->assigned_by) && $del_order->assigned_by != ''){
-                            $assigned_by = $del_order->assigned_by;
-                        }else{
-                            $assigned_by = 0;
-                        }
-                        /* Add new Notifications */
-                            $notification = new SendNotification();
-                            $msg = $user_fname.' '.$user_lname.' has loaded truck for Delivery Order #'.$id;
-                            $notification->order_id = $id;
-                            $notification->order_type = 'load_truck';
-                            $notification->msg = $msg;
-                            $notification->assigned_by = $assigned_by;
-                            $notification->assigned_to = $assigned_to;
-                            $notification->user_read_status = '0';
-                            $notification->admin_read_status = '0';
-                            $notification->save();
-                        /* Notification has been stored */
                         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
                     }
                     else{
@@ -1668,6 +1629,32 @@ class DeliveryOrderController extends Controller {
         else{
             $serialize = "";
         }
+        $cust = User::where('id',Auth::user()->id)->first();             
+        if(isset($cust) && !empty($cust)){
+            $user_fname = isset($cust->first_name)?$cust->first_name:'';
+            $user_lname = isset($cust->last_name)?$cust->last_name:'';
+        }
+        $del_order = '';
+        $del_order_notif = App\SendNotification::where('order_type','supervisor_assigned')
+                            ->where('order_id',$delivery_id)
+                            ->orderBy('id','DESC')
+                            ->first();
+        $load_delboy = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::user()->id)->where('assigned_status', 1)->first();
+        
+        $assigned_to = 0;
+        if (Auth::user()->role_id == 9 || (isset($load_delboy) && $load_delboy->del_boy == Auth::user()->id && $load_delboy->del_supervisor != Auth::user()->id )){
+            $del_order = App\SendNotification::where('order_id',$delivery_id)
+                            ->orderBy('id','ASC')
+                            ->first();
+            $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:$del_order->assigned_by;
+        }
+        if(isset($del_order_notif->assigned_by) && $del_order_notif->assigned_by != ''){
+            $assigned_by = $del_order_notif->assigned_by;
+        }else if(isset($del_order->assigned_by) && $del_order->assigned_by != ''){
+            $assigned_by = $del_order->assigned_by;
+        }else{
+            $assigned_by = 0;
+        }
         
         $del = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
@@ -1707,6 +1694,18 @@ class DeliveryOrderController extends Controller {
                             }
                         }
                     }
+                    /* Add new Notifications */
+                        $notification = new SendNotification();
+                        $msg = $user_fname.' '.$user_lname.' has updated truck weight for Delivery Order #'.$delivery_id;
+                        $notification->order_id = $delivery_id;
+                        $notification->order_type = 'load_truck';
+                        $notification->msg = $msg;
+                        $notification->assigned_by = $assigned_by;
+                        $notification->assigned_to = $assigned_to;
+                        $notification->user_read_status = '0';
+                        $notification->admin_read_status = '0';
+                        $notification->save();
+                    /* Notification has been stored */
                 }else {
                     $loadetrucks[] = [
                         'deliver_id' => $delivery_id,
@@ -1747,6 +1746,18 @@ class DeliveryOrderController extends Controller {
                             }
                         }
                     }
+                    /* Add new Notifications */
+                        $notification = new SendNotification();
+                        $msg = $user_fname.' '.$user_lname.' has loaded truck for Delivery Order #'.$delivery_id;
+                        $notification->order_id = $delivery_id;
+                        $notification->order_type = 'load_truck';
+                        $notification->msg = $msg;
+                        $notification->assigned_by = $assigned_by;
+                        $notification->assigned_to = $assigned_to;
+                        $notification->user_read_status = '0';
+                        $notification->admin_read_status = '0';
+                        $notification->save();
+                    /* Notification has been stored */
                 }
                 if(Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())){
                     $truck_details = LoadTrucks::where('id',$truck_weight_id)->first();
