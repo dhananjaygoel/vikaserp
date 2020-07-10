@@ -1103,7 +1103,7 @@ class DeliveryOrderController extends Controller {
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
             $inputprodut = (Input::has('product')) ? Input::get('product') : 'array()';
-            //dd($inputprodut);
+            // dd($inputprodut);
             $delivery_productdata = LoadTrucks::where('deliver_id',$id)->get();
             // dd($delivery_productdata);
             if(!$delivery_productdata->isEmpty()){
@@ -1128,7 +1128,7 @@ class DeliveryOrderController extends Controller {
 
                 $productids = array();
                 foreach($inputprodut as $truckprod){
-                    $product_id = $truckprod['id'];
+                    $product_id = $truckprod['order'];
                     $actual_pieces = $truckprod['actual_pieces'];
                     if($actual_pieces >= 0 && $actual_pieces != ""){
                         if(!(in_array($product_id,$explodetruck_prodcuts))){
@@ -1623,6 +1623,7 @@ class DeliveryOrderController extends Controller {
                 $truck_product_ids = "";
             }
         }
+        // dd($truck_product_ids);
         if(!empty($truck_product_ids)){
             $serialize = serialize($truck_product_ids);
         }
