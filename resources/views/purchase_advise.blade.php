@@ -133,7 +133,7 @@
                                         <th>Vechile Number</th>
                                         <th>Quantity</th>
                                         <th>Serial Number</th>
-                                        @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
+                                        @if(Input::get('advice_status') == 'in_process' || Input::get('advice_status') == '')
                                         <th class="text-center">Create Purchase Challan</th>
                                         @endif
                                         <th class="text-center">Actions</th>
@@ -156,9 +156,9 @@
                                         <td>{{ $pa->vehicle_number}}</td>
                                         <td>{{ round($pa->total_quantity, 2) }}</td>
                                         <td>{{ $pa->serial_number }}</td>
-                                        @if(Input::get('purchaseaAdviseFilter') == 'in_process' || Input::get('purchaseaAdviseFilter') == '')
+                                        @if(Input::get('advice_status') == 'in_process' || Input::get('advice_status') == '')
 
-                                        <td class="text-center">
+                                        <td class="text-center">    
                                             @if($pa->serial_number != "")
                                             <a href="{{ url('purchaseorder_advise_challan/'.$pa->id)}}" class="table-link" title="purchase challan" >
                                                 <span class="fa-stack">
