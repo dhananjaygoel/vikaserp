@@ -1436,7 +1436,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            $roundoff_item = ProductSubCategory::where('alias_name','Roundoff')->first();
+            $roundoff_item = ProductSubCategory::where('alias_name','Round Off')->first();
             if($del_products->vat_percentage==0){
                 $roundoff_id=$roundoff_item->quickbook_a_item_id;
             }else{
