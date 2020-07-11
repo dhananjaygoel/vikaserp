@@ -1441,8 +1441,10 @@ class DeliveryChallanController extends Controller {
              $tax = 9;
              $grand_total = $update_delivery_challan->grand_price;
              $roundoff = round($grand_total,0) - $grand_total;
+             $roundoff = round($roundoff,2);
+            //  dd($roundoff);
              $line[] = [
-                "Amount" => round($roundoff,2),
+                "Amount" => $roundoff,
                 "DetailType" => "SalesItemLineDetail",
                 "SalesItemLineDetail" => [
                     "ItemRef" => [
