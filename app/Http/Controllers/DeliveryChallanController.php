@@ -1436,20 +1436,24 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            $loading_item = ProductSubCategory::where('alias_name','Roundoff')->first();
-             $loading_id=$loading_item->quickbook_item_id;
-             $tax = 9;
-             $grand_total = $update_delivery_challan->grand_price;
-             $roundoff = round($grand_total,0) - $grand_total;
-             $roundoff = round($roundoff,2);
+            $roundoff_item = ProductSubCategory::where('alias_name','Roundoff')->first();
+            if($del_products->vat_percentage==0){
+                $roundoff_id=$roundoff_item->quickbook_a_item_id;
+            }else{
+                $roundoff_id=$roundoff_item->quickbook_item_id;
+            }
+                $tax = 9;
+                $grand_total = $update_delivery_challan->grand_price;
+                $roundoff = round($grand_total,0) - $grand_total;
+                $roundoff = round($roundoff,2);
             //  dd($roundoff);
-             $line[] = [
+                $line[] = [
                 "Amount" => $roundoff,
                 "DetailType" => "SalesItemLineDetail",
                 "SalesItemLineDetail" => [
                     "ItemRef" => [
-                        "name" => "Roundoff",
-                        "value" => $loading_id
+                        "name" => "Round Off",
+                        "value" => $roundoff_id
                     ],
                     "TaxCodeRef"=>[
                         "value" => $tax
