@@ -1790,6 +1790,7 @@ class DeliveryOrderController extends Controller {
     public function store_delivery_challan($id) {
 
         $input_data = Input::all();
+        // dd($input_data);
         $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
         $final_truck_weight = (Input::has('final_truck_weight')) ? Input::get('final_truck_weight') : '0';
         $delivery_order_details = DeliveryOrder::find($id);
@@ -1875,8 +1876,12 @@ class DeliveryOrderController extends Controller {
             if(isset($product_sub) && isset($product_sub[0]['product_category'])){
                 $product_type_id = $product_sub[0]['product_category']->product_type_id;
             }
-
-            if (isset($product['actual_quantity']) && isset($product['price'])) {
+            if(isset($product['price']) && $product['price'] != '0.00'){
+                $prod_price = $product['price'];
+            }elseif(isset($product_sub[0]['product_category'])){
+                $prod_price = $product_sub[0]['product_category']->price;
+            }
+            if (isset($product['actual_quantity']) && isset($prod_price)) {
                 if (isset($product_type_id)) {
 
 
@@ -1897,7 +1902,7 @@ class DeliveryOrderController extends Controller {
                         $productsub = ProductSubCategory::where('id',$product['id'])->first();
                         $product_cat = ProductCategory::where('id',$productsub->product_category_id)->first();
 
-                        $product_price = (float)$product['price'] * (float)$product['actual_quantity'];
+                        $product_price = (float)$prod_price * (float)$product['actual_quantity'];
 
                         if($product_cat->hsn_code && $delivery_order_details->vat_percentage == 0 ){
                             $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
@@ -1940,25 +1945,25 @@ class DeliveryOrderController extends Controller {
 
                     }else{
 
-                        $product_price = (float)$product['price'] * (float)$product['actual_quantity'];
+                        $product_price = (float)$prod_price * (float)$product['actual_quantity'];
 //                        $total_profile_price = $total_profile_price + $product_price;
 
                         $total_without_vat_items ++;
                         $without_vat_product[$counter_without_vat++] = $product;
                         $total_actual_quantity_without_vat = (float)$total_actual_quantity_without_vat + (float)$product['actual_quantity'];
-                        $total_without_vat_price = (float)$total_without_vat_price + ((float)$product['price'] * (float)$product['actual_quantity']);
+                        $total_without_vat_price = (float)$total_without_vat_price + ((float)$prod_price * (float)$product['actual_quantity']);
                     }
                 }
                 else if (isset($product['vat_percentage']) && $product['vat_percentage'] == 'yes') {
                     $total_vat_items ++;
                     $vat_product[$counter_vat++] = $product;
                     $total_actual_quantity_vat = (float)$total_actual_quantity_vat + (float)$product['actual_quantity'];
-                    $total_vat_price = (float)$total_vat_price + ((float)$product['price'] * (float)$product['actual_quantity']);
+                    $total_vat_price = (float)$total_vat_price + ((float)$prod_price * (float)$product['actual_quantity']);
                 } else {
                     $total_without_vat_items ++;
                     $without_vat_product[$counter_without_vat++] = $product;
                     $total_actual_quantity_without_vat = (float)$total_actual_quantity_without_vat + (float)$product['actual_quantity'];
-                    $total_without_vat_price = (float)$total_without_vat_price + ((float)$product['price'] * (float)$product['actual_quantity']);
+                    $total_without_vat_price = (float)$total_without_vat_price + ((float)$prod_price * (float)$product['actual_quantity']);
                 }
             }
         }
