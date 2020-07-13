@@ -153,6 +153,19 @@ class DeliveryOrderController extends Controller {
                     $query->where('present_shipping','>', '0');
                 })->with('track_do_product', 'track_order_product', 'delivery_product', 'order_details', 'customer', 'location')
                 ->paginate(20);
+        $is_gst = 0;
+        if (count((array)$delivery_data) > 0) {
+            foreach ($delivery_data as $key => $order) {
+                foreach ($order['delivery_product'] as $product_data) {
+                    if(isset($product_data->vat_percentage) && $product_data->vat_percentage != "0.00"){
+                        $is_gst = 1;
+                    }
+                }
+                $delivery_data[$key]['is_gst'] = $is_gst;
+                $is_gst = 0;
+            }
+        }
+        
 
         // print(date("Y-m-d h:i:s a", time()));
         // print($delivery_data['track_do_product']);

@@ -404,7 +404,7 @@ class DeliveryChallanController extends Controller {
                 $product_for_order_do_pending = 0;
                 $previous_dc_quantity = 0;
                 $previous_dc_quantity_parent = 0;
-
+                $is_gst = 0;
 
                 if (count((array)$order['delivery_challan_products']) > 0) {
                     $order_quantity = $order['delivery_challan_products']->sum('present_shipping');
@@ -445,8 +445,11 @@ class DeliveryChallanController extends Controller {
                         $result['reasons'] = "Order not found.";
 //                            return json_encode($result);
                     }
+                    if(isset($product_data->vat_percentage) && $product_data->vat_percentage != "0.00"){
+                        $is_gst = 1;
+                    }
                 }
-
+                $allorders[$key]['is_gst'] = $is_gst;
                 $allorders[$key]['total_quantity'] = $order_quantity;
                 $allorders[$key]['actual_quantity'] = $total_quantity;
 
