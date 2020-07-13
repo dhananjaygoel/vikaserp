@@ -46,7 +46,7 @@
         <table class="user-invoice-details">
             <thead>
                 <tr>
-                    <th class="title-name" colspan="2">Estimate</th>
+                    <th class="title-name" colspan="2">Delivery Challan</th>
                 </tr>
                 <tr>
                     <th>Name: {{(isset($allorder->customer->tally_name) && $allorder->customer->tally_name != "") ? $allorder->customer->tally_name : $allorder->customer->owner_name}}</th>
