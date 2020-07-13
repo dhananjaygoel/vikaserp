@@ -207,8 +207,8 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    {{$product->price}}
-                                                    <input type="hidden" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
+                                                    <!-- {{$product->price}} -->
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
