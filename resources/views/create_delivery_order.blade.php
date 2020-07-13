@@ -208,7 +208,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <!-- {{$product->price}} -->
-                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]">
+                                                    <input type="tel" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" onkeypress=" return numbersOnly(this,event,true,true);">
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>
                                             </td>
