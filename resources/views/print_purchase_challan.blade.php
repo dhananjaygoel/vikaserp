@@ -39,8 +39,15 @@
 
         <table class="user-invoice-details">
             <thead>
+                <?php 
+                if(isset($purchase_challan['vat_percentage']) && $purchase_challan['vat_percentage'] != ""){
+                    $title = 'Purchase Challan';
+                }else{
+                    $title = 'Purchase Estimate';
+                }
+                ?>
                 <tr>
-                    <th class="title-name" colspan="2">Purchase Challan</th>
+                    <th class="title-name" colspan="2">{{ $title }}</th>
                 </tr>
                 <tr>
                     <th>Tally Name: {{ $purchase_challan['supplier']->owner_name }}</th>

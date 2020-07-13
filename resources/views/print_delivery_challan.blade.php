@@ -45,8 +45,15 @@
 
         <table class="user-invoice-details">
             <thead>
+                <?php
+                    if(isset($allorder->is_gst) && $allorder->is_gst == 1){
+                        $title = 'Delivery Challan';
+                    }else{
+                        $title = 'Estimate';
+                    }
+                ?>
                 <tr>
-                    <th class="title-name" colspan="2">Delivery Challan</th>
+                    <th class="title-name" colspan="2">{{ $title }}</th>
                 </tr>
                 <tr>
                     <th>Name: {{(isset($allorder->customer->tally_name) && $allorder->customer->tally_name != "") ? $allorder->customer->tally_name : $allorder->customer->owner_name}}</th>

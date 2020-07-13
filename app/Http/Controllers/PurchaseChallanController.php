@@ -583,7 +583,7 @@ class PurchaseChallanController extends Controller {
          */
         $input_data = $purchase_challan['all_purchase_products'];
         /* check for vat/gst items */
-        if (isset($purchase_challan['vat_percentage']) && !empty($purchase_challan['vat_percentage']) && $purchase_challan['vat_percentage'] != "") {
+        if (isset($purchase_challan['vat_percentage']) && !empty($purchase_challan['vat_percentage']) && $purchase_challan['vat_percentage'] != "0.00") {
             $sms_flag = 1;
         }
         /**/

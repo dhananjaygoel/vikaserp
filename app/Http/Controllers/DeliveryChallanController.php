@@ -1562,6 +1562,7 @@ class DeliveryChallanController extends Controller {
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $sms_flag = 1;
+        $vat_applicable = 0;
 //      $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_details', 'customer', 'delivery_order.location')->find($id);
         $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         // echo '<pre>';
@@ -1582,7 +1583,7 @@ class DeliveryChallanController extends Controller {
                     }
                 }
             }
-
+            $allorder['is_gst'] = $vat_applicable;
             $date_letter = $update_delivery_challan->serial_number;
             $viewhtml = View::make('delivery_challan_pdf', [
                 'allorder' => $allorder,
@@ -1710,6 +1711,7 @@ class DeliveryChallanController extends Controller {
 //                            ->with('delivery_challan_products.order_product_details', 'customer','delivery_order.location')->first();
 
             $allorder = $update_delivery_challan;
+            $allorder['is_gst'] = $vat_applicable;
 
             $number = $allorder->grand_price;
             $exploded_value = explode(".", $number);
