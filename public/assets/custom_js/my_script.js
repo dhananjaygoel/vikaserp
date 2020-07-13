@@ -779,7 +779,7 @@ function print_challan(delivery_order_id) {
 }
 
 function print_challan_do(el) {    
-    $('#print_delivery_order').val(el.id);
+    $('#print_delivery_order').val(el.id); 
     var is_gst = $('#is_gst'+el.id).val();
     var empty_truck_weight = $(el).data('bind');
     var customer_type = $(el).data('customer_type');
