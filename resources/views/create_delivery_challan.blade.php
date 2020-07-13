@@ -193,7 +193,8 @@
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
-                                                <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
+                                                <div class="form-group">
+                                                <input type="tel" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();" onkeypress=" return numbersOnly(this, event, true, true);"></div>
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
