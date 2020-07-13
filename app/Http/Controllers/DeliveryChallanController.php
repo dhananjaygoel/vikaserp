@@ -1711,7 +1711,6 @@ class DeliveryChallanController extends Controller {
 //                            ->with('delivery_challan_products.order_product_details', 'customer','delivery_order.location')->first();
 
             $allorder = $update_delivery_challan;
-            $allorder['is_gst'] = $vat_applicable;
 
             $number = $allorder->grand_price;
             $exploded_value = explode(".", $number);
@@ -1730,7 +1729,7 @@ class DeliveryChallanController extends Controller {
 //                $convert_value = $this->convert_number($allorder->grand_price);
 //            }
 //            $allorder['convert_value'] = $convert_value;
-            
+            $allorder['is_gst'] = $vat_applicable;
             $viewhtml = View::make('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount]
