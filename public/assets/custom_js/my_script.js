@@ -780,6 +780,7 @@ function print_challan(delivery_order_id) {
 
 function print_challan_do(el) {    
     $('#print_delivery_order').val(el.id);
+    var is_gst = $('#is_gst'+el.id).val();
     var empty_truck_weight = $(el).data('bind');
     var customer_type = $(el).data('customer_type');
     var vehicle_number = $(el).data('vehicle_number');
@@ -803,6 +804,13 @@ function print_challan_do(el) {
         $('#empty_truck_weight').css('display',"block");
         $('.empty_truck_weight_title').css('display',"block");
 //        $('#vehicle_no').css('display',"block");
+    }
+    if(is_gst == 1){
+        $("#checksms").prop("checked", true);
+        $("#checkwhatsapp").prop("checked", true);
+    }else{
+        $("#checksms").prop("checked", false);
+        $("#checkwhatsapp").prop("checked", false);
     }
 }
 /*
@@ -878,6 +886,7 @@ $('.print_delivery_order').click(function () {
 });
 function print_delivery_challan(challan_id,allinc) {
     $('#print_delivery_challan').val(challan_id);
+    var is_gst = $('#is_gst'+challan_id).val();
     if(allinc){
         $("#checksms").prop("disabled", false);
         $("#checkwhatsapp").prop("disabled", false);
@@ -890,6 +899,14 @@ function print_delivery_challan(challan_id,allinc) {
         $("#checkwhatsapp").prop("checked", false);
         $('#checksms_span').attr('data-original-title','Sending SMS not allowed');
     }
+    if(is_gst == 1){
+        $("#checksms").prop("checked", true);
+        $("#checkwhatsapp").prop("checked", true);
+    }else{
+        $("#checksms").prop("checked", false);
+        $("#checkwhatsapp").prop("checked", false);
+    }
+
 }
 
 
