@@ -1061,8 +1061,8 @@ class InquiryController extends Controller {
                 }
             // }
 
-            // InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
-            // Inquiry::find(Input::get('inquiry_id'))->delete();
+            InquiryProducts::where('inquiry_id', '=', Input::get('inquiry_id'))->delete();
+            Inquiry::find(Input::get('inquiry_id'))->delete();
 
             $parameter = Session::get('parameters');
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
