@@ -638,12 +638,12 @@ class DeliveryChallanController extends Controller {
             $delivery_order->save();
         }
 
-        if (isset($delivery_challan->vat_percentage) && $delivery_challan->vat_percentage > 0) {
-            $input_data['grand_total'] = (float)$input_data['grand_total'] + (float)($input_data['grand_total'] * $delivery_challan->vat_percentage / 100);
+        // if (isset($delivery_challan->vat_percentage) && $delivery_challan->vat_percentage > 0) {
+        //     $input_data['grand_total'] = (float)$input_data['grand_total'] + (float)($input_data['grand_total'] * $delivery_challan->vat_percentage / 100);
 
-            $input_data['grand_total'] = number_format((float) $input_data['grand_total'], 2, '.', '');
-        }
-
+        //     $input_data['grand_total'] = number_format((float) $input_data['grand_total'], 2, '.', '');
+        // }
+        
         $delivery_challan->bill_number = $input_data['billno'];
         $delivery_challan->loaded_by = (isset($input_data['loadedby']) ? $input_data['loadedby'] : '');
 //        $delivery_challan->labours = $input_data['labour'];
