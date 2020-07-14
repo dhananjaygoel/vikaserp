@@ -310,7 +310,7 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                                        $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>
                                     {{ round($vat,2) }}</td>
                                 </tr>
@@ -318,7 +318,7 @@
                                     <td class="lable">Round Off</td>
                                     <td class="total-count">
                                     <?php
-                                        $roundoff = $vat + $with_total;
+                                        $roundoff = round($vat,2) + round($with_total,2);
                                         $roundoff = round($roundoff,0) - $roundoff;
                                     ?>
                                     {{ round($roundoff,2) }}</td>
