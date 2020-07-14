@@ -872,7 +872,7 @@ class DeliveryOrderController extends Controller {
         //$delivery_challan->loaded_by = $input_data['loadedby'];
         //$delivery_challan->labours = $input_data['labour'];
 
-        if (isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != "") {
+        if (isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != 0) {
             $delivery_challan->vat_percentage = $input_data['vat_percentage'];
             $delivery_challan->grand_price = $input_data['grand_price_gst'];
         } else {
@@ -1878,6 +1878,7 @@ class DeliveryOrderController extends Controller {
         $discount_vat_amount = 0;
         $grand_price_gst = 0;
         $grand_price = 0;
+        $total = 0;
 
         foreach ($input_data['product'] as $product) {
             $product_id = $product['id'];
@@ -1943,14 +1944,7 @@ class DeliveryOrderController extends Controller {
 
                         $total_profile_items ++;
                         $profile_product[$counter_profile++] = $product;
-
-                        if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
-                            $loading_vat_amount = ((float)$input_data['loading'] * (float)$loading_vat) / 100;
-                            $freight_vat_amount = ((float)$input_data['freight'] * (float)$loading_vat) / 100;
-                            $discount_vat_amount = ((float)$input_data['discount'] * (float)$loading_vat) / 100;
-                        }
-                        $grand_price_gst = $total_profile_price + $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
-
+                              
                     }else{
 
                         $product_price = (float)$prod_price * (float)$product['actual_quantity'];
@@ -1987,10 +1981,20 @@ class DeliveryOrderController extends Controller {
             $all_vat_on_overhead_count = 0;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)$input_data['round_off'], 2);
+            
+            if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
+                $loading_vat_amount = ((float)$input_data['loading'] * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$input_data['freight'] * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$input_data['discount'] * (float)$loading_vat) / 100;
+                $total = $input_data['loading'] + $input_data['discount'] + $input_data['freight'];
+            }
+            $grand_price_gst = $total_profile_price + $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount + $total;
+            $input_data['grand_price_gst'] = $grand_price_gst;
 
             if($delivery_order_details->vat_percentage != 0){
                 $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
             }
+            $input_data['vat_percentage'] = $profile_vat;
            $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with puls VAT */
@@ -2005,10 +2009,20 @@ class DeliveryOrderController extends Controller {
             $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
             $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)$input_data['round_off'], 2);
-
+            
+            if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
+                $loading_vat_amount = ((float)$input_data['loading'] * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$input_data['freight'] * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$input_data['discount'] * (float)$loading_vat) / 100;
+                $total = $input_data['loading'] + $input_data['discount'] + $input_data['freight'];
+            }
+            $grand_price_gst = $total_profile_price + $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount + $total;
+            $input_data['grand_price_gst'] = $grand_price_gst;
+            
             if($delivery_order_details->vat_percentage != 0){
                 $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
             }
+            $input_data['vat_percentage'] = $profile_vat;
             $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items without VAT */
@@ -2018,6 +2032,8 @@ class DeliveryOrderController extends Controller {
             // exit;
             $input_data['freight_vat_percentage'] = $input_data['loading_vat_percentage'] = $input_data['discount_vat_percentage'] = $input_data['vat_percentage'] = $input_data['vat_total'] = number_format((float) 0.00, 2, '.', '');
             $case = 'all_without_vat';
+            $total = $input_data['loading'] + $input_data['discount'] + $input_data['freight'];
+            $input_data['grand_price'] = $grand_price + $total;
             $savedid =  $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with and without VAT */
@@ -2057,6 +2073,15 @@ class DeliveryOrderController extends Controller {
                 $profile_input_data['round_off'] = number_format((float) ((float)$ratio_profile * (float)$input_data['round_off']) / 100, 2, '.', '');
                 $profile_input_data['freight_vat_percentage'] = $profile_input_data['loading_vat_percentage'] = $profile_input_data['discount_vat_percentage'] = $profile_input_data['vat_percentage'] = number_format((float) $profile_vat_amount, 2, '.', '');
                 $profile_input_data['grand_total'] = number_format((float) ((float)$total_profile_price + (float)$profile_share_overhead + (float)$profile_input_data['round_off']), 2, '.', '');
+                
+                if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
+                    $loading_vat_amount = ((float)$profile_input_data['loading'] * (float)$loading_vat) / 100;
+                    $freight_vat_amount = ((float)$profile_input_data['freight'] * (float)$loading_vat) / 100;
+                    $discount_vat_amount = ((float)$profile_input_data['discount'] * (float)$loading_vat) / 100;
+                    $total = $profile_input_data['loading'] + $profile_input_data['discount'] + $profile_input_data['freight'];
+                }
+                $grand_price_gst = $total_profile_price + $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount + $total;
+                
                 $profile_input_data['grand_price_gst'] = $grand_price_gst;
                 $profile_input_data['grand_price'] = $grand_price;
             }
@@ -2074,6 +2099,15 @@ class DeliveryOrderController extends Controller {
                // $gst_amount = $total_amnt * $vat_input_data['vat_percentage']/100;
                 $gst_amount = $total_amnt * 100;
                 $vat_input_data['grand_total'] = (float)$total_amnt + (float)$gst_amount + (float)$vat_input_data['round_off'];
+                
+                if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
+                    $loading_vat_amount = ((float)$vat_input_data['loading'] * (float)$loading_vat) / 100;
+                    $freight_vat_amount = ((float)$vat_input_data['freight'] * (float)$loading_vat) / 100;
+                    $discount_vat_amount = ((float)$vat_input_data['discount'] * (float)$loading_vat) / 100;
+                    $total = $vat_input_data['loading'] + $vat_input_data['discount'] + $vat_input_data['freight'];
+                }
+                $grand_price_gst = $total_profile_price + $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount + $total;
+                
                 $vat_input_data['grand_price_gst'] = $grand_price_gst;
                 $vat_input_data['grand_price'] = $grand_price;
             }
@@ -2087,8 +2121,9 @@ class DeliveryOrderController extends Controller {
                 $without_vat_input_data['round_off'] = number_format((float) ((float)$ratio_without_vat * (float)$input_data['round_off']) / 100, 2, '.', '');
                 //$without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
                 $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + (float)$without_vat_share_overhead + (float)$without_vat_input_data['round_off'], 2, '.', '');
+                $total = $without_vat_input_data['loading'] + $without_vat_input_data['discount'] + $without_vat_input_data['freight'];
                 $without_vat_input_data['grand_price_gst'] = $grand_price_gst;
-                $without_vat_input_data['grand_price'] = $grand_price;
+                $without_vat_input_data['grand_price'] = $grand_price + $total;
             }
 
             if($total_profile_items > 0 && $total_vat_items > 0 && $total_without_vat_items>0){
