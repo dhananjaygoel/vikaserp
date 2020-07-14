@@ -312,7 +312,7 @@
                                     <?php
                                         $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                                     ?>
-                                    {{ round($vat,5) }}</td>
+                                    {{ round($vat,2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Round Off</td>
