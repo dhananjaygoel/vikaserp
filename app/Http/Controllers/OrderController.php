@@ -1605,8 +1605,8 @@ class OrderController extends Controller {
             parse_str($inputData, $formFields);
         }
 
-        $send_sms = $formFields['send_sms'];
-        $send_whatsapp = $formFields['send_whatsapp'];
+        $send_sms = isset($formFields['send_sms'])?$formFields['send_sms']:"";
+        $send_whatsapp = isset($formFields['send_whatsapp'])?$formFields['send_whatsapp']:"";
         $password = $formFields['password'];
         $userinfo = auth()->user();
         $order_sort_type = $formFields['order_sort_type'];
@@ -1833,8 +1833,8 @@ class OrderController extends Controller {
           | -----------------------------------------------------
          */
         $product_string = '';
-        $send_sms = $input['send_sms'];
-        $send_whatsapp = $input['send_whatsapp'];
+        $send_sms = isset($input['send_sms'])?$input['send_sms']:"";
+        $send_whatsapp = isset($input['send_whatsapp'])?$input['send_whatsapp']:"";
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($order['customer']->id);
