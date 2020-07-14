@@ -2083,7 +2083,7 @@ class DeliveryOrderController extends Controller {
                 $grand_price_gst = $total_profile_price + $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2) + round($total,2);
                 
                 $profile_input_data['grand_price_gst'] = round($grand_price_gst,2);
-                $profile_input_data['grand_price'] = round($grand_price,2);
+                $profile_input_data['grand_price'] = round($grand_price,2) + round($total,2);
             }
             if(isset($total_vat_items) && $total_vat_items > 0) {
                 $vat_input_data['product'] = $vat_product;
@@ -2109,7 +2109,7 @@ class DeliveryOrderController extends Controller {
                 $grand_price_gst = $total_profile_price + $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2) + round($total,2);
                 
                 $vat_input_data['grand_price_gst'] = round($grand_price_gst,2);
-                $vat_input_data['grand_price'] = round($grand_price,2);
+                $vat_input_data['grand_price'] = round($grand_price,2) + round($total,2);
             }
             if(isset($total_without_vat_items) && $total_without_vat_items > 0) {
                 $without_vat_input_data['product'] = $without_vat_product;
@@ -2123,7 +2123,7 @@ class DeliveryOrderController extends Controller {
                 $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + (float)$without_vat_share_overhead + (float)$without_vat_input_data['round_off'], 2, '.', '');
                 $total = (float)$without_vat_input_data['loading'] + (float)$without_vat_input_data['discount'] + (float)$without_vat_input_data['freight'];
                 $without_vat_input_data['grand_price_gst'] = round($grand_price_gst,2);
-                $without_vat_input_data['grand_price'] = round($grand_price,2); + round($total,2);
+                $without_vat_input_data['grand_price'] = round($grand_price,2) + round($total,2);
             }
 
             if($total_profile_items > 0 && $total_vat_items > 0 && $total_without_vat_items>0){
