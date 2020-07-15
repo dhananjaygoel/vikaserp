@@ -1944,7 +1944,6 @@ class DeliveryOrderController extends Controller {
 
                         $total_profile_items ++;
                         $profile_product[$counter_profile++] = $product;
-                        $input_data['vat_percentage'] = 1;
                               
                     }else{
 
@@ -1965,7 +1964,6 @@ class DeliveryOrderController extends Controller {
                     $total_actual_quantity_vat = (float)$total_actual_quantity_vat + (float)$product['actual_quantity'];
                     $total_vat_price = (float)$total_vat_price + ((float)$prod_price * (float)$product['actual_quantity']);
                     $grand_price_gst = $total_vat_price;
-                    $input_data['vat_percentage'] = 1;
                 } else {
                     $total_without_vat_items ++;
                     $without_vat_product[$counter_without_vat++] = $product;
