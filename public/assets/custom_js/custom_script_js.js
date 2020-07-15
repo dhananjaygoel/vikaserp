@@ -906,7 +906,8 @@ function grand_total_challan() {
 
             var vat_percentage = $("#product_vat_percentage_value_" + i).val();
             if (vat_percentage != "" && vat_percentage > 0)  {
-                vat_total =  vat_total + (amount * vat_percentage / 100);
+                var amount_vat = parseFloat(amount * vat_percentage / 100);
+                vat_total =  parseFloat(vat_total) + parseFloat(amount_vat.toFixed(2));
             }
         }
     }
@@ -923,7 +924,7 @@ function grand_total_challan() {
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(loading_charge.toFixed(2));
             var loading_vat = parseFloat(loading_charge) * vat_percentage / 100;
-            vat_total = parseFloat(vat_total.toFixed(2)) + parseFloat(loading_vat.toFixed(2));
+            vat_total = parseFloat(vat_total) + parseFloat(loading_vat.toFixed(2));
         }
 //        if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
 //            var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
