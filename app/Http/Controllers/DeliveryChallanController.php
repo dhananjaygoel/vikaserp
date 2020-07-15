@@ -1231,12 +1231,37 @@ class DeliveryChallanController extends Controller {
 
         }
         else{
+            $cust_id = $update_delivery_challan->customer_id;
+            $order_id = $update_delivery_challan->order_id;
+            $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
+            $state = \App\DeliveryLocation::where('id',isset($loc_id->delivery_location_id)?$loc_id->delivery_location_id:0)->first();
+            $local = \App\States::where('id',isset($state->state_id)?$state->state_id:0)->first();
+            $local_state = isset($local->local_state)?$local->local_state:0;
+            $total_price = 0;
+            $total_vat = 0;
+            if(isset($update_delivery_challan->delivery_challan_products[0]->vat_percentage) && $update_delivery_challan->delivery_challan_products[0]->vat_percentage > 0){
+                $loading_vat = 18;
+            }else{
+                $loading_vat = 0;
+            }
+            $loading_vat_amount = ((float)$update_delivery_challan->loading_charge * (float)$loading_vat) / 100;
+            $freight_vat_amount = ((float)$update_delivery_challan->freight * (float)$loading_vat) / 100;
+            $discount_vat_amount = ((float)$update_delivery_challan->discount * (float)$loading_vat) / 100;
+            $final_vat_amount = 0; 
+            $final_total_amt = 0;
+            $total_amount = 0;
 
             $line = [];
              $i = 0;
              foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 $TaxCodeRef = 0;
                 $grand_total = 0;
+                $sgst = 0;
+                $cgst = 0;
+                $igst = 0;
+                $price = ((isset($del_products->price) && $del_products->price != '0.00')?$del_products->price:$del_products['order_product_all_details']->product_category['price']);
+                $amount = (float)$del_products->actual_quantity * (float)$price;
+                $total_amount = round($amount + $total_amount, 2);
                 $hsncode = $del_products->order_product_all_details->hsn_code;
                 $hsn = Hsn::where('hsn_code',$hsncode)->first();
                 $state = \App\DeliveryLocation::where('id',$update_delivery_challan->delivery_order->delivery_location_id)->first();
@@ -1257,9 +1282,19 @@ class DeliveryChallanController extends Controller {
                             if($del_products->vat_percentage > 0){
                                 if($local_state == 1){
                                     $TaxCodeRef = $gst->quick_gst_id;
+                                    $sgst = isset($gst->sgst)?$gst->sgst:0;
+                                    $cgst = isset($gst->cgst)?$gst->cgst:0;
+                                    $total_sgst_amount = ((float)$amount * (float)$sgst) / 100;
+                                    $total_cgst_amount = ((float)$amount * (float)$cgst) / 100;
+                                    $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
                                 }else {
                                     $TaxCodeRef = $gst->quick_igst_id;
+                                    $igst = isset($gst->igst)?$gst->igst:0;
+                                    $total_igst_amount = ((float)$amount * (float)$igst) / 100;
+                                    $total_vat_amount1 = round($total_igst_amount,2);
                                 }
+                                $total_vat_amount = $total_vat_amount1;
+                                $total_price += round($total_vat_amount,2);
                             }
                         }
                     }
@@ -1326,7 +1361,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
                 }
-             }
+            }
 
             if($del_products->vat_percentage==0)
             {
@@ -1446,11 +1481,11 @@ class DeliveryChallanController extends Controller {
                 $roundoff_id=$roundoff_item->quickbook_item_id;
             }
                 $tax = 9;
-                $grand_total = $update_delivery_challan->grand_price;
-                $roundoff = round($grand_total,0) - $grand_total;
-                $roundoff = round($roundoff,2);
-                $roundoff = isset($update_delivery_challan->round_off) && ($update_delivery_challan->round_off != '0.00')?$update_delivery_challan->round_off:$roundoff;
-            //  dd($roundoff);
+                $total = (float)$total_amount + (float)$update_delivery_challan->freight + (float)$update_delivery_challan->loading_charge + (float)$update_delivery_challan->discount;
+                $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                $tot = $total + $total_vat; 
+                $roundoff = round($tot,0) - $tot;
+
                 $line[] = [
                 "Amount" => $roundoff,
                 "DetailType" => "SalesItemLineDetail",
