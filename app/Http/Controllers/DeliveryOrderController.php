@@ -1398,7 +1398,7 @@ class DeliveryOrderController extends Controller {
                 $actual_quantity = $product_info['actual_quantity'];
                 $vat_percentage = isset($product_info['vat_percentage'])?$product_info['vat_percentage']:'';
                 $productid =$product_info['order'];
-                if(!empty($actual_pieces)&& !empty($average_weight)){
+                if(isset($actual_pieces) && $actual_pieces != "" && isset($average_weight) && $average_weight != "" ){
                     $update_product_details = AllOrderProducts::where('id',$productid)->update([
                         'actual_pieces'=>$actual_pieces,
                         'actual_quantity'=>$average_weight,
@@ -1411,7 +1411,7 @@ class DeliveryOrderController extends Controller {
                     ]);
                 }
             }
-         
+            
             $count = count((array)$products_data);
             $productlist = AllOrderProducts::where('order_id', '=', $id)
                         ->where('actual_pieces', '>=', 0)
