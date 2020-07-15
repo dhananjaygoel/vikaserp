@@ -1939,7 +1939,7 @@ class DeliveryOrderController extends Controller {
                         $final_vat_amount += $profile_vat;
                         $loading_vat = 18;
 
-                        $product_price = (float)$product_price + (float)$prod_vat_price;
+                        // $product_price = (float)$product_price + (float)$prod_vat_price;
                         $total_profile_price = (float)$total_profile_price + (float)$product_price;
 
                         $total_profile_items ++;
@@ -1997,7 +1997,7 @@ class DeliveryOrderController extends Controller {
             // if($delivery_order_details->vat_percentage != 0){
             //     $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
             // }
-            $input_data['vat_percentage'] = 1;
+            $input_data['vat_percentage'] = $profile_vat_amount;
            $savedid = $this->store_delivery_challan_vat_wise($input_data, $id);
         }
         /* all items with puls VAT */
@@ -2066,7 +2066,7 @@ class DeliveryOrderController extends Controller {
             // if($delivery_order_details->vat_percentage != 0){
             //     $input_data['vat_percentage'] = $delivery_order_details->vat_percentage;
             // }
-            $input_data['vat_percentage'] = 1;
+            $input_data['vat_percentage'] = $profile_vat_amount;
 
             if(isset($total_profile_items) && $total_profile_items > 0){
                 $profile_input_data['product'] = $profile_product;
