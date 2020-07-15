@@ -1219,30 +1219,34 @@ public function update_cust_all_inc(){
                     $dataService = $this->getTokenWihtoutGST();
                     $custom_query = "select * from Customer where Id='".$quickbook_a_id."'";
                     $customer_details = $dataService->Query($custom_query);
-                    $customerObj = \QuickBooksOnline\API\Facades\Customer::update($customer_details[0],$Qdata);
-                    $resultingCustomerObj = $dataService->Update($customerObj);
-                    $error = $dataService->getLastError();
-                    if ($error) {
-                        $this->refresh_token_Wihtout_GST();
-                        $dataService = $this->getTokenWihtoutGST();
-                    }
-                    else{
+                    if($customer_details){
+                        $customerObj = \QuickBooksOnline\API\Facades\Customer::update($customer_details[0],$Qdata);
                         $resultingCustomerObj = $dataService->Update($customerObj);
+                        $error = $dataService->getLastError();
+                        if ($error) {
+                            $this->refresh_token_Wihtout_GST();
+                            $dataService = $this->getTokenWihtoutGST();
+                        }
+                        else{
+                            $resultingCustomerObj = $dataService->Update($customerObj);
+                        }
                     }
                     // for plus gst account
                     $this->refresh_token();
                     $nextdataservice = $this->getToken();
                     $nextcustom_query = "select * from Customer where ID='".$quickbook_id."'";
                     $nextcust_details = $nextdataservice->Query($nextcustom_query);
-                    $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextcust_details[0],$Qdata);
-                    $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
-                    $error1 = $nextdataservice->getLastError();
-                    if ($error1) {
-                        $this->refresh_token();
-                        $nextdataservice = $this->getToken();
-                    }
-                    else{
+                    if($nextcust_details){
+                        $nextcustomerObj = \QuickBooksOnline\API\Facades\Customer::update($nextcust_details[0],$Qdata);
                         $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+                        $error1 = $nextdataservice->getLastError();
+                        if ($error1) {
+                            $this->refresh_token();
+                            $nextdataservice = $this->getToken();
+                        }
+                        else{
+                            $nextresultingCustomerObj = $nextdataservice->Update($nextcustomerObj);
+                        }
                     }
                 }
 
