@@ -184,7 +184,7 @@
                                             }
 
                                             $total_vat_amount = $total_vat_amount1;
-                                            $total_price += ($total_vat_amount);
+                                            $total_price += round($total_vat_amount,2);
                                         ?>
                                         <tr id="add_row_{{$key}}" class="add_product_row">
                                             <td class="col-md-2">
@@ -653,9 +653,9 @@
                             @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                             <div class="form-group">
                                 <label for="gst_total"><b class="challan">GST Amount: </b> <?php
-                                $total_vat = $total_price + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                                $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                 ?></label>
-                                <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,5)}}" readonly="readonly">
+                                <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
                             </div>
                             @endif
                             <div class="form-group">
