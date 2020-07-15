@@ -382,7 +382,7 @@ function fetch_price() {
                     quantity = parseFloat($("#actual_quantity_" + i).val());
                 }
             } else {
-                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() == 0 || $("#actual_quantity_" + i).val() == '') {
+                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
                     quantity = parseFloat($("#actual_pieces_" + i).val());
                 }
             }
@@ -393,7 +393,7 @@ function fetch_price() {
 //            }
             var amount = parseFloat(rate) * parseInt(quantity);
 //            amount = parseFloat(amount + ((amount * vat_percentage) / 100));
-            if (amount > 0) {
+            if (amount >= 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
         }
@@ -754,7 +754,7 @@ function fetch_average_quantity() {
             total_avg_qty = total_avg_qty + amount;
 //            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
 
-            if (amount > 0) {
+            if (amount >= 0) {
                 $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
 //                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
@@ -807,7 +807,7 @@ function fetch_actual_quantity() {
             product_price = parseFloat($("#product_price_" + i).val());
 
             var amount = actual_qty * parseFloat(product_price);
-            if (amount > 0) {
+            if (amount >= 0) {
                 $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
             }
             Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);

@@ -3983,8 +3983,10 @@ $("body").on('click',"button", function() {
             var html = '<div class ="row form-group truck_weight_save">'+
                     '<ul style="list-style-type: none;padding: 0;">'+
                     '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (Kg):</span>'+
-                    '<span id="truck_value_add_'+truck_sequence+'"><input type="text" name="truck_weight[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save('+truck_sequence+','+delboy_id+');" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save('+truck_sequence+','+delboy_id+');">'+
-                    '<input type="hidden" name="truck_weight_id[]" id="truck_weight_'+truck_sequence+'" value=""></span>'+
+                    '<span id="truck_value_add_'+truck_sequence+'">'+
+                    '<input type="text" name="truck_weight[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save('+truck_sequence+','+delboy_id+');" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save('+truck_sequence+','+delboy_id+');">'+
+                    '<input type="hidden" name="truck_weight_id[]" id="truck_weight_'+truck_sequence+'" value="">'+
+                    '<input type="hidden" id="truck_weight_'+truck_sequence+'_readonly" value=""></span>'+
                     '<select id="labour_select_'+truck_sequence+'" name="labour['+truck_sequence+'][]" class="form-control labour_select" multiple="multiple">'+
                     '</select>'+
                     '<button type="button" value="truck_weight_save" id="btn_truck_weight_'+delboy_id+'_'+truck_sequence+'" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>'+

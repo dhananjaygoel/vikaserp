@@ -1449,6 +1449,7 @@ class DeliveryChallanController extends Controller {
                 $grand_total = $update_delivery_challan->grand_price;
                 $roundoff = round($grand_total,0) - $grand_total;
                 $roundoff = round($roundoff,2);
+                $roundoff = isset($update_delivery_challan->round_off) && ($update_delivery_challan->round_off != '0.00')?$update_delivery_challan->round_off:$roundoff;
             //  dd($roundoff);
                 $line[] = [
                 "Amount" => $roundoff,
