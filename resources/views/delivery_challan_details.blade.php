@@ -241,7 +241,7 @@
                                                     // $total_vat_amount = round($total_vat_amount1,2);
                                                     // $total_price += $total_vat_amount;
                                                     // $total_price += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
-                                                    $total_price += ($total_vat_amount);
+                                                    $total_price += round($total_vat_amount,2);
                                                     // print_r($total_pr);print_r($total_price);
                                                 ?>
                                                 {{round($amount, 2)}}
@@ -417,8 +417,8 @@
                         @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                         <div class="form-group">
                             <label for="total"><b class="challan">GST Amount: </b> <?php
-                            $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
-                            ?> {{round($total_vat,5)}}</label>
+                            $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                            ?> {{round($total_vat,2)}}</label>
                         </div>
                         <hr/>
                         @endif

@@ -1008,6 +1008,14 @@ function fetch_city() {
 function delete_inquiry_row(inquiry_id) {
     $('#inquiry_id').val(inquiry_id);
     $('#inquiry_id').focus();
+    var is_gst = $('#is_gst'+inquiry_id).val();
+    if(is_gst == 1){
+        $("#checksms").prop("checked", true);
+        $("#checkwhatsapp").prop("checked", true);
+    }else{
+        $("#checksms").prop("checked", false);
+        $("#checkwhatsapp").prop("checked", false);
+    }
 }
 
 function reject_inquiry_row(inquiry_id) {
@@ -1125,6 +1133,14 @@ function cancel_order_row(order_id,allinc) {
     if(allinc){
         $('#is_sendsms').attr('checked', true);
     }
+    var is_gst = $('#is_gst'+order_id).val();
+    if(is_gst == 1){
+        $("#checksms").prop("checked", true);
+        $("#checkwhatsapp").prop("checked", true);
+    }else{
+        $("#checksms").prop("checked", false);
+        $("#checkwhatsapp").prop("checked", false);
+    }
 }
 /*
  * Cancel the order using AJAX request
@@ -1173,6 +1189,15 @@ function delete_delivery_order(deliver_order_id) {
 }
 
 function delete_order_row(order_id) {
+    $('.delete_orders_modal_submit').val(order_id);
+    var is_gst = $('#is_gst'+order_id).val();
+    if(is_gst == 1){
+        $("#checksms_delete").prop("checked", true);
+        $("#checkwhatsapp_delete").prop("checked", true);
+    }else{
+        $("#checksms_delete").prop("checked", false);
+        $("#checkwhatsapp_delete").prop("checked", false);
+    }
     $("#delete_order_row").attr('action', baseurl + '/order/' + order_id + '-delete');
     $('#user_id').val(order_id);
 }

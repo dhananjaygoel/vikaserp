@@ -120,7 +120,18 @@ class InquiryController extends Controller {
 //                ->where('inquiry_status', '=', 'pending')
 //                ->orderBy('created_at', 'desc')
 //                ->paginate(15);
-
+        $is_gst = 0;
+        if (count((array)$inquiries) > 0) {
+            foreach ($inquiries as $key => $order) {
+                foreach ($order['inquiry_products'] as $product_data) {
+                    if(isset($product_data->vat_percentage) && $product_data->vat_percentage != "0.00"){
+                        $is_gst = 1;
+                    }
+                }
+                $inquiries[$key]['is_gst'] = $is_gst;
+                $is_gst = 0;
+            }
+        }
         $parameters = parse_url($request->fullUrl());
         $parameters = isset($parameters['query']) ? $parameters['query'] : '';
         Session::put('parameters', $parameters);
@@ -969,6 +980,8 @@ class InquiryController extends Controller {
                 }
                 
                 /**/
+                $send_sms = Input::get('send_sms');
+                $send_whatsapp = Input::get('send_whatsapp');
                 if (count((array)$customer) > 0 && $sms_flag == 1) {
                     $total_quantity = '';
                     $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\n Admin rejected your inquiry #".$inq->id.".\n";
@@ -987,14 +1000,14 @@ class InquiryController extends Controller {
                     }
                     $msg = urlencode($str);
                     $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
+                    if (SEND_SMS === true && $send_sms == "yes") {
                         $ch = curl_init($url);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_scraped_page = curl_exec($ch);
                         curl_close($ch);
                     }
                      // whatsapp code starts here
-                        
+                    if (SEND_SMS === true && $send_whatsapp == "yes") {
                         $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                         try{
                             $message = $twilio->messages
@@ -1010,6 +1023,7 @@ class InquiryController extends Controller {
                         }catch(\Exception $e){
                             $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                         }
+                    }
                     // whatsapp testing code endse here
                     if (count((array)$customer['manager']) > 0) {
                         $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has rejected an inquiry #".$inq->id." for " . $customer->owner_name . ", " . round($total_quantity,2) . " Kindly check and contact.\nVIKAS ASSOCIATES";
@@ -1020,13 +1034,13 @@ class InquiryController extends Controller {
                         }
                         $msg = urlencode($str);
                         $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                        if (SEND_SMS === true) {
+                        if (SEND_SMS === true && $send_sms == "yes") {
                             $ch = curl_init($url);
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                             $curl_scraped_page = curl_exec($ch);
                             curl_close($ch);
                         }
-                        
+                        if (SEND_SMS === true && $send_whatsapp == "yes") {
                             $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                             try{
                                 $message = $twilio->messages
@@ -1041,6 +1055,7 @@ class InquiryController extends Controller {
                             }catch(\Exception $e){
                                 $whatsapp_error = ':: Whatsapp Error: Invalid Number';
                             }
+                        }
                         
                     }
                 }

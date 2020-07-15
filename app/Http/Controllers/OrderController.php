@@ -591,6 +591,18 @@ class OrderController extends Controller {
         $delivery_location = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $delivery_order = AllOrderProducts::where('order_type', '=', 'delivery_order')->where('product_category_id', '=', $product_category_id)->get();
 
+        $is_gst = 0;
+        if (count((array)$allorders) > 0) {
+            foreach ($allorders as $key => $order) {
+                foreach ($order['all_order_products'] as $product_data) {
+                    if(isset($product_data->vat_percentage) && $product_data->vat_percentage != "0.00"){
+                        $is_gst = 1;
+                    }
+                }
+                $allorders[$key]['is_gst'] = $is_gst;
+                $is_gst = 0;
+            }
+        }
         //$product_size = ProductSubCategory::all();
         // dd("ii");
         $pending_orders = $this->checkpending_quantity($allorders);
@@ -1593,6 +1605,8 @@ class OrderController extends Controller {
             parse_str($inputData, $formFields);
         }
 
+        $send_sms = isset($formFields['send_sms'])?$formFields['send_sms']:"";
+        $send_whatsapp = isset($formFields['send_whatsapp'])?$formFields['send_whatsapp']:"";
         $password = $formFields['password'];
         $userinfo = auth()->user();
         $order_sort_type = $formFields['order_sort_type'];
@@ -1644,7 +1658,7 @@ class OrderController extends Controller {
                             }
                             /**/
                         }
-                        if ($sms_flag == 1) {
+                        // if ($sms_flag == 1) {
                             $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nAdmin has rejected your order #".$id." \n";
                             foreach ($input_data as $product_data) {
 
@@ -1662,13 +1676,13 @@ class OrderController extends Controller {
                             }
                             $msg = urlencode($str);
                             $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                            if (SEND_SMS === true) {
+                            if (SEND_SMS === true && $send_sms == "yes") {
                                 $ch = curl_init($url);
                                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                                 $curl_scraped_page = curl_exec($ch);
                                 curl_close($ch);
-
-                                
+                            }
+                            if (SEND_SMS === true && $send_whatsapp == "yes") {   
                                 $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                                 try{
                                     $message = $twilio->messages
@@ -1696,12 +1710,13 @@ class OrderController extends Controller {
                                 }
                                 $msg = urlencode($str);
                                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                                if (SEND_SMS === true) {
+                                if (SEND_SMS === true && $send_sms == "yes") {
                                     $ch = curl_init($url);
                                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                                     $curl_scraped_page = curl_exec($ch);
                                     curl_close($ch);
-
+                                }
+                                if (SEND_SMS === true && $send_whatsapp == "yes") {
                                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                                     try{
                                         $message = $twilio->messages
@@ -1718,7 +1733,7 @@ class OrderController extends Controller {
                                     }
                                 }
                             }
-                        }
+                        // }
                     }
                 // }
 
@@ -1818,6 +1833,8 @@ class OrderController extends Controller {
           | -----------------------------------------------------
          */
         $product_string = '';
+        $send_sms = isset($input['send_sms'])?$input['send_sms']:"";
+        $send_whatsapp = isset($input['send_whatsapp'])?$input['send_whatsapp']:"";
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($order['customer']->id);
@@ -1852,12 +1869,13 @@ class OrderController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && $send_sms == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
-
+                }
+                if (SEND_SMS === true && $send_whatsapp == "yes") {
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
@@ -1885,12 +1903,13 @@ class OrderController extends Controller {
                 }
                 $msg = urlencode($str);
                 $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
+                if (SEND_SMS === true && $send_sms == "yes") {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     $curl_scraped_page = curl_exec($ch);
                     curl_close($ch);
-
+                }
+                if (SEND_SMS === true && $send_whatsapp == "yes") {
                     $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
                     try{
                         $message = $twilio->messages
