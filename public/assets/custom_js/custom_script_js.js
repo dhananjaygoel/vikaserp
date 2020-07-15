@@ -910,7 +910,6 @@ function grand_total_challan() {
             }
         }
     }
-    var vat_val = 0;
     var total_price = total_price_products;
 
     $("#total_price").val(total_price.toFixed(2));
@@ -923,7 +922,8 @@ function grand_total_challan() {
             loading_charge = parseFloat($("#loading_charge").val());
             $("#loading_charge").val(loading_charge.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(loading_charge.toFixed(2));
-            vat_total = vat_total + (loading_charge * vat_percentage / 100).toFixed(2);
+            var loading_vat = parseFloat(loading_charge) * vat_percentage / 100;
+            vat_total = parseFloat(vat_total.toFixed(2)) + parseFloat(loading_vat.toFixed(2));
         }
 //        if (parseFloat(loading_vat_percentage) > 0 && parseFloat(loading_charge) > 0) {
 //            var subtotal = ((parseFloat(loading_vat_percentage) * parseFloat($("#loading_charge").val())) / 100);
@@ -944,7 +944,7 @@ function grand_total_challan() {
             discount_value = parseFloat($("#discount_value").val());
             $("#discount_value").val(discount_value.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(discount_value);
-            vat_total = vat_total + (discount_value * vat_percentage / 100).toFixed(2);
+            vat_total = parseFloat(vat_total) + parseFloat((discount_value * vat_percentage / 100).toFixed(2));
         }
 //        if (parseFloat(discount_vat_percentage) > 0 && parseFloat(discount_value) > 0) {
 //            var subtotal_discount = ((parseFloat(discount_vat_percentage) * parseFloat($("#discount_value").val())) / 100);
@@ -970,7 +970,7 @@ function grand_total_challan() {
             freight_value = parseFloat($("#freight_value").val());
             $("#freight_value").val(freight_value.toFixed(2));
             total_price = parseFloat(total_price) + parseFloat(freight_value);
-            vat_total = vat_total + (freight_value * vat_percentage / 100).toFixed(2);
+            vat_total = parseFloat(vat_total) + parseFloat((freight_value * vat_percentage / 100).toFixed(2));
         }
 //        if (parseFloat(freight_vat_percentage) > 0 && parseFloat(freight_value) > 0) {
 //            var subtotal_frieght = ((parseFloat(freight_vat_percentage) * parseFloat($("#freight_value").val())) / 100);
