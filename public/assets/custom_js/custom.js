@@ -2040,13 +2040,13 @@ $('body').delegate(".btn_edit_delivery_challan", "click", function () {
         var actual_qty = parseInt($("#actual_quantity_" + i).val());
         var actual_pieces = parseInt($("#actual_pieces_" + i).val());
         var price = parseInt($("#product_price_" + i).val());
-        if ($("#actual_quantity_" + i).val() == "" || actual_qty == "0") {
+        if ($("#actual_quantity_" + i).val() == "" || actual_qty === "") {
             if(isNaN(actual_qty) == false){
                 $('#actual_quantity_' + i).addClass('error_validation');
                 status_form = 1;
             }
         }
-        if ($("#actual_pieces_" + i).val() == "" || actual_pieces == "0") {
+        if ($("#actual_pieces_" + i).val() == "" || actual_pieces === "") {
             if(isNaN(actual_pieces) == false){
                 $('#actual_pieces_' + i).addClass('error_validation');
                 status_form = 1;
