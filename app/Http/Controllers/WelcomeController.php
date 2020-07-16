@@ -35,7 +35,6 @@ use Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
-use Dropbox\Client;
 use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
 use Dropbox;
@@ -47,6 +46,7 @@ use App\DeliveryChallan;
 use App\PurchaseChallan;
 use App\DeliveryChallanLoadedBy;
 use Twilio\TwiML\MessagingResponse;
+use Twilio\Rest\Client;
 
 class WelcomeController extends Controller {
     /*
@@ -2045,6 +2045,32 @@ class WelcomeController extends Controller {
         $count = \App\User::where('id', 1)->update(['password_updated_at' => "2017-9-01 10:43:37"]);
                 
         echo $count." records updated";
+        
+    }
+
+    public function send_whatsapp($send_to,$msg){
+
+        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+        try{
+            $message = $twilio->messages
+            ->create("whatsapp:+91".$send_to,
+                [
+                    "body" => $msg,
+                    "from" => "whatsapp:+13344012472"
+                ]
+                );
+        }catch(\Exception $e){
+            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+        }
+    }
+    
+    public function send_sms($send_to,$msg){
+        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $send_to . "&msgtext=" . $msg . "&smstype=0";
+        
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $curl_scraped_page = curl_exec($ch);
+        curl_close($ch);
         
     }
 }

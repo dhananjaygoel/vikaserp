@@ -235,6 +235,7 @@
                                                            @if(isset($session_data['product'][$i]['units']))
                                                             @if($session_data['product'][$i]['units'] == $unit->id)
                                                                 <option value="{{$unit->id}}" selected="">{{$unit->unit_name}}</option>
+                                                                <input type="hidden" name="product[{{$i}}][units]" value="{{$unit->id}}">
                                                             @endif
                                                              @endif
                                                         @endforeach
@@ -399,7 +400,7 @@
                                                         <div class="form-group searchproduct">
                                                             <input value="{{ $product['order_product_details']->alias_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
                                                             <input type="hidden" name="product[{{$key}}][product_category_id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
-                                                            <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->id}}">
+                                                            <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product->product_category_id}}">
                                                             <input type="hidden" name="product[{{$key}}][order]" value="{{ $product->from}}">
                                                             <!--                                                    <i class="fa fa-search search-icon"></i>-->
                                                             {{ $product['order_product_details']->alias_name}}
@@ -417,6 +418,7 @@
                                                                 <option value=4 id = 'unit_{{$key}}_4' {{($product->unit_id == 4)?'selected':''}}>ft</option>
                                                                 <option value=5 id = 'unit_{{$key}}_5' {{($product->unit_id == 5)?'selected':''}}>mm</option>
                                                             <?php } ?>
+                                                            <input type="hidden" name="product[{{$key}}][units]" value="{{$product->unit_id}}">
                                                             </select>
                                                         </div>
                                                     </td>
@@ -426,12 +428,14 @@
                                                         <div class = "form-group length_list_{{$key}}">
                                                             <input id = "length_{{$key}}" class = "form-control each_length_qnty" data-productid="{{$product->id}}"  name = "product[{{$key}}][length]" type = "tel" onkeypress=" return numbersOnly(this, event, true, true);" 
                                                                    value = "{{$product->length}}" <?php if($product->unit_id ==1 || $product->unit_id ==2 || $product->unit_id ==3 ){?> disabled <?php } ?> disabled>
+                                                            <input type="hidden" name="product[{{$key}}][length]" value="{{$product->length}}">
                                                     </div>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-1">
                                                     <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}} >
                                                         <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel" disabled>
+                                                        <input type="hidden" name="product[{{$key}}][quantity]" value="{{$product->quantity}}">
                                                     </div>
                                                     <div class = "form-group kg_list_{{$key}}" {{($product->unit_id==1)?'':'style=display:none'}}>
                                                         <select class = "form-control kg_list" name = "kg_list" id = "kg_list_{{$key}}" onchange="setQty(this);" disabled>

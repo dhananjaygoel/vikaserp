@@ -855,6 +855,11 @@ class DeliveryChallanController extends Controller {
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 
             $input_data = $allorder['delivery_challan_products'];
+            $loading_charge = isset($delivery_challan['loading_charge']) && $delivery_challan['loading_charge'] != ""? "₹".$delivery_challan['loading_charge']:"N\A";
+            $discount = isset($delivery_challan['discount']) && $delivery_challan['discount'] != ""? "₹".$delivery_challan['discount']:"N\A";
+            $freight = isset($delivery_challan['freight']) && $delivery_challan['freight'] != ""? "₹".$delivery_challan['freight']:"N\A";
+            $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N\A";
+            $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N\A";
             $send_sms = Input::get('send_msg');
             $send_whatsapp = Input::get('send_whatsapp');
             $product_string = '';
@@ -862,107 +867,62 @@ class DeliveryChallanController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
             if ($sms_flag == 1) {
-                if (count((array)$cust_count) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour delivery challan #".$id." has been edited for following products:\n";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-                        $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
+                $total_quantity = '';
+                $i = 1;
+                foreach ($input_data as $product_data) {
+                    if ($product_data['order_product_details']->alias_name != "") {
+                        $product = ProductSubCategory::find($product_data['product_category_id']);
+                        if ($product_data['unit_id'] == 1) {
+                            $total_quantity = (float)$product_data['quantity'];
+                        }
+                        if ($product_data['unit_id'] == 2) {
+                            $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                        }
+                        if ($product_data['unit_id'] == 3) {
+                            $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        }
+                        if ($product_data['unit_id'] == 4) {
+                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                        }
+                        if ($product_data['unit_id'] == 5) {
+                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                        }
+                        $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                     }
-                    $str .= " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A') .
-                            ", Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .
-                            ", Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
-
+                }
+                if (count((array)$cust_count) > 0) {
+                    $str = "Dear Customer,\n\nYour delivery challan has been updated.\n\nCustomer Name:".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nLoading charge: ".$loading_charge."\nDiscount: ".$discount."\nFreight: ".$freight."\n\nVIKAS ASSOCIATES."; 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer->phone_number1;
                     }
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
+                    if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_sms($phone_number,$msg);
                     }
-                    // whatsapp code starts here
-                    if(isset($send_whatsapp) && $send_whatsapp == "yes"){
-                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                        try{
-                            $message = $twilio->messages
-                            ->create("whatsapp:+91".$phone_number,
-                                [
-                                    "body" => 'Dear '. strtoupper($customer->owner_name) .'
-                                        On Dated '. date("j M, Y") .'
-                                        Your delivery challan #'.$id.' has been edited for following products:
-                                        '.$product_string.'
-                                        Vehicle No: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '. (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due by: '. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
-                                        VIKAS ASSOCIATES.',
-                                    "from" => "whatsapp:+13344012472"
-                                ]
-                            );
-                        }catch(\Exception $e){
-                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                        }
+                    if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_whatsapp($phone_number,$str);                    
                     }
-                    // whatsapp testing code endse here
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $total_quantity = '';
-                    $product_string = '';
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) ."\n" . Auth::user()->first_name . " has edited delivery challan #".$id." for " . $customer->owner_name . " is as follows: ";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-                        $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
-                    }
-                    $str .= " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A') .
-                            ", Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .
-                            ", Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ", Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .
-                            ", Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES";
-
-                    if (App::environment('development')) {
+                    $str = "Dear Manager,\n\nDelivery challan has been updated.\n\nCustomer Name:".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nLoading charge: ".$loading_charge."\nDiscount: ".$discount."\nFreight: ".$freight."\n\nVIKAS ASSOCIATES."; 
+                    if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
                         $phone_number = $customer['manager']->mobile_number;
                     }
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
+                    if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_sms($phone_number,$msg);
                     }
-                    // whatsapp code starts here
-                    if(isset($send_whatsapp) && $send_whatsapp == "yes"){
-                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                        try{
-                            $message = $twilio->messages
-                            ->create("whatsapp:+91".$phone_number,
-                                [
-                                    "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
-                                        '.Auth::user()->first_name.' has edited delivery challan #'.$id.' for ' . $customer->owner_name . ' is as following:
-                                        '.$product_string.'
-                                        Vehicle No: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '. (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due by: '. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
-                                        VIKAS ASSOCIATES.',
-                                    "from" => "whatsapp:+13344012472"
-                                ]
-                            );
-                        }catch(\Exception $e){
-                            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                        }
+                    if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_whatsapp($phone_number,$str);                    
                     }
-                    // whatsapp testing code endse here
                 }
             }
         }
@@ -1806,126 +1766,79 @@ class DeliveryChallanController extends Controller {
           | -------------------------------------------
          */
         $input_data = $allorder['delivery_challan_products'];
-
-        /* check for vat/gst items */
-        foreach ($input_data as $product_data) {
-            if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] != '0.00') {
-                $sms_flag = 1;
-            }
-        }
-        /**/
+        $delivery_order = $allorder['delivery_order'];
+        $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N\A";
+        $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N\A";  
         $product_string = '';
         $send_sms = Input::get('send_sms');
         $send_whatsapp = Input::get('send_whatsapp');
-        if ($sms_flag == 1 && ($send_sms == 'true' || $send_whatsapp == 'true')) {
-            // if ($send_sms == 'true') {
-                $customer_id = $allorder->customer_id;
-                $customer = Customer::with('manager')->find($customer_id);
-                $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
-                if ($cust_count > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour order #".$id." has been dispatched for following products:\n";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-                        $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
+        if ($sms_flag == 1) {
+            $customer_id = $allorder->customer_id;
+            $customer = Customer::with('manager')->find($customer_id);
+            $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
+            $total_quantity = 0;
+            $tot_quantity = 0;
+            $i = 1;
+            foreach ($input_data as $product_data) {
+                if ($product_data['order_product_all_details']->alias_name != "") {
+                    $product = ProductSubCategory::find($product_data['product_category_id']);
+                    if ($product_data['unit_id'] == 1) {
+                        $total_quantity = (float)$product_data['quantity'];
+                        $tot_quantity = $tot_quantity + $total_quantity;
                     }
-                    $str .= $s = " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
-                            ",\n Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:"") .
-                            ",\n Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ",\n Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:"") .
-                            ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES.";
-
-                    if (App::environment('local')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer->phone_number1;
+                    if ($product_data['unit_id'] == 2) {
+                        $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                        $tot_quantity = $tot_quantity + $total_quantity;
                     }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && $send_sms == 'true') {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
+                    if ($product_data['unit_id'] == 3) {
+                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $tot_quantity = $tot_quantity + $total_quantity;
                     }
-                    // whatsapp code starts here
-                    if($send_whatsapp == "true"){
-                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                        try{
-                            $message = $twilio->messages
-                            ->create("whatsapp:+91".$phone_number,
-                                [
-                                    "body" => 'Dear '.strtoupper($customer->owner_name).'
-                                            On Dated '. date("j M, Y") .'
-                                            Your order #'.$id.' has been dispatched for following products:
-                                            '.$product_string.'
-                                            Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
-                                            VIKAS ASSOCIATES.',
-                                    "from" => "whatsapp:+13344012472"
-                                ]
-                            );
-                        }catch(\Exception $e){
-                            // dd($e);
-                            // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                        }
+                    if ($product_data['unit_id'] == 4) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                        $tot_quantity = $tot_quantity + $total_quantity;
                     }
-                    // whatsapp testing code endse here
+                    if ($product_data['unit_id'] == 5) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                        $tot_quantity = $tot_quantity + $total_quantity;
+                    }
+                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                 }
-                if (count((array)$customer['manager']) > 0) {
-                    $total_quantity = '';
-                    $product_string = '';
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n" . Auth::user()->first_name . "  has dispatched an order #".$id." for " . $customer->owner_name . " is as following:\n ";
-                    foreach ($input_data as $product_data) {
-                        $product = ProductSubCategory::find($product_data->product_category_id);
-                        $product_string .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $str .= $product->alias_name . ' - ' . $product_data->quantity . ' - ' . $product_data->price . ', ';
-                        $total_quantity = (float)$total_quantity + (float)$product_data->quantity;
-                    }
-                    $str .= " Vehicle No: " . (isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:"") .
-                            ",\n Driver No: " . (isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:"") .
-                            ",\n Quantity: " . $allorder['delivery_challan_products']->sum('actual_quantity') .
-                            ",\n Amount: " . (isset($allorder->grand_price)?$allorder->grand_price:"") .
-                            ",\n Due by: " . date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .
-                            "\nVIKAS ASSOCIATES.";
-
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer['manager']->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                    // whatsapp code starts here
-                    if($send_whatsapp == "true"){
-                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                        try{
-                            $message = $twilio->messages
-                            ->create("whatsapp:+91".$phone_number,
-                                [
-                                    "body" => 'Dear '.strtoupper($customer['manager']->first_name).',
-                                           '.Auth::user()->first_name.' has dispatched an order #'.$id.' for '. $customer->owner_name . ' is as following:
-                                            '.$product_string.'
-                                            Vehicle Number: '.(isset($allorder['delivery_order']->vehicle_number)?$allorder['delivery_order']->vehicle_number:'N/A').', Driver No: '.(isset($allorder['delivery_order']->driver_contact_no) && $allorder['delivery_order']->driver_contact_no != ''?$allorder['delivery_order']->driver_contact_no:'N/A') .', Quantity: '. $allorder['delivery_challan_products']->sum('actual_quantity') .', Amount: '. (isset($allorder->grand_price)?$allorder->grand_price:'N/A') .', Due By:'. date("j F, Y", strtotime($allorder['delivery_order']->expected_delivery_date)) .'
-                                            VIKAS ASSOCIATES.',
-                                    "from" => "whatsapp:+13344012472"
-                                ]
-                            );
-                        }catch(\Exception $e){
-                            // $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                        }
-                    }
-                    // whatsapp testing code endse here
+            }
+            if ($cust_count > 0) {
+                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name:".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
+                if (App::environment('local')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
                 }
-            // }
+                $msg = urlencode($str);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "true") {
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_sms($phone_number,$msg);
+                }
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_whatsapp($phone_number,$str);                    
+                }
+            }
+            if (count((array)$customer['manager']) > 0) {
+                $str = "Dear Manager,\n\nDelivery challan is ready.\n\nCustomer Name:".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "true") {
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_sms($phone_number,$msg);
+                }
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_whatsapp($phone_number,$str);                    
+                }
+            }
         }
         //         update sync table
         $tables = ['delivery_challan', 'all_order_products'];
