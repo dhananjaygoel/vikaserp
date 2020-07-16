@@ -2094,7 +2094,7 @@ class WelcomeController extends Controller {
             return Storage::download(getcwd().$file_path);
             exit(); // downloadable file
         } else {
-            die("You're not allowed to download this file");
+            return view('notfound');
         }
     }
 }
