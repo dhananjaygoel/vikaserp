@@ -47,6 +47,9 @@ use App\PurchaseChallan;
 use App\DeliveryChallanLoadedBy;
 use Twilio\TwiML\MessagingResponse;
 use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\PDF;
+use Response;
 
 class WelcomeController extends Controller {
     /*
@@ -2072,5 +2075,26 @@ class WelcomeController extends Controller {
         $curl_scraped_page = curl_exec($ch);
         curl_close($ch);
         
+    }
+
+    public function download_dc($uuid){
+
+        $allowed = false;
+        $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
+        if(isset($file_data) && !empty($file_data)){
+            $allowed = true;
+            $file_path = $file_data->file_path;
+        }else{
+            $allowed = false;
+        }
+        if ($allowed) {
+            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
+            $file_name = $file_data->file_name;
+            $contenttype = "application/force-download";
+            return Storage::download(getcwd().$file_path);
+            exit(); // downloadable file
+        } else {
+            die("You're not allowed to download this file");
+        }
     }
 }

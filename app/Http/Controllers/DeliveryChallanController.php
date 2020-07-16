@@ -20,6 +20,7 @@ use Redirect;
 use App\User;
 use Auth;
 use App;
+use URL;
 use Hash;
 use Config;
 use App\Units;
@@ -1699,7 +1700,7 @@ class DeliveryChallanController extends Controller {
             $date_letter = 'DC/' . $current_date . $modified_id . $suffix;
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
-            $update_delivery_challan->save();
+            // $update_delivery_challan->save();
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 // //            $this->checkpending_quantity();
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
@@ -1736,7 +1737,8 @@ class DeliveryChallanController extends Controller {
             //     'total_vat_amount' => $total_vat_amount
             // ]);
             $pdf->loadHTML($viewhtml);
-
+            $file_name = str_replace('/', '-', $date_letter);
+            $uuid = uniqid();
 
             Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
@@ -1744,6 +1746,13 @@ class DeliveryChallanController extends Controller {
 
             $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
+            DB::table('file_info')->insert(array(
+                'file_name' => $file_name.".pdf",
+                'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
+                'uuid' => $uuid,
+                'status' => 0
+            ));
+            $link = URL::to("/download_dc/".$uuid);
         }
 
         /* inventory code */
@@ -1806,7 +1815,7 @@ class DeliveryChallanController extends Controller {
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nDownload your Delivery Challan from  following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

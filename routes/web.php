@@ -565,3 +565,4 @@ Route::get('remove_test_labour','WelcomeController@remove_test_labour');
 Auth::routes();
 
 // Route::get('/dashboard', 'DashboardController@index');
+Route::get('download_dc/{uuid}','WelcomeController@download_dc');
