@@ -725,7 +725,7 @@ class InquiryController extends Controller {
                             $product_string .= $key . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";                            
                         }
                     }
-                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name:".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -793,7 +793,7 @@ class InquiryController extends Controller {
                             $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                         }
                     }
-                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name:".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
