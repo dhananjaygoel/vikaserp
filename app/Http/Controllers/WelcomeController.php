@@ -2090,7 +2090,7 @@ class WelcomeController extends Controller {
         if ($allowed) {
             DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
             $file_name = $file_data->file_name;
-            $contenttype = "application/force-download";
+            $contenttype = "application/pdf";
             return Storage::download(getcwd().$file_path);
             exit(); // downloadable file
         } else {
