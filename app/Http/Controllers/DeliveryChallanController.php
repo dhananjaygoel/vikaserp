@@ -1703,7 +1703,7 @@ class DeliveryChallanController extends Controller {
             $date_letter = 'DC/' . $current_date . $modified_id . $suffix;
             $update_delivery_challan->serial_number = $date_letter;
             $update_delivery_challan->challan_status = 'completed';
-            // $update_delivery_challan->save();
+            $update_delivery_challan->save();
 //            $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 // //            $this->checkpending_quantity();
 //            $allorder = DeliveryChallan::where('id', '=', $id)->where('challan_status', '=', 'completed')
