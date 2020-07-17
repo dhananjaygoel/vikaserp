@@ -2092,7 +2092,7 @@ class WelcomeController extends Controller {
             $file_name = $file_data->file_name;
             $content = Storage::get(getcwd().$file_path);
             $response = Response::make($content, 200);
-            $response->header('Content-Type', 'application/json');
+            $response->header('Content-Type', 'application/pdf');
             $response->header('Content-Disposition', 'attachment; filename="'. $file_name.'"');
             return $response;
             // chmod(getcwd().$file_path,0777);
