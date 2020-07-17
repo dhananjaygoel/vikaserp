@@ -28,19 +28,19 @@
 			}
 
 			.title {
-				font-size: 96px;
+				font-size: 46px;
 				margin-bottom: 40px;
 			}
 
 			.quote {
-				font-size: 24px;
+				font-size: 14px;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Oops! Page not found.</div>
+				<div class="title">Sorry! This link has been expired.<br>Please contact support.</div>
 			</div>
 		</div>
 	</body>
