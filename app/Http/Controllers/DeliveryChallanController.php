@@ -1726,6 +1726,8 @@ class DeliveryChallanController extends Controller {
 //                $convert_value = $this->convert_number($allorder->grand_price);
 //            }
 //            $allorder['convert_value'] = $convert_value;
+            $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
+            
             $allorder['is_gst'] = $vat_applicable;
             $viewhtml = View::make('delivery_challan_pdf', [
                 'allorder' => $allorder,
@@ -1767,7 +1769,7 @@ class DeliveryChallanController extends Controller {
 
 //        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 
-        $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
+        
 
         /*
           | ------------------- -----------------------
