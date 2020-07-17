@@ -2088,18 +2088,17 @@ class WelcomeController extends Controller {
             $allowed = false;
         }
         if ($allowed) {
-            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
+            // DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
             $file_name = $file_data->file_name;
-            $content = Storage::get(getcwd().$file_path);
-            $response = Response::make($content, 200);
-            $response->header('Content-Type', 'application/pdf');
-            $response->header('Content-Disposition', 'attachment; filename="'. $file_name.'"');
-            return $response;
+
+            $headers = [
+                'Content-type' => 'application/pdf'];
+            return Storage::download(getcwd().$file_path, $file_name,$headers);
+           
+            // Storage::get(getcwd().$file_path);
+            // $response = Response::make($content, 200);
             // chmod(getcwd().$file_path,0777);
-            // return Storage::download(getcwd().$file_path)->withHeaders([
-            //     'Content-type: application/pdf',
-            //     'Content-Disposition: attachment; filename=' . $file_name
-            // ]);;
+            // return Storage::download(getcwd().$file_path);
             exit(); // downloadable file
         } else {
             return view('notfound');
