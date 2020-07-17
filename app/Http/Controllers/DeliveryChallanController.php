@@ -1582,6 +1582,7 @@ class DeliveryChallanController extends Controller {
             }
             $allorder['is_gst'] = $vat_applicable;
             $date_letter = $update_delivery_challan->serial_number;
+            $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
             $viewhtml = View::make('delivery_challan_pdf', [
                 'allorder' => $allorder,
                 'total_vat_amount' => $total_vat_amount
@@ -1593,6 +1594,8 @@ class DeliveryChallanController extends Controller {
             //     'total_vat_amount' => $total_vat_amount
             // ]);
             $pdf->loadHTML($viewhtml);
+            $file_name = str_replace('/', '-', $date_letter);
+            $uuid = uniqid();
 
            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
@@ -1746,15 +1749,7 @@ class DeliveryChallanController extends Controller {
             $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
             chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
 
-            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-
-            DB::table('file_info')->insert(array(
-                'file_name' => $file_name.".pdf",
-                'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
-                'uuid' => $uuid,
-                'status' => 0
-            ));
-            $link = URL::to("/download_dc/".$uuid);
+            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output()); 
         }
 
         /* inventory code */
@@ -1828,6 +1823,13 @@ class DeliveryChallanController extends Controller {
                     $send_msg = new WelcomeController();
                     $send_msg->send_sms($phone_number,$msg);
                 }
+                DB::table('file_info')->insert(array(
+                    'file_name' => $file_name.".pdf",
+                    'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
+                    'uuid' => $uuid,
+                    'status' => 0
+                ));
+                $link = URL::to("/download_dc/".$uuid);
                 $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nDownload your Delivery Challan from  following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
                 if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
                     $send_msg = new WelcomeController();
