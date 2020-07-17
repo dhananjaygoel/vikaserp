@@ -10,9 +10,9 @@
 				padding: 0;
 				width: 100%;
 				height: 100%;
-				color: #867f7f;
+				color: #000000;
 				display: table;
-				font-weight: 100;
+				font-weight: 200;
 				font-family: 'Lato';
 			}
 
@@ -40,7 +40,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Sorry! The link has been expired.<br>Please contact our team.</div>
+				<div class="title"><h2>Sorry! The link has been expired.<br>Please contact our team.</h2></div>
 			</div>
 		</div>
 	</body>
