@@ -10,7 +10,7 @@
 				padding: 0;
 				width: 100%;
 				height: 100%;
-				color: #B0BEC5;
+				color: #867f7f;
 				display: table;
 				font-weight: 100;
 				font-family: 'Lato';
@@ -40,7 +40,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Sorry! This link has been expired.<br>Please contact. VIKAS ASSOCIATES.</div>
+				<div class="title">Sorry! The link has been expired.<br>Please contact our team.</div>
 			</div>
 		</div>
 	</body>
