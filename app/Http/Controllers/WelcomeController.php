@@ -2090,8 +2090,16 @@ class WelcomeController extends Controller {
         if ($allowed) {
             DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
             $file_name = $file_data->file_name;
-            $contenttype = "application/pdf";
-            return Storage::download(getcwd().$file_path);
+            $content = Storage::get(getcwd().$file_path);
+            $response = Response::make($content, 200);
+            $response->header('Content-Type', 'application/json');
+            $response->header('Content-Disposition', 'attachment; filename="'. $file_name.'"');
+            return $response;
+            // chmod(getcwd().$file_path,0777);
+            // return Storage::download(getcwd().$file_path)->withHeaders([
+            //     'Content-type: application/pdf',
+            //     'Content-Disposition: attachment; filename=' . $file_name
+            // ]);;
             exit(); // downloadable file
         } else {
             return view('notfound');
