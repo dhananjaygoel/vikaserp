@@ -8,12 +8,12 @@
             table tr {padding: 0px;}
             table thead tr th {text-align:left;}
             table thead tr th.title-name {text-align:center;}
-            table th, table td {padding: 0px; text-align: center; border-left: 1px solid #ccc; border-right: 1px solid #ccc;}
+            table th, table td {padding: 0px; text-align: center; border: 1px solid #ccc;}
 
             .user-invoice-details th, .user-invoice-details td {padding: 10px;}
             .user-invoice-details thead tr {border: 1px solid #ddd;}
-            .user-invoice-details thead tr th {border-left: none; border-right: none; border-bottom: none !important;}
 
+            .user-invoice-data .spacing {padding: 15px;}
             .user-invoice-data {border: none !important;}
             .user-invoice-data th, .user-invoice-data td {padding: 10px;}
             .user-invoice-data thead tr:first-child {border-top: none;}
@@ -21,26 +21,19 @@
             .user-invoice-data tr td {text-align: left;}
             .user-invoice-data tr td.index {width: 25px;}
             .user-invoice-data tr td.product-size {width: 90px;}
-
-            .user-invoice-cal-total tbody tr td {text-align: left; border: none;}
-            .user-invoice-cal-total tbody tr:first-child {border-top: none;}
-            .user-invoice-cal-total tbody tr {border: 1px solid #ddd;}
-            .user-invoice-cal-total tbody tr td.lable {text-align: left;}
-            .user-invoice-cal-total tbody tr td.total-count {text-align: right;}
-            .user-invoice-cal-total .spacing {padding: 15px;}
-
-            .sm-table-data {width: 250px; float: right;}
-            .sm-table-data tbody tr td {text-align: left;}
-            .sm-table-data tbody tr:last-child {border-bottom: none;}
-            .sm-table-data tbody tr td {border-left: 1px solid #ddd;}
-            .sm-table-data th, .sm-table-data td {padding: 10px;}
-            .total-qty {display: inline-block; margin-bottom: 1.8em;}
         </style>
 
         <table class="user-invoice-details">
             <thead>
+                <?php
+                    if(isset($allorder->is_gst) && $allorder->is_gst == 1){
+                        $title = 'Delivery Challan';
+                    }else{
+                        $title = 'Estimate';
+                    }
+                ?>
                 <tr>
-                    <th class="title-name" colspan="2">Estimate</th>
+                    <th class="title-name" colspan="2">{{ $title }}</th>
                 </tr>
                 <tr>
                     <th>Name: {{(isset($allorder->customer->tally_name) && $allorder->customer->tally_name != "") ? $allorder->customer->tally_name : $allorder->customer->owner_name}}</th>
@@ -61,21 +54,19 @@
                             $is_allincludive = 1;
                         }
                     }
+                    if($is_allincludive == 1) {
                 ?>
-                @if($is_allincludive)
                 <tr>
                     <th>Empty Truck Weight: {{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}</th>
                     <th>Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</th>
                 </tr>
-                @endif
+                    <?php } ?>  
             </thead>
         </table>
 
             <?php
             $cust_id = $allorder->customer_id;
             $order_id = $allorder->order_id;
-            // $state = \App\Customer::where('id',$cust_id)->first()->state;
-            // $local_state = App\States::where('id',$state)->first()->local_state;
             $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
             $state = \App\DeliveryLocation::where('id',isset($loc_id->delivery_location_id)?$loc_id->delivery_location_id:0)->first();
             $local = \App\States::where('id',isset($state->state_id)?$state->state_id:0)->first();
@@ -107,10 +98,14 @@
             <?php
                 $i = 1;
                 $total_price = 0;
-//                $total_qty = 0;
-                $loading_vat_amount = isset($allorder->loading_charge) && isset($allorder->loading_vat_percentage)?($allorder->loading_charge * $allorder->loading_vat_percentage) / 100:0;
-                $freight_vat_amount = isset($allorder->freight) && isset($allorder->freight_vat_percentage)?($allorder->freight * $allorder->freight_vat_percentage) / 100:0;
-                $discount_vat_amount = (!empty($allorder->discount))?($allorder->discount * $allorder->discount_vat_percentage) / 100:0;
+                if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0){
+                    $loading_vat = 18;
+                }else{
+                    $loading_vat = 0;
+                }
+                $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
                 $final_vat_amount = 0; 
                 $final_total_amt = 0;
             ?>
@@ -124,7 +119,6 @@
                         <td>{{ $prod->actual_pieces }}</td>
                         <td>{{ round($prod->actual_quantity) }}</td>
                         <?php
-
                         $productsub = \App\ProductSubCategory::where('id',$prod['product_category_id'])->first();
                         $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
                         $sgst = 0;
@@ -159,7 +153,7 @@
                         @else
                             <td>{{$gst}}</td>
                         @endif
-                        <td><?php echo $rate = (float)$prod->price; ?></td>
+                        <td><?php echo $rate = (float)(isset($prod->price) && $prod->price !=0) ? $prod->price : $prod['order_product_all_details']->product_category['price']; ?></td>
                         <td><?php $total_price = (float)$rate * (float)$prod->actual_quantity; 
                             $final_total_amt += (float)$total_price;
                             ?>
@@ -167,8 +161,6 @@
                     </tr>
                 </tbody>
                 <?php
-                // $total_pr = (float)$sgst + (float)$cgst + (float)$igst + (float)$gst;
-                
                 if((isset($prod->vat_percentage) && $prod->vat_percentage > 0) && empty($allorder['delivery_order']->vat_percentage)){
                     if($local_state == 1){
                         $total_sgst_amount = ((float)$total_price * (float)$sgst) / 100;
@@ -182,26 +174,60 @@
                     $total_gst_amount = ((float)$total_price * (float)$gst) / 100;
                     $total_vat_amount1 = round((float)$total_gst_amount,2);
                 }
-                // $total_vat_amount1 = ($total_price * $total_pr) / 100;
                 $total_vat_amount = $total_vat_amount1;
-                // $total_price += $total_price;
-                // $final_vat_amount += ($total_vat_amount + $loading_vat_amount + $freight_vat_amount) + $discount_vat_amount;
                 $final_vat_amount += ($total_vat_amount);
-
                 ?>
                 @endif
             @endforeach
-        </table>
-        
-        <table class="user-invoice-cal-total">
+        </table>      
+        <table class="user-invoice-data">
             <tbody>
                 <tr>
-                    <td  class="spacing" valign="top">
-                        <div>Total Quantity: <span class="total-qty">{{ round($allorder->delivery_challan_products->sum('actual_quantity'), 2) }}</span></div>
-                        <div>Remarks: <span class="remarks">{{$allorder->remarks}}</span></div>
+                    <td valign="top">
+                        <div style="padding-left:15px;">Total Quantity: <span class="total-qty">{{ round($allorder->delivery_challan_products->sum('actual_quantity'), 2) }}</span></div>
+                        <div class="spacing">Remarks: <span class="remarks">{{$allorder->remarks}}</span></div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="lable">HSN CODE</td>
+                                    <td class="label">Qty</td>
+                                    <td class="label">Amount</td>
+                                    <td class="label">GST</td>
+                                    <td class="label">Total Inc GST</td>
+                                </tr>
+                                <?php
+                                    $gst_percentage=0;
+                                    $total_amount=0;
+                                    $total_qty=0;
+                                    $total_inc_gst=0;
+                                ?>
+                                @foreach($allorder['hsn'] as $hsn)
+                                <tr>
+                                    <td>{{ $hsn['id'] }}</td>
+                                    <td>{{ round($hsn['actual_quantity'], 2) }}</td>
+                                    <td>{{ round($hsn['amount'], 2) }}</td>
+                                    <td>{{ round($hsn['vat_percentage'], 2) }}</td>
+                                    <td>{{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</td>
+                                </tr>
+                                <?php
+                                    $gst_percentage = $hsn['vat_percentage'];
+                                    $total_amount += $hsn['amount'];
+                                    $total_qty += $hsn['actual_quantity'];
+                                    $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
+                                ?>
+                                @endforeach
+                                <tr>
+                                    <td><b>Total</b></td>
+                                    <td><b>{{ round($total_qty, 2) }}</b></td>
+                                    <td><b>{{ round($total_amount, 2) }}</b></td>
+                                    <td><b>{{ round($gst_percentage, 2) }}</b></td>
+                                    <td><b>{{ round($total_inc_gst, 2) }}</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
-                    <td>
-                        <table class="sm-table-data">
+                    <td style="padding:0 !important;">
+                        <table>
                             <tbody>
                                 <tr>
                                     <td class="lable">Total</td>
@@ -215,7 +241,7 @@
                                     $loading_vat = $allorder->loading_vat_percentage;
                                     ?>
                                     {{($loading_charge != "")?round($loading_charge,2):0}}</td>
-                                </tr>
+                                </tr> 
                                 <tr>
                                     <td class="lable">Freight</td>
                                     <td class="total-count">
@@ -230,34 +256,35 @@
                                     <td class="lable">Total</td>
                                     <td class="total-count">
                                     <?php 
-                                    $with_total = (float)$final_total_amt + (float)$loading_charge + (float)$allorder->freight + (!empty($allorder->discount))?(float)$allorder->discount:0; 
+                                    $with_total = (float)$final_total_amt + (float)$loading_charge + (float)$allorder->freight + (float)$allorder->discount; 
                                     ?>
                                     {{ round($with_total, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="lable">Total GST = 
-                                    @if((isset($prod->vat_percentage) && $prod->vat_percentage>0) && empty($allorder['delivery_order']->vat_percentage))
+                                    <td class="lable">
+                                    Total GST
+                                    @if((isset($prod->vat_percentage) && $prod->vat_percentage>0) && empty($allorder->delivery_order->vat_percentage))
                                         @if($local_state == 1)
-                                            SGST + CGST
+                                            = SGST + CGST
                                         @else
-                                            IGST
+                                            = IGST
                                         @endif
                                     @else
-
+                                            
                                     @endif
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        // $vat = $final_vat_amount;
-                                        $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                                        $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>
-                                    {{ round($vat,5) }}</td>
+                                    {{ round($vat,2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Round Off</td>
                                     <td class="total-count">
                                     <?php
-                                        $roundoff = $vat;
+                                        $roundoff = round($vat,2) + round($with_total,2);
+                                        $roundoff = round($roundoff,0) - $roundoff;
                                     ?>
                                     {{ round($roundoff,2) }}</td>
                                 </tr>
@@ -280,7 +307,7 @@
                                             $grand_price = $grand_price + $allorder->discount;
                                         }
                                     ?>
-                                    {{ round($grand_price + $vat, 2) }}</td>
+                                    {{ round($grand_price + $vat, 0) }}</td>
                                 </tr>
                             </tbody>
                         </table>

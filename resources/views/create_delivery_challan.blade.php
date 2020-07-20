@@ -108,13 +108,13 @@
                             <span class="col-md-2">Final Truck Weight(Kg):</span>
                             @if(isset($delivery_data->final_truck_weight))
                             @if($delivery_data->final_truck_weight > 0)                            
-                            <input type="text" name="final_truck_weight" value="{{ $delivery_data->final_truck_weight}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onblur="truck_weight(this)">
+                            <input type="text" name="final_truck_weight" value="{{ $delivery_data->final_truck_weight}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="truck_weight(this);fetch_average_quantity();">
                             <input type="hidden" name="final_truck_weight_edited" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight">
                             @else
-                            <input type="text" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onblur="truck_weight(this)">
+                            <input type="text" name="final_truck_weight" value="{{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:'0'}}" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="truck_weight(this);fetch_average_quantity();">
                             @endif
                             @else
-                            <input type="text" name="final_truck_weight" value="" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onblur="truck_weight(this)">
+                            <input type="text" name="final_truck_weight" value="" id="final_truck_weight" class="form-control" name="final_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="truck_weight(this);fetch_average_quantity();">
                             @endif 
                         </div>
                         <hr>
@@ -137,9 +137,30 @@
                                             <td><span>Amount</span></td>
                                         </tr>
                                         <?php $key = 1; $actualsum =0; $actualtotal =0; $total_average_qnty=0;
+
                                         ?>
                                         @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
+                                            @if(!$truckdetails->isEmpty())<?php 
+
+                                                $truck_weight_id = '';
+                                                //$j = 1;
+                                                foreach($truckdetails as $truck_details){
+                                                    $truck_product_id = $truck_details->product_id;
+                                                    $truck_procudcts = unserialize($truck_product_id);
+                                                    $explodetruck_prodcuts = explode(',',$truck_procudcts); 
+                                                    if(in_array($product->id,$explodetruck_prodcuts)){
+                                                        $truck_weight_id = $truck_details->id;
+                                                        $truck_weight = $truck_details->final_truck_weight;
+                                                        //$j++;
+                                                    }
+                                                }
+                                                // echo '<pre>';
+                                                // print_r($truck_weight_id." _ ".$truck_weight);
+                                                ?>
+                                            @else
+                                                <?php $explodetruck_prodcuts = array(); ?>
+                                            @endif
                                         <?php
                                          $average_quantity = $product->actual_pieces * $product->actual_quantity; 
                                          $total_average_qnty = $total_average_qnty + $average_quantity;
@@ -156,16 +177,17 @@
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
+                                                    <input type="hidden" id="truck_weight_{{$key}}" value="{{$truck_weight_id}}_{{$truck_weight}}">
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group"> 
-                                                    <input id="actual_pieces_{{$key}}" class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity();" onclick="clear_actual_qty();" >
+                                                    <input id="actual_pieces_{{$key}}" class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{$product->actual_pieces}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onchange="fetch_average_quantity();" onclick="clear_actual_qty();" >
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="average_weight_{{$key}}" class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{$product->actual_quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity();" maxlength="10" onclick="clear_actual_qty();">
+                                                    <input id="average_weight_{{$key}}" class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{$product->actual_quantity}}" type="tel" onkeypress=" return numbersOnly(this, event, true, false);" onchange="fetch_average_quantity();" maxlength="10" onclick="clear_actual_qty();">
                                                 </div>
                                             </td>
                                             <td class="col-md-1">

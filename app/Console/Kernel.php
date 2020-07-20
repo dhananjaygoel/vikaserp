@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\CronForUpdateInventory::class,
+        Commands\QuickbookTokenUpdate::class,
     ];
 
     /**
@@ -26,6 +27,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('daily:update_inventory')
                  ->dailyAt('19:00');
+        $schedule->command('quickbooks_token:update')
+                 ->twiceDaily(8,20);
+
     }
 
     /**

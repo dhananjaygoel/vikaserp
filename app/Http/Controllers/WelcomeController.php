@@ -35,7 +35,6 @@ use Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
-use Dropbox\Client;
 use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
 use Dropbox;
@@ -47,6 +46,10 @@ use App\DeliveryChallan;
 use App\PurchaseChallan;
 use App\DeliveryChallanLoadedBy;
 use Twilio\TwiML\MessagingResponse;
+use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\PDF;
+use Response;
 
 class WelcomeController extends Controller {
     /*
@@ -2046,5 +2049,53 @@ class WelcomeController extends Controller {
                 
         echo $count." records updated";
         
+    }
+
+    public function send_whatsapp($send_to,$msg){
+
+        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
+        try{
+            $message = $twilio->messages
+            ->create("whatsapp:+91".$send_to,
+                [
+                    "body" => $msg,
+                    "from" => "whatsapp:+13344012472"
+                ]
+                );
+        }catch(\Exception $e){
+            $whatsapp_error = ':: Whatsapp Error: Invalid Number';
+        }
+    }
+    
+    public function send_sms($send_to,$msg){
+        $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $send_to . "&msgtext=" . $msg . "&smstype=0";
+        
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $curl_scraped_page = curl_exec($ch);
+        curl_close($ch);
+        
+    }
+
+    public function download_dc($uuid){
+
+        $allowed = false;
+        $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
+        if(isset($file_data) && !empty($file_data)){
+            $allowed = true;
+            $file_path = $file_data->file_path;
+        }else{
+            $allowed = false;
+        }
+        if ($allowed) {
+            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
+            $file_name = $file_data->file_name;
+            $headers = [
+                'Content-type' => 'application/pdf'];
+            return Storage::download(getcwd().$file_path, $file_name,$headers);
+            exit(); // downloadable file
+        } else {
+            return view('notfound');
+        }
     }
 }
