@@ -2082,7 +2082,7 @@ class WelcomeController extends Controller {
         // $browser = get_browser(null, true);
         $agent = new Agent();
         $browser = $agent->browser();
-        // dd($browser);
+        dd($agent);
         $allowed = false;
         $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
         if(isset($file_data) && !empty($file_data)){
