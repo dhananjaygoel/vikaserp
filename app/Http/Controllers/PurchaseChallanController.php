@@ -608,7 +608,7 @@ class PurchaseChallanController extends Controller {
                 if ($product_data['unit']->id == 5) {
                     $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
                 }
-                $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
             }
             if (count((array)$customer) > 0) {
                 $str = "Dear Customer,\n\nYour purchase challan has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A') . "\nTotal Quantity: ".round($input_data->sum('quantity'), 2)."\nAmount: ".(isset($purchase_challan->grand_total)?$purchase_challan->grand_total:'N/A')."\nDue By: ".date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))."\n\nVIKAS ASSOCIATES.";   

@@ -562,7 +562,7 @@ class DeliveryOrderController extends Controller {
                     if ($product_data['units'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                    $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
@@ -1424,7 +1424,7 @@ class DeliveryOrderController extends Controller {
                             $prod_quantity = ((float)$product_data['actual_quantity'] * (float)(isset($product_row->weight)?$product_row->weight:'') * ((float)$product_data['length'] / 305));
                             $total_quantity = $total_quantity + $prod_quantity;
                         }
-                        $product_string .= $k++ . ") " . $product_data['name'] . " , " . round((float)$prod_quantity,2) . "KG ";  
+                        $product_string .= $k++ . ") " . $product_data['name'] . ", " . round((float)$prod_quantity,2) . "KG ";  
                     }
                 }
                 if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
@@ -1628,7 +1628,7 @@ class DeliveryOrderController extends Controller {
                             $prod_quantity = ((float)$product_data['quantity'] * (float)(isset($product_row->weight)?$product_row->weight:'') * ((float)$product_data['length'] / 305));
                             $total_quantity = $total_quantity + $prod_quantity;
                         }
-                        $product_string .= $i++ . ") " . $product_row['alias_name'] . " , " . round((float)$prod_quantity,2) . "KG ";  
+                        $product_string .= $i++ . ") " . $product_row['alias_name'] . ", " . round((float)$prod_quantity,2) . "KG ";  
                     }
                 }
             }
@@ -2346,7 +2346,7 @@ class DeliveryOrderController extends Controller {
                     if ($product_data['unit_id'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
