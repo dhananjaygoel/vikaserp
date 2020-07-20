@@ -3870,10 +3870,12 @@ $("body").on('click',"button", function() {
                 url: url + '/save_truck_weight',
                 data: {
                     truck_weight:truck_weight,
+                    truck_no:truck_sequence,
                     delivery_id:delivery_id,
                     delboy_id:delboy_id,
                     labour:labour,
                     truck_weight_id:truck_weight_id,
+                    empty_truck_weight:empty_truck_weight,
                     product_ids:product_ids
                 },
                 success: function (data) {

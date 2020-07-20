@@ -888,11 +888,11 @@ class DeliveryChallanController extends Controller {
                         if ($product_data['unit_id'] == 5) {
                             $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                         }
-                        $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                        $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                     }
                 }
                 if (count((array)$cust_count) > 0) {
-                    $str = "Dear Customer,\n\nYour delivery challan has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nLoading charge: ".$loading_charge."\nDiscount: ".$discount."\nFreight: ".$freight."\n\nVIKAS ASSOCIATES."; 
+                    $str = "Dear Customer,\n\nYour delivery challan has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nLoading charge: ".$loading_charge."\nDiscount: ".$discount."\nFreight: ".$freight."\n\nVIKAS ASSOCIATES."; 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -909,7 +909,7 @@ class DeliveryChallanController extends Controller {
                     }
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nDelivery challan has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nLoading charge: ".$loading_charge."\nDiscount: ".$discount."\nFreight: ".$freight."\n\nVIKAS ASSOCIATES."; 
+                    $str = "Dear Manager,\n\nDelivery challan has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nLoading charge: ".$loading_charge."\nDiscount: ".$discount."\nFreight: ".$freight."\n\nVIKAS ASSOCIATES."; 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
@@ -1808,11 +1808,11 @@ class DeliveryChallanController extends Controller {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                         $tot_quantity = $tot_quantity + $total_quantity;
                     }
-                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1830,14 +1830,14 @@ class DeliveryChallanController extends Controller {
                     'status' => 0
                 ));
                 $link = URL::to("/download_dc/".$uuid);
-                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nDownload your Delivery Challan from  following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nDownload your Delivery Challan from following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
                 if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
                     $send_msg = new WelcomeController();
                     $send_msg->send_whatsapp($phone_number,$str);                    
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nDelivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Manager,\n\nDelivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".$allorder->grand_price."\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
