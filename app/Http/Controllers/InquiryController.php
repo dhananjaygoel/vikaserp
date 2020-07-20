@@ -310,11 +310,11 @@ class InquiryController extends Controller {
                     if ($product_data['units'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $key . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                    $product_string .= $key . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nThank you for placing the inquiry.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$inquiry_id."\nInquiry Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nThank you for placing the inquiry.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$inquiry_id."\nInquiry Date: ".date("j F, Y")."\nProducts:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -337,7 +337,7 @@ class InquiryController extends Controller {
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nNew inquiry has been created.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$inquiry_id. "\nInquiry Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nNew inquiry has been created.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$inquiry_id. "\nInquiry Date: ".date("j F, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -439,7 +439,7 @@ class InquiryController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             if (count((array)$customer) > 0) {
                 $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j M, Y") . "\nPrices for your inquiry are as follows\n";
+                $str = "Dear " . $customer->owner_name . "\nDT " . date("j F, Y") . "\nPrices for your inquiry are as follows\n";
                 foreach ($input_data as $product_data) {
                     $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
                     $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
@@ -722,10 +722,10 @@ class InquiryController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $key . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";                            
+                            $product_string .= $key . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";                            
                         }
                     }
-                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -745,7 +745,7 @@ class InquiryController extends Controller {
                     }
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear Manager,\n\nInquiry has been updated.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$id. "\nInquiry Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nInquiry has been updated.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$id. "\nInquiry Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\n\nVIKAS ASSOCIATES.";
                         
                         if (App::environment('local')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -790,10 +790,10 @@ class InquiryController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                            $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . ", ";
                         }
                     }
-                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
 
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -811,7 +811,7 @@ class InquiryController extends Controller {
                     }
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear Manager,\n\nInquiry has been updated.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$id. "\nInquiry Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nInquiry has been updated.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$id. "\nInquiry Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\n\nVIKAS ASSOCIATES.";
                         
                         if (App::environment('local')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -902,10 +902,10 @@ class InquiryController extends Controller {
                             if ($product_data['unit_id'] == 5) {
                                 $total_quantity = ((float)$product_data->quantity * (float)($product_data['inquiry_product_details']->weight) * ((float)$product_data->length / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['inquiry_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data->price . ", ";
+                            $product_string .= $i++ . ") " . $product_data['inquiry_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data->price . " ";
                         }
                     }
-                    $str = "Dear Manager,\n\nInquiry has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$inq->id. "\nInquiry Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nInquiry has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$inq->id. "\nInquiry Date: ".date("j F, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
                     
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1633,10 +1633,10 @@ class InquiryController extends Controller {
                         if ($product_data['units'] == 5) {
                             $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                         }
-                        $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                        $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                     }
                 }
-                $str = "Dear Customer,\n\nThank you for confirming the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nThank you for confirming the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1653,7 +1653,7 @@ class InquiryController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nInquiry has been converted into order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nInquiry has been converted into order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');

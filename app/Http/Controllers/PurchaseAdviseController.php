@@ -443,11 +443,11 @@ class PurchaseAdviseController extends Controller {
                     if ($product_data['unit_id'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour purchase advice has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
+                $str = "Dear Customer,\n\nYour purchase advice has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -462,7 +462,7 @@ class PurchaseAdviseController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nPurchase advice has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
+                $str = "Dear Manager,\n\nPurchase advice has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -796,11 +796,11 @@ class PurchaseAdviseController extends Controller {
                     if ($product_data['unit_id'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour purchase advice has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
+                $str = "Dear Customer,\n\nYour purchase advice has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -816,7 +816,7 @@ class PurchaseAdviseController extends Controller {
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nPurchase advice has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
+                $str = "Dear Manager,\n\nPurchase advice has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

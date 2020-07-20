@@ -919,10 +919,10 @@ class OrderController extends Controller {
                         if ($product_data['units'] == 5) {
                             $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                         }
-                        $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                        $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                     }
                 }
-                $str = "Dear Customer,\n\nThank you for placing the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nThank you for placing the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -940,7 +940,7 @@ class OrderController extends Controller {
                 }
                 
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1328,10 +1328,10 @@ class OrderController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                            $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                         }
                     }
-                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                    
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1349,7 +1349,7 @@ class OrderController extends Controller {
                     }
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
 
                         if (App::environment('local')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1391,10 +1391,10 @@ class OrderController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                            $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                         }
                     }
-                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                   
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1412,7 +1412,7 @@ class OrderController extends Controller {
                     }
                     
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
 
                         if (App::environment('local')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1552,10 +1552,10 @@ class OrderController extends Controller {
                                 if ($product_data['unit_id'] == 5) {
                                     $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['order_product_details']->weight * ((float)$product_data['length'] / 305));
                                 }
-                                $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                                $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                             }
                         }
-                        $str = "Dear Manager,\n\nOrder has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$id. "\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nOrder has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$id. "\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
                 
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1709,10 +1709,10 @@ class OrderController extends Controller {
                             if ($product_data['unit_id'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['order_product_details']->weight * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                            $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                         }
                     }
-                    $str = "Dear Manager,\n\nOrder has been canceled.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$order_id. "\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nOrder has been canceled.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$order_id. "\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -2069,10 +2069,10 @@ class OrderController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                            $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                         }
                     }
-                    $str = "Dear Customer,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
     
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -2090,7 +2090,7 @@ class OrderController extends Controller {
                     }
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {

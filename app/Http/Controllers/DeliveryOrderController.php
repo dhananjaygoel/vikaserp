@@ -562,11 +562,11 @@ class DeliveryOrderController extends Controller {
                     if ($product_data['units'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                    $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour delivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nYour delivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -583,7 +583,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nDelivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nDelivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1424,7 +1424,7 @@ class DeliveryOrderController extends Controller {
                             $prod_quantity = ((float)$product_data['actual_quantity'] * (float)(isset($product_row->weight)?$product_row->weight:'') * ((float)$product_data['length'] / 305));
                             $total_quantity = $total_quantity + $prod_quantity;
                         }
-                        $product_string .= $k++ . ") " . $product_data['name'] . " - " . round((float)$prod_quantity,2) . "KG, ";  
+                        $product_string .= $k++ . ") " . $product_data['name'] . " , " . round((float)$prod_quantity,2) . "KG ";  
                     }
                 }
                 if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
@@ -1446,7 +1446,7 @@ class DeliveryOrderController extends Controller {
                         } else {
                             $mobile_number = $user->mobile_number;
                         }
-                        $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_name).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nLoaded Date: ".date("j M, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: ".$do_det->final_truck_weight."KG\nTruck Weight ".$i.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_name).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: ".$do_det->final_truck_weight."KG\nTruck Weight ".$i.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
                         $msg = urlencode($str);
                         if (SEND_SMS === true) {
                             $send_msg = new WelcomeController();
@@ -1463,7 +1463,7 @@ class DeliveryOrderController extends Controller {
                             } else {
                                 $mobile_number = $del_user->mobile_number;
                             }
-                            $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_name).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nLoaded Date: ".date("j M, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: ".$do_det->final_truck_weight."KG\nTruck Weight ".$i.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
+                            $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_name).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: ".$do_det->final_truck_weight."KG\nTruck Weight ".$i.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
                             $msg = urlencode($str);
                             if (SEND_SMS === true) {
                                 $send_msg = new WelcomeController();
@@ -1628,7 +1628,7 @@ class DeliveryOrderController extends Controller {
                             $prod_quantity = ((float)$product_data['quantity'] * (float)(isset($product_row->weight)?$product_row->weight:'') * ((float)$product_data['length'] / 305));
                             $total_quantity = $total_quantity + $prod_quantity;
                         }
-                        $product_string .= $i++ . ") " . $product_row['alias_name'] . " - " . round((float)$prod_quantity,2) . "KG, ";  
+                        $product_string .= $i++ . ") " . $product_row['alias_name'] . " , " . round((float)$prod_quantity,2) . "KG ";  
                     }
                 }
             }
@@ -1798,7 +1798,7 @@ class DeliveryOrderController extends Controller {
                             } else {
                                 $mobile_number = $user->mobile_number;
                             }
-                            $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j M, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N\A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
+                            $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N\A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
                             $msg = urlencode($str);
                             if (SEND_SMS === true) {
                                 $send_msg = new WelcomeController();
@@ -2346,11 +2346,11 @@ class DeliveryOrderController extends Controller {
                     if ($product_data['unit_id'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
+                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour delivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N\A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N\A"). "\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Customer,\n\nYour delivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N\A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N\A"). "\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -2367,7 +2367,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nDelivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N\A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N\A"). "\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Manager,\n\nDelivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N\A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N\A"). "\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
