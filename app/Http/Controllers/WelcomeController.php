@@ -2078,7 +2078,8 @@ class WelcomeController extends Controller {
     }
 
     public function download_dc($uuid){
-
+        $browser = get_browser(null, true);
+        dd($browser);
         $allowed = false;
         $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
         if(isset($file_data) && !empty($file_data)){
