@@ -101,7 +101,7 @@
                     <td><?php
                             if($product->vat_percentage > 0 && empty($delivery_data->vat_percentage)){
                             $state = \App\DeliveryLocation::where('id',$delivery_data->delivery_location_id)->first();
-                            $local_state = \App\States::where('id',$state)->first()->local_state;
+                            $local_state = \App\States::where('id',$state)->first();
                             $productsub = \App\ProductSubCategory::where('id',$product['product_category_id'])->first();
                             $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
                             $hsn_code = $product_cat->hsn_code;
