@@ -498,6 +498,7 @@ public function update_cust_all_inc(){
             ];
             $inclusivecustomerid ="";
             $gstcustomerid = "";
+            $this->refresh_token_Wihtout_GST();
             $dataService = $this->getTokenWihtoutGST();
             // $newCustomerObj = Vendor::create($Qdata);
             $newCustomerObj = \QuickBooksOnline\API\Facades\Customer::create($Qdata);
@@ -511,6 +512,7 @@ public function update_cust_all_inc(){
             else{
                 $inclusivecustomerid =  $newcus->Id;
             }
+            $this->refresh_token();
             $nextdataservice = $this->getToken();
             $newcustoinclusive = $nextdataservice->add($newCustomerObj);
             $error1 = $nextdataservice->getLastError();

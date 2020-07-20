@@ -315,121 +315,71 @@ class PurchaseOrderController extends Controller {
          * SEND SMS TO CUSTOMER FOR NEW PURCHASE ORDER
          * -------------------------------------------
          */
-
-        /* check for vat/gst items */
-        if (isset($input_data['vat_percentage']) && !empty($input_data['vat_percentage'])) {
-            $sms_flag = 1;
-        }
-        /**/
-
-
         $input_data = Input::all();
+        $total_quantity = 0;
+        $product_string = '';
+        $q = 1;
+        $send_sms = isset($input_data['send_msg'])?$input_data['send_msg']:"";
+        $send_whatsapp = isset($input_data['send_whatsapp'])?$input_data['send_whatsapp']:"";
         if ($sms_flag == 1) {
-//        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer = Customer::with('manager')->find($customer_id);
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
-            if ($cust_count > 0) {
-                $total_quantity = '';
-                $product_string = '';
-                $str = "Dear " . $customer->owner_name . "\nOn Dated " . date("j M, Y") . "\nYour purchase order #".$purchase_order_id." has been logged for following products:\n";
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
-                        $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+            $send_msg = new WelcomeController();
+            foreach ($input_data['product'] as $product_data) {
+                if ($product_data['name'] != "") {
+                    $product = ProductSubCategory::find($product_data['id']);
+                    if ($product_data['units'] == 1) {
+                        $total_quantity = (float)$product_data['quantity'];
                     }
+                    if ($product_data['units'] == 2) {
+                        $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                    }
+                    if ($product_data['units'] == 3) {
+                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                    }
+                    if ($product_data['units'] == 4) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                    }
+                    if ($product_data['units'] == 5) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                    }
+                    $product_string .= $q++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                 }
-
-                $str .= " Material will be dispatched by " . date("j M, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
+            }
+            if ($cust_count > 0) {
+                $str = "Dear Customer,\n\nNew purchase order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($expected_delivery_date)) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
-
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                    $send_msg->send_sms($phone_number,$msg);
                 }
-                // whatsapp code starts here
-                if(SEND_SMS === true && isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                    $message = $twilio->messages
-                    ->create("whatsapp:+91".$phone_number,
-                        [
-                            "body" => 'Dear '. strtoupper($customer->owner_name) .'
-                            On Dated '. date("j M, Y") .'
-                            Your purchase order #'.$purchase_order_id.' has been logged for following products:
-                            '.$product_string.'
-                            Material will be dispatched by '. date("j M, Y", strtotime($expected_delivery_date)) .'.
-                            VIKAS ASSOCIATES.',
-                            "from" => "whatsapp:+13344012472"
-                        ]
-                    );
-                    
-                    // print($message->sid);
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                    $send_msg->send_whatsapp($phone_number,$str);                    
                 }
-                // whatsapp testing code endse here
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $total_quantity = '';
-                $product_string = '';
-                $str = "Dear " . strtoupper($customer['manager']->first_name) . ",\n" . Auth::user()->first_name . "  has logged purchase order #".$purchase_order_id." for " . $customer->owner_name . " is as following:\n";
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
-                        $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
-                    }
-                }
-
-                $str .= " Material will be dispatched by " . date("j F, Y", strtotime($expected_delivery_date)) . ".\nVIKAS ASSOCIATES";
-                if (App::environment('development')) {
+                $str = "Dear Manager,\n\nNew purchase order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($expected_delivery_date)) . "\n\nVIKAS ASSOCIATES.";
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                    $send_msg->send_sms($phone_number,$msg);
                 }
-                // whatsapp testing code starts here
-                if(SEND_SMS === true && isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                    try{
-                        $message = $twilio->messages
-                        ->create("whatsapp:+91".$phone_number,
-                            [
-                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
-                                '. Auth::user()->first_name .' has logged purchase order #'.$purchase_order_id.' for '. $customer->owner_name .' is as following:
-                                '.$product_string.'
-                                Material will be dispatched by '. date("j M, Y", strtotime($expected_delivery_date)) .'.
-                                VIKAS ASSOCIATES.',
-                                "from" => "whatsapp:+13344012472"
-                            ]
-                            );
-                    }catch(\Exception $e){
-                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                    }
-                    
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                    $send_msg->send_whatsapp($phone_number,$str);                    
                 }
-                // whatsapp testing code endse here 
             }
         }
-
-
-        
+ 
         $purchase_order_products = array();
-        // dd($input_data);
 
         foreach ($input_data['product'] as $product_data) {
             // dd($product_data['length']);
@@ -660,99 +610,66 @@ class PurchaseOrderController extends Controller {
         }
         /**/
         $input_data = Input::all();
+        $total_quantity = 0;
+        $product_string = '';
+        $send_sms = isset($input_data['send_msg'])?$input_data['send_msg']:"";
+        $send_whatsapp = isset($input_data['send_whatsapp'])?$input_data['send_whatsapp']:"";
+        $q = 1;
 //        if (isset($input['sendsms']) && $input['sendsms'] == "true") {
         if ($sms_flag == 1) {
             $customer = Customer::with('manager')->find($customer_id);
             $cust_count = Customer::with('manager')->where('id',$customer_id)->count();
-            if ($cust_count > 0) {
-                $total_quantity = '';
-                $product_string = '';
-                $str = "Dear " . strtoupper($customer->owner_name) . "\nOn Dated " . date("j M, Y") . "\nYour purchase order #".$id." has been edited for following products:\n";
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
-                        $product_string.= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+            $send_msg = new WelcomeController();
+            foreach ($input_data['product'] as $product_data) {
+                if ($product_data['name'] != "") {
+                    $product = ProductSubCategory::find($product_data['id']);
+                    if ($product_data['units'] == 1) {
+                        $total_quantity = (float)$product_data['quantity'];
                     }
+                    if ($product_data['units'] == 2) {
+                        $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                    }
+                    if ($product_data['units'] == 3) {
+                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                    }
+                    if ($product_data['units'] == 4) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                    }
+                    if ($product_data['units'] == 5) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                    }
+                    $product_string .= $q++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                 }
-                $str .= " Material will be dispatched by " . date("j M, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES";
-
+            }
+            if ($cust_count > 0) {
+                $str = "Dear Customer,\n\nYour purchase order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ".  date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                    $send_msg->send_sms($phone_number,$msg);
                 }
-                // whatsapp code starts here
-                if(SEND_SMS === true && isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                    $message = $twilio->messages
-                    ->create("whatsapp:+91".$phone_number,
-                        [
-                            "body" => 'Dear '. strtoupper($customer->owner_name) .'
-                            On Dated '. date("j M, Y") .'
-                            Your purchase order #'.$id.' has been edited for following products:
-                            '.$product_string.'
-                            Material will be dispatched by '. date("j M, Y", strtotime($datetime->format('Y-m-d'))) .'.
-                            VIKAS ASSOCIATES.',
-                            "from" => "whatsapp:+13344012472"
-                        ]
-                    );
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                    $send_msg->send_whatsapp($phone_number,$str);                    
                 }
-                // whatsapp testing code endse here
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $total_quantity = '';
-                $product_string = '';
-                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . "  has edited purchase order #".$id." for " . $customer->owner_name . " \n";
-                foreach ($input_data['product'] as $product_data) {
-                    if ($product_data['name'] != "") {
-                        $product_string .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
-                        $str .= $product_data['name'] . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
-                    }
-                }
-                $str .= " Material will be dispatched by " . date("j F, Y", strtotime($datetime->format('Y-m-d'))) . ".\nVIKAS ASSOCIATES.";
-
+                $str = "Dear Manager,\n\nA purchase order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true) {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                    $send_msg->send_sms($phone_number,$msg);
                 }
-                if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                    $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                    try{
-                        $message = $twilio->messages
-                        ->create("whatsapp:+91".$phone_number,
-                            [
-                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
-                                '. Auth::user()->first_name .' has edited purchase order #'.$id.' for '.$customer->owner_name.'
-                                '.$product_string.'
-                                Material will be dispatched by '. date("j F, Y", strtotime($datetime->format('Y-m-d'))) .'.
-                                VIKAS ASSOCIATES.',
-                                "from" => "whatsapp:+13344012472"
-                            ]
-                            );
-                    }catch(\Exception $e){
-                        $whatsapp_error = ':: Whatsapp Error: Invalid Number';
-                    }
-                    
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                    $send_msg->send_whatsapp($phone_number,$str);                    
                 }
             }
         }
@@ -951,92 +868,66 @@ class PurchaseOrderController extends Controller {
          */
         $inputData = Input::get('formData');
         parse_str($inputData, $input);
-        /* check for vat/gst items */
-        if (isset($purchase_order['vat_percentage']) && !empty($purchase_order['vat_percentage']) && $purchase_order['vat_percentage'] != "") {
-            $sms_flag = 1;
-        }
-        /**/
+        $total_quantity = 0;
+        $product_string = '';
+        $i = 1;
+        $send_sms = isset($input_data['send_msg'])?$input_data['send_msg']:"";
+        $send_whatsapp = isset($input_data['send_whatsapp'])?$input_data['send_whatsapp']:"";
         if ($sms_flag == 1) {
-            // if (isset($input['sendsms']) && $input['sendsms'] == "true") {
-                $customer = Customer::with('manager')->find($purchase_order['customer']->id);
-                $cust_count = Customer::with('manager')->where('id',$purchase_order['customer']->id)->count();
-                if ($cust_count > 0) {
-                    $total_quantity = '';
-                    $product_string = '';
-                    $str = "Dear " . strtoupper($customer->owner_name) . "\nYour purchase order #".$purchase_order_id." has been canceled for following products:\n";
-                    foreach ($purchase_order['purchase_products'] as $product_data) {
-                        $product_string .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", ";
-                        $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
+            $customer = Customer::with('manager')->find($purchase_order['customer']->id);
+            $cust_count = Customer::with('manager')->where('id',$purchase_order['customer']->id)->count();
+            $send_msg = new WelcomeController();
+            foreach ($purchase_order['purchase_products'] as $product_data) {
+                if ($product_data['purchase_product_details']->alias_name != "") {
+                    if ($product_data['unit_id'] == 1) {
+                        $total_quantity = (float)$product_data['quantity'];
                     }
-                    $str .= ".\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer->phone_number1;
+                    if ($product_data['unit_id'] == 2) {
+                        $total_quantity = (float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight;
                     }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
+                    if ($product_data['unit_id'] == 3) {
+                        $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
                     }
-                    // whatsapp code starts here
-                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                        $message = $twilio->messages
-                        ->create("whatsapp:+91".$phone_number,
-                            [
-                                "body" => 'Dear '. strtoupper($customer->owner_name) .'
-                                Your purchase order #'.$purchase_order_id.' has been canceled for following products:
-                                '. $product_string.'
-                                VIKAS ASSOCIATES.',
-                                "from" => "whatsapp:+13344012472"
-                            ]
-                        );
-                        
-                        // print($message->sid);
+                    if ($product_data['unit_id'] == 4) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
                     }
-                    // whatsapp testing code endse here
+                    if ($product_data['unit_id'] == 5) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
+                    }
+                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                 }
-                if (count((array)$customer['manager']) > 0) {
-                    $total_quantity = '';
-                    $str = "Dear " . strtoupper($customer['manager']->first_name) . "\n". Auth::user()->first_name ." has canceled the purchase order #".$purchase_order_id." for " . $customer->owner_name .", ".round($total_quantity,2). " \n";
-                    foreach ($purchase_order['purchase_products'] as $product_data) {
-                        $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
-                        // $str .= $product_data['purchase_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ", \n";
-                    }
-                    $str .= ".\nKindly check and contact.\nVIKAS ASSOCIATES";
-                    if (App::environment('development')) {
-                        $phone_number = Config::get('smsdata.send_sms_to');
-                    } else {
-                        $phone_number = $customer['manager']->mobile_number;
-                    }
-                    $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
-                    }
-                    if(isset($input_data['send_whatsapp']) && $input_data['send_whatsapp'] == "yes"){
-                        $twilio = new Client(TWILIO_SID, TWILIO_TOKEN);
-                        $message = $twilio->messages
-                        ->create("whatsapp:+91".$phone_number,
-                            [
-                                "body" => 'Dear '. strtoupper($customer['manager']->first_name) .',
-                                '.Auth::user()->first_name .' has canceled the purchase order #'.$purchase_order_id.' for ' . $customer->owner_name.', '.round($total_quantity,2).'
-                                Kindly check and contact.
-                                VIKAS ASSOCIATES',
-                                "from" => "whatsapp:+13344012472"
-                            ]
-                        );
-                    }
+            }
+            if ($cust_count > 0) {
+                $str = "Dear Customer,\n\nYour purchase order #".$purchase_order_id." has been closed. Thank you!\n\nVIKAS ASSOCIATES.";
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer->phone_number1;
                 }
-
-            // }
+                $msg = urlencode($str);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                    $send_msg->send_sms($phone_number,$msg);
+                }
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                    $send_msg->send_whatsapp($phone_number,$str);                    
+                }
+            }
+            if (count((array)$customer['manager']) > 0) {
+                $str = "Dear Manager,\n\nA purchase order has been closed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                
+                if (App::environment('development')) {
+                    $phone_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $phone_number = $customer['manager']->mobile_number;
+                }
+                $msg = urlencode($str);
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                    $send_msg->send_sms($phone_number,$msg);
+                }
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                    $send_msg->send_whatsapp($phone_number,$str);                    
+                }
+            }
         }
 
         /*

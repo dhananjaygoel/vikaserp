@@ -188,7 +188,7 @@ class OrderController extends Controller {
         $delivery_data = DeliveryOrder::where('id',$request->delivery_id)->first();
 
         $del_supervisor = $request->del_supervisor;
-
+        $str = '';
         $roleid = Auth::user()->role_id;
         if($roleid == 0 || $roleid == 2){
             if(!empty($delivery_data->del_supervisor) || ($delivery_data->del_supervisor != $del_supervisor)){
@@ -203,39 +203,56 @@ class OrderController extends Controller {
                     } else {
                         $mobile_number = $user->mobile_number;
                     }
-                    // echo $mobile_number;
-                    $str = "Order #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
+                    $str = "Dear ".ucwords($user->first_name).",\n\nOrder #".$request->delivery_id." has been assigned to you for load truck.\n\nVIKAS ASSOCIATES.";
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_sms($mobile_number,$msg);
+                        $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
-
                 $cust = User::where('id',Auth::user()->id)->first();
                 $supervisor = User::where('id',$del_supervisor)->first();
-                
                 if(isset($cust) && isset($supervisor)){
                     $staff_fname = isset($cust->first_name)?$cust->first_name:'';
                     $staff_lname = isset($cust->last_name)?$cust->last_name:'';
                     $supervisor_fname = isset($supervisor->first_name)?$supervisor->first_name:'';
                     $supervisor_lname = isset($supervisor->last_name)?$supervisor->last_name:'';
                 }
-              /* Add new Notifications */
-              $notification = new SendNotification();
-              $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
-              $notification->order_id = $request->delivery_id;
-              $notification->order_type = 'supervisor_assigned';
-              $notification->msg = $msg;
-              $notification->assigned_by = Auth::user()->id;
-              $notification->assigned_to = $request->del_supervisor;
-              $notification->user_read_status = '0';
-              $notification->admin_read_status = '0';
-              $notification->save();
-                /* Notification has been stored */
+                /* Add new Notifications */
+                $notification = new SendNotification();
+                $msg = $staff_fname.' '.$staff_lname.' assigned delivery order #'.$request->delivery_id.' to '.$supervisor_fname.' '.$supervisor_lname;
+                $notification->order_id = $request->delivery_id;
+                $notification->order_type = 'supervisor_assigned';
+                $notification->msg = $msg;
+                $notification->assigned_by = Auth::user()->id;
+                $notification->assigned_to = $request->del_supervisor;
+                $notification->user_read_status = '0';
+                $notification->admin_read_status = '0';
+                $notification->save();
+                    /* Notification has been stored */
+                
+                /*
+                |------------------------------------------------
+                | SEND SMS AND WHATSAPP MSG TO THE SUPERVISOR
+                |------------------------------------------------
+                */
+                $cust_count = User::where('id',Auth::user()->id)->count();
+                if ($cust_count > 0) {
+                    $str = "Dear ".isset($cust->first_name)?$cust->first_name:''.",\n\nOrder #".$request->delivery_id." has been assigned to you for load truck.\n\nVIKAS ASSOCIATES.";
+                    if (App::environment('local')) {
+                        $phone_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $phone_number = $cust->mobile_number;
+                    }
+
+                    $msg = urlencode($str);
+                    if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_sms($phone_number,$msg);
+                    }
+                }
+
 
               echo "success";
           } else{
@@ -291,20 +308,16 @@ class OrderController extends Controller {
                     } else {
                         $mobile_number = $user->mobile_number;
                     }
-                    // echo $mobile_number;
-                    $str = "Order #".$delivery_data->serial_no." has been assigned to ".$user->first_name." ".$user->last_name.".\nVIKAS ASSOCIATES";
+                    $str = "Dear ".ucwords($user->first_name).",\n\nOrder #".$request->delivery_id." has been assigned to you for load truck.\n\nVIKAS ASSOCIATES.";
                     $msg = urlencode($str);
-                    $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $mobile_number . "&msgtext=" . $msg . "&smstype=0";
                     if (SEND_SMS === true) {
-                        $ch = curl_init($url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $curl_scraped_page = curl_exec($ch);
-                        curl_close($ch);
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_sms($mobile_number,$msg);
+                        $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
                 $cust = User::where('id',Auth::user()->id)->first();
                 $supervisor = User::where('id',$del_boy)->first();
-                // dd($supervisor);
                 if(isset($cust) && isset($supervisor)){
                     $staff_fname = isset($cust->first_name)?$cust->first_name:'';
                     $staff_lname = isset($cust->last_name)?$cust->last_name:'';
@@ -326,8 +339,6 @@ class OrderController extends Controller {
 
                 $delivery_boydata = LoadDelboy::where('delivery_id',$request->delivery_id)
                                  ->where('del_boy',$request->del_boy)
-                                //  ->where('del_supervisor',Auth::id())
-                                //  ->where('assigned_status',1)
                                  ->first();
 
                 if(is_null($delivery_boydata)){
@@ -911,7 +922,7 @@ class OrderController extends Controller {
                         $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                     }
                 }
-                $str = "Dear Customer,\n\nThank you for placing the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nThank you for placing the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -929,7 +940,7 @@ class OrderController extends Controller {
                 }
                 
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1320,7 +1331,7 @@ class OrderController extends Controller {
                             $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                         }
                     }
-                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                    
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1338,7 +1349,7 @@ class OrderController extends Controller {
                     }
 
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
 
                         if (App::environment('local')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1383,7 +1394,7 @@ class OrderController extends Controller {
                             $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                         }
                     }
-                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nYour order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nOrder No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                   
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1401,7 +1412,7 @@ class OrderController extends Controller {
                     }
                     
                     if (count((array)$customer['manager']) > 0) {
-                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nOrder Date: ".date("j M Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nOrder has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$id."\nOrder Date: ".date("j M, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
 
                         if (App::environment('local')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1544,7 +1555,7 @@ class OrderController extends Controller {
                                 $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                             }
                         }
-                        $str = "Dear Manager,\n\nOrder has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$id. "\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                        $str = "Dear Manager,\n\nOrder has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$id. "\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
                 
                         if (App::environment('development')) {
                             $phone_number = Config::get('smsdata.send_sms_to');
@@ -1701,7 +1712,7 @@ class OrderController extends Controller {
                             $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                         }
                     }
-                    $str = "Dear Manager,\n\nOrder has been canceled.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$order_id. "\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nOrder has been canceled.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nOrder No: #" .$order_id. "\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
 
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -2061,7 +2072,7 @@ class OrderController extends Controller {
                             $product_string .= $i++ . ") " . $product_data['name'] . " - " . round((float)$total_quantity,2) . "KG - ₹". $product_data['price'] . ", ";
                         }
                     }
-                    $str = "Dear Customer,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Customer,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
     
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -2079,7 +2090,7 @@ class OrderController extends Controller {
                     }
                 }
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j M Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager,\n\nDelivery order has been created for your order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_order_id."\nOrder Date: ".date("j M, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
                     if (App::environment('development')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
                     } else {
