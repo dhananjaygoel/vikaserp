@@ -178,6 +178,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
 
     ],
 
@@ -240,6 +241,7 @@ return [
         'WhatsapiTool' => Xaamin\Whatsapi\Facades\Laravel\Registration::class,
         'Sentry' => Sentry\Laravel\ServiceProvider::class,
         'Input' => Request::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];
