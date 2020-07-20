@@ -549,7 +549,7 @@ class PurchaseChallanController extends Controller {
 
         //$current_date = date("m/d");
         $sms_flag = 1;
-dd(date("F Y"));
+
        /* $pr_c = PurchaseChallan::where('id','=',$id)->with('purchase_order_single')->first();
         $vat_status = $pr_c->purchase_order_single->vat_percentage;
         if($vat_status == "" OR $vat_status == null){
