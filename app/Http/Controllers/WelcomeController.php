@@ -51,6 +51,7 @@ use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\PDF;
 use Response;
 use Jenssegers\Agent\Agent;
+use App\Jobs\ProcessPDFDownload;
 
 class WelcomeController extends Controller {
     /*
@@ -2080,9 +2081,10 @@ class WelcomeController extends Controller {
 
     public function download_dc($uuid){
         // $browser = get_browser(null, true);
-        $agent = new Agent();
-        $browser = $agent->browser();
-        dd($agent);
+        // ProcessPDFDownload::dispatch($uuid)
+        //         ->delay(now()->addMinutes(2));
+        // $agent = new Agent();
+        // $browser = $agent->browser();
         $allowed = false;
         $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
         if(isset($file_data) && !empty($file_data)){
@@ -2092,7 +2094,9 @@ class WelcomeController extends Controller {
             $allowed = false;
         }
         if ($allowed) {
-            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
+            ProcessPDFDownload::dispatch($uuid)
+                ->delay(now()->addMinutes(2));
+            // DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
             $file_name = $file_data->file_name;
             $headers = [
                 'Content-type' => 'application/force-download'];
