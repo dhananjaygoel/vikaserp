@@ -308,6 +308,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('save_empty_truck', 'DeliveryOrderController@save_empty_truck');
     Route::get('save_final_truck', 'DeliveryOrderController@save_final_truck');
     Route::get('save_truck_weight', 'DeliveryOrderController@save_truck_weight');
+    Route::get('send_save_truck_msgs', 'DeliveryOrderController@send_save_truck_msg');
     Route::post('loaded_assign', 'OrderController@loaded_assign');
     Route::get('load_notification', 'OrderController@load_notification');
     Route::get('read_notification', 'OrderController@read_notification');

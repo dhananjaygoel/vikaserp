@@ -910,7 +910,7 @@ $('#discount_amount').on('blur', function () {
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
-                    $('#product_price_' + rowId).val(arr1[0]['product_price'].toFixed(0));
+                    $('#product_price_' + rowId).val(arr1[0]['product_price'].toFixed(2));
                 },
             });
         }
@@ -941,7 +941,7 @@ $('#discount_type,#discount_unit').on('change', function () {
                 success: function (data) {
                     var main_array = JSON.parse(data);
                     var arr1 = main_array['data_array'];
-                    $('#product_price_' + rowId).val(arr1[0]['product_price'].toFixed(0));
+                    $('#product_price_' + rowId).val(arr1[0]['product_price'].toFixed(2));
                 },
             });
         }

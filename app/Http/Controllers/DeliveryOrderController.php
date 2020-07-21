@@ -1783,30 +1783,30 @@ class DeliveryOrderController extends Controller {
                         $notification->admin_read_status = '0';
                         $notification->save();
                     /* Notification has been stored */
-                    if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
-                        if(Auth::user()->role_id == 8){
-                            $user_role = 'supervisor';
-                        }elseif(Auth::user()->role_id == 9){
-                            $user_role = 'boy';
-                        }
-                        $user = User::find($assigned_by);
-                        $do = DeliveryOrder::find($delivery_id);
-                        $customer = Customer::with('manager')->find($do->customer_id);
-                        if($user){
-                            if (App::environment('local')) {
-                                $mobile_number = Config::get('smsdata.send_sms_to');
-                            } else {
-                                $mobile_number = $user->mobile_number;
-                            }
-                            $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N\A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
-                            $msg = urlencode($str);
-                            if (SEND_SMS === true) {
-                                $send_msg = new WelcomeController();
-                                $send_msg->send_sms($mobile_number,$msg);
-                                $send_msg->send_whatsapp($mobile_number,$str); 
-                            }
-                        }
-                    }
+                    // if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+                    //     if(Auth::user()->role_id == 8){
+                    //         $user_role = 'supervisor';
+                    //     }elseif(Auth::user()->role_id == 9){
+                    //         $user_role = 'boy';
+                    //     }
+                    //     $user = User::find($assigned_by);
+                    //     $do = DeliveryOrder::find($delivery_id);
+                    //     $customer = Customer::with('manager')->find($do->customer_id);
+                    //     if($user){
+                    //         if (App::environment('local')) {
+                    //             $mobile_number = Config::get('smsdata.send_sms_to');
+                    //         } else {
+                    //             $mobile_number = $user->mobile_number;
+                    //         }
+                    //         $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N\A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
+                    //         $msg = urlencode($str);
+                    //         if (SEND_SMS === true) {
+                    //             $send_msg = new WelcomeController();
+                    //             $send_msg->send_sms($mobile_number,$msg);
+                    //             $send_msg->send_whatsapp($mobile_number,$str); 
+                    //         }
+                    //     }
+                    // }
                 }
                 if(Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())){
                     $truck_details = LoadTrucks::where('id',$truck_weight_id)->first();
@@ -1830,6 +1830,145 @@ class DeliveryOrderController extends Controller {
         }
     }
 
+    public function send_save_truck_msg(){
+
+        $delivery_id = Input::get('delivery_id');
+        $delivery_order_details = DeliveryOrder::find($delivery_id);
+        $delboy_id = Input::get('delboy_id');
+        $truck_weight = (Input::has('truck_weight')) ? Input::get('truck_weight') : '0';
+        $truck_weight_id = (Input::has('truck_weight_id')) ? Input::get('truck_weight_id') : "";
+        $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : 0;
+        $truck_no = (Input::has('truck_no')) ? Input::get('truck_no') : 0;
+        $actual_quantity = (Input::has('actual_qty')) ? Input::get('actual_qty') : 0;
+
+        $inputprodut = (Input::has('product_ids')) ? Input::get('product_ids') : 'array()';
+        $inputprodut = explode(',',$inputprodut);
+
+        $delivery_productdata = LoadTrucks::where('deliver_id',$delivery_id)->where('id','<>',$truck_weight_id)->get();
+
+        if(!($delivery_productdata)->isEmpty()){
+            foreach($delivery_productdata as $delivery_product){
+                $truck_procudcts[] = unserialize($delivery_product->product_id);
+                $temp_array[] = $truck_procudcts;
+            }
+            $explodetruck_prodcuts = array();
+            foreach($truck_procudcts as $prod){
+                $prod = explode(',',$prod);
+                foreach($prod as $ids){
+                    array_push($explodetruck_prodcuts,$ids);
+                }
+            }
+        }else{
+            $explodetruck_prodcuts = array();
+        }
+        $truck_product_ids = "";
+        $product_string = "";
+        $total_quantity = 0;
+        $prod_quantity = 0;
+        $i = 1;
+        if(!empty($inputprodut)){
+            $productids = array();
+            foreach($inputprodut as $truckprod){
+                $product = explode('-',$truckprod);
+                $product_id = $product[0];
+                $actual_pieces = $product[1];
+                if($actual_pieces >= 0 && $actual_pieces != ""){
+                    if(!(in_array($product_id,$explodetruck_prodcuts))){
+                        $productids[] = $product_id;
+                        $product_data = AllOrderProducts::find($product_id);
+                        $product_row = ProductSubCategory::find($product_data['product_category_id']);
+                        if ($product_data['unit_id'] == 1) {
+                            $prod_quantity = (float)(isset($product[2])?$product[2]:$product_data['quantity']);
+                        }
+                        if ($product_data['unit_id'] == 2) {
+                            $prod_quantity = (float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)$product_row->weight;
+                        }
+                        if ($product_data['unit_id'] == 3) {
+                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) / (float)$product_row->standard_length ) * (float)$product_row->weight;
+                        }
+                        if ($product_data['unit_id'] == 4) {
+                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)(isset($product_row->weight)?$product_row->weight:'') * (float)$product_data['length']);
+                        }
+                        if ($product_data['unit_id'] == 5) {
+                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)(isset($product_row->weight)?$product_row->weight:'') * ((float)$product_data['length'] / 305));
+                        }
+                        $product_string .= $i++ . ") " . $product_row['alias_name'] . ", " . round((float)$prod_quantity,2) . "KG ";  
+                    }
+                }
+            }
+        }
+        $cust = User::where('id',Auth::user()->id)->first();             
+        if(isset($cust) && !empty($cust)){
+            $user_fname = isset($cust->first_name)?$cust->first_name:'';
+            $user_lname = isset($cust->last_name)?$cust->last_name:'';
+        }
+        $del_order = '';
+        $del_order_notif = App\SendNotification::where('order_type','supervisor_assigned')
+                            ->where('order_id',$delivery_id)
+                            ->orderBy('id','DESC')
+                            ->first();
+        $load_delboy = LoadDelboy::where('delivery_id',$delivery_id)->where('del_boy', '=', Auth::user()->id)->where('assigned_status', 1)->first();
+        
+        $assigned_to = 0;
+        if (Auth::user()->role_id == 9 || (isset($load_delboy) && $load_delboy->del_boy == Auth::user()->id && $load_delboy->del_supervisor != Auth::user()->id )){
+            $del_order = App\SendNotification::where('order_id',$delivery_id)
+                            ->orderBy('id','ASC')
+                            ->first();
+            $assigned_to = isset($delivery_order_details->del_supervisor)?$delivery_order_details->del_supervisor:$del_order->assigned_by;
+        }
+        if(isset($del_order_notif->assigned_by) && $del_order_notif->assigned_by != ''){
+            $assigned_by = $del_order_notif->assigned_by;
+        }else if(isset($del_order->assigned_by) && $del_order->assigned_by != ''){
+            $assigned_by = $del_order->assigned_by;
+        }else{
+            $assigned_by = 0;
+        }
+
+        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+            if(Auth::user()->role_id == 8){
+                $user_role = 'supervisor';
+            }elseif(Auth::user()->role_id == 9){
+                $user_role = 'boy';
+            }
+            $user = User::find($assigned_by);
+            $do = DeliveryOrder::find($delivery_id);
+            $customer = Customer::with('manager')->find($do->customer_id);
+            if($user){
+                if (App::environment('local')) {
+                    $mobile_number = Config::get('smsdata.send_sms_to');
+                } else {
+                    $mobile_number = $user->mobile_number;
+                }
+                $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N/A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".(isset($product_string)?$product_string:'N/A')."\nTotal Actual Quantity: ".round((float)$actual_quantity,0)."KG \n\nVIKAS ASSOCIATES.";
+                $msg = urlencode($str);
+                if (SEND_SMS === true) {
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_sms($mobile_number,$msg);
+                    $send_msg->send_whatsapp($mobile_number,$str); 
+                }
+            }
+            $do_det = DeliveryOrder::where('id',$delivery_id)->first();
+            if(isset($do_det->del_supervisor) && !empty($do_det->del_supervisor) && $do_det->del_supervisor != Auth::user()->id){
+                $del_user = User::find($do_det->del_supervisor);
+                //  Confirmation msg to Supervisor who assigned the order to del_boy
+                if($del_user){
+                    if (App::environment('local')) {
+                        $mobile_number = Config::get('smsdata.send_sms_to');
+                    } else {
+                        $mobile_number = $del_user->mobile_number;
+                    }
+                    $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N/A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".(isset($product_string)?$product_string:'N/A')."\nTotal Actual Quantity: ".round((float)$actual_quantity,0)."KG \n\nVIKAS ASSOCIATES.";
+                    $msg = urlencode($str);
+                    if (SEND_SMS === true) {
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_sms($mobile_number,$msg);
+                        $send_msg->send_whatsapp($mobile_number,$str); 
+                    }
+                }
+            }
+        }
+
+    }
 
     /*
      * save create delivery challan form details for the challan
