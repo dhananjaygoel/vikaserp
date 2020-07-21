@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use DB;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
