@@ -239,7 +239,7 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130348727626676",
+            'QBORealmID' => env('QBORealmID_Plus_GST'),
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
@@ -282,7 +282,7 @@ class CustomerController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130348727630856",
+            'QBORealmID' => env('QBORealmID_All_Inc'),
             'baseUrl' => "Production",
             'minorVersion'=>34
         ));
