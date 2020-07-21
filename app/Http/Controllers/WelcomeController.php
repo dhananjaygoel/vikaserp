@@ -2082,7 +2082,7 @@ class WelcomeController extends Controller {
         // $browser = get_browser(null, true);
         $agent = new Agent();
         $browser = $agent->browser();
-        dd($browser);
+        dd($agent);
         $allowed = false;
         $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
         if(isset($file_data) && !empty($file_data)){
@@ -2095,7 +2095,7 @@ class WelcomeController extends Controller {
             DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
             $file_name = $file_data->file_name;
             $headers = [
-                'Content-type' => 'application/pdf'];
+                'Content-type' => 'application/force-download'];
             return Storage::download(getcwd().$file_path, $file_name,$headers);
             exit(); // downloadable file
         } else {

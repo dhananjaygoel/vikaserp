@@ -343,7 +343,7 @@ class PurchaseOrderController extends Controller {
                     if ($product_data['units'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $q++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                    $product_string .= $q++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
@@ -638,7 +638,7 @@ class PurchaseOrderController extends Controller {
                     if ($product_data['units'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $q++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                    $product_string .= $q++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
@@ -894,7 +894,7 @@ class PurchaseOrderController extends Controller {
                     if ($product_data['unit_id'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                    $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {

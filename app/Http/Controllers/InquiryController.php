@@ -310,7 +310,7 @@ class InquiryController extends Controller {
                     if ($product_data['units'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                     }
-                    $product_string .= $key . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                    $product_string .= $key . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
             }
             if ($cust_count > 0) {
@@ -722,7 +722,7 @@ class InquiryController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $key . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";                            
+                            $product_string .= $key . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";                            
                         }
                     }
                     $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
@@ -790,7 +790,7 @@ class InquiryController extends Controller {
                             if ($product_data['units'] == 5) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . ", ";
+                            $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                         }
                     }
                     $str = "Dear Customer,\n\nYour inquiry has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
@@ -902,7 +902,7 @@ class InquiryController extends Controller {
                             if ($product_data['unit_id'] == 5) {
                                 $total_quantity = ((float)$product_data->quantity * (float)($product_data['inquiry_product_details']->weight) * ((float)$product_data->length / 305));
                             }
-                            $product_string .= $i++ . ") " . $product_data['inquiry_product_details']->alias_name . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data->price . " ";
+                            $product_string .= $i++ . ") " . $product_data['inquiry_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data->price . " ";
                         }
                     }
                     $str = "Dear Manager,\n\nInquiry has been deleted.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$inq->id. "\nInquiry Date: ".date("j F, Y")."\nProducts:\n".$product_string."\n\nVIKAS ASSOCIATES.";
@@ -1633,7 +1633,7 @@ class InquiryController extends Controller {
                         if ($product_data['units'] == 5) {
                             $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                         }
-                        $product_string .= $i++ . ") " . $product_data['name'] . " , " . round((float)$total_quantity,2) . "KG , ₹". $product_data['price'] . " ";
+                        $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                     }
                 }
                 $str = "Dear Customer,\n\nThank you for confirming the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
