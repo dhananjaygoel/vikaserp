@@ -817,16 +817,16 @@ class PurchaseAdviseController extends Controller {
 
             if (count((array)$customer['manager']) > 0) {
                 $str = "Dear Manager,\n\nPurchase advice has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Advice No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_advise->vehicle_number)?$purchase_advise->vehicle_number:'N/A') . "\n\nVIKAS ASSOCIATES.";   
-                if (App::environment('development')) {
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
-                if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
+                if(SEND_SMS === true && isset($send_sms) && $send_sms == "true") {
                     $send_msg->send_sms($phone_number,$msg);
                 }
-                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "yes"){
+                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
                     $send_msg->send_whatsapp($phone_number,$str);                    
                 }
             }

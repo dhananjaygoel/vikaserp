@@ -3787,7 +3787,7 @@ $("body").on('click',"button", function() {
         var delboy_id  = arr[3];
         var truck_sequence = arr[4];
         var labour = $('#labour_select_'+truck_sequence).val();
-        var product_ids = [];
+        var product_ids = [];var product = [];
         if(labour){
             labour = labour.toString();
         }else{
@@ -3921,6 +3921,37 @@ $("body").on('click',"button", function() {
                         }
                         // $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                         fetch_average_quantity_load_truck();
+                        var actual_qty =  $('#total_actual_qty_truck').val();
+                        for (var i = 1; i < current_row_count + 1; i++) {
+                            product.push($('#product_id'+i).val()+'-'+$('#actual_pieces_'+i).val()+'-'+$('#actual_quantity_'+i).val());
+                        }
+                        console.log(product);
+                        if(product){
+                            product = product.toString();
+                        }else{
+                            product = '';
+                        }
+                        console.log(product);
+                        console.log(actual_qty);
+                        $.ajax({
+                            type: 'GET',
+                            url: url + '/send_save_truck_msgs',
+                            data: {
+                                delivery_id:delivery_id,
+                                delboy_id:delboy_id,
+                                truck_weight:truck_weight,
+                                empty_truck_weight:empty_truck_weight,
+                                truck_no:truck_sequence,
+                                actual_qty:actual_qty,
+                                truck_weight_id:truck_weight_id,
+                                product_ids:product
+                            },
+                            success: function(data){
+                                // alert(data);
+                            }
+
+                        });
+                        
                             window.onbeforeunload = null;
                             // return false;
                     }else {
