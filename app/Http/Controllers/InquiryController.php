@@ -1636,7 +1636,7 @@ class InquiryController extends Controller {
                         $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                     }
                 }
-                $str = "Dear Customer,\n\nThank you for confirming the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nThank you for confirming the order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -1653,7 +1653,7 @@ class InquiryController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nInquiry has been converted into order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nInquiry has been converted into order.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');

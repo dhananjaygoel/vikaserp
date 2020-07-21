@@ -347,7 +347,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nNew purchase order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($expected_delivery_date)) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nNew purchase order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($expected_delivery_date)) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -363,7 +363,7 @@ class PurchaseOrderController extends Controller {
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nNew purchase order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($expected_delivery_date)) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nNew purchase order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$purchase_order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($expected_delivery_date)) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -642,7 +642,7 @@ class PurchaseOrderController extends Controller {
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour purchase order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ".  date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";   
+                $str = "Dear Customer,\n\nYour purchase order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ".  date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -658,7 +658,7 @@ class PurchaseOrderController extends Controller {
             }
 
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nA purchase order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j M, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nA purchase order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Order No: #".$id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
