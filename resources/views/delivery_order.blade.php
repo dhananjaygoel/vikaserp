@@ -368,7 +368,7 @@
                                                @if($delivery->order_status == 'pending')
                                                 @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2))
 
-                                                    @if(Auth::user()->role_id == 3  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4)
+                                                    @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2  || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                                                         <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -378,7 +378,7 @@
                                                         </a>
                                                     @endif
 
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4)
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8  || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
 
 												   <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
 
@@ -392,8 +392,8 @@
                                             @endif
 
 
-                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 2)
+                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2)
                                                 <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <input type="hidden" id="is_gst{{$delivery->id}}" value="{{$delivery->is_gst}}">
                                                 <span class="fa-stack">
@@ -404,7 +404,7 @@
                                                 
                                                 @endif
 
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 2)
                                                     <span class="table-link normal_cursor" title="print">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
