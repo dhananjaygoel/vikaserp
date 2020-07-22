@@ -132,6 +132,6 @@ class DailyProformaExport implements FromView, ShouldAutoSize
             
             $VchNo++;
         }
-        return view('excelView.sales', array('allorders' => isset($sr)?$sr:null));
+        return view('excelView.sales', array('allorders' => isset($allorders)?$allorders:null));
     }
 }

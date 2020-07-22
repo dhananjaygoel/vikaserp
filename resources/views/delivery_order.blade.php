@@ -261,7 +261,7 @@
 
                                             ?>
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 )
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                                              <?php $data_supervisor_id = $delivery->del_supervisor;
                                                 if(isset($data_supervisor_id) && $data_supervisor_id != null) {
                                                     $test = \App\User::where('id',$data_supervisor_id)->get();
@@ -392,8 +392,8 @@
                                             @endif
 
 
-                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0  || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
+                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                                                 <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
                                                 <input type="hidden" id="is_gst{{$delivery->id}}" value="{{$delivery->is_gst}}">
                                                 <span class="fa-stack">

@@ -137,6 +137,6 @@ class SalesDaybookExport implements FromView, ShouldAutoSize
             
             $VchNo++;
         }
-        return view('excelView.sales', array('allorders' => $sr));
+        return view('excelView.sales', array('allorders' => $allorders));
     }
 }
