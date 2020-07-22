@@ -144,6 +144,7 @@
                                             @if(!$truckdetails->isEmpty())<?php 
 
                                                 $truck_weight_id = '';
+                                                $truck_weight = '';
                                                 //$j = 1;
                                                 foreach($truckdetails as $truck_details){
                                                     $truck_product_id = $truck_details->product_id;
