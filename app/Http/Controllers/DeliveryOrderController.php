@@ -1870,8 +1870,8 @@ class DeliveryOrderController extends Controller {
             $productids = array();
             foreach($inputprodut as $truckprod){
                 $product = explode('-',$truckprod);
-                $product_id = $product[0];
-                $actual_pieces = $product[1];
+                $product_id = isset($product[0])?$product[0]:0;
+                $actual_pieces = isset($product[1])?$product[1]:'';
                 if($actual_pieces >= 0 && $actual_pieces != ""){
                     if(!(in_array($product_id,$explodetruck_prodcuts))){
                         $productids[] = $product_id;
