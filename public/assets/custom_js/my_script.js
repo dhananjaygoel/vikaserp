@@ -952,6 +952,7 @@ $('.print_inventory_report_list').click(function (event) {
     var base_url = $('#baseurl').attr('name');
     var tbl=$("#day-wise").html();
     var newdata='<html>    <head>        <title>Delivery Order</title>        <meta charset="windows-1252">        <meta name="viewport" content="width=device-width, initial-scale=1.0">        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>    </head>    <body><style>.crossout{    /width: 120px;/   min-width: 150px;   min-width: 150px;   width: 150px;   background-image: linear-gradient(to bottom left,  transparent calc(50% - 1px), #DDDDDD, transparent calc(50% + 1px));}.thickness-head{   float: right;   margin-top: -10px;}.size-head{    float: left;    margin-top: 20px;}.table {    margin-bottom: 6px !important;}.table-bordered {    border: 1px solid #ddd;}.table {    margin-bottom: 20px;    max-width: 100%;    width: 100%;}.text-center {    text-align: center;}.table-bordered {    border: 1px solid #ddd;}.table {    margin-bottom: 20px;    max-width: 100%;    width: 100%;}.text-center {    text-align: center;}table {    background-color: transparent;}table {    border-collapse: collapse;    border-spacing: 0;}.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {    border-top: 1px solid #ddd;    line-height: 1.42857;    padding: 8px;    vertical-align: top;}</style><table id="day-wise" class="table table-bordered text-center complex-data-table">'+ tbl +'</table></body></html>';
+    newdata = newdata.replace(/\s\s+/g, ' ');
     var printWindow = window.open(newdata);
     // var printWindow = window.open('', '');
     printWindow.document.write(newdata);
@@ -1044,6 +1045,7 @@ $('.print_inventory_price_list').click(function () {
         url: base_url + '/print_inventory_price_list/' + product_id,
         success: function (data) {
             $('#print_inventory_price_list').modal('hide');
+            data = data.replace(/\s\s+/g, ' ');
             var printWindow = window.open(data);
             // var printWindow = window.open('', '');
             printWindow.document.write(data);
