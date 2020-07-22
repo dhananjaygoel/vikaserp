@@ -177,7 +177,7 @@
                                                     <input type="hidden" name="product[{{$key}}][name]" id="name_{{$key}}" value="{{$product['order_product_details']->alias_name}}">
                                                     <input type="hidden" name="product[{{$key}}][id]" id="add_product_id_{{$key}}" value="{{$product['order_product_details']->id}}">
                                                     <input type="hidden" name="product[{{$key}}][order]" value="{{$product->id}}">
-                                                    <input type="hidden" id="truck_weight_{{$key}}" value="{{$truck_weight_id}}_{{$truck_weight}}">
+                                                    <!-- <input type="hidden" id="truck_weight_{{$key}}" value="{{$truck_weight_id}}_{{$truck_weight}}"> -->
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
