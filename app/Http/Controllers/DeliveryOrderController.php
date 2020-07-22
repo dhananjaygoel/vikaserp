@@ -483,7 +483,7 @@ class DeliveryOrderController extends Controller {
                     //  'length' => isset($product_data['length'])? $product_data['length']:'',
                      'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
                      'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
-                    //  'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
+                     'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
                 ];
                 $add_order_products = AllOrderProducts::where('id', '=', $product_data['id'])->update($order_products);

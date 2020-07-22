@@ -496,7 +496,7 @@
                                                     <td class="col-md-1">
                                                         <div class="form-group inquiry_vat_chkbox">
 
-                                                            <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes" onchange="check_vat();" disabled>
+                                                            <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes" onchange="check_vat();">
 
                                                         </div>
                                                     </td>
