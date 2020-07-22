@@ -84,7 +84,7 @@
                                                     <th><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" ></th>
                                                     <th>#</th>
                                                 @endif
-                                                @if( Auth::user()->role_id == 1 )
+                                                @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4 )
                                                     <th>#</th>
                                                 @endif
                                                 <th>Date</th>
@@ -100,7 +100,7 @@
                                                 <th>Bill Number</th>
                                                 <th>Remarks </th>
                                                 <th>Edited </th>
-                                                @if( Auth::user()->role_id == 0)
+                                                @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                                                     <th>Action </th>
                                                 @endif
                                             </tr>
@@ -120,8 +120,8 @@
                                                         <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
                                                         <td>{{$k++}}</td>
                                                     @endif
-                                                    @if( Auth::user()->role_id == 1)
-                                                        <th>{{$k}}</th>
+                                                    @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                                        <td>{{$k++}}</td>
                                                     @endif
                                                     <td>{{ date('m-d-Y',strtotime($challan['updated_at']))}}</td>
                                                     <td>
@@ -241,8 +241,8 @@
                                                                 <span class="text-info">No</span>
                                                             @endif
                                                         </td>
-                                                        <td>
-                                                        <a href="{{url('delivery_challan_invoice/'.$challan->id)}}" class="table-link" title="view">
+                                                        <td >
+                                                        <a style="margin:0" href="{{url('delivery_challan_invoice/'.$challan->id)}}" class="table-link" title="view">
                                                             <span class="fa-stack">
                                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                                 <i class="fa fa-search fa-stack-1x fa-inverse"></i>
@@ -258,7 +258,7 @@
                                                             @endif -->
 
                                                             @if(Auth::user()->role_id == 0)
-                                                               <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
+                                                               <a style="margin:0" target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
                                                                     <span class="fa-stack">
                                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                                         <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
@@ -273,7 +273,7 @@
                                                                         </span>
                                                                     </span>
                                                                 @else
-                                                                    <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
+                                                                    <a style="margin:0" target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
                                                                     <span class="fa-stack">
                                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                                         <i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
@@ -289,13 +289,13 @@
                                                                     </span>
                                                                 </a>-->
 
-                                                            <a href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}},1)">
+                                                            <a style="margin:0" href="" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" onclick="print_delivery_challan({{$challan->id}},1)">
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                                 </span>
                                                             </a>
-                                                            <a href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_daily_proforma",$challan->id)}}'>
+                                                            <a style="margin:0" href="#" class="table-link danger delete-sales-day-book" data-toggle="modal" data-target="#delete-sales-day-book" title="delete" data-url='{{url("delete_daily_proforma",$challan->id)}}'>
                                                                 <span class="fa-stack">
                                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>

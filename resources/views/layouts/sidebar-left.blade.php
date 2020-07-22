@@ -224,21 +224,21 @@
                             </li>
 
                             @endif
-                            @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1 )
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
                             <li class="{{ (Request::is('*pending_delivery_order*') ? 'active' : '') }}">
                                 <a href="{{url('pending_delivery_order')}}">
                                     Pending Delivery Order Report
                                 </a>
                             </li>
                             @endif
-                            @if((Auth::user()->role_id == 0 ||Auth::user()->role_id == 1) && ( Auth::user()->role_id != 3))
+                            @if((Auth::user()->role_id == 0 || Auth::user()->role_id == 1) && ( Auth::user()->role_id != 3))
                             <li class="{{ (Request::is('*sales_daybook*') ? 'active' : '') }}">
                                 <a href="{{url('sales_daybook')}}">
                                     Sales Daybook
                                 </a>
                             </li>
                             @endif
-                                @if((Auth::user()->role_id == 0 ||Auth::user()->role_id == 1) && ( Auth::user()->role_id != 3))
+                                @if((Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) && ( Auth::user()->role_id != 3))
                                     <li class="{{ (Request::is('*daily_pro_forma_invoice*') ? 'active' : '') }}">
                                         <a href="{{url('daily_pro_forma_invoice')}}">
                                             Daily Pro Forma Invoice
