@@ -228,7 +228,7 @@
                     </td>                
                     <td style="height:18px;">{{$VchNo}}</td>
                 </tr>
-        <?php 
+<?php 
         $VchNo++;
         }
     }
