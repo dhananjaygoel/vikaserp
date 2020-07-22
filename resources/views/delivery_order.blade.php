@@ -261,7 +261,7 @@
 
                                             ?>
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                                              <?php $data_supervisor_id = $delivery->del_supervisor;
                                                 if(isset($data_supervisor_id) && $data_supervisor_id != null) {
                                                     $test = \App\User::where('id',$data_supervisor_id)->get();
