@@ -4,12 +4,11 @@
 <?php 
     // dd($ip);
     $ip_array = [];
-    if (!empty($ip)) {
+    $ipaddress = '';
+    if (isset($ip) && !$ip->isEmpty()) {
         foreach ($ip as $key => $value) {
             $ip_array[$key] = $value->ip_address;
         }
-
-        $ipaddress = '';
         if (getenv('HTTP_CLIENT_IP'))
             $ipaddress = getenv('HTTP_CLIENT_IP');
         else if (getenv('HTTP_X_FORWARDED_FOR'))
