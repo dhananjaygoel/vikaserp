@@ -546,7 +546,7 @@ class DeliveryOrderController extends Controller {
             $i = 1;
             foreach ($input_data['product'] as $product_data) {
                 if ($product_data['name'] != "") {
-                    $product = ProductSubCategory::find($product_data['id']);
+                    $product = ProductSubCategory::find($product_data['product_category_id']);
                     if ($product_data['units'] == 1) {
                         $total_quantity = (float)$product_data['quantity'];
                     }
