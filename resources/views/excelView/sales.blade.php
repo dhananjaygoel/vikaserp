@@ -1,345 +1,237 @@
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <!-- {!! HTML::style('assets/css/custom_style/excel-export-table.css') !!} -->
     
-
-    <table >
-<!--        <tr>
-            <td colspan="3" class="heading1">Vikash Associates ..(<?= date('Y') ?>)</td>
-        </tr>
+    <table>
         <tr>
-            <td colspan="3" class="border1">411014</td>
-        </tr>
-        <tr>
-            <td colspan="3" class="heading1">Daybook</td>
-        </tr>
-        <tr>
-            <td colspan="3">For: <?= date('d-m-Y') ?></td>
-        </tr>-->
-
-
-        <tr>
-            <th style="height:20px;font-size:16px;color:#000080;"> InvoiceNo</th>
-            <th style="height:20px;font-size:16px;color:#000080;"> Customer</th>
-            <th style="height:20px;font-size:16px;color:#000080;">InvoiceDate</th>
-            <th style="height:20px;font-size:16px;color:#000080;">DueDate</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Terms</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Memo</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Place Of Supply</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Item(Product/Service)</th>
-            <th style="height:20px;font-size:16px;color:#000080;">ItemDescription</th>
-            <th style="height:20px;font-size:16px;color:#000080;">ItemQuantity</th>
-            <th style="height:20px;font-size:16px;color:#000080;">ItemRate</th>
-            <th style="height:20px;font-size:16px;color:#000080;">ItemAmount</th>
-            <!-- <td class="heading1">ItemTaxCode</td> -->
-            <!-- <td class="heading1">ItemTaxAmount</td> -->
-            <th style="height:20px;font-size:16px;color:#000080;">Service Date</th>
-            <!-- <td class="heading1">Date</td>            
-            <td class="heading1">Type</td>
-            <td class="heading1">No</td>
-            <td class="heading1">Customer</td>
-            <td class="heading1">Due Date</td>
-            <td class="heading1">Balance</td>
-            <td class="heading1">Total before tax</td>
-            <td class="heading1">Tax</td>
-            <td class="heading1">Total</td>
-            <td class="heading1">Status</td> -->
-
-            <!--<td class="heading1">Code</td>-->
-            <!--<td class="heading1">Address1</td>-->
-            <!--<td class="heading1">Address2</td>-->
-            <!--<td class="heading1">State</td>-->
-            <!--<td class="heading1">Pin Code</td>-->
-            <!--<td class="heading1">Tin No</td>-->            
-            <!--<td class="heading1">Godown</td>-->            
-            <!-- <td class="heading1">Rate</td>
-            <td class="heading1">Amt</td> -->
-<!--            <td class="heading1">Discount</td>
-            <td class="heading1">Loading</td>
-            <td class="heading1">Freight</td>-->
-            <!--<td class="heading1">Tax Type</td>-->
-            <!--<td class="heading1">Tax Rate</td>-->
-            <!--<td class="heading1">Tax</td>-->
-<!--            <td class="heading1">Round Off</td>
-            <td class="heading1">Grand total</td>-->
-            <!-- <td></td><td></td>
-            <td class="heading1">Vehicle Number/Remark</td> -->
-            <!--<td class="heading1">Remark</td>-->            
-            <!-- <td class="heading1">Vch No</td> -->
+            <th style="height:20px;font-size:16px;color:#000080;">Date</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Ref NUM</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Vch Type</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Account</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Item Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Product Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Pcs</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Unit</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Qty</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Rate</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Amt</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Vehicle Number/Remark</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Vch No</th>
         </tr>
         <?php
         $VchNo = 1;
+        // dd($allorders);
         if($allorders != null){
-        foreach ($allorders as $key => $value) { ?>
+            foreach ($allorders as $key => $value) {
+                $total_amount = 0;
+                $cust_id = $value->customer_id;
+                $order_id = $value->order_id;
+                $loc_id = \App\DeliveryOrder::where('customer_id',$cust_id)->where('order_id',$order_id)->first();
+                $state = \App\DeliveryLocation::where('id',isset($loc_id->delivery_location_id)?$loc_id->delivery_location_id:0)->first();
+                $local = \App\States::where('id',isset($state->state_id)?$state->state_id:0)->first();
+                $local_state = isset($local->local_state)?$local->local_state:0;
+                $i = 1;
+                $total_price = 0;
+                $total_vat = 0;
+                $round_off = 0;
+                if(isset($value->vat_percentage) && $value->vat_percentage > 0){
+                    $loading_vat = 18;
+                }else{
+                    $loading_vat = 0;
+                }
+                $loading_vat_amount = ((float)$value->loading_charge * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$value->freight * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$value->discount * (float)$loading_vat) / 100;
+                $final_vat_amount = 0; 
+                $final_total_amt = 0;
+                $total_amount=0;
+                $total_price = 0;
+                $price = 0;
+
+                foreach ($value['delivery_challan_products'] as $key1 => $value1) {
+                    $productsub = \App\ProductSubCategory::where('id',$value1['product_category_id'])->first();
+                    $product_cat = \App\ProductCategory::where('id',$productsub->product_category_id)->first();
+                    $sgst = 0;
+                    $cgst = 0;
+                    $igst = 0;
+                    $rate = (float)((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $product_cat->price);
+                    $is_gst = false;
+                    $amount = (float)$value1->actual_quantity * (float)$rate;
+                    $total_amount = round($amount + $total_amount, 2);
+                    if(isset($value1->vat_percentage) && $value1->vat_percentage > 0){
+                        if($product_cat->hsn_code){
+                            
+                            $is_gst = true;
+                            $hsn_det = \App\Hsn::where('hsn_code',$product_cat->hsn_code)->first();
+                            if(isset($hsn_det->gst))
+                            $gst_det = \App\Gst::where('gst',$hsn_det->gst)->first();
+                            if($local_state == 1){
+                                $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                            }
+                            else{
+                                $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                            }
+                        }
+                    }
+                    else{
+                        $igst = 0;
+                    }
+                    if(isset($value1->vat_percentage) && $value1->vat_percentage > 0){
+                        if($local_state == 1){
+                            $total_sgst_amount = ((float)$amount * (float)$sgst) / 100;
+                            $total_cgst_amount = ((float)$amount * (float)$cgst) / 100;
+                            $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                        } else {
+                            $total_igst_amount = ((float)$amount * (float)$igst) / 100;
+                            $total_vat_amount1 = round($total_igst_amount,2);
+                        }
+                    } else{
+                        $total_gst_amount = ((float)$amount * (float)$igst) / 100;
+                        $total_vat_amount1 = round($total_gst_amount,2);
+                    }
+                    $total_vat_amount = $total_vat_amount1;
+                    $total_price += ($total_vat_amount);
+                ?>
                 <tr>
-                    <td style="height:16px;">{{ $value['invoice_no'] }}</td>    
-                    <td style="height:16px;">{{ $value['customer'] }}</td>    
-                    <td style="height:16px;">{{ $value['date'] }}</td>     
-                    <td style="height:16px;">{{ $value['date'] }}</td>  
-                    <td style="height:16px;">Net 30</td>
-                    <td style="height:16px;">Memo</td>    
-                    <td style="height:16px;">{{ $value['placeof_supply'] }}</td>      
-                    <td style="height:16px;">{{ $value['producttitle'] }}</td>  
-                    <td style="height:16px;">{{ $value['producttitle'] }}</td>                    
-                    <td style="height:16px;">{{ $value['balance'] }}</td>       
-                    <td style="height:16px;">{{ $value['total_btax'] }}</td>    
-                    <td style="height:16px;">{{ $value['total'] }}</td>    
-                    <!-- <td> 12.0% GST </td>     -->
-                    <!-- <td>{{ $value['tax'] }}</td>        -->
-                    <td style="height:16px;">{{ $value['due_date'] }}</td>   
+                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td style="height:16px;">Sales</td>
+                    <td style="height:16px;">{{ isset($value['customer']->tally_name) ? (($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales"):'' }}</td>
+                    <td style="height:16px;">Sales Account</td>
+                    <td style="height:16px;">{{ isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
+                    <td style="height:16px;">{{ isset($value1['order_product_details']->product_category->product_category_name) ? $value1['order_product_details']->product_category->product_category_name : '' }}</td>
+                    <td style="height:16px;">{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
+                    @if(isset($value1->unit_id) && $value1->unit_id == 1)
+                        <td style="height:16px;">Kg</td>
+                    @elseif(isset($value1->unit_id) && $value1->unit_id == 2)
+                        <td style="height:16px;">Pieces</td>
+                    @elseif(isset($value1->unit_id) && $value1->unit_id == 3)
+                        <td style="height:16px;">Meter</td>
+                    @elseif(isset($value1->unit_id) && $value1->unit_id == 4)
+                        <td style="height:16px;">ft</td>
+                    @elseif(isset($value1->unit_id) && $value1->unit_id == 5)
+                        <td style="height:16px;">mm</td>
+                    @else
+                        <td style="height:16px;">Kg</td>
+                    @endif
+                    <td style="height:16px;">{{ isset($value1->actual_quantity) ? $value1->actual_quantity : '' }}</td>
+                    <td style="height:16px;">{{ isset($value1->price) ? $value1->price : '0' }}</td>
+                    <?php $tot_amt = $value1->price * $value1->quantity;
+                    ?>
+                    <td style="height:16px;">{{ round($tot_amt,2) }}</td>
+                    <td style="height:16px;">{{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}</td>
+                    <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
-            <?php
-            $VchNo++;
+            <?php }?>
+                <tr>
+                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td style="height:16px;"></td><td></td>
+                    <td style="height:16px;">Discount</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td style="height:16px;">{{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
+                    <td style="height:16px;">
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td>
+                    <td>{{$VchNo}}</td>
+                </tr>
+                <tr> 
+                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td></td><td></td>
+                    <td style="height:16px;">Loading</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td style="height:16px;">{{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
+                    <td style="height:16px;">
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td> 
+                    <td>{{$VchNo}}</td> 
+                </tr> 
+                <tr>  
+                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td></td><td></td>
+                    <td style="height:16px;">Freight</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td style="height:16px;">{{isset($value->freight) ? $value->freight :'0.00'}}</td>
+                    <td>
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td> 
+                    <td>{{$VchNo}}</td>                
+                </tr>
+                <tr>    
+                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td></td><td></td>
+                    <td style="height:16px;">Tax</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                      
+                        <?php
+                            $total = (float)$total_amount + (float)$value->freight + (float)$value->loading_charge + (float)$value->discount;
+                            $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                            $tot = $total + $total_vat;
+                            $round_off = round($tot,0) - $tot;
+                        ?>
+                    <td style="height:16px;">{{ round($total_vat,2) }}
+                    </td>
+                    <td style="height:16px;">
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td> 
+                    <td style="height:16px;">{{$VchNo}}</td>                
+                </tr>
+                <tr>    
+                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td></td><td></td>
+                    <td style="height:16px;">Round Off</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td style="height:16px;">{{  round($round_off,2) }}</td>
+                    <td>
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td> 
+                    <td style="height:16px;">{{$VchNo}}</td>
+                </tr>
+                <tr style="border:2px solid green;">    
+                    <td style="height:18px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:18px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td></td><td></td>
+                    <td style="height:18px;"> <b>Total</b></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td style="height:18px;"><b>{{ round($tot,0) }}</b></td>
+                    <td style="height:18px;">
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td>                
+                    <td style="height:18px;">{{$VchNo}}</td>
+                </tr>
+        <?php 
+        $VchNo++;
         }
-        }
-        ?>
-
-
-
-
-
-
-
-
-
-
-
-
-<!--        <tr>
-    <td class="heading1">Vch No</td>
-    <td class="heading1">Ref NUM</td>
-    <td class="heading1">Vch Type</td>
-    <td class="heading1">Date</td>
-    <td class="heading1">Code</td>
-    <td class="heading1">Name</td>
-    <td class="heading1">Address1</td>
-    <td class="heading1">Address2</td>
-    <td class="heading1">State</td>
-    <td class="heading1">Pin Code</td>
-    <td class="heading1">Tin No</td>
-    <td class="heading1">Item Name</td>
-    <td class="heading1">Product Name</td>
-    <td class="heading1">Godown</td>
-    <td class="heading1">Pcs</td>
-    <td class="heading1">Unit</td>
-    <td class="heading1">Qty</td>
-    <td class="heading1">Rate</td>
-    <td class="heading1">Amt</td>
-    <td class="heading1">Discount</td>
-    <td class="heading1">Loading</td>
-    <td class="heading1">Freight</td>
-    <td class="heading1">Tax Type</td>
-    <td class="heading1">Tax Rate</td>
-    <td class="heading1">Tax</td>
-    <td class="heading1">Round Off</td>
-    <td class="heading1">Grand total</td>
-    <td class="heading1">Vehicle Number</td>
-    <td class="heading1">Remark</td>
-</tr>-->
-        <?php
-//        $i = 1;
-//        $j = 1;
-        /*
-          foreach ($allorders as $key => $value) {
-          $next_cnt = count((array)$value['delivery_challan_products']);
-          $current_number = 1;
-          $grand_vat_amt = 0;
-          $type_of_bill = 0;
-          foreach ($value['delivery_challan_products'] as $key1 => $value1) {
-          $order_quantity = 0;
-          $value_cnt = "";
-          ?>
-          <tr>
-          <?php
-          $value_cnt = "";
-          if ($current_number == 1) {
-          $value_cnt = $j;
-          } else {
-          $value_cnt = $j;
-          }
-          ?>
-          @if($current_number == 1)
-          <td>{{$value_cnt}}</td>
-          @else
-          <td>{{$value_cnt}}</td>
-          @endif
-          <td>
-          {{ isset($value->serial_number) ? $value->serial_number :'' }}
-          <?php
-          $type_of_bill = substr($value->serial_number, -1);
-          ?>
-          </td>
-          <td>Sales</td>
-          <td>{{ date("m-d-Y", strtotime($value->updated_at)) }}</td>
-          <td></td>
-          <td>{{ ($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales" }}</td>
-          <td>{{ isset($value['customer']->address1) ? $value['customer']->address1 : '' }}</td>
-          <!--                    <td>{{ isset($value['customer']->address2) ? $value['customer']->address2 : '' }}</td>-->
-          <td>{{ isset($value['customer']->states) ? $value->customer->states->state_name : '' }}</td>
-          <!--<td>{{ isset($value['customer']->zip) ? $value['customer']->zip : '' }}</td>-->
-          <td>{{ isset($value['customer']->vat_tin_number) ? $value['customer']->vat_tin_number : '' }}</td>
-          <td>{{ isset($value1['order_product_details']->alias_name) ? $value1['order_product_details']->alias_name : '' }}</td>
-          <td>{{ isset($value1['order_product_details']->product_category->product_category_name) ? $value1['order_product_details']->product_category->product_category_name : '' }}</td>
-          <td></td>
-
-          @if($value1->actual_quantity != 0 )
-          <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
-          <td>Kg</td>
-          <td>
-          <?php
-          if ($value1->unit_id == 1) {
-          $order_quantity = $order_quantity + $value1->quantity;
-          }
-          if ($value1->unit_id == 2) {
-          if(isset($value1['order_product_details']->weight)){
-          $order_quantity = $order_quantity + ($value1->quantity * $value1['order_product_details']->weight);
-          }
-          else{
-          $order_quantity = $order_quantity + ($value1->quantity);
-          }
-          }
-          if ($value1->unit_id == 3) {
-          $order_quantity = $order_quantity + (($value1->quantity / $value1['order_product_details']->standard_length ) * $value1['order_product_details']->weight);
-          }
-          ?>
-          <?= round($value1->actual_quantity, 2) ?>
-          </td>
-          <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
-          <?php $value1['order_product_details']['product_category']['id'] ?>
-          <?php
-          if (!empty($value['customer']['customerproduct'])) {
-          foreach ($value['customer']['customerproduct'] as $customer_difference) {
-          if ($customer_difference['product_category_id'] == $value1['order_product_details']['product_category']['id']) {
-          $customer_diff = $customer_difference->difference_amount;
-          $customer_diff1 = $customer_difference->difference;
-          }
-          }
-          }
-          ?>
-          <td>
-          <?php
-          //                        Commented by Amit Gupta on 03-09-2015
-          //
-          //                        $total_amt = ($value1->price + $value1['order_product_details']['difference']);
-          //                        $total_amt = $total_amt + $value->delivery_order->location_difference;
-          //                        if (isset($customer_diff)) {
-          //                            $total_amt = $total_amt + $customer_diff;
-          //                        }
-          $total_amt = "";
-          if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
-          $vat_amt = 0;
-          $tot_amt = $value1->price * $value1->quantity;
-
-          if (isset($value['delivery_order']->vat_percentage) && $value['delivery_order']->vat_percentage !== "") {
-          $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['delivery_order']->vat_percentage / 100));
-          }
-
-          if ($next_cnt == $current_number) {
-          $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount + $value->round_off;
-          if (isset($value['delivery_order']->vat_percentage) && $value['delivery_order']->vat_percentage !== "") {
-          $vat_amt = ($total_amt * ($value['delivery_order']->vat_percentage / 100));
-          }
-          $total_amt = $vat_amt + $total_amt;
-          } else {
-          $total_amt = $tot_amt;
-          }
-          } else {
-          $vat_amt = 0;
-          $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
-
-          if (isset($value['delivery_order']->vat_percentage) && $value['delivery_order']->vat_percentage !== "") {
-          $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['delivery_order']->vat_percentage / 100));
-          }
-
-          if ($next_cnt == $current_number) {
-          $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount + $value->round_off;
-          $vat_amt = ($total_amt * ($value['delivery_order']->vat_percentage / 100));
-          $total_amt = $vat_amt + $total_amt;
-          } else {
-          $total_amt = $tot_amt;
-          }
-          }
-          echo number_format($tot_amt, 2, '.', '');
-          //                        if (isset($customer_diff)) {
-          //                            echo (($value1->price + $value1['order_product_details']['difference'] + $customer_diff + $value['delivery_location']['difference']) * $value1->quantity);
-          //                        } else {
-          //                            echo (($value1->price + $value1['order_product_details']['difference'] + $value['delivery_location']['difference']) * $value1->quantity);
-          //                        }
-          ?>
-          </td>
-          @else
-          <td>{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
-          <td>Pieces</td>
-          @if((isset($value1->actual_quantity)) && ($value1->actual_quantity!=""))
-          <td><?= round($value1->actual_quantity, 2) ?></td>
-          @else
-          <td></td>
-          @endif
-          <td>{{ isset($value1->price) ? $value1->price : '' }}</td>
-          <td><?php ($value1['order_product_details']['weight'] * $value1->actual_pieces * $value1->price) ?></td>
-          @endif
-
-          <td>{{ ($next_cnt == $current_number) ? (isset($value->discount) ? $value->discount : '') : '' }}</td>
-
-          <td>{{ ($next_cnt == $current_number) ? (isset($value->loading_charge) ? $value->loading_charge : '') : '' }}</td>
-
-          <td>{{ ($next_cnt == $current_number) ? (isset($value->freight) ? $value->freight : '') : '' }}</td>
-
-          <td>{{ ($next_cnt == $current_number) ? (($type_of_bill == "P") ? "VAT" : "All inclusive") : '' }}</td>
-          <!--                    <td><?php
-          echo  substr($value->serial_number, -1);
-          ?></td>-->
-
-
-          @if($next_cnt == $current_number)
-          <td>
-          <?php
-          if ($value->vat_percentage !== "" & $type_of_bill == "P")
-          echo $value->vat_percentage . "%";
-          else
-          echo "0%"
-          ?>
-          </td>
-          @else
-          <td></td>
-          @endif
-
-          @if($next_cnt == $current_number)
-          <td>
-          <?php
-          if ($type_of_bill == "P")
-          echo number_format($grand_vat_amt, 2, '.', '');
-          else
-          echo "0";
-          ?>
-          </td>
-          @else
-          <td></td>
-          @endif
-
-          <td>{{ ($next_cnt == $current_number) ? (isset($value->round_off) ? $value->round_off : '') : '' }}</td>
-
-          <td>{{ ($next_cnt == $current_number) ? (isset($value->grand_price) ? number_format($value->grand_price, 2, '.', '') : '') : '' }}</td>
-          <td>
-          <?php
-          if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
-          echo "[" . $value['delivery_order']->vehicle_number . "]";
-          if ((isset($value->remark)) && ($value->remark != ""))
-          echo "[" . $value->remark . "]";
-          if ((isset($value['delivery_location']->area_name)) && ($value['delivery_location']->area_name != ""))
-          echo "[" . $value['delivery_location']->area_name . "]";
-          ?>
-          </td>
-          <td>{{ isset($value->remarks) ? $value->remarks : '' }}</td>
-          </tr>
-          <?php
-          $current_number++;
-          }
-          $i++;
-          if ($next_cnt != 0) {
-          $j++;
-          }
-          } */
-        ?>
+    }
+?>
     </table>
 </html>
