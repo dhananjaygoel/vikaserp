@@ -157,7 +157,7 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                            @if(Auth::user()->role_id == 0)
                                             <a href="{{URL::action('DeliveryChallanController@edit', ['delivery_challan'=> $challan->id])}}" class="table-link" title="edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -189,7 +189,7 @@
                                                     <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                            @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1 )
                                             <a href="#" class="table-link danger" data-toggle="modal" data-target="#delete_challan" title="delete" onclick="delete_challan({{$challan->id}})">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
