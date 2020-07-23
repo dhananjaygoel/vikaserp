@@ -1991,7 +1991,7 @@ class OrderController extends Controller {
                         'order_id' => $delivery_order_id,
                         'order_type' => 'delivery_order',
                         'from' => '',
-                        'product_category_id' => $product_data['id'],
+                        'product_category_id' => $product_data['product_category_id'],
                         'length' => isset($product_data['length']) ? $product_data['length'] :'NULL',
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
@@ -2052,7 +2052,7 @@ class OrderController extends Controller {
                     $i = 1;
                     foreach ($input_data['product'] as $product_data) {
                         if ($product_data['name'] != "") {
-                            $product = ProductSubCategory::find($product_data['id']);
+                            $product = ProductSubCategory::find(isset($product_data['id']) && $product_data['id'] != ""?$product_data['id']:$product_data['product_category_id']);
                             if ($product_data['units'] == 1) {
                                 $total_quantity = (float)$product_data['quantity'];
                             }
