@@ -249,7 +249,7 @@
                                             </a>
                                             @endif
 
-                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                            @if(Auth::user()->role_id == 0)
                                                <a target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link" title="Generate Invoice">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
