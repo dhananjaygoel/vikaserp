@@ -120,7 +120,12 @@
                     <?php $tot_amt = $value1->price * $value1->quantity;
                     ?>
                     <td style="height:16px;">{{ round($tot_amt,2) }}</td>
-                    <td style="height:16px;">{{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}</td>
+                    <td style="height:16px;">
+                    <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                    ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}</td>
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
             <?php }?>
