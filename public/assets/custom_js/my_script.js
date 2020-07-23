@@ -866,20 +866,26 @@ $('.print_delivery_order').click(function () {
         data: {send_whatsapp:send_whatsapp,empty_truck_weight:empty_truck_weight,vehicle_number:vehicle_number,customer_type:customer_type},
         url: base_url + '/print_delivery_order/' + $(this).val() + '?send_sms=' + send_sms,
         success: function (data) {
+            console.log(data);
             $('#print_challan').modal('hide');
-           var printWindow = window.open(data);
-            // var printWindow = window.open('', '');
-//            printWindow.document.open();
-            if (printWindow) {
-                printWindow.document.write(data);
-                printWindow.print();
-                printWindow.close();
-                printWindow.onunload = function () {
-//                location.reload();
-
-                };
-                $('.print_delivery_order').html('Generate DO').prop("disabled", false);
+            if(data == "failed"){
+                $('#flash_error').html('You can not print many time, please contact your administrator');
                 location.reload();
+            }else{
+                var printWindow = window.open(data);
+                // var printWindow = window.open('', '');
+    //            printWindow.document.open();
+                if (printWindow) {
+                    printWindow.document.write(data);
+                    printWindow.print();
+                    printWindow.close();
+                    printWindow.onunload = function () {
+    //                location.reload();
+
+                    };
+                    $('.print_delivery_order').html('Generate DO').prop("disabled", false);
+                    location.reload();
+                }
             }
         }
     });

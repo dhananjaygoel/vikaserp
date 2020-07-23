@@ -2362,6 +2362,13 @@ class DeliveryOrderController extends Controller {
 
     public function print_delivery_order($id, DropboxStorageRepository $connection) {
 
+        if(Auth::user()->role_id != 0){
+            $do =  DeliveryOrder::where('id', $id)->first();
+            if(isset($do->printed_by) && !empty($do->printed_by)){
+                \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
+                return 'failed';
+            }
+        }
         if (Input::has('empty_truck_weight')) {
             $empty_truck_weight = Input::get('empty_truck_weight');
             if ($empty_truck_weight != "0" || $empty_truck_weight != "") {

@@ -149,7 +149,9 @@
                             <strong> {{ Session::get('error') }} </strong>
                         </div>
                         @endif
-
+                        @if (Session::has('flash_message_err'))
+                            <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('flash_message_err') }}</div>
+                        @endif
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-success1">{{Session::get('success')}}</div>
                         @endif
