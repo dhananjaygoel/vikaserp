@@ -392,25 +392,33 @@
                                             @endif
 
 
-                                            @if($delivery->serial_no == "" || Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
-                                                @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
-                                                <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
-                                                <input type="hidden" id="is_gst{{$delivery->id}}" value="{{$delivery->is_gst}}">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                                    </a>
-                                                
-                                                @endif
-
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0  || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
-                                                    <span class="table-link normal_cursor" title="print">
+                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                                                @if(Auth::user()->role_id == 0)
+                                                    <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
+                                                    <input type="hidden" id="is_gst{{$delivery->id}}" value="{{$delivery->is_gst}}">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-print fa-stack-1x fa-inverse"></i>
                                                     </span>
-                                                    </span>
+                                                        </a>
+                                                @elseif(Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+                                                    @if(isset($delivery->printed_by) && !empty($delivery->printed_by))
+                                                        <a class="table-link disabled" title="print" data-toggle="modal">
+                                                            <span class="fa-stack">
+                                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                                <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                            </span>
+                                                        </a>
+                                                    @else
+                                                        <a href="#" class="table-link" title="print" data-toggle="modal" data-target="#print_challan" id="{{$delivery->id}}" data-bind="{{$delivery->empty_truck_weight}}" data-customer_type="{{$delivery->order_source}}" data-vehicle_number="{{$delivery->vehicle_number}}"  onclick="print_challan_do(this)">
+                                                            <input type="hidden" id="is_gst{{$delivery->id}}" value="{{$delivery->is_gst}}">
+                                                            <span class="fa-stack">
+                                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                                <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                            </span>
+                                                        </a>
+                                                    @endif
+                                                @endif
                                             @endif
 
                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1   )

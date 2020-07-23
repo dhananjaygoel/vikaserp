@@ -116,11 +116,16 @@
                         <td style="height:16px;">Kg</td>
                     @endif
                     <td style="height:16px;">{{ isset($value1->actual_quantity) ? $value1->actual_quantity : '' }}</td>
-                    <td style="height:16px;">{{ isset($value1->price) ? $value1->price : '0' }}</td>
+                    <td style="height:16px;">{{ ((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $product_cat->price) }}</td>
                     <?php $tot_amt = $value1->price * $value1->quantity;
                     ?>
                     <td style="height:16px;">{{ round($tot_amt,2) }}</td>
-                    <td style="height:16px;">{{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}</td>
+                    <td style="height:16px;">
+                    <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                    ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}</td>
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
             <?php }?>
@@ -212,21 +217,27 @@
                     </td> 
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
-                <tr style="border:2px solid green;">    
-                    <td style="height:18px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-                    <td style="height:18px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
-                    <td></td><td></td>
-                    <td style="height:18px;"> <b>Total</b></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:18px;"><b>{{ round($tot,0) }}</b></td>
-                    <td style="height:18px;">
+                <tr>    
+                    <td style="height:18px;border:2px solid #4fe24f;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:18px;border:2px solid #4fe24f;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"> <b>Total</b></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"><b>{{ round($tot,0) }}</b></td>
+                    <td style="height:18px;border:2px solid #4fe24f;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
                             echo "[" . $value['delivery_order']->vehicle_number . "]";  
                         ?>
                         {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
                     </td>                
-                    <td style="height:18px;">{{$VchNo}}</td>
+                    <td style="height:18px;border:2px solid #4fe24f;">{{$VchNo}}</td>
                 </tr>
 <?php 
         $VchNo++;

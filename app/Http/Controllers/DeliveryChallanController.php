@@ -581,6 +581,7 @@ class DeliveryChallanController extends Controller {
 
         $input_data = Input::all();
         $tasked = $input_data['task'];
+
         // echo '<pre>';
         // print_r($tasked);
         // exit;
@@ -958,10 +959,10 @@ class DeliveryChallanController extends Controller {
         }
 
         DeliveryChallan::where('id',$id)->update(['is_editable'=>1]);
-        if($tasked == 'del_ch') {
-            return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly '.$whatsapp_error);
-        } else {
+        if($tasked == 'dailyProforma'){
             return redirect('daily_pro_forma_invoice' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly'.$whatsapp_error);
+        }else {
+            return redirect('delivery_challan' . $parameters)->with('flash_message', 'Delivery Challan details updated successfuly '.$whatsapp_error);
         }
     }
 
