@@ -2383,10 +2383,12 @@ class DeliveryOrderController extends Controller {
         set_time_limit(0);
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
-        DeliveryOrder::where('id', $id)->update([
-            'printed_by' => Auth::id(),
-            'print_time' => date("Y-m-d H:i:s"),
-        ]);
+        if(Auth::user()->role_id != 0){
+            DeliveryOrder::where('id', $id)->update([
+                'printed_by' => Auth::id(),
+                'print_time' => date("Y-m-d H:i:s"),
+            ]);
+        }
         // if (count((array)$do) <= 0) {
         //     $number = '1';
         // } else {
