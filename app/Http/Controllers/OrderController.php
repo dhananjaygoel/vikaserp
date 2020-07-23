@@ -1991,7 +1991,7 @@ class OrderController extends Controller {
                         'order_id' => $delivery_order_id,
                         'order_type' => 'delivery_order',
                         'from' => '',
-                        'product_category_id' => $product_data['product_category_id'],
+                        'product_category_id' => $product_data['id'],
                         'length' => isset($product_data['length']) ? $product_data['length'] :'NULL',
                         'unit_id' => $product_data['units'],
                         'quantity' => $product_data['present_shipping'],
