@@ -72,7 +72,7 @@ class DashboardController extends Controller {
         }
 
         if (Auth::user()->role_id == 4) {
-            return Redirect::to('customers');
+            return Redirect::to('delivery_order');
         }
         if (Auth::user()->role_id == 6) {
             return Redirect::to('due-payment');
