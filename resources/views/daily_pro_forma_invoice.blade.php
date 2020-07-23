@@ -282,7 +282,7 @@
                                                                 @endif
                                                             @endif
                                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 1)
-                                                                <a style="margin:0" href="{{url('delivery_challan/'.$challan->id.'/edit')}}" class="table-link" title="edit">
+                                                                <a style="margin:0" href="{{url('delivery_challan/'.$challan->id.'/edit')}}?task=dailyProforma" class="table-link" title="edit">
                                                                     <span class="fa-stack">
                                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                                         <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
