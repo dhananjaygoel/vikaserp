@@ -1165,8 +1165,8 @@ var qtyPieces = '<option value = "1">1</option>'+
         '<td class="col-md-2">' +
         '<div class="form-group searchproduct">' +
         '<input class="form-control each_product_detail" placeholder="Enter product name " type="text" data-productid="' + current_row_count + '" name="product[' + current_row_count + '][name]" id="add_product_name_' + current_row_count + '" onfocus="getProductDetails(' + current_row_count + ');">' +
-        '<input type="hidden" name="product[' + current_row_count + '][product_category_id]" id="add_product_id_' + current_row_count + '">' +
         '<input type="hidden" name="product[' + current_row_count + '][id]" id="add_product_id_' + current_row_count + '">' +
+        '<input type="hidden" name="product[' + current_row_count + '][order]" >' +
     //            '<i class="fa fa-search search-icon"></i>' +
         '</div>' +
         '</td>' +
