@@ -8060,7 +8060,7 @@ h1.printwrapper{margin:20px 0px;color:#000}
 .actionicons .fa-stack-1x, .actionicons a.table-link .fa-inverse, .theme-whbl  #table-example .actionicons .btn-primary { background: #3498db; margin: 0 2px; width: 2em; border-bottom: 3px solid #2980b9; border-radius: 4px; height: 26px; line-height: 24px; vertical-align: top; }
 .actionicons a.table-link { margin: 0 2px; }
 .actionicons a.table-link.danger .fa-stack .fa-inverse { background: #e74c3c; border-bottom: 3px solid #ab382c; }
-.actionicons a.table-link.disabled .fa-stack .fa-inverse{ background: #9a9f9f; border-bottom: 3px solid #807b7b;}
+.actionicons a.table-link.disabled .fa-stack .fa-inverse{ background: #344644; border-bottom: 3px solid #344644;}
 .truck_willer {
     margin-top: 5px;
     padding-top: 5px;
