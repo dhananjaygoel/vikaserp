@@ -32,7 +32,7 @@ class SalesDaybookExport implements FromView, ShouldAutoSize
                         ->where('updated_at', 'like', $date1 . '%')
                         ->where('serial_number', 'like', '%P%')
 //                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
-                        ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
+                        ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
                         ->get();
             } else {
@@ -41,13 +41,13 @@ class SalesDaybookExport implements FromView, ShouldAutoSize
                         ->where('updated_at', '<=', $date2 . ' 23:59:59')
                         ->where('serial_number', 'like', '%P%')
 //                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
-                        ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
+                        ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
                         ->get();
             }
         } else {
             $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
-                    ->with('delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
+                    ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                     ->where('serial_number', 'like', '%P%')
                     ->orderBy('updated_at', 'desc')
                     ->get();
