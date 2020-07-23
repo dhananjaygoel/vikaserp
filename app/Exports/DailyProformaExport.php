@@ -35,6 +35,7 @@ class DailyProformaExport implements FromView, ShouldAutoSize
                         ->where('serial_number', 'like', '%A%')
                         ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
+                        ->orderBy('serial_number', 'desc')
                         ->get();
             } else {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
@@ -43,6 +44,7 @@ class DailyProformaExport implements FromView, ShouldAutoSize
                         ->where('serial_number', 'like', '%A%')
                         ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
+                        ->orderBy('serial_number', 'desc')
                         ->get();
             }
         } else {
@@ -50,6 +52,7 @@ class DailyProformaExport implements FromView, ShouldAutoSize
                     ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                     ->where('serial_number', 'like', '%A%')
                     ->orderBy('updated_at', 'desc')
+                    ->orderBy('serial_number', 'desc')
                     ->get();
         }    
         $VchNo = 0;        
