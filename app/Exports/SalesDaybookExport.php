@@ -34,6 +34,7 @@ class SalesDaybookExport implements FromView, ShouldAutoSize
 //                       >with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
+                        ->orderBy('serial_number', 'desc')
                         ->get();
             } else {
                 $allorders = DeliveryChallan::where('challan_status', '=', 'completed')
@@ -43,6 +44,7 @@ class SalesDaybookExport implements FromView, ShouldAutoSize
 //                        ->with('customer.states', 'customer.customerproduct', 'delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'delivery_challan_products.order_product_details.product_category', 'delivery_order', 'user', 'delivery_location', 'challan_loaded_by', 'challan_labours')
                         ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                         ->orderBy('updated_at', 'desc')
+                        ->orderBy('serial_number', 'desc')
                         ->get();
             }
         } else {
@@ -50,6 +52,7 @@ class SalesDaybookExport implements FromView, ShouldAutoSize
                     ->with('delivery_order', 'delivery_challan_products.order_product_details', 'challan_loaded_by', 'challan_labours')
                     ->where('serial_number', 'like', '%P%')
                     ->orderBy('updated_at', 'desc')
+                    ->orderBy('serial_number', 'desc')
                     ->get();
         }    
         if (count((array)$allorders) < 1) {
