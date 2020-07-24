@@ -396,10 +396,24 @@
                                     <input id="billno" class="form-control" placeholder="Bill Number" name="billno" value="" type="hidden">
                                 </div>
                                 @endif
-                                <div class="form-group">
-                                    <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
-                                    <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
-                                </div>
+                                @if(isset($delivery_data->vehicle_number) && $delivery_data->vehicle_number != "")
+                                    @if(Auth::user()->role_id == 0)
+                                        <div class="form-group">
+                                            <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
+                                            <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
+                                        </div>
+                                    @else
+                                        <div class="form-group">
+                                            <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
+                                            <input readonly id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="form-group">
+                                        <label for="challan_vehicle_number"><b class="challan">Vehicle Number</b></label>
+                                        <input id="challan_vehicle_number" class="form-control" name="challan_vehicle_number" value="{{isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number:''}}" type="text">
+                                    </div>
+                                @endif
                                 
                                 <div class="form-group">
                                     <label for="challan_remark"><b class="challan">Remark</b></label>

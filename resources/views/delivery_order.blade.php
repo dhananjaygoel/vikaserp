@@ -502,9 +502,21 @@
                                                 <div class="col-md-3">
                                                     <label><span title="Vehicle Number" class="smstooltip ">Vehicle Number</span></label>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
-                                                </div>
+                                                @if(isset($delivery_data->vehicle_number) && $delivery_data->vehicle_number != "")
+                                                    @if(Auth::user()->role_id == 0)
+                                                        <div class="col-md-3">
+                                                            <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
+                                                        </div>
+                                                    @else
+                                                        <div class="col-md-3">
+                                                            <input readonly type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
+                                                        </div>
+                                                    @endif
+                                                @else
+                                                    <div class="col-md-3">
+                                                        <input type="text" id="vehicle_no" value="" class="form-control vehicle_number" name="vehicle_number" >
+                                                    </div>
+                                                @endif
                                                 <div class="checkbox col-md-12">
                                                     <label style="margin-right:10px;"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
                                                     <label><input type="checkbox" id="checksms" value="yes" checked><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>

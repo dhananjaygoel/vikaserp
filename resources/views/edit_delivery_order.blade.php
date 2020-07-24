@@ -548,11 +548,25 @@
                             </div>
                             </div>
                              <div class="clearfix"></div>
+                            @if(isset($delivery_data->vehicle_number) && $delivery_data->vehicle_number != "")
+                                @if(Auth::user()->role_id == 0)
+                                    <div class="form-group">
+                                        <label for="vehicle_name">Vehicle Number</label>
+                                        <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="vehicle_name">Vehicle Number</label>
+                                        <input readonly id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
+                                    </div>
+                                @endif
+                            @else
+                                <div class="form-group">
+                                    <label for="vehicle_name">Vehicle Number</label>
+                                    <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
+                                </div>
+                            @endif
 
-                            <div class="form-group">
-                                <label for="vehicle_name">Vehicle Number</label>
-                                <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{ $delivery_data->vehicle_number }}" type="text">
-                            </div>
                             <div class="form-group">
                                 <label for="driver_contact">Driver Contact</label>
                                 <input id="driver_contact" class="form-control" placeholder="Driver Contact" name="driver_contact" value="{{ $delivery_data->driver_contact_no }}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="tel">
