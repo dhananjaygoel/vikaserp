@@ -1410,7 +1410,7 @@ class DeliveryOrderController extends Controller {
                         }
                         if ($product_data['units'] == 2) {
                             $prod_quantity = (float)$product_data['actual_quantity'] * (float)$product_row->weight;
-                            $total_quantity = $total_quantity + $product_data['actual_quantity']
+                            $total_quantity = $total_quantity + $product_data['actual_quantity'];
                         }
                         if ($product_data['units'] == 3) {
                             $prod_quantity = ((float)$product_data['actual_quantity'] / (float)$product_row->standard_length ) * (float)$product_row->weight;
