@@ -78,8 +78,8 @@
                 ?>
                 
                 <tr>
-                    <th>Empty Truck Weight: {{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}}</th>
-                    <th>Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }}</th>
+                    <th>Empty Truck Weight: {{isset($allorder->delivery_order->empty_truck_weight)?$allorder->delivery_order->empty_truck_weight:'0'}} KG</th>
+                    <th>Final Truck Weight: {{isset($allorder->delivery_order->final_truck_weight)?$allorder->delivery_order->final_truck_weight:'0' }} KG</th>
                 </tr>
                     <?php } ?> 
                     
@@ -145,7 +145,7 @@
                         <td>{{ $prod->order_product_all_details->alias_name }}</td>
                         <td>{{ $prod->order_product_all_details->hsn_code }}</td>
                         <td>{{ $prod->actual_pieces }}</td>
-                        <td>{{ round($prod->actual_quantity) }}</td>
+                        <td>{{ round($prod->actual_quantity) }} KG</td>
                         <?php
 
                         $productsub = \App\ProductSubCategory::where('id',$prod['product_category_id'])->first();
@@ -182,11 +182,11 @@
                         @else
                             <td>{{$gst}}</td>
                         @endif
-                        <td><?php echo $rate = (float)(isset($prod->price) && $prod->price !=0) ? $prod->price : $prod['order_product_all_details']->product_category['price']; ?></td>
+                        <td>₹ <?php echo $rate = (float)(isset($prod->price) && $prod->price !=0) ? $prod->price : $prod['order_product_all_details']->product_category['price']; ?></td>
                         <td><?php $total_price = (float)$rate * (float)$prod->actual_quantity; 
                             $final_total_amt += (float)$total_price;
                             ?>
-                            {{ ($rate * (float)$prod->actual_quantity) }}</td>
+                            ₹ {{ ($rate * (float)$prod->actual_quantity) }}</td>
                     </tr>
                 </tbody>
                 <?php
@@ -219,7 +219,7 @@
             <tbody>
                 <tr>
                     <td  class="spacing" valign="top">
-                        <div>Total Quantity: <span class="total-qty">{{ round($allorder->delivery_challan_products->sum('actual_quantity'), 2) }}</span></div>
+                        <div>Total Quantity: <span class="total-qty">{{ round($allorder->delivery_challan_products->sum('actual_quantity'), 2) }} KG</span></div>
                         <div>Remarks: <span class="remarks">{{$allorder->remarks}}</span></div>
                         <table class="sm-table-data-left">
                             <tbody>
@@ -239,10 +239,10 @@
                                 @foreach($allorder['hsn'] as $hsn)
                                 <tr>
                                     <td>{{ $hsn['id'] }}</td>
-                                    <td>{{ round($hsn['actual_quantity'], 2) }}</td>
-                                    <td>{{ round($hsn['amount'], 2) }}</td>
+                                    <td>{{ round($hsn['actual_quantity'], 2) }} KG</td>
+                                    <td>₹ {{ round($hsn['amount'], 2) }}</td>
                                     <td>{{ round($hsn['vat_percentage'], 2) }}</td>
-                                    <td>{{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</td>
+                                    <td>₹ {{ round(($hsn['amount'] +$hsn['vat_amount']), 2) }}</td>
                                 </tr>
                                 <?php
                                     $gst_percentage = $hsn['vat_percentage'];
@@ -253,10 +253,10 @@
                                 @endforeach
                                 <tr>
                                     <td><b>Total</b></td>
-                                    <td><b>{{ round($total_qty, 2) }}</b></td>
-                                    <td><b>{{ round($total_amount, 2) }}</b></td>
+                                    <td><b>{{ round($total_qty, 2) }} KG</b></td>
+                                    <td><b>₹ {{ round($total_amount, 2) }}</b></td>
                                     <td><b>{{ round($gst_percentage, 2) }}</b></td>
-                                    <td><b>{{ round($total_inc_gst, 2) }}</b></td>
+                                    <td><b>₹ {{ round($total_inc_gst, 2) }}</b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -266,7 +266,7 @@
                             <tbody>
                                 <tr>
                                     <td class="lable">Total</td>
-                                    <td class="total-count">{{ round($final_total_amt, 2) }}</td>
+                                    <td class="total-count">₹ {{ round($final_total_amt, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Loading</td>
@@ -275,17 +275,17 @@
                                     $loading_charge = $allorder->loading_charge;
                                     $loading_vat = $allorder->loading_vat_percentage;
                                     ?>
-                                    {{($loading_charge != "")?round($loading_charge,2):0}}</td>
+                                    ₹ {{($loading_charge != "")?round($loading_charge,2):0}}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Freight</td>
                                     <td class="total-count">
-                                    {{($allorder->freight != "")?round($allorder->freight,2):0}}</td>
+                                    ₹ {{($allorder->freight != "")?round($allorder->freight,2):0}}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Discount</td>
                                     <td class="total-count">
-                                    {{($allorder->discount != "")?round($allorder->discount,2):0}}</td>
+                                    ₹ {{($allorder->discount != "")?round($allorder->discount,2):0}}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Total</td>
@@ -293,7 +293,7 @@
                                     <?php 
                                     $with_total = (float)$final_total_amt + (float)$loading_charge + (float)$allorder->freight + (float)$allorder->discount; 
                                     ?>
-                                    {{ round($with_total, 2) }}</td>
+                                    ₹ {{ round($with_total, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">
@@ -312,7 +312,7 @@
                                     <?php
                                         $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>
-                                    {{ round($vat,2) }}</td>
+                                    ₹ {{ round($vat,2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Round Off</td>
@@ -321,7 +321,7 @@
                                         $roundoff = round($vat,2) + round($with_total,2);
                                         $roundoff = round($roundoff,0) - $roundoff;
                                     ?>
-                                    {{ round($roundoff,2) }}</td>
+                                    ₹ {{ round($roundoff,2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">GT</td>
@@ -342,7 +342,7 @@
                                             $grand_price = $grand_price + $allorder->discount;
                                         }
                                     ?>
-                                    {{ round($grand_price + $vat, 0) }}</td>
+                                    ₹ {{ round($grand_price + $vat, 0) }}</td>
                                 </tr>
                             </tbody>
                         </table>
