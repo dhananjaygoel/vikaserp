@@ -873,23 +873,7 @@ class DeliveryChallanController extends Controller {
                 $i = 1;
                 foreach ($input_data as $product_data) {
                     if ($product_data['order_product_details']->alias_name != "") {
-                        $product = ProductSubCategory::find($product_data['product_category_id']);
-                        if ($product_data['unit_id'] == 1) {
-                            $total_quantity = (float)$product_data['quantity'];
-                        }
-                        if ($product_data['unit_id'] == 2) {
-                            $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
-                        }
-                        if ($product_data['unit_id'] == 3) {
-                            $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
-                        }
-                        if ($product_data['unit_id'] == 4) {
-                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
-                        }
-                        if ($product_data['unit_id'] == 5) {
-                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
-                        }
-                        $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
+                        $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . ", " . round($product_data['quantity'],2) . "KG, ₹". $product_data['price'] . " ";
                     }
                 }
                 if (count((array)$cust_count) > 0) {
@@ -1765,8 +1749,6 @@ class DeliveryChallanController extends Controller {
 
 //        $update_delivery_challan = $this->calc_qty_product_type_wise($update_delivery_challan);
 
-        
-
         /*
           | ------------------- -----------------------
           | SEND SMS TO CUSTOMER FOR NEW DELIVERY CHALLAN
@@ -1791,26 +1773,31 @@ class DeliveryChallanController extends Controller {
                     $product = ProductSubCategory::find($product_data['product_category_id']);
                     if ($product_data['unit_id'] == 1) {
                         $total_quantity = (float)$product_data['quantity'];
-                        $tot_quantity = $tot_quantity + $total_quantity;
+                        $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 2) {
                         $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
-                        $tot_quantity = $tot_quantity + $total_quantity;
+                        $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 3) {
                         $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
-                        $tot_quantity = $tot_quantity + $total_quantity;
+                        $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 4) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
-                        $tot_quantity = $tot_quantity + $total_quantity;
+                        $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 5) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
-                        $tot_quantity = $tot_quantity + $total_quantity;
+                        $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
-                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
+                    $product_string .= $i++ . ") " . $product_data['order_product_details']->alias_name . ", " . round((float)$product_data['quantity'],2) . "KG, ₹". $product_data['price'] . " ";
                 }
+                /* check for vat/gst items */
+                if (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] != '0.00') {
+                    $gst_link = 1;
+                }
+                /**/
             }
             if ($cust_count > 0) {
                 $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nVIKAS ASSOCIATES."; 
@@ -1824,17 +1811,25 @@ class DeliveryChallanController extends Controller {
                     $send_msg = new WelcomeController();
                     $send_msg->send_sms($phone_number,$msg);
                 }
-                DB::table('file_info')->insert(array(
-                    'file_name' => $file_name.".pdf",
-                    'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
-                    'uuid' => $uuid,
-                    'status' => 0
-                ));
-                $link = URL::to("/download_dc/".$uuid);
-                $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nDownload your Delivery Challan from following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
-                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
-                    $send_msg = new WelcomeController();
-                    $send_msg->send_whatsapp($phone_number,$str);                    
+                if(isset($gst_link) && $gst_link == 1){
+                    DB::table('file_info')->insert(array(
+                        'file_name' => $file_name.".pdf",
+                        'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
+                        'uuid' => $uuid,
+                        'status' => 0
+                    ));
+                    $link = URL::to("/download_dc/".$uuid);
+                    $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nDownload your Delivery Challan from following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
+                    if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_whatsapp($phone_number,$str);                    
+                    }
+                }else{
+                    $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nVIKAS ASSOCIATES."; 
+                    if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
+                        $send_msg = new WelcomeController();
+                        $send_msg->send_whatsapp($phone_number,$str);                    
+                    }
                 }
             }
             if (count((array)$customer['manager']) > 0) {
