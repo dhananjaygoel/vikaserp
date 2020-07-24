@@ -77,6 +77,7 @@
                         <input type="hidden" name="delivery_id" id ="delivery_id" value="{{$delivery_data->id}}">
                         <input type="hidden" name="form_key" value="frm{{rand(100,1000000)}}">
                         <input type="hidden" id="customer_id" name="customer_id" value="{{isset($delivery_data['customer']->id)?$delivery_data['customer']->id:''}}">
+                        <input type="hidden" id="user_role_id" value="{{Auth::user()->role_id}}">
                         <div class="form-group">
                             <span>Serial Number: </span>{{($delivery_data->serial_no != "") ? $delivery_data->serial_no : '--'}}
                         </div>
