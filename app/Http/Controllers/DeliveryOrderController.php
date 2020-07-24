@@ -2362,13 +2362,6 @@ class DeliveryOrderController extends Controller {
 
     public function print_delivery_order($id, DropboxStorageRepository $connection) {
 
-        if(Auth::user()->role_id != 0){
-            $do =  DeliveryOrder::where('id', $id)->first();
-            if(isset($do->printed_by) && !empty($do->printed_by)){
-                \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
-                return 'failed';
-            }
-        }
         if (Input::has('empty_truck_weight')) {
             $empty_truck_weight = Input::get('empty_truck_weight');
             if ($empty_truck_weight != "0" || $empty_truck_weight != "") {
@@ -2390,27 +2383,11 @@ class DeliveryOrderController extends Controller {
         set_time_limit(0);
         $date_letter = 'DO/' . $current_date . "" . $id;
         $do = DeliveryOrder::where('updated_at', 'like', date('Y-m-d') . '%')->withTrashed()->get();
-        if(Auth::user()->role_id != 0){
-            DeliveryOrder::where('id', $id)->update([
-                'printed_by' => Auth::id(),
-                'print_time' => date("Y-m-d H:i:s"),
-            ]);
-        }
-        // if (count((array)$do) <= 0) {
-        //     $number = '1';
-        // } else {
-        //     $serial_numbers = [];
-        //     foreach ($do as $temp) {
-        //         $list = explode("/", $temp->serial_no);
-        //         $serial_numbers[] = $list[count((array)$list) - 1];
-        //         $pri_id = max($serial_numbers);
-        //         $number = $pri_id + 1;
-        //     }
-        // }
+        DeliveryOrder::where('id', $id)->update([
+            'printed_by' => Auth::id(),
+            'print_time' => date("Y-m-d H:i:s"),
+        ]);
 
-        // $date_letter = 'DO/' . $current_date . "" . $number;
-        // DeliveryOrder:: where('id', $id)->where('serial_no', '=', "")->update(array('serial_no' => $date_letter));
-//        DeliveryOrder:: where('id', $id)->update(array('serial_no' => $date_letter));
         $delivery_data = DeliveryOrder::with('customer', 'delivery_product.order_product_details')->find($id);
         $order_qty = 0;
         if (isset($delivery_data['delivery_product'])) {
