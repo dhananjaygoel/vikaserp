@@ -42,9 +42,9 @@
             <td style="height:16px;">Purchase Account</td>
             <td style="height:16px;">{{ isset($value1['purchase_product_details']->alias_name) ? $value1['purchase_product_details']->alias_name : '' }}</td>
             <td style="height:16px;">{{ isset($value1['purchase_product_details']->product_category->product_category_name) ? $value1['purchase_product_details']->product_category->product_category_name : '' }}</td>
-            <td style="height:16px;">{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
-            <td style="height:16px;">{{ isset($value1->unit->unit_name) ? $value1->unit->unit_name : '' }}</td>
-            <td style="height:16px;">
+            <td style="height:16px;text-align: left;">{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
+            <td style="height:16px;text-align: left;">{{ isset($value1->unit->unit_name) ? $value1->unit->unit_name : '' }}</td>
+            <td style="height:16px;text-align: left;">
                         <?php
                         if ($value1->unit_id == 1) {
                             $order_quantity = $order_quantity + $value1->quantity;
@@ -58,8 +58,8 @@
                         ?>
                         <?= round($value1->quantity, 2) ?>
             </td>
-            <td style="height:16px;">{{ isset($value1->price) ? $value1->price : '' }}</td>
-            <td style="height:16px;">
+            <td style="height:16px;text-align: left;">{{ isset($value1->price) ? $value1->price : '' }}</td>
+            <td style="height:16px;text-align: left;">
                         <?php
                         // Calculation Updated by 157 on 03-09-2015
                         $total_amt = "";
@@ -124,7 +124,7 @@
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Discount</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{ isset($value->discount) ? $value->discount : '0.00' }}</td>
+            <td style="height:16px;text-align: left;">{{ isset($value->discount) ? $value->discount : '0.00' }}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
@@ -139,7 +139,7 @@
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Loading</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{ isset($value->loading_charge) ? $value->loading_charge : '0.00' }}</td>
+            <td style="height:16px;text-align: left;">{{ isset($value->loading_charge) ? $value->loading_charge : '0.00' }}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
@@ -154,7 +154,7 @@
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Freight</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{isset($value->freight) ? $value->freight : '0.00'}}</td>
+            <td style="height:16px;text-align: left;">{{isset($value->freight) ? $value->freight : '0.00'}}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
@@ -169,7 +169,7 @@
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Tax</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">
+            <td style="height:16px;text-align: left;">
                 <?php
                         if($value->purchase_advice->vat_percentage != ""){
                             $discount =0;
@@ -219,7 +219,7 @@
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Round Off</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{ isset($value->round_off) ? $value->round_off : '' }}</td>
+            <td style="height:16px;text-align: left;">{{ isset($value->round_off) ? $value->round_off : '' }}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
@@ -253,6 +253,7 @@
         <?php
             $VchNo++;
         }
+        // dd('end');
         ?>
         
         
