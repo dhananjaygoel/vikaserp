@@ -129,7 +129,7 @@
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-                {{ (isset($value->remarks)&& $value->remarks!='')? $value->remarks : '' }}
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
             </td>
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
