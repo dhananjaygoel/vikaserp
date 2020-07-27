@@ -136,6 +136,10 @@
                                                         if ($total->unit_id == 3) {
                                                             $total_qunatity += ($total->present_shipping / $total['purchase_product_details']->standard_length ) * $total['purchase_product_details']->weight;
                                                         }
+
+                                                        $rate = (float)((isset($total->price) && $total->price != '0.00') ? $total->price : $total['purchase_product_details']->product_category['price']);
+                                                        $amount = (float)$total->quantity * (float)$rate;
+                                                        $total_amount = round($amount + $total_amount, 2);
                                                         ?>
                                                     @endforeach
                                                     <tr>
@@ -183,7 +187,9 @@
                                                             {{count((array)$lbr_arr)}}
                                                         </td>
                                                         <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
-                                                        <td>{{ $daybook->grand_total}}</td>
+                                                        <?php $grand_total = $total_amount + (isset($daybook->freight)?$daybook->freight:0) + (isset($daybook->discount)?$daybook->discount:0) ;
+                                                        ?>
+                                                        <td>{{ round($grand_total,2) }}</td>
                                                         <td>{{ $daybook->bill_number }}</td>
                                                         <td>
                                                             @if((strlen(trim($daybook->remarks))) > 50)
