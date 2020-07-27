@@ -91,22 +91,24 @@ class DashboardController extends Controller {
 
         foreach ($orders as $order) {
             if ($order->order_status == 'pending') {
+                $order_pending = 0;
                 foreach ($order->all_order_products as $all_order_products) {
                     if ($all_order_products->unit_id == 1){
-                        $order_pending_sum += $all_order_products->quantity;
+                        $order_pending += $all_order_products->quantity;
                     } elseif ($all_order_products->unit_id == 2){
-                        $order_pending_sum += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                        $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
                     } elseif ($all_order_products->unit_id == 3){
-                        $order_pending_sum += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                        $order_pending += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
                     } elseif ($all_order_products->unit_id == 4){
-                        $order_pending_sum += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                        $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
                     } elseif ($all_order_products->unit_id == 5){
-                        $order_pending_sum += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                        $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
                     }
 
                     // $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
                     //     $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity, $all_order_products->product_sub_category, $all_order_products->length);
                 }
+                $order_pending_sum += round($order_pending,2);
             }
         }
 
@@ -119,17 +121,18 @@ class DashboardController extends Controller {
         $inquiries = Inquiry::with('inquiry_products')->get();
         foreach ($inquiries as $inquiry) {
             if ($inquiry->inquiry_status == 'pending' && $inquiry->is_approved == 'yes') {
+                $inquiry_pending = 0;
                 foreach ($inquiry->inquiry_products as $all_inquiry_products) {
                     if ($all_inquiry_products->unit_id == 1){
-                        $inquiry_pending_sum += $all_inquiry_products->quantity;
+                        $inquiry_pending += $all_inquiry_products->quantity;
                     } elseif ($all_inquiry_products->unit_id == 2){
-                        $inquiry_pending_sum += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight;
+                        $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight;
                     } elseif ($all_inquiry_products->unit_id == 3){
-                        $inquiry_pending_sum += ($all_inquiry_products->quantity / $all_inquiry_products->product_sub_category->standard_length) * $all_inquiry_products->product_sub_category->weight;
+                        $inquiry_pending += ($all_inquiry_products->quantity / $all_inquiry_products->product_sub_category->standard_length) * $all_inquiry_products->product_sub_category->weight;
                     } elseif ($all_inquiry_products->unit_id == 4){
-                        $inquiry_pending_sum += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * $all_inquiry_products->length;
+                        $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * $all_inquiry_products->length;
                     } elseif ($all_inquiry_products->unit_id == 5){
-                        $inquiry_pending_sum += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * ($all_inquiry_products->length/305);
+                        $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * ($all_inquiry_products->length/305);
                     }
 
                 // if ($inquiry->inquiry_status == 'pending' && $inquiry->is_approved == 'yes') {
@@ -141,9 +144,9 @@ class DashboardController extends Controller {
                         // $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity, $all_inquiry_products->product_sub_category, $all_inquiry_products->length);
                         
                 }
+                $inquiry_pending_sum += round($inquiry_pending,2);
             }
         }
-
         $inquiry_pending_sum = $inquiry_pending_sum / 1000;
 
 
@@ -153,17 +156,18 @@ class DashboardController extends Controller {
 
         foreach ($delivery_order as $delivery_order_info) {
             if ($delivery_order_info->order_status == 'pending') {
+                $deliver_pending = 0;
                 foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
                     if ($delivery_order_productinfo->unit_id == 1){
-                        $deliver_pending_sum += $delivery_order_productinfo->quantity;
+                        $deliver_pending += $delivery_order_productinfo->quantity;
                     } elseif ($delivery_order_productinfo->unit_id == 2){
-                        $deliver_pending_sum += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight;
+                        $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight;
                     } elseif ($delivery_order_productinfo->unit_id == 3){
-                        $deliver_pending_sum += ($delivery_order_productinfo->quantity / $delivery_order_productinfo->product_sub_category->standard_length) * $delivery_order_productinfo->product_sub_category->weight;
+                        $deliver_pending += ($delivery_order_productinfo->quantity / $delivery_order_productinfo->product_sub_category->standard_length) * $delivery_order_productinfo->product_sub_category->weight;
                     } elseif ($delivery_order_productinfo->unit_id == 4){
-                        $deliver_pending_sum += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * $delivery_order_productinfo->length;
+                        $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * $delivery_order_productinfo->length;
                     } elseif ($delivery_order_productinfo->unit_id == 5){
-                        $deliver_pending_sum += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * ($delivery_order_productinfo->length/305);
+                        $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * ($delivery_order_productinfo->length/305);
                     }
 
                 //     if ($delivery_order_productinfo->unit_id == 1)
@@ -173,6 +177,7 @@ class DashboardController extends Controller {
                 //     // $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
                 //         $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity, $delivery_order_productinfo->product_sub_category, $delivery_order_productinfo->length);
                 }
+                $deliver_pending_sum += round($deliver_pending,2);
             }
         }
         $deliver_sum = $deliver_sum / 1000;
