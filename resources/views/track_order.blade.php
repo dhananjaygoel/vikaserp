@@ -93,7 +93,20 @@
                                 <tbody>
                                     @foreach($order_status_responase['order_details'] as $order_details) 
                                     @foreach($order_details->all_order_products as $all_order_products) 
-                                    <?php $qty = $qty + $all_order_products->quantity ?>
+                                    <?php 
+                                        //$qty = $qty + $all_order_products->quantity;
+                                        if ($all_order_products->unit_id == 1){
+                                            $qty = $qty + $all_order_products->quantity;
+                                        } elseif ($all_order_products->unit_id == 2){
+                                            $qty = $qty + $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                                        } elseif ($all_order_products->unit_id == 3){
+                                            $qty = $qty + ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                                        } elseif ($all_order_products->unit_id == 4){
+                                            $qty = $qty + $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                                        } elseif ($all_order_products->unit_id == 5){
+                                            $qty = $qty + $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                                        }
+                                    ?>
 
                                     @endforeach
 
@@ -162,7 +175,20 @@
                                     @foreach($order_status_responase['delivery_order_details'] as $delivery_order_details) 
                                     <?php $qty_do = 0; ?>
                                     @foreach($delivery_order_details->delivery_product as $all_order_products) 
-                                    <?php $qty_do = $qty_do + $all_order_products->quantity ?>
+                                    <?php 
+                                        // $qty_do = $qty_do + $all_order_products->quantity;
+                                        if ($all_order_products->unit_id == 1){
+                                            $qty_do += $all_order_products->quantity;
+                                        } elseif ($all_order_products->unit_id == 2){
+                                            $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                                        } elseif ($all_order_products->unit_id == 3){
+                                            $qty_do += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                                        } elseif ($all_order_products->unit_id == 4){
+                                            $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                                        } elseif ($all_order_products->unit_id == 5){
+                                            $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                                        }
+                                    ?>
                                     @endforeach
 
                                     <tr >
@@ -232,7 +258,20 @@
 
                                     <?php $qty_co = 0; ?>
                                     @foreach($delivery_challan_details->delivery_challan_products as $all_order_products) 
-                                    <?php $qty_co = $qty_co + $all_order_products->present_shipping ?>
+                                    <?php 
+                                        // $qty_co = $qty_co + $all_order_products->present_shipping;
+                                        if ($all_order_products->unit_id == 1){
+                                            $qty_co += $all_order_products->quantity;
+                                        } elseif ($all_order_products->unit_id == 2){
+                                            $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                                        } elseif ($all_order_products->unit_id == 3){
+                                            $qty_co += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                                        } elseif ($all_order_products->unit_id == 4){
+                                            $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                                        } elseif ($all_order_products->unit_id == 5){
+                                            $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                                        }
+                                    ?>
                                     @endforeach
 
 
