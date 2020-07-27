@@ -35,7 +35,7 @@
             ?>
         <tr>
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;">Purchase</td>
            <td>
                <!-- @if($value['supplier']->tally_name != "" && $value['supplier']->owner_name != "")
