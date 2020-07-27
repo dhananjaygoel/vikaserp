@@ -60,11 +60,11 @@
             <?php $product_data = isset($inquiry['inquiry_products']) && isset($inquiry['inquiry_products'][0]) ? $inquiry['inquiry_products'][0] : ''; ?>
             @if(isset($product_data))
             <td>{{isset($product_data['inquiry_product_details'])?$product_data['inquiry_product_details']->alias_name: ''}}</td>
-            <td>{{isset($product_data->quantity) ? $product_data->quantity:''}}</td>
+            <td>{{isset($product_data->quantity) ? $product_data->quantity:''}} KG</td>
             <td>{{isset($product_data['unit']->unit_name) ? $product_data['unit']->unit_name:''}}</td>
-            <td>{{isset($product_data->price) ? $product_data->price:''}}</td>
+            <td>₹ {{isset($product_data->price) ? $product_data->price:''}}</td>
             <td>{{isset($inquiry->vat_percentage) ? $inquiry->vat_percentage:''}}</td>
-            <td>{{isset($product_data->price) ? $product_data->price:''}}</td>
+            <td>₹ {{isset($product_data->price) ? $product_data->price:''}}</td>
             <td>{{isset($product_data->remarks) ? $product_data->remarks:''}}</td>
             @else
             <td></td>
@@ -76,7 +76,7 @@
             <td></td>
             @endif
 
-            <td>{{isset($inquiry->expected_delivery_date) ? date('F jS, Y',strtotime($inquiry->expected_delivery_date)):''}}</td>
+            <td>{{isset($inquiry->expected_delivery_date) ? date('j F, Y',strtotime($inquiry->expected_delivery_date)):''}}</td>
             <td>{{isset($inquiry->remarks) ? $inquiry->remarks :''}}</td>
         </tr>
         <?php $count = 0; ?>
@@ -91,11 +91,11 @@
             <td></td>
             <td></td>
             <td>{{isset($product_data['inquiry_product_details'])?$product_data['inquiry_product_details']->alias_name: ''}}</td>
-            <td>{{isset($product_data->quantity) ? $product_data->quantity:''}}</td>
+            <td>{{isset($product_data->quantity) ? $product_data->quantity:''}} KG</td>
             <td>{{isset($product_data['unit']->unit_name) ? $product_data['unit']->unit_name:''}}</td>
-            <td>{{isset($product_data->price) ? $product_data->price:''}}</td>
+            <td>₹ {{isset($product_data->price) ? $product_data->price:''}}</td>
             <td>{{isset($inquiry->vat_percentage) ? $inquiry->vat_percentage:''}}</td>
-            <td>{{isset($product_data->price) ? $product_data->price:''}}</td>
+            <td>₹ {{isset($product_data->price) ? $product_data->price:''}}</td>
             <td>{{isset($product_data->remarks) ? $product_data->remarks:''}}</td>
             <td></td>
             <td></td>
