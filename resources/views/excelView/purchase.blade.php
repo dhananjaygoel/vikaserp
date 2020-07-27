@@ -144,7 +144,7 @@
    
         <tr>
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>            
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>            
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Discount</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
@@ -159,7 +159,7 @@
         </tr> 
         <tr> 
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>           
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>           
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Loading</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
@@ -174,7 +174,7 @@
         </tr> 
         <tr>  
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Freight</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
@@ -189,7 +189,7 @@
         </tr>
         <tr>    
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Tax</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
@@ -242,7 +242,7 @@
          
          <tr>    
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Round Off</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
