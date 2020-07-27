@@ -98,7 +98,7 @@
                                         @foreach($inquiry['inquiry_products'] as $product_data)
                                         <tr>
                                             <td>{{isset($product_data['inquiry_product_details'])?$product_data['inquiry_product_details']->alias_name: ''}}</td>
-                                            <td>{{$product_data->quantity}} KG</td>
+                                            <td>{{$product_data->quantity}}</td>
                                             <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
                                             <td>{{isset($product_data->length)?$product_data->length:'0'}}</td>
                                             <td><div id='price_{{$product_data->id}}'>₹ {{$product_data->price}}</div></td>
