@@ -95,7 +95,7 @@
                                 @if(Auth::user()->role_id == 0)
                                     <!-- {{ $delivery_data->empty_truck_weight}} -->
                                     <input type="text" name="empty_truck_weight" value="{{$delivery_data->empty_truck_weight}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 10.33%;" maxlength="10">
-                                    <input type="hidden" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight">
+                                    <!-- <input type="hidden" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight"> -->
                                 @else
                                     <input readonly type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control" name="empty_truck_weight" style="width: 10.33%;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);">
                                 @endif

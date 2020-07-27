@@ -2321,7 +2321,8 @@ class DeliveryOrderController extends Controller {
             }
 
         }
-        DeliveryOrder:: where('id', '=', $id)->update(array('order_status' => 'completed',
+        DeliveryOrder:: where('id', '=', $id)->update(array(
+            'order_status' => 'completed',
             'empty_truck_weight' => $empty_truck_weight,
             'final_truck_weight' => $final_truck_weight,
         ));
