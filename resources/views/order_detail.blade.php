@@ -131,11 +131,11 @@
                                                     {{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:' '}}
                                                 </div>
                                             </td>
-                                            <td class="col-md-1"><div class="form-group">{{$product->quantity}}</div></td>
+                                            <td class="col-md-1"><div class="form-group">{{$product->quantity}} KG</div></td>
                                             <td class="col-md-1"><div class="form-group ">{{$product->length}}</div></td>
                                             <td class="col-md-2"><div class="form-group ">{{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}</div></td>
                                             <td class="col-md-2">
-                                                <div class="form-group">{{$product->price}}
+                                                <div class="form-group">₹ {{$product->price}}
                                                     <?php $total = $total + $product->price * $product->quantity; ?>
                                                 </div>
                                             </td>
@@ -158,10 +158,10 @@
 <!--                                        <tr>
                                             <td><span>Total: </span></td>
                                         </tr>-->
-                                        <tr><td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td></tr>
+                                        <tr><td><span>Expected Delivery Date: </span>{{ date("j F, Y", strtotime($order->expected_delivery_date)) }}</td></tr>
                                         <tr><td><span>Remark: </span>{{$order->remarks}}</td></tr>
                                         <tr><td><span>Order By : </span>{{(isset($order->createdby->first_name)?$order->createdby->first_name:'')." ".(isset($order->createdby->last_name)?$order->createdby->last_name:'')}}</td></tr>
-                                        <tr><td><span>Order Time/Date : </span>{{$order->updated_at}}</td></tr>
+                                        <tr><td><span>Order Time/Date : </span>{{ date("j F, Y h:i A", strtotime($order->updated_at)) }}</td></tr>
                                     </tbody>
                                 </table>
                                 <!--                                <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a>-->

@@ -73,7 +73,7 @@
                                         </tr>
                                     @endif
                                     <tr>
-                                        <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
+                                        <td><span>Date:</span> {{ date('j F, Y', strtotime ($delivery_data['created_at'])) }}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Serial Number: </span>
@@ -199,7 +199,7 @@
                                             @foreach($order_data['all_order_products'] as $all_order_products)
 
                                             @if($all_order_products->product_category_id == $product->product_category_id)
-                                            {{$all_order_products->quantity}}                                            
+                                            {{$all_order_products->quantity}} KG                                          
                                             @endif
                                             @endforeach
 
@@ -210,7 +210,7 @@
                                         <td>
                                         {{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}
                                         </td>
-                                        <td>{{$product->price}}</td>
+                                        <td>₹ {{$product->price}}</td>
                                         <td>
                                             <div class="form-group">
                                                 <input type="checkbox" disabled="" {{($product->vat_percentage>0)?'checked':''}} >
@@ -239,14 +239,14 @@
                                         <td><span>Order By : </span>{{(isset($delivery_data->order_details->createdby->first_name)?$delivery_data->order_details->createdby->first_name:'')." ".(isset($delivery_data->order_details->createdby->last_name)?$delivery_data->order_details->createdby->last_name:'')}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Order Time/Date : </span>{{(isset($delivery_data->order_details->updated_at)?$delivery_data->order_details->updated_at:'')}}</td>
+                                        <td><span>Order Time/Date : </span>{{(isset($delivery_data->order_details->updated_at) ? date('j F, Y h:i A', strtotime($delivery_data->order_details->updated_at)):"") }}</td>
                                     </tr>
                                     @endif                                    
                                     <tr>
                                         <td><span>Delivery Order By : </span>{{(isset($delivery_data->user->first_name)?$delivery_data->user->first_name:'')." ".(isset($delivery_data->user->last_name)?$delivery_data->user->last_name:'')}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Delivery Order Time/Date : </span>{{isset($delivery_data->updated_at)?$delivery_data->updated_at:''}}</td>
+                                        <td><span>Delivery Order Time/Date : </span>{{isset($delivery_data->updated_at)? date('j F, Y h:i A', strtotime($delivery_data->updated_at)):''}}</td>
                                     </tr>
                                 </tbody>
                             </table>

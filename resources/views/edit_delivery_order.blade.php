@@ -28,7 +28,7 @@
                                     @endforeach
                                 </div>
                             @endif
-                            <div class="form-group">Date : {{date('d F, Y')}}</div>
+                            <div class="form-group">Date : {{date('j F, Y')}}</div>
                             {!!Form::open(array('data-button'=>'btn_edit_delivery_order','method'=>'PUT','url'=>url('delivery_order/'.$delivery_data['id']),'id'=>'onenter_prevent'))!!}
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
@@ -155,7 +155,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label><b>Amount :</b> </label>
-                                    {{$delivery_data->discount}}
+                                    ₹ {{$delivery_data->discount}}
                                     <input type="hidden" id="discount_amount" name="discount" value="{{$delivery_data->discount}}" >
                                 </div>
                             @else

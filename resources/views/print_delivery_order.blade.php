@@ -36,21 +36,22 @@
                 </tr>
                 <tr>
                     <th>DO Number: {{isset($delivery_data->serial_no)?$delivery_data->serial_no:'' }}</th>
-                    <th>Date: {{date('F d, Y')}}</th>
-                    <th>Time: <?php
+                    <th>Date: {{date('j F, Y')}}</th>
+                    <th>Time: {{ date('h:i A')}}
+                        <!-- <?php
                         echo '<script type="text/javascript">
                             var x = new Date()
                             var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
                             document.write(current_time)
                             </script>';
-                        ?>
+                        ?> -->
                     </th>
                 </tr>
                 <tr>
                     <th>Vehicle No: {{ isset($delivery_data->vehicle_number)?$delivery_data->vehicle_number :'' }}</th>
                     <th>Driver Mob: {{ isset($delivery_data->driver_contact_no)?$delivery_data->driver_contact_no:'' }}</th>
                     @if($customer_type!="supplier")
-                    <th>Empty Truck Weight: {{ isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0' }} Kg</th>
+                    <th>Empty Truck Weight: {{ isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0' }} KG</th>
                     @endif
                 </tr>
                 <tr>

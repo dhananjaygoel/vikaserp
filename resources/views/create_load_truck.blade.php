@@ -70,7 +70,7 @@
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Truck weight value successfully updated.
                         </div>
-                        <div class="form-group">Date : {{date('d F, Y')}}</div>
+                        <div class="form-group">Date : {{date('j F, Y')}}</div>
                         <hr>
                         {!!Form::open(array('data-button'=>'btn_delorderto_deltruck','method'=>'POST','url'=>url('create_load_truck/'.$delivery_data['id']),'class'=>'load_truck_data','id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
@@ -515,33 +515,33 @@
                                             </td>
                                             <td class="col-md-1">
                                               
-                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}}</div></div>
+                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}} KG</div></div>
                                                 </div>
                                             </td> 
                                             
 
                                             <td class="col-md-1 sfdsf">
-                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}}</div></div>
+                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}} KG</div></div>
                                                 <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="{{$actual_quantity}}" type="hidden" >
                                               
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     {{ $product->present_shipping}}
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
-                                                <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
+                                                <div class="form-group">₹ {{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
                                             </td>
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                            <td class="col-md-1">
+                                            <td class="">
                                                 <div class="form-group">
                                                     <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
                                                   
                                                 </div>
                                             </td>
                                              @endif
-                                            <td class="col-md-2">
+                                            <td class="">
                                                 <div class="form-group ">
                                                     @foreach($units as $unit)
                                                     @if($unit->id == $product->unit_id)
@@ -552,13 +552,13 @@
                                                     @endforeach
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">{{$product->length}}
                                                 <input type="hidden" class="form-control" id="product_length_{{$key}}" value="{{$product->length}}" name="product[{{$key}}][length]"></div>
                                             </td>
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                            <td class="col-md-2">
-                                                <div class="form-group"><div id="amount_{{$key}}">{{$total_amt}}</div></div>
+                                            <td class="col-md-3">
+                                                <div class="form-group"><div id="amount_{{$key}}">₹ {{$total_amt}}</div></div>
                                             </td>
                                             @endif
                                         </tr>
@@ -573,12 +573,12 @@
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="total_actual_qty_truck">
-                                <b class="load_truck">Actual Quantity*</b> 
+                                <b class="load_truck">Actual Quantity* : KG</b> 
                                 <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly=""  >  
                             </label>
                             &nbsp;&nbsp;
                             <label for="total_avg_qty">
-                                <b class="load_truck">Total Avg Quantity*</b>
+                                <b class="load_truck">Total Avg Quantity* : KG</b>
                                 <input type="text" value ="{{$actualsum}}" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="">
                                 <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
                             </label> 
@@ -586,7 +586,7 @@
                         <div class="form-group">  
                         @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                             <label for="total">
-                                <b class="load_truck">Total</b>
+                                <b class="load_truck">Total : ₹</b>
                                 <span class="gtotal">
                                     <input type="text" value ="{{$actualtotal}}" class="form-control" id="total_price" name="total_price" placeholder="" readonly="">
                                 </span>
@@ -594,7 +594,7 @@
                             &nbsp;&nbsp;
                         @endif
                             <label for="total">
-                                <b class="load_truck">Total Actual Quantity</b>
+                                <b class="load_truck">Total Actual Quantity : KG</b>
                                 <span class="gtotal">
                                     <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
                                 </span>
