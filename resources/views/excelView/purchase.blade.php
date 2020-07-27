@@ -14,8 +14,8 @@
             <th style="height:20px;font-size:16px;color:#000080;">Qty</th>
             <th style="height:20px;font-size:16px;color:#000080;">Rate</th>
             <th style="height:20px;font-size:16px;color:#000080;">Amt</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Ref NUM</th>
             <th style="height:20px;font-size:16px;color:#000080;">Vehicle Number/Remark</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Ref NUM</th>
         </tr>
         <?php
          $VchNo=1;
