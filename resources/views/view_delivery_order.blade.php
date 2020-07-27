@@ -180,6 +180,20 @@
                                     <tr>
                                         <td> {{ $product['order_product_details']->alias_name}}</td>
                                         <td>{{$product->present_shipping}}</td>
+                                        <!-- @if(Auth::user()->role_id == 5)
+                                        <td>
+                                            @foreach($order_data['all_order_products'] as $all_order_products)
+
+                                            @if($all_order_products->product_category_id == $product->product_category_id)
+                                            {{$all_order_products->quantity}}                                            
+                                            @endif
+                                            @endforeach
+
+
+                                        </td>
+                                        @endif -->
+                                        <td>{{isset($product->actual_pieces)?$product->actual_pieces:'0'}}</td>
+                                        <td>{{isset($product->actual_quantity)?$product->actual_quantity:'0'}}</td>
                                         @if(Auth::user()->role_id == 5)
                                         <td>
                                             @foreach($order_data['all_order_products'] as $all_order_products)
@@ -192,8 +206,6 @@
 
                                         </td>
                                         @endif
-                                        <td>{{isset($product->actual_pieces)?$product->actual_pieces:'0'}}</td>
-                                        <td>{{isset($product->actual_quantity)?$product->actual_quantity:'0'}}</td>
                                         <td>{{$product->length}}</td>
                                         <td>
                                         {{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}
