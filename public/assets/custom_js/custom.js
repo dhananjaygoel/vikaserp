@@ -3712,6 +3712,7 @@ $("body").on('click',"button", function() {
             var empty_truck_value = $("#empty_truck_weight").val();
             var delivery_id = $("#delivery_id").val();
             var url = $('#site_url').val();
+            var user_role_id = $('#user_role_id').val();
             $.ajax({
                 type: 'GET',
                 url: url + '/save_empty_truck',
@@ -3722,6 +3723,10 @@ $("body").on('click',"button", function() {
                 success: function (data) {
                     // alert(data);
                     if(data=='success'){
+                        if(user_role_id != 0){
+                            $('#empty_truck_weight').prop('readonly','readonly');
+                            $('#btn_empty_truck').attr('disabled',true);
+                        }
                         $('.alert-success-empty-truck').show();
                         setTimeout(function(){
                             $('.alert-success-empty-truck').hide();

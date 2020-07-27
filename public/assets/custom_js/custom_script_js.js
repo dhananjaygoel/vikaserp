@@ -394,7 +394,7 @@ function fetch_price() {
             var amount = parseFloat(rate) * parseInt(quantity);
 //            amount = parseFloat(amount + ((amount * vat_percentage) / 100));
             if (amount >= 0) {
-                $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+                $("#amount_" + i).html('<span class="text-center"> ₹ ' + amount.toFixed(2) + '</span>');
             }
         }
     }

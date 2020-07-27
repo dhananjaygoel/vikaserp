@@ -1406,25 +1406,25 @@ class DeliveryOrderController extends Controller {
                         $product_row = ProductSubCategory::find($product_data['id']);
                         if ($product_data['units'] == 1) {
                             $prod_quantity = (float)$product_data['actual_quantity'];
-                            $total_quantity = $total_quantity + $prod_quantity;
+                            $total_quantity = $total_quantity + $product_data['actual_quantity'];
                         }
                         if ($product_data['units'] == 2) {
                             $prod_quantity = (float)$product_data['actual_quantity'] * (float)$product_row->weight;
-                            $total_quantity = $total_quantity + $prod_quantity;
+                            $total_quantity = $total_quantity + $product_data['actual_quantity'];
                         }
                         if ($product_data['units'] == 3) {
                             $prod_quantity = ((float)$product_data['actual_quantity'] / (float)$product_row->standard_length ) * (float)$product_row->weight;
-                            $total_quantity = $total_quantity + $prod_quantity;
+                            $total_quantity = $total_quantity + $product_data['actual_quantity'];
                         }
                         if ($product_data['units'] == 4) {
                             $prod_quantity = ((float)$product_data['actual_quantity'] * (float)(isset($product_row->weight)?$product_row->weight:'') * (float)$product_data['length']);
-                            $total_quantity = $total_quantity + $prod_quantity;
+                            $total_quantity = $total_quantity + $product_data['actual_quantity'];
                         }
                         if ($product_data['units'] == 5) {
                             $prod_quantity = ((float)$product_data['actual_quantity'] * (float)(isset($product_row->weight)?$product_row->weight:'') * ((float)$product_data['length'] / 305));
-                            $total_quantity = $total_quantity + $prod_quantity;
+                            $total_quantity = $total_quantity + $product_data['actual_quantity'];
                         }
-                        $product_string .= $k++ . ") " . $product_data['name'] . ", " . round((float)$prod_quantity,2) . "KG ";  
+                        $product_string .= $k++ . ") " . $product_data['name'] . ", " . round((float)$product_data['actual_quantity'],2) . "KG ";  
                     }
                 }
                 if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){

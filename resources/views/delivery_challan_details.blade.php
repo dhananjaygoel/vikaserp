@@ -151,7 +151,7 @@
                                             <div class="form-group searchproduct">{{isset($product->order_product_details->alias_name)?$product->order_product_details->alias_name:''}}</div>
                                         </td>
                                         <td class="col-md-2">
-                                            <div class="form-group">{{isset($product->quantity)?$product->quantity:''}}</div>
+                                            <div class="form-group">{{isset($product->quantity)?$product->quantity:''}} KG</div>
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group">{{isset($product->actual_pieces)?$product->actual_pieces:''}}</div>
@@ -171,7 +171,7 @@
                                             @foreach($order_product['all_order_products'] as $all_order_products)
 
                                             @if($all_order_products->product_category_id == $product->product_category_id)
-                                            {{$all_order_products->quantity}}                                            
+                                            {{$all_order_products->quantity}} KG
                                             @endif
                                             @endforeach
 
@@ -181,7 +181,7 @@
 
 
                                         <td class="col-md-1">
-                                            <div class="form-group">{{(isset($product->price) && $product->price != '0.00')?$product->price:$product['order_product_details']->product_category['price']}}</div>
+                                            <div class="form-group">₹ {{(isset($product->price) && $product->price != '0.00')?$product->price:$product['order_product_details']->product_category['price']}}</div>
                                         </td>
                                         <td class="col-md-1">
                                             <div class="form-group">
@@ -244,7 +244,7 @@
                                                     $total_price += round($total_vat_amount,2);
                                                     // print_r($total_pr);print_r($total_price);
                                                 ?>
-                                                {{round($amount, 2)}}
+                                                ₹ {{round($amount, 2)}}
                                             </div>
                                         </td>
                                     </tr>
@@ -255,34 +255,34 @@
                         </div>
                         <div class="form-group">
                             <label for="Total_actual_qty"><b class="challan">Total Actual Quantity: </b></label>
-                            {{$allorder->all_order_products->sum('actual_quantity')}}&nbsp;&nbsp;
-                            <label for="TOtal_amount"><b class="challan">Total Amount: </b></label> {{$total_amount}}
+                            {{$allorder->all_order_products->sum('actual_quantity')}} KG&nbsp;&nbsp;
+                            <label for="TOtal_amount"><b class="challan">Total Amount: </b></label> ₹ {{$total_amount}}
                         </div>
                         <hr>
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
-                                <label for="Loading"><b class="challan">Loading: </b></label> {{$allorder->loading_charge}}
+                                <label for="Loading"><b class="challan">Loading: </b></label> ₹ {{$allorder->loading_charge}}
                             </div>
                             <br>
                         </div>
                         <hr>
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
-                                <label for="Discount"><b class="challan">Discount: </b></label> {{$allorder->discount}}
+                                <label for="Discount"><b class="challan">Discount: </b></label> ₹ {{$allorder->discount}}
                             </div>
                             <br>
                         </div>
                         <hr>
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
-                                <label for="Freight"><b class="challan">Freight: </b></label> {{$allorder->freight}}
+                                <label for="Freight"><b class="challan">Freight: </b></label> ₹ {{$allorder->freight}}
                             </div>
                             <br>
                         </div>
                         <hr>
                         <div class="form-group">
                         <?php $total = (float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount?>
-                            <label for="total"><b class="challan">Total: </b></label> <?php print_r((float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount); ?>
+                            <label for="total"><b class="challan">Total: </b></label> ₹ <?php print_r((float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount); ?>
                         </div>                        
                         <hr>
                         <!-- @if($product_type['pipe'] == 1)
@@ -418,18 +418,18 @@
                         <div class="form-group">
                             <label for="total"><b class="challan">GST Amount: </b> <?php
                             $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
-                            ?> {{round($total_vat,2)}}</label>
+                            ?> ₹ {{round($total_vat,2)}}</label>
                         </div>
                         <hr/>
                         @endif
                         <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b>
-                            <?php $tot = $total + $total_vat; $roundoff = round($tot,0) - $tot; ?> {{round($roundoff,2)}}</label>
+                            <?php $tot = $total + $total_vat; $roundoff = round($tot,0) - $tot; ?> ₹ {{round($roundoff,2)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b>
-                            <?php $tot = $total + $total_vat; ?> {{round($tot,0)}}</label>
+                            <?php $tot = $total + $total_vat; ?> ₹ {{round($tot,0)}}</label>
                         </div>
                         <hr/>
                         <div class="form-group">
@@ -452,7 +452,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="orderdatetime"><b class="challan">Order Time/Date: </b></label> {{$allorder->order_details->updated_at}}
+                            <label for="orderdatetime"><b class="challan">Order Time/Date: </b></label> {{ date("j F, Y h:i A", strtotime($allorder->order_details->updated_at)) }}
                         </div>
                         <hr>
                         @else
@@ -461,7 +461,8 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="deliveryorderdatetime"><b class="challan">Delivery Order Time/Date: </b></label> {{$allorder->delivery_order->updated_at}}
+                            <label for="deliveryorderdatetime"><b class="challan">Delivery Order Time/Date: </b></label> {{ date("j F, Y h:i A", strtotime($allorder->order_details->updated_at)) }}
+                            <!-- {{$allorder->delivery_order->updated_at}} -->
                         </div><hr>
                         @endif
                         <div class="form-group">
@@ -469,7 +470,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="deliveryorderdatetime"><b class="challan">Delivery Challan Time/Date: </b></label> {{$allorder->updated_at}}
+                            <label for="deliveryorderdatetime"><b class="challan">Delivery Challan Time/Date: </b></label> {{ date("j F, Y g:i A", strtotime($allorder->updated_at)) }}
                         </div>
                         <hr>
                         <div class="form-group">

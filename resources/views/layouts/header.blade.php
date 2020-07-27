@@ -255,29 +255,30 @@
 <?php 
 $notif = '';
 $count = 0;
+$ipaddress = '';
+if (getenv('HTTP_CLIENT_IP'))
+    $ipaddress = getenv('HTTP_CLIENT_IP');
+else if (getenv('HTTP_X_FORWARDED_FOR'))
+    $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+else if (getenv('HTTP_X_FORWARDED'))
+    $ipaddress = getenv('HTTP_X_FORWARDED');
+else if (getenv('HTTP_FORWARDED_FOR'))
+    $ipaddress = getenv('HTTP_FORWARDED_FOR');
+else if (getenv('HTTP_FORWARDED'))
+    $ipaddress = getenv('HTTP_FORWARDED');
+else if (getenv('REMOTE_ADDR'))
+    $ipaddress = getenv('REMOTE_ADDR');
+else
+    $ipaddress = 'UNKNOWN';
 
 $ip = App\Security::all();
-$ip_array = [];
-$ipaddress = '';
 if (isset($ip) && !$ip->isEmpty()) {
     foreach ($ip as $key => $value) {
         $ip_array[$key] = $value->ip_address;
     }
-    if (getenv('HTTP_CLIENT_IP'))
-        $ipaddress = getenv('HTTP_CLIENT_IP');
-    else if (getenv('HTTP_X_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-    else if (getenv('HTTP_X_FORWARDED'))
-        $ipaddress = getenv('HTTP_X_FORWARDED');
-    else if (getenv('HTTP_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-    else if (getenv('HTTP_FORWARDED'))
-        $ipaddress = getenv('HTTP_FORWARDED');
-    else if (getenv('REMOTE_ADDR'))
-        $ipaddress = getenv('REMOTE_ADDR');
-    else
-        $ipaddress = 'UNKNOWN';
-}    
+} else {
+    $ip_array = array($ipaddress);
+}  
 ?>
 <header class="navbar" id="header-navbar">
     <div class="container">

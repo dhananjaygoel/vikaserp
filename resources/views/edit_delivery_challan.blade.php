@@ -364,14 +364,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="total">
-                                    <b class="challan">Total</b>
+                                    <b class="challan">Total : ₹</b>
                                     <span class="gtotal">
                                         <input type="text" class="form-control" value = "{{ $total_amount }}" id="total_price" name="total_price" placeholder="" readonly="readonly">
                                     </span>
                                 </label>
                                 &nbsp;&nbsp;
                                 <label for="total">
-                                    <b class="challan">Total Actual Quantity</b>
+                                    <b class="challan">Total Actual Quantity : KG</b>
                                     <span class="gtotal">
                                         <input type="text" class="form-control" id="total_actual_quantity" name="total_actual_quantity" placeholder="" readonly="readonly">
                                     </span>
@@ -383,7 +383,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
-                                    <label for="loading"><b class="challan">Loading</b></label>
+                                    <label for="loading"><b class="challan">Loading : ₹</b></label>
                                     <input id="loading_charge" class="form-control" placeholder="Loading Charges" name="loading" onkeypress=" return numbersOnly(this, event, true, true);" value="{{$allorder->loading_charge}}" type="tel" onblur="grand_total_challan();" >
                                 </div>
 
@@ -406,7 +406,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
-                                    <label for="Discount"><b class="challan">Discount</b></label>
+                                    <label for="Discount"><b class="challan">Discount : ₹</b></label>
                                     <input id="discount_value" class="form-control" placeholder="Discount " name="discount" value="{{$allorder->discount}}" type="tel" onblur="grand_total_challan(); " onkeypress=" return numbersOnly(this, event, true, true);" onkeypress=" return numbersOnly(this, event, true, true);" >
                                 </div>
                                 <!--                                <div class="col-md-4">
@@ -425,7 +425,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 no_left_margin">
-                                    <label for="Freight"><b class="challan">Freight</b></label>
+                                    <label for="Freight"><b class="challan">Freight : ₹</b></label>
                                     <input id="freight_value" class="form-control" placeholder="Freight " name="freight" value="{{$allorder->freight}}" type="text" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                                 </div>
                                 <!--                                <div class="col-md-4">
@@ -652,32 +652,45 @@
                             @endif
                             @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                             <div class="form-group">
-                                <label for="gst_total"><b class="challan">GST Amount: </b> <?php
+                                <label for="gst_total"><b class="challan">GST Amount : ₹</b> <?php
                                 $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                 ?></label>
                                 <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
                             </div>
                             @endif
                             <div class="form-group">
-                                <label for="roundoff"><b class="challan">Round Off</b></label>
+                                <label for="roundoff"><b class="challan">Round Off : ₹</b></label>
                                 <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
                             </div>
                             <div class="form-group" >
-                                <label for="Total"><b class="challan"> Grand Total </b></label>
+                                <label for="Total"><b class="challan"> Grand Total : ₹</b></label>
                                 <div id="total_l_d_f"></div>
                             </div>
                             <div class="form-group" style="display: none">
-                                <label for="total"><b class="challan">Grand Total </b>
+                                <label for="total"><b class="challan">Grand Total : ₹</b>
                                     <span class="gtotal">
                                         <input type="text" class="form-control" name="grand_total" id="grand_total" readonly="readonly">
                                     </span>
                                 </label>
                             </div>
-                            <div class="form-group" >
-                                <label for="challan_vehicle_number"><b class="challan">Vehicle Number :</b></label>
-                                <input id="challan_vehicle_number" class="form-control" placeholder="Vehicle Number" name="challan_vehicle_number"  value="{{$allorder->delivery_order->vehicle_number}}" type="text">
-                            </div>
-
+                            @if(isset($allorder->delivery_order->vehicle_number) && $allorder->delivery_order->vehicle_number != "")
+                                @if(Auth::user()->role_id == 0)
+                                    <div class="form-group">
+                                        <label for="challan_vehicle_number"><b class="challan">Vehicle Number :</b></label>
+                                        <input id="challan_vehicle_number" class="form-control" placeholder="Vehicle Number" name="challan_vehicle_number" value="{{isset($allorder->delivery_order->vehicle_number)?$allorder->delivery_order->vehicle_number:''}}" type="text">
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="challan_vehicle_number"><b class="challan">Vehicle Number :</b></label>
+                                        <input readonly id="challan_vehicle_number" class="form-control" placeholder="Vehicle Number" name="challan_vehicle_number" value="{{isset($allorder->delivery_order->vehicle_number)?$allorder->delivery_order->vehicle_number:''}}" type="text">
+                                    </div>
+                                @endif
+                            @else
+                                <div class="form-group">
+                                    <label for="challan_vehicle_number"><b class="challan">Vehicle Number :</b></label>
+                                    <input id="challan_vehicle_number" class="form-control" placeholder="Vehicle Number" name="challan_vehicle_number" value="{{isset($allorder->delivery_order->vehicle_number)?$allorder->delivery_order->vehicle_number:''}}" type="text">
+                                </div>
+                            @endif
                             <div class="form-group" >
                                 <label for="challan_driver_contact"><b class="challan">Driver Contact :</b></label>
                                 <input id="challan_driver_contact" class="form-control" placeholder="Driver Contact" name="challan_driver_contact"  value="{{$allorder->delivery_order->driver_contact_no}}" onkeypress=" return numbersOnly(this, event, false, false);" maxlength="10" type="text">
