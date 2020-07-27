@@ -91,7 +91,7 @@
             <td></td>
             <td></td>
             <td>{{isset($product_data['inquiry_product_details'])?$product_data['inquiry_product_details']->alias_name: ''}}</td>
-            <td>{{isset($product_data->quantity) ? $product_data->quantity:''}} KG</td>
+            <td>{{isset($product_data->quantity) ? $product_data->quantity:''}}</td>
             <td>{{isset($product_data['unit']->unit_name) ? $product_data['unit']->unit_name:''}}</td>
             <td>₹ {{isset($product_data->price) ? $product_data->price:''}}</td>
             <td>{{isset($inquiry->vat_percentage) ? $inquiry->vat_percentage:''}}</td>
