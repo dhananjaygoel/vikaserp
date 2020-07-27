@@ -178,7 +178,7 @@
                                         <th>Tally Name</th>
                                         <th>Delivery Location</th>
 <!--                                        <th>Quantity</th>-->
-                                        <th>Present Shipping</th>
+                                        <th>Total Quantity</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
 
