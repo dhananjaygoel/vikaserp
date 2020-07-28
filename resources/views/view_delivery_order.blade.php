@@ -35,12 +35,12 @@
                                 <tbody>
                                     @if(isset($print_user ) && $print_user != '')
                                     <?php 
-                                        $time = date('h:i a', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'00:00:00'));
-                                        $date = date('d/m/Y', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'01/01/0000'));
+                                        $time = date('h:i A', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'00:00:00'));
+                                        $date = date('j F, Y', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'01/01/0000'));
                                     ?>
                                     <tr>
                                         <td><span><b>Printed By: </b></span> 
-                                        {{$print_user->first_name.' '.$print_user->last_name.' at '.$time.' on '.$date}}
+                                        {{ucwords($print_user->first_name).' '.ucwords($print_user->last_name).' on '.$date.' '.$time}}
                                         </td>
                                     </tr>
                                     @endif
