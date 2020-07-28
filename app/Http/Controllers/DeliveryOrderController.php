@@ -2604,9 +2604,9 @@ class DeliveryOrderController extends Controller {
                         if (isset($popv)) {
                             $product_size = $popv['product_sub_category'];
                             //$product_size = ProductSubCategory::find($popv->product_category_id);
-
+                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
                             if ($popv->unit_id == 1) {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
+                                // $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
                                 $delivery_order_present_shipping = (float)$delivery_order_present_shipping + (float)$popv->present_shipping;
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -2635,7 +2635,7 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                             } elseif ($popv->unit_id == 2) {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight);
+                                // $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight);
                                 $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)$popv->present_shipping * (float)$product_size->weight);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -2669,7 +2669,7 @@ class DeliveryOrderController extends Controller {
                             } elseif ($popv->unit_id == 3) {
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
+                                    // $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
                                     $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)($popv->present_shipping / $product_size->standard_length ) * (float)$product_size->weight);
 
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
@@ -2706,7 +2706,7 @@ class DeliveryOrderController extends Controller {
                                     }
                                 }
                             } elseif ($popv->unit_id == 4) {
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight * (float)$popv->length);
+                                // $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight * (float)$popv->length);
                                 $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)$popv->present_shipping * (float)$product_size->weight * (float)$popv->length);
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -2742,7 +2742,7 @@ class DeliveryOrderController extends Controller {
                             elseif ($popv->unit_id == 5){
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$product_size->weight * (float)$popv->quantity * (float)($popv->length/305));
+                                // $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$product_size->weight * (float)$popv->quantity * (float)($popv->length/305));
                                 $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)$popv->present_shipping * (float)$product_size->weight *  (float)($popv->length/305));
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
