@@ -158,16 +158,21 @@ class DashboardController extends Controller {
             if ($delivery_order_info->order_status == 'pending') {
                 $deliver_pending = 0;
                 foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
-                    if ($delivery_order_productinfo->unit_id == 1){
+                    if(isset($delivery_order_productinfo->actual_pieces) && !empty($delivery_order_productinfo->actual_pieces) && isset($delivery_order_productinfo->actual_quantity) && !empty($delivery_order_productinfo->actual_quantity)){
                         $deliver_pending += $delivery_order_productinfo->quantity;
-                    } elseif ($delivery_order_productinfo->unit_id == 2){
-                        $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight;
-                    } elseif ($delivery_order_productinfo->unit_id == 3){
-                        $deliver_pending += ($delivery_order_productinfo->quantity / $delivery_order_productinfo->product_sub_category->standard_length) * $delivery_order_productinfo->product_sub_category->weight;
-                    } elseif ($delivery_order_productinfo->unit_id == 4){
-                        $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * $delivery_order_productinfo->length;
-                    } elseif ($delivery_order_productinfo->unit_id == 5){
-                        $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * ($delivery_order_productinfo->length/305);
+                    }
+                    else{
+                        if ($delivery_order_productinfo->unit_id == 1){
+                            $deliver_pending += $delivery_order_productinfo->quantity;
+                        } elseif ($delivery_order_productinfo->unit_id == 2){
+                            $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight;
+                        } elseif ($delivery_order_productinfo->unit_id == 3){
+                            $deliver_pending += ($delivery_order_productinfo->quantity / $delivery_order_productinfo->product_sub_category->standard_length) * $delivery_order_productinfo->product_sub_category->weight;
+                        } elseif ($delivery_order_productinfo->unit_id == 4){
+                            $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * $delivery_order_productinfo->length;
+                        } elseif ($delivery_order_productinfo->unit_id == 5){
+                            $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * ($delivery_order_productinfo->length/305);
+                        }
                     }
 
                 //     if ($delivery_order_productinfo->unit_id == 1)
