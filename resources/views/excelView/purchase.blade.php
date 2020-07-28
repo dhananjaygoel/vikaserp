@@ -131,11 +131,11 @@
             <?php                             
                 if(isset($value->vat_percentage) && !empty($value->vat_percentage)){
                     $total_gst_amount = ((float)$total_amount * (float)$value->vat_percentage) / 100;
-                    if((isset($purchase_challan->freight) && $purchase_challan->freight != '')){
-                        $freight_vat = $purchase_challan->freight * $purchase_challan->vat_percentage / 100;
+                    if((isset($value->freight) && $value->freight != '')){
+                        $freight_vat = $value->freight * $value->vat_percentage / 100;
                     }
-                    if((isset($purchase_challan->discount) && $purchase_challan->discount != '')){
-                        $discount_vat = $purchase_challan->discount * $purchase_challan->vat_percentage / 100;
+                    if((isset($value->discount) && $value->discount != '')){
+                        $discount_vat = $value->discount * $value->vat_percentage / 100;
                     }
                 }
                 $grand_total = $total_gst_amount + $total_amount + (isset($value->freight)?$value->freight:0) + (isset($value->discount)?$value->discount:0) + $freight_vat + $discount_vat ;
@@ -225,7 +225,8 @@
                             echo "0.00";
                         }
                 ?> -->
-                <?php $grand_vat_amt = $total_gst_amount + $freight_vat + $discount_vat ;
+                <?php
+                    $grand_vat_amt = $total_gst_amount + $freight_vat + $discount_vat ;
                 ?>
                 {{ round($grand_vat_amt,2) }}
             
