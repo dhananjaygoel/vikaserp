@@ -194,7 +194,7 @@
                                             <td class="col-md-1">
                                                 <!--                                                <div class="form-group">
                                                                                                     <input type="text" class="form-control" name="average_quantity" id="average_quantity" readonly="readonly">-->
-                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$average_quantity}}</div></div>
+                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$average_quantity}} KG</div></div>
                                                 </div>
                                             </td>
                                             <td class="col-md-1 sfdsf">
