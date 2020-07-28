@@ -113,7 +113,7 @@
                                     <tr >
                                         <!--<td>{{$k++}}</td>-->
                                         <td>N/A</td>
-                                        <td>{{$qty}}</td>
+                                        <td>{{round($qty,2)}}</td>
                                         <td>
                                             @if($order_details->order_status == 'cancelled')
                                             {{'Cancelled'}}
@@ -176,18 +176,18 @@
                                     <?php $qty_do = 0; ?>
                                     @foreach($delivery_order_details->delivery_product as $all_order_products) 
                                     <?php 
-                                        // $qty_do = $qty_do + $all_order_products->quantity;
-                                        if ($all_order_products->unit_id == 1){
-                                            $qty_do += $all_order_products->quantity;
-                                        } elseif ($all_order_products->unit_id == 2){
-                                            $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
-                                        } elseif ($all_order_products->unit_id == 3){
-                                            $qty_do += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
-                                        } elseif ($all_order_products->unit_id == 4){
-                                            $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
-                                        } elseif ($all_order_products->unit_id == 5){
-                                            $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
-                                        }
+                                        $qty_do = $qty_do + $all_order_products->quantity;
+                                        // if ($all_order_products->unit_id == 1){
+                                        //     $qty_do += $all_order_products->quantity;
+                                        // } elseif ($all_order_products->unit_id == 2){
+                                        //     $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                                        // } elseif ($all_order_products->unit_id == 3){
+                                        //     $qty_do += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                                        // } elseif ($all_order_products->unit_id == 4){
+                                        //     $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                                        // } elseif ($all_order_products->unit_id == 5){
+                                        //     $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                                        // }
                                     ?>
                                     @endforeach
 
@@ -201,7 +201,7 @@
                                             @endif
 
                                         </td>
-                                        <td>{{$qty_do}}</td>
+                                        <td>{{round($qty_do,2)}}</td>
                                         <td>
                                             @if($delivery_order_details->order_status == 'completed')                                 {{'Completed'}}
                                             </span>
@@ -259,18 +259,18 @@
                                     <?php $qty_co = 0; ?>
                                     @foreach($delivery_challan_details->delivery_challan_products as $all_order_products) 
                                     <?php 
-                                        // $qty_co = $qty_co + $all_order_products->present_shipping;
-                                        if ($all_order_products->unit_id == 1){
-                                            $qty_co += $all_order_products->quantity;
-                                        } elseif ($all_order_products->unit_id == 2){
-                                            $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
-                                        } elseif ($all_order_products->unit_id == 3){
-                                            $qty_co += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
-                                        } elseif ($all_order_products->unit_id == 4){
-                                            $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
-                                        } elseif ($all_order_products->unit_id == 5){
-                                            $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
-                                        }
+                                        $qty_co = $qty_co + $all_order_products->present_shipping;
+                                        // if ($all_order_products->unit_id == 1){
+                                        //     $qty_co += $all_order_products->quantity;
+                                        // } elseif ($all_order_products->unit_id == 2){
+                                        //     $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                                        // } elseif ($all_order_products->unit_id == 3){
+                                        //     $qty_co += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                                        // } elseif ($all_order_products->unit_id == 4){
+                                        //     $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                                        // } elseif ($all_order_products->unit_id == 5){
+                                        //     $qty_co += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                                        // }
                                     ?>
                                     @endforeach
 
@@ -295,7 +295,7 @@
                                             @endforeach
                                         </td>
 
-                                        <td>{{$qty_co}}</td>
+                                        <td>{{round($qty_co,2)}}</td>
                                         <td>
                                             @if($delivery_challan_details->challan_status == 'completed') 
                                             {{'Completed'}}

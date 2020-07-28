@@ -77,7 +77,7 @@
             <td style="height:16px;">₹ {{round($amount, 2)}}</td>
             <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->remarks))?$allorder['all_order_products'][0]->remarks:''}}</td>
 
-            <td style="height:16px;">{{isset($allorder->all_order_products) ? $allorder->all_order_products->sum('actual_quantity'):0}}</td>
+            <td style="height:16px;">{{isset($allorder->all_order_products) ? $allorder->all_order_products->sum('actual_quantity'):0}} KG</td>
             <td style="height:16px;">₹ {{$total_amount}}</td>
             <td style="height:16px;">₹ {{isset($allorder->discount) ?$allorder->discount :''}}</td>
             <td style="height:16px;">{{isset($allorder->discount_vat_percentage)? $allorder->discount_vat_percentage:''}}</td>
