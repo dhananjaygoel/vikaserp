@@ -64,47 +64,47 @@
             ?>
             <td style="height:16px;">{{isset($product->alias_name)?$product->alias_name:''}}</td>
             <!--<td>{{$allorder['all_order_products'][0]->quantity}}</td>-->
-           <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->quantity))?$allorder['all_order_products'][0]->quantity:''}} KG</td>
+           <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->quantity))?$allorder['all_order_products'][0]->quantity:''}}</td>
            <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->actual_pieces))?$allorder['all_order_products'][0]->actual_pieces:''}}</td>
            <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->unit) && isset($allorder['all_order_products'][0]->unit->unit_name))?$allorder['all_order_products'][0]->unit->unit_name:''}}</td>
            <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->present_shipping))?$allorder['all_order_products'][0]->present_shipping:''}}</td>
-           <td style="height:16px;">₹ {{(isset($allorder['all_order_products'][0]->price))?$allorder['all_order_products'][0]->price:''}}</td>
+           <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->price))?$allorder['all_order_products'][0]->price:''}}</td>
            <td style="height:16px;">{{(isset($allorder->vat_percentage))?$allorder->vat_percentage:''}}</td>
            <?php
                 $amount = $product->actual_quantity * $product->price;
                 $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
             ?>
-            <td style="height:16px;">₹ {{round($amount, 2)}}</td>
+            <td style="height:16px;">{{round($amount, 2)}}</td>
             <td style="height:16px;">{{(isset($allorder['all_order_products'][0]->remarks))?$allorder['all_order_products'][0]->remarks:''}}</td>
 
-            <td style="height:16px;">{{isset($allorder->all_order_products) ? $allorder->all_order_products->sum('actual_quantity'):0}} KG</td>
-            <td style="height:16px;">₹ {{$total_amount}}</td>
-            <td style="height:16px;">₹ {{isset($allorder->discount) ?$allorder->discount :''}}</td>
+            <td style="height:16px;">{{isset($allorder->all_order_products) ? $allorder->all_order_products->sum('actual_quantity'):0}}</td>
+            <td style="height:16px;">{{$total_amount}}</td>
+            <td style="height:16px;">{{isset($allorder->discount) ?$allorder->discount :''}}</td>
             <td style="height:16px;">{{isset($allorder->discount_vat_percentage)? $allorder->discount_vat_percentage:''}}</td>
             <?php
             $total_discount_charges = (float)$allorder->discount + (((float)$allorder->discount * (float)$allorder->discount_vat_percentage) / 100);
             $total_amount = $total_amount - $total_discount_charges;
             ?>
-            <td style="height:16px;">₹ {{$total_discount_charges}}</td>
-            <td style="height:16px;">₹ {{isset($allorder->freight) ?$allorder->freight : ''}}</td>
+            <td style="height:16px;">{{$total_discount_charges}}</td>
+            <td style="height:16px;">{{isset($allorder->freight) ?$allorder->freight : ''}}</td>
             <td style="height:16px;">{{isset($allorder->freight_vat_percentage) ?$allorder->freight_vat_percentage:''}}</td>
             <?php
             $total_freight_charges = $allorder->freight + (($allorder->freight * $allorder->freight_vat_percentage) / 100);
             $total_amount = $total_amount + $total_freight_charges;
             ?>
-            <td style="height:16px;">₹ {{$total_freight_charges}}</td>
-            <td style="height:16px;">₹ {{isset($allorder->loading_charge) ? $allorder->loading_charge :''}}</td>
+            <td style="height:16px;">{{$total_freight_charges}}</td>
+            <td style="height:16px;">{{isset($allorder->loading_charge) ? $allorder->loading_charge :''}}</td>
             <td style="height:16px;">{{isset($allorder->loading_vat_percentage) ? $allorder->loading_vat_percentage:''}}</td>
             <?php
             $total_loading_charges = $allorder->loading_charge + (($allorder->loading_charge * $allorder->loading_vat_percentage) / 100);
             $total_amount = $total_amount + $total_loading_charges;
             ?>
-            <td style="height:16px;">₹ {{$total_loading_charges}}</td>
-            <td style="height:16px;">₹ {{$total_amount}}</td>
+            <td style="height:16px;">{{$total_loading_charges}}</td>
+            <td style="height:16px;">{{$total_amount}}</td>
             <td style="height:16px;">{{isset($allorder->loaded_by) ?$allorder->loaded_by:'' }}</td>
             <td style="height:16px;">{{isset($allorder->labours) ? $allorder->labours:''}}</td>
-            <td style="height:16px;">₹ {{isset($allorder->round_off) ? $allorder->round_off:''}}</td>
-            <td style="height:16px;">₹ {{isset($allorder->grand_price) ? $allorder->grand_price:''}}</td>
+            <td style="height:16px;">{{isset($allorder->round_off) ? $allorder->round_off:''}}</td>
+            <td style="height:16px;">{{isset($allorder->grand_price) ? $allorder->grand_price:''}}</td>
             <td style="height:16px;">{{isset($allorder->delivery_order->vehicle_number) ? $allorder->delivery_order->vehicle_number:''}}</td>
             <td style="height:16px;">{{isset($allorder->delivery_order->driver_contact_no) ? $allorder->delivery_order->driver_contact_no:''}}</td>
             <td style="height:16px;">{{isset($allorder->order_details->createdby->first_name) ? $allorder->order_details->createdby->first_name." ".$allorder->order_details->createdby->last_name:''}}</td>
@@ -123,18 +123,18 @@
             <td></td>
             <td></td>
             <td style="height:16px;">{{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:''}}</td>
-            <td style="height:16px;">{{isset($product->quantity)?$product->quantity:'0'}} KG</td>
+            <td style="height:16px;">{{isset($product->quantity)?$product->quantity:'0'}}</td>
             <td style="height:16px;">{{isset($product->actual_pieces)?$product->actual_pieces:'0'}}</td>
             <td style="height:16px;">{{(isset($product->unit) && $product->unit->unit_name!='')?$product->unit->unit_name:''}}</td>
             <td style="height:16px;">{{isset($product->present_shipping)?$product->present_shipping:'0'}}</td>
-            <td style="height:16px;">₹ {{(isset($product->price))?$product->price:''}}</td>
+            <td style="height:16px;">{{(isset($product->price))?$product->price:''}}</td>
             <!--<td>{{$product->price}}</td>-->
             <td style="height:16px;">{{($allorder->vat_percentage!='')?$allorder->vat_percentage:''}}</td>
             <?php
                 $amount = $product->actual_quantity * $product->price;
                 $amount = $amount + (($amount * (($product->vat_percentage != '') ? $product->vat_percentage : 0)) / 100);
             ?>
-            <td style="height:16px;">₹ {{round($amount, 2)}}</td>
+            <td style="height:16px;">{{round($amount, 2)}}</td>
             <td style="height:16px;">{{isset($product->remarks)?$product->remarks:''}}</td>
             <td></td>
             <td></td>

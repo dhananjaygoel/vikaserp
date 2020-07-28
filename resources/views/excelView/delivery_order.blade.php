@@ -74,7 +74,7 @@
                 {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
                 @endforeach
             </td>
-            <td>₹ {{$product->price}}</td>
+            <td>{{$product->price}}</td>
             <td>{{($delivery_data->vat_percentage!='')?$delivery_data->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             @endif
@@ -106,7 +106,7 @@
                 {{($unit->id == $product->unit_id)? $unit->unit_name:''}}
                 @endforeach
             </td>
-            <td>₹ {{$product->price}}</td>
+            <td>{{$product->price}}</td>
             <td>{{($delivery_data->vat_percentage!='')?$delivery_data->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             <td></td>

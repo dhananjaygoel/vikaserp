@@ -115,11 +115,11 @@
                     @else
                         <td style="height:16px;">Kg</td>
                     @endif
-                    <td style="height:16px;">{{ isset($value1->actual_quantity) ? $value1->actual_quantity : '' }} KG</td>
-                    <td style="height:16px;">₹ {{ ((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $product_cat->price) }}</td>
+                    <td style="height:16px;">{{ isset($value1->actual_quantity) ? $value1->actual_quantity : '' }}</td>
+                    <td style="height:16px;">{{ ((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $product_cat->price) }}</td>
                     <?php $tot_amt = $value1->price * $value1->quantity;
                     ?>
-                    <td style="height:16px;">₹ {{ round($tot_amt,2) }}</td>
+                    <td style="height:16px;">{{ round($tot_amt,2) }}</td>
                     <td style="height:16px;">
                     <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -135,7 +135,7 @@
                     <td style="height:16px;"></td><td></td>
                     <td style="height:16px;">Discount</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">₹ {{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
+                    <td style="height:16px;">{{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
                     <td style="height:16px;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -151,7 +151,7 @@
                     <td></td><td></td>
                     <td style="height:16px;">Loading</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">₹ {{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
+                    <td style="height:16px;">{{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
                     <td style="height:16px;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -167,7 +167,7 @@
                     <td></td><td></td>
                     <td style="height:16px;">Freight</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">₹ {{isset($value->freight) ? $value->freight :'0.00'}}</td>
+                    <td style="height:16px;">{{isset($value->freight) ? $value->freight :'0.00'}}</td>
                     <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -190,7 +190,7 @@
                             $tot = $total + $total_vat;
                             $round_off = round($tot,0) - $tot;
                         ?>
-                    <td style="height:16px;">₹ {{ round($total_vat,2) }}
+                    <td style="height:16px;">{{ round($total_vat,2) }}
                     </td>
                     <td style="height:16px;">
                         <?php
@@ -207,7 +207,7 @@
                     <td></td><td></td>
                     <td style="height:16px;">Round Off</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">₹ {{ round($round_off,2) }}</td>
+                    <td style="height:16px;">{{ round($round_off,2) }}</td>
                     <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -229,7 +229,7 @@
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
-                    <td style="height:18px;border:2px solid #4fe24f;"><b>₹ {{ round($tot,0) }}</b></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"><b>{{ round($tot,0) }}</b></td>
                     <td style="height:18px;border:2px solid #4fe24f;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
