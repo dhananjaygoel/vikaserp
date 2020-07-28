@@ -836,7 +836,7 @@ class OrderController extends Controller {
         $order->discount_unit = $discount_unit;
         $order->discount = $discount;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
-        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $order->expected_delivery_date = $datetime->format('Y-m-d');
         $order->remarks = $input_data['order_remark'];
@@ -1211,7 +1211,7 @@ class OrderController extends Controller {
 //            $vat_price = $input_data['vat_percentage'];
 //        }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
-        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $order = Order::find($id);
         $update_order = $order->update([

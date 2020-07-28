@@ -62,12 +62,12 @@ $(document).ready(function () {
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
 
     $('#expected_delivery_date_order').datepicker({
-        format: 'mm-dd-yyyy',
+        format: 'dd/mm/yyyy',
         startDate: new Date(),
         autoclose: true
     });
     $('#estimated_delivery_date').datepicker({
-        format: 'mm-dd-yyyy',
+        format: 'dd/mm/yyyy',
         startDate: new Date(),
         autoclose: true
     });
@@ -75,7 +75,7 @@ $(document).ready(function () {
 //        format: 'dd-mm-yyyy',
 //        startDate: new Date(),
 //        autoclose: true
-        format: 'dd-mm-yyyy',
+        format: 'dd/mm/yyyy',
         autoclose: false
     });
 

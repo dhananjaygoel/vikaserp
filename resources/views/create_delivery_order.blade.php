@@ -193,7 +193,7 @@
                                             <td class="col-md-1">
                                                 <div class="form-group">
                                                     <!--{{$product->pending_quantity}}-->
-                                                    {{$product->quantity}} KG
+                                                    {{$product->quantity}}
                                                     <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" name="product[{{$key}}][quantity]" value="{{$product->pending_quantity}}" type="hidden" >
                                                 </div>
                                             </td>

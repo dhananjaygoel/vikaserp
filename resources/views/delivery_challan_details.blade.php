@@ -16,12 +16,12 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">                        
-                        @if($allorder['delivery_order']->order_source == 'warehouse')                            
+                        @if(!empty($allorder['delivery_order']->order_source) && $allorder['delivery_order']->order_source == 'warehouse')                            
                             <div class="form-group">
                                 <label><b>Order From:</b> Warehouse                                    
                                 </label>
                             </div><hr>
-                        @elseif($allorder['delivery_order']->order_source == 'supplier')
+                        @elseif(!empty($allorder['delivery_order']->order_source) && $allorder['delivery_order']->order_source == 'supplier')
                         <div class="form-group">
                             <label><b>Order From:</b> 
                                 @foreach($customers as $customer)

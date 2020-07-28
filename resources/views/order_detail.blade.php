@@ -131,7 +131,7 @@
                                                     {{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:' '}}
                                                 </div>
                                             </td>
-                                            <td class="col-md-1"><div class="form-group">{{$product->quantity}} KG</div></td>
+                                            <td class="col-md-1"><div class="form-group">{{$product->quantity}}</div></td>
                                             <td class="col-md-1"><div class="form-group ">{{$product->length}}</div></td>
                                             <td class="col-md-2"><div class="form-group ">{{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}</div></td>
                                             <td class="col-md-2">

@@ -142,14 +142,14 @@
                                     @endif
                                         <tr>
                                             <td>
-                                                <span><b>Empty Truck Weight(Kg):</b> </span>
-                                                {{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:0}} 
+                                                <span><b>Empty Truck Weight(KG):</b> </span>
+                                                {{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:0}} KG
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span><b>Final Truck Weight(Kg):</b> </span>
-                                                {{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:0}} 
+                                                <span><b>Final Truck Weight(KG):</b> </span>
+                                                {{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:0}} KG
                                             </td>
                                         </tr>  
 
