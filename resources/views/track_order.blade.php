@@ -263,7 +263,7 @@
                                     <?php $qty_co = 0; ?>
                                     @foreach($delivery_challan_details->delivery_challan_products as $all_order_products) 
                                     <?php 
-                                        $qty_co = $qty_co + $all_order_products->present_shipping;
+                                        $qty_co = $qty_co + $all_order_products->quantity;
                                         // if ($all_order_products->unit_id == 1){
                                         //     $qty_co += $all_order_products->quantity;
                                         // } elseif ($all_order_products->unit_id == 2){
