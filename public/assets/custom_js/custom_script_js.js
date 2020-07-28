@@ -862,7 +862,9 @@ function fetch_actual_quantity_load_truck() {
         if (amount > 0) {
             $("#amount_" + i).html('<span class="text-center">₹ ' + amount.toFixed(2) + '</span>');
         }
-        Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+        if (!isNaN(actual_qty)) {
+            Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+        }
         if(!isNaN(parseFloat(amount))){
             Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
         }
