@@ -259,7 +259,7 @@
                     
         <tr style="border:2px solid black">    
             <td style="height:18px;border:2px solid #4fe24f;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:18px;border:2px solid #4fe24f;">{{$VchNo}}</td>
+            <td style="height:18px;border:2px solid #4fe24f;text-align: left;">{{$VchNo}}</td>
             <td style="height:18px;border:2px solid #4fe24f;"></td>
             <td style="height:18px;border:2px solid #4fe24f;"></td>
             <td style="height:18px;border:2px solid #4fe24f;"> <b>Total</b></td>
