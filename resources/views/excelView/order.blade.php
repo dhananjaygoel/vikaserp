@@ -59,7 +59,7 @@
             <?php $product = isset($order['all_order_products']) && isset($order['all_order_products'][0]) ? $order['all_order_products'][0]['order_product_details'] : ''; ?>
             <td style="height:16px;">{{isset($product->alias_name)?$product->alias_name:''}}</td>
 
-           <td style="height:16px;">{{(isset($order['all_order_products'][0]->quantity))?$order['all_order_products'][0]->quantity:0}} KG</td>
+           <td style="height:16px;">{{(isset($order['all_order_products'][0]->quantity))?$order['all_order_products'][0]->quantity:0}}</td>
            <td style="height:16px;">{{(isset($order['all_order_products'][0]->unit) && isset($order['all_order_products'][0]->unit->unit_name))?$order['all_order_products'][0]->unit->unit_name:''}}</td>
            <td style="height:16px;">₹ {{(isset($order['all_order_products'][0]->price))?$order['all_order_products'][0]->price:0}}</td>
            <td style="height:16px;">{{(isset($order->vat_percentage))?$order->vat_percentage:''}}</td>
@@ -83,7 +83,7 @@
             <td></td>
             <td></td>
             <td style="height:16px;">{{isset($product['order_product_details']->alias_name)?$product['order_product_details']->alias_name:''}}</td>
-            <td style="height:16px;">{{isset($product->quantity)?$product->quantity:'0'}} KG</td>
+            <td style="height:16px;">{{isset($product->quantity)?$product->quantity:'0'}}</td>
             <td style="height:16px;">{{(isset($product->unit) && $product->unit->unit_name!='')?$product->unit->unit_name:''}}</td>
             <td style="height:16px;">₹ {{(isset($product->price))?$product->price:0}}</td>
             

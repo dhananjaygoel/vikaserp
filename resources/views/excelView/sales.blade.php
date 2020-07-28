@@ -94,7 +94,7 @@
                     $total_price += ($total_vat_amount);
                 ?>
                 <tr>
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:16px;">Sales</td>
                     <td style="height:16px;">{{ isset($value['customer']->tally_name) ? (($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales"):'' }}</td>
@@ -115,11 +115,11 @@
                     @else
                         <td style="height:16px;">Kg</td>
                     @endif
-                    <td style="height:16px;">{{ isset($value1->actual_quantity) ? $value1->actual_quantity : '' }}</td>
-                    <td style="height:16px;">{{ ((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $product_cat->price) }}</td>
+                    <td style="height:16px;">{{ isset($value1->actual_quantity) ? $value1->actual_quantity : '' }} KG</td>
+                    <td style="height:16px;">₹ {{ ((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $product_cat->price) }}</td>
                     <?php $tot_amt = $value1->price * $value1->quantity;
                     ?>
-                    <td style="height:16px;">{{ round($tot_amt,2) }}</td>
+                    <td style="height:16px;">₹ {{ round($tot_amt,2) }}</td>
                     <td style="height:16px;">
                     <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -130,12 +130,12 @@
                 </tr>
             <?php }?>
                 <tr>
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:16px;"></td><td></td>
                     <td style="height:16px;">Discount</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">{{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
+                    <td style="height:16px;">₹ {{(isset($value->discount)&& !empty($value->discount))? $value->discount :'0.00'}}</td>
                     <td style="height:16px;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -146,12 +146,12 @@
                     <td>{{$VchNo}}</td>
                 </tr>
                 <tr> 
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Loading</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">{{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
+                    <td style="height:16px;">₹ {{isset($value->loading_charge) ? $value->loading_charge :'0.00'}}</td>
                     <td style="height:16px;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -162,12 +162,12 @@
                     <td>{{$VchNo}}</td> 
                 </tr> 
                 <tr>  
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Freight</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">{{isset($value->freight) ? $value->freight :'0.00'}}</td>
+                    <td style="height:16px;">₹ {{isset($value->freight) ? $value->freight :'0.00'}}</td>
                     <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -178,7 +178,7 @@
                     <td>{{$VchNo}}</td>                
                 </tr>
                 <tr>    
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Tax</td>
@@ -190,7 +190,7 @@
                             $tot = $total + $total_vat;
                             $round_off = round($tot,0) - $tot;
                         ?>
-                    <td style="height:16px;">{{ round($total_vat,2) }}
+                    <td style="height:16px;">₹ {{ round($total_vat,2) }}
                     </td>
                     <td style="height:16px;">
                         <?php
@@ -202,12 +202,12 @@
                     <td style="height:16px;">{{$VchNo}}</td>                
                 </tr>
                 <tr>    
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Round Off</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">{{  round($round_off,2) }}</td>
+                    <td style="height:16px;">₹ {{ round($round_off,2) }}</td>
                     <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -218,7 +218,7 @@
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
                 <tr>    
-                    <td style="height:18px;border:2px solid #4fe24f;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:18px;border:2px solid #4fe24f;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:18px;border:2px solid #4fe24f;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
@@ -229,7 +229,7 @@
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
-                    <td style="height:18px;border:2px solid #4fe24f;"><b>{{ round($tot,0) }}</b></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"><b>₹ {{ round($tot,0) }}</b></td>
                     <td style="height:18px;border:2px solid #4fe24f;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
