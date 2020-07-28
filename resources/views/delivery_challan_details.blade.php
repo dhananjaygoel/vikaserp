@@ -268,7 +268,7 @@
                         <hr>
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
-                                <label for="Discount"><b class="challan">Discount: </b></label> ₹ {{$allorder->discount}}
+                                <label for="Discount"><b class="challan">Discount: </b></label> ₹ {{isset($allorder->discount)?$allorder->discount:0}}
                             </div>
                             <br>
                         </div>
