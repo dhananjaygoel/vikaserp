@@ -178,7 +178,7 @@
                                         <th>Tally Name</th>
                                         <th>Delivery Location</th>
 <!--                                        <th>Quantity</th>-->
-                                        <th>Total Quantity</th>
+                                        <!-- <th>Total Quantity</th> -->
                                         <th>Present Shipping</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
@@ -219,9 +219,9 @@
 <!--                                        <td>
                                             {{ round($delivery->total_quantity, 2) }}
                                         </td>-->
-                                        <td>
+                                        <!-- <td>
                                             {{ round($delivery->total_quantity, 2) }}
-                                        </td>
+                                        </td> -->
                                         <td>
                                             {{ round($delivery->present_shipping, 2) }}
                                         </td>
