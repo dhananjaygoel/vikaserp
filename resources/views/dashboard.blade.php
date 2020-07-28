@@ -82,7 +82,8 @@
                         <i class="fa fa-money green-bg"></i>
                         <span class="headline">Pending Inquiries</span>
                         <span class="value">
-                            <span class="" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30">                  {{round($inquiry_pending_sum,2)}}Ton
+                            <span class="" data-from="30" data-to="658" data-speed="800" data-refresh-interval="30"> 
+                                {{round($inquiry_pending_sum,2)}}Ton
                             </span>
                         </span>
                     </div>

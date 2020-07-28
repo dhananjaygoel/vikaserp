@@ -142,7 +142,7 @@ class PurchaseDaybookController extends Controller {
                 ->orderBy('updated_at', 'desc')
                 ->Paginate(20);
         }
-        $purchase_daybook->setPath('purchase_order_daybook');
+        $purchase_daybook->setPath('purchase_estimate');
         return view('purchase_estimate', compact('purchase_daybook'));
     }
 

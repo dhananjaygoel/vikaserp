@@ -73,11 +73,11 @@
             @if(isset($product) && $product!='' && $product->order_type =='delivery_challan')
             <?php $id_stored = $product->id; ?>
             <td>{{isset($product->order_product_details->alias_name) ? $product->order_product_details->alias_name:''}}<</td>
-            <td>{{isset($product->quantity) ? $product->quantity:''}}</td>
+            <td>{{isset($product->quantity) ? $product->quantity:''}}KG </td>
             <td>{{isset($product->actual_pieces) ? $product->actual_pieces:''}} </td>
             <td>{{isset($product->unit->unit_name) ? $product->unit->unit_name:''}}</td>
             <td>{{isset($product->present_shipping) ? $product->present_shipping:''}}</td>
-            <td>{{isset($product->price) ? $product->price:''}}</td>
+            <td>₹ {{isset($product->price) ? $product->price:''}}</td>
             <td>{{(isset($allorder->vat_percentage) && $allorder->vat_percentage!='')?$allorder->vat_percentage:''}}</td>
             <td><?php
                 $amount = $product->actual_quantity * $product->price;
@@ -87,39 +87,39 @@
             @endif
 
             <td>{{isset($allorder->all_order_products) ? $allorder->all_order_products->sum('actual_quantity'):0}}</td>
-            <td>{{$total_amount}}</td>
-            <td>{{isset($allorder->discount) ?$allorder->discount :''}}</td>
+            <td>₹ {{$total_amount}}</td>
+            <td>₹ {{isset($allorder->discount) ?$allorder->discount :''}}</td>
             <td>{{ isset($allorder->discount_vat_percentage)? $allorder->discount_vat_percentage:''}}</td>
             <?php
             $total_discount_charges = $allorder->discount + (($allorder->discount * $allorder->discount_vat_percentage) / 100);
             $total_amount = $total_amount - $total_discount_charges;
             ?>
-            <td>{{$total_discount_charges}}</td>
-            <td>{{isset($allorder->freight) ?$allorder->freight : ''}}</td>
+            <td>₹ {{$total_discount_charges}}</td>
+            <td>₹ {{isset($allorder->freight) ?$allorder->freight : ''}}</td>
             <td>{{isset($allorder->freight_vat_percentage) ?$allorder->freight_vat_percentage:''}}</td>
             <?php
             $total_freight_charges = $allorder->freight + (($allorder->freight * $allorder->freight_vat_percentage) / 100);
             $total_amount = $total_amount + $total_freight_charges;
             ?>
-            <td>{{$total_freight_charges}}</td>
-            <td>{{isset($allorder->loading_charge) ? $allorder->loading_charge :''}}</td>
+            <td>₹ {{$total_freight_charges}}</td>
+            <td>₹ {{isset($allorder->loading_charge) ? $allorder->loading_charge :''}}</td>
             <td>{{isset($allorder->loading_vat_percentage) ? $allorder->loading_vat_percentage:''}}</td>
             <?php
             $total_loading_charges = $allorder->loading_charge + (($allorder->loading_charge * $allorder->loading_vat_percentage) / 100);
             $total_amount = $total_amount + $total_loading_charges;
             ?>
-            <td>{{$total_loading_charges}}</td>
-            <td>{{$total_amount}}</td>
+            <td>₹ {{$total_loading_charges}}</td>
+            <td>₹ {{$total_amount}}</td>
             <td>{{isset($allorder->loaded_by) ?$allorder->loaded_by:'' }}</td>
             <td>{{isset($allorder->labours) ? $allorder->labours:''}}</td>
             <td>{{isset($allorder->round_off) ? $allorder->round_off:''}}</td>
-            <td>{{isset($allorder->grand_price) ? $allorder->grand_price:''}}</td>
+            <td>₹ {{isset($allorder->grand_price) ? $allorder->grand_price:''}}</td>
             <td>{{isset($allorder->delivery_order->vehicle_number) ? $allorder->delivery_order->vehicle_number:''}}</td>
             <td>{{isset($allorder->delivery_order->driver_contact_no) ? $allorder->delivery_order->driver_contact_no:''}}</td>
             <td>{{isset($allorder->order_details->createdby->first_name) ? $allorder->order_details->createdby->first_name." ".$allorder->order_details->createdby->last_name:''}}</td>
-            <td>{{isset($allorder->order_details->updated_at) ? $allorder->order_details->updated_at:''}}</td>
+            <td>{{isset($allorder->order_details->updated_at) ? date('j F, Y h:i A',strtotime($allorder->order_details->updated_at)):''}}</td>
             <td>{{isset($allorder->delivery_order->user->first_name) ? $allorder->delivery_order->user->first_name." ".$allorder->delivery_order->user->last_name:''}}</td>
-            <td>{{isset($allorder->delivery_order->updated_at) ? $allorder->delivery_order->updated_at:''}}</td>
+            <td>{{isset($allorder->delivery_order->updated_at) ? date('j F, Y h:i A',strtotime($allorder->delivery_order->updated_at)):''}}</td>
 
             <td>{{isset($allorder->remarks) ? $allorder->remarks:''}}</td>
         </tr>
@@ -134,7 +134,7 @@
             <td></td>
             <td></td>
             <td>{{isset($product->order_product_details->alias_name) ? $product->order_product_details->alias_name:''}}<</td>
-            <td>{{isset($product->quantity) ? $product->quantity:''}}</td>
+            <td>{{isset($product->quantity) ? $product->quantity:''}} KG</td>
             <td>{{isset($product->actual_pieces) ? $product->actual_pieces:''}} </td>
             <td>{{isset($product->unit->unit_name) ? $product->unit->unit_name:''}}</td>
             <td>{{isset($product->present_shipping) ? $product->present_shipping:''}}</td>

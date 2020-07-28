@@ -76,7 +76,7 @@
             <td></td>
             @endif
 
-            <td>{{isset($inquiry->expected_delivery_date) ? date('F jS, Y',strtotime($inquiry->expected_delivery_date)):''}}</td>
+            <td>{{isset($inquiry->expected_delivery_date) ? date('j F, Y',strtotime($inquiry->expected_delivery_date)):''}}</td>
             <td>{{isset($inquiry->remarks) ? $inquiry->remarks :''}}</td>
         </tr>
         <?php $count = 0; ?>

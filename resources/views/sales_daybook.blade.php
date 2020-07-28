@@ -80,7 +80,7 @@
                                 <table id="add_product_table_delivery_challan" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            @if( Auth::user()->role_id == 0 )
+                                            @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 4)
                                             <th><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" ></th>
                                             <th>#</th>
                                             @endif
@@ -134,14 +134,14 @@
                                     ?>
                                         <?php $total_amount=0;$total_price = 0;$price = 0;$lb_arr = []; $lbr_arr=[];?>
                                         <tr class="add_product_row">
-                                            @if( Auth::user()->role_id == 0 )
+                                            @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 4)
                                             <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
                                             <td>{{$k++}}</td>
                                             @endif
                                             @if( Auth::user()->role_id == 1)
                                             <th>{{$k}}</th>
                                             @endif
-                                            <td>{{ date('m-d-Y',strtotime($challan['updated_at']))}}</td>
+                                            <td>{{ date('j F, Y',strtotime($challan['updated_at']))}}</td>
                                             <td>
                                                 @if($challan->serial_number == '')
                                                 --

@@ -149,7 +149,7 @@
                                         <td class="text-center">{{ (round($challan->actual_quantity, 2)>0)? round($challan->actual_quantity, 2)  :0 }}</td>
                                         <!--<td class="text-center">{{ (round($challan->total_quantity_pending, 2)>0)? round($challan->total_quantity_pending, 2)  :0 }}</td>-->
                                         <!--<td class="text-center">{{ (round($challan->vat_percentage, 2)<>"")? round($challan->vat_percentage, 2):0}}</td>-->
-                                        <td class="text-center">{{ ($challan['delivery_order']->vehicle_number)}}</td>
+                                        <td class="text-center">{{ isset($challan['delivery_order']->vehicle_number)?($challan['delivery_order']->vehicle_number):""}}</td>
                                         <td class="text-center">
                                             <a href="{{url('delivery_challan/'.$challan->id)}}" class="table-link" title="view">
                                                 <span class="fa-stack">

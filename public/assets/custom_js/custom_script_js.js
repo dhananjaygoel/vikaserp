@@ -62,12 +62,12 @@ $(document).ready(function () {
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
 
     $('#expected_delivery_date_order').datepicker({
-        format: 'mm-dd-yyyy',
+        format: 'dd/mm/yyyy',
         startDate: new Date(),
         autoclose: true
     });
     $('#estimated_delivery_date').datepicker({
-        format: 'mm-dd-yyyy',
+        format: 'dd/mm/yyyy',
         startDate: new Date(),
         autoclose: true
     });
@@ -75,7 +75,7 @@ $(document).ready(function () {
 //        format: 'dd-mm-yyyy',
 //        startDate: new Date(),
 //        autoclose: true
-        format: 'dd-mm-yyyy',
+        format: 'dd/mm/yyyy',
         autoclose: false
     });
 
@@ -772,7 +772,7 @@ function fetch_average_quantity_load_truck() {
 //            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
 
             if (amount > 0) {
-                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + ' KG</span>');
 //                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
             }
@@ -853,16 +853,18 @@ function fetch_actual_quantity_load_truck() {
         var actual_qty = (parseFloat(average_quantity) / parseFloat(total_avg_qty) * parseFloat(Total_Actual_qty));
         actual_qty = parseFloat(actual_qty.toFixed(0));
         if (!isNaN(actual_qty)) {
-            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+            $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + ' KG</span>');
             $("#actual_quantity_" + i).val(actual_qty);
         }
         product_price = parseFloat($("#product_price_" + i).val());
 
         var amount = actual_qty * parseFloat(product_price);
         if (amount > 0) {
-            $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+            $("#amount_" + i).html('<span class="text-center">₹ ' + amount.toFixed(2) + '</span>');
         }
-        Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+        if (!isNaN(actual_qty)) {
+            Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+        }
         if(!isNaN(parseFloat(amount))){
             Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
         }
@@ -906,7 +908,7 @@ function fetch_average_quantity() {
 //            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
 
             if (amount >= 0) {
-                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+                $("#average_quantity_" + i).html('<span class="text-center">' + amount.toFixed(2) + ' KG</span>');
 //                $("#total_avg_qty").html('<span class="text-center">' + total_avg_qty.toFixed(2) + '</span>');
                 $('#total_avg_qty').val(total_avg_qty.toFixed(2));
             }
@@ -951,7 +953,7 @@ function fetch_actual_quantity() {
             var actual_qty = (parseFloat(average_quantity) / parseFloat(Total_Avg_qty) * parseFloat(Total_Actual_qty));
             actual_qty = parseFloat(actual_qty.toFixed(0));
             if (!isNaN(actual_qty)) {
-                $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + '</span>');
+                $("#actual_quantity_readonly_" + i).html('<span class="text-center">' + actual_qty.toFixed(0) + ' KG</span>');
                 $("#actual_quantity_" + i).val(actual_qty);
             }
 
@@ -959,9 +961,11 @@ function fetch_actual_quantity() {
 
             var amount = actual_qty * parseFloat(product_price);
             if (amount >= 0) {
-                $("#amount_" + i).html('<span class="text-center">' + amount.toFixed(2) + '</span>');
+                $("#amount_" + i).html('<span class="text-center">₹ ' + amount.toFixed(2) + '</span>');
             }
-            Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+            if(!isNaN(actual_qty)) {
+                Total_Actual_qty_calc = parseFloat(Total_Actual_qty_calc) + parseFloat(actual_qty);
+            }
             if(!isNaN(parseFloat(amount))){
                 Total_Amount = parseFloat(Total_Amount) + parseFloat(amount);
             }

@@ -226,11 +226,12 @@ $(document).ready(function () {
 
     $('#expected_delivery_date').datepicker({
         startDate: new Date(),
+        'format': 'dd/mm/yyyy',
         autoclose: true
     });
     $('#expected_date').datepicker({
 //        startDate: new Date(),
-        'format': 'yyyy-mm-dd',
+        'format': 'dd/mm/yyyy',
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();

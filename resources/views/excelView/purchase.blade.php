@@ -5,35 +5,17 @@
             <th style="height:20px;font-size:16px;color:#000080;">Date</th>
             <th style="height:20px;font-size:16px;color:#000080;">Vch No</th>
             <th style="height:20px;font-size:16px;color:#000080;">Vch Type</th>
-            
-<!--            <td class="heading1">Code</td>-->
             <th style="height:20px;font-size:16px;color:#000080;">Name</th>
-            <!--<td class="heading1">Address1</td>-->
-            <!--<td class="heading1">Address2</td>-->
-            <!--<td class="heading1">State</td>-->
-            <!--<td class="heading1">Pin Code</td>-->
-            <!--<td class="heading1">Tin No</td>-->
             <th style="height:20px;font-size:16px;color:#000080;">Account</th>
             <th style="height:20px;font-size:16px;color:#000080;">Item Name</th>
             <th style="height:20px;font-size:16px;color:#000080;">Product Name</th>
-            <!--<td class="heading1">Godown</td>-->
             <th style="height:20px;font-size:16px;color:#000080;">Pcs</th>
             <th style="height:20px;font-size:16px;color:#000080;">Unit</th>
             <th style="height:20px;font-size:16px;color:#000080;">Qty</th>
             <th style="height:20px;font-size:16px;color:#000080;">Rate</th>
             <th style="height:20px;font-size:16px;color:#000080;">Amt</th>
-<!--            <td class="heading1">Discount</td>
-            <td class="heading1">Loading</td>
-            <td class="heading1">Freight</td>-->
-            <!--<td class="heading1">Tax Type</td>-->
-            <!--<td class="heading1">Tax Rate</td>-->
-            <!--<td class="heading1">Tax</td>-->
-<!--            <td class="heading1">Round Off</td>
-            <td class="heading1">Grand total</td>-->
-            <th style="height:20px;font-size:16px;color:#000080;">Vehicle Number</th>
-            <!--<td class="heading1">Remark</td>-->
+            <th style="height:20px;font-size:16px;color:#000080;">Vehicle Number/Remark</th>
             <th style="height:20px;font-size:16px;color:#000080;">Ref NUM</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
         </tr>
         <?php
          $VchNo=1;
@@ -41,160 +23,178 @@
             $next_cnt = count((array)$value['delivery_challan_products']);
             $grand_vat_amt = 0;
             $current_number = 1;
+            $total_quantity = 0;
+            $amount = 0;
+            $total_amount = 0;
+            $rate = 0;
+            $total = 0;$freight_vat = 0;$discount_vat=0;$roundoff=0;
+            $total_gst_amount=0;
             ?>
             <?php foreach ($value['all_purchase_products'] as $key1 => $value1) {
                   $order_quantity = 0;
             ?>
         <tr>
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;">Purchase</td>
            <td>
-               @if($value['supplier']->tally_name != "" && $value['supplier']->owner_name != "")
+               <!-- @if($value['supplier']->tally_name != "" && $value['supplier']->owner_name != "")
                 {{ $value['supplier']->owner_name }}-{{$value['supplier']->tally_name}}
                 @else 
                 {{ $value['supplier']->owner_name }}
-                @endif
+                @endif -->
+                {{ isset($value['supplier']->tally_name) ? $value['supplier']->tally_name : 'N/A' }}
             </td>
             <td style="height:16px;">Purchase Account</td>
             <td style="height:16px;">{{ isset($value1['purchase_product_details']->alias_name) ? $value1['purchase_product_details']->alias_name : '' }}</td>
             <td style="height:16px;">{{ isset($value1['purchase_product_details']->product_category->product_category_name) ? $value1['purchase_product_details']->product_category->product_category_name : '' }}</td>
-            <td style="height:16px;">{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
-            <td style="height:16px;">{{ isset($value1->unit->unit_name) ? $value1->unit->unit_name : '' }}</td>
-            <td style="height:16px;">
+            <td style="height:16px;text-align: left;">{{ isset($value1->actual_pieces) ? $value1->actual_pieces : '' }}</td>
+            @if(isset($value1->unit_id) && $value1->unit_id == 1)
+                <td style="height:16px;text-align: left;">Kg</td>
+            @elseif(isset($value1->unit_id) && $value1->unit_id == 2)
+                <td style="height:16px;text-align: left;">Pieces</td>
+            @elseif(isset($value1->unit_id) && $value1->unit_id == 3)
+                <td style="height:16px;text-align: left;">Meter</td>
+            @elseif(isset($value1->unit_id) && $value1->unit_id == 4)
+                <td style="height:16px;text-align: left;">ft</td>
+            @elseif(isset($value1->unit_id) && $value1->unit_id == 5)
+                <td style="height:16px;text-align: left;">mm</td>
+            @else
+                <td style="height:16px;text-align: left;">Kg</td>
+            @endif
+            <!-- <td style="height:16px;text-align: left;">{{ isset($value1->unit->unit_name) ? $value1->unit->unit_name : '' }}</td> -->
+            <td style="height:16px;text-align: left;">{{ round($value1->quantity,2) }}</td>
+            <td style="height:16px;text-align: left;">{{ ((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $value1['purchase_product_details']->product_category['price']) }}</td>
+            <td style="height:16px;text-align: left;">
                         <?php
-                        if ($value1->unit_id == 1) {
-                            $order_quantity = $order_quantity + $value1->quantity;
-                        }
-                        if ($value1->unit_id == 2) {
-                            $order_quantity = $order_quantity + ($value1->quantity * $value1['purchase_product_details']->weight);
-                        }
-                        if ($value1->unit_id == 3) {
-                            $order_quantity = $order_quantity + (($value1->quantity / $value1['purchase_product_details']->standard_length ) * $value1['purchase_product_details']->weight);
-                        }
-                        ?>
-                        <?= round($value1->quantity, 2) ?>
-            </td>
-            <td style="height:16px;">{{ isset($value1->price) ? $value1->price : '' }}</td>
-            <td style="height:16px;">
-                        <?php
+                        $rate = (float)((isset($value1->price) && $value1->price != '0.00') ? $value1->price : $value1['purchase_product_details']->product_category['price']);
+                        $amount = (float)$value1->quantity * (float)$rate;
+                        $total_amount = round($amount + $total_amount, 2);
                         // Calculation Updated by 157 on 03-09-2015
-                        $total_amt = "";
+//                         $total_amt = "";
 
-                        if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
+//                         if (isset($value1->quantity) && !empty($value1->quantity) && $value1->quantity != 0) {
 
-                            $vat_amt = 0;
-                            $tot_amt = $value1->price * $value1->quantity;
+//                             $vat_amt = 0;
+//                             $tot_amt = $value1->price * $value1->quantity;
 
-                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
-                                $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
-                            }
+//                             if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+//                                 $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
+//                             }
 
-                            if ($next_cnt == $current_number) {
+//                             if ($next_cnt == $current_number) {
 
-                                $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
-                                if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
-                                    $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
-                                }
-                                $total_amt = $vat_amt + $total_amt;
-                            } else {
-                                $total_amt = $tot_amt;
-                            }
-                        } else {
-                            $vat_amt = 0;
-//                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
-                            if(isset($value1->order_product_details->weight))
-                            $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
-                        else {
-                             $tot_amt = $value1->price * $value1->actual_pieces;
-                        }
+//                                 $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
+//                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+//                                     $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
+//                                 }
+//                                 $total_amt = $vat_amt + $total_amt;
+//                             } else {
+//                                 $total_amt = $tot_amt;
+//                             }
+//                         } else {
+//                             $vat_amt = 0;
+// //                            $total_amt = $total_amt * $value1->actual_pieces * $value1->order_product_details->weight;
+//                             if(isset($value1->order_product_details->weight))
+//                             $tot_amt = $value1->price * $value1->actual_pieces * $value1->order_product_details->weight;
+//                         else {
+//                              $tot_amt = $value1->price * $value1->actual_pieces;
+//                         }
                             
                             
-                            if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
-                                $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
-                            }
-                            if ($next_cnt == $current_number) {
-                                $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
-                                if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
-                                    $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
-                                }
-                                $total_amt = $total_amt + $vat_amt;
-                            } else {
-                                $total_amt = $tot_amt;
-                            }
-                        }
-                        echo number_format($tot_amt, 2, '.', '');
+//                             if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+//                                 $grand_vat_amt = $grand_vat_amt + ($tot_amt * ($value['purchase_advice']->vat_percentage / 100));
+//                             }
+//                             if ($next_cnt == $current_number) {
+//                                 $total_amt = $tot_amt + $value->loading_charge + $value->freight + $value->discount = $value->round_off;
+//                                 if (isset($value['purchase_advice']->vat_percentage) && $value['purchase_advice']->vat_percentage !== "") {
+//                                     $vat_amt = ($total_amt * ($value['purchase_advice']->vat_percentage / 100));
+//                                 }
+//                                 $total_amt = $total_amt + $vat_amt;
+//                             } else {
+//                                 $total_amt = $tot_amt;
+//                             }
+//                         }
+//                         echo number_format($tot_amt, 2, '.', '');
                         ?>
+                        {{ round($amount,2) }}
             </td>
             <td style="height:16px;">
-                <?php
-                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
-                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
+                <?php if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                        echo "[" . $value['purchase_advice']->vehicle_number . "]";
+                ?>
+                    {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
-            <td style="height:16px;">{{ (isset($value->remarks)&& $value->remarks!='')? $value->remarks : '' }}</td>
-       
-            <?php }?>
-             
-             
-       
-                   
-             
-             
+            <?php }
+            ?>
+            <?php                             
+                if(isset($value->vat_percentage) && !empty($value->vat_percentage)){
+                    $total_gst_amount = ((float)$total_amount * (float)$value->vat_percentage) / 100;
+                    if((isset($value->freight) && $value->freight != '')){
+                        $freight_vat = $value->freight * $value->vat_percentage / 100;
+                    }
+                    if((isset($value->discount) && $value->discount != '')){
+                        $discount_vat = $value->discount * $value->vat_percentage / 100;
+                    }
+                }
+                $grand_total = $total_gst_amount + $total_amount + (isset($value->freight)?$value->freight:0) + (isset($value->discount)?$value->discount:0) + $freight_vat + $discount_vat ;
+                $roundoff = round($grand_total,0) - $grand_total;
+            ?>
+   
         <tr>
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>            
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>            
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Discount</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{ isset($value->discount) ? $value->discount : '0.00' }}</td>
+            <td style="height:16px;text-align: left;">{{ isset($value->discount) ? $value->discount : '0.00' }}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
         <tr> 
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>           
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>           
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Loading</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{ isset($value->loading_charge) ? $value->loading_charge : '0.00' }}</td>
+            <td style="height:16px;text-align: left;">{{ isset($value->loading_charge) ? $value->loading_charge : '0.00' }}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
-           <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
         <tr>  
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Freight</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{isset($value->freight) ? $value->freight : '0.00'}}</td>
+            <td style="height:16px;text-align: left;">{{isset($value->freight) ? $value->freight : '0.00'}}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
-           <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
         <tr>    
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Tax</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">
-                <?php
+            <td style="height:16px;text-align: left;">
+                <!-- <?php
                         if($value->purchase_advice->vat_percentage != ""){
                             $discount =0;
                             $loading_charge =0;
@@ -224,54 +224,64 @@
                         else {
                             echo "0.00";
                         }
+                ?> -->
+                <?php
+                    $grand_vat_amt = $total_gst_amount + $freight_vat + $discount_vat ;
                 ?>
+                {{ round($grand_vat_amt,2) }}
             
             </td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
-            <td>{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
            
         </tr>
          
          <tr>    
             <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Round Off</td>
             <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;">{{ isset($value->round_off) ? $value->round_off : '' }}</td>
+            <td style="height:16px;text-align: left;">{{ round($roundoff,2) }}</td>
             <td style="height:16px;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
-           <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
                     
         <tr style="border:2px solid black">    
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
-            <td style="height:16px;">{{$VchNo}}</td>
-            <td style="height:16px;"></td><td></td>
-            <td style="height:16px;"> <b>Total</b></td>
-            <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
-            <td style="height:16px;"><b>{{  isset($value->grand_total) ? number_format($value->grand_total, 2, '.', '') : '0.00' }}</b></td>
-            <td style="height:16px;">
+            <td style="height:18px;border:2px solid #4fe24f;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:18px;border:2px solid #4fe24f;text-align: left;">{{$VchNo}}</td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"> <b>Total</b></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"></td>
+            <td style="height:18px;border:2px solid #4fe24f;"><b>{{  round($grand_total, 0) }}</b></td>
+            <td style="height:18px;border:2px solid #4fe24f;">
                 <?php
                  if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
                             echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
-
-            </td> 
-            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:18px;border:2px solid #4fe24f;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
-        
-         
-        <?php    $VchNo++;
-         }
+        <?php
+            $VchNo++;
+        }
+        // dd('end');
         ?>
         
         

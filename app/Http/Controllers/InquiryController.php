@@ -206,8 +206,9 @@ class InquiryController extends Controller {
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
+        
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
-        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $i = 0;
         $j = count((array)$input_data['product']);
@@ -566,7 +567,7 @@ class InquiryController extends Controller {
             return Redirect::back()->withErrors($validator)->withInput();
         }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
-        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $i = 0;
         $j = count((array)$input_data['product']);
@@ -1485,7 +1486,7 @@ class InquiryController extends Controller {
         }
         $customer_id = 0;
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_date']);
-        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $i = 0;
         $j = count((array)$input_data['product']);

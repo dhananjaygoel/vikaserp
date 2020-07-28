@@ -16,7 +16,7 @@
             <th style="height:20px;font-size:16px;color:#000080;">Price</th>
             <th style="height:20px;font-size:16px;color:#000080;">GST Percentage</th>
             <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Vehicle Name</th>
+            <th style="height:20px;font-size:16px;color:#000080;">Vehicle No.</th>
             <th style="height:20px;font-size:16px;color:#000080;">Driver Contact</th>
             <th style="height:20px;font-size:16px;color:#000080;">Remark</th>
             <th style="height:20px;font-size:16px;color:#000080;">Order By</th>
@@ -42,7 +42,7 @@
             </td>
             <td>
                 @if(isset($delivery_data['created_at']) && $delivery_data['created_at']!='')
-                {{date('F jS, Y', strtotime ($delivery_data['created_at']))}}
+                {{date('j F, Y', strtotime ($delivery_data['created_at']))}}
                 @endif
             </td>
             <td>
@@ -83,9 +83,9 @@
             <td>{{(isset($delivery_data->driver_contact_no) && $delivery_data->driver_contact_no != "") ? $delivery_data->driver_contact_no : ''}}</td>
             <td>{{(isset($delivery_data->remarks) && $delivery_data->remarks != "") ? $delivery_data->remarks : ''}}</td>
             <td>{{(isset($delivery_data->order_details->createdby->first_name) && $delivery_data->order_details->createdby->first_name != "" && isset($delivery_data->order_details->createdby->last_name) && $delivery_data->order_details->createdby->last_name != "") ? $delivery_data->order_details->createdby->first_name." ".$delivery_data->order_details->createdby->last_name : ''}}</td>
-            <td>{{(isset($delivery_data->order_details->updated_at) && $delivery_data->order_details->updated_at != "") ? $delivery_data->order_details->updated_at : ''}}</td>
+            <td>{{(isset($delivery_data->order_details->updated_at) && $delivery_data->order_details->updated_at != "") ? date('j F, Y h:i A' ,strtotime($delivery_data->order_details->updated_at)) : ''}}</td>
             <td>{{(isset($delivery_data->user->first_name) && isset($delivery_data->user->last_name)) ? $delivery_data->user->first_name." ".$delivery_data->user->last_name : ''}}</td>
-            <td>{{(isset($delivery_data->updated_at)) ? $delivery_data->updated_at : ''}}</td>
+            <td>{{(isset($delivery_data->updated_at)) ? date('j F, Y h:i A',strtotime($delivery_data->updated_at)) : ''}}</td>
         </tr>
         <?php $count = 0; ?>
         @foreach($delivery_data['delivery_product'] as $product)

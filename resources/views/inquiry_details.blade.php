@@ -101,7 +101,7 @@
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
                                             <td>{{isset($product_data->length)?$product_data->length:'0'}}</td>
-                                            <td><div id='price_{{$product_data->id}}'>{{$product_data->price}}</div></td>
+                                            <td><div id='price_{{$product_data->id}}'>₹ {{$product_data->price}}</div></td>
                                             <td>
                                                 <div id='vat_{{$product_data->id}}'>
                                                     <input type="checkbox" disabled="" {{($product_data->vat_percentage>0)?'checked':''}} >
@@ -134,7 +134,7 @@
                                         <!-- <tr><td><span>GST Percentage: </span> {{isset($inquiry->vat_percentage)?$inquiry->vat_percentage:'0.00'}}% </td></tr>
                                         @endif -->
                                         <tr>
-                                            <td><span>Expected Delivery Date: </span>{{date('F jS, Y',strtotime($inquiry->expected_delivery_date))}}</td>
+                                            <td><span>Expected Delivery Date: </span>{{date('j F, Y',strtotime($inquiry->expected_delivery_date))}}</td>
                                         </tr>
                                         <tr>
                                             <td><span>Remark: </span>{{$inquiry->remarks}}</td>

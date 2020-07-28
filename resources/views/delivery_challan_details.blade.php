@@ -16,12 +16,12 @@
             <div class="col-lg-12">
                 <div class="main-box">
                     <div class="main-box-body clearfix">                        
-                        @if($allorder['delivery_order']->order_source == 'warehouse')                            
+                        @if(!empty($allorder['delivery_order']->order_source) && $allorder['delivery_order']->order_source == 'warehouse')                            
                             <div class="form-group">
                                 <label><b>Order From:</b> Warehouse                                    
                                 </label>
                             </div><hr>
-                        @elseif($allorder['delivery_order']->order_source == 'supplier')
+                        @elseif(!empty($allorder['delivery_order']->order_source) && $allorder['delivery_order']->order_source == 'supplier')
                         <div class="form-group">
                             <label><b>Order From:</b> 
                                 @foreach($customers as $customer)
@@ -56,12 +56,12 @@
                         @if($is_allincludive)
                                 <div class="form-group">
                                     <label><b>Empty Truck Weight:</b>
-                                        {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}}
+                                        {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}} KG
                                     </label>
                                 </div><hr>
                                 <div class="form-group">
                                     <label><b>Final Truck Weight:</b>
-                                        {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
+                                        {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}} KG
                                     </label>
                                 </div><hr>
                         @endif
@@ -268,7 +268,7 @@
                         <hr>
                         <div class="form-group">
                             <div class="col-md-12 no_left_margin">
-                                <label for="Discount"><b class="challan">Discount: </b></label> ₹ {{$allorder->discount}}
+                                <label for="Discount"><b class="challan">Discount: </b></label> ₹ {{isset($allorder->discount) && $allorder->discount != ''?$allorder->discount:0}}
                             </div>
                             <br>
                         </div>

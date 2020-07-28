@@ -108,9 +108,9 @@
             <td style="height:16px;">{{isset($allorder->delivery_order->vehicle_number) ? $allorder->delivery_order->vehicle_number:''}}</td>
             <td style="height:16px;">{{isset($allorder->delivery_order->driver_contact_no) ? $allorder->delivery_order->driver_contact_no:''}}</td>
             <td style="height:16px;">{{isset($allorder->order_details->createdby->first_name) ? $allorder->order_details->createdby->first_name." ".$allorder->order_details->createdby->last_name:''}}</td>
-            <td style="height:16px;">{{isset($allorder->order_details->updated_at) ? $allorder->order_details->updated_at:''}}</td>
+            <td style="height:16px;">{{isset($allorder->order_details->updated_at) ? date('j F, Y h:i A',strtotime($allorder->order_details->updated_at)):''}}</td>
             <td style="height:16px;">{{isset($allorder->delivery_order->user->first_name) ? $allorder->delivery_order->user->first_name." ".$allorder->delivery_order->user->last_name:''}}</td>
-            <td style="height:16px;">{{isset($allorder->delivery_order->updated_at) ? $allorder->delivery_order->updated_at:''}}</td>
+            <td style="height:16px;">{{isset($allorder->updated_at) ? date('j F, Y h:i A',strtotime($allorder->updated_at)):''}}</td>
             <td style="height:16px;">{{isset($allorder->remarks) ? $allorder->remarks:''}}</td>
 
         </tr>

@@ -123,7 +123,7 @@
                                                     @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                                                         <td>{{$k++}}</td>
                                                     @endif
-                                                    <td>{{ date('m-d-Y',strtotime($challan['updated_at']))}}</td>
+                                                    <td>{{ date('j F, Y',strtotime($challan['updated_at']))}}</td>
                                                     <td>
                                                         @if($challan->serial_number == '')
                                                             --

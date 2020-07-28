@@ -91,14 +91,24 @@ class DashboardController extends Controller {
 
         foreach ($orders as $order) {
             if ($order->order_status == 'pending') {
+                $order_pending = 0;
                 foreach ($order->all_order_products as $all_order_products) {
-                    if ($all_order_products->unit_id == 1)
-                        $order_pending_sum += $all_order_products->quantity;
-                    elseif (($all_order_products->unit_id == 2) || ($all_order_products->unit_id == 3))
+                    if ($all_order_products->unit_id == 1){
+                        $order_pending += $all_order_products->quantity;
+                    } elseif ($all_order_products->unit_id == 2){
+                        $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                    } elseif ($all_order_products->unit_id == 3){
+                        $order_pending += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                    } elseif ($all_order_products->unit_id == 4){
+                        $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                    } elseif ($all_order_products->unit_id == 5){
+                        $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                    }
 
                     // $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity);
-                        $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity, $all_order_products->product_sub_category);
+                    //     $order_pending_sum += $this->checkpending_quantity($all_order_products->unit_id, $all_order_products->product_category_id, $all_order_products->quantity, $all_order_products->product_sub_category, $all_order_products->length);
                 }
+                $order_pending_sum += round($order_pending,2);
             }
         }
 
@@ -110,104 +120,80 @@ class DashboardController extends Controller {
         $inquiry_pending_sum = 0;
         $inquiries = Inquiry::with('inquiry_products')->get();
         foreach ($inquiries as $inquiry) {
-            foreach ($inquiry->inquiry_products as $all_inquiry_products) {
-                if ($inquiry->inquiry_status == 'pending' && $inquiry->is_approved == 'yes') {
-                    if ($all_inquiry_products->unit_id == 1)
-                        $inquiry_pending_sum += $all_inquiry_products->quantity;
-                    elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))
+            if ($inquiry->inquiry_status == 'pending' && $inquiry->is_approved == 'yes') {
+                $inquiry_pending = 0;
+                foreach ($inquiry->inquiry_products as $all_inquiry_products) {
+                    if ($all_inquiry_products->unit_id == 1){
+                        $inquiry_pending += $all_inquiry_products->quantity;
+                    } elseif ($all_inquiry_products->unit_id == 2){
+                        $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight;
+                    } elseif ($all_inquiry_products->unit_id == 3){
+                        $inquiry_pending += ($all_inquiry_products->quantity / $all_inquiry_products->product_sub_category->standard_length) * $all_inquiry_products->product_sub_category->weight;
+                    } elseif ($all_inquiry_products->unit_id == 4){
+                        $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * $all_inquiry_products->length;
+                    } elseif ($all_inquiry_products->unit_id == 5){
+                        $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * ($all_inquiry_products->length/305);
+                    }
+
+                // if ($inquiry->inquiry_status == 'pending' && $inquiry->is_approved == 'yes') {
+                //     if ($all_inquiry_products->unit_id == 1)
+                    //     $inquiry_pending_sum += $all_inquiry_products->quantity;
+                    // elseif (($all_inquiry_products->unit_id == 2) || ($all_inquiry_products->unit_id == 3))
 
                     // $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity);
-                        $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity, $all_inquiry_products->product_sub_category);
+                        // $inquiry_pending_sum += $this->checkpending_quantity($all_inquiry_products->unit_id, $all_inquiry_products->product_category_id, $all_inquiry_products->quantity, $all_inquiry_products->product_sub_category, $all_inquiry_products->length);
+                        
                 }
+                $inquiry_pending_sum += round($inquiry_pending,2);
             }
         }
-
         $inquiry_pending_sum = $inquiry_pending_sum / 1000;
+
 
         $delivery_order = DeliveryOrder::where('order_status', 'pending')->with('delivery_product')->get();
         $deliver_sum = 0;
         $deliver_pending_sum = 0;
-//        foreach ($delivery_order as $qty) {
-//            if ($qty->order_status == 'pending') {
-//                foreach ($qty['delivery_product'] as $qty_val) {
-//                    $deliver_pending_sum += $qty_val->quantity;
-//                }
-//            } else if ($qty->order_status == 'completed') {
-//                foreach ($qty['delivery_product'] as $qty_val) {
-//                    $deliver_sum += $qty_val->quantity;
-//                }
-//            }
-//        }
+
         foreach ($delivery_order as $delivery_order_info) {
             if ($delivery_order_info->order_status == 'pending') {
+                $deliver_pending = 0;
                 foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
-                    if ($delivery_order_productinfo->unit_id == 1)
-                        $deliver_pending_sum += $delivery_order_productinfo->quantity;
-                    elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+                    if(isset($delivery_order_productinfo->actual_pieces) && !empty($delivery_order_productinfo->actual_pieces) && isset($delivery_order_productinfo->actual_quantity) && !empty($delivery_order_productinfo->actual_quantity)){
+                        $deliver_pending += $delivery_order_productinfo->quantity;
+                    }
+                    else{
+                        if ($delivery_order_productinfo->unit_id == 1){
+                            $deliver_pending += $delivery_order_productinfo->quantity;
+                        } elseif ($delivery_order_productinfo->unit_id == 2){
+                            $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight;
+                        } elseif ($delivery_order_productinfo->unit_id == 3){
+                            $deliver_pending += ($delivery_order_productinfo->quantity / $delivery_order_productinfo->product_sub_category->standard_length) * $delivery_order_productinfo->product_sub_category->weight;
+                        } elseif ($delivery_order_productinfo->unit_id == 4){
+                            $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * $delivery_order_productinfo->length;
+                        } elseif ($delivery_order_productinfo->unit_id == 5){
+                            $deliver_pending += $delivery_order_productinfo->quantity * $delivery_order_productinfo->product_sub_category->weight * ($delivery_order_productinfo->length/305);
+                        }
+                    }
 
-                    // $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
-                        $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity, $delivery_order_productinfo->product_sub_category);
+                //     if ($delivery_order_productinfo->unit_id == 1)
+                //         $deliver_pending_sum += $delivery_order_productinfo->quantity;
+                //     elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
+
+                //     // $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
+                //         $deliver_pending_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity, $delivery_order_productinfo->product_sub_category, $delivery_order_productinfo->length);
                 }
+                $deliver_pending_sum += round($deliver_pending,2);
             }
-//            foreach ($delivery_order_info->delivery_product as $delivery_order_productinfo) {
-//                if ($delivery_order_productinfo->unit_id == 1)
-//                    $deliver_sum += $delivery_order_productinfo->quantity;
-//                elseif (($delivery_order_productinfo->unit_id == 2) || ($delivery_order_productinfo->unit_id == 3))
-//                    $deliver_sum += $this->checkpending_quantity($delivery_order_productinfo->unit_id, $delivery_order_productinfo->product_category_id, $delivery_order_productinfo->quantity);
-//            }
         }
         $deliver_sum = $deliver_sum / 1000;
         $deliver_pending_sum = $deliver_pending_sum / 1000;
-
-
-//        $delivery_challan = DeliveryChallan::with('delivery_challan_products')->get();
-//        $delivery_challan_sum = 0;
-//
-////        foreach ($pur_challan as $qty) {
-////            foreach ($qty['delivery_challan_products'] as $qty_val) {
-////                $challan_sum += $qty_val->quantity;
-////            }
-////        }
-//        foreach ($delivery_challan as $delivery_challan_info) {
-//            foreach ($delivery_challan_info->delivery_challan_products as $delivery_challan_productinfo) {
-////                if ($delivery_challan_productinfo->unit_id == 1)
-////                    $delivery_challan_sum += $delivery_challan_productinfo->quantity;
-////                else
-////                    $delivery_challan_sum += $this->checkpending_quantity($delivery_challan_productinfo->unit_id, $delivery_challan_productinfo->product_category_id, $delivery_challan_productinfo->quantity);
-//
-//
-//                if($delivery_challan_info->challan_status == 'completed'){
-//                    $delivery_challan_sum =  $delivery_challan_sum + $delivery_challan_productinfo->actual_quantity;
-//                }
-//            }
-//        }
-//        $delivery_challan_sum = $delivery_challan_sum / 1000;
-//        $purc_order_sum = 0;
-//        $purchase_order = PurchaseOrder::with('purchase_products')->get();
-////        foreach ($pur_challan as $qty) {
-////            foreach ($qty['purchase_products'] as $qty_val) {
-////                $purc_order_sum += $qty_val->quantity;
-////            }
-////        }
-//        foreach ($purchase_order as $purchase_order_info) {
-//            foreach ($purchase_order_info->purchase_products as $purchase_order_productinfo) {
-//                if ($purchase_order_productinfo->unit_id == 1)
-//                    $purc_order_sum += $purchase_order_productinfo->quantity;
-//                else
-//                    $purc_order_sum += $this->checkpending_quantity($purchase_order_productinfo->unit_id, $purchase_order_productinfo->product_category_id, $purchase_order_productinfo->quantity);
-//            }
-//        }
-//        $purc_order_sum = $purc_order_sum / 1000;
-//        dd(DB::getQueryLog());
-//            exit;
-
 
         return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
 
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));
     }
 
-    function checkpending_quantity($unit_id, $product_category_id, $product_qty, $prod_info = false) {
+    function checkpending_quantity($unit_id, $product_category_id, $product_qty, $prod_info = false, $product_length = false) {
 
         $kg_qty = 0;
         if ($prod_info && count((array)(array)$prod_info)) {
@@ -225,6 +211,7 @@ class DashboardController extends Controller {
         } elseif ($unit_id == 2) {
             if (isset($product_info->weight)) {
                 $weight = $product_info->weight;
+                $product_qty = $product_info->quantity;
             } else {
                 $weight = 0;
             }
@@ -232,6 +219,7 @@ class DashboardController extends Controller {
         } elseif ($unit_id == 3) {
             if (isset($product_info->weight)) {
                 $weight = $product_info->weight;
+                $product_qty = $product_info->quantity;
             } else {
                 $weight = 1;
             }
@@ -241,9 +229,26 @@ class DashboardController extends Controller {
             }
 
             $kg_qty = $kg_qty + (($product_qty / $std_length ) * $weight);
+        } elseif ($unit_id == 4) {
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+                $product_qty = $product_info->quantity;
+            } else {
+                $weight = 1;
+            }
+            $kg_qty = $kg_qty + $product_qty * $weight * $product_length;
+        } elseif ($unit_id == 5) {
+            if (isset($product_info->weight)) {
+                $weight = $product_info->weight;
+                $product_qty = $product_info->quantity;
+            } else {
+                $weight = 1;
+            }
+            $kg_qty = $kg_qty + $product_qty * $weight * ($product_length/305);
         }
         return $kg_qty;
     }
+
 
 //    public function logout() {
 //

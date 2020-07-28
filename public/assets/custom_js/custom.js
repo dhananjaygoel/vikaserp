@@ -4020,7 +4020,7 @@ $("body").on('click',"button", function() {
             truck_sequence++;
             var html = '<div class ="row form-group truck_weight_save">'+
                     '<ul style="list-style-type: none;padding: 0;">'+
-                    '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (Kg):</span>'+
+                    '<li><span class="col-md-2"style="padding-top:8px;"> Truck Weight '+truck_sequence+' (KG):</span>'+
                     '<span id="truck_value_add_'+truck_sequence+'">'+
                     '<input type="text" name="truck_weight[]" value="0" id="truck_weight_'+delboy_id+'_'+truck_sequence+'" class="form-control " style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save('+truck_sequence+','+delboy_id+');" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save('+truck_sequence+','+delboy_id+');">'+
                     '<input type="hidden" name="truck_weight_id[]" id="truck_weight_'+truck_sequence+'" value="">'+

@@ -199,11 +199,11 @@
                                                 
                                                     if(isset($daybook->vat_percentage) && !empty($daybook->vat_percentage)){
                                                         $total_gst_amount = ((float)$total_amount * (float)$daybook->vat_percentage) / 100;
-                                                        if((isset($purchase_challan->freight) && $purchase_challan->freight != '')){
-                                                            $freight_vat = $purchase_challan->freight * $purchase_challan->vat_percentage / 100;
+                                                        if((isset($daybook->freight) && $daybook->freight != '')){
+                                                            $freight_vat = $daybook->freight * $daybook->vat_percentage / 100;
                                                         }
-                                                        if((isset($purchase_challan->discount) && $purchase_challan->discount != '')){
-                                                            $discount_vat = $purchase_challan->discount * $purchase_challan->vat_percentage / 100;
+                                                        if((isset($daybook->discount) && $daybook->discount != '')){
+                                                            $discount_vat = $daybook->discount * $daybook->vat_percentage / 100;
                                                         }
                                                     }
                                                     

@@ -94,7 +94,7 @@
                     $total_price += ($total_vat_amount);
                 ?>
                 <tr>
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:16px;">Sales</td>
                     <td style="height:16px;">{{ isset($value['customer']->tally_name) ? (($value['customer']->tally_name != "") ? $value['customer']->tally_name : "Advance Sales"):'' }}</td>
@@ -130,7 +130,7 @@
                 </tr>
             <?php }?>
                 <tr>
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:16px;"></td><td></td>
                     <td style="height:16px;">Discount</td>
@@ -146,7 +146,7 @@
                     <td>{{$VchNo}}</td>
                 </tr>
                 <tr> 
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Loading</td>
@@ -162,7 +162,7 @@
                     <td>{{$VchNo}}</td> 
                 </tr> 
                 <tr>  
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Freight</td>
@@ -178,7 +178,7 @@
                     <td>{{$VchNo}}</td>                
                 </tr>
                 <tr>    
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Tax</td>
@@ -202,12 +202,12 @@
                     <td style="height:16px;">{{$VchNo}}</td>                
                 </tr>
                 <tr>    
-                    <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
                     <td style="height:16px;">Round Off</td>
                     <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td style="height:16px;">{{  round($round_off,2) }}</td>
+                    <td style="height:16px;">{{ round($round_off,2) }}</td>
                     <td>
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
@@ -218,7 +218,7 @@
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
                 <tr>    
-                    <td style="height:18px;border:2px solid #4fe24f;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:18px;border:2px solid #4fe24f;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:18px;border:2px solid #4fe24f;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>

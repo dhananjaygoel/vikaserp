@@ -70,7 +70,7 @@
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             Truck weight value successfully updated.
                         </div>
-                        <div class="form-group">Date : {{date('d F, Y')}}</div>
+                        <div class="form-group">Date : {{date('j F, Y')}}</div>
                         <hr>
                         {!!Form::open(array('data-button'=>'btn_delorderto_deltruck','method'=>'POST','url'=>url('create_load_truck/'.$delivery_data['id']),'class'=>'load_truck_data','id'=>'onenter_prevent'))!!}
                         <input type="hidden" name="order_id" value="{{$delivery_data->order_id}}">
@@ -121,7 +121,7 @@
                         @endif
                         <hr>
                         <div class="form-group row">
-                            <span class="col-md-2" style="padding-top:6px;">Empty Truck Weight(Kg):</span> 
+                            <span class="col-md-2" style="padding-top:6px;">Empty Truck Weight(KG):</span> 
                             @if(isset($delivery_data->empty_truck_weight) && $delivery_data->empty_truck_weight > 0)
                                 @if(Auth::user()->role_id == 0)
                                     <input type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" style="width: 150px;" maxlength="10" >
@@ -139,16 +139,16 @@
                         <div class="form-group row">
                         @if(Auth::user()->role_id ==0)
                             @if($delivery_data->final_truck_weight > 0)
-                                <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
+                                <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(KG):</span>
                                 <input type="text" class="form-control col-md-2" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="{{ $delivery_data->final_truck_weight}}"  style="width:150px;" onkeypress=" return numbersOnly(this, event, true, false);">
                                 <input type='hidden' name='final_weight_edited' id='final_weight_edited' value=''>
                                 <span><button type="button" value="final_truck_weight_save" id="btn_final_truck_weight" class="btn btn-sm btn-primary" style="position: relative;margin-left:2em;">Save</button></span>
                             @else
-                                <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
+                                <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(KG):</span>
                                 <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" readonly="readonly" style="width:150px;">
                             @endif
                         @else 
-                            <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(Kg):</span>
+                            <span class="col-md-2" style="padding-top:8px;">Final Truck Weight(KG):</span>
                             <input type="text" class="form-control" id="final_truck_weight_load" name="final_truck_weight_load" placeholder="" value="<?php isset($delivery_data->final_truck_weight) && $delivery_data->final_truck_weight>0? print $delivery_data->final_truck_weight:''?>" readonly="readonly" style="width:170px;">
                         @endif 
                         </div>
@@ -234,7 +234,7 @@
                             <div class ="row form-group truck_weight_save">
                                 <ul style="list-style-type: none;padding: 0;">
                                     <li>
-                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (KG):</span>
                                     <span id="truck_value_add_{{$i}}"><input type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{$truck_value->userid}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{$truck_value->userid}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{$truck_value->userid}});">
                                     <input type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
                                     <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}">
@@ -257,31 +257,12 @@
                         
                             <?php $i++;?>
                         @endforeach
-                            <!-- <div class ="row form-group truck_weight_save">
-                                <ul id="truck" style="list-style-type: none;padding: 0;">
-                                    <li>
-                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                        <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
-                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="0">
-                                        <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
-                                        <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
-                                            @if(isset($labours))
-                                                @foreach ($labours as $labour)
-                                                    <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
-                                        <span id="load_label_{{Auth::id()}}_{{$i}}" style="padding-top:8px;"></span>
-                                    </li>
-                                </ul>
-                            </div> -->
                         <?php $i--;?>
                         @else
                         <div class ="row form-group truck_weight_save">
                             <ul id="truck" style="list-style-type: none;padding: 0;">
                                 <li>
-                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                    <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (KG):</span>
                                     <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{Auth::user()->id}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{Auth::user()->id}});">
                                     <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
                                     <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
@@ -331,7 +312,7 @@
                                 <div class ="row form-group truck_weight_save">
                                     <ul style="list-style-type: none;padding: 0;">
                                         <li>
-                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (KG):</span>
                                         <span id="truck_value_add_{{$i}}"><input <?php isset($class)?print $class:''?>type="text" value="{{$truck_value->final_truck_weight}}" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{$truck_value->userid}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{$truck_value->userid}});">
                                         <input <?php isset($class)?print $class:''?> type="hidden" name="" id="truck_weight_{{$truck_value->id}}" value="{{$truck_value->final_truck_weight}}_{{$i}}">
                                         <input <?php isset($class)?print $class:''?> type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="{{$truck_value->final_truck_weight}}_{{$truck_value->id}}">
@@ -353,30 +334,12 @@
                                 
                                 <?php $i++;?>
                             @endforeach
-                                <!-- <div class ="row form-group truck_weight_save">
-                                    <ul id="truck" style="list-style-type: none;padding: 0;">
-                                        <li>
-                                            <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
-                                            <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" >
-                                            <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
-                                            <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
-                                            <select id="labour_select_{{Auth::id()}}_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
-                                                @if(isset($labours))
-                                                    @foreach ($labours as $labour)
-                                                        <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <button type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
-                                        </li>
-                                    </ul>
-                                </div> -->
                             <?php $i--;?>
                         @else
                             <div class ="row form-group truck_weight_save">
                                 <ul id="truck" style="list-style-type: none;padding: 0;">
                                     <li>
-                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (Kg):</span>
+                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (KG):</span>
                                         <span id="truck_value_add_{{$i}}"><input type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{Auth::user()->id}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{Auth::user()->id}});">
                                         <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
                                         <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
@@ -515,33 +478,33 @@
                                             </td>
                                             <td class="col-md-1">
                                               
-                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}}</div></div>
+                                                <div class="form-group"><div id="average_quantity_{{$key}}">{{$actual_quantity}} KG</div></div>
                                                 </div>
                                             </td> 
                                             
 
                                             <td class="col-md-1 sfdsf">
-                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}}</div></div>
+                                                <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}} KG</div></div>
                                                 <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="{{$actual_quantity}}" type="hidden" >
                                               
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     {{ $product->present_shipping}}
                                                     <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
                                                 </div>
                                             </td>
                                             <td class="col-md-1">
-                                                <div class="form-group">{{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
+                                                <div class="form-group">₹ {{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
                                             </td>
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                            <td class="col-md-1">
+                                            <td class="">
                                                 <div class="form-group">
                                                     <input class="vat_chkbox" type="checkbox" {{($product->vat_percentage>0)?'checked':''}} name="product[{{$key}}][vat_percentage]" value="yes">
                                                   
                                                 </div>
                                             </td>
                                              @endif
-                                            <td class="col-md-2">
+                                            <td class="">
                                                 <div class="form-group ">
                                                     @foreach($units as $unit)
                                                     @if($unit->id == $product->unit_id)
@@ -552,13 +515,13 @@
                                                     @endforeach
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">{{$product->length}}
                                                 <input type="hidden" class="form-control" id="product_length_{{$key}}" value="{{$product->length}}" name="product[{{$key}}][length]"></div>
                                             </td>
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                            <td class="col-md-2">
-                                                <div class="form-group"><div id="amount_{{$key}}">{{$total_amt}}</div></div>
+                                            <td class="col-md-3">
+                                                <div class="form-group"><div id="amount_{{$key}}">₹ {{$total_amt}}</div></div>
                                             </td>
                                             @endif
                                         </tr>
@@ -573,12 +536,12 @@
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <label for="total_actual_qty_truck">
-                                <b class="load_truck">Actual Quantity*</b> 
+                                <b class="load_truck">Actual Quantity* : KG</b> 
                                 <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_qty_truck" name="total_actual_qty_truck" readonly=""  >  
                             </label>
                             &nbsp;&nbsp;
                             <label for="total_avg_qty">
-                                <b class="load_truck">Total Avg Quantity*</b>
+                                <b class="load_truck">Total Avg Quantity* : KG</b>
                                 <input type="text" value ="{{$actualsum}}" class="form-control" id="total_avg_qty" name="total_avg_qty" placeholder="" readonly="">
                                 <!--                                <div class="form-group"><div id="total_avg_qty"></div></div>-->
                             </label> 
@@ -586,7 +549,7 @@
                         <div class="form-group">  
                         @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
                             <label for="total">
-                                <b class="load_truck">Total</b>
+                                <b class="load_truck">Total : ₹</b>
                                 <span class="gtotal">
                                     <input type="text" value ="{{$actualtotal}}" class="form-control" id="total_price" name="total_price" placeholder="" readonly="">
                                 </span>
@@ -594,7 +557,7 @@
                             &nbsp;&nbsp;
                         @endif
                             <label for="total">
-                                <b class="load_truck">Total Actual Quantity</b>
+                                <b class="load_truck">Total Actual Quantity : KG</b>
                                 <span class="gtotal">
                                     <input type="text" value ="{{$actualsum}}" class="form-control" id="total_actual_quantity_calc" name="total_actual_quantity_calc" placeholder="" readonly="readonly">
                                 </span>

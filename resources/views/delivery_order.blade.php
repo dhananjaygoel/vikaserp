@@ -178,6 +178,7 @@
                                         <th>Tally Name</th>
                                         <th>Delivery Location</th>
 <!--                                        <th>Quantity</th>-->
+                                        <th>Total Quantity</th>
                                         <th>Present Shipping</th>
                                         <th>Pending Order</th>
                                         <th>Vehicle Number</th>
@@ -199,7 +200,7 @@
                                             <span class="{{($delivery->flaged==true)?'filled_star flags':'empty_star flags'}}" data-orderid="{{$delivery->id}}"></span>
                                         </td>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{date("F jS, Y", strtotime($delivery->created_at)) }}</td>
+                                        <td>{{date("j F, Y", strtotime($delivery->created_at)) }}</td>
                                         <td>
                                             @if(isset($delivery['customer']->tally_name) && $delivery['customer']->tally_name != "")
                                             {{$delivery['customer']->tally_name}}
@@ -218,6 +219,9 @@
 <!--                                        <td>
                                             {{ round($delivery->total_quantity, 2) }}
                                         </td>-->
+                                        <td>
+                                            {{ round($delivery->total_quantity, 2) }}
+                                        </td>
                                         <td>
                                             {{ round($delivery->present_shipping, 2) }}
                                         </td>

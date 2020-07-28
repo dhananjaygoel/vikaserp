@@ -35,7 +35,7 @@
                         @endif
                         <table id="table-example" class="table table-hover  ">
                             <tbody>
-                                <tr><td><span><b>Date: </b></span> <?php echo date('F d, Y'); ?></td></tr>
+                                <tr><td><span><b>Date: </b></span> <?php echo date('j F, Y'); ?></td></tr>
                                 @if($order->order_source == 'warehouse')
                                 <tr><td><span><b>Warehouse: </b></span> yes</td></tr>
                                 @elseif($order->order_source == 'supplier')
@@ -207,7 +207,7 @@
                                             </td>
                                             <td class="col-md-1">
                                                 <div class="form-group">
-                                                    {{$product->price}}
+                                                    ₹ {{$product->price}}
                                                     <input type="hidden" class="form-control" value="{{$product->price}}" id="product_price_{{$key}}" name="product[{{$key}}][price]" readonly="readonly">
                                                     <?php $total = $total + $product->price; ?>
                                                 </div>

@@ -35,12 +35,12 @@
                                 <tbody>
                                     @if(isset($print_user ) && $print_user != '')
                                     <?php 
-                                        $time = date('h:i a', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'00:00:00'));
-                                        $date = date('d/m/Y', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'01/01/0000'));
+                                        $time = date('h:i A', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'00:00:00'));
+                                        $date = date('j F, Y', strtotime(isset($delivery_data->print_time)?$delivery_data->print_time:'01/01/0000'));
                                     ?>
                                     <tr>
                                         <td><span><b>Printed By: </b></span> 
-                                        {{$print_user->first_name.' '.$print_user->last_name.' at '.$time.' on '.$date}}
+                                        {{ucwords($print_user->first_name).' '.ucwords($print_user->last_name).' on '.$date.' '.$time}}
                                         </td>
                                     </tr>
                                     @endif
@@ -73,7 +73,7 @@
                                         </tr>
                                     @endif
                                     <tr>
-                                        <td><span>Date:</span> {{ date('F jS, Y', strtotime ($delivery_data['created_at'])) }}</td>
+                                        <td><span>Date:</span> {{ date('j F, Y', strtotime ($delivery_data['created_at'])) }}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Serial Number: </span>
@@ -142,14 +142,14 @@
                                     @endif
                                         <tr>
                                             <td>
-                                                <span><b>Empty Truck Weight(Kg):</b> </span>
-                                                {{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:0}} 
+                                                <span><b>Empty Truck Weight(KG):</b> </span>
+                                                {{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:0}} KG
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span><b>Final Truck Weight(Kg):</b> </span>
-                                                {{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:0}} 
+                                                <span><b>Final Truck Weight(KG):</b> </span>
+                                                {{isset($delivery_data->final_truck_weight)?$delivery_data->final_truck_weight:0}} KG
                                             </td>
                                         </tr>  
 
@@ -180,7 +180,7 @@
                                     <tr>
                                         <td> {{ $product['order_product_details']->alias_name}}</td>
                                         <td>{{$product->present_shipping}}</td>
-                                        @if(Auth::user()->role_id == 5)
+                                        <!-- @if(Auth::user()->role_id == 5)
                                         <td>
                                             @foreach($order_data['all_order_products'] as $all_order_products)
 
@@ -191,14 +191,26 @@
 
 
                                         </td>
-                                        @endif
+                                        @endif -->
                                         <td>{{isset($product->actual_pieces)?$product->actual_pieces:'0'}}</td>
                                         <td>{{isset($product->actual_quantity)?$product->actual_quantity:'0'}}</td>
+                                        @if(Auth::user()->role_id == 5)
+                                        <td>
+                                            @foreach($order_data['all_order_products'] as $all_order_products)
+
+                                            @if($all_order_products->product_category_id == $product->product_category_id)
+                                            {{$all_order_products->quantity}} KG                                          
+                                            @endif
+                                            @endforeach
+
+
+                                        </td>
+                                        @endif
                                         <td>{{$product->length}}</td>
                                         <td>
                                         {{isset($product['unit']->unit_name)?$product['unit']->unit_name:''}}
                                         </td>
-                                        <td>{{$product->price}}</td>
+                                        <td>₹ {{$product->price}}</td>
                                         <td>
                                             <div class="form-group">
                                                 <input type="checkbox" disabled="" {{($product->vat_percentage>0)?'checked':''}} >
@@ -227,14 +239,14 @@
                                         <td><span>Order By : </span>{{(isset($delivery_data->order_details->createdby->first_name)?$delivery_data->order_details->createdby->first_name:'')." ".(isset($delivery_data->order_details->createdby->last_name)?$delivery_data->order_details->createdby->last_name:'')}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Order Time/Date : </span>{{(isset($delivery_data->order_details->updated_at)?$delivery_data->order_details->updated_at:'')}}</td>
+                                        <td><span>Order Time/Date : </span>{{(isset($delivery_data->order_details->updated_at) ? date('j F, Y h:i A', strtotime($delivery_data->order_details->updated_at)):"") }}</td>
                                     </tr>
                                     @endif                                    
                                     <tr>
                                         <td><span>Delivery Order By : </span>{{(isset($delivery_data->user->first_name)?$delivery_data->user->first_name:'')." ".(isset($delivery_data->user->last_name)?$delivery_data->user->last_name:'')}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Delivery Order Time/Date : </span>{{isset($delivery_data->updated_at)?$delivery_data->updated_at:''}}</td>
+                                        <td><span>Delivery Order Time/Date : </span>{{isset($delivery_data->updated_at)? date('j F, Y h:i A', strtotime($delivery_data->updated_at)):''}}</td>
                                     </tr>
                                 </tbody>
                             </table>
