@@ -2604,7 +2604,27 @@ class DeliveryOrderController extends Controller {
                         if (isset($popv)) {
                             $product_size = $popv['product_sub_category'];
                             //$product_size = ProductSubCategory::find($popv->product_category_id);
-                            $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
+                            // dd($popv);
+                            if(isset($popv->actual_pieces) && !empty($popv->actual_pieces) && isset($popv->actual_quantity) && !empty($popv->actual_quantity)){
+                                $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
+                            }
+                            else{
+                                if ($popv->unit_id == 1) {
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
+                                }elseif ($popv->unit_id == 2) {
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight);
+                                }elseif ($popv->unit_id == 3) {
+                                    if ($product_size->standard_length == 0)
+                                    $product_size->standard_length = 1;
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
+                                }elseif ($popv->unit_id == 4) {
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight * (float)$popv->length);
+                                }elseif ($popv->unit_id == 5) {
+                                    if ($product_size->standard_length == 0)
+                                    $product_size->standard_length = 1;
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$product_size->weight * (float)$popv->quantity * (float)($popv->length/305));
+                                }
+                            }
                             if ($popv->unit_id == 1) {
                                 // $delivery_order_quantity = (float)$delivery_order_quantity + (float)$popv->quantity;
                                 $delivery_order_present_shipping = (float)$delivery_order_present_shipping + (float)$popv->present_shipping;

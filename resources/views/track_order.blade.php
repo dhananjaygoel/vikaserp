@@ -176,18 +176,22 @@
                                     <?php $qty_do = 0; ?>
                                     @foreach($delivery_order_details->delivery_product as $all_order_products) 
                                     <?php 
-                                        $qty_do = $qty_do + $all_order_products->quantity;
-                                        // if ($all_order_products->unit_id == 1){
-                                        //     $qty_do += $all_order_products->quantity;
-                                        // } elseif ($all_order_products->unit_id == 2){
-                                        //     $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
-                                        // } elseif ($all_order_products->unit_id == 3){
-                                        //     $qty_do += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
-                                        // } elseif ($all_order_products->unit_id == 4){
-                                        //     $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
-                                        // } elseif ($all_order_products->unit_id == 5){
-                                        //     $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
-                                        // }
+                                        // dd($all_order_products);
+                                        if(isset($all_order_products->actual_pieces) && !empty($all_order_products->actual_pieces) && isset($all_order_products->actual_quantity) && !empty($all_order_products->actual_quantity)){
+                                            $qty_do = $qty_do + $all_order_products->quantity;
+                                        }else{
+                                            if ($all_order_products->unit_id == 1){
+                                                $qty_do += $all_order_products->quantity;
+                                            } elseif ($all_order_products->unit_id == 2){
+                                                $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
+                                            } elseif ($all_order_products->unit_id == 3){
+                                                $qty_do += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                                            } elseif ($all_order_products->unit_id == 4){
+                                                $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
+                                            } elseif ($all_order_products->unit_id == 5){
+                                                $qty_do += $all_order_products->quantity * $all_order_products->product_sub_category->weight * ($all_order_products->length/305);
+                                            }
+                                        }
                                     ?>
                                     @endforeach
 
