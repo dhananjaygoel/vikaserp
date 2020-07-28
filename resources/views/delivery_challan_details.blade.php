@@ -56,12 +56,12 @@
                         @if($is_allincludive)
                                 <div class="form-group">
                                     <label><b>Empty Truck Weight:</b>
-                                        {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}}
+                                        {{($allorder->delivery_order->empty_truck_weight != '') ? $allorder->delivery_order->empty_truck_weight : '0'}} KG
                                     </label>
                                 </div><hr>
                                 <div class="form-group">
                                     <label><b>Final Truck Weight:</b>
-                                        {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}}
+                                        {{($allorder->delivery_order->final_truck_weight != '') ? $allorder->delivery_order->final_truck_weight : '0'}} KG
                                     </label>
                                 </div><hr>
                         @endif
