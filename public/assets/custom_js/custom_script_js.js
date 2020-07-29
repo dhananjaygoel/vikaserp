@@ -1185,7 +1185,7 @@ function purchase_challan_calculation() {
             var quantity = parseFloat($("#actual_quantity_" + i).val());
             var rate = $("#product_price_" + i).val();
             var amount = (parseFloat(rate) * parseFloat(quantity)).toFixed(2);
-            $("#amount_" + i).html('' + amount + '');
+            $("#amount_" + i).html('₹ ' + amount + '');
             total_actual_quantity = total_actual_quantity + parseFloat(quantity);
             total_amount_product = (parseFloat(total_amount_product) + parseFloat(amount)).toFixed(2);
         }

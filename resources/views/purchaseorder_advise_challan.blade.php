@@ -220,11 +220,11 @@
                         <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
                     <div class="form-group">
-                        <label for="driver_name"><b class="challan">Freight</b><span class="mandatory">* : ₹</span></label>
+                        <label for="driver_name"><b class="challan">Freight<span class="mandatory">* : ₹</span></b></label>
                         <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
                     <div class="form-group">
-                        <label for="total"><b class="challan">Total : ₹</b> <div id="total_price">{{ $total_price }}</div></label>
+                        <label for="total"><b class="challan">Total : ₹ <span id="total_price">{{ $total_price }}</span></b></label>
                     </div>
                     @if(isset($purchase_advise['purchase_order'][0]->order_for) && $purchase_advise['purchase_order'][0]->order_for == 0)
                         <div class="form-group">
