@@ -1322,7 +1322,7 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;
                 $owner_name = $update_delivery_challan->customer->owner_name;
             }
-            if($update_delivery_challan->freight>0){
+            if(isset($update_delivery_challan->freight) && $update_delivery_challan->freight != "0.00"){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
 
                 if($del_products->vat_percentage==0){
@@ -1356,7 +1356,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            if($update_delivery_challan->loading_charge>0){ 
+            if(isset($update_delivery_challan->loading_charge) && $update_delivery_challan->loading_charge != "0.00"){ 
                 // $TaxCodeRef = 26;
                 $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
                 if($del_products->vat_percentage==0){
@@ -1389,7 +1389,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-             if($update_delivery_challan->discount>0){
+             if(!empty($update_delivery_challan->discount) && $update_delivery_challan->discount != 0){
                  $discount_item = ProductSubCategory::where('alias_name','Discount')->first();
                  if($del_products->vat_percentage==0){
                      $discount_a_id=$discount_item->quickbook_a_item_id;
