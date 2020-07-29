@@ -57,15 +57,15 @@
                 </tr>
                 <tr>
                     <th>Name: {{(isset($allorder->customer->tally_name) && $allorder->customer->tally_name != "") ? $allorder->customer->tally_name : $allorder->customer->owner_name}}</th>
-                    <th>Date: {{date('F d, Y')}}</th>
+                    <th>Date: {{date('j F, Y')}}</th>
                 </tr>
                 <tr>
                     <th>Delivery @: {{isset($allorder->delivery_order->delivery_location_id)&&($allorder->delivery_order->delivery_location_id!=0) ? $allorder->delivery_order->location->area_name : (isset($allorder->delivery_order->other_location)?$allorder->delivery_order->other_location:"") }}</th>
                     <th>Challan Serial: {{ $allorder->serial_number }}</th>
                 </tr>
                 <tr>
-                    <th>Time Created: {{ date("h:i:sa", strtotime($allorder->created_at))}}</th>
-                    <th>Time Print: {{ date("h:i:sa") }}</th>
+                    <th>Time Created: {{ date("h:i A", strtotime($allorder->created_at))}}</th>
+                    <th>Time Print: {{ date("h:i A") }}</th>
                 </tr>
                 <?php
                     $is_allincludive = 0;

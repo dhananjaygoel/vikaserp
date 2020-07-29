@@ -124,7 +124,7 @@
                                         </td>
                                         <td class="text-center">{{isset($challan->serial_number)?$challan->serial_number:''}}</td>
                                         <td class="text-center">{{isset($challan->bill_number)?$challan->bill_number:''}}</td>
-                                        <td class="text-center">{{isset($challan['purchase_advice']->purchase_advice_date)?date('F jS, Y',strtotime($challan['purchase_advice']->purchase_advice_date)):''}}</td>
+                                        <td class="text-center">{{isset($challan['purchase_advice']->purchase_advice_date)?date('j F, Y',strtotime($challan['purchase_advice']->purchase_advice_date)):''}}</td>
                                         <td class="text-center">
                                             <?php
 //                                            $total_qty = 0;
