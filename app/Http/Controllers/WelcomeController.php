@@ -2089,11 +2089,12 @@ class WelcomeController extends Controller {
         if(isset($file_data) && !empty($file_data)){
             $allowed = true;
             $file_path = $file_data->file_path;
+            $created_at = $file_data->created_at;
         }else{
             $allowed = false;
         }
         if ($allowed) {
-            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1,'updated_at'=>$date));
+            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1,'created_at'=>$created_at,'updated_at'=>$date));
             $file_name = $file_data->file_name;
             $headers = [
                 'Content-type' => 'application/force-download'];
