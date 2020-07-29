@@ -205,10 +205,10 @@
                     </div>
                     <div class="form-group">
 
-                        <label><b>Total Actual Quantity : KG</b> <div id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}}</div></label>
+                        <label><b>Total Actual Quantity : </b> <span id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}} KG</span></label>
                         &nbsp;
                         &nbsp;
-                        <label for="total"><b class="challan">Total Amount : ₹</b> <div id="total_price2">{{ $total_price }}</div></label>
+                        <label for="total"><b class="challan">Total Amount : </b> <span id="total_price2">₹ {{ $total_price }}</span></label>
                     </div>
 
                     <div class="form-group">
