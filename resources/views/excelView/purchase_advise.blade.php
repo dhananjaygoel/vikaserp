@@ -95,10 +95,10 @@
             <td>{{($product->vat_percentage!='')?$product->vat_percentage:''}}</td>
             <td>{{$product->remarks}}</td>
             @endif-->
-            <td style="height:16px;">{{date("F jS, Y", strtotime($order->expected_delivery_date)) }}</td>
+            <td style="height:16px;">{{date("j F, Y", strtotime($order->expected_delivery_date)) }}</td>
             <td style="height:16px;">{{$order->remarks}}</td>
             
-            <td style="height:16px;">{{$order->updated_at}}</td>
+            <td style="height:16px;">{{date('j F, Y h:i A',strtotime($order->updated_at))}}</td>
         </tr>
         <?php $count = 0; ?>
         @foreach($order['purchase_products'] as $product)
