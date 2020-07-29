@@ -23,6 +23,7 @@ use App;
 use URL;
 use Hash;
 use Config;
+use Carbon;
 use App\Units;
 use App\DeliveryLocation;
 use App\Customer;
@@ -1812,12 +1813,14 @@ class DeliveryChallanController extends Controller {
                     $send_msg = new WelcomeController();
                     $send_msg->send_sms($phone_number,$msg);
                 }
+                $date = new Carbon\Carbon;
                 if(isset($gst_link) && $gst_link == 1){
                     DB::table('file_info')->insert(array(
                         'file_name' => $file_name.".pdf",
                         'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
                         'uuid' => $uuid,
-                        'status' => 0
+                        'status' => 0,
+                        'created_at' => $date,
                     ));
                     $link = URL::to("/download_dc/".$uuid);
                     $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nDownload your Delivery Challan from following link:\n".$link."\n\nVIKAS ASSOCIATES."; 

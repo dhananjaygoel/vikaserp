@@ -2081,12 +2081,7 @@ class WelcomeController extends Controller {
 
     public function download_dc($uuid){
         $allowed = false;
-        // $sourceTimezone = new \DateTimeZone('America/Managua');
-        // $date = new \DateTime(date('m/d/Y h:i:s'), $sourceTimezone);
         $date = new Carbon\Carbon;
-        $formatted_date = $date->format('Y-m-d h:i:s');
-        // $date = new \DateTime();
-        dd($date);
         // $date->modify('-48 hours');
         $date->modify('-10 minutes');
         $formatted_date = $date->format('Y-m-d H:i:s');
