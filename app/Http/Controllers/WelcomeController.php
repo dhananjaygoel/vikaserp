@@ -39,7 +39,7 @@ use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
 use Dropbox;
 use Auth;
-use Carbon\Carbon;
+use Carbon;
 use SmsBump;
 use App\LoadedBy;
 use App\DeliveryChallan;
