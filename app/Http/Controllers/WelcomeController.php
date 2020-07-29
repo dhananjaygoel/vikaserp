@@ -2081,7 +2081,7 @@ class WelcomeController extends Controller {
 
     public function download_dc($uuid){
         $allowed = false;
-        $sourceTimezone = new DateTimeZone('America/Managua');
+        $sourceTimezone = new \DateTimeZone('America/Managua');
         $date = new \DateTime(date('m/d/Y h:i:s'), $sourceTimezone);
 
         // $date = new \DateTime();
