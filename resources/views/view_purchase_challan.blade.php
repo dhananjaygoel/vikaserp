@@ -22,7 +22,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr>
-                                        <td><span>Bill Date:</span> {{isset($purchase_challan['purchase_advice']->purchase_advice_date)?date('F jS, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)):''}}</td>
+                                        <td><span>Bill Date:</span> {{isset($purchase_challan['purchase_advice']->purchase_advice_date)?date('j F, Y',strtotime($purchase_challan['purchase_advice']->purchase_advice_date)):''}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Bill Number:</span> {{ $purchase_challan->bill_number }}</td>
@@ -104,25 +104,25 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>
                                     <tr class="headingunderline">
-                                        <td class="widthtable">
+                                        <td class="col-md-2">
                                             <span>Product Name(Alias)</span>
                                         </td>
-                                        <td class="widthtable">
+                                        <td class="col-md-2">
                                             <span>Actual Quantity</span>
                                         </td>
-                                        <td  class="widthtable">
+                                        <td  class="col-md-1">
                                             <span>Unit</span>
                                         </td>
-                                        <td  class="widthtable">
+                                        <td  class="col-md-1">
                                             <span>Length</span>
                                         </td>
-                                        <td class="widthtable">
+                                        <td class="col-md-2">
                                             <span>Present Shipping</span>
                                         </td>
-                                        <td class="widthtable">
+                                        <td class="col-md-2">
                                             <span>Rate</span>
                                         </td>
-                                        <td  class="widthtable">
+                                        <td  class="col-md-2">
                                             <span>Amount</span>
                                         </td>
                                         <!-- <td class="widthtable">
@@ -141,15 +141,15 @@
                                         <td> {{$product_data['unit']->unit_name}} </td>
                                         <td> {{isset($product_data->length)?$product_data->length:'0'}} </td>
                                         <td> {{$product_data->present_shipping}}</td>
-                                        <td> {{((isset($product_data->price) && $product_data->price != '0.00') ? $product_data->price : $product_data['purchase_product_details']->product_category['price'])}}</td>
+                                        <td> ₹ {{((isset($product_data->price) && $product_data->price != '0.00') ? $product_data->price : $product_data['purchase_product_details']->product_category['price'])}}</td>
                                         <td>
                                             <?php
                                             $total_quantity += $product_data->quantity;
                                             $amount = $product_data->quantity * ((isset($product_data->price) && $product_data->price != '0.00') ? $product_data->price : $product_data['purchase_product_details']->product_category['price']);
-                                            echo $amount;
+                                            // echo $amount;
                                             $total_amount = $total_amount + $amount;
                                             ?>
-
+                                            ₹ {{ round($amount,2) }}
                                         </td>
                                         <!-- <td> {{$product_data->remarks}}</td> -->
                                     </tr>
@@ -161,23 +161,23 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span>Total Actual Quantity: </span>{{$total_quantity}}
+                                            <span>Total Actual Quantity: </span>{{$total_quantity}} KG
                                             &nbsp;
                                             &nbsp;
-                                            <span>Total Amount: </span>{{$total_amount}}
+                                            <span>Total Amount: </span>₹ {{$total_amount}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>Discount: </span>{{$purchase_challan->discount}}</td>
+                                        <td><span>Discount: </span>₹ {{$purchase_challan->discount}}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Freight: </span>{{ $purchase_challan->freight }}</td>
+                                        <td><span>Freight: </span>₹ {{ $purchase_challan->freight }}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Total: </span>
                                             <?php
                                             $total = $total_amount + $purchase_challan->discount + $purchase_challan->freight;
-                                            echo $total;
+                                            echo '₹ '.$total;
                                             ?>
                                         </td>
                                     </tr>
@@ -237,10 +237,10 @@
                                         
                                     ?>
                                     <tr>
-                                        <td><span>Round Off: </span>{{ round($roundoff,2) }}</td>
+                                        <td><span>Round Off: </span>₹ {{ round($roundoff,2) }}</td>
                                     </tr>
                                     <tr>
-                                        <td><span>Grand Total: </span>{{round($grand_total,0)}}</td>
+                                        <td><span>Grand Total: </span>₹ {{round($grand_total,0)}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Name: </span>{{ $purchase_challan->vehicle_number }}</td>

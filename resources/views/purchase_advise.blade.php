@@ -151,7 +151,7 @@
                                     @endforeach
                                     <tr id="purchase_advice_row_{{$pa->id}}">
                                         <td>{{ $i }}</td>
-                                        <td>{{ date("F jS, Y", strtotime($pa->updated_at)) }}</td>
+                                        <td>{{ date("j F, Y", strtotime($pa->updated_at)) }}</td>
                                         <td>{{($pa['supplier']->tally_name != "" ) ? $pa['supplier']->tally_name:$pa['supplier']->owner_name}}</td>
                                         <td>{{ $pa->vehicle_number}}</td>
                                         <td>{{ round($pa->total_quantity, 2) }}</td>

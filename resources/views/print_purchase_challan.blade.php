@@ -51,20 +51,21 @@
                 </tr>
                 <tr>
                     <th>Tally Name: {{ $purchase_challan['supplier']->owner_name }}</th>
-                    <th>Date: {{date('F d, Y')}}</th>
+                    <th>Date: {{date('j F, Y')}}</th>
                 </tr>
                 <tr>
                     <th>Delivery @: {{ ($purchase_challan->delivery_location_id == 0)?$purchase_challan['purchase_advice']->other_location : $purchase_challan['delivery_location']->area_name }}</th>
                     <th>Estimate No: {{ $purchase_challan->serial_number }}</th>
                 </tr>
                 <tr>
-                    <th>Time Generated: {{ date("h:i:s a" , strtotime($purchase_challan->created_at)) }}</th>
-                    <th>Time Print: <?php
-                        echo '<script type="text/javascript">
-                            var x = new Date()
-                            var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
-                            document.write(current_time)
-                            </script>';
+                    <th>Time Generated: {{ date("h:i A" , strtotime($purchase_challan->created_at)) }}</th>
+                    <th>Time Print: {{ date("h:i A")}}
+                    <?php
+                        // echo '<script type="text/javascript">
+                        //     var x = new Date()
+                        //     var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
+                        //     document.write(current_time)
+                        //     </script>';
                         ?>
                     </th>
                 </tr>
@@ -96,9 +97,9 @@
                         <td>{{ $i++ }}</td>
                         <td>{{ $prod['purchase_product_details']->alias_name }}</td>
                         <td>{{ $prod->actual_pieces}}</td>
-                        <td>{{ $prod->quantity }}</td>
-                        <td>{{ ((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) }}</td>
-                        <td>{{ ((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) * $prod->quantity }}</td>
+                        <td>{{ round($prod->quantity,2) }} KG</td>
+                        <td>₹ {{ ((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) }}</td>
+                        <td>₹ {{ ((isset($prod->price) && $prod->price != '0.00') ? $prod->price : $prod['purchase_product_details']->product_category['price']) * $prod->quantity }}</td>
                     </tr>
                 </tbody>
                 <?php 
@@ -113,7 +114,7 @@
             <tbody>
                 <tr>
                     <td  class="spacing" valign="top">
-                        <div>Total Quantity: <span class="total-qty">{{ round($purchase_challan['all_purchase_products']->sum('quantity'), 2) }}</span></div>
+                        <div>Total Quantity: <span class="total-qty">{{ round($purchase_challan['all_purchase_products']->sum('quantity'), 2) }} KG</span></div>
                         <div>Remarks: <span class="remarks">{{ isset($purchase_challan['remarks']) ? $purchase_challan['remarks'] : ''}}</span></div>
                     </td>
                     <td>
@@ -121,17 +122,17 @@
                             <tbody>
                                 <tr>
                                     <td class="lable">Total</td>
-                                    <td class="total-count">{{ round($total_price, 2) }}</td>
+                                    <td class="total-count">₹ {{ round($total_price, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Freight</td>
                                     <td class="total-count">
-                                    {{($purchase_challan->freight != "")?round($purchase_challan->freight, 2):0}}</td>
+                                    ₹ {{($purchase_challan->freight != "")?round($purchase_challan->freight, 2):0}}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Discount</td>
                                     <td class="total-count">
-                                    {{($purchase_challan->discount != "")?round($purchase_challan->discount,2):0}}</td>
+                                    ₹ {{($purchase_challan->discount != "")?round($purchase_challan->discount,2):0}}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Total</td>
@@ -139,12 +140,12 @@
                                     <?php 
                                         $total = $total_price + $purchase_challan->freight + $purchase_challan->discount;
                                     ?>
-                                    {{ round($total_price + $purchase_challan->freight + $purchase_challan->discount, 2) }}</td>
+                                    ₹ {{ round($total_price + $purchase_challan->freight + $purchase_challan->discount, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">GST</td>
                                     <td class="total-count">
-                                    {{($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0}} %</td>
+                                    ₹ {{($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0}} %</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Round Off</td>
@@ -162,12 +163,12 @@
                                         $grand_total = (float)$vat + (float)$total + $freight_vat + $discount_vat;
                                         $roundoff = round($grand_total,0) - $grand_total;
                                     ?>
-                                    {{ round($roundoff, 2) }}</td>
+                                    ₹ {{ round($roundoff, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">GT</td>
                                     <td class="total-count">
-                                    {{ round($grand_total, 0) }}</td>
+                                    ₹ {{ round($grand_total, 0) }}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -454,7 +454,7 @@ use Illuminate\Support\Facades\Session;
                                 <label for="time">Expected Delivery Date:<span class="mandatory">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate" value="{{Input::old('expected_delivery_date')!=''?Input::old('expected_delivery_date'):date('m-d-Y')}}" >
+                                    <input type="text" name="expected_delivery_date" class="form-control" id="datepickerDate" value="{{Input::old('expected_delivery_date')!=''?Input::old('expected_delivery_date'):date('d/m/Y')}}" >
                                 </div>
                             </div>
                             <div class="clearfix"></div>

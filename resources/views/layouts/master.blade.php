@@ -433,7 +433,7 @@
             var url = "{{url("/")}}";
             $(function ($) {
                 $("#datepickerDate").datepicker({
-                    format: "dd-mm-yyyy"
+                    format: "dd/mm/yyyy"
                 });
 
                 $("#datepickerDateComponent").datepicker();

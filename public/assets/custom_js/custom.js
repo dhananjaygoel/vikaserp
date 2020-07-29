@@ -290,7 +290,7 @@ $(document).ready(function () {
     });
 });
 $('#datepickerDate').datepicker({
-    format: 'mm-dd-yyyy',
+    format: 'dd/mm/yyyy',
     startDate: new Date(),
     autoclose: true
 

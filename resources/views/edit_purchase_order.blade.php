@@ -463,7 +463,7 @@
                         <label for="date">Expected Delivery Date: <span class="mandatory">*</span></label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" name="expected_delivery_date" class="form-control" id="expected_delivery_date" value="{{date('m-d-Y', strtotime($purchase_order->expected_delivery_date))}}" >
+                            <input type="text" name="expected_delivery_date" class="form-control" id="expected_delivery_date" value="{{date('d/m/Y', strtotime($purchase_order->expected_delivery_date))}}" >
                         </div>
                     </div>
                     <div class="clearfix"></div>

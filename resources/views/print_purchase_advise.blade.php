@@ -36,13 +36,14 @@
                 </tr>
                 <tr>
                     <th>PA Number: {{ $purchase_advise->serial_number}}</th>
-                    <th>Date: {{date('F d, Y')}}</th>
-                    <th>Time: <?php
-                        echo '<script type="text/javascript">
-                            var x = new Date()
-                            var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
-                            document.write(current_time)
-                            </script>';
+                    <th>Date: {{date('d F, Y')}}</th>
+                    <th>Time: {{date('h:i A')}}
+                    <?php
+                        // echo '<script type="text/javascript">
+                        //     var x = new Date()
+                        //     var current_time = x.getHours()+":"+x.getMinutes()+":"+x.getSeconds()
+                        //     document.write(current_time)
+                        //     </script>';
                         ?>
                     </th>
                 </tr>

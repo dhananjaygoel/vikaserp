@@ -100,8 +100,8 @@
                                 <table id="table-example" class="table table-hover customerview_table  ">
                                     <tbody>
                                         <tr class="headingunderline">
-                                            <td><span> Product(Alias) </span></td>
-                                            <td><span> Qty</span></td>
+                                            <td><span>Product(Alias) </span></td>
+                                            <td><span>Qty</span></td>
                                             <td><span>Length</span></td>
                                             <td><span>Unit</span></td>
                                             <td><span>Price</span></td>
@@ -116,7 +116,7 @@
                                             <td>{{$product_data->quantity}}</td>
                                             <td>{{isset($product_data->length)?$product_data->length:'0'}}</td>
                                             <td>{{isset($product_data['unit']->unit_name)?$product_data['unit']->unit_name:''}}</td>
-                                            <td>{{$product_data->price}}</td>
+                                            <td>₹ {{$product_data->price}}</td>
                                             <td>{{$product_data->remarks}}</td>
                                         </tr>
                                         <?php
@@ -136,7 +136,7 @@
                                         <tr><td><span>GST Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         @endif
 
-                                        <tr><td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
+                                        <tr><td><span>Expected Delivery Date: </span>{{date("j F, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
 
                                         @if($purchase_orders->delivery_location_id > 0)
                                         <tr><td><span>Delivery Location: </span>{{$purchase_orders['delivery_location']->area_name}}</td></tr>
@@ -149,7 +149,7 @@
                                             <td><span>Purchase Order By: </span>{{isset($purchase_orders->user->first_name) && isset($purchase_orders->user->last_name) ? $purchase_orders->user->first_name." ".$purchase_orders->user->last_name : ''}}</td>
                                         </tr>
                                         <tr>
-                                            <td><span>Purchase order Time/Date : </span>{{isset($purchase_orders->updated_at)?$purchase_orders->updated_at:''}}</td>
+                                            <td><span>Purchase order Time/Date : </span>{{isset($purchase_orders->updated_at)?date('j F, Y h:i A',strtotime($purchase_orders->updated_at)):''}}</td>
                                         </tr>
                                     </tbody>
                                 </table>

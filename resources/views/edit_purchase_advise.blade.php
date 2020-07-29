@@ -49,7 +49,7 @@
                             <div class="alert alert-danger">{{ Session::get('flash_message_error') }}</div>
                             @endif
                             <div class="form-group">
-                                <label for="billdate"><b>Bill Date:</b> {{date("jS F, Y", strtotime($purchase_advise->purchase_advice_date))}}</label>
+                                <label for="billdate"><b>Bill Date:</b> {{date("j F, Y", strtotime($purchase_advise->purchase_advice_date))}}</label>
                             </div>
                             <div class="form-group">
                                 <label for="cn"><b>Serial Number:</b> {{$purchase_advise->serial_number}}</label>
@@ -210,7 +210,7 @@
                                     </tr>
                                     <tr class="">
                                         <td class="cdfirst">Expected Delivery Date:</td>
-                                        <td> {{ date("jS F, Y", strtotime($purchase_advise->expected_delivery_date)) }} </td>
+                                        <td> {{ date("j F, Y", strtotime($purchase_advise->expected_delivery_date)) }} </td>
                                     </tr>
                                     <tr class="cdtable">
                                         <td class="cdfirst">Remark:</td>
