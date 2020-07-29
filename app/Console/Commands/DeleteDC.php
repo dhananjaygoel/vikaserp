@@ -41,7 +41,8 @@ class DeleteDC extends Command
     public function handle()
     {
         $date = new \DateTime();
-        $date->modify('-48 hours');
+        // $date->modify('-48 hours');
+        $date->modify('-10 minutes');
         $formatted_date = $date->format('Y-m-d H:i:s');
         $select_data = DB::table('file_info')->where('created_at','<',$formatted_date)->get();
         foreach ($select_data as $data){

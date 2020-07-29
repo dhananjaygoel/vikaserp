@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('quickbooks_token:update')
                  ->twiceDaily(8,20);
         $schedule->command('delivery_challan:delete')
-                 ->dailyAt('7:00');
+                 ->everyFiveMinutes();
 
     }
 

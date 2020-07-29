@@ -2082,7 +2082,8 @@ class WelcomeController extends Controller {
     public function download_dc($uuid){
         $allowed = false;
         $date = new \DateTime();
-        $date->modify('-48 hours');
+        // $date->modify('-48 hours');
+        $date->modify('-10 minutes');
         $formatted_date = $date->format('Y-m-d H:i:s');
         $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
         if(isset($file_data) && !empty($file_data)){
