@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Labour extends Model {
     
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = 'labours';
     protected $dates = ['deleted_at'];
     protected $hidden = ['password', 'remember_token','deleted_at'];
