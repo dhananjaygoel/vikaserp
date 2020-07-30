@@ -859,11 +859,11 @@ class DeliveryChallanController extends Controller {
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 
             $input_data = $allorder['delivery_challan_products'];
-            $loading_charge = isset($delivery_challan['loading_charge']) && $delivery_challan['loading_charge'] != ""? "₹".$delivery_challan['loading_charge']:"N\A";
-            $discount = isset($delivery_challan['discount']) && $delivery_challan['discount'] != ""? "₹".$delivery_challan['discount']:"N\A";
-            $freight = isset($delivery_challan['freight']) && $delivery_challan['freight'] != ""? "₹".$delivery_challan['freight']:"N\A";
-            $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N\A";
-            $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N\A";
+            $loading_charge = isset($delivery_challan['loading_charge']) && $delivery_challan['loading_charge'] != ""? "₹".$delivery_challan['loading_charge']:"N/A";
+            $discount = isset($delivery_challan['discount']) && $delivery_challan['discount'] != ""? "₹".$delivery_challan['discount']:"N/A";
+            $freight = isset($delivery_challan['freight']) && $delivery_challan['freight'] != ""? "₹".$delivery_challan['freight']:"N/A";
+            $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N/A";
+            $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N/A";
             $send_sms = Input::get('send_msg');
             $send_whatsapp = Input::get('send_whatsapp');
             $product_string = '';
@@ -1758,8 +1758,8 @@ class DeliveryChallanController extends Controller {
          */
         $input_data = $allorder['delivery_challan_products'];
         $delivery_order = $allorder['delivery_order'];
-        $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N\A";
-        $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N\A";  
+        $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N/A";
+        $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N/A";  
         $product_string = '';
         $send_sms = Input::get('send_sms');
         $send_whatsapp = Input::get('send_whatsapp');

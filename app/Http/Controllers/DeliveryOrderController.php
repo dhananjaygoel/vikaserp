@@ -566,7 +566,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour delivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Customer,\n\nYour delivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N/A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N/A"). "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -583,7 +583,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nDelivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N\A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N\A"). "\n\nVIKAS ASSOCIATES.";
+                $str = "Dear Manager,\n\nDelivery order has been updated.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$delivery_order->id."\nOrder Date: ".date("j F, Y")."\n\nUpdated Products:\n".$product_string."\nVehicle No: " .(isset($input_data['vehicle_number']) && $input_data['vehicle_number'] != ""?$input_data['vehicle_number']:"N/A"). "\nDriver No: " .(isset($input_data['driver_contact']) && $input_data['driver_contact'] != ""?$input_data['driver_contact']:"N/A"). "\n\nVIKAS ASSOCIATES.";
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -2011,7 +2011,7 @@ class DeliveryOrderController extends Controller {
                     //         } else {
                     //             $mobile_number = $user->mobile_number;
                     //         }
-                    //         $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N\A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
+                    //         $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N/A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
                     //         $msg = urlencode($str);
                     //         if (SEND_SMS === true) {
                     //             $send_msg = new WelcomeController();
@@ -2777,7 +2777,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             if ($cust_count > 0) {
-                $str = "Dear Customer,\n\nYour delivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N\A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N\A"). "\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Customer,\n\nYour delivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N/A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N/A"). "\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
@@ -2794,7 +2794,7 @@ class DeliveryOrderController extends Controller {
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear Manager,\n\nDelivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N\A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N\A"). "\n\nVIKAS ASSOCIATES."; 
+                $str = "Dear Manager,\n\nDelivery order has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Order No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .(isset($vehicle_number) && $vehicle_number != ""?$vehicle_number:"N/A"). "\nDriver No: " .(isset($delivery_data['driver_contact_no']) && $delivery_data['driver_contact_no'] != ""?$delivery_data['driver_contact_no']:"N/A"). "\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
