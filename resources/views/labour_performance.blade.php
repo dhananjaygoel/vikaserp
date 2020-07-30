@@ -100,7 +100,7 @@
 //                                                       
                                                 }
                                                 ?>
-                                                <td>{{$tangage}}</td>
+                                                <td>{{round($tangage,2)}}</td>
 
                                                 @endfor
 
