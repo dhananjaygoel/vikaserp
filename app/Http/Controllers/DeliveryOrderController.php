@@ -1059,8 +1059,16 @@ class DeliveryOrderController extends Controller {
         $input_data = Input::all();
         $products_data = '';
         //  dd($input_data);
-        $delivery_order_details = DeliveryOrder::find($id);
+        $delivery_order_details = DeliveryOrder::with('delivery_product.order_product_details')->find($id);
+        $produc_type['pipe'] = "0";
+        $produc_type['structure'] = "0";
+        $produc_type['sheet'] = "0";
+        $actual_qty['pipe'] = "0";
+        $actual_qty['structure'] = "0";
+        $actual_qty['sheet'] = "0";
         $delboy = Auth::id();
+        $created_at = $delivery_order_details->created_at;
+        $updated_at = $delivery_order_details->updated_at;
         $i=0;
         $del = LoadDelboy::where('delivery_id',$id)->where('del_boy', '=', Auth::id())->where('assigned_status', 1)->count();
         if((isset($del) && $del == 1) || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())) {
@@ -1111,6 +1119,23 @@ class DeliveryOrderController extends Controller {
             else{
                 $serialize = "";
             }
+            foreach ($input_data['product'] as $product_data) {
+                if ($product_data['name'] != "") {
+                    $product_row = ProductSubCategory::find($product_data['id']);
+                    $product_cat = ProductCategory::find($product_row->product_category_id);
+                    if ($product_cat->product_type_id == 1) {
+                        $actual_qty['pipe'] += (float)($product_data['actual_quantity']);
+                        $produc_type['pipe'] = "1";
+                    } else if ($product_cat->product_type_id  == 2) {
+                        $actual_qty['structure'] += (float)($product_data['actual_quantity']);
+                        $produc_type['structure'] = "1";
+                    }else if ($product_cat->product_type_id == 3) {
+                        $actual_qty['sheet'] += (float)($product_data['actual_quantity']);
+                        $produc_type['sheet'] = "1";
+                    }
+                }
+            }
+            
             $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : '0';
             $total_avg = (Input::has('total_avg_qty')) ? Input::get('total_avg_qty') : '0';
             //$final_truck_weight = (Input::has('final_truck_weight_load')) ? Input::get('final_truck_weight_load') : '0';
@@ -1166,6 +1191,53 @@ class DeliveryOrderController extends Controller {
                                                         'truck_weight_id'=> $truck_id
                                                     ];
                                                     LoadLabour::insert($load_loabour);
+                                                    if(!empty($produc_type) && !empty($actual_qty)){
+                                                        $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                                        ->where('truck_weight_id',$truck_id)->get();
+                                                        if(!empty($is_lbr)){
+                                                            App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                                ->where('truck_weight_id',$truck_id)
+                                                                ->delete();
+                                                        }
+
+                                                        if($produc_type['pipe'] == 1){
+                                                            $labours_info[] = [
+                                                                'delivery_challan_id' => $id,
+                                                                'truck_weight_id'=> $truck_id,
+                                                                'labours_id' => $load_val,
+                                                                'created_at' => $created_at,
+                                                                'updated_at' => $updated_at,
+                                                                'type' => 'sale',
+                                                                'product_type_id' => '1',
+                                                                'total_qty' => $actual_qty['pipe'],
+                                                            ];
+                                                        }
+                                                        if($produc_type['structure'] == 1){
+                                                            $labours_info[] = [
+                                                                'delivery_challan_id' => $id,
+                                                                'truck_weight_id'=> $truck_id,
+                                                                'labours_id' => $load_val,
+                                                                'created_at' => $created_at,
+                                                                'updated_at' => $updated_at,
+                                                                'type' => 'sale',
+                                                                'product_type_id' => '2',
+                                                                'total_qty' => $actual_qty['structure'],
+                                                            ];
+                                                        }
+                                                        if($produc_type['sheet'] == 1){
+                                                            $labours_info[] = [
+                                                                'delivery_challan_id' => $id,
+                                                                'truck_weight_id'=> $truck_id,
+                                                                'labours_id' => $load_val,
+                                                                'created_at' => $created_at,
+                                                                'updated_at' => $updated_at,
+                                                                'type' => 'sale',
+                                                                'product_type_id' => '3',
+                                                                'total_qty' => $actual_qty['sheet'],
+                                                            ];
+                                                        }
+                                                        $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                                    }
                                                 }
                                             }
                                         }
@@ -1209,6 +1281,53 @@ class DeliveryOrderController extends Controller {
                                                     'truck_weight_id'=> $truck_weight_id
                                                 ];
                                                 LoadLabour::insert($load_loabour);
+                                                if(!empty($produc_type) && !empty($actual_qty)){
+                                                    $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                                        ->where('truck_weight_id',$truck_weight_id)->get();
+                                                    if(!empty($is_lbr)){
+                                                        App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                            ->where('truck_weight_id',$truck_weight_id)
+                                                            ->delete();
+                                                    }
+
+                                                    if($produc_type['pipe'] == 1){
+                                                        $labours_info[] = [
+                                                            'delivery_challan_id' => $id,
+                                                            'truck_weight_id'=> $truck_weight_id,
+                                                            'labours_id' => $load_val,
+                                                            'created_at' => $created_at,
+                                                            'updated_at' => $updated_at,
+                                                            'type' => 'sale',
+                                                            'product_type_id' => '1',
+                                                            'total_qty' => $actual_qty['pipe'],
+                                                        ];
+                                                    }
+                                                    if($produc_type['structure'] == 1){
+                                                        $labours_info[] = [
+                                                            'delivery_challan_id' => $id,
+                                                            'truck_weight_id'=> $truck_weight_id,
+                                                            'labours_id' => $load_val,
+                                                            'created_at' => $created_at,
+                                                            'updated_at' => $updated_at,
+                                                            'type' => 'sale',
+                                                            'product_type_id' => '2',
+                                                            'total_qty' => $actual_qty['structure'],
+                                                        ];
+                                                    }
+                                                    if($produc_type['sheet'] == 1){
+                                                        $labours_info[] = [
+                                                            'delivery_challan_id' => $id,
+                                                            'truck_weight_id'=> $truck_weight_id,
+                                                            'labours_id' => $load_val,
+                                                            'created_at' => $created_at,
+                                                            'updated_at' => $updated_at,
+                                                            'type' => 'sale',
+                                                            'product_type_id' => '3',
+                                                            'total_qty' => $actual_qty['sheet'],
+                                                        ];
+                                                    }
+                                                    $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                                }
                                             }
                                         }
                                     }
@@ -1281,6 +1400,53 @@ class DeliveryOrderController extends Controller {
                                                     'truck_weight_id'=> $truck_id
                                                 ];
                                                 LoadLabour::insert($load_loabour);
+                                                if(!empty($produc_type) && !empty($actual_qty)){
+                                                    $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                                    ->where('truck_weight_id',$truck_id)->get();
+                                                    if(!empty($is_lbr)){
+                                                        App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                            ->where('truck_weight_id',$truck_id)
+                                                            ->delete();
+                                                    }
+
+                                                    if($produc_type['pipe'] == 1){
+                                                        $labours_info[] = [
+                                                            'delivery_challan_id' => $id,
+                                                            'truck_weight_id'=> $truck_id,
+                                                            'labours_id' => $load_val,
+                                                            'created_at' => $created_at,
+                                                            'updated_at' => $updated_at,
+                                                            'type' => 'sale',
+                                                            'product_type_id' => '1',
+                                                            'total_qty' => $actual_qty['pipe'],
+                                                        ];
+                                                    }
+                                                    if($produc_type['structure'] == 1){
+                                                        $labours_info[] = [
+                                                            'delivery_challan_id' => $id,
+                                                            'truck_weight_id'=> $truck_id,
+                                                            'labours_id' => $load_val,
+                                                            'created_at' => $created_at,
+                                                            'updated_at' => $updated_at,
+                                                            'type' => 'sale',
+                                                            'product_type_id' => '2',
+                                                            'total_qty' => $actual_qty['structure'],
+                                                        ];
+                                                    }
+                                                    if($produc_type['sheet'] == 1){
+                                                        $labours_info[] = [
+                                                            'delivery_challan_id' => $id,
+                                                            'truck_weight_id'=> $truck_id,
+                                                            'labours_id' => $load_val,
+                                                            'created_at' => $created_at,
+                                                            'updated_at' => $updated_at,
+                                                            'type' => 'sale',
+                                                            'product_type_id' => '3',
+                                                            'total_qty' => $actual_qty['sheet'],
+                                                        ];
+                                                    }
+                                                    $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                                }
                                             }
                                         }
                                     }
@@ -1323,6 +1489,53 @@ class DeliveryOrderController extends Controller {
                                                 'truck_weight_id'=> $truck_weight_id
                                             ];
                                             LoadLabour::insert($load_loabour);
+                                            if(!empty($produc_type) && !empty($actual_qty)){
+                                                $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                                ->where('truck_weight_id',$truck_weight_id)->get();
+                                                if(!empty($is_lbr)){
+                                                    App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                        ->where('truck_weight_id',$truck_weight_id)
+                                                        ->delete();
+                                                }
+
+                                                if($produc_type['pipe'] == 1){
+                                                    $labours_info[] = [
+                                                        'delivery_challan_id' => $id,
+                                                        'truck_weight_id'=> $truck_weight_id,
+                                                        'labours_id' => $load_val,
+                                                        'created_at' => $created_at,
+                                                        'updated_at' => $updated_at,
+                                                        'type' => 'sale',
+                                                        'product_type_id' => '1',
+                                                        'total_qty' => $actual_qty['pipe'],
+                                                    ];
+                                                }
+                                                if($produc_type['structure'] == 1){
+                                                    $labours_info[] = [
+                                                        'delivery_challan_id' => $id,
+                                                        'truck_weight_id'=> $truck_weight_id,
+                                                        'labours_id' => $load_val,
+                                                        'created_at' => $created_at,
+                                                        'updated_at' => $updated_at,
+                                                        'type' => 'sale',
+                                                        'product_type_id' => '2',
+                                                        'total_qty' => $actual_qty['structure'],
+                                                    ];
+                                                }
+                                                if($produc_type['sheet'] == 1){
+                                                    $labours_info[] = [
+                                                        'delivery_challan_id' => $id,
+                                                        'truck_weight_id'=> $truck_weight_id,
+                                                        'labours_id' => $load_val,
+                                                        'created_at' => $created_at,
+                                                        'updated_at' => $updated_at,
+                                                        'type' => 'sale',
+                                                        'product_type_id' => '3',
+                                                        'total_qty' => $actual_qty['sheet'],
+                                                    ];
+                                                }
+                                                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                            }
                                         }
                                     }
                                 }
@@ -1844,7 +2057,9 @@ class DeliveryOrderController extends Controller {
         $inputprodut = (Input::has('product_ids')) ? Input::get('product_ids') : 'array()';
         $inputprodut = explode(',',$inputprodut);
 
-        $produc_type = $this->check_product_type($delivery_order_details);
+        $produc_type['pipe'] = "0";
+        $produc_type['structure'] = "0";
+        $produc_type['sheet'] = "0";
         if(Input::has('labour')){
             $labour[] = explode(',',Input::get('labour'));
         }else{
@@ -1910,10 +2125,13 @@ class DeliveryOrderController extends Controller {
                         $product_cat = ProductCategory::find($product_row->product_category_id);
                         if ($product_cat->product_type_id == 1) {
                             $actual_qty['pipe'] += (float)(isset($product[2])?$product[2]:$product_data['quantity']);
+                            $produc_type['pipe'] = "1";
                         } else if ($product_cat->product_type_id  == 2) {
                             $actual_qty['structure'] += (float)(isset($product[2])?$product[2]:$product_data['quantity']);
+                            $produc_type['structure'] = "1";
                         }else if ($product_cat->product_type_id == 3) {
                             $actual_qty['sheet'] += (float)(isset($product[2])?$product[2]:$product_data['quantity']);
+                            $produc_type['sheet'] = "1";
                         }
                     }
                 }
@@ -1921,6 +2139,7 @@ class DeliveryOrderController extends Controller {
         }
         if(!empty($labour)){
             foreach($labour as $key => $val){
+               
                 $truck_load = LoadTrucks::where('deliver_id', '=', $delivery_id)
                         ->where('userid', '=', Auth::id())
                         ->where('final_truck_weight', $truck_weight)
@@ -1928,40 +2147,51 @@ class DeliveryOrderController extends Controller {
                         ->first();
                 if(!empty($truck_load)){
                     foreach($val as $load_val){
-                        if($produc_type['pipe'] == 1){
-                            $labours_info[] = [
-                                'delivery_challan_id' => $delivery_id,
-                                'labours_id' => $load_val,
-                                'created_at' => $created_at,
-                                'updated_at' => $updated_at,
-                                'type' => 'sale',
-                                'product_type_id' => '1',
-                                'total_qty' => $actual_qty['pipe'],
-                            ];
-                            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                        }
-                        if($produc_type['structure'] == 1){
-                            $labours_info[] = [
-                                'delivery_challan_id' => $delivery_id,
-                                'labours_id' => $load_val,
-                                'created_at' => $created_at,
-                                'updated_at' => $updated_at,
-                                'type' => 'sale',
-                                'product_type_id' => '2',
-                                'total_qty' => $actual_qty['structure'],
-                            ];
-                            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                        }
-                        if($produc_type['sheet'] == 1){
-                            $labours_info[] = [
-                                'delivery_challan_id' => $delivery_id,
-                                'labours_id' => $load_val,
-                                'created_at' => $created_at,
-                                'updated_at' => $updated_at,
-                                'type' => 'sale',
-                                'product_type_id' => '3',
-                                'total_qty' => $actual_qty['sheet'],
-                            ];
+                        if(!empty($produc_type) && !empty($actual_qty)){
+                            $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$delivery_id)
+                                            ->where('truck_weight_id',$truck_weight_id)
+                                            ->first();
+                            if(!empty($is_lbr)){
+                                App\DeliveryChallanLabours::where('delivery_challan_id',$delivery_id)
+                                    ->where('truck_weight_id',$truck_weight_id)
+                                    ->delete();
+                            }
+                            if($produc_type['pipe'] == 1){
+                                $labours_info[] = [
+                                    'delivery_challan_id' => $delivery_id,
+                                    'truck_weight_id'=> $truck_weight_id,
+                                    'labours_id' => $load_val,
+                                    'created_at' => $created_at,
+                                    'updated_at' => $updated_at,
+                                    'type' => 'sale',
+                                    'product_type_id' => '1',
+                                    'total_qty' => $actual_qty['pipe'],
+                                ];
+                            }
+                            if($produc_type['structure'] == 1){
+                                $labours_info[] = [
+                                    'delivery_challan_id' => $delivery_id,
+                                    'truck_weight_id'=> $truck_weight_id,
+                                    'labours_id' => $load_val,
+                                    'created_at' => $created_at,
+                                    'updated_at' => $updated_at,
+                                    'type' => 'sale',
+                                    'product_type_id' => '2',
+                                    'total_qty' => $actual_qty['structure'],
+                                ];
+                            }
+                            if($produc_type['sheet'] == 1){
+                                $labours_info[] = [
+                                    'delivery_challan_id' => $delivery_id,
+                                    'truck_weight_id'=> $truck_weight_id,
+                                    'labours_id' => $load_val,
+                                    'created_at' => $created_at,
+                                    'updated_at' => $updated_at,
+                                    'type' => 'sale',
+                                    'product_type_id' => '3',
+                                    'total_qty' => $actual_qty['sheet'],
+                                ];
+                            }
                             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
                         }
                     } 
