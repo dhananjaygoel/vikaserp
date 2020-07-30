@@ -282,7 +282,7 @@ class LabourController extends Controller {
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
-        $labours = Labour::withTrashed()->get();
+        $labours = Labour::get();
         $date = date('Y-m-01', time());
 
 
