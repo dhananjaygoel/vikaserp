@@ -90,19 +90,22 @@
                                                 }
                                                 $k = 0;
                                                 $tangage = 0;
-                                                foreach ($data as $key => $value) {
-                                                    if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
-                                                        if ($value['labour_id'] == $labour->id) {
-                                                            $k++;
-                                                            $tangage += $value['tonnage'];
+                                                // if(!empty($data)){
+                                                    foreach ($data as $key => $value) {
+                                                        if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
+                                                            if ($value['labour_id'] == $labour->id) {
+                                                                $k++;
+                                                                $tangage += $value['tonnage'];
+                                                            }
+                                                            if($labour->id == 13){
+                                                                echo '<pre>';
+                                                                print_r($value);
+                                                                print_r($i.' - '.$k.' - '.$value['tonnage'].' - '.$tangage);
+                                                            }
                                                         }
-                                                        if($labour->id == 13){
-                                                            echo '<pre>';
-                                                            print_r($k.' - '.$value['tonnage'].' - '.$tangage);
-                                                        }
+    //                                                       
                                                     }
-//                                                       
-                                                }
+                                                // }
                                                 ?>
                                                 <td>{{round($tangage,2)}}</td>
 
