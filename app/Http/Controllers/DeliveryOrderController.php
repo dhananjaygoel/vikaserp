@@ -1193,7 +1193,8 @@ class DeliveryOrderController extends Controller {
                                                     LoadLabour::insert($load_loabour);
                                                     if(!empty($produc_type) && !empty($actual_qty)){
                                                         $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                                        ->where('truck_weight_id',$truck_id)->get();
+                                                                        ->where('truck_weight_id',$truck_id)
+                                                                        ->first();
                                                         if(!empty($is_lbr)){
                                                             App\DeliveryChallanLabours::where('delivery_challan_id',$id)
                                                                 ->where('truck_weight_id',$truck_id)
@@ -1283,7 +1284,8 @@ class DeliveryOrderController extends Controller {
                                                 LoadLabour::insert($load_loabour);
                                                 if(!empty($produc_type) && !empty($actual_qty)){
                                                     $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                                        ->where('truck_weight_id',$truck_weight_id)->get();
+                                                                        ->where('truck_weight_id',$truck_weight_id)
+                                                                        ->first();
                                                     if(!empty($is_lbr)){
                                                         App\DeliveryChallanLabours::where('delivery_challan_id',$id)
                                                             ->where('truck_weight_id',$truck_weight_id)
@@ -1402,7 +1404,8 @@ class DeliveryOrderController extends Controller {
                                                 LoadLabour::insert($load_loabour);
                                                 if(!empty($produc_type) && !empty($actual_qty)){
                                                     $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                                    ->where('truck_weight_id',$truck_id)->get();
+                                                                    ->where('truck_weight_id',$truck_id)
+                                                                    ->first();
                                                     if(!empty($is_lbr)){
                                                         App\DeliveryChallanLabours::where('delivery_challan_id',$id)
                                                             ->where('truck_weight_id',$truck_id)
@@ -1491,7 +1494,8 @@ class DeliveryOrderController extends Controller {
                                             LoadLabour::insert($load_loabour);
                                             if(!empty($produc_type) && !empty($actual_qty)){
                                                 $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                                ->where('truck_weight_id',$truck_weight_id)->get();
+                                                                ->where('truck_weight_id',$truck_weight_id)
+                                                                ->first();
                                                 if(!empty($is_lbr)){
                                                     App\DeliveryChallanLabours::where('delivery_challan_id',$id)
                                                         ->where('truck_weight_id',$truck_weight_id)
@@ -2141,7 +2145,6 @@ class DeliveryOrderController extends Controller {
             foreach($labour as $key => $val){
                
                 $truck_load = LoadTrucks::where('deliver_id', '=', $delivery_id)
-                        ->where('userid', '=', Auth::id())
                         ->where('final_truck_weight', $truck_weight)
                         ->orderBy('id','DESC')
                         ->first();
