@@ -39,7 +39,7 @@ use Dropbox\WriteMode;
 use Illuminate\Filesystem\Filesystem;
 use Dropbox;
 use Auth;
-use Carbon\Carbon;
+use Carbon;
 use SmsBump;
 use App\LoadedBy;
 use App\DeliveryChallan;
@@ -2080,21 +2080,21 @@ class WelcomeController extends Controller {
     }
 
     public function download_dc($uuid){
-        // $browser = get_browser(null, true);
-        // ProcessPDFDownload::dispatch($uuid)
-        //         ->delay(now()->addMinutes(2));
-        // $agent = new Agent();
-        // $browser = $agent->browser();
         $allowed = false;
-        $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->first();
+        $date = new Carbon\Carbon;
+        // $date->modify('-48 hours');
+        $date->modify('-10 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
         if(isset($file_data) && !empty($file_data)){
             $allowed = true;
             $file_path = $file_data->file_path;
+            $created_at = $file_data->created_at;
         }else{
             $allowed = false;
         }
         if ($allowed) {
-            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1));
+            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1,'created_at'=>$created_at,'updated_at'=>$date));
             $file_name = $file_data->file_name;
             $headers = [
                 'Content-type' => 'application/force-download'];

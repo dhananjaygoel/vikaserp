@@ -269,8 +269,8 @@ class PurchaseOrderController extends Controller {
             }
         }
 
-        $expected_delivery_date = explode('-', $input_data['expected_delivery_date']);
-        $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[0] . '-' . $expected_delivery_date[1];
+        $expected_delivery_date = explode('/', $input_data['expected_delivery_date']);
+        $expected_delivery_date = $expected_delivery_date[2] . '-' . $expected_delivery_date[1] . '-' . $expected_delivery_date[0];
         $expected_delivery_date = date("Y-m-d", strtotime($expected_delivery_date));
 
         $add_purchase_order_array = [
@@ -578,7 +578,7 @@ class PurchaseOrderController extends Controller {
             }
         }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
-        $date = date("Y-m-d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y-m-d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $purchase_order = PurchaseOrder::find($id);
         if ($input_data['vat_status'] == 'include_vat') {

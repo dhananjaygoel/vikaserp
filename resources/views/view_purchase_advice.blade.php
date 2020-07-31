@@ -28,7 +28,7 @@
                             <table id="table-example" class="table customerview_table">
                                 <tbody>                                    
                                     <tr>
-                                        <td><span>Bill Date:</span> {{date('F jS, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
+                                        <td><span>Bill Date:</span> {{date('j F, Y', strtotime($purchase_advise->purchase_advice_date))}}</td>
                                     </tr>                                    
                                     <tr>
                                         <td><span>Order From:</span>
@@ -125,7 +125,7 @@
                                         <td>{{isset($product_data->length)?$product_data->length:''}}</td>
                                         <td>{{$product_data->actual_pieces}}</td>
                                         <td>{{$product_data->present_shipping}}</td>
-                                        <td>{{$product_data->price}}</td>
+                                        <td>₹ {{$product_data->price}}</td>
                                         <td>{{$product_data->remarks}}</td>
                                     </tr>
                                     @endif
@@ -153,7 +153,7 @@
                                         </tr>
                                     <?php } ?>
                                     <tr>
-                                        <td><span>Expected Delivery Date: </span>{{date("F jS, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
+                                        <td><span>Expected Delivery Date: </span>{{date("j F, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
                                     </tr>
                                     <tr>
                                         <td><span>Vehicle Number: </span> {{$purchase_advise->vehicle_number}}</td>

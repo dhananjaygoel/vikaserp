@@ -159,15 +159,7 @@ class PurchaseChallanController extends Controller {
             Session::put('forms_purchase_challan', $forms_array);
         }
 
-
-
         $current_date = date("m/d");
-        $sms_flag = 0;
-
-
-
-
-
 
         $add_challan = new PurchaseChallan();
         $add_challan->expected_delivery_date = $request->input('bill_date');
@@ -318,10 +310,10 @@ class PurchaseChallanController extends Controller {
          */
 
         /* check for vat/gst items */
-        if (isset($challan['vat_percentage']) && !empty($challan['vat_percentage']) && $challan != "") {
-            $sms_flag = 1;
-        }
-        /**/
+        // if (isset($challan['vat_percentage']) && !empty($challan['vat_percentage']) && $challan != "") {
+        //     $sms_flag = 1;
+        // }
+        // /**/
 
         $input_data = $purchase_challan['all_purchase_products'];
         $send_sms = Input::get('send_sms');

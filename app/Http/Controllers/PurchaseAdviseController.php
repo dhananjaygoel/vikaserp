@@ -229,7 +229,7 @@ class PurchaseAdviseController extends Controller {
             }
         }
         $date_string = preg_replace('~\x{00a0}~u', ' ', $input_data['bill_date']);
-        $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+        $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
         $datetime = new DateTime($date);
         $date_string2 = preg_replace('~\x{00a0}~u', ' ', $input_data['expected_delivery_date']);
         $date2 = date("Y/m/d", strtotime(str_replace('-', '/', $date_string2)));
@@ -567,7 +567,7 @@ class PurchaseAdviseController extends Controller {
         if ($validator->passes()) {
             $orderp = PurchaseOrder::where('id',$input_data['id'])->first();
             $date_string = preg_replace('~\x{00a0}~u', '', $input_data['bill_date']);
-            $date = date("Y/m/d", strtotime(str_replace('-', '/', $date_string)));
+            $date = date("Y/m/d", strtotime(str_replace('/', '-', $date_string)));
             $datetime = new DateTime($date);
             $bill_date = $datetime->format('Y-m-d');
             $add_purchase_advice_array = [

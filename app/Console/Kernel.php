@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
                  ->dailyAt('19:00');
         $schedule->command('quickbooks_token:update')
                  ->twiceDaily(8,20);
+        $schedule->command('delivery_challan:delete')
+                 ->everyTenMinutes();
 
     }
 

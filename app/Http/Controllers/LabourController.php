@@ -282,7 +282,7 @@ class LabourController extends Controller {
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
-        $labours = Labour::withTrashed()->get();
+        $labours = Labour::get();
         $date = date('Y-m-01', time());
 
 
@@ -463,7 +463,7 @@ class LabourController extends Controller {
                             'delivery_id' => $data['delivery_id'],
                             'labour_id' => $value,
                             'date' => $data['delivery_date'],
-                            'tonnage' => (isset($data['tonnage']) ? round($data['tonnage'], 2) : '0'),
+                            'tonnage' => (isset($data['tonnage']) ? $data['tonnage'] : '0'),
                             'delivery_sum_money' => isset($data['delivery_sum_money']) ? $data['delivery_sum_money'] : '0',
                         ];
                     }

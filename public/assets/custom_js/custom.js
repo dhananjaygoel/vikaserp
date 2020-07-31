@@ -290,7 +290,7 @@ $(document).ready(function () {
     });
 });
 $('#datepickerDate').datepicker({
-    format: 'mm-dd-yyyy',
+    format: 'dd/mm/yyyy',
     startDate: new Date(),
     autoclose: true
 
@@ -3949,7 +3949,8 @@ $("body").on('click',"button", function() {
                                 truck_no:truck_sequence,
                                 actual_qty:actual_qty,
                                 truck_weight_id:truck_weight_id,
-                                product_ids:product
+                                product_ids:product,
+                                labour:labour
                             },
                             success: function(data){
                                 // alert(data);

@@ -48,7 +48,7 @@
                                                     <div class="targetdate">
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            <input type="text" name="bill_date" class="form-control" id="datepickerDate" value="{{Input::old('bill_date')!=''?Input::old('bill_date'):date('m-d-Y')}}">
+                                                            <input type="text" name="bill_date" class="form-control" id="datepickerDate" value="{{Input::old('bill_date')!=''?Input::old('bill_date'):date('d/m/Y')}}">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -168,7 +168,7 @@
                                                         @endif
                                                     </div>
                                                 </td>
-                                                <td class="col-md-1">{{$product_data->price}}</td>
+                                                <td class="col-md-1">₹ {{$product_data->price}}</td>
                                                 <td class="col-md-2">
                                                     {{$product_data->remarks}}
 
@@ -243,7 +243,7 @@
                                             <tr>
                                                 <td>
                                                     <span><b>Expected Delivery Date:</b> </span>
-                                                    {{date("jS F, Y", strtotime($purchase_orders['expected_delivery_date']))}}
+                                                    {{date("j F, Y", strtotime($purchase_orders['expected_delivery_date']))}}
                                                     <input type="hidden" name="expected_delivery_date" value="{{$purchase_orders['expected_delivery_date']}}">
                                                 </td>
                                             </tr>

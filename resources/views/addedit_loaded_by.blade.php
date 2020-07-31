@@ -61,7 +61,7 @@
                                 <label for="loader_type">Type<span class="mandatory">*</span></label>
                                 <select class="form-control" name="loader_type" id="loader_type">
                                   
-                                    <option {{isset($loader->type)?(($loader->type == 'sale') ? 'selected' : ''):((Input::old('loader_type')=='sale')?'selected':'')}} value="sale">Sale</option>
+                                    <!-- <option {{isset($loader->type)?(($loader->type == 'sale') ? 'selected' : ''):((Input::old('loader_type')=='sale')?'selected':'')}} value="sale">Sale</option> -->
                                     <option  {{isset($loader->type)?(($loader->type == 'purchase') ? 'selected' : ''):((Input::old('loader_type')=='purchase')?'selected':'')}} value="purchase">Purchase</option>
                                     <!--<option value="both">Both</option>-->
                                     

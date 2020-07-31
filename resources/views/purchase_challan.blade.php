@@ -124,7 +124,7 @@
                                         </td>
                                         <td class="text-center">{{isset($challan->serial_number)?$challan->serial_number:''}}</td>
                                         <td class="text-center">{{isset($challan->bill_number)?$challan->bill_number:''}}</td>
-                                        <td class="text-center">{{isset($challan['purchase_advice']->purchase_advice_date)?date('F jS, Y',strtotime($challan['purchase_advice']->purchase_advice_date)):''}}</td>
+                                        <td class="text-center">{{isset($challan['purchase_advice']->purchase_advice_date)?date('j F, Y',strtotime($challan['purchase_advice']->purchase_advice_date)):''}}</td>
                                         <td class="text-center">
                                             <?php
 //                                            $total_qty = 0;
@@ -144,21 +144,22 @@
                                             <?php
                                             $total_qty = 0;
                                             foreach ($challan['all_purchase_products'] as $pc) {
-                                                if ($pc->unit_id == 1) {
-                                                    $total_qty += $pc->quantity;
-                                                }
-                                                if ($pc->unit_id == 2) {
-                                                    $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight);
-                                                }
-                                                if ($pc->unit_id == 3) {
-                                                    $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
-                                                }
-                                                if ($pc->unit_id == 4) {
-                                                    $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight * $pc->length);
-                                                }
-                                                if ($pc->unit_id == 5) {
-                                                    $total_qty += $pc->quantity * $pc['purchase_product_details']->weight * ($pc->length/305);
-                                                }
+                                                $total_qty += $pc->quantity;
+                                                // if ($pc->unit_id == 1) {
+                                                //     $total_qty += $pc->quantity;
+                                                // }
+                                                // if ($pc->unit_id == 2) {
+                                                //     $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight);
+                                                // }
+                                                // if ($pc->unit_id == 3) {
+                                                //     $total_qty += (($pc->quantity / $pc['purchase_product_details']->standard_length ) * $pc['purchase_product_details']->weight);
+                                                // }
+                                                // if ($pc->unit_id == 4) {
+                                                //     $total_qty += ($pc->quantity * $pc['purchase_product_details']->weight * $pc->length);
+                                                // }
+                                                // if ($pc->unit_id == 5) {
+                                                //     $total_qty += $pc->quantity * $pc['purchase_product_details']->weight * ($pc->length/305);
+                                                // }
                                             }
                                             echo round($total_qty, 2);
                                             ?>

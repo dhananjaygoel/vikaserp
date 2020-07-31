@@ -49,7 +49,7 @@
                     <input type="hidden" name="delivery_location_id" value="{{$purchase_advise->delivery_location_id}}"/>
 
                     <div class="form-group">
-                        <label><b>Bill Date:</b> {{ date("jS F, Y", strtotime($purchase_advise->purchase_advice_date)) }}
+                        <label><b>Bill Date:</b> {{ date("j F, Y", strtotime($purchase_advise->purchase_advice_date)) }}
                             <input type='hidden' class="form-control" name="bill_date" value="{{$purchase_advise->purchase_advice_date}}"/>
                         </label>
                     </div>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="form-group">                                    
                                 <label><b>Amount :</b> </label>
-                                {{isset($purchase_advise['purchase_order'][0]->discount)?$purchase_advise['purchase_order'][0]->discount:''}}
+                                ₹ {{isset($purchase_advise['purchase_order'][0]->discount)?$purchase_advise['purchase_order'][0]->discount:''}}
                         </div>
                     @else
                         <div class="form-group">                                
@@ -173,7 +173,7 @@
                             <td>
                                 <div class="form-group">
                                     <?php $total_price += $products->present_shipping * $products->price; ?>
-                                    <div id="amount_{{$key}}">{{ $products->present_shipping * $products->price }}</div>
+                                    <div id="amount_{{$key}}">₹ {{ $products->present_shipping * $products->price }}</div>
                                 </div>
                             </td>
                             </tr>
@@ -205,10 +205,10 @@
                     </div>
                     <div class="form-group">
 
-                        <label><b>Total Actual Quantity :</b> <div id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}}</div></label>
+                        <label><b>Total Actual Quantity : </b> <span id="total_actual_quantity">{{$purchase_advise['purchase_products']->sum('present_shipping')}} KG</span></label>
                         &nbsp;
                         &nbsp;
-                        <label for="total"><b class="challan">Total Amount :</b> <div id="total_price2">{{ $total_price }}</div></label>
+                        <label for="total"><b class="challan">Total Amount : </b> <span id="total_price2">₹ {{ $total_price }}</span></label>
                     </div>
 
                     <div class="form-group">
@@ -216,15 +216,15 @@
                         <input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text">
                     </div>
                     <div class="form-group">
-                        <label for="vehicle_name"><b class="challan">Discount</b></label>
+                        <label for="vehicle_name"><b class="challan">Discount : ₹</b></label>
                         <input id="discount" class="form-control" placeholder="Discount" name="discount" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
                     <div class="form-group">
-                        <label for="driver_name"><b class="challan">Freight</b><span class="mandatory">*</span></label>
+                        <label for="driver_name"><b class="challan">Freight<span class="mandatory">* : ₹</span></b></label>
                         <input id="freight" class="form-control" placeholder="Freight " name="Freight" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
                     <div class="form-group">
-                        <label for="total"><b class="challan">Total :</b> <div id="total_price">{{ $total_price }}</div></label>
+                        <label for="total"><b class="challan">Total : </b>₹ <span id="total_price">{{ $total_price }}</span></label>
                     </div>
                     @if(isset($purchase_advise['purchase_order'][0]->order_for) && $purchase_advise['purchase_order'][0]->order_for == 0)
                         <div class="form-group">
@@ -268,11 +268,11 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="driver_contact"><b class="challan">GST Value :</b> <div id="vat_value"></div></label>
+                        <label for="driver_contact"><b class="challan">GST Value : ₹</b> <div id="vat_value"></div></label>
                     </div>
                     @endif
                     <div class="form-group">
-                        <label for="vatp"><b class="challan">Total : </b>
+                        <label for="vatp"><b class="challan">Total : ₹</b>
                             <span class="gtotal">
                                 <input type="text" class="form-control" name="vat_total" id="vat_tot_val" readonly="readonly">
                             </span>
@@ -280,12 +280,12 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <label for="labour"><b class="challan">Round Off</b></label>
+                        <label for="labour"><b class="challan">Round Off : ₹</b></label>
                         <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
                     </div>
 
                     <div class="form-group">
-                        <label for="total"><b class="challan">Grand Total :</b> <div id="grand_total"></div>
+                        <label for="total"><b class="challan">Grand Total : ₹</b> <div id="grand_total"></div>
                         </label>
                         <input type="hidden" id="grand_total_val" name="grand_total">
                     </div>

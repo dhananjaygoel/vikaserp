@@ -23,6 +23,7 @@ use App;
 use URL;
 use Hash;
 use Config;
+use Carbon;
 use App\Units;
 use App\DeliveryLocation;
 use App\Customer;
@@ -858,11 +859,11 @@ class DeliveryChallanController extends Controller {
                             ->with('delivery_challan_products.unit', 'delivery_challan_products.order_product_details', 'customer', 'customer_difference', 'delivery_order.location')->first();
 
             $input_data = $allorder['delivery_challan_products'];
-            $loading_charge = isset($delivery_challan['loading_charge']) && $delivery_challan['loading_charge'] != ""? "₹".$delivery_challan['loading_charge']:"N\A";
-            $discount = isset($delivery_challan['discount']) && $delivery_challan['discount'] != ""? "₹".$delivery_challan['discount']:"N\A";
-            $freight = isset($delivery_challan['freight']) && $delivery_challan['freight'] != ""? "₹".$delivery_challan['freight']:"N\A";
-            $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N\A";
-            $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N\A";
+            $loading_charge = isset($delivery_challan['loading_charge']) && $delivery_challan['loading_charge'] != ""? "₹".$delivery_challan['loading_charge']:"N/A";
+            $discount = isset($delivery_challan['discount']) && $delivery_challan['discount'] != ""? "₹".$delivery_challan['discount']:"N/A";
+            $freight = isset($delivery_challan['freight']) && $delivery_challan['freight'] != ""? "₹".$delivery_challan['freight']:"N/A";
+            $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N/A";
+            $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N/A";
             $send_sms = Input::get('send_msg');
             $send_whatsapp = Input::get('send_whatsapp');
             $product_string = '';
@@ -1322,7 +1323,7 @@ class DeliveryChallanController extends Controller {
                 $tally_name = $update_delivery_challan->customer->tally_name;
                 $owner_name = $update_delivery_challan->customer->owner_name;
             }
-            if($update_delivery_challan->freight>0){
+            if(isset($update_delivery_challan->freight) && $update_delivery_challan->freight != "0.00"){
                 $freight_item = ProductSubCategory::where('alias_name','Freight Charges')->first();
 
                 if($del_products->vat_percentage==0){
@@ -1356,7 +1357,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            if($update_delivery_challan->loading_charge>0){ 
+            if(isset($update_delivery_challan->loading_charge) && $update_delivery_challan->loading_charge != "0.00"){ 
                 // $TaxCodeRef = 26;
                 $loading_item = ProductSubCategory::where('alias_name','Loading Charges')->first();
                 if($del_products->vat_percentage==0){
@@ -1389,7 +1390,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-             if($update_delivery_challan->discount>0){
+             if(!empty($update_delivery_challan->discount) && $update_delivery_challan->discount != 0){
                  $discount_item = ProductSubCategory::where('alias_name','Discount')->first();
                  if($del_products->vat_percentage==0){
                      $discount_a_id=$discount_item->quickbook_a_item_id;
@@ -1582,11 +1583,11 @@ class DeliveryChallanController extends Controller {
             $pdf->loadHTML($viewhtml);
             $file_name = str_replace('/', '-', $date_letter);
             $uuid = uniqid();
-
-           Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-           $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
-           chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-
+            if($vat_applicable>0){
+                Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+                $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
+                chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+            }
            $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
 
         } else {
@@ -1730,11 +1731,11 @@ class DeliveryChallanController extends Controller {
             $pdf->loadHTML($viewhtml);
             $file_name = str_replace('/', '-', $date_letter);
             $uuid = uniqid();
-
-            Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
-            $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
-            chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
-
+            if($vat_applicable>0){
+                Storage::put(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output());
+                $pdf->save(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf');
+                chmod(getcwd() . "/upload/invoices/dc/" . str_replace('/', '-', $date_letter) . '.pdf', 0777);
+            }
             $connection->getConnection()->put('Delivery Challan/' . date('d-m-Y') . '/' . str_replace('/', '-', $date_letter) . '.pdf', $pdf->output()); 
         }
 
@@ -1757,8 +1758,8 @@ class DeliveryChallanController extends Controller {
          */
         $input_data = $allorder['delivery_challan_products'];
         $delivery_order = $allorder['delivery_order'];
-        $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N\A";
-        $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N\A";  
+        $vehicle_number = isset($delivery_order->vehicle_number) && $delivery_order->vehicle_number != "" ? $delivery_order->vehicle_number : "N/A";
+        $driver_number = isset($delivery_order->driver_contact_no) && $delivery_order->driver_contact_no != "" ? $delivery_order->driver_contact_no : "N/A";  
         $product_string = '';
         $send_sms = Input::get('send_sms');
         $send_whatsapp = Input::get('send_whatsapp');
@@ -1812,12 +1813,14 @@ class DeliveryChallanController extends Controller {
                     $send_msg = new WelcomeController();
                     $send_msg->send_sms($phone_number,$msg);
                 }
+                $date = new Carbon\Carbon;
                 if(isset($gst_link) && $gst_link == 1){
                     DB::table('file_info')->insert(array(
                         'file_name' => $file_name.".pdf",
                         'file_path' => "/upload/invoices/dc/".$file_name.".pdf",
                         'uuid' => $uuid,
-                        'status' => 0
+                        'status' => 0,
+                        'created_at' => $date,
                     ));
                     $link = URL::to("/download_dc/".$uuid);
                     $str = "Dear Customer,\n\nYour delivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nDownload your Delivery Challan from following link:\n".$link."\n\nVIKAS ASSOCIATES."; 
