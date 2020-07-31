@@ -83,7 +83,7 @@ class LoadByController extends Controller {
         if (Input::has('loader_type')) {
             $loader->type = trim(Input::get('loader_type'));
         } else {
-            $loader->type = 'sale';
+            $loader->type = 'purchase';
         }
 
         if ($loader->save()) {
