@@ -34,7 +34,7 @@
                   $order_quantity = 0;
             ?>
         <tr>
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;">Purchase</td>
            <td>
@@ -143,7 +143,7 @@
             ?>
    
         <tr>
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>            
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Discount</td>
@@ -158,7 +158,7 @@
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
         <tr> 
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>           
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Loading</td>
@@ -173,7 +173,7 @@
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr> 
         <tr>  
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Freight</td>
@@ -188,7 +188,7 @@
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
         <tr>    
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Tax</td>
@@ -242,7 +242,7 @@
         </tr>
          
          <tr>    
-            <td style="height:16px;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
             <td style="height:16px;">Round Off</td>
@@ -258,7 +258,7 @@
         </tr>
                     
         <tr style="border:2px solid black">    
-            <td style="height:18px;border:2px solid #4fe24f;">{{ date("d/m/Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:18px;border:2px solid #4fe24f;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:18px;border:2px solid #4fe24f;text-align: left;">{{$VchNo}}</td>
             <td style="height:18px;border:2px solid #4fe24f;"></td>
             <td style="height:18px;border:2px solid #4fe24f;"></td>
