@@ -94,7 +94,11 @@
                                                     if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
                                                         if ($value['labour_id'] == $labour->id) {
                                                             $k++;
-                                                            $tangage +=$value['tonnage'];
+                                                            $tangage += $value['tonnage'];
+                                                        }
+                                                        if($labour->id == 13){
+                                                            echo '<pre>';
+                                                            print_r($k.' - '.$value['tonnage'].' - '.$tangage);
                                                         }
                                                     }
 //                                                       
