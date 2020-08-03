@@ -217,42 +217,13 @@ class PurchaseChallanController extends Controller {
             ]);
         }
 
-        if (isset($input_data['unloaded_by'])) {
-            $loaders = $input_data['unloaded_by'];
-            $loaders_info = [];
-            foreach ($loaders as $loader) {
-                $loaders_info[] = [
-                    'delivery_challan_id' => $challan_id,
-                    'loaded_by_id' => $loader,
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
-                    'type' => 'purchase',
-                ];
-            }
-            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
-        }
-
-        if (isset($input_data['labour'])) {
-            $labours = $input_data['labour'];
-            $labours_info = [];
-            foreach ($labours as $labour) {
-                $labours_info[] = [
-                    'delivery_challan_id' => $challan_id,
-                    'labours_id' => $labour,
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
-                    'type' => 'purchase',
-                ];
-            }
-            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-        }
-
         $input_data = Input::all();
 //        $order_products = array();
         $order_products = [];
-
+        $total_qty = 0;
         foreach ($input_data['product'] as $product_data) {
             if (isset($product_data['id']) && $product_data['id'] != "") {
+                $total_qty = $total_qty + $product_data['quantity'];
 //                $order_products = [
                 $order_products[] = [
                     'purchase_order_id' => $challan_id,
@@ -270,6 +241,7 @@ class PurchaseChallanController extends Controller {
                 ];
 //                $add_order_products = PurchaseProducts::create($order_products);
             } else {
+                $total_qty = $total_qty + $product_data['quantity'];
 //                $order_products = [
                 $order_products[] = [
                     'purchase_order_id' => $challan_id,
@@ -289,6 +261,38 @@ class PurchaseChallanController extends Controller {
             }
         }
         $add_order_products = PurchaseProducts::insert($order_products);
+
+        if (isset($input_data['unloaded_by'])) {
+            $loaders = $input_data['unloaded_by'];
+            $loaders_info = [];
+            foreach ($loaders as $loader) {
+                $loaders_info[] = [
+                    'delivery_challan_id' => $challan_id,
+                    'loaded_by_id' => $loader,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'purchase',
+                    'total_qty' => $total_qty,
+                ];
+            }
+            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+        }
+
+        if (isset($input_data['labour'])) {
+            $labours = $input_data['labour'];
+            $labours_info = [];
+            foreach ($labours as $labour) {
+                $labours_info[] = [
+                    'delivery_challan_id' => $challan_id,
+                    'labours_id' => $labour,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'purchase',
+                    'total_qty' => $total_qty,
+                ];
+            }
+            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+        }
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($challan_id);
 
