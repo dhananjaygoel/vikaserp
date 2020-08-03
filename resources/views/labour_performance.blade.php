@@ -95,10 +95,10 @@
                                                             if ($value['labour_id'] == $labour->id) {
                                                                 $k++;
                                                                 $tangage = $value['tonnage'];
-                                                                if($value['labour_id'] == 11){
-                                                                    echo '<pre>';
-                                                                    print_r($value);
-                                                                }
+                                                                // if($value['labour_id'] == 11){
+                                                                //     echo '<pre>';
+                                                                //     print_r($value);
+                                                                // }
                                                             }
                                                         }
                                                     }
