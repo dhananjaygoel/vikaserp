@@ -75,9 +75,9 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
+                            <!-- <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
                                 <a href="{{url('performance/loaded-by')}}" > Loaded-by </a>
-                            </li>
+                            </li> -->
                             <li class="{{ (Request::is('*performance/loaded-by/loaded-by-performance*') ? 'active' : '') }}">
                                 <a href="{{url('performance/loaded-by/loaded-by-performance')}}" > Performance </a>
                             </li>
