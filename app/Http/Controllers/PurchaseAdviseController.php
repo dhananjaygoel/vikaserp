@@ -729,7 +729,8 @@ class PurchaseAdviseController extends Controller {
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
         $labours = Labour::where('type', '<>', 'sale')->get();
-        $loaders = LoadedBy::where('type', '<>', 'sale')->get();
+        // $loaders = LoadedBy::where('type', '<>', 'sale')->get();
+        $loaders = User::where('role_id', 8)->orWhere('role_id', 9)->orWhere('role_id', 0)->get();
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units', 'labours', 'loaders'));
     }
 

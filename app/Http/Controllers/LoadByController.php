@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Input;
 use App\Order;
 use App\Inquiry;
@@ -198,7 +199,8 @@ class LoadByController extends Controller {
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
-        $loaded_by = LoadedBy::get();
+        // $loaded_by = LoadedBy::get();
+        $loaded_by = User::where('role_id', 8)->orWhere('role_id', 9)->orWhere('role_id', 0)->get();
         $date = date('Y-m-01', time());
         if (Input::has('val')) {
             $val = Input::get('val');
