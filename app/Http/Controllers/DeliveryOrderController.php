@@ -1063,9 +1063,9 @@ class DeliveryOrderController extends Controller {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
         $produc_type['sheet'] = "0";
-        $actual_qty['pipe'] = "0";
-        $actual_qty['structure'] = "0";
-        $actual_qty['sheet'] = "0";
+        $actual_qty['pipe'] = 0;
+        $actual_qty['structure'] = 0;
+        $actual_qty['sheet'] = 0;
         $delboy = Auth::id();
         $created_at = $delivery_order_details->created_at;
         $updated_at = $delivery_order_details->updated_at;
@@ -1201,7 +1201,7 @@ class DeliveryOrderController extends Controller {
                                                                 ->delete();
                                                         }
 
-                                                        if($produc_type['pipe'] == 1){
+                                                        if($produc_type['pipe'] == 1 && $actual_qty['pipe'] != 0){
                                                             $labours_info[] = [
                                                                 'delivery_challan_id' => $id,
                                                                 'truck_weight_id'=> $truck_id,
@@ -1213,7 +1213,7 @@ class DeliveryOrderController extends Controller {
                                                                 'total_qty' => $actual_qty['pipe'],
                                                             ];
                                                         }
-                                                        if($produc_type['structure'] == 1){
+                                                        if($produc_type['structure'] == 1 && $actual_qty['structure'] != 0){
                                                             $labours_info[] = [
                                                                 'delivery_challan_id' => $id,
                                                                 'truck_weight_id'=> $truck_id,
@@ -1225,7 +1225,7 @@ class DeliveryOrderController extends Controller {
                                                                 'total_qty' => $actual_qty['structure'],
                                                             ];
                                                         }
-                                                        if($produc_type['sheet'] == 1){
+                                                        if($produc_type['sheet'] == 1 && $actual_qty['sheet'] != 0){
                                                             $labours_info[] = [
                                                                 'delivery_challan_id' => $id,
                                                                 'truck_weight_id'=> $truck_id,
@@ -1292,7 +1292,7 @@ class DeliveryOrderController extends Controller {
                                                             ->delete();
                                                     }
 
-                                                    if($produc_type['pipe'] == 1){
+                                                    if($produc_type['pipe'] == 1 && $actual_qty['pipe'] != 0){
                                                         $labours_info[] = [
                                                             'delivery_challan_id' => $id,
                                                             'truck_weight_id'=> $truck_weight_id,
@@ -1304,7 +1304,7 @@ class DeliveryOrderController extends Controller {
                                                             'total_qty' => $actual_qty['pipe'],
                                                         ];
                                                     }
-                                                    if($produc_type['structure'] == 1){
+                                                    if($produc_type['structure'] == 1 && $actual_qty['structure'] != 0){
                                                         $labours_info[] = [
                                                             'delivery_challan_id' => $id,
                                                             'truck_weight_id'=> $truck_weight_id,
@@ -1316,7 +1316,7 @@ class DeliveryOrderController extends Controller {
                                                             'total_qty' => $actual_qty['structure'],
                                                         ];
                                                     }
-                                                    if($produc_type['sheet'] == 1){
+                                                    if($produc_type['sheet'] == 1 && $actual_qty['sheet'] != 0){
                                                         $labours_info[] = [
                                                             'delivery_challan_id' => $id,
                                                             'truck_weight_id'=> $truck_weight_id,
@@ -1412,7 +1412,7 @@ class DeliveryOrderController extends Controller {
                                                             ->delete();
                                                     }
 
-                                                    if($produc_type['pipe'] == 1){
+                                                    if($produc_type['pipe'] == 1 && $actual_qty['pipe'] != 0){
                                                         $labours_info[] = [
                                                             'delivery_challan_id' => $id,
                                                             'truck_weight_id'=> $truck_id,
@@ -1424,7 +1424,7 @@ class DeliveryOrderController extends Controller {
                                                             'total_qty' => $actual_qty['pipe'],
                                                         ];
                                                     }
-                                                    if($produc_type['structure'] == 1){
+                                                    if($produc_type['structure'] == 1 && $actual_qty['structure'] != 0){
                                                         $labours_info[] = [
                                                             'delivery_challan_id' => $id,
                                                             'truck_weight_id'=> $truck_id,
@@ -1436,7 +1436,7 @@ class DeliveryOrderController extends Controller {
                                                             'total_qty' => $actual_qty['structure'],
                                                         ];
                                                     }
-                                                    if($produc_type['sheet'] == 1){
+                                                    if($produc_type['sheet'] == 1 && $actual_qty['sheet'] != 0){
                                                         $labours_info[] = [
                                                             'delivery_challan_id' => $id,
                                                             'truck_weight_id'=> $truck_id,
@@ -1502,7 +1502,7 @@ class DeliveryOrderController extends Controller {
                                                         ->delete();
                                                 }
 
-                                                if($produc_type['pipe'] == 1){
+                                                if($produc_type['pipe'] == 1 && $actual_qty['pipe'] != 0){
                                                     $labours_info[] = [
                                                         'delivery_challan_id' => $id,
                                                         'truck_weight_id'=> $truck_weight_id,
@@ -1514,7 +1514,7 @@ class DeliveryOrderController extends Controller {
                                                         'total_qty' => $actual_qty['pipe'],
                                                     ];
                                                 }
-                                                if($produc_type['structure'] == 1){
+                                                if($produc_type['structure'] == 1 && $actual_qty['structure'] != 0){
                                                     $labours_info[] = [
                                                         'delivery_challan_id' => $id,
                                                         'truck_weight_id'=> $truck_weight_id,
@@ -1526,7 +1526,7 @@ class DeliveryOrderController extends Controller {
                                                         'total_qty' => $actual_qty['structure'],
                                                     ];
                                                 }
-                                                if($produc_type['sheet'] == 1){
+                                                if($produc_type['sheet'] == 1 && $actual_qty['sheet'] != 0){
                                                     $labours_info[] = [
                                                         'delivery_challan_id' => $id,
                                                         'truck_weight_id'=> $truck_weight_id,
@@ -1699,6 +1699,8 @@ class DeliveryOrderController extends Controller {
                 if(isset($empty_truck_weight) && $empty_truck_weight != 0 && isset($truck_weight) && $truck_weight != '0') {
                     if(!($truck_weight<$empty_truck_weight)) {
                         return redirect('delivery_order' . $parameters)->with('success', 'Truck loaded.');
+                        
+
                     }
                     else{
                         return Redirect::back()->with('validation_message', 'Please fill valid truck weight.');
@@ -2070,9 +2072,9 @@ class DeliveryOrderController extends Controller {
         }else{
             $labour[] = '';
         }
-        $actual_qty['pipe'] = "0";
-        $actual_qty['structure'] = "0";
-        $actual_qty['sheet'] = "0";
+        $actual_qty['pipe'] = 0;
+        $actual_qty['structure'] = 0;
+        $actual_qty['sheet'] = 0;
         $created_at = $delivery_order_details->created_at;
         $updated_at = $delivery_order_details->updated_at;
 
@@ -2159,7 +2161,7 @@ class DeliveryOrderController extends Controller {
                                     ->where('truck_weight_id',$truck_weight_id)
                                     ->delete();
                             }
-                            if($produc_type['pipe'] == 1){
+                            if($produc_type['pipe'] == 1 && $actual_qty['pipe'] != 0){
                                 $labours_info[] = [
                                     'delivery_challan_id' => $delivery_id,
                                     'truck_weight_id'=> $truck_weight_id,
@@ -2171,7 +2173,7 @@ class DeliveryOrderController extends Controller {
                                     'total_qty' => $actual_qty['pipe'],
                                 ];
                             }
-                            if($produc_type['structure'] == 1){
+                            if($produc_type['structure'] == 1 && $actual_qty['structure'] != 0){
                                 $labours_info[] = [
                                     'delivery_challan_id' => $delivery_id,
                                     'truck_weight_id'=> $truck_weight_id,
@@ -2183,7 +2185,7 @@ class DeliveryOrderController extends Controller {
                                     'total_qty' => $actual_qty['structure'],
                                 ];
                             }
-                            if($produc_type['sheet'] == 1){
+                            if($produc_type['sheet'] == 1 && $actual_qty['sheet'] != 0){
                                 $labours_info[] = [
                                     'delivery_challan_id' => $delivery_id,
                                     'truck_weight_id'=> $truck_weight_id,
