@@ -2064,6 +2064,7 @@ class DeliveryOrderController extends Controller {
         $produc_type['pipe'] = "0";
         $produc_type['structure'] = "0";
         $produc_type['sheet'] = "0";
+        $labours_info = [];
         if(Input::has('labour')){
             $labour[] = explode(',',Input::get('labour'));
         }else{
@@ -2145,8 +2146,7 @@ class DeliveryOrderController extends Controller {
             foreach($labour as $key => $val){
                
                 $truck_load = LoadTrucks::where('deliver_id', '=', $delivery_id)
-                        ->where('final_truck_weight', $truck_weight)
-                        ->orderBy('id','DESC')
+                        ->where('id', $truck_weight_id)
                         ->first();
                 if(!empty($truck_load)){
                     foreach($val as $load_val){
