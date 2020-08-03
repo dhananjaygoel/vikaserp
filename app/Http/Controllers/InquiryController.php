@@ -399,8 +399,7 @@ class InquiryController extends Controller {
      * Display the specified resource.
      */
     public function show($id, InquiryRequest $request) {
-        // echo $id;
-        // exit;
+        
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
@@ -434,45 +433,57 @@ class InquiryController extends Controller {
         $input_data = $inquiry['inquiry_products'];
         $input = Input::all();
         $str = "";
+        $product_string = "";
+        $total_quantity = 0;
+        $i = 1;
         if (isset($input['sendsms']) && $input['sendsms'] == "true") {
             $customer_id = $inquiry->customer_id;
             $customer = Customer::with('manager')->find($customer_id);
-            if (count((array)$customer) > 0) {
-                $total_quantity = '';
-                $str = "Dear " . $customer->owner_name . "\nDT " . date("j F, Y") . "\nPrices for your inquiry are as follows\n";
-                foreach ($input_data as $product_data) {
-                    $str .= $product_data['inquiry_product_details']->alias_name . ' - ' . $product_data['quantity'] . ' - ' . $product_data['price'] . ",\n";
-                    $total_quantity = (float)$total_quantity + (float)$product_data['quantity'];
+            foreach ($input_data as $product_data) {
+                if ($product_data['inquiry_product_details']->alias_name != "") {
+                    $product = ProductSubCategory::find($product_data['inquiry_product_details']->id);
+                    if ($product_data['unit_id'] == 1) {
+                       $total_quantity = (float)$product_data['quantity'];
+                    }
+                    if ($product_data['unit_id'] == 2) {
+                        $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                    }
+                    if ($product_data['unit_id'] == 3) {
+                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                    }
+                    if ($product_data['unit_id'] == 4) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                    }
+                    if ($product_data['unit_id'] == 5) {
+                        $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                    }
+                    $product_string .= $i++ . ") " . $product_data['inquiry_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
-                $str .= " materials will be dispatched by " . date('j M, Y', strtotime($inquiry['expected_delivery_date'])) . ".\nVIKAS ASSOCIATES";
+            }
+            if (count((array)$customer) > 0) {
+                $str = "Dear Customer,\n\nThe price has been updated for your inquiry.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nInquiry No: #".$id."\nInquiry Date: ".date("j F, Y")."\n\nUpdated Price for Products:\n".$product_string."\n\nOur sales representative will contact you shortly.\n\nVIKAS ASSOCIATES.";
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer->phone_number1;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if (SEND_SMS === true) {
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_sms($phone_number,$msg);
                 }
             }
             if (count((array)$customer['manager']) > 0) {
-                $str = "Dear " . $customer['manager']->first_name . "\n" . Auth::user()->first_name . " has logged an enquiry for " . $customer->owner_name . ", '" . round($total_quantity, 2) . "'. Kindly check and contact. Vikas Associates";
-                if (App::environment('development')) {
+                $str = "Dear Manager,\n\nThe price has been updated for inquiry.\n\nCustomer Name: " . ucwords($customer->owner_name) . "\nInquiry No: #" .$id. "\nInquiry Date: ".date("j F, Y")."\n\nUpdated Price for Products:\n".$product_string."\n\nVIKAS ASSOCIATES.";
+                if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {
                     $phone_number = $customer['manager']->mobile_number;
                 }
                 $msg = urlencode($str);
-                $url = SMS_URL . "?user=" . PROFILE_ID . "&pwd=" . PASS . "&senderid=" . SENDER_ID . "&mobileno=" . $phone_number . "&msgtext=" . $msg . "&smstype=0";
-                if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
-                    $ch = curl_init($url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $curl_scraped_page = curl_exec($ch);
-                    curl_close($ch);
+                if (SEND_SMS === true) {
+                    $send_msg = new WelcomeController();
+                    $send_msg->send_sms($phone_number,$msg);                    
                 }
             }
             Inquiry::where('id', '=', $id)->update(array(
@@ -535,8 +546,7 @@ class InquiryController extends Controller {
     public function update($id, InquiryRequest $request) {
 
         $input_data = Input::all();
-        // print_r($input_data['product']);
-        // exit;
+        
         $sms_flag = 1;
         $whatsapp_error = '';
         if (Session::has('forms_edit_inquiry')) {

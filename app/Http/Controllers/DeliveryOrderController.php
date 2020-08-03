@@ -1066,6 +1066,7 @@ class DeliveryOrderController extends Controller {
         $actual_qty['pipe'] = 0;
         $actual_qty['structure'] = 0;
         $actual_qty['sheet'] = 0;
+        $labours_info = [];
         $delboy = Auth::id();
         $created_at = $delivery_order_details->created_at;
         $updated_at = $delivery_order_details->updated_at;
