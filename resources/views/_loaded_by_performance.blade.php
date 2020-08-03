@@ -95,7 +95,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
             <?php foreach ($loaded_by as $loader) { ?>
                 <tr>
                     <td rowspan="2"><b>{{$loader->first_name}} {{$loader->last_name}}</B></td>
-                    <td><b>Tonnage1</b></td>
+                    <td><b>Tonnage</b></td>
                     @for($i = 1; $i<= $month ; $i++ )
                     <?php
                     $k = 0;
@@ -121,7 +121,7 @@ if (date('m') == date("m", strtotime($date)) && date('y') == date("y", strtotime
                     @endfor
                 </tr>
                 <tr>
-                    <td><b>Delivery1</b></td>
+                    <td><b>Delivery</b></td>
                     @for($i = 1; $i<= $month ; $i++ )
                     <?php
                     $dc_id_list = array();
