@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Response;
 use Config;
+use DB;
 
 class LoadByController extends Controller {
 
@@ -196,6 +197,132 @@ class LoadByController extends Controller {
             return redirect()->back();
         }
         $var = 0;
+        $var_month = 0;
+        $loaded_by_all = [];
+        $loaded_by_all_month = [];
+        $loader_arr = array();
+        $loader_arr_month = array();
+        $loaders_data = array();
+        $loaders_data_month = array();
+        $loaded_by = User::where('role_id', 8)->orWhere('role_id', 9)->orWhere('role_id', 0)->get();
+        $date = date('Y-m-01', time());
+        $enddate = date("Y-m-d");
+        $month = date('m');
+
+        if (Input::has('val')) {
+            $val = Input::get('val');
+            if ($val == "Month") {
+                $year = trim(Input::get('month'));
+                $date = date("$year-01-01");
+                $enddate = date("$year-12-31", strtotime($year));
+                if ($year == date('Y')) {
+                    $enddate = date("$year-m-t");
+                }
+
+                $loaded_by_all_month = \App\DeliveryChallanLoadedBy::join('users','delivery_challan_loaded_bies.loaded_by_id','=','users.id')
+                    ->select('delivery_challan_loaded_bies.loaded_by_id','delivery_challan_loaded_bies.created_at',DB::raw('MONTH(delivery_challan_loaded_bies.created_at) as _month,Year(delivery_challan_loaded_bies.created_at) as _year'),
+                    DB::raw('count(*) as _count'),DB::raw('sum(total_qty)/1000 as total_qty'))
+                    ->groupBy(DB::raw('MONTH(delivery_challan_loaded_bies.created_at)'),'delivery_challan_loaded_bies.loaded_by_id')
+                    ->get();
+
+            } else if ($val == "Day") {
+                $month = date('m');
+                $enddate = date("Y-m-d");
+                $date = date('Y-m-01', time());
+
+                $loaded_by_all = \App\DeliveryChallanLoadedBy::join('users','delivery_challan_loaded_bies.loaded_by_id','=','users.id')
+                    ->select('delivery_challan_loaded_bies.loaded_by_id','delivery_challan_loaded_bies.delivery_challan_id','delivery_challan_loaded_bies.created_at','users.first_name','users.last_name',
+                    DB::raw('DAY(delivery_challan_loaded_bies.created_at) as _day,MONTH(delivery_challan_loaded_bies.created_at) as _month,
+                    Year(delivery_challan_loaded_bies.created_at) as _year'),DB::raw('count(*) as _count'),DB::raw('sum(total_qty)/1000 as total_qty'))
+                    ->where(DB::raw('MONTH(delivery_challan_loaded_bies.created_at)'),$month)
+                    ->groupBy(DB::raw('DAY(delivery_challan_loaded_bies.created_at)'),'delivery_challan_loaded_bies.loaded_by_id')
+                    ->get();
+            }
+        } else{
+            $month = date('m');
+            $enddate = date("Y-m-d");
+            $date = date('Y-m-01', time());
+
+            $loaded_by_all = \App\DeliveryChallanLoadedBy::join('users','delivery_challan_loaded_bies.loaded_by_id','=','users.id')
+                ->select('delivery_challan_loaded_bies.loaded_by_id','delivery_challan_loaded_bies.delivery_challan_id','delivery_challan_loaded_bies.created_at','users.first_name','users.last_name',
+                DB::raw('DAY(delivery_challan_loaded_bies.created_at) as _day,MONTH(delivery_challan_loaded_bies.created_at) as _month,
+                Year(delivery_challan_loaded_bies.created_at) as _year'),DB::raw('count(*) as _count'),DB::raw('sum(total_qty)/1000 as total_qty'))
+                ->where(DB::raw('MONTH(delivery_challan_loaded_bies.created_at)'),$month)
+                ->groupBy(DB::raw('DAY(delivery_challan_loaded_bies.created_at)'),'delivery_challan_loaded_bies.loaded_by_id')
+                ->get();
+        }
+
+        if(!empty($loaded_by_all)){
+            foreach($loaded_by_all as $loader_value){
+                if ($loader_value['total_qty'] != 0) {
+                    $id = $loader_value['delivery_challan_id'];
+                    $loader_arr['delivery_id'] = $id;
+                    $loader_arr['date'] = date('Y-m-d', strtotime($loader_value['created_at']));
+                    $loader_arr['tonnage'] = $loader_value['total_qty'];
+                    $loader_arr['loader_id'] = $loader_value['loaded_by_id'];
+                    $loader_arr['_count'] = $loader_value['_count'];
+                }
+                $loaders_data[$var] = $loader_arr;
+                $var++;
+            }
+        }
+        
+        if(!empty($loaded_by_all_month)){
+            foreach($loaded_by_all_month as $loader_value_month){
+                if ($loader_value_month['total_qty'] != 0) {
+                    $loader_arr_month['tonnage'] = $loader_value_month['total_qty'];
+                    $loader_arr_month['loader_id'] = $loader_value_month['loaded_by_id'];
+                    $loader_arr_month['date'] = date('Y-m-d', strtotime($loader_value_month['created_at']));
+                    $loader_arr_month['month'] = $loader_value_month['_month'];
+                    $loader_arr_month['year'] = $loader_value_month['_year'];
+                    $loader_arr_month['_count'] = $loader_value_month['_count'];
+                }
+                $loaders_data[$var_month] = $loader_arr_month;
+                $var_month++;
+            }
+        }
+
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+ 
+        // dd($request);
+        if ($request->ajax()) {
+            if ($val == "Month") {
+                $html = view('_loaded_by_performance')
+                        ->with('date', $enddate)
+                        ->with('final_array', $loaders_data)
+                        ->with('loaded_by', $loaded_by)
+                        ->with('performance_index', true)
+                        ->with('filter_with', "months")
+                        ->render();
+            } else {
+                $html = view('_loaded_by_performance')
+                        ->with('date', $date)
+                        ->with('final_array', $loaders_data)
+                        ->with('loaded_by', $loaded_by)
+                        ->with('performance_index', true)
+                        ->with('filter_with', "days")
+                        ->render();
+            }
+            return Response::json(['success' => true, 'date' => $date, 'final_array' => $loaders_data, 'loaded_by' => $loaded_by, 'performance_index', true, 'html' => $html]);
+        }else{
+            return view('loaded_by_performance')
+                        ->with('date', $date)
+                        ->with('final_array', $loaders_data)
+                        ->with('loaded_by', $loaded_by)
+                        ->with('performance_index', true);
+        }
+
+    }
+
+    public function performance_old(Request $request) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
+        if (Auth::user()->role_id != 0) {
+            return redirect()->back();
+        }
+        $var = 0;
         $loader_arr = array();
         $loader_array = array();
         $loaders_data = array();
@@ -268,8 +395,6 @@ class LoadByController extends Controller {
 
             $loaded_by_all = \App\DeliveryChallanLoadedBy::get();
         }
-
-
 
         $temp1 = [];
         $pipe = [];
