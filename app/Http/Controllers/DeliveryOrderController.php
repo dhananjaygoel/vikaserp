@@ -548,19 +548,19 @@ class DeliveryOrderController extends Controller {
                 if ($product_data['name'] != "") {
                     $product = ProductSubCategory::find($product_data['product_category_id']);
                     if ($product_data['units'] == 1) {
-                        $total_quantity = (float)$product_data['quantity'];
+                        $total_quantity = (float)$product_data['present_shipping'];
                     }
                     if ($product_data['units'] == 2) {
-                        $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                        $total_quantity = (float)$product_data['present_shipping'] * (float)$product->weight;
                     }
                     if ($product_data['units'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product->standard_length ) * (float)$product->weight;
                     }
                     if ($product_data['units'] == 4) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product->weight * (float)$product_data['length']);
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product->weight * (float)$product_data['length']);
                     }
                     if ($product_data['units'] == 5) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product->weight * ((float)$product_data['length'] / 305));
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product->weight * ((float)$product_data['length'] / 305));
                     }
                     $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }

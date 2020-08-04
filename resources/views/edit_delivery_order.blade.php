@@ -483,7 +483,8 @@
                                                 </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                              <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});" disabled>                                                            
+                                                            <input type="hidden" name="product[{{$key}}][present_shipping]" value="{{$product->present_shipping}}">
+                                                            <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});" disabled>                                                            
                                                         </div>                                                        
                                                     </td>
                                                     
