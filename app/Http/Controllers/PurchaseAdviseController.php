@@ -416,7 +416,7 @@ class PurchaseAdviseController extends Controller {
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $input_data = $purchase_advise['purchase_products'];
 
-        $send_msg = Input::get('send_msg');
+        $send_sms = Input::get('send_msg');
         $send_whatsapp = Input::get('send_whatsapp');
         $customer_id = $purchase_advise->supplier_id;
         $customer = Customer::with('manager')->find($customer_id);
