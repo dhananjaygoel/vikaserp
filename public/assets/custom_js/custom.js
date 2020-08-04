@@ -3836,8 +3836,9 @@ $("body").on('click',"button", function() {
             $('.alert-empty-truck-weight').show();
             status_form = 1;
         }
+        var previous_truck_weight = '';
         if($("#truck_weight_"+(parseInt(truck_sequence) - 1)+"_readonly").length){
-            var previous_truck_weight = $("#truck_weight_"+(parseInt(truck_sequence) - 1)+"_readonly").val();
+            previous_truck_weight = $("#truck_weight_"+(parseInt(truck_sequence) - 1)+"_readonly").val();
             if(parseFloat(truck_weight) < parseFloat(previous_truck_weight)){
                 $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
                 $('.alert-valid-truck-weight').show();
@@ -3879,6 +3880,7 @@ $("body").on('click',"button", function() {
                     delivery_id:delivery_id,
                     delboy_id:delboy_id,
                     labour:labour,
+                    previous_truck_weight:previous_truck_weight,
                     truck_weight_id:truck_weight_id,
                     empty_truck_weight:empty_truck_weight,
                     product_ids:product_ids
