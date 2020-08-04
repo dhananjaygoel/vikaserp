@@ -272,7 +272,7 @@ class PurchaseChallanController extends Controller {
                     'created_at' => $created_at,
                     'updated_at' => $updated_at,
                     'type' => 'purchase',
-                    'total_qty' => $total_qty,
+                    'total_qty' => $total_qty/count((array)$loaders),
                 ];
             }
             $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
@@ -288,7 +288,7 @@ class PurchaseChallanController extends Controller {
                     'created_at' => $created_at,
                     'updated_at' => $updated_at,
                     'type' => 'purchase',
-                    'total_qty' => $total_qty,
+                    'total_qty' => $total_qty/count((array)$labours),
                 ];
             }
             $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
