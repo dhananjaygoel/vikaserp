@@ -1171,26 +1171,26 @@ class DeliveryOrderController extends Controller {
                                                         'truck_weight_id'=> $truck_id
                                                     ];
                                                     LoadLabour::insert($load_loabour);
-                                                    if($actual_qty != 0){
-                                                        $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                            ->where('truck_weight_id',$truck_id)
-                                                            ->first();
-                                                        if(!empty($is_lbr)){
-                                                            App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                                ->where('truck_weight_id',$truck_id)
-                                                                ->delete();
-                                                        }
-                                                        $labours_info[] = [
-                                                            'delivery_challan_id' => $id,
-                                                            'truck_weight_id'=> $truck_id,
-                                                            'labours_id' => $load_val,
-                                                            'created_at' => $delivery_order_details->created_at,
-                                                            'updated_at' => $delivery_order_details->updated_at,
-                                                            'type' => 'sale',
-                                                            'total_qty' => $actual_qty/count((array)$val),
-                                                        ];
-                                                        $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                                                    }
+                                                    // if($actual_qty != 0){
+                                                    //     $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                    //         ->where('truck_weight_id',$truck_id)
+                                                    //         ->first();
+                                                    //     if(!empty($is_lbr)){
+                                                    //         App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                    //             ->where('truck_weight_id',$truck_id)
+                                                    //             ->delete();
+                                                    //     }
+                                                    //     $labours_info[] = [
+                                                    //         'delivery_challan_id' => $id,
+                                                    //         'truck_weight_id'=> $truck_id,
+                                                    //         'labours_id' => $load_val,
+                                                    //         'created_at' => $delivery_order_details->created_at,
+                                                    //         'updated_at' => $delivery_order_details->updated_at,
+                                                    //         'type' => 'sale',
+                                                    //         'total_qty' => $actual_qty/count((array)$val),
+                                                    //     ];
+                                                    //     $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                                    // }
                                                 }
                                             }
                                         }
@@ -1235,26 +1235,26 @@ class DeliveryOrderController extends Controller {
                                                     'truck_weight_id'=> $truck_weight_id
                                                 ];
                                                 LoadLabour::insert($load_loabour);
-                                                if($actual_qty != 0){
-                                                    $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                        ->where('truck_weight_id',$truck_weight_id)
-                                                        ->first();
-                                                    if(!empty($is_lbr)){
-                                                        App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                            ->where('truck_weight_id',$truck_weight_id)
-                                                            ->delete();
-                                                    }
-                                                    $labours_info[] = [
-                                                        'delivery_challan_id' => $id,
-                                                        'truck_weight_id'=> $truck_weight_id,
-                                                        'labours_id' => $load_val,
-                                                        'created_at' => $delivery_order_details->created_at,
-                                                        'updated_at' => $delivery_order_details->updated_at,
-                                                        'type' => 'sale',
-                                                        'total_qty' => $actual_qty/count((array)$val),
-                                                    ];
-                                                    $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                                                }
+                                                // if($actual_qty != 0){
+                                                //     $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                //         ->where('truck_weight_id',$truck_weight_id)
+                                                //         ->first();
+                                                //     if(!empty($is_lbr)){
+                                                //         App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                //             ->where('truck_weight_id',$truck_weight_id)
+                                                //             ->delete();
+                                                //     }
+                                                //     $labours_info[] = [
+                                                //         'delivery_challan_id' => $id,
+                                                //         'truck_weight_id'=> $truck_weight_id,
+                                                //         'labours_id' => $load_val,
+                                                //         'created_at' => $delivery_order_details->created_at,
+                                                //         'updated_at' => $delivery_order_details->updated_at,
+                                                //         'type' => 'sale',
+                                                //         'total_qty' => $actual_qty/count((array)$val),
+                                                //     ];
+                                                //     $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                                // }
                                             }
                                         }
                                     }
@@ -1328,26 +1328,26 @@ class DeliveryOrderController extends Controller {
                                                     'truck_weight_id'=> $truck_id
                                                 ];
                                                 LoadLabour::insert($load_loabour);
-                                                if($actual_qty != 0){
-                                                    $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                        ->where('truck_weight_id',$truck_id)
-                                                        ->first();
-                                                    if(!empty($is_lbr)){
-                                                        App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                            ->where('truck_weight_id',$truck_id)
-                                                            ->delete();
-                                                    }
-                                                    $labours_info[] = [
-                                                        'delivery_challan_id' => $id,
-                                                        'truck_weight_id'=> $truck_id,
-                                                        'labours_id' => $load_val,
-                                                        'created_at' => $delivery_order_details->created_at,
-                                                        'updated_at' => $delivery_order_details->updated_at,
-                                                        'type' => 'sale',
-                                                        'total_qty' => $actual_qty/count((array)$val),
-                                                    ];
-                                                    $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                                                }
+                                                // if($actual_qty != 0){
+                                                //     $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                //         ->where('truck_weight_id',$truck_id)
+                                                //         ->first();
+                                                //     if(!empty($is_lbr)){
+                                                //         App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                                //             ->where('truck_weight_id',$truck_id)
+                                                //             ->delete();
+                                                //     }
+                                                //     $labours_info[] = [
+                                                //         'delivery_challan_id' => $id,
+                                                //         'truck_weight_id'=> $truck_id,
+                                                //         'labours_id' => $load_val,
+                                                //         'created_at' => $delivery_order_details->created_at,
+                                                //         'updated_at' => $delivery_order_details->updated_at,
+                                                //         'type' => 'sale',
+                                                //         'total_qty' => $actual_qty/count((array)$val),
+                                                //     ];
+                                                //     $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                                // }
                                             }
                                         }
                                     }
@@ -1391,26 +1391,26 @@ class DeliveryOrderController extends Controller {
                                                 'truck_weight_id'=> $truck_weight_id
                                             ];
                                             LoadLabour::insert($load_loabour);
-                                            if($actual_qty != 0){
-                                                $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                    ->where('truck_weight_id',$truck_weight_id)
-                                                    ->first();
-                                                if(!empty($is_lbr)){
-                                                    App\DeliveryChallanLabours::where('delivery_challan_id',$id)
-                                                        ->where('truck_weight_id',$truck_weight_id)
-                                                        ->delete();
-                                                }
-                                                $labours_info[] = [
-                                                    'delivery_challan_id' => $id,
-                                                    'truck_weight_id'=> $truck_weight_id,
-                                                    'labours_id' => $load_val,
-                                                    'created_at' => $delivery_order_details->created_at,
-                                                    'updated_at' => $delivery_order_details->updated_at,
-                                                    'type' => 'sale',
-                                                    'total_qty' => $actual_qty/count((array)$val),
-                                                ];
-                                                $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-                                            }
+                                            // if($actual_qty != 0){
+                                            //     $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                            //         ->where('truck_weight_id',$truck_weight_id)
+                                            //         ->first();
+                                            //     if(!empty($is_lbr)){
+                                            //         App\DeliveryChallanLabours::where('delivery_challan_id',$id)
+                                            //             ->where('truck_weight_id',$truck_weight_id)
+                                            //             ->delete();
+                                            //     }
+                                            //     $labours_info[] = [
+                                            //         'delivery_challan_id' => $id,
+                                            //         'truck_weight_id'=> $truck_weight_id,
+                                            //         'labours_id' => $load_val,
+                                            //         'created_at' => $delivery_order_details->created_at,
+                                            //         'updated_at' => $delivery_order_details->updated_at,
+                                            //         'type' => 'sale',
+                                            //         'total_qty' => $actual_qty/count((array)$val),
+                                            //     ];
+                                            //     $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                            // }
                                         }
                                     }
                                 }
