@@ -1848,10 +1848,10 @@ class DeliveryChallanController extends Controller {
                     $send_msg = new WelcomeController();
                     $send_msg->send_sms($phone_number,$msg);
                 }
-                if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
-                    $send_msg = new WelcomeController();
-                    $send_msg->send_whatsapp($phone_number,$str);                    
-                }
+                // if(SEND_SMS === true && isset($send_whatsapp) && $send_whatsapp == "true"){
+                //     $send_msg = new WelcomeController();
+                //     $send_msg->send_whatsapp($phone_number,$str);                    
+                // }
             }
         }
         //         update sync table
