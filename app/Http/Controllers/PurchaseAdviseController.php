@@ -429,19 +429,19 @@ class PurchaseAdviseController extends Controller {
             foreach ($purchase_advise['purchase_products'] as $product_data) {
                 if ($product_data['purchase_product_details']->alias_name != "") {
                     if ($product_data['unit_id'] == 1) {
-                        $total_quantity = (float)$product_data['quantity'];
+                        $total_quantity = (float)$product_data['present_shipping'];
                     }
                     if ($product_data['unit_id'] == 2) {
-                        $total_quantity = (float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = (float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
                     }
                     if ($product_data['unit_id'] == 5) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
                     $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
@@ -783,19 +783,19 @@ class PurchaseAdviseController extends Controller {
             foreach ($purchase_advise['purchase_products'] as $product_data) {
                 if ($product_data['purchase_product_details']->alias_name != "") {
                     if ($product_data['unit_id'] == 1) {
-                        $total_quantity = (float)$product_data['quantity'];
+                        $total_quantity = (float)$product_data['present_shipping'];
                     }
                     if ($product_data['unit_id'] == 2) {
-                        $total_quantity = (float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = (float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
                     }
                     if ($product_data['unit_id'] == 5) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
                     $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
