@@ -1936,18 +1936,18 @@ class DeliveryOrderController extends Controller {
                                     ];
                                     LoadLabour::insert($load_loabour);
 
-                                    if($actual_qty != 0){
-                                        $labours_info[] = [
-                                            'delivery_challan_id' => $delivery_id,
-                                            'truck_weight_id'=> $truck_load->id,
-                                            'labours_id' => $load_val,
-                                            'created_at' => $created_at,
-                                            'updated_at' => $updated_at,
-                                            'type' => 'sale',
-                                            'total_qty' => $actual_qty,
-                                        ];
-                                    }
-                                    $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+                                    // if($actual_qty != 0){
+                                    //     $labours_info[] = [
+                                    //         'delivery_challan_id' => $delivery_id,
+                                    //         'truck_weight_id'=> $truck_load->id,
+                                    //         'labours_id' => $load_val,
+                                    //         'created_at' => $created_at,
+                                    //         'updated_at' => $updated_at,
+                                    //         'type' => 'sale',
+                                    //         'total_qty' => $actual_qty,
+                                    //     ];
+                                    // }
+                                    // $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
                                 }
                             }
                         }
