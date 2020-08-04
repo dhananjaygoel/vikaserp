@@ -208,7 +208,7 @@ class OrderController extends Controller {
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
                         $send_msg->send_sms($mobile_number,$msg);
-                        $send_msg->send_whatsapp($mobile_number,$str); 
+                        // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
                 $cust = User::where('id',Auth::user()->id)->first();
@@ -313,7 +313,7 @@ class OrderController extends Controller {
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
                         $send_msg->send_sms($mobile_number,$msg);
-                        $send_msg->send_whatsapp($mobile_number,$str); 
+                        // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
                 $cust = User::where('id',Auth::user()->id)->first();

@@ -1539,7 +1539,7 @@ class DeliveryOrderController extends Controller {
                         if (SEND_SMS === true) {
                             $send_msg = new WelcomeController();
                             $send_msg->send_sms($mobile_number,$msg);
-                            $send_msg->send_whatsapp($mobile_number,$str); 
+                            // $send_msg->send_whatsapp($mobile_number,$str); 
                         }
                     }
                     if(isset($do_det->del_supervisor) && !empty($do_det->del_supervisor) && $do_det->del_supervisor != Auth::user()->id){
@@ -1556,7 +1556,7 @@ class DeliveryOrderController extends Controller {
                             if (SEND_SMS === true) {
                                 $send_msg = new WelcomeController();
                                 $send_msg->send_sms($mobile_number,$msg);
-                                $send_msg->send_whatsapp($mobile_number,$str); 
+                                // $send_msg->send_whatsapp($mobile_number,$str); 
                             }
                         }
                     }
@@ -2116,7 +2116,7 @@ class DeliveryOrderController extends Controller {
                 if (SEND_SMS === true) {
                     $send_msg = new WelcomeController();
                     $send_msg->send_sms($mobile_number,$msg);
-                    $send_msg->send_whatsapp($mobile_number,$str); 
+                    // $send_msg->send_whatsapp($mobile_number,$str); 
                 }
             }
             $do_det = DeliveryOrder::where('id',$delivery_id)->first();
@@ -2134,7 +2134,7 @@ class DeliveryOrderController extends Controller {
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
                         $send_msg->send_sms($mobile_number,$msg);
-                        $send_msg->send_whatsapp($mobile_number,$str); 
+                        // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
             }

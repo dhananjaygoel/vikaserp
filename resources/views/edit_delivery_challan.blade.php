@@ -700,7 +700,7 @@
                                 <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3">{{trim($allorder->remarks)}}</textarea>
                             </div>
                             <div class="checkbox customer_select_order">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label>
+                                <!-- <label class="marginsms" style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes" checked><span class="checksms">Send Whatsapp</span></label> -->
                                 <label class="marginsms"><input type="checkbox" name="send_msg" value="yes" checked><span class="checksms">Send SMS</span></label>
                             </div>
                             <!--  <button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button> -->

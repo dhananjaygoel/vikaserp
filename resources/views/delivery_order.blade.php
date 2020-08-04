@@ -522,7 +522,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="checkbox col-md-12">
-                                                    <label style="margin-right:10px;"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                                    <!-- <label style="margin-right:10px;"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label> -->
                                                     <label><input type="checkbox" id="checksms" value="yes" checked><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>
