@@ -940,7 +940,7 @@ class OrderController extends Controller {
                 }
                 
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager, \n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts: \n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1418,6 +1418,7 @@ class OrderController extends Controller {
                         } else {
                             $phone_number = $customer['manager']->mobile_number;
                         }
+                        $msg = urlencode($str);
                         if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
                             $send_msg = new WelcomeController();
                             $send_msg->send_sms($phone_number,$msg);

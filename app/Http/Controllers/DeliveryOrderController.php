@@ -1935,6 +1935,19 @@ class DeliveryOrderController extends Controller {
                                         'truck_weight_id'=> $truck_load->id
                                     ];
                                     LoadLabour::insert($load_loabour);
+
+                                    if($actual_qty != 0){
+                                        $labours_info[] = [
+                                            'delivery_challan_id' => $delivery_id,
+                                            'truck_weight_id'=> $truck_load->id,
+                                            'labours_id' => $load_val,
+                                            'created_at' => $created_at,
+                                            'updated_at' => $updated_at,
+                                            'type' => 'sale',
+                                            'total_qty' => $actual_qty,
+                                        ];
+                                    }
+                                    $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
                                 }
                             }
                         }
@@ -2003,30 +2016,6 @@ class DeliveryOrderController extends Controller {
                         $notification->admin_read_status = '0';
                         $notification->save();
                     /* Notification has been stored */
-                    // if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
-                    //     if(Auth::user()->role_id == 8){
-                    //         $user_role = 'supervisor';
-                    //     }elseif(Auth::user()->role_id == 9){
-                    //         $user_role = 'boy';
-                    //     }
-                    //     $user = User::find($assigned_by);
-                    //     $do = DeliveryOrder::find($delivery_id);
-                    //     $customer = Customer::with('manager')->find($do->customer_id);
-                    //     if($user){
-                    //         if (App::environment('local')) {
-                    //             $mobile_number = Config::get('smsdata.send_sms_to');
-                    //         } else {
-                    //             $mobile_number = $user->mobile_number;
-                    //         }
-                    //         $str = "Dear Manager,\n\nTruck has been loaded by delivery ".$user_role." ".ucwords($user_fname).".\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$delivery_id."\nLoaded Date: ".date("j F, Y")."\nEmpty Truck Weight: ".$empty_truck_weight."KG\nFinal Truck Weight: N/A\nTruck Weight ".$truck_no.": ".$truck_weight."KG\nProducts:\n".$product_string."\nTotal Actual Quantity: ".round((float)$total_quantity,2)."KG \n\nVIKAS ASSOCIATES.";
-                    //         $msg = urlencode($str);
-                    //         if (SEND_SMS === true) {
-                    //             $send_msg = new WelcomeController();
-                    //             $send_msg->send_sms($mobile_number,$msg);
-                    //             $send_msg->send_whatsapp($mobile_number,$str); 
-                    //         }
-                    //     }
-                    // }
                 }
                 if(Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())){
                     $truck_details = LoadTrucks::where('id',$truck_weight_id)->first();
