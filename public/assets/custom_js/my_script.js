@@ -896,13 +896,15 @@ function print_delivery_challan(challan_id,allinc) {
         $("#checkwhatsapp").prop("checked", false);
         $('#checksms_span').attr('data-original-title','Sending SMS not allowed');
     }
-    if(is_gst == 1){
-        $("#checksms").prop("checked", true);
-        $("#checkwhatsapp").prop("checked", true);
-    }else{
-        $("#checksms").prop("checked", false);
-        $("#checkwhatsapp").prop("checked", false);
-    }
+    $("#checksms").prop("checked", false);
+    $("#checkwhatsapp").prop("checked", false);
+    // if(is_gst == 1){
+    //     $("#checksms").prop("checked", true);
+    //     $("#checkwhatsapp").prop("checked", true);
+    // }else{
+    //     $("#checksms").prop("checked", false);
+    //     $("#checkwhatsapp").prop("checked", false);
+    // }
 
 }
 
