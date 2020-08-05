@@ -207,7 +207,7 @@ class OrderController extends Controller {
                     $msg = urlencode($str);
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
-                        $send_msg->send_sms($mobile_number,$msg);
+                        // $send_msg->send_sms($mobile_number,$msg);
                         // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
@@ -249,7 +249,7 @@ class OrderController extends Controller {
                     $msg = urlencode($str);
                     if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $send_msg = new WelcomeController();
-                        $send_msg->send_sms($phone_number,$msg);
+                        // $send_msg->send_sms($phone_number,$msg);
                     }
                 }
 
@@ -312,7 +312,7 @@ class OrderController extends Controller {
                     $msg = urlencode($str);
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
-                        $send_msg->send_sms($mobile_number,$msg);
+                        // $send_msg->send_sms($mobile_number,$msg);
                         // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }

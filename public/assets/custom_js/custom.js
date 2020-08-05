@@ -1978,16 +1978,16 @@ $('body').delegate(".btn_add_delivery_order", "click", function () {
 });
 
 function check_vat(){
-    var tot_products = $(".add_product_row:visible").length;
-    var atLeastOneIsChecked = $('.vat_chkbox:checkbox:checked').length > 0;
-    // console.log($('.vat_chkbox:checkbox:checked').length);
-    if(atLeastOneIsChecked == true){
-        $('#send_whatsapp').prop("checked",true);
-        $('#send_msg').prop("checked",true);
-    } else{
-        $('#send_whatsapp').prop("checked",false);
-        $('#send_msg').prop("checked",false);
-    }
+    // var tot_products = $(".add_product_row:visible").length;
+    // var atLeastOneIsChecked = $('.vat_chkbox:checkbox:checked').length > 0;
+    // // console.log($('.vat_chkbox:checkbox:checked').length);
+    // if(atLeastOneIsChecked == true){
+    //     $('#send_whatsapp').prop("checked",true);
+    //     $('#send_msg').prop("checked",true);
+    // } else{
+    //     $('#send_whatsapp').prop("checked",false);
+    //     $('#send_msg').prop("checked",false);
+    // }
 }
 
 $('body').delegate(".btn_edit_delivery_challan", "click", function () {
@@ -3928,37 +3928,37 @@ $("body").on('click',"button", function() {
                         }
                         // $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                         fetch_average_quantity_load_truck();
-                        var actual_qty =  $('#total_actual_qty_truck').val();
-                        for (var i = 1; i < current_row_count + 1; i++) {
-                            product.push($('#product_id'+i).val()+'-'+$('#actual_pieces_'+i).val()+'-'+$('#actual_quantity_'+i).val());
-                        }
-                        console.log(product);
-                        if(product){
-                            product = product.toString();
-                        }else{
-                            product = '';
-                        }
-                        console.log(product);
-                        console.log(actual_qty);
-                        $.ajax({
-                            type: 'GET',
-                            url: url + '/send_save_truck_msgs',
-                            data: {
-                                delivery_id:delivery_id,
-                                delboy_id:delboy_id,
-                                truck_weight:truck_weight,
-                                empty_truck_weight:empty_truck_weight,
-                                truck_no:truck_sequence,
-                                actual_qty:actual_qty,
-                                truck_weight_id:truck_weight_id,
-                                product_ids:product,
-                                labour:labour
-                            },
-                            success: function(data){
-                                // alert(data);
-                            }
+                        // var actual_qty =  $('#total_actual_qty_truck').val();
+                        // for (var i = 1; i < current_row_count + 1; i++) {
+                        //     product.push($('#product_id'+i).val()+'-'+$('#actual_pieces_'+i).val()+'-'+$('#actual_quantity_'+i).val());
+                        // }
+                        // console.log(product);
+                        // if(product){
+                        //     product = product.toString();
+                        // }else{
+                        //     product = '';
+                        // }
+                        // console.log(product);
+                        // console.log(actual_qty);
+                        // $.ajax({
+                        //     type: 'GET',
+                        //     url: url + '/send_save_truck_msgs',
+                        //     data: {
+                        //         delivery_id:delivery_id,
+                        //         delboy_id:delboy_id,
+                        //         truck_weight:truck_weight,
+                        //         empty_truck_weight:empty_truck_weight,
+                        //         truck_no:truck_sequence,
+                        //         actual_qty:actual_qty,
+                        //         truck_weight_id:truck_weight_id,
+                        //         product_ids:product,
+                        //         labour:labour
+                        //     },
+                        //     success: function(data){
+                        //         // alert(data);
+                        //     }
 
-                        });
+                        // });
                         
                             window.onbeforeunload = null;
                             // return false;
