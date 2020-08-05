@@ -1484,7 +1484,7 @@ class DeliveryOrderController extends Controller {
 
             }
             $do_det = DeliveryOrder::where('id',$id)->first();
-            if(isset($do_det) && !empty($do_det->final_truck_weight)){
+            /* if(isset($do_det) && !empty($do_det->final_truck_weight)){
                 $prod_quantity = 0;
                 $total_quantity = 0;
                 $product_string = "";
@@ -1539,7 +1539,7 @@ class DeliveryOrderController extends Controller {
                         if (SEND_SMS === true) {
                             $send_msg = new WelcomeController();
                             $send_msg->send_sms($mobile_number,$msg);
-                            // $send_msg->send_whatsapp($mobile_number,$str); 
+                            $send_msg->send_whatsapp($mobile_number,$str); 
                         }
                     }
                     if(isset($do_det->del_supervisor) && !empty($do_det->del_supervisor) && $do_det->del_supervisor != Auth::user()->id){
@@ -1556,12 +1556,12 @@ class DeliveryOrderController extends Controller {
                             if (SEND_SMS === true) {
                                 $send_msg = new WelcomeController();
                                 $send_msg->send_sms($mobile_number,$msg);
-                                // $send_msg->send_whatsapp($mobile_number,$str); 
+                                $send_msg->send_whatsapp($mobile_number,$str); 
                             }
                         }
                     }
                 }
-            }
+            } */
             $parameter = Session::get('parameters');
             $parameters = (isset($parameter) && !empty($parameter)) ? '?' . $parameter : '';
             $action = Input::get('action');
