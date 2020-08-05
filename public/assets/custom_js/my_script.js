@@ -805,13 +805,14 @@ function print_challan_do(el) {
         $('.empty_truck_weight_title').css('display',"block");
 //        $('#vehicle_no').css('display',"block");
     }
-    if(is_gst == 1){
-        $("#checksms").prop("checked", true);
-        $("#checkwhatsapp").prop("checked", true);
-    }else{
-        $("#checksms").prop("checked", false);
-        $("#checkwhatsapp").prop("checked", false);
-    }
+    $("#checksms").prop("checked", false);
+    // if(is_gst == 1){
+    //     $("#checksms").prop("checked", true);
+    //     $("#checkwhatsapp").prop("checked", true);
+    // }else{
+    //     $("#checksms").prop("checked", false);
+    //     $("#checkwhatsapp").prop("checked", false);
+    // }
 }
 /*
  * print challan to new page on delivery order  
