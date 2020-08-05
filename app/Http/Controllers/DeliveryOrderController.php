@@ -1272,6 +1272,12 @@ class DeliveryOrderController extends Controller {
                     'empty_truck_weight'=>$empty_truck_weight,
                 ]);
             }
+
+            if(isset($input_data['order_remark']) && $input_data['order_remark'] != "") {
+                $update_delivery = DeliveryOrder::where('id',$id)->update([
+                    'remarks' => $input_data['order_remark'],
+                ]);
+            }
           
             if($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())){
                 $variable = 'truck_weight';
@@ -1434,6 +1440,11 @@ class DeliveryOrderController extends Controller {
                         'actual_pieces'=>$actual_pieces,
                         'actual_quantity'=>$average_weight,
                         'quantity'=>$actual_quantity,
+                    ]);
+                }
+                if(isset($product_info['remark']) && $product_info['remark'] != ""){
+                    $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                        'remarks'=>$product_info['remark']
                     ]);
                 }
                 if(!empty($vat_percentage) && $vat_percentage == 'yes'){
