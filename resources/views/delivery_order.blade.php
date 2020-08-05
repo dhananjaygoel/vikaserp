@@ -18,7 +18,7 @@
                     <!--<div class="form-group pull-right">-->
                     <h1 class="pull-left">Delivery Orders</h1>
                     <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
-                            @if(Auth::user()->role_id == 0)
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                             <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
                             <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
                             @endif
@@ -72,7 +72,7 @@
                             @else
                             <input type="hidden" name="delivery_order_status" value="Inprocess">
                             @endif
-                            @if(Auth::user()->role_id == 0)
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                             <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
                             <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
                             @endif
@@ -97,14 +97,14 @@
                             @else
                             <input type="hidden" name="delivery_order_status" value="Inprocess">
                             @endif
-                            @if(Auth::user()->role_id == 0)
+                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                             <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
                             <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
                             @endif
                             <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
                         </form>
                     </div>
-                    @if(Auth::user()->role_id == 0)
+                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
                     <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
                         @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
                                 <input type="hidden" name="delivery_order_status" value="Delivered">
