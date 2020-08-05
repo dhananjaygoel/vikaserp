@@ -296,7 +296,7 @@
                                           @endif
 
                                           @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
                                              <?php $data_delivery_boy = $delivery->del_boy;
                                                 if(isset($data_delivery_boy) && $data_delivery_boy != null) {
                                                     $test = \App\User::where('id',$data_delivery_boy)->get();
@@ -335,7 +335,7 @@
                                                   //    $disable = "";
                                                   // }
 
-                                                if(Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+                                                if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
                                                     $tclass ="trucksuccess";
                                                 }
                                                 else{
@@ -343,7 +343,7 @@
                                                 }
                                             ?>
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9   )
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9   )
                                              <a style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" href="{{url('create_load_truck/'.$delivery->id)}}" class="btn btn-primary truck_load <?php echo $tclass; ?>" id="truck_load" title="Load truck"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></a>
 
                                             <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
@@ -369,9 +369,9 @@
                                                 </span>
                                             </a> -->
                                                @if($delivery->order_status == 'pending')
-                                                @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2))
+                                                @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4))
 
-                                                    @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2  || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+                                                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                                                         <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -381,7 +381,7 @@
                                                         </a>
                                                     @endif
 
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8  || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8 || Auth::user()->role_id == 4)
 
 												   <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
 

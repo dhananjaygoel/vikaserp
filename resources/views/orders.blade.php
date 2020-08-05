@@ -393,14 +393,14 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 5 || Auth::user()->role_id == 4)
+                                            @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2  || Auth::user()->role_id == 5 || Auth::user()->role_id == 4)
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if(Auth::user()->role_id <> 5)
+                                            @if(Auth::user()->role_id <> 5 && Auth::user()->role_id <> 2)
                                             <?php
                                              $is_allinclusive = 0;
                                              foreach ($order->all_order_products as $dord){

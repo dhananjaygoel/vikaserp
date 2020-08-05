@@ -131,8 +131,13 @@
                                     <button disabled type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                                 @endif
                             @else
-                                <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="check_change();">
-                                <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                                @if(Auth::user()->role_id == 2)
+                                    <input readonly type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                    <button disabled type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                                @else
+                                    <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="check_change();">
+                                    <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                                @endif
                             @endif  
                         </div>
                         <hr>
@@ -280,7 +285,7 @@
                         </div>
                         @endif
  
-                    @elseif(Auth::user()->role_id ==9)
+                    @elseif(Auth::user()->role_id ==9 || Auth::user()->role_id == 2)
                     
                         @if(isset($truckinfo) && (!empty($truckinfo)))
                             @foreach($truckinfo as $truck_value)
@@ -336,6 +341,26 @@
                             @endforeach
                             <?php $i--;?>
                         @else
+                            @if( Auth::user()->role_id == 2 )
+                            <div class ="row form-group truck_weight_save">
+                                <ul id="truck" style="list-style-type: none;padding: 0;">
+                                    <li>
+                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (KG):</span>
+                                        <span id="truck_value_add_{{$i}}"><input disabled type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{Auth::user()->id}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{Auth::user()->id}});">
+                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
+                                        <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
+                                        <select disabled id="labour_select_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
+                                            @if(isset($labours))
+                                                @foreach ($labours as $labour)
+                                                    <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            @else
                             <div class ="row form-group truck_weight_save">
                                 <ul id="truck" style="list-style-type: none;padding: 0;">
                                     <li>
@@ -354,11 +379,17 @@
                                     </li>
                                 </ul>
                             </div>
+                            @endif
                         @endif
+                    
                     @endif
                        
                     </div>
-                    <button type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
+                    @if( Auth::user()->role_id == 2 )
+                        <button disabled type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
+                    @else
+                        <button type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
+                    @endif
                     
                         <hr>
                         <div class="form-group underline">Product Details</div>
@@ -434,8 +465,8 @@
                                         //     }
                                         // }
 
-                                        if(Auth::user()->role_id ==9){
-                                             if($product->actual_pieces >0){
+                                        if(Auth::user()->role_id ==9 || Auth::user()->role_id ==2){
+                                             if($product->actual_pieces >0 || Auth::user()->role_id ==2){
                                                  $class = 'readonly="readonly"';
                                                  $class1 = 'disabled';
                                              }
@@ -443,10 +474,10 @@
                                                  $class = '';
                                                  $class1 = '';
                                              }
-                                          }else {
-                                                $class = '';
-                                                $class1 = '';
-                                            }
+                                        }else {
+                                            $class = '';
+                                            $class1 = '';
+                                        }
                                            
                                            $actual_quantity = $product->actual_pieces * $product->actual_quantity;
                                           
@@ -568,9 +599,11 @@
                                 <div>
                                     
                                     
-                                   
+                                @if(Auth::user()->role_id == 2)
+                                    <button disabled type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck" >Submit</button>
+                                @else
                                     <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck" >Submit</button>
-                                  
+                                @endif  
                                     <a href="{{URL::action('DeliveryOrderController@index')}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
                                 <div class="clearfix"></div>
