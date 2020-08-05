@@ -480,6 +480,9 @@
                                             $class = '';
                                             $class1 = '';
                                         }
+                                        if(Auth::user()->role_id == 2){
+                                            $sales_class = 'readonly="readonly"';
+                                        }
                                            
                                            $actual_quantity = $product->actual_pieces * $product->actual_quantity;
                                           
@@ -568,7 +571,7 @@
                                             @endif
                                             <td class="col-md-2">
                                                 <div class="form-group">
-                                                    <input id="remark" class="form-control" placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
+                                                    <input id="remark" class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
                                                 </div>
                                             </td>
                                         </tr>
@@ -612,7 +615,7 @@
                         </div>
                             <div class="form-group">
                                 <label for="inquiry_remark"><b>Remark :</b></label>
-                                <textarea class="form-control" id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
+                                <textarea class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
                             </div>
                                 
                                 <hr>
