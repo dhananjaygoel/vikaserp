@@ -1273,11 +1273,11 @@ class DeliveryOrderController extends Controller {
                 ]);
             }
 
-            if(isset($input_data['order_remark']) && $input_data['order_remark'] != "") {
-                $update_delivery = DeliveryOrder::where('id',$id)->update([
-                    'remarks' => $input_data['order_remark'],
-                ]);
-            }
+            // if(isset($input_data['order_remark']) && $input_data['order_remark'] != "") {
+            //     $update_delivery = DeliveryOrder::where('id',$id)->update([
+            //         'remarks' => $input_data['order_remark'],
+            //     ]);
+            // }
           
             if($delivery_order_details->del_boy == "" || Auth::user()->role_id == 0 || (isset($delivery_order_details->del_supervisor) && $delivery_order_details->del_supervisor == Auth::id())){
                 $variable = 'truck_weight';
@@ -1442,11 +1442,11 @@ class DeliveryOrderController extends Controller {
                         'quantity'=>$actual_quantity,
                     ]);
                 }
-                if(isset($product_info['remark']) && $product_info['remark'] != ""){
-                    $update_product_details = AllOrderProducts::where('id',$productid)->update([
-                        'remarks'=>$product_info['remark']
-                    ]);
-                }
+                // if(isset($product_info['remark']) && $product_info['remark'] != ""){
+                //     $update_product_details = AllOrderProducts::where('id',$productid)->update([
+                //         'remarks'=>$product_info['remark']
+                //     ]);
+                // }
                 if(!empty($vat_percentage) && $vat_percentage == 'yes'){
                     $update_product_details = AllOrderProducts::where('id',$productid)->update([
                         'vat_percentage'=> 1 ,
