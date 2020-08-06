@@ -1685,7 +1685,16 @@ class DeliveryOrderController extends Controller {
         $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : 0;
         $previous_truck_weight = (Input::has('previous_truck_weight')) &&  Input::get('previous_truck_weight') != '' ? Input::get('previous_truck_weight') : $empty_truck_weight;
         $truck_no = (Input::has('truck_no')) ? Input::get('truck_no') : 0;
-        // dd(Input::all());
+        $delboy_id = (Input::has('delboy_id')) ? Input::get('delboy_id') : 0;
+        $delivery_id = Input::get('delivery_id');
+
+        if(isset($delboy_id) && $delboy_id != 0 && $truck_weight_id != ""){
+            if($delboy_id == Auth::user()->id){
+                $delboy_id = Auth::user()->id;
+            }else{
+                $delboy_id = $delboy_id;
+            }
+        }
         $labour = array();
         if(Input::has('labour') && Input::get('labour') != ""){
             $labour = explode(',',Input::get('labour'));
@@ -1693,9 +1702,8 @@ class DeliveryOrderController extends Controller {
         $labours_info = [];
         $loaders_info = [];
         $actual_qty = $truck_weight - $previous_truck_weight;
-        $delivery_id = Input::get('delivery_id');
+        // dd($labour);
         $delivery_order_details = DeliveryOrder::find($delivery_id);
-        $delboy_id = Input::get('delboy_id');
 
         $inputprodut = (Input::has('product_ids')) ? Input::get('product_ids') : 'array()';
         $inputprodut = explode(',',$inputprodut);
@@ -1865,19 +1873,19 @@ class DeliveryOrderController extends Controller {
                         }
                     }
                     $is_exist = DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
-                        ->where('loaded_by_id',Auth::user()->id)
+                        ->where('loaded_by_id',$delboy_id)
                         ->where('truck_weight_id',$truck_weight_id)
                         ->first();
                     if(!empty($is_exist)){
                         DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
-                        ->where('loaded_by_id',Auth::user()->id)
+                        ->where('loaded_by_id',$delboy_id)
                         ->where('truck_weight_id',$truck_weight_id)
                         ->delete();
                     }
                     $loaders_info[] = [
                         'delivery_challan_id' => $delivery_id,
                         'truck_weight_id' => $truck_weight_id,
-                        'loaded_by_id' => Auth::user()->id,
+                        'loaded_by_id' => $delboy_id,
                         'created_at' => $delivery_order_details->created_at,
                         'updated_at' => $delivery_order_details->updated_at,
                         'type' => 'sale',
