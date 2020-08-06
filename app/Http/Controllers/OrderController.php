@@ -911,13 +911,13 @@ class OrderController extends Controller {
                             $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                         }
                         if ($product_data['units'] == 3) {
-                            $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                            $total_quantity = ((float)$product_data['quantity'] / (float)(isset($product->standard_length) && $product->standard_length != 0 ? $product->standard_length : 1 )) * (float)$product->weight;
                         }
                         if ($product_data['units'] == 4) {
-                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:1) * (float)$product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:1) * ((float)$product_data['length'] / 305));
                         }
                         $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                     }
