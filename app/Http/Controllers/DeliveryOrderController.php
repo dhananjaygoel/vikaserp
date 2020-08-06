@@ -1687,7 +1687,12 @@ class DeliveryOrderController extends Controller {
         $truck_no = (Input::has('truck_no')) ? Input::get('truck_no') : 0;
         $delboy_id = (Input::has('delboy_id')) ? Input::get('delboy_id') : 0;
         $delivery_id = Input::get('delivery_id');
-
+        $next_truck_weight_id = (Input::has('next_truck_weight_id')) ? Input::get('next_truck_weight_id') : 0;
+        $next_truck_weight = (Input::has('next_truck_weight')) ? Input::get('next_truck_weight') : 0;
+        $next_labour = array();
+        if(Input::has('next_labour') && Input::get('next_labour') != ""){
+            $next_labour = explode(',',Input::get('next_labour'));
+        }
         if(isset($delboy_id) && $delboy_id != 0 && $truck_weight_id != ""){
             if($delboy_id == Auth::user()->id){
                 $delboy_id = Auth::user()->id;
@@ -1892,6 +1897,48 @@ class DeliveryOrderController extends Controller {
                         'total_qty' => $actual_qty,
                     ];
                     $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+
+                    if($next_truck_weight_id != 0){
+                        $truck_details = LoadTrucks::where('deliver_id', '=', $delivery_id)
+                                ->where('id', '=', $next_truck_weight_id)
+                                ->first();
+                        if(!empty($truck_details)){
+                            $next_delboy_id = $truck_details->userid;
+                        }
+                        $actual_qty_next = $next_truck_weight - $truck_weight;
+                        $is_exist = DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
+                            ->where('loaded_by_id',$next_delboy_id)
+                            ->where('truck_weight_id',$next_truck_weight_id)
+                            ->first();
+                        if(!empty($is_exist)){
+                            $update_next_qty = DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
+                                                ->where('loaded_by_id',$next_delboy_id)
+                                                ->where('truck_weight_id',$next_truck_weight_id)
+                                                ->update(array(
+                                                    'total_qty' => $actual_qty_next,
+                                                ));
+                        }
+                        if(!empty((array)$next_labour)){                            
+                            if(!empty($truck_details)){
+                                foreach($next_labour as $load_val){
+                                    if($actual_qty_next != 0){
+                                        $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$delivery_id)
+                                            ->where('truck_weight_id',$next_truck_weight_id)
+                                            ->where('labours_id',$load_val)
+                                            ->first();
+                                        if(!empty($is_lbr)){
+                                            App\DeliveryChallanLabours::where('delivery_challan_id',$delivery_id)
+                                                ->where('truck_weight_id',$next_truck_weight_id)
+                                                ->where('labours_id',$load_val)
+                                                ->update(array(
+                                                    'total_qty' => $actual_qty_next/count((array)$next_labour),
+                                                ));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     /* Add new Notifications */
                         $notification = new SendNotification();
