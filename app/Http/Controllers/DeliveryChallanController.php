@@ -1836,7 +1836,7 @@ class DeliveryChallanController extends Controller {
                     }
                 }
             }
-            /*if (count((array)$customer['manager']) > 0) {
+            if (count((array)$customer['manager']) > 0) {
                 $str = "Dear Manager,\n\nDelivery challan is ready.\n\nCustomer Name: ".ucwords($customer->owner_name)."  \nDelivery Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: " .$vehicle_number. "\nDriver No: " .$driver_number. "\nTotal quantity: ".$tot_quantity."KG\nAmount: ₹".round($allorder->grand_price,0)."\n\nVIKAS ASSOCIATES."; 
                 if (App::environment('development')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
@@ -1852,7 +1852,7 @@ class DeliveryChallanController extends Controller {
                 //     $send_msg = new WelcomeController();
                 //     $send_msg->send_whatsapp($phone_number,$str);                    
                 // }
-            }*/
+            }
         }
         //         update sync table
         $tables = ['delivery_challan', 'all_order_products'];
