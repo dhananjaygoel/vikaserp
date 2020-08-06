@@ -570,8 +570,8 @@
                                             </td>
                                             @endif
                                             <td class="col-md-2">
-                                                <div class="form-group">
-                                                    <input id="remark" class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text">
+                                                <div class="form-group">{{$product->remarks}}
+                                                    <!-- <input id="remark" class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text"> -->
                                                 </div>
                                             </td>
                                         </tr>
@@ -614,8 +614,8 @@
                             </label>
                         </div>
                             <div class="form-group">
-                                <label for="inquiry_remark"><b>Remark :</b></label>
-                                <textarea class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea>
+                                <label for="inquiry_remark"><b>Remark :</b></label> {{ $delivery_data->remarks }}
+                                <!-- <textarea class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea> -->
                             </div>
                                 
                                 <hr>
