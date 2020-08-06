@@ -98,7 +98,7 @@ class DashboardController extends Controller {
                     } elseif ($all_order_products->unit_id == 2){
                         $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight;
                     } elseif ($all_order_products->unit_id == 3){
-                        $order_pending += ($all_order_products->quantity / $all_order_products->product_sub_category->standard_length) * $all_order_products->product_sub_category->weight;
+                        $order_pending += ($all_order_products->quantity / isset($all_order_products->product_sub_category->standard_length) ? $all_order_products->product_sub_category->standard_length : 1) * $all_order_products->product_sub_category->weight;
                     } elseif ($all_order_products->unit_id == 4){
                         $order_pending += $all_order_products->quantity * $all_order_products->product_sub_category->weight * $all_order_products->length;
                     } elseif ($all_order_products->unit_id == 5){
