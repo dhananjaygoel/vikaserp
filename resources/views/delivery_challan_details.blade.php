@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12"><?php //dd($url); ?>
                 <ol class="breadcrumb">
                     <li><a href="{{url($url)}}">{{$page_title}}</a></li>
                     <li class="active"><span>View {{$page_title}}</span></li>
@@ -432,10 +432,13 @@
                             <?php $tot = $total + $total_vat; ?> ₹ {{round($tot,0)}}</label>
                         </div>
                         <hr/>
+                        @if($url == 'daily_pro_forma_invoice')
+                        @else
                         <div class="form-group">
                             <label for="vehicle_number"><b class="challan">Vehicle Number: </b> {{$allorder->delivery_order->vehicle_number}}</label>
                         </div>
                         <hr/>
+                        @endif
                         <div class="form-group">
                             <label for="driver_contact"><b class="challan">Driver Contact: </b> {{$allorder->delivery_order->driver_contact_no}}</label>
                         </div>
@@ -473,12 +476,14 @@
                             <label for="deliveryorderdatetime"><b class="challan">Delivery Challan Time/Date: </b></label> {{ date("j F, Y g:i A", strtotime($allorder->updated_at)) }}
                         </div>
                         <hr>
+                        @if($url == 'daily_pro_forma_invoice')
+                        @else
                         <div class="form-group">
                             <label for="challan_remark"><b class="challan">Remark: </b></label>
                             <textarea class="form-control" id="challan_remark" name="challan_remark" rows="3" readonly="readonly">{{$allorder->remarks}}</textarea>
                         </div>
                         <!--                        <a href="{{url('delivery_challan')}}" class="btn btn-default form_button_footer">Back</a>-->
-
+                        @endif
                         @if( Auth::user()->role_id  <> 5)
                         <a href="{{URL::previous()}}" class="btn btn-default form_button_footer">Back</a>
                         @endif
