@@ -98,7 +98,7 @@
                                                 <th>Actual Quantity</th>
                                                 <th>Amount</th>
                                                 <th>Bill Number</th>
-                                                <th>Remarks </th>
+                                                <!-- <th>Remarks </th> -->
                                                 <th>Edited </th>
                                                 @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                                                     <th>Action </th>
@@ -227,13 +227,13 @@
                                                     <!-- <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td> -->
                                                     <td>{{ $total }}</td>
                                                     <td >{{$challan->bill_number}}</td>
-                                                    <td>
+                                                    <!-- <td>
                                                         @if((strlen(trim($challan->remarks))) > 50)
                                                             {{ substr(trim($challan->remarks),0,50)}} ..
                                                         @else
                                                             {{trim($challan->remarks)}}
                                                         @endif
-                                                    </td>
+                                                    </td> -->
                                                         <td>
                                                             @if($challan->is_editable > 0)
                                                                 <span class="text-success">Yes</span>
@@ -241,7 +241,7 @@
                                                                 <span class="text-info">No</span>
                                                             @endif
                                                         </td>
-                                                        <td >
+                                                        <td class="col-md-2">
                                                         <a style="margin:0" href="{{url('delivery_challan_invoice/'.$challan->id)}}" class="table-link" title="view">
                                                             <span class="fa-stack">
                                                                 <i class="fa fa-square fa-stack-2x"></i>

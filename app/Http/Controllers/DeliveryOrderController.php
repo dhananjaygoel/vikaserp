@@ -3238,8 +3238,8 @@ class DeliveryOrderController extends Controller {
         $formatted_date = $date->format('Y-m-d 00:00:00');
         // dd($formatted_date);
 
-        if($roleid == 0 || $roleid == 8 ){
-            if($roleid == 0) {
+        if($roleid == 0 || $roleid == 2 || $roleid == 8 ){
+            if($roleid == 0 || $roleid == 2) {
                 $type = "del_boy";
                 $all = \App\User::whereIn('role_id',[8,9])
                             ->orderBy('id', 'DESC')

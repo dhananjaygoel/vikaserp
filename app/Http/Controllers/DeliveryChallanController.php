@@ -517,7 +517,7 @@ class DeliveryChallanController extends Controller {
         }
         $product_type = $this->check_product_type($allorder);
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
-        $page_title=" Daily Pro Forma Invoice";
+        $page_title="Daily Pro Forma Invoice";
         $url="daily_pro_forma_invoice";
         return view('delivery_challan_details', compact('allorder', 'order_product', 'product_type', 'customers','page_title','url'));
     }
