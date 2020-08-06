@@ -22,6 +22,10 @@
                             <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
                             <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
                             @endif
+                            @if(Auth::user()->role_id == 2)
+                            <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
+                            @endif
+
                         <div class=" pull-right col-md-3">
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                             <?php
@@ -76,6 +80,9 @@
                             <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
                             <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
                             @endif
+                            @if(Auth::user()->role_id == 2)
+                            <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
+                            @endif
                             <input type="submit" disabled="" name="search_data" value="Search" class="search_button btn btn-primary pull-right export_btn">
                         </form>
                         <form class="pull-left" method="POST" action="{{URL::action('DeliveryOrderController@exportDeliveryOrderBasedOnStatus')}}">
@@ -101,9 +108,33 @@
                             <input type="hidden" name="delboy_filter" value="{{Input::get('delboy_filter')}}">
                             <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
                             @endif
+                            @if(Auth::user()->role_id == 2)
+                            <input type="hidden" name="supervisor_filter" value="{{Input::get('supervisor_filter')}}">
+                            @endif
                             <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">
                         </form>
                     </div>
+                    @if(Auth::user()->role_id == 2)
+                    <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
+                        @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
+                                <input type="hidden" name="delivery_order_status" value="Delivered">
+                                @elseif(($qstring_sort_type_order =='') || isset($qstring_sort_type_order) && $qstring_sort_type_order =='Inprocess')
+                                <input type="hidden" name="delivery_order_status" value="Inprocess">
+                                @else
+                                <input type="hidden" name="delivery_order_status" value="Inprocess">
+                                @endif
+                        <div class="row col-md-12">
+                            <div class="form-group col-md-3  pull-right">
+                                <select class="form-control" name="supervisor_filter" onchange="this.form.submit()">
+                                    <option value="" selected="">--Select Delivery Supervisor--</option>
+                                    @foreach($del_supervisor as $delivery_supervisor)
+                                        <option <?php if (Input::get('supervisor_filter') == $delivery_supervisor->id) echo 'selected="selected"'; ?> value="{{$delivery_supervisor->id}}"> {{$delivery_supervisor->first_name.' '.$delivery_supervisor->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    @endif
                     @if(Auth::user()->role_id == 0)
                     <form method="GET" action="{{URL::action('DeliveryOrderController@index')}}" id="filter_form">
                         @if(isset($qstring_sort_type_order) && $qstring_sort_type_order =='Delivered' )
@@ -296,7 +327,7 @@
                                           @endif
 
                                           @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0  || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
+                                             @if( Auth::user()->role_id == 0|| Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
                                              <?php $data_delivery_boy = $delivery->del_boy;
                                                 if(isset($data_delivery_boy) && $data_delivery_boy != null) {
                                                     $test = \App\User::where('id',$data_delivery_boy)->get();
@@ -335,7 +366,7 @@
                                                   //    $disable = "";
                                                   // }
 
-                                                if(Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
+                                                if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
                                                     $tclass ="trucksuccess";
                                                 }
                                                 else{
@@ -343,7 +374,7 @@
                                                 }
                                             ?>
                                             @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9   )
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9   )
                                              <a style="padding-right: 6px;padding-left: 6px;padding-top: 0px;padding-bottom: 0px;" href="{{url('create_load_truck/'.$delivery->id)}}" class="btn btn-primary truck_load <?php echo $tclass; ?>" id="truck_load" title="Load truck"><i class="fa fa-truck fa-stack-3x fa-inverse"></i></a>
 
                                             <!-- <a class="table-link truck_load" title="truck_load" data-order_id="{{$delivery->order_id}}" id="truck_load" data-toggle="modal" href="#myModal" >
@@ -369,9 +400,9 @@
                                                 </span>
                                             </a> -->
                                                @if($delivery->order_status == 'pending')
-                                                @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4 || Auth::user()->role_id == 2))
+                                                @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4))
 
-                                                    @if(Auth::user()->role_id == 0  || Auth::user()->role_id == 2  || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+                                                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                                                         <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -381,7 +412,7 @@
                                                         </a>
                                                     @endif
 
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8  || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8 || Auth::user()->role_id == 4)
 
 												   <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
 
@@ -522,7 +553,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="checkbox col-md-12">
-                                                    <label style="margin-right:10px;"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                                    <!-- <label style="margin-right:10px;"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label> -->
                                                     <label><input type="checkbox" id="checksms" value="yes" checked><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                 </div>
                                                 <div class="clearfix"></div>

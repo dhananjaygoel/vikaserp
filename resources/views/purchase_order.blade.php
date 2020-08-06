@@ -293,7 +293,7 @@
                                                         <label><input type="checkbox" value="true" name="sendsms"><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                                     </div> -->
                                                     <div class="checkbox">
-                                                        <label style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes"><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                                        <!-- <label style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes"><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label> -->
                                                         <label><input type="checkbox" name="send_msg" value="yes"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                     </div>
                                             </div>
@@ -358,7 +358,7 @@
                     <label><input type="checkbox" value=""><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                 </div> -->
                 <div class="checkbox">
-                    <label style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes"><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                    <!-- <label style="margin-right:10px;"><input type="checkbox" name="send_whatsapp" value="yes"><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label> -->
                     <label><input type="checkbox" name="send_msg" value="yes"><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                 </div>
             </div>

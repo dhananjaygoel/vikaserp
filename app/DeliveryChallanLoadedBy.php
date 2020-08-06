@@ -10,7 +10,8 @@ class DeliveryChallanLoadedBy extends Model {
 
     //
     public function dc_loaded_by() {
-        return $this->hasMany('App\LoadedBy', 'id', 'loaded_by_id');
+        return $this->hasMany('App\User', 'id', 'loaded_by_id');
+        // return $this->hasMany('App\LoadedBy', 'id', 'loaded_by_id');
 //        return $this->belongsTo('App\LoadedBy', 'id', 'loaded_by_id');
     }
     public function dc_delivery_challan() {

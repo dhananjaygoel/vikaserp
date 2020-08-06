@@ -207,8 +207,8 @@ class OrderController extends Controller {
                     $msg = urlencode($str);
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
-                        $send_msg->send_sms($mobile_number,$msg);
-                        $send_msg->send_whatsapp($mobile_number,$str); 
+                        // $send_msg->send_sms($mobile_number,$msg);
+                        // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
                 $cust = User::where('id',Auth::user()->id)->first();
@@ -249,7 +249,7 @@ class OrderController extends Controller {
                     $msg = urlencode($str);
                     if (SEND_SMS === true && isset($input_data['send_msg']) && $input_data['send_msg'] == "yes") {
                         $send_msg = new WelcomeController();
-                        $send_msg->send_sms($phone_number,$msg);
+                        // $send_msg->send_sms($phone_number,$msg);
                     }
                 }
 
@@ -312,8 +312,8 @@ class OrderController extends Controller {
                     $msg = urlencode($str);
                     if (SEND_SMS === true) {
                         $send_msg = new WelcomeController();
-                        $send_msg->send_sms($mobile_number,$msg);
-                        $send_msg->send_whatsapp($mobile_number,$str); 
+                        // $send_msg->send_sms($mobile_number,$msg);
+                        // $send_msg->send_whatsapp($mobile_number,$str); 
                     }
                 }
                 $cust = User::where('id',Auth::user()->id)->first();
@@ -940,7 +940,7 @@ class OrderController extends Controller {
                 }
                 
                 if (count((array)$customer['manager']) > 0) {
-                    $str = "Dear Manager,\n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
+                    $str = "Dear Manager, \n\nNew order has been created.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nOrder No: #".$order_id."\nOrder Date: ".date("j F, Y")."\nProducts: \n".$product_string."\nExpected Date: ". date("j F, Y", strtotime($datetime->format('Y-m-d'))) . "\n\nVIKAS ASSOCIATES.";
                
                     if (App::environment('local')) {
                         $phone_number = Config::get('smsdata.send_sms_to');
@@ -1418,6 +1418,7 @@ class OrderController extends Controller {
                         } else {
                             $phone_number = $customer['manager']->mobile_number;
                         }
+                        $msg = urlencode($str);
                         if(SEND_SMS === true && isset($send_sms) && $send_sms == "yes") {
                             $send_msg = new WelcomeController();
                             $send_msg->send_sms($phone_number,$msg);
@@ -2054,19 +2055,19 @@ class OrderController extends Controller {
                         if ($product_data['name'] != "") {
                             $product = ProductSubCategory::find(isset($product_data['id']) && $product_data['id'] != ""?$product_data['id']:$product_data['product_category_id']);
                             if ($product_data['units'] == 1) {
-                                $total_quantity = (float)$product_data['quantity'];
+                                $total_quantity = (float)$product_data['present_shipping'];
                             }
                             if ($product_data['units'] == 2) {
-                                $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
+                                $total_quantity = (float)$product_data['present_shipping'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['present_shipping'] / (float)$product->standard_length ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
-                                $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                                $total_quantity = ((float)$product_data['present_shipping'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
                             }
                             if ($product_data['units'] == 5) {
-                                $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                                $total_quantity = ((float)$product_data['present_shipping'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
                             }
                             $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                         }

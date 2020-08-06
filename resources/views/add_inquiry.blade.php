@@ -341,7 +341,7 @@
                             </div>
                             
                             <div class="checkbox customer_select_order" style="{{(Input::old('customer_status') == "new_customer")?'display:none':'display:block'}}">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label>
+                                <!-- <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label> -->
                                 <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                             </div>
 <!--                            <button type="button" class="btn btn-primary btn_add_inquiry_sms" id="add_inquiry_sendSMS">Save and Send SMS</button>

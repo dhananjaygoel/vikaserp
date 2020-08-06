@@ -217,42 +217,13 @@ class PurchaseChallanController extends Controller {
             ]);
         }
 
-        if (isset($input_data['unloaded_by'])) {
-            $loaders = $input_data['unloaded_by'];
-            $loaders_info = [];
-            foreach ($loaders as $loader) {
-                $loaders_info[] = [
-                    'delivery_challan_id' => $challan_id,
-                    'loaded_by_id' => $loader,
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
-                    'type' => 'purchase',
-                ];
-            }
-            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
-        }
-
-        if (isset($input_data['labour'])) {
-            $labours = $input_data['labour'];
-            $labours_info = [];
-            foreach ($labours as $labour) {
-                $labours_info[] = [
-                    'delivery_challan_id' => $challan_id,
-                    'labours_id' => $labour,
-                    'created_at' => $created_at,
-                    'updated_at' => $updated_at,
-                    'type' => 'purchase',
-                ];
-            }
-            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
-        }
-
         $input_data = Input::all();
 //        $order_products = array();
         $order_products = [];
-
+        $total_qty = 0;
         foreach ($input_data['product'] as $product_data) {
             if (isset($product_data['id']) && $product_data['id'] != "") {
+                $total_qty = $total_qty + $product_data['quantity'];
 //                $order_products = [
                 $order_products[] = [
                     'purchase_order_id' => $challan_id,
@@ -270,6 +241,7 @@ class PurchaseChallanController extends Controller {
                 ];
 //                $add_order_products = PurchaseProducts::create($order_products);
             } else {
+                $total_qty = $total_qty + $product_data['quantity'];
 //                $order_products = [
                 $order_products[] = [
                     'purchase_order_id' => $challan_id,
@@ -289,6 +261,38 @@ class PurchaseChallanController extends Controller {
             }
         }
         $add_order_products = PurchaseProducts::insert($order_products);
+
+        if (isset($input_data['unloaded_by'])) {
+            $loaders = $input_data['unloaded_by'];
+            $loaders_info = [];
+            foreach ($loaders as $loader) {
+                $loaders_info[] = [
+                    'delivery_challan_id' => $challan_id,
+                    'loaded_by_id' => $loader,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'purchase',
+                    'total_qty' => $total_qty/count((array)$loaders),
+                ];
+            }
+            $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+        }
+
+        if (isset($input_data['labour'])) {
+            $labours = $input_data['labour'];
+            $labours_info = [];
+            foreach ($labours as $labour) {
+                $labours_info[] = [
+                    'delivery_challan_id' => $challan_id,
+                    'labours_id' => $labour,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'type' => 'purchase',
+                    'total_qty' => $total_qty/count((array)$labours),
+                ];
+            }
+            $add_loaders_info = App\DeliveryChallanLabours::insert($labours_info);
+        }
 
         $purchase_challan = PurchaseChallan::with('purchase_advice', 'delivery_location', 'supplier', 'all_purchase_products.purchase_product_details', 'all_purchase_products.unit')->find($challan_id);
 
@@ -584,26 +588,27 @@ class PurchaseChallanController extends Controller {
             $customer = Customer::with('manager')->find($customer_id);
             $send_msg = new WelcomeController();
             foreach ($input_data as $product_data) {
-                $product = ProductSubCategory::find($product_data->product_category_id);
-                if ($product_data['unit']->id == 1) {
-                    $total_quantity = (float)$product_data->quantity;
-                }
-                if ($product_data['unit']->id == 2) {
-                    $total_quantity = (float)$product_data->quantity * (float)$product->weight;
-                }
-                if ($product_data['unit']->id == 3) {
-                    $total_quantity = (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
-                }
-                if ($product_data['unit']->id == 4) {
-                    $total_quantity = (float)($product_data->quantity * $product->weight * $product_data->length);
-                }
-                if ($product_data['unit']->id == 5) {
-                    $total_quantity = (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
-                }
-                $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
+                $total_quantity = $total_quantity + (float)$product_data->quantity;
+                // $product = ProductSubCategory::find($product_data->product_category_id);
+                // if ($product_data['unit']->id == 1) {
+                //     $total_quantity = (float)$product_data->quantity;
+                // }
+                // if ($product_data['unit']->id == 2) {
+                //     $total_quantity = (float)$product_data->quantity * (float)$product->weight;
+                // }
+                // if ($product_data['unit']->id == 3) {
+                //     $total_quantity = (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
+                // }
+                // if ($product_data['unit']->id == 4) {
+                //     $total_quantity = (float)($product_data->quantity * $product->weight * $product_data->length);
+                // }
+                // if ($product_data['unit']->id == 5) {
+                //     $total_quantity = (float)($product_data->quantity * $product->weight * (float)($product_data->length/305));
+                // }
+                $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$product_data->quantity,2) . "KG, ₹". $product_data['price'] . " ";
             }
             if (count((array)$customer) > 0) {
-                $str = "Dear Customer,\n\nYour purchase challan has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A') . "\nTotal Quantity: ".round($input_data->sum('quantity'), 2)."\nAmount: ".(isset($purchase_challan->grand_total)?round($purchase_challan->grand_total,0):'N/A')."\nDue By: ".date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))."\n\nVIKAS ASSOCIATES.";   
+                $str = "Dear Customer,\n\nYour purchase challan has been printed.\n\nCustomer Name: ".ucwords($customer->owner_name)."\nPurchase Challan No: #".$id."\nOrder Date: ".date("j F, Y")."\nProducts:\n".$product_string."\nVehicle No: ". (isset($purchase_challan['purchase_advice']->vehicle_number)?$purchase_challan['purchase_advice']->vehicle_number:'N/A') . "\nTotal Quantity: ".round($total_quantity, 2)."\nAmount: ".(isset($purchase_challan->grand_total)?round($purchase_challan->grand_total,0):'N/A')."\nDue By: ".date("j M, Y", strtotime($purchase_challan['purchase_advice']->expected_delivery_date))."\n\nVIKAS ASSOCIATES.";   
                 if (App::environment('local')) {
                     $phone_number = Config::get('smsdata.send_sms_to');
                 } else {

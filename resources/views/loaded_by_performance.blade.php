@@ -98,7 +98,7 @@
                                                 if ($value['date'] == "$date_val" . $i) {
                                                     if ($value['loader_id'] == $loader_val->id) {
                                                         $k++;
-                                                        $tangage +=$value['tonnage'];
+                                                        $tangage = $value['tonnage'];
                                                     }
                                                 }
                                             }
@@ -112,22 +112,25 @@
                                             $dc_id_list = array();
 //                                            $k = 0;
                                             $tangage = 0;
+                                            $count = 0;
                                             foreach ($final_array as $key => $value) {
                                                 if ($i <= 9) {
                                                     $i = sprintf("%02d", $i);
                                                 }
                                                 if ($value['date'] == "$date_val" . $i) {
                                                     if ($value['loader_id'] == $loader_val->id) {
-                                                        array_push($dc_id_list, $value['delivery_id']);
+                                                        // array_push($dc_id_list, $value['delivery_id']);
 //                                                        $k++;
                                                         $tangage +=$value['tonnage'];
+                                                        $count = $value['_count'];
                                                     }
                                                 }
                                             }
                                             ?>
-                                            <td> <?php
+                                            <!-- <td> <?php
                                                 $dc_id_list = array_unique($dc_id_list);
-                                                ?>{{count((array)$dc_id_list)}}</td>
+                                                ?>{{count((array)$dc_id_list)}}</td> -->
+                                                <td>{{$count}}</td>
                                             @endfor
                                         </tr>
                                         </tr>

@@ -483,7 +483,8 @@
                                                 </td>
                                                     <td class="col-md-1">
                                                         <div class="form-group">
-                                                              <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});" disabled>                                                            
+                                                            <input type="hidden" name="product[{{$key}}][present_shipping]" value="{{$product->present_shipping}}">
+                                                            <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});" disabled>                                                            
                                                         </div>                                                        
                                                     </td>
                                                     
@@ -583,7 +584,7 @@
                                 <!--<button title="SMS would be sent to Party" type="button" class="btn btn-primary smstooltip" >Save and Send SMS</button>-->
                             </div>
                             <div class="checkbox customer_select_order">
-                                <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label>
+                                <!-- <label class="marginsms" style="margin-right:10px;"><input type="checkbox" id="send_whatsapp" name="send_whatsapp" value="yes"><span class="checksms">Send Whatsapp</span></label> -->
                                 <label class="marginsms"><input type="checkbox" id="send_msg" name="send_msg" value="yes"><span class="checksms">Send SMS</span></label>
                             </div>
                             <hr>

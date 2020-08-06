@@ -393,14 +393,14 @@
                                                     <i class="fa fa-search fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if( Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 5 || Auth::user()->role_id == 4)
+                                            @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2  || Auth::user()->role_id == 5 || Auth::user()->role_id == 4)
                                             <a href="{{url('orders/'.$order->id.'/edit')}}" class="table-link" title="Edit">
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            @if(Auth::user()->role_id <> 5)
+                                            @if(Auth::user()->role_id <> 5 && Auth::user()->role_id <> 2)
                                             <?php
                                              $is_allinclusive = 0;
                                              foreach ($order->all_order_products as $dord){
@@ -657,7 +657,7 @@
                                                 <label><input type="checkbox" id="is_sendsms" value="true" name="sendsms" checked><span title="SMS would be sent to Party" class="checksms smstooltip">SMS</span></label>
                                             </div> -->
                                             <div class="checkbox">
-                                                <label class="marginsms"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                                <!-- <label class="marginsms"><input type="checkbox" id="checkwhatsapp" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label> -->
                                                 <label><input type="checkbox" name="send_sms" id="checksms" value="yes" checked><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                             </div>
                                         </div>
@@ -690,7 +690,7 @@
                                                         <div class="pwdr"><input class="form-control" placeholder="" name="password" type="password" id="pwdr"></div>
                                                     </div>
                                                     <div class="checkbox col-md-12">
-                                                        <label class="marginsms"><input type="checkbox" id="checkwhatsapp_delete" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label>
+                                                        <!-- <label class="marginsms"><input type="checkbox" id="checkwhatsapp_delete" name="send_whatsapp" value="yes" checked><span title="Whatsapp message would be sent to Party" class="checksms smstooltip">Send Whatsapp</span></label> -->
                                                         <label><input type="checkbox" name="send_sms" id="checksms_delete" value="yes" checked><span title="SMS would be sent to Party" class="checksms smstooltip">Send SMS</span></label>
                                                     </div>
                                                     <div class="clearfix"></div>

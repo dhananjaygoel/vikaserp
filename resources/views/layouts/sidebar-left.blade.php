@@ -75,9 +75,9 @@
                             <i class="fa fa-chevron-circle-right drop-icon"></i>
                         </a>
                         <ul class="submenu">
-                            <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
+                            <!-- <li class="{{ (Request::is('*performance/loaded-by/*') ? 'active' : '') }}">
                                 <a href="{{url('performance/loaded-by')}}" > Loaded-by </a>
-                            </li>
+                            </li> -->
                             <li class="{{ (Request::is('*performance/loaded-by/loaded-by-performance*') ? 'active' : '') }}">
                                 <a href="{{url('performance/loaded-by/loaded-by-performance')}}" > Performance </a>
                             </li>
@@ -201,7 +201,7 @@
                             
                             @if(Auth::user()->role_id == 9 ||  Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 0 ||Auth::user()->role_id == 1  || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 )
                                 @if(Auth::user()->role_id != 8 && Auth::user()->role_id != 9)
-                                @if(Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4)
+                                @if(Auth::user()->role_id != 3 && Auth::user()->role_id != 4)
                                 <li class="{{ (Request::is('*orders*') ? 'active' : '') }}">
                                     <a href="{{url('orders')}}" >
                                         Order

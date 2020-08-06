@@ -270,8 +270,76 @@ class LabourController extends Controller {
             return Redirect::to('performance/labours')->with('error', 'Invalid password');
         }
     }
-
     public function labourPerformance(Request $request) {
+        if (Auth::user()->hasOldPassword()) {
+            return redirect('change_password');
+        }
+        if (Auth::user()->role_id != 0) {
+            return redirect()->back();
+        }
+        $var = 0;
+        $var_month = 0;
+        $loader_arr = array();
+        $loaders_data = array();
+        $loaders_data_month = array();
+        $labours = Labour::get();
+        $date = date('Y-m-01', time());
+        $enddate = date("Y-m-d");
+        $month = date('m');
+
+        $labour_all = \App\DeliveryChallanLabours::join('labours','delivery_challan_labours.labours_id','=','labours.id')
+            ->select('delivery_challan_labours.labours_id','delivery_challan_labours.delivery_challan_id','delivery_challan_labours.created_at','labours.first_name','labours.last_name',
+            DB::raw('DAY(delivery_challan_labours.created_at) as _day,MONTH(delivery_challan_labours.created_at) as _month,
+            Year(delivery_challan_labours.created_at) as _year'),DB::raw('count(*) as _count'),DB::raw('sum(total_qty)/1000 as total_qty'))
+            ->where(DB::raw('MONTH(delivery_challan_labours.created_at)'),$month)
+            ->groupBy(DB::raw('DAY(delivery_challan_labours.created_at)'),'delivery_challan_labours.labours_id')
+            ->get();
+
+        $labour_all_month = \App\DeliveryChallanLabours::join('labours','delivery_challan_labours.labours_id','=','labours.id')
+        ->select('delivery_challan_labours.labours_id',DB::raw('MONTH(delivery_challan_labours.created_at) as _month,
+        Year(delivery_challan_labours.created_at) as _year'),DB::raw('count(*) as _count'),DB::raw('sum(total_qty)/1000 as total_qty'))
+        ->groupBy(DB::raw('MONTH(delivery_challan_labours.created_at)'),'delivery_challan_labours.labours_id')
+        ->get();
+
+        foreach($labour_all as $labour_value){
+            if ($labour_value['total_qty'] != 0) {
+                $id = $labour_value['delivery_challan_id'];
+                $loader_arr['delivery_id'] = $id;
+                $loader_arr['date'] = date('Y-m-d', strtotime($labour_value['created_at']));
+                $loader_arr['tonnage'] = $labour_value['total_qty'];
+                $loader_arr['labour_id'] = $labour_value['labours_id'];
+                $loader_arr['_count'] = $labour_value['_count'];
+            }
+            $loaders_data[$var] = $loader_arr;
+            $var++;
+        }
+        $loaders_data = array_filter(array_map('array_filter', $loaders_data));
+        $loaders_data = array_values($loaders_data);
+
+        foreach($labour_all_month as $labour_value_month){
+            if ($labour_value_month['total_qty'] != 0) {
+                $loader_arr_month['tonnage'] = $labour_value_month['total_qty'];
+                $loader_arr_month['labour_id'] = $labour_value_month['labours_id'];
+                $loader_arr_month['month'] = $labour_value_month['_month'];
+                $loader_arr_month['year'] = $labour_value_month['_year'];
+                $loader_arr_month['_count'] = $labour_value_month['_count'];
+            }
+            $loaders_data_month[$var_month] = $loader_arr_month;
+            $var_month++;
+        }
+        $loaders_data_month = array_filter(array_map('array_filter', $loaders_data_month));
+        $loaders_data_month = array_values($loaders_data_month);
+
+        return view('labour_performance')
+                ->with('labours', $labours)
+                ->with('data', $loaders_data)
+                ->with('data_month', $loaders_data_month)
+                ->with('enddate', $enddate)
+                ->with('performance_index', true);
+
+    }
+    
+    public function labourPerformance_old(Request $request) {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }

@@ -131,8 +131,13 @@
                                     <button disabled type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
                                 @endif
                             @else
-                                <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="check_change();">
-                                <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                                @if(Auth::user()->role_id == 2)
+                                    <input readonly type="text" name="empty_truck_weight" value="{{isset($delivery_data->empty_truck_weight)?$delivery_data->empty_truck_weight:'0'}}" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" onkeyup="check_change();" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" >
+                                    <button disabled type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                                @else
+                                    <input type="text" name="empty_truck_weight" value="0" id="empty_truck_weight" class="form-control col-md-2" name="empty_truck_weight" style="width: 150px;" maxlength="10" onkeypress=" return numbersOnly(this, event, true, false);" onkeyup="check_change();">
+                                    <button type="button" value="empty_truck_save" id="btn_empty_truck" class="btn btn-sm btn-primary" style="position: relative;margin-left: 2em;">Save</button>
+                                @endif
                             @endif  
                         </div>
                         <hr>
@@ -280,7 +285,7 @@
                         </div>
                         @endif
  
-                    @elseif(Auth::user()->role_id ==9)
+                    @elseif(Auth::user()->role_id ==9 || Auth::user()->role_id == 2)
                     
                         @if(isset($truckinfo) && (!empty($truckinfo)))
                             @foreach($truckinfo as $truck_value)
@@ -336,6 +341,26 @@
                             @endforeach
                             <?php $i--;?>
                         @else
+                            @if( Auth::user()->role_id == 2 )
+                            <div class ="row form-group truck_weight_save">
+                                <ul id="truck" style="list-style-type: none;padding: 0;">
+                                    <li>
+                                        <span class="col-md-2"style="padding-top:8px;"> Truck Weight {{$i}} (KG):</span>
+                                        <span id="truck_value_add_{{$i}}"><input disabled type="text" value="0" id="truck_weight_{{Auth::id()}}_{{$i}}" class="form-control " name="truck_weight[]" style="width: 70px; display:inline;margin-right:1em;" maxlength="10" onkeyup="check_change();enable_save({{$i}},{{Auth::user()->id}});" onkeypress=" return numbersOnly(this, event, true, false);" onchange="enable_save({{$i}},{{Auth::user()->id}});">
+                                        <input type="hidden" name="truck_weight_id[]" id="truck_weight_{{$i}}" value="">
+                                        <input type="hidden" id="truck_weight_{{$i}}_readonly" value=""></span>
+                                        <select disabled id="labour_select_{{$i}}" name="labour[{{$i}}][]" class="form-control labour_select" multiple="multiple">
+                                            @if(isset($labours))
+                                                @foreach ($labours as $labour)
+                                                    <option value="{{$labour->id}}" >{{$labour->first_name}} {{$labour->last_name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <button disabled type="button" value="truck_weight_save" id="btn_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-left:1em;">Save</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            @else
                             <div class ="row form-group truck_weight_save">
                                 <ul id="truck" style="list-style-type: none;padding: 0;">
                                     <li>
@@ -354,11 +379,17 @@
                                     </li>
                                 </ul>
                             </div>
+                            @endif
                         @endif
+                    
                     @endif
                        
                     </div>
-                    <button type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
+                    @if( Auth::user()->role_id == 2 )
+                        <button disabled type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
+                    @else
+                        <button type="button" value="add_truck_weight" id="add_truck_weight_{{Auth::id()}}_{{$i}}" class="btn btn-sm btn-primary" style="position: relative;margin-right:1em;">Add Truck Weight</button>
+                    @endif
                     
                         <hr>
                         <div class="form-group underline">Product Details</div>
@@ -380,18 +411,20 @@
                                     <tbody>
                                         <tr class="headingunderline">
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
+                                            <td><span>Present Shipping</span></td>
+                                            <!-- <td><span>Unit</span><span class="mandatory">*</span></td> -->
                                             <td><span>Actual Pieces</span></td>
                                             <td><span>Average Weight</span></td>
                                             <td><span></span></td>
                                             <td><span>Average Quantity</span></td>
-                                            <td><span>Actual Quantity</span></td>    
-                                            <td><span>Present Shipping</span></td>
+                                            <td><span>Actual Quantity</span></td>
                                             <td><span>Rate</span></td>
-                                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)<td><span>GST</span></td> @endif  
-                                            <td><span>Unit</span><span class="mandatory">*</span></td>
+                                            @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
+                                            <td><span>GST</span></td>
+                                            @endif  
                                             <td><span>Length</span></td>
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)<td><span>Amount</span></td>@endif 
-                                            
+                                            <td><span>Remark</span></td>
                                         </tr>
                                        <?php $key = 1; $actualsum =0; $actualtotal =0;
                                             
@@ -403,7 +436,7 @@
                                             @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
                                             @if(!$truckdetails->isEmpty())<?php 
-
+// dd($product);
                                                 $truck_weight_id = '';
                                                 foreach($truckdetails as $truck_details){
                                                     $truck_product_id = $truck_details->product_id;
@@ -434,8 +467,8 @@
                                         //     }
                                         // }
 
-                                        if(Auth::user()->role_id ==9){
-                                             if($product->actual_pieces >0){
+                                        if(Auth::user()->role_id ==9 || Auth::user()->role_id ==2){
+                                             if($product->actual_pieces >0 || Auth::user()->role_id ==2){
                                                  $class = 'readonly="readonly"';
                                                  $class1 = 'disabled';
                                              }
@@ -443,10 +476,13 @@
                                                  $class = '';
                                                  $class1 = '';
                                              }
-                                          }else {
-                                                $class = '';
-                                                $class1 = '';
-                                            }
+                                        }else {
+                                            $class = '';
+                                            $class1 = '';
+                                        }
+                                        if(Auth::user()->role_id == 2){
+                                            $sales_class = 'readonly="readonly"';
+                                        }
                                            
                                            $actual_quantity = $product->actual_pieces * $product->actual_quantity;
                                           
@@ -463,12 +499,36 @@
                                                     
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
+                                                <div class="form-group">
+                                                    {{ $product->present_shipping}}
+                                                    @foreach($units as $unit)
+                                                    @if($unit->id == $product->unit_id)
+                                                    <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
+                                                    {{$unit->unit_name}}
+                                                    <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
+                                                    @endif
+                                                    @endforeach
+                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
+                                                </div>
+                                            </td>
+                                            <!-- <td class="">
+                                                <div class="form-group ">
+                                                    @foreach($units as $unit)
+                                                    @if($unit->id == $product->unit_id)
+                                                    <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
+                                                    {{$unit->unit_name}}
+                                                    <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </td> -->
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="actual_pieces_{{$key}}" <?php print isset($class) ? $class :''; ?> class="form-control " placeholder="Actual Pieces" name="product[{{$key}}][actual_pieces]" value="{{(isset($product->actual_pieces) && $product->actual_pieces >= 0) ? $product->actual_pieces : '' }}" type="tel" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" maxlength="10" onblur="fetch_average_quantity_load_truck();" onclick="clear_actual_qty();" >
                                                 </div>
                                             </td>
-                                            <td class="col-md-2">
+                                            <td class="col-md-1">
                                                 <div class="form-group">
                                                     <input id="average_weight_{{$key}}" <?php print isset($class) ? $class :''; ?>  class="form-control" placeholder="Average Weight" name="product[{{$key}}][average_weight]" value="{{(isset($product->actual_quantity) && $product->actual_quantity >= 0) ? $product->actual_quantity : '' }}" type="tel" onkeyup="check_change();" onkeypress=" return numbersOnly(this, event, true, false);" onblur="fetch_average_quantity_load_truck();" maxlength="10" onclick="clear_actual_qty();">
                                                 </div>
@@ -487,12 +547,7 @@
                                                 <div class="form-group"><div id="actual_quantity_readonly_{{$key}}" name="product[{{$key}}][actual_quantity]">{{$actual_quantity}} KG</div></div>
                                                 <input id="actual_quantity_{{$key}}"  name="product[{{$key}}][actual_quantity]" value="{{$actual_quantity}}" type="hidden" >
                                               
-                                            <td class="col-md-1">
-                                                <div class="form-group">
-                                                    {{ $product->present_shipping}}
-                                                    <input id="present_shipping_{{$key}}" class="form-control text-center" placeholder="Present Shipping" name="product[{{$key}}][present_shipping]" value="{{ $product->present_shipping}}" type="hidden" >
-                                                </div>
-                                            </td>
+                                            
                                             <td class="col-md-1">
                                                 <div class="form-group">₹ {{$product->price}}<input type="hidden" class="form-control" id="product_price_{{$key}}" value="{{$product->price}}" name="product[{{$key}}][price]" placeholder="Price" onblur="fetch_price();"></div>
                                             </td>
@@ -504,26 +559,21 @@
                                                 </div>
                                             </td>
                                              @endif
-                                            <td class="">
-                                                <div class="form-group ">
-                                                    @foreach($units as $unit)
-                                                    @if($unit->id == $product->unit_id)
-                                                    <input class="form-control" name="product[{{$key}}][units]" id="units_{{$key}}" value="{{$unit->id}}" type="hidden">
-                                                    {{$unit->unit_name}}
-                                                    <input type="hidden" id="unit_name_{{$key}}" value="{{$unit->unit_name}}">
-                                                    @endif
-                                                    @endforeach
-                                                </div>
-                                            </td>
+                                            
                                             <td class="col-md-1">
                                                 <div class="form-group">{{$product->length}}
                                                 <input type="hidden" class="form-control" id="product_length_{{$key}}" value="{{$product->length}}" name="product[{{$key}}][length]"></div>
                                             </td>
                                             @if(Auth::user()->role_id ==0 || Auth::user()->role_id ==8)
-                                            <td class="col-md-3">
+                                            <td class="col-md-1">
                                                 <div class="form-group"><div id="amount_{{$key}}">₹ {{$total_amt}}</div></div>
                                             </td>
                                             @endif
+                                            <td class="col-md-2">
+                                                <div class="form-group">{{$product->remarks}}
+                                                    <!-- <input id="remark" class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> placeholder="Remark" name="product[{{$key}}][remark]" value="{{$product->remarks}}" type="text"> -->
+                                                </div>
+                                            </td>
                                         </tr>
                                         <?php $key++; ?>
                                         @endif
@@ -563,14 +613,21 @@
                                 </span>
                             </label>
                         </div>
+                            <div class="form-group">
+                                <label for="inquiry_remark"><b>Remark :</b></label> {{ $delivery_data->remarks }}
+                                <!-- <textarea class="form-control" <?php print isset($sales_class) ? $sales_class :''; ?> id="order_remark" name="order_remark"  rows="3">{{ $delivery_data->remarks }}</textarea> -->
+                            </div>
                                 
                                 <hr>
                                 <div>
+                                
                                     
                                     
-                                   
+                                @if(Auth::user()->role_id == 2)
+                                    <button disabled type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck" >Submit</button>
+                                @else
                                     <button type="submit" name="action" class="btn btn-primary form_button_footer btn_delorderto_delload_truck" >Submit</button>
-                                  
+                                @endif  
                                     <a href="{{URL::action('DeliveryOrderController@index')}}" class="btn btn-default form_button_footer">Back</a>
                                 </div>
                                 <div class="clearfix"></div>

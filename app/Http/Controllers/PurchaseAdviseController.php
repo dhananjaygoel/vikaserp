@@ -416,7 +416,7 @@ class PurchaseAdviseController extends Controller {
         $purchase_advise = PurchaseAdvise::with('supplier', 'purchase_products.purchase_product_details', 'purchase_products.unit', 'location')->find($id);
         $input_data = $purchase_advise['purchase_products'];
 
-        $send_msg = Input::get('send_msg');
+        $send_sms = Input::get('send_msg');
         $send_whatsapp = Input::get('send_whatsapp');
         $customer_id = $purchase_advise->supplier_id;
         $customer = Customer::with('manager')->find($customer_id);
@@ -429,19 +429,19 @@ class PurchaseAdviseController extends Controller {
             foreach ($purchase_advise['purchase_products'] as $product_data) {
                 if ($product_data['purchase_product_details']->alias_name != "") {
                     if ($product_data['unit_id'] == 1) {
-                        $total_quantity = (float)$product_data['quantity'];
+                        $total_quantity = (float)$product_data['present_shipping'];
                     }
                     if ($product_data['unit_id'] == 2) {
-                        $total_quantity = (float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = (float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
                     }
                     if ($product_data['unit_id'] == 5) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
                     $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }
@@ -729,7 +729,8 @@ class PurchaseAdviseController extends Controller {
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $units = Units::all();
         $labours = Labour::where('type', '<>', 'sale')->get();
-        $loaders = LoadedBy::where('type', '<>', 'sale')->get();
+        // $loaders = LoadedBy::where('type', '<>', 'sale')->get();
+        $loaders = User::where('role_id', 8)->orWhere('role_id', 9)->orWhere('role_id', 0)->get();
         return view('purchaseorder_advise_challan', compact('purchase_advise', 'locations', 'units', 'labours', 'loaders'));
     }
 
@@ -782,19 +783,19 @@ class PurchaseAdviseController extends Controller {
             foreach ($purchase_advise['purchase_products'] as $product_data) {
                 if ($product_data['purchase_product_details']->alias_name != "") {
                     if ($product_data['unit_id'] == 1) {
-                        $total_quantity = (float)$product_data['quantity'];
+                        $total_quantity = (float)$product_data['present_shipping']; 
                     }
                     if ($product_data['unit_id'] == 2) {
-                        $total_quantity = (float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = (float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product_data['purchase_product_details']->standard_length ) * (float)$product_data['purchase_product_details']->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * (float)$product_data['length']);
                     }
                     if ($product_data['unit_id'] == 5) {
-                        $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
+                        $total_quantity = ((float)$product_data['present_shipping'] * (float)$product_data['purchase_product_details']->weight * ((float)$product_data['length'] / 305));
                     }
                     $product_string .= $i++ . ") " . $product_data['purchase_product_details']->alias_name . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                 }

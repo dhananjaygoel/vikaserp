@@ -90,22 +90,18 @@
                                                 }
                                                 $k = 0;
                                                 $tangage = 0;
-                                                // if(!empty($data)){
                                                     foreach ($data as $key => $value) {
                                                         if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
                                                             if ($value['labour_id'] == $labour->id) {
                                                                 $k++;
-                                                                $tangage += $value['tonnage'];
-                                                                // if($labour->id == 13){
+                                                                $tangage = $value['tonnage'];
+                                                                // if($value['labour_id'] == 11){
                                                                 //     echo '<pre>';
                                                                 //     print_r($value);
-                                                                //     print_r($i.' - '.$k.' - '.$value['tonnage'].' - '.$tangage);
                                                                 // }
                                                             }
                                                         }
-    //                                                       
                                                     }
-                                                // }
                                                 ?>
                                                 <td>{{round($tangage,2)}}</td>
 
@@ -124,20 +120,23 @@
                                                 } else {
                                                     $temp_date = $i;
                                                 }
+                                                $count = 0;
                                                 foreach ($data as $key => $value) {
                                                     if ($value['date'] == $today_year . '-' . $today_month . '-' . $temp_date) {
                                                         if ($value['labour_id'] == $labour->id) {
-                                                            array_push($dc_id_list, $value['delivery_id']);
+                                                            // array_push($dc_id_list, $value['delivery_id']);
 //                                                            $k++;
-                                                            $tangage +=$value['tonnage'];
+                                                            $tangage =$value['tonnage'];
+                                                            $count = $value['_count'];
                                                         }
                                                     }
 //                                                       
                                                 }
                                                 ?>
-                                                <td><?php
+                                                <!-- <td><?php
                                                 $dc_id_list = array_unique($dc_id_list);
-                                                ?>{{count((array)$dc_id_list)}}</td>
+                                                ?>{{count((array)$dc_id_list)}}</td> -->
+                                                <td>{{$count}}</td>
                                                 @endfor
                                             </tr>
                                         <?php } ?>
@@ -178,13 +177,13 @@
                                                 }
                                                 $start_limit = $year . '-' . $temp_month . '-01';
                                                 $end_limit = $year . '-' . $temp_month . '-31';
-                                               
-                                                foreach ($data as $key => $value) {
-                                                    if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
+                                                $count = 0;
+                                                foreach ($data_month as $key => $value) {
+                                                    if ($value['month'] == $temp_month && $value['year'] == $year) {
                                                         if ($value['labour_id'] == $labour->id) {
 
                                                             $k++;
-                                                            $tangage +=$value['tonnage'];
+                                                            $tangage =$value['tonnage'];
                                                         }
                                                     }
 //                                                       
@@ -207,20 +206,21 @@
                                                 }
                                                 $start_limit = $year . '-' . $temp_month . '-01';
                                                 $end_limit = $year . '-' . $temp_month . '-31';
-
-                                                foreach ($data as $key => $value) {
-                                                    if ($value['date'] >= $start_limit && $value['date'] <= $end_limit) {
+                                                $count = 0;
+                                                foreach ($data_month as $key => $value) {
+                                                    if ($value['month'] == $temp_month && $value['year'] == $year) {
                                                         if ($value['labour_id'] == $labour->id) {
-                                                            array_push($dc_id_list, $value['delivery_id']);
+                                                            // array_push($dc_id_list, $value['delivery_id']);
 //                                                            $k++;
-                                                            $tangage +=$value['tonnage'];
+                                                            $tangage =$value['tonnage'];
+                                                            $count = $value['_count'];
                                                         }
                                                     }
                                                 }
                                                 ?>
                                                 <td><?php
-                                                $dc_id_list = array_unique($dc_id_list);
-                                                ?>{{count((array)$dc_id_list)}}</td>
+                                                // $dc_id_list = array_unique($dc_id_list);
+                                                ?>{{$count}}</td>
                                                 @endfor
                                             </tr>
                                         <?php } ?>
