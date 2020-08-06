@@ -1182,31 +1182,31 @@ var qtyPieces = '<option value = "1">1</option>'+
         '<input id="length_' + current_row_count + '" class="form-control each_length_qnty"  onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][length]" value="" type="tel" disabled>' +
         '</div>' +
         '</td>' +
-        '<td class="col-md-1">' +
-        '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
-        '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
-        '</div>' +
-        '<div class = "form-group kg_list_' + current_row_count + '" >'+
-        ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
-        opt +
-        ' </select>'+
-        '</div>'+
-        '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
-        '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+           
-        qtyPieces + 
-        '</select>'+
-        '</div>'+
-        '<div class = "form-group ff_list_' + current_row_count + '" style="display:none">'+
-        '<select class = "form-control ff_list " name = "ff_list" id = "ff_list_' + current_row_count + '" onchange="setQty(this);">'+
-        qtyPieces +
-        '</select>'+
-        '</div>'+
-        '<div class = "form-group mm_list_' + current_row_count + '" style="display:none">'+
-        '<select class = "form-control mm_list " name = "mm_list" id = "mm_list_' + current_row_count + '" onchange="setQty(this);">'+
-        qtyPieces +
-        '</select>'+
-        '</div>'+     
-        '</td>' +
+        // '<td class="col-md-1">' +
+        // '<div class="form-group meter_list_' + current_row_count + '" style="display:none"> ' +
+        // '<input id="quantity_' + current_row_count + '" class="form-control dileep" placeholder="Qnty" onkeypress=" return numbersOnly(this,event,true,true);" name="product[' + current_row_count + '][quantity]" value="" type="text" onblur="create_delivery_order_PS(' + current_row_count + ');">' +
+        // '</div>' +
+        // '<div class = "form-group kg_list_' + current_row_count + '" >'+
+        // ' <select class = "form-control kg_list" name = "kg_list" id = "kg_list_' + current_row_count + '" onchange="setQty(this);">'+
+        // opt +
+        // ' </select>'+
+        // '</div>'+
+        // '<div class = "form-group pieces_list_' + current_row_count + '" style="display:none">'+
+        // '<select class = "form-control pieces_list " name = "pieces_list" id = "pieces_list_' + current_row_count + '" onchange="setQty(this);">'+           
+        // qtyPieces + 
+        // '</select>'+
+        // '</div>'+
+        // '<div class = "form-group ff_list_' + current_row_count + '" style="display:none">'+
+        // '<select class = "form-control ff_list " name = "ff_list" id = "ff_list_' + current_row_count + '" onchange="setQty(this);">'+
+        // qtyPieces +
+        // '</select>'+
+        // '</div>'+
+        // '<div class = "form-group mm_list_' + current_row_count + '" style="display:none">'+
+        // '<select class = "form-control mm_list " name = "mm_list" id = "mm_list_' + current_row_count + '" onchange="setQty(this);">'+
+        // qtyPieces +
+        // '</select>'+
+        // '</div>'+     
+        // '</td>' +
         '<td class="col-md-1">' +
         '<div class="form-group">' +
         '<input id="present_shipping_' + current_row_count + '" class="form-control" placeholder="Present Shipping" name="product[' + current_row_count + '][present_shipping]" value="" type="text" onblur="change_quantity(' + current_row_count + ');">' +
