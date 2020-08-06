@@ -264,7 +264,7 @@ class InventoryController extends Controller {
                                     $order_qty = $order_qty + ($orders_product_details->quantity * $orders_product_details->product_sub_category->weight);
                                 }
                                 if ($orders_product_details->unit_id == 3) {
-                                    $order_qty = $order_qty + (($orders_product_details->quantity / $orders_product_details->product_sub_category->standard_length ) * $orders_product_details->product_sub_category->weight);
+                                    $order_qty = $order_qty + (($orders_product_details->quantity / isset($orders_product_details->product_sub_category->standard_length)?$orders_product_details->product_sub_category->standard_length:1 ) * $orders_product_details->product_sub_category->weight);
                                 }
                                 if ($orders_product_details->unit_id == 4) {
                                     $order_qty = $order_qty + ($orders_product_details->quantity * $orders_product_details->product_sub_category->weight * $orders_product_details->length );
