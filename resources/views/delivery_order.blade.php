@@ -307,7 +307,7 @@
                                           @endif
 
                                           @if(Input::get('order_status') == 'Inprocess' || Input::get('order_status') == '' && Input::get('order_status') != 'Delivered')
-                                             @if( Auth::user()->role_id == 0|| Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
+                                             @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 )
                                              <?php $data_delivery_boy = $delivery->del_boy;
                                                 if(isset($data_delivery_boy) && $data_delivery_boy != null) {
                                                     $test = \App\User::where('id',$data_delivery_boy)->get();
@@ -380,9 +380,9 @@
                                                 </span>
                                             </a> -->
                                                @if($delivery->order_status == 'pending')
-                                                @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0  || Auth::user()->role_id == 1 || Auth::user()->role_id == 4))
+                                                @if(($delivery->serial_no == "" ||  Auth::user()->role_id == 8  || Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 1 || Auth::user()->role_id == 4))
 
-                                                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
+                                                    @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
                                                         <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
@@ -392,7 +392,7 @@
                                                         </a>
                                                     @endif
 
-                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8 || Auth::user()->role_id == 4)
+                                                @elseif($delivery->serial_no != "" && Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 8 || Auth::user()->role_id == 4)
 
 												   <a href="{{URL::action('DeliveryOrderController@edit', ['delivery_order'=> $delivery->id])}}" class="table-link" title="edit">
 
@@ -714,8 +714,23 @@
                        $roleid = $dduser->role_id;
 
 
-                if($roleid == 0 || $roleid == 8 || $roleid == 9 ){
+                if($roleid == 0 || $roleid == 2 || $roleid == 8 || $roleid == 9 ){
                     if($roleid == 0) {
+                        $type = "del_boy";
+                        $options =array(''=>'Select Delivery boy');
+                        $array = \App\User::where('role_id',9)->where('is_active',1)
+                                   ->orderBy('id', 'DESC')
+                                   ->get();
+
+                       ?>
+
+                        @foreach($array as $user)<?php
+                           $options[$user->id] = $user->first_name.' '.$user->last_name;
+                          ?>
+                        @endforeach
+                    <?php
+                    }
+                    if($roleid == 2) {
                         $type = "del_boy";
                         $options =array(''=>'Select Delivery boy');
                         $array = \App\User::where('role_id',9)->where('is_active',1)
