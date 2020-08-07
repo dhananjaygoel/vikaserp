@@ -204,6 +204,7 @@ $(document).ready(function () {
         fetch_price();
     }
     grand_total_challan();
+    fetch_average_quantity();
 });
 /**
  * Comment
