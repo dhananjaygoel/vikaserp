@@ -105,7 +105,7 @@ class ThicknessController extends Controller {
 		$thick = $request->input('thickness');
 		$diff = $request->input('difference');
         $this->validate($request, [
-            'thickness' => 'required|numeric|unique:thickness,thickness',
+            'thickness' => 'required|numeric|unique:thickness,thickness'. ($id ? ",$id" : ''),
             'difference' => 'required|numeric',
         ]);
 		// if(Thickness::where('thickness',$thick)->where('diffrence',$diff)->count() == 0)
