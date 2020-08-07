@@ -138,6 +138,7 @@ class ProductsubController extends Controller {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         $product_type = ProductType::all();
+        // $thickness = \App\Thickness::orderBy('thickness','ASC')->all();
         $units = Units::first();
         $hsn_code = Hsn::all();
         return view('add_product_sub_category', compact('product_type','hsn_code', 'units'));

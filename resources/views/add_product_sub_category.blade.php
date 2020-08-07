@@ -72,7 +72,7 @@
                                     <label for="thickness">Product Thickness</label>
 
                                     <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
-                                        @foreach(\App\Thickness::all() as $thick)
+                                        @foreach(\App\Thickness::orderBy('thickness','ASC')->get() as $thick)
                                             <option value="{{$thick->thickness.':'.$thick->diffrence}}"> {{$thick->thickness}}</option>
                                         @endforeach
                                     </select>

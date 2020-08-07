@@ -46,22 +46,22 @@ class ThicknessController extends Controller {
 		$thick = $request->input('thickness');
 		$diff = $request->input('difference');
         $this->validate($request, [
-            'thickness' => 'required|numeric',
+            'thickness' => 'required|numeric|unique:thickness,thickness',
             'difference' => 'required|numeric',
 		]);
-		if(Thickness::where('thickness','=',$thick)->where('diffrence','=',$diff)->count() > 0)
-		{
-			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
-		}
-		else
-		{
+		// if(Thickness::where('thickness','=',$thick)->where('diffrence','=',$diff)->count() > 0)
+		// {
+		// 	return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
+		// }
+		// else
+		// {
 			$thickness = new Thickness();
 			$thickness->thickness = $request->thickness;
 			$thickness->diffrence = $request->difference;
 			$thickness->save();
 
 			return redirect('thickness')->with('flash_success_message', 'Thickness successfully added.');
-		}
+		// }
 	}
 
 	/**
@@ -105,11 +105,11 @@ class ThicknessController extends Controller {
 		$thick = $request->input('thickness');
 		$diff = $request->input('difference');
         $this->validate($request, [
-            'thickness' => 'required|numeric',
+            'thickness' => 'required|numeric|unique:thickness,thickness',
             'difference' => 'required|numeric',
         ]);
-		if(Thickness::where('thickness',$thick)->where('diffrence',$diff)->count() == 0)
-		{
+		// if(Thickness::where('thickness',$thick)->where('diffrence',$diff)->count() == 0)
+		// {
        		Thickness::where('id',$id)->update([
             	'thickness' => $request->thickness,
             	'diffrence' => $request->difference
@@ -117,11 +117,11 @@ class ThicknessController extends Controller {
 
 			return redirect('thickness')->with('flash_success_message', 'Thickness updated successfully');
 
-		}
-		else
-		{
-			return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
-		}
+		// }
+		// else
+		// {
+		// 	return redirect('thickness')->with('flash_message', 'Thickness and Difference combination has already been taken.');
+		// }
 	}
 
 	/**

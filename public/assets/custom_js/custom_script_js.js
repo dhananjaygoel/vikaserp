@@ -883,6 +883,7 @@ function fetch_average_quantity() {
     var total_avg_qty = 0;
     var current_row_count = $(".add_product_row").length;
     var quantity = 0;
+    var rate = 0;
     for (var i = 1; i < current_row_count + 1; i++) {
         // if (parseFloat($('#product_price_' + i).val())) {
             quantity = $("#actual_quantity_readonly_" + i).val();
@@ -902,8 +903,8 @@ function fetch_average_quantity() {
                 }
             }            
             // var rate = $("#product_price_" + i).val();
-
-            var amount = parseFloat(rate.toFixed(2)) * parseInt(quantity.toFixed(2));
+            if(rate != 0)
+                var amount = parseFloat(rate.toFixed(2)) * parseInt(quantity.toFixed(2));
 
             total_avg_qty = total_avg_qty + amount;
 //            total_avg_qty = parseFloat(total_avg_qty.toFixed(2)) + parseInt(amount.toFixed(2));
