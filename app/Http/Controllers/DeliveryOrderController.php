@@ -555,7 +555,7 @@ class DeliveryOrderController extends Controller {
                         $total_quantity = (float)$product_data['present_shipping'] * (float)$product->weight;
                     }
                     if ($product_data['units'] == 3) {
-                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['units'] == 4) {
                         $total_quantity = ((float)$product_data['present_shipping'] * (float)$product->weight * (float)$product_data['length']);
@@ -2123,7 +2123,7 @@ class DeliveryOrderController extends Controller {
                             $prod_quantity = (float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)$product_row->weight;
                         }
                         if ($product_data['unit_id'] == 3) {
-                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) / (float)$product_row->standard_length ) * (float)$product_row->weight;
+                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) / (float)isset($product_row->standard_length)?$product_row->standard_length:1 ) * (float)$product_row->weight;
                         }
                         if ($product_data['unit_id'] == 4) {
                             $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)(isset($product_row->weight)?$product_row->weight:'') * (float)$product_data['length']);
@@ -2639,7 +2639,7 @@ class DeliveryOrderController extends Controller {
                     $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight);
                 }
                 if ($do_product_details->unit_id == 3) {
-                    $order_qty = (float)$order_qty + ((float)($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * (float)$do_product_details->product_sub_category->weight);
+                    $order_qty = (float)$order_qty + ((float)($do_product_details->quantity / isset($do_product_details->product_sub_category->standard_length)?$do_product_details->product_sub_category->standard_length:1 ) * (float)$do_product_details->product_sub_category->weight);
                 }
                 if ($do_product_details->unit_id == 4) {
                     $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight * (float)$do_product_details->length);
@@ -2703,7 +2703,7 @@ class DeliveryOrderController extends Controller {
                         $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -2856,7 +2856,7 @@ class DeliveryOrderController extends Controller {
                                 }elseif ($popv->unit_id == 3) {
                                     if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
                                 }elseif ($popv->unit_id == 4) {
                                     $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight * (float)$popv->length);
                                 }elseif ($popv->unit_id == 5) {
@@ -2930,7 +2930,7 @@ class DeliveryOrderController extends Controller {
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
                                     // $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
-                                    $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)($popv->present_shipping / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)($popv->present_shipping / isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
 
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -2957,7 +2957,7 @@ class DeliveryOrderController extends Controller {
                                     }
 
 
-                                    $pending_order_temp = ((float)($remaining / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $pending_order_temp = ((float)($remaining / isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
 
                                     if ($pending_order == 0) {
                                         $pending_order = (float)$pending_order_temp;

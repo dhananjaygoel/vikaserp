@@ -104,7 +104,7 @@
                             }
                         }
                         if ($value1->unit_id == 3) {
-                            $order_quantity = $order_quantity + (($value1->quantity / $value1['order_product_details']->standard_length ) * $value1['order_product_details']->weight);
+                            $order_quantity = $order_quantity + (($value1->quantity / isset($value1['order_product_details']->standard_length)?$value1['order_product_details']->standard_length:1 ) * $value1['order_product_details']->weight);
                         }
                         ?>
                         <?= round($value1->actual_quantity, 2) ?>

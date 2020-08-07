@@ -137,7 +137,7 @@
                                                 $total_qunatity += ($total->present_shipping * $total['purchase_product_details']->weight);
                                             }
                                             if ($total->unit_id == 3) {
-                                                $total_qunatity += ($total->present_shipping / $total['purchase_product_details']->standard_length ) * $total['purchase_product_details']->weight;
+                                                $total_qunatity += ($total->present_shipping / isset($total['purchase_product_details']->standard_length)?$total['purchase_product_details']->standard_length:1 ) * $total['purchase_product_details']->weight;
                                             }
                                             
                                             $rate = (float)((isset($total->price) && $total->price != '0.00') ? $total->price : $total['purchase_product_details']->product_category['price']);

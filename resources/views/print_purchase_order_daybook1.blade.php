@@ -119,7 +119,7 @@
                        $wight = 1; 
                     }
                     
-                    $total_qunatity += ($total_qty->present_shipping / $total_qty['purchase_product_details']->standard_length) * $wight;
+                    $total_qunatity += ($total_qty->present_shipping / isset($total_qty['purchase_product_details']->standard_length)?$total_qty['purchase_product_details']->standard_length:1) * $wight;
                 }
                 ?>
                 @endforeach

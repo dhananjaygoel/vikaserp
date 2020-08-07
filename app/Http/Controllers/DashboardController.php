@@ -128,7 +128,7 @@ class DashboardController extends Controller {
                     } elseif ($all_inquiry_products->unit_id == 2){
                         $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight;
                     } elseif ($all_inquiry_products->unit_id == 3){
-                        $inquiry_pending += ($all_inquiry_products->quantity / $all_inquiry_products->product_sub_category->standard_length) * $all_inquiry_products->product_sub_category->weight;
+                        $inquiry_pending += ($all_inquiry_products->quantity / isset($all_inquiry_products->product_sub_category->standard_length) ? $all_inquiry_products->product_sub_category->standard_length : 1) * $all_inquiry_products->product_sub_category->weight;
                     } elseif ($all_inquiry_products->unit_id == 4){
                         $inquiry_pending += $all_inquiry_products->quantity * $all_inquiry_products->product_sub_category->weight * $all_inquiry_products->length;
                     } elseif ($all_inquiry_products->unit_id == 5){
@@ -163,7 +163,7 @@ class DashboardController extends Controller {
                     } elseif ($delivery_order_productinfo->unit_id == 2){
                         $deliver_pending += $delivery_order_productinfo->present_shipping * $delivery_order_productinfo->product_sub_category->weight;
                     } elseif ($delivery_order_productinfo->unit_id == 3){
-                        $deliver_pending += ($delivery_order_productinfo->present_shipping / $delivery_order_productinfo->product_sub_category->standard_length) * $delivery_order_productinfo->product_sub_category->weight;
+                        $deliver_pending += ($delivery_order_productinfo->present_shipping / isset($delivery_order_productinfo->product_sub_category->standard_length)?$delivery_order_productinfo->product_sub_category->standard_length:1) * $delivery_order_productinfo->product_sub_category->weight;
                     } elseif ($delivery_order_productinfo->unit_id == 4){
                         $deliver_pending += $delivery_order_productinfo->present_shipping * $delivery_order_productinfo->product_sub_category->weight * $delivery_order_productinfo->length;
                     } elseif ($delivery_order_productinfo->unit_id == 5){

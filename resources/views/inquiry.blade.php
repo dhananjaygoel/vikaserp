@@ -171,7 +171,7 @@
 
                                         @if($prod['unit']->unit_name == 'Meter')
                                         <?php
-                                        $qty += ($prod->quantity / $prod['inquiry_product_details']->standard_length) * $prod['inquiry_product_details']->weight;
+                                        $qty += ($prod->quantity / isset($prod['inquiry_product_details']->standard_length)?$prod['inquiry_product_details']->standard_length:1) * $prod['inquiry_product_details']->weight;
                                          $alias = $prod['inquiry_product_details']->alias_name;
                                         ?>
                                         @endif
