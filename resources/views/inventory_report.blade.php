@@ -69,6 +69,7 @@
                 </div>
                 <form class="pull-right" method="POST" action="{{URL::action('InventoryController@exportinventoryReport')}}">
                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
+                    <input type="hidden" id="size_filter" name="size_filter" value="">
                     <input type="hidden" id="export_product_id" name="product_id" value="<?php echo $product_id; ?>">
                     <input type="hidden" id="export_dropdown_filter" name="dropdown_filter" value="<?php echo $dropdown_filter; ?>">
                     <input type="submit"  name="export_data" value="Export" class="btn btn-primary pull-right " style=" float: left !important; margin-left: 2% !important;">

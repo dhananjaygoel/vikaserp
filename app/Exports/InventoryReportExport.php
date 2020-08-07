@@ -25,6 +25,8 @@ class InventoryReportExport implements FromView, ShouldAutoSize
         $request = Input::all();
         $product_id = $request['product_id'];
         $dropdown_filter = $request['dropdown_filter'];
+        $size_value = $request['size_filter'];
+        
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
         $size_array = [];
@@ -41,7 +43,27 @@ class InventoryReportExport implements FromView, ShouldAutoSize
                 }
             }
             foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
-                if (!in_array($sub_cat->size, $size_array)) {
+                $valid=1;
+                $size_tmp=$sub_cat->size;
+                $size_tmp=preg_replace('/[^0-9]/', ' ', $size_tmp);
+                $size_tmp=trim($size_tmp);
+                $size_tmp=substr($size_tmp,0,3);
+                $size_tmp=trim($size_tmp);
+                $size_tmp=(int)$size_tmp;
+                if($size_value=='small'){
+                    if($size_tmp < 100){
+                        $valid=1;
+                    } else {
+                        $valid=0;
+                    }
+                } else if($size_value=='large'){
+                    if($size_tmp >= 100){
+                        $valid=1;
+                    } else {
+                        $valid=0;
+                    }
+                }
+                if (!in_array($sub_cat->size, $size_array) && $valid==1) {
                     array_push($size_array, $sub_cat->size);
                 }
             }
@@ -98,7 +120,28 @@ class InventoryReportExport implements FromView, ShouldAutoSize
             $product_column = "Product Alias";
             array_push($thickness_array, "NA");
             foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
-                if (!in_array($sub_cat->alias_name, $size_array)) {
+                $valid=1;
+                $size_tmp=$sub_cat->size;
+                $size_tmp=preg_replace('/[^0-9]/', ' ', $size_tmp);
+                $size_tmp=trim($size_tmp);
+                $size_tmp=substr($size_tmp,0,3);
+                $size_tmp=trim($size_tmp);
+                $size_tmp=(int)$size_tmp;
+                if($size_value=='small'){
+                    //dd($size_value);
+                    if($size_tmp < 100){
+                        $valid=1;
+                    } else {
+                        $valid=0;
+                    }
+                } else if($size_value=='large'){
+                    if($size_tmp >= 100){
+                        $valid=1;
+                    } else {
+                        $valid=0;
+                    }
+                }
+                if (!in_array($sub_cat->alias_name, $size_array) && $valid==1) {
                     array_push($size_array, $sub_cat->alias_name);
                 }
             }

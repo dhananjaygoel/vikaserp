@@ -862,6 +862,7 @@ class InventoryController extends Controller {
             $thickness_array = [];
             $report_arr = [];
             $final_arr = [];
+            $size_filter = '';
             $dropdown_filter = '';
             $product_id = $product_last[0]->id;
             $product_type = $product_last[0]->product_type_id;
@@ -944,6 +945,7 @@ class InventoryController extends Controller {
             return view('inventory_report')->with('product_cat', $product_cat)
                             ->with('product_id', $product_id)
                             ->with('dropdown_filter', $dropdown_filter)
+                            ->with('size_filter', $size_filter)
                             ->with('product_last', $product_last)
                             ->with('thickness_array', $thickness_array)
                             ->with('report_arr', $report_arr)

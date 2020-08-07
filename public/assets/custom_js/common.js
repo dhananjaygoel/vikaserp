@@ -375,6 +375,7 @@ $(document).ready(function () {
         var product_id = $('#inventory_report_filter').val();
         var dropdown_value = $('#inventory_report_dropdown').val();
         var size_value = $(this).val();
+        $('#size_filter').val(size_value);
         var baseurl = $('#baseurl').attr('name');
         var url = baseurl + '/get_inventory_report';
         $.ajax({
