@@ -1200,8 +1200,9 @@ class DeliveryChallanController extends Controller {
             $total_amount = 0;
 
             $line = [];
-             $i = 0;
-             foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
+            $i = 0;
+            foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
+                if($del_products->actual_quantity != 0){
                 $TaxCodeRef = 0;
                 $grand_total = 0;
                 $sgst = 0;
@@ -1309,6 +1310,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
                 }
+            }
             }
 
             if($del_products->vat_percentage==0)

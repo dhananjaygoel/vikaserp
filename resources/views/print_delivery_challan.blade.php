@@ -138,7 +138,7 @@
                 $final_total_amt = 0;
             ?>
             @foreach($allorder['delivery_challan_products'] as $prod)
-                @if($prod->order_type == 'delivery_challan')
+                @if($prod->order_type == 'delivery_challan' && $prod->actual_quantity != 0)
                 <tbody>
                     <tr>
                         <td>{{ $i++ }}</td>
@@ -237,6 +237,7 @@
                                     $total_inc_gst=0;
                                 ?>
                                 @foreach($allorder['hsn'] as $hsn)
+                                @if($hsn['actual_quantity'] != 0)
                                 <tr>
                                     <td>{{ $hsn['id'] }}</td>
                                     <td>{{ round($hsn['actual_quantity'], 2) }} KG</td>
@@ -250,6 +251,7 @@
                                     $total_qty += $hsn['actual_quantity'];
                                     $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
                                 ?>
+                                @endif
                                 @endforeach
                                 <tr>
                                     <td><b>Total</b></td>

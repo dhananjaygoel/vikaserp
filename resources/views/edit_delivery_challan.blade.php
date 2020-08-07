@@ -134,7 +134,7 @@
                                         </tr>
                                         <?php $key = 1; ?>
                                         @foreach($allorder['all_order_products'] as $product)
-                                        @if($product->order_type == 'delivery_challan')
+                                        @if($product->order_type == 'delivery_challan' && $product->quantity != 0)
                                         <?php
                                             $price = ((isset($product->price) && $product->price != '0.00')?$product->price:$product['order_product_details']->product_category['price']);
                                             $amount = (float)$product->actual_quantity * (float)$price;
