@@ -46,6 +46,7 @@
                         </form>
                     </div>
                 </div>
+                
                 <div class="col-md-2 pull-right">
                     <form method="GET" action="javascript:;">
                         <select class="form-control" id="inventory_report_dropdown" name="inventory_report_dropdown">
@@ -54,6 +55,15 @@
                             <option value="pending_sales_order">Pending Sales Order</option>
                             <option value="pending_delivery_order">Pending Delivery Order</option>
                             <option value="pending_purchase_advice">Pending Purchase Advice</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="col-md-2 pull-right">
+                    <form method="GET" action="javascript:;">
+                        <select class="form-control" id="inventory_report_size" name="inventory_report_size">
+                            <option value="" selected>Select Product Size</option>
+                            <option value="small">Small</option>
+                            <option value="large">Large</option>
                         </select>
                     </form>
                 </div>
