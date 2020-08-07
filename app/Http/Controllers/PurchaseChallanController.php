@@ -338,7 +338,7 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 3) {
-                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity / isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 4) {
                         $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * $product_data->length);
@@ -380,7 +380,7 @@ class PurchaseChallanController extends Controller {
                         $total_quantity = (float)$total_quantity + (float)$product_data->quantity * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 3) {
-                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity / $product->standard_length ) * (float)$product->weight;
+                        $total_quantity = (float)$total_quantity + (float)($product_data->quantity / isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['unit']->id == 4) {
                         $total_quantity = (float)$total_quantity + (float)($product_data->quantity * $product->weight * $product_data->length);

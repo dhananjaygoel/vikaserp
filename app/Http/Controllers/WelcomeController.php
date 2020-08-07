@@ -1641,7 +1641,7 @@ class WelcomeController extends Controller {
                     $total_qunatity += ($products->present_shipping * $products['order_product_details']->weight);
                 }
                 if ($products->unit_id == 3) {
-                    $total_qunatity += (($products->present_shipping / $products['order_product_details']->standard_length ) * $products['order_product_details']->weight);
+                    $total_qunatity += (($products->present_shipping / isset($products['order_product_details']->standard_length)?$products['order_product_details']->standard_length:1 ) * $products['order_product_details']->weight);
                 }
             }
 

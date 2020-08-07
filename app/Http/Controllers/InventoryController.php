@@ -264,7 +264,7 @@ class InventoryController extends Controller {
                                     $order_qty = $order_qty + ($orders_product_details->quantity * $orders_product_details->product_sub_category->weight);
                                 }
                                 if ($orders_product_details->unit_id == 3) {
-                                    $order_qty = $order_qty + (($orders_product_details->quantity / $orders_product_details->product_sub_category->standard_length ) * $orders_product_details->product_sub_category->weight);
+                                    $order_qty = $order_qty + (($orders_product_details->quantity / isset($orders_product_details->product_sub_category->standard_length)?$orders_product_details->product_sub_category->standard_length:1 ) * $orders_product_details->product_sub_category->weight);
                                 }
                                 if ($orders_product_details->unit_id == 4) {
                                     $order_qty = $order_qty + ($orders_product_details->quantity * $orders_product_details->product_sub_category->weight * $orders_product_details->length );
@@ -295,7 +295,7 @@ class InventoryController extends Controller {
                                                     $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight);
                                                 }
                                                 if ($delivery_orders_product_details->unit_id == 3) {
-                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
+                                                    $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + (($delivery_orders_product_details->quantity / isset($delivery_orders_product_details->product_sub_category->standard_length)?$delivery_orders_product_details->product_sub_category->standard_length:1 ) * $delivery_orders_product_details->product_sub_category->weight);
                                                 }
                                                 if ($delivery_orders_product_details->unit_id == 4) {
                                                     $orders_pending_delivery_order_qty = $orders_pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight * $delivery_orders_product_details->length );
@@ -334,7 +334,7 @@ class InventoryController extends Controller {
                                         $pending_delivery_order_qty = $pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight);
                                     }
                                     if ($delivery_orders_product_details->unit_id == 3) {
-                                        $pending_delivery_order_qty = $pending_delivery_order_qty + (($delivery_orders_product_details->quantity / $delivery_orders_product_details->product_sub_category->standard_length ) * $delivery_orders_product_details->product_sub_category->weight);
+                                        $pending_delivery_order_qty = $pending_delivery_order_qty + (($delivery_orders_product_details->quantity / isset($delivery_orders_product_details->product_sub_category->standard_length)?$delivery_orders_product_details->product_sub_category->standard_length:1 ) * $delivery_orders_product_details->product_sub_category->weight);
                                     }
                                     if ($delivery_orders_product_details->unit_id == 4) {
                                         $pending_delivery_order_qty = $pending_delivery_order_qty + ($delivery_orders_product_details->quantity * $delivery_orders_product_details->product_sub_category->weight * $delivery_orders_product_details->length );
@@ -464,7 +464,7 @@ class InventoryController extends Controller {
                                         }
                                     }
                                     if ($purchase_orders_product_details->unit_id == 3) {
-                                        $pending_purchase_order_qty = $pending_purchase_order_qty + (($purchase_orders_product_details->quantity / $purchase_orders_product_details->product_sub_category->standard_length ) * $purchase_orders_product_details->product_sub_category->weight);
+                                        $pending_purchase_order_qty = $pending_purchase_order_qty + (($purchase_orders_product_details->quantity / isset($purchase_orders_product_details->product_sub_category->standard_length)?$purchase_orders_product_details->product_sub_category->standard_length:1 ) * $purchase_orders_product_details->product_sub_category->weight);
                                     }
                                     if ($purchase_orders_product_details->unit_id == 4) {
                                         $pending_purchase_order_qty = $pending_purchase_order_qty + ($purchase_orders_product_details->quantity * $purchase_orders_product_details->product_sub_category->weight * $purchase_orders_product_details->length );
@@ -495,7 +495,7 @@ class InventoryController extends Controller {
                                                     $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight);
                                                 }
                                                 if ($purchase_advice_product_details->unit_id == 3) {
-                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
+                                                    $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / isset($purchase_advice_product_details->product_sub_category->standard_length)?$purchase_advice_product_details->product_sub_category->standard_length:1 ) * $purchase_advice_product_details->product_sub_category->weight);
                                                 }
                                                 if ($purchase_advice_product_details->unit_id == 4) {
                                                     $purchase_orders_pending_purchase_advice_qty = $purchase_orders_pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight * $purchase_advice_product_details->length );
@@ -532,7 +532,7 @@ class InventoryController extends Controller {
                                         $pending_purchase_advice_qty = $pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight);
                                     }
                                     if ($purchase_advice_product_details->unit_id == 3) {
-                                        $pending_purchase_advice_qty = $pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / $purchase_advice_product_details->product_sub_category->standard_length ) * $purchase_advice_product_details->product_sub_category->weight);
+                                        $pending_purchase_advice_qty = $pending_purchase_advice_qty + (($purchase_advice_product_details->quantity / isset($purchase_advice_product_details->product_sub_category->standard_length)?$purchase_advice_product_details->product_sub_category->standard_length:1 ) * $purchase_advice_product_details->product_sub_category->weight);
                                     }
                                     if ($purchase_advice_product_details->unit_id == 4) {
                                         $pending_purchase_advice_qty = $pending_purchase_advice_qty + ($purchase_advice_product_details->quantity * $purchase_advice_product_details->product_sub_category->weight * $purchase_advice_product_details->length );

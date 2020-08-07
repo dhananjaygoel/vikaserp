@@ -269,7 +269,7 @@
                 }
 
                 if ($prod['unit']->id == 3) {
-                    $total_qty += (($prod->present_shipping / $prod['purchase_product_details']->standard_length ) * $prod['purchase_product_details']->weight);
+                    $total_qty += (($prod->present_shipping / isset($prod['purchase_product_details']->standard_length)?$prod['purchase_product_details']->standard_length:1 ) * $prod['purchase_product_details']->weight);
                 }
 
 //                $total_price = $total_price + $prod->price;

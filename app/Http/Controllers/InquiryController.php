@@ -303,7 +303,7 @@ class InquiryController extends Controller {
                         $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                     }
                     if ($product_data['units'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['units'] == 4) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -449,7 +449,7 @@ class InquiryController extends Controller {
                         $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -724,7 +724,7 @@ class InquiryController extends Controller {
                                 $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -792,7 +792,7 @@ class InquiryController extends Controller {
                                 $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -904,7 +904,7 @@ class InquiryController extends Controller {
                                 $total_quantity = (float)$product_data->quantity * (float)$product_data['inquiry_product_details']->weight;
                             }
                             if ($product_data['unit_id'] == 3) {
-                                $total_quantity = ((float)$product_data->quantity / (float)$product_data['inquiry_product_details']->standard_length ) * (float)$product_data['inquiry_product_details']->weight;
+                                $total_quantity = ((float)$product_data->quantity / (float)isset($product_data['inquiry_product_details']->standard_length)?$product_data['inquiry_product_details']->standard_length:1 ) * (float)$product_data['inquiry_product_details']->weight;
                             }
                             if ($product_data['unit_id'] == 4) {
                                 $total_quantity = ((float)$product_data->quantity * (float)($product_data['inquiry_product_details']->weight) * (float)$product_data->length);
@@ -1635,7 +1635,7 @@ class InquiryController extends Controller {
                             $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                         }
                         if ($product_data['units'] == 3) {
-                            $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                            $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                         }
                         if ($product_data['units'] == 4) {
                             $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);

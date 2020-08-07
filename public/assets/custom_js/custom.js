@@ -3798,6 +3798,7 @@ $("body").on('click',"button", function() {
         }else{
             labour = '';
         }
+        var next_labour = [];
         var empty_truck_weight = $("#empty_truck_weight").val();
         var truck_weight = $("#truck_weight_"+delboy_id+"_"+truck_sequence).val();
         var truck_value = $('#truck_weight_'+truck_sequence).val();
@@ -3849,8 +3850,11 @@ $("body").on('click',"button", function() {
             }
         }
         var next_truck_sequence = parseInt(truck_sequence) + 1;
+        var next_truck_weight = 0;
+        var next_truck_weight_array = '';
+        var next_truck_weight_id = 0;
         if($("#truck_weight_"+next_truck_sequence+"_readonly").length){
-            var next_truck_weight = $("#truck_weight_"+next_truck_sequence+"_readonly").val();
+            next_truck_weight = $("#truck_weight_"+next_truck_sequence+"_readonly").val();
             if(parseFloat(truck_weight) > parseFloat(next_truck_weight)){
                 $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
                 $('.alert-valid-truck-weight').html('Please fill valid truck weight smaller than next truck weight.');
@@ -3860,7 +3864,17 @@ $("body").on('click',"button", function() {
                 }, 8000);
                 status_form = 1;
             }
+            next_truck_weight_array = $("#truck_weight_"+next_truck_sequence).val();
+            next_truck_weight_array = next_truck_weight_array.split('_');
+            next_truck_weight_id = next_truck_weight_array[1];
+            next_labour = $('#labour_select_'+next_truck_sequence).val();
+            if(next_labour){
+                next_labour = next_labour.toString();
+            }else{
+                next_labour = '';
+            }
         }
+        // alert(next_labour);
         if (status_form == 1) {
             $('html, body').animate({
                 scrollTop: $('.breadcrumb').offset().top
@@ -3881,6 +3895,9 @@ $("body").on('click',"button", function() {
                     delboy_id:delboy_id,
                     labour:labour,
                     previous_truck_weight:previous_truck_weight,
+                    next_truck_weight:next_truck_weight,
+                    next_labour:next_labour,
+                    next_truck_weight_id:next_truck_weight_id,
                     truck_weight_id:truck_weight_id,
                     empty_truck_weight:empty_truck_weight,
                     product_ids:product_ids

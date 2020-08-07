@@ -189,7 +189,7 @@
                                             <td><span>Select Product(Alias)</span><span class="mandatory">*</span></td>
                                             <td><span>Unit</span><span class="mandatory">*</span></td>
                                             <td><span>Length</span></td>
-                                            <td><span>Quantity</span></td>
+                                            <!-- <td><span>Quantity</span></td> -->
                                             <td><span>Present Shipping</span></td>
                                             <td><span>Price</span><span class="mandatory">*</span></td>
                                             <td class="inquiry_vat_chkbox"><span>GST</span></td>
@@ -432,7 +432,7 @@
                                                     </div>
                                                     </div>
                                                 </td>
-                                                <td class="col-md-1">
+                                                <td class="col-md-1" style="display:none">
                                                     <div class="form-group meter_list_{{$key}}" {{($product->unit_id==3)?'':'style=display:none'}} >
                                                         <input id="quantity_{{$key}}" class="form-control" placeholder="Qnty" onkeypress=" return numbersOnly(this, event, true, true);" name="product[{{$key}}][quantity]" value="{{$product->quantity}}" type="tel" disabled>
                                                         <input type="hidden" name="product[{{$key}}][quantity]" value="{{$product->quantity}}">
@@ -481,10 +481,10 @@
 
 
                                                 </td>
-                                                    <td class="col-md-1">
+                                                    <td class="col-md-2">
                                                         <div class="form-group">
                                                             <input type="hidden" name="product[{{$key}}][present_shipping]" value="{{$product->present_shipping}}">
-                                                            <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});" disabled>                                                            
+                                                            <input  type="tel" class="form-control" id="present_shipping_{{$key}}" value="{{$product->present_shipping}}" name="product[{{$key}}][present_shipping]" onkeypress=" return numbersOnly(this,event,true,true);" placeholder="Present Shipping" onblur="change_quantity2({{$key}});">                                                            
                                                         </div>                                                        
                                                     </td>
                                                     

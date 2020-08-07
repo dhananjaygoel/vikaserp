@@ -1200,8 +1200,9 @@ class DeliveryChallanController extends Controller {
             $total_amount = 0;
 
             $line = [];
-             $i = 0;
-             foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
+            $i = 0;
+            foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
+                if($del_products->actual_quantity != 0){
                 $TaxCodeRef = 0;
                 $grand_total = 0;
                 $sgst = 0;
@@ -1309,6 +1310,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
                 }
+            }
             }
 
             if($del_products->vat_percentage==0)
@@ -1782,7 +1784,7 @@ class DeliveryChallanController extends Controller {
                         $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                         $tot_quantity = $tot_quantity + (float)$product_data['quantity'];
                     }
                     if ($product_data['unit_id'] == 4) {
@@ -2402,8 +2404,8 @@ class DeliveryChallanController extends Controller {
                             }
                         } elseif ($popv->unit_id == 3) {
 
-                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / $product_size->standard_length ) * $product_size->weight);
-                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / $product_size->standard_length ) * $product_size->weight);
+                            $delivery_order_quantity = $delivery_order_quantity + (($popv->quantity / isset($product_size->standard_length)?$product_size->standard_length:1 ) * $product_size->weight);
+                            $delivery_order_present_shipping = $delivery_order_present_shipping + (($popv->present_shipping / isset($product_size->standard_length)?$product_size->standard_length:1 ) * $product_size->weight);
 
                             $do = DeliveryOrder::find($popv->order_id);
 
@@ -2413,7 +2415,7 @@ class DeliveryChallanController extends Controller {
                                 $remaining = $prd_details[0]->quantity - $popv->quantity;
                             else
                                 $remaining = 0;
-                            $pending_order_temp = (($remaining / $product_size->standard_length ) * $product_size->weight);
+                            $pending_order_temp = (($remaining / isset($product_size->standard_length)?$product_size->standard_length:1 ) * $product_size->weight);
 
                             if ($pending_order == 0) {
                                 $pending_order = $pending_order_temp;

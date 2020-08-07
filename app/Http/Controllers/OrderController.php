@@ -911,13 +911,13 @@ class OrderController extends Controller {
                             $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                         }
                         if ($product_data['units'] == 3) {
-                            $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                            $total_quantity = ((float)$product_data['quantity'] / (float)(isset($product->standard_length) && $product->standard_length != 0 ? $product->standard_length : 1 )) * (float)$product->weight;
                         }
                         if ($product_data['units'] == 4) {
-                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
+                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:1) * (float)$product_data['length']);
                         }
                         if ($product_data['units'] == 5) {
-                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * ((float)$product_data['length'] / 305));
+                            $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:1) * ((float)$product_data['length'] / 305));
                         }
                         $product_string .= $i++ . ") " . $product_data['name'] . ", " . round((float)$total_quantity,2) . "KG, ₹". $product_data['price'] . " ";
                     }
@@ -1319,7 +1319,7 @@ class OrderController extends Controller {
                                 $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -1382,7 +1382,7 @@ class OrderController extends Controller {
                                 $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -1544,7 +1544,7 @@ class OrderController extends Controller {
                                     $total_quantity = (float)$product_data['quantity'] * (float)$product_data['order_product_details']->weight;
                                 }
                                 if ($product_data['unit_id'] == 3) {
-                                    $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['order_product_details']->standard_length ) * (float)$product_data['order_product_details']->weight;
+                                    $total_quantity = ((float)$product_data['quantity'] / (float)isset($product_data['order_product_details']->standard_length)?$product_data['order_product_details']->standard_length:1 ) * (float)$product_data['order_product_details']->weight;
                                 }
                                 if ($product_data['unit_id'] == 4) {
                                     $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['order_product_details']->weight * (float)$product_data['length']);
@@ -1701,7 +1701,7 @@ class OrderController extends Controller {
                                 $total_quantity = (float)$product_data['quantity'] * (float)$product_data['order_product_details']->weight;
                             }
                             if ($product_data['unit_id'] == 3) {
-                                $total_quantity = ((float)$product_data['quantity'] / (float)$product_data['order_product_details']->standard_length ) * (float)$product_data['order_product_details']->weight;
+                                $total_quantity = ((float)$product_data['quantity'] / (float)isset($product_data['order_product_details']->standard_length)?$product_data['order_product_details']->standard_length:1 ) * (float)$product_data['order_product_details']->weight;
                             }
                             if ($product_data['unit_id'] == 4) {
                                 $total_quantity = ((float)$product_data['quantity'] * (float)$product_data['order_product_details']->weight * (float)$product_data['length']);
@@ -2061,7 +2061,7 @@ class OrderController extends Controller {
                                 $total_quantity = (float)$product_data['present_shipping'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['present_shipping'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['present_shipping'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
                                 $total_quantity = ((float)$product_data['present_shipping'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -2156,7 +2156,7 @@ class OrderController extends Controller {
                                 $delivery_order_quantity = (float)$delivery_order_quantity + (float)$dopv->quantity * (float)$product_size->weight;
                             } elseif ($dopv->unit_id == 3) {
                                 if ($product_size->standard_length) {
-                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight;
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity / (float)isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight;
                                 } else {
                                     $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$dopv->quantity * (float)$product_size->weight);
                                 }
@@ -2182,7 +2182,7 @@ class OrderController extends Controller {
                             $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                         } elseif ($opv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
+                                $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
                             } else {
                                 $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                             }
@@ -2201,7 +2201,7 @@ class OrderController extends Controller {
                             $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                         } elseif ($opv->unit_id == 3) {
                             if ($product_size->standard_length) {
-                                $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)$product_size->standard_length ) * (float)$product_size->weight);
+                                $order_quantity = (float)$order_quantity + (((float)$opv->quantity / (float)isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
                             } else {
                                 $order_quantity = (float)$order_quantity + ((float)$opv->quantity * (float)$product_size->weight);
                             }

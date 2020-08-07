@@ -370,6 +370,7 @@ class DeliveryOrderController extends Controller {
      */
     public function update($id) {
         $input_data = Input::all();
+        // dd($input_data);
         $whatsapp_error = '';
         $sms_flag = 1;
         if (Session::has('forms_edit_delivery_order')) {
@@ -481,7 +482,7 @@ class DeliveryOrderController extends Controller {
                    'from'=> $order_id,
                     //  'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
                     //  'length' => isset($product_data['length'])? $product_data['length']:'',
-                    //  'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
+                     'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
                      'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
                      'vat_percentage' => (isset($product_data['vat_percentage']) && $product_data['vat_percentage'] == 'yes') ? 1 : 0,
                     'remarks' => $product_data['remark'],
@@ -495,7 +496,7 @@ class DeliveryOrderController extends Controller {
                     'product_category_id' => $product_data['product_category_id'],
                     'unit_id' => isset($product_data['units'])? $product_data['units'] :'1',
                    'from'=> $order_id,
-                    'quantity' => isset($product_data['quantity'])? $product_data['quantity']:'50.00',
+                    'quantity' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00',
                      'length' => isset($product_data['length'])? $product_data['length']:'',
                      'present_shipping' => isset($product_data['present_shipping'])? $product_data['present_shipping']:'50.00' ,
                      'price' => isset($product_data['price']) ?$product_data['price'] :'' ,
@@ -554,7 +555,7 @@ class DeliveryOrderController extends Controller {
                         $total_quantity = (float)$product_data['present_shipping'] * (float)$product->weight;
                     }
                     if ($product_data['units'] == 3) {
-                        $total_quantity = ((float)$product_data['present_shipping'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['present_shipping'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['units'] == 4) {
                         $total_quantity = ((float)$product_data['present_shipping'] * (float)$product->weight * (float)$product_data['length']);
@@ -1684,7 +1685,21 @@ class DeliveryOrderController extends Controller {
         $empty_truck_weight = (Input::has('empty_truck_weight')) ? Input::get('empty_truck_weight') : 0;
         $previous_truck_weight = (Input::has('previous_truck_weight')) &&  Input::get('previous_truck_weight') != '' ? Input::get('previous_truck_weight') : $empty_truck_weight;
         $truck_no = (Input::has('truck_no')) ? Input::get('truck_no') : 0;
-        // dd(Input::all());
+        $delboy_id = (Input::has('delboy_id')) ? Input::get('delboy_id') : 0;
+        $delivery_id = Input::get('delivery_id');
+        $next_truck_weight_id = (Input::has('next_truck_weight_id')) ? Input::get('next_truck_weight_id') : 0;
+        $next_truck_weight = (Input::has('next_truck_weight')) ? Input::get('next_truck_weight') : 0;
+        $next_labour = array();
+        if(Input::has('next_labour') && Input::get('next_labour') != ""){
+            $next_labour = explode(',',Input::get('next_labour'));
+        }
+        if(isset($delboy_id) && $delboy_id != 0 && $truck_weight_id != ""){
+            if($delboy_id == Auth::user()->id){
+                $delboy_id = Auth::user()->id;
+            }else{
+                $delboy_id = $delboy_id;
+            }
+        }
         $labour = array();
         if(Input::has('labour') && Input::get('labour') != ""){
             $labour = explode(',',Input::get('labour'));
@@ -1692,9 +1707,8 @@ class DeliveryOrderController extends Controller {
         $labours_info = [];
         $loaders_info = [];
         $actual_qty = $truck_weight - $previous_truck_weight;
-        $delivery_id = Input::get('delivery_id');
+        // dd($labour);
         $delivery_order_details = DeliveryOrder::find($delivery_id);
-        $delboy_id = Input::get('delboy_id');
 
         $inputprodut = (Input::has('product_ids')) ? Input::get('product_ids') : 'array()';
         $inputprodut = explode(',',$inputprodut);
@@ -1740,7 +1754,7 @@ class DeliveryOrderController extends Controller {
                             $total_quantity = $total_quantity + $prod_quantity;
                         }
                         if ($product_data['unit_id'] == 3) {
-                            $prod_quantity = ((float)$product_data['quantity'] / (float)$product_row->standard_length ) * (float)$product_row->weight;
+                            $prod_quantity = ((float)$product_data['quantity'] / (float)isset($product_row->standard_length)?$product_row->standard_length:1 ) * (float)$product_row->weight;
                             $total_quantity = $total_quantity + $prod_quantity;
                         }
                         if ($product_data['unit_id'] == 4) {
@@ -1864,25 +1878,67 @@ class DeliveryOrderController extends Controller {
                         }
                     }
                     $is_exist = DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
-                        ->where('loaded_by_id',Auth::user()->id)
+                        ->where('loaded_by_id',$delboy_id)
                         ->where('truck_weight_id',$truck_weight_id)
                         ->first();
                     if(!empty($is_exist)){
                         DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
-                        ->where('loaded_by_id',Auth::user()->id)
+                        ->where('loaded_by_id',$delboy_id)
                         ->where('truck_weight_id',$truck_weight_id)
                         ->delete();
                     }
                     $loaders_info[] = [
                         'delivery_challan_id' => $delivery_id,
                         'truck_weight_id' => $truck_weight_id,
-                        'loaded_by_id' => Auth::user()->id,
+                        'loaded_by_id' => $delboy_id,
                         'created_at' => $delivery_order_details->created_at,
                         'updated_at' => $delivery_order_details->updated_at,
                         'type' => 'sale',
                         'total_qty' => $actual_qty,
                     ];
                     $add_loaders_info = DeliveryChallanLoadedBy::insert($loaders_info);
+
+                    if($next_truck_weight_id != 0){
+                        $truck_details = LoadTrucks::where('deliver_id', '=', $delivery_id)
+                                ->where('id', '=', $next_truck_weight_id)
+                                ->first();
+                        if(!empty($truck_details)){
+                            $next_delboy_id = $truck_details->userid;
+                        }
+                        $actual_qty_next = $next_truck_weight - $truck_weight;
+                        $is_exist = DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
+                            ->where('loaded_by_id',$next_delboy_id)
+                            ->where('truck_weight_id',$next_truck_weight_id)
+                            ->first();
+                        if(!empty($is_exist)){
+                            $update_next_qty = DeliveryChallanLoadedBy::where('delivery_challan_id',$delivery_id)
+                                                ->where('loaded_by_id',$next_delboy_id)
+                                                ->where('truck_weight_id',$next_truck_weight_id)
+                                                ->update(array(
+                                                    'total_qty' => $actual_qty_next,
+                                                ));
+                        }
+                        if(!empty((array)$next_labour)){                            
+                            if(!empty($truck_details)){
+                                foreach($next_labour as $load_val){
+                                    if($actual_qty_next != 0){
+                                        $is_lbr = App\DeliveryChallanLabours::where('delivery_challan_id',$delivery_id)
+                                            ->where('truck_weight_id',$next_truck_weight_id)
+                                            ->where('labours_id',$load_val)
+                                            ->first();
+                                        if(!empty($is_lbr)){
+                                            App\DeliveryChallanLabours::where('delivery_challan_id',$delivery_id)
+                                                ->where('truck_weight_id',$next_truck_weight_id)
+                                                ->where('labours_id',$load_val)
+                                                ->update(array(
+                                                    'total_qty' => $actual_qty_next/count((array)$next_labour),
+                                                ));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     /* Add new Notifications */
                         $notification = new SendNotification();
@@ -2067,7 +2123,7 @@ class DeliveryOrderController extends Controller {
                             $prod_quantity = (float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)$product_row->weight;
                         }
                         if ($product_data['unit_id'] == 3) {
-                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) / (float)$product_row->standard_length ) * (float)$product_row->weight;
+                            $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) / (float)isset($product_row->standard_length)?$product_row->standard_length:1 ) * (float)$product_row->weight;
                         }
                         if ($product_data['unit_id'] == 4) {
                             $prod_quantity = ((float)(isset($product[2])?$product[2]:$product_data['quantity']) * (float)(isset($product_row->weight)?$product_row->weight:'') * (float)$product_data['length']);
@@ -2583,7 +2639,7 @@ class DeliveryOrderController extends Controller {
                     $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight);
                 }
                 if ($do_product_details->unit_id == 3) {
-                    $order_qty = (float)$order_qty + ((float)($do_product_details->quantity / $do_product_details->product_sub_category->standard_length ) * (float)$do_product_details->product_sub_category->weight);
+                    $order_qty = (float)$order_qty + ((float)($do_product_details->quantity / isset($do_product_details->product_sub_category->standard_length)?$do_product_details->product_sub_category->standard_length:1 ) * (float)$do_product_details->product_sub_category->weight);
                 }
                 if ($do_product_details->unit_id == 4) {
                     $order_qty = (float)$order_qty + ((float)$do_product_details->quantity * (float)$do_product_details->product_sub_category->weight * (float)$do_product_details->length);
@@ -2647,7 +2703,7 @@ class DeliveryOrderController extends Controller {
                         $total_quantity = (float)$product_data['quantity'] * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 3) {
-                        $total_quantity = ((float)$product_data['quantity'] / (float)$product->standard_length ) * (float)$product->weight;
+                        $total_quantity = ((float)$product_data['quantity'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                     }
                     if ($product_data['unit_id'] == 4) {
                         $total_quantity = ((float)$product_data['quantity'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
@@ -2800,7 +2856,7 @@ class DeliveryOrderController extends Controller {
                                 }elseif ($popv->unit_id == 3) {
                                     if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
-                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
                                 }elseif ($popv->unit_id == 4) {
                                     $delivery_order_quantity = (float)$delivery_order_quantity + ((float)$popv->quantity * (float)$product_size->weight * (float)$popv->length);
                                 }elseif ($popv->unit_id == 5) {
@@ -2874,7 +2930,7 @@ class DeliveryOrderController extends Controller {
                                 if ($product_size->standard_length == 0)
                                     $product_size->standard_length = 1;
                                     // $delivery_order_quantity = (float)$delivery_order_quantity + ((float)($popv->quantity / $product_size->standard_length ) * (float)$product_size->weight);
-                                    $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)($popv->present_shipping / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $delivery_order_present_shipping = (float)$delivery_order_present_shipping + ((float)($popv->present_shipping / isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
 
                                 foreach ($del_order['track_order_product'] as $track_order_product) {
                                     if ($popv->parent == $track_order_product->id) {
@@ -2901,7 +2957,7 @@ class DeliveryOrderController extends Controller {
                                     }
 
 
-                                    $pending_order_temp = ((float)($remaining / $product_size->standard_length ) * (float)$product_size->weight);
+                                    $pending_order_temp = ((float)($remaining / isset($product_size->standard_length)?$product_size->standard_length:1 ) * (float)$product_size->weight);
 
                                     if ($pending_order == 0) {
                                         $pending_order = (float)$pending_order_temp;

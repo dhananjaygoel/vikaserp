@@ -145,7 +145,7 @@
 
 
                                     @foreach($allorder['all_order_products'] as $key=>$product) 
-                                    @if($product->order_type =='delivery_challan')
+                                    @if($product->order_type =='delivery_challan' && $product->quantity != 0)
                                     <tr id="add_row_{{$key}}" class="add_product_row">
                                         <td class="col-md-2">
                                             <div class="form-group searchproduct">{{isset($product->order_product_details->alias_name)?$product->order_product_details->alias_name:''}}</div>
