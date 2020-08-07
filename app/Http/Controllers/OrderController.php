@@ -2061,7 +2061,7 @@ class OrderController extends Controller {
                                 $total_quantity = (float)$product_data['present_shipping'] * (float)$product->weight;
                             }
                             if ($product_data['units'] == 3) {
-                                $total_quantity = ((float)$product_data['present_shipping'] / (float)$product->standard_length ) * (float)$product->weight;
+                                $total_quantity = ((float)$product_data['present_shipping'] / (float)isset($product->standard_length)?$product->standard_length:1 ) * (float)$product->weight;
                             }
                             if ($product_data['units'] == 4) {
                                 $total_quantity = ((float)$product_data['present_shipping'] * (float)(isset($product->weight)?$product->weight:'') * (float)$product_data['length']);
