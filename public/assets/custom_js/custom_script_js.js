@@ -382,10 +382,10 @@ function fetch_price() {
                 if ($("#actual_quantity_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
                     quantity = parseFloat($("#actual_quantity_" + i).val());
                 }
-            } else {
-                if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
-                    quantity = parseFloat($("#actual_pieces_" + i).val());
-                }
+            // } else {
+            //     if ($("#actual_pieces_" + i).val() > 0 && $("#actual_quantity_" + i).val() != 0 || $("#actual_quantity_" + i).val() != '') {
+            //         quantity = parseFloat($("#actual_pieces_" + i).val());
+            //     }
             }
             var rate = $("#product_price_" + i).val();
 //            var vat_percentage = $("#product_vatpercentage_" + i).val();
