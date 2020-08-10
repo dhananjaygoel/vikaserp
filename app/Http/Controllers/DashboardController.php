@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Auth;
+use Input;
+use App;
 use App\Order;
 use App\User;
 use App\Inquiry;
@@ -26,6 +28,13 @@ class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
+        define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
+        define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
         // $this->middleware('validIP');
 
 //        if (Config::get('rollbar.send') === true) {
@@ -45,7 +54,110 @@ class DashboardController extends Controller {
      */
 
     public function ipvalid_dashboard(){
+
         return view('dashboard_ipvalid');
+    }
+
+    public function generate_otp(){
+        $send_otp = Session::has('send_otp')?Session::get('send_otp'):false;
+        if($send_otp == false){
+            $otp = rand(000000,999999);
+            $user_id = Auth::user()->id;
+            $date = new Carbon\Carbon;
+            $formatted_date = $date->format('Y-m-d H:i:s');
+            User::where('id',$user_id)->update(
+                array(
+                    'is_active'=>'0',
+                    'otp'=> $otp,
+                    'otp_generation_time' => $formatted_date,
+                )
+            );
+
+            $str = "Your One Time Password(OTP) for login is : ".$otp.", valid for next 5 minutes.\nPlease do not share with others.\nCall our support team if not requested by you.\nVIKAS ASSOCIATES.";
+            
+            $user = User::find($user_id);
+            
+            if (App::environment('local')) {
+                $phone_number = Config::get('smsdata.send_sms_to');
+            } else {
+                $phone_number = $user->mobile_number;
+            }
+            
+            $msg = urlencode($str);
+            if(SEND_SMS === true) {
+                $send_msg = new WelcomeController();
+                $send_msg->send_sms($phone_number,$msg);
+            }
+            Session::forget('send_otp');
+            Session::put('send_otp', true);
+            return view('otp_verification');
+
+        } else{
+            return view('otp_verification');
+        }
+            
+        
+    }
+
+    public function resend_otp(){
+        $otp = rand(000000,999999);
+        $user_id = Auth::user()->id;
+        $date = new Carbon\Carbon;
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        User::where('id',$user_id)->update(
+            array(
+                'otp'=> $otp,
+                'otp_generation_time' => $formatted_date,
+            )
+        );
+        $str = "Your One Time Password(OTP) for login is : ".$otp.", valid for next 5 minutes.\nPlease do not share with others.\nCall our support team if not requested by you.\nVIKAS ASSOCIATES.";
+            
+        $user = User::find($user_id);
+        
+        if (App::environment('local')) {
+            $phone_number = Config::get('smsdata.send_sms_to');
+        } else {
+            $phone_number = $user->mobile_number;
+        }
+        
+        $msg = urlencode($str);
+        if(SEND_SMS === true) {
+            $send_msg = new WelcomeController();
+            $send_msg->send_sms($phone_number,$msg);
+        }
+        return redirect('otp_verification')->with('flash_message','OTP has been sent successfully.');
+    }
+
+    public function validate_otp(Request $request){
+        $input_data = Input::all();
+        $otp_array = [];
+
+        for($i = 1; $i < 7; $i++){
+            if($input_data['digit-'.$i] != ""){
+                array_push($otp_array, $input_data['digit-'.$i]);
+            }
+        }
+        if(count($otp_array) != 6){
+            return redirect('otp_verification')->with('errors','There were some problems with your input.');
+        }
+        $otp_input = implode("",$otp_array);
+
+        $date = new Carbon\Carbon;
+        $date->modify('-5 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        $db_otp = User::where('id',Auth::user()->id)->where('otp_generation_time','>',$formatted_date)->first();
+        if(isset($db_otp) && !empty($db_otp)){
+            $otp = $db_otp->otp;
+            $otp_time = $db_otp->otp_generation_time;
+            if($otp == $otp_input){
+                Session::put('otp_validate', true);
+                return redirect('dashboard');
+            }else{
+                return redirect('otp_verification')->with('errors','Invalid OTP. Please resend code to login again.');
+            }
+        }else{
+            return redirect('otp_verification')->with('errors','Your OTP has been expired. Please resend code to login again.');
+        }
     }
 
     public function index() {

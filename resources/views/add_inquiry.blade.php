@@ -24,6 +24,7 @@
         else
             $ipaddress = 'UNKNOWN';
     }   
+    $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
      
 ?>
 <div class="row">
@@ -31,7 +32,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li style="<?php if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){ echo 'display:none;'; }else {echo ""; }?>"><a href="{{url('inquiry')}}">Inquiry</a></li>
+                    <li style="<?php if((!in_array($ipaddress, $ip_array) || $otp_validate == true) && Auth::user()->role_id == 2){ echo 'display:none;'; }else {echo ""; }?>"><a href="{{url('inquiry')}}">Inquiry</a></li>
                     <li class="active"><span>Add Inquiry</span></li>
                 </ol>
                 <div class="clearfix"><h1 class="pull-left"></h1></div>
@@ -350,7 +351,7 @@
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_inquiry">Submit</button>
                                 <!--<input type="submit" class="btn btn-primary form_button_footer btn_add_inquiry" value="Submit">-->
                                 <!-- <a href="{{url('/')}}/inquiry" class="btn btn-default form_button_footer">Back</a> -->
-                                <a href="<?php if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){ echo "/dashboard";}else{ echo "/inquiry";}?>" class="btn btn-default form_button_footer">Back</a>
+                                <a href="<?php if((!in_array($ipaddress, $ip_array) || $otp_validate == true) && Auth::user()->role_id == 2){ echo "/dashboard";}else{ echo "/inquiry";}?>" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>

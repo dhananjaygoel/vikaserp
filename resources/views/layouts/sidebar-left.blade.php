@@ -27,6 +27,7 @@
             } else {
                 $ip_array = array($ipaddress);
             }
+            $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
             // print_r($ip_array);
             // exit;
             ?>
@@ -133,7 +134,7 @@
                     </li>
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('*users*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Users">
                         <a href="{{url('/')}}/users">
                             <i class="fa fa-user"></i>
@@ -144,7 +145,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('customers*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Customers">
                         <a href="{{url('customers')}}">
                             <i class="fa fa-male"></i>
@@ -155,7 +156,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 )
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="{{ (Request::is('pending_customers*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Pending Customers">
                         <a href="{{url('pending_customers')}}">
                             <i class="fa fa-book"></i>
@@ -166,7 +167,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
                     <li class="{{ (Request::is('*inquiry*') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Inquiry">
                         <a href="{{url("inquiry")}}">
                             <i class="fa fa-info"></i>
@@ -177,7 +178,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 ||  Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
                     <li class="<?php
                     if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')|| Request::is('*daily_pro_forma_invoice*')) {
                         echo 'active';
@@ -256,7 +257,7 @@
                     </li>
                     @endif
                     @endif
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0)
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
                     <li class="<?php
                     if (Request::is('*purchase_orders*') || Request::is('*purchaseorder_advise*') || Request::is('*purchase_challan*') || Request::is('*purchase_order_report*') || Request::is('*purchase_order_daybook*') || Request::is('*pending_purchase_advice*') || Request::is('*purchase_estimate*')) {
@@ -326,7 +327,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*product_category*') || Request::is('*product_sub_category*') || Request::is('*thickness*')) {
                         echo 'active';
@@ -358,7 +359,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 ||Auth::user()->role_id == 1)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <li class="<?php
                     if (Request::is('*states*') || Request::is('*city*') || Request::is('*unit*') || Request::is('*location*')) {
                         echo 'active';
@@ -425,7 +426,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 7)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0)
                     <li class="<?php if (Request::is('vehicle-list*') || Request::is('pa-vehicle-list*')) {
                         echo 'active';
                         } ?> menutooltip" data-placement='right' data-original-title="Truck List">
@@ -438,7 +439,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 1)
                     <div style="display:none">
                         <!--                        Do not display customer Module-->
                         <li class="{{ (Request::is('*customer_manager*') ? 'active' : '') }}">
@@ -461,7 +462,7 @@
                     </li>
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 10)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || $otp_validate == true || Auth::user()->role_id == 0)
                     <li class="{{ (Request::is('bulk-delete') ? 'active' : '') }} menutooltip" data-placement='right' data-original-title="Bulk Delete">
                         <a href="{{url('bulk-delete')}}">
                             <i class="fa fa-trash-o"></i>

@@ -24,14 +24,14 @@
         else
             $ipaddress = 'UNKNOWN';
     }   
-     
+    $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
 ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
-                    <li style="<?php if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){ echo 'display:none;'; }else {echo ""; }?>"><a href="{{url('orders')}}"  >Orders</a></li>
+                    <li style="<?php if((!in_array($ipaddress, $ip_array) || $otp_validate == true) && Auth::user()->role_id == 2){ echo 'display:none;'; }else {echo ""; }?>"><a href="{{url('orders')}}"  >Orders</a></li>
                     <li class="active"><span>Place Order</span></li>
                 </ol>
                 <div class="clearfix">
@@ -459,7 +459,7 @@
                                 <input type="hidden" name="total_products" id="total_products" value="{{isset($existig_product)?$existig_product:10}}">
                                 <button type="submit" class="btn btn-primary form_button_footer btn_add_order">Submit</button>
                                 <!-- <a href="{{url('orders')}}" class="btn btn-default form_button_footer">Back</a> -->
-                                <a href="<?php if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){ echo "/dashboard";}else{ echo "/orders";}?>" class="btn btn-default form_button_footer">Back</a>
+                                <a href="<?php if((!in_array($ipaddress, $ip_array) || $otp_validate == true) && Auth::user()->role_id == 2){ echo "/dashboard";}else{ echo "/orders";}?>" class="btn btn-default form_button_footer">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </form>
