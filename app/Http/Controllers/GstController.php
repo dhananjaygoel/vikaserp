@@ -91,7 +91,7 @@ class GstController extends Controller {
             'ClientSecret' => $quickbook->secret,
             'accessTokenKey' =>  $quickbook->access_token,
             'refreshTokenKey' => $quickbook->refresh_token,
-            'QBORealmID' => "9130346851582276",
+            'QBORealmID' => env('QBORealmID_Plus_GST'),
             'baseUrl' => "production"));
         // return $dataService = \QuickBooksOnline\API\DataService\DataService::Configure(array(
         //         'auth_mode' => 'oauth2',
