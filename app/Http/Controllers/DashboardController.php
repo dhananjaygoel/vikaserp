@@ -110,7 +110,7 @@ class DashboardController extends Controller {
                 'otp_generation_time' => $formatted_date,
             )
         );
-        $str = "Your One Time Password(OTP) for login is : ".$otp.", valid for next 5 minutes.\nPlease do not share with others.\nCall our support team if not requested by you.\nVIKAS ASSOCIATES.";
+        $str = "Your One Time Password(OTP) for login is: ".$otp.", valid for next 5 minutes.\nPlease do not share with others.\nCall our support team if not requested by you.\nVIKAS ASSOCIATES.";
             
         $user = User::find($user_id);
         
