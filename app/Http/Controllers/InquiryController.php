@@ -62,7 +62,6 @@ class InquiryController extends Controller {
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id <> 5) {
 
@@ -151,7 +150,7 @@ class InquiryController extends Controller {
     public function create() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $units = Units::all();
         $inquiry = [];
@@ -403,7 +402,6 @@ class InquiryController extends Controller {
         
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {
@@ -513,7 +511,6 @@ class InquiryController extends Controller {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
 
@@ -862,7 +859,7 @@ class InquiryController extends Controller {
     public function destroy() {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $whatsapp_error = '';
         $inquiry_filter=Input::get('inquiry_sort_type')!=""?Input::get('inquiry_sort_type'):"";
@@ -1442,7 +1439,6 @@ class InquiryController extends Controller {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {
@@ -1478,7 +1474,7 @@ class InquiryController extends Controller {
 
     function store_place_order($id, InquiryRequest $request) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
         $sms_flag = 1;

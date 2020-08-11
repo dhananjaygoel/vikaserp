@@ -523,7 +523,7 @@ class PurchaseChallanController extends Controller {
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Hash::check($password, Auth::user()->password)) {
 

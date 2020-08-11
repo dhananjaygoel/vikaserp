@@ -1514,7 +1514,7 @@ class OrderController extends Controller {
         $userinfo = auth()->user();
         $order_sort_type = $formFields['order_sort_type'];
         if ($userinfo->role_id != 0 && $userinfo->role_id != 1) {
-            return redirect('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         } elseif ($password == '') {
 //            return redirect('orders')->with('error', 'Please enter your password');
             return Redirect::back()->with('error', 'Please enter your password');

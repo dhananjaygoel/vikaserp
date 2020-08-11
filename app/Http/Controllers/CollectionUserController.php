@@ -39,7 +39,7 @@ class CollectionUserController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('/')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $search_field = Input::get('search');
@@ -105,7 +105,7 @@ class CollectionUserController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('/')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $data = array(
             "first_name" => Input::get('first_name'),
@@ -161,7 +161,7 @@ class CollectionUserController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('/')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $user = User::with('locations')->find($id);
         $territories = Territory::orderBy('created_at', 'DESC')->get();
@@ -253,7 +253,7 @@ class CollectionUserController extends Controller {
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('wrong', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
         if ($password == '') {

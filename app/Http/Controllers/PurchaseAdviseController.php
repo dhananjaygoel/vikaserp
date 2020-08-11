@@ -521,7 +521,7 @@ class PurchaseAdviseController extends Controller {
         $password = $formFields['password'];
         $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if ($password == '') {
             return Redirect::to('purchaseorder_advise')->with('error', 'Please enter your password');

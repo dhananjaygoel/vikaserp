@@ -41,7 +41,7 @@ class UsersController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 //        $users_data = User::where('role_id', '!=', 0)->with('user_role')->orderBy('created_at', 'desc')->Paginate(20);
         $users_data = User::with('user_role')->where('first_name', '!=', 'Super')
@@ -62,7 +62,7 @@ class UsersController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         //$roles = UserRoles::where('role_id', '!=', 0)->get();
         $roles = UserRoles::where('name', '!=', 'Super Admin')->get();
@@ -100,7 +100,7 @@ class UsersController extends Controller {
 //            }
 //        } else {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $Users_data = new User();
         $Users_data->role_id = Input::get('user_type');
@@ -125,7 +125,7 @@ class UsersController extends Controller {
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
             if (Input::get('mobile') == Auth::user()->mobile_number) {
@@ -149,7 +149,7 @@ class UsersController extends Controller {
     public function edit($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
        // $roles = UserRoles::where('role_id', '!=', 0)->get();
@@ -166,7 +166,7 @@ class UsersController extends Controller {
 
     public function update(UpdateUser $request, $id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $this->validate($request, [
@@ -242,7 +242,7 @@ class UsersController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';

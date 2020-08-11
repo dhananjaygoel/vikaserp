@@ -620,7 +620,7 @@ class DeliveryOrderController extends Controller {
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $data = Input::all();
