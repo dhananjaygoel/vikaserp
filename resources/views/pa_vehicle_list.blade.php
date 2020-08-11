@@ -37,6 +37,13 @@
                 </form>
             </div>
         </div> 
+        @if(Session::has('error'))
+        <div class="clearfix"> &nbsp;</div>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <strong> {{ Session::get('error') }} </strong>
+        </div>
+        @endif
 <!--        <div class="tab">
              <a href="{{url('vehicle-list')}}"><button class="tablinks" onclick="openCity(event, 'London')">Delivery Order Vehicle List</button></a>
             <a href="{{url('pa-vehicle-list')}}"><button class="tablinks active">Purchase Advise Vehicle List</button></a>
