@@ -111,7 +111,7 @@ class PendingCustomerController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customers = Customer::orderBy('created_at', 'desc')->where('customer_status', '=', 'pending')->paginate(20);
         $locations = DeliveryLocation::all();
@@ -129,7 +129,7 @@ class PendingCustomerController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
         if (count((array)$customer) < 1) {
@@ -149,7 +149,7 @@ class PendingCustomerController extends Controller {
     public function edit($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
         $locations = DeliveryLocation::all();
@@ -162,7 +162,7 @@ class PendingCustomerController extends Controller {
     public function update($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
         if (count((array)$customer) < 1) {
@@ -200,7 +200,7 @@ class PendingCustomerController extends Controller {
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
         if ($password == '') {
@@ -350,7 +350,7 @@ class PendingCustomerController extends Controller {
     public function add_pending_customers(StoreCustomer $request, $id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = Customer::find($id);
         if (count((array)$customer) < 1) {
