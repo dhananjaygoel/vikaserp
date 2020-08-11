@@ -395,7 +395,7 @@
                                         @foreach($delivery_data['delivery_product'] as $key=>$product)
                                             @if($product->order_type =='delivery_order')
 
-                                                <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}" {{($product->present_shipping==0)?'style = display:none':''}}>
+                                                <tr id="add_row_{{$key}}" class="add_product_row" data-row-id="{{$key}}">
                                                     <td class="col-md-2">
                                                         <div class="form-group searchproduct">
                                                             <input value="{{ $product['order_product_details']->alias_name}}" class="form-control" placeholder="Enter Product name " type="hidden" name="product[{{$key}}][name]" id="add_product_name_{{$key}}" onfocus="product_autocomplete({{$key}});">
