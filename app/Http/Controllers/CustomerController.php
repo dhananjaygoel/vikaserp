@@ -68,8 +68,8 @@ class CustomerController extends Controller {
             return redirect('change_password');
         }
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $customers = '';
@@ -451,7 +451,7 @@ public function update_cust_all_inc(){
     public function store(Request $request) {
 // dd('hello this is store');
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = new Customer();
         $users = new User();
@@ -744,8 +744,8 @@ public function update_cust_all_inc(){
             return redirect('change_password');
         }
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = Customer::with('deliverylocation', 'customerproduct', 'manager')->find($id);
         $states = States::all();
@@ -762,7 +762,7 @@ public function update_cust_all_inc(){
         $states = States::all();
         $cities = City::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $customer = Customer::with('customerproduct')->find($id);
         if (count((array)$customer) < 1) {
@@ -780,7 +780,7 @@ public function update_cust_all_inc(){
      */
     public function update($id) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $validator = Validator::make(Input::all(), Customer::$customers_rules);
         // dd(Input::all());
@@ -1075,7 +1075,7 @@ public function update_cust_all_inc(){
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
         if ($password == '') {

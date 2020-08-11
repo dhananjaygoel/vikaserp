@@ -79,7 +79,7 @@ class PurchaseOrderController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $q = PurchaseOrder::query();
         if ((isset($data['pending_purchase_order'])) && $data['pending_purchase_order'] != '') {
@@ -99,7 +99,7 @@ class PurchaseOrderController extends Controller {
             $q = $q->where('order_status', '=', 'pending');
         }
 
-        if (Auth::user()->role_id > 1) {
+        if (Auth::user()->role_id > 2) {
             $q->where('is_view_all', '=', 1);
         }
 

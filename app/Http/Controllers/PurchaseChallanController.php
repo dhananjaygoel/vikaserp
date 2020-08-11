@@ -52,7 +52,7 @@ class PurchaseChallanController extends Controller {
 
         $data = Input::all();
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -127,6 +127,9 @@ class PurchaseChallanController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(PurchaseChallanRequest $request) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $input_data = Input::all();
         $sms_flag = 0;
@@ -431,7 +434,9 @@ class PurchaseChallanController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Auth::user()->role_id == 5 | $id == "") {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
@@ -511,6 +516,9 @@ class PurchaseChallanController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
@@ -542,7 +550,9 @@ class PurchaseChallanController extends Controller {
     }
 
     public function print_purchase_challan($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         //$current_date = date("m/d");
         $sms_flag = 1;
 

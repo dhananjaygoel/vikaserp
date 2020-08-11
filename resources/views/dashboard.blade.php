@@ -29,7 +29,14 @@
             </div>
         </div>
         @if (Session::has('flash_success_message'))
-        <div id="flash_success_message" class="alert alert-success no_data_msg_container">{{ Session::get('flash_success_message') }}</div>
+            <div id="flash_success_message" class="alert alert-success no_data_msg_container">{{ Session::get('flash_success_message') }}</div>
+        @endif
+        @if(Session::has('error'))
+            <div class="clearfix"> &nbsp;</div>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong> {{ Session::get('error') }} </strong>
+            </div>
         @endif
         <?php
             $ipaddress = '';

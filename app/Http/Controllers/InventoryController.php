@@ -86,7 +86,7 @@ class InventoryController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 3) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -855,6 +855,9 @@ class InventoryController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
         if (count((array)$product_cat) > 0) {
             $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
@@ -1161,7 +1164,9 @@ class InventoryController extends Controller {
     }
 
     public function inventoryPriceList() {
-        
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }

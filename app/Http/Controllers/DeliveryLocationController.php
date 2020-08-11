@@ -34,7 +34,7 @@ class DeliveryLocationController extends Controller {
      */
     public function index() {
         
-          if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+          if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 3) {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         
@@ -49,7 +49,7 @@ class DeliveryLocationController extends Controller {
      */
     public function create() {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('location')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $states = States::orderBy('state_name', 'ASC')->get();
         $cities = City::orderBy('city_name', 'ASC')->get();
@@ -62,7 +62,7 @@ class DeliveryLocationController extends Controller {
     public function store(LocationRequest $request) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('location')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $location = new DeliveryLocation();
         $location->area_name = $request->input('area_name');
@@ -79,7 +79,7 @@ class DeliveryLocationController extends Controller {
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('location')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $delivery_location = DeliveryLocation::find($id);
         $states = States::orderBy('state_name', 'ASC')->get();
@@ -92,7 +92,7 @@ class DeliveryLocationController extends Controller {
      */
     public function update($id, EditLocationRequest $request) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('location')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $check_location_exists = DeliveryLocation::where('area_name', '=', $request->input('area_name'))->where('id', '!=', $id)->count();
         if ($check_location_exists == 0) {
@@ -113,7 +113,7 @@ class DeliveryLocationController extends Controller {
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('location')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_location = DeliveryLocation::find($id);

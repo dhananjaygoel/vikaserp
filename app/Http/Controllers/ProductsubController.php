@@ -68,7 +68,7 @@ class ProductsubController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id == 5 ) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -135,7 +135,7 @@ class ProductsubController extends Controller {
 
     public function create() {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $product_type = ProductType::all();
         // $thickness = \App\Thickness::orderBy('thickness','ASC')->all();
@@ -400,7 +400,7 @@ class ProductsubController extends Controller {
 
     public function store(ProductSubCategoryRequest $request) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
 
@@ -558,7 +558,7 @@ class ProductsubController extends Controller {
 
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
@@ -614,7 +614,7 @@ class ProductsubController extends Controller {
 
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('product_sub_category')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $prod_sub_cat = ProductSubCategory::with('product_category', 'product_unit')->find($id);
         if (count((array)$prod_sub_cat) < 1) {
@@ -633,6 +633,9 @@ class ProductsubController extends Controller {
      */
 
     public function update($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $validator = Validator::make(Input::all(), ProductSubCategory::$product_sub_category_rules);
 
 

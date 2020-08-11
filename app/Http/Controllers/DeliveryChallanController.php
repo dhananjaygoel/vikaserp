@@ -282,6 +282,9 @@ class DeliveryChallanController extends Controller {
             return redirect('change_password');
         }
 
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Auth::user()->role_id == 5) {
             return Redirect::to('inquiry')->with('error', 'You do not have permission.');
         }
@@ -480,6 +483,15 @@ class DeliveryChallanController extends Controller {
      * Display the specified Delivery Challan Details.
      */
     public function show($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -547,7 +559,12 @@ class DeliveryChallanController extends Controller {
      */
     public function edit($id = "") {
         $idata = Input::all();
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         if (array_key_exists("task",$idata)) {
             $data['task'] = $idata['task'];
         } else {
@@ -580,7 +597,15 @@ class DeliveryChallanController extends Controller {
      * Update Delivery Challan Details
      */
     public function update($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         $input_data = Input::all();
         $tasked = $input_data['task'];
 
@@ -1003,7 +1028,15 @@ class DeliveryChallanController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
@@ -1114,6 +1147,15 @@ class DeliveryChallanController extends Controller {
     }
 
     public function generate_invoice($id){
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         set_time_limit(0);
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
@@ -1545,6 +1587,15 @@ class DeliveryChallanController extends Controller {
 
 
     public function print_delivery_challan($id, DropboxStorageRepository $connection) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $sms_flag = 1;

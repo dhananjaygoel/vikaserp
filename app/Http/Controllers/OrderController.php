@@ -473,8 +473,8 @@ class OrderController extends Controller {
             return redirect('change_password');
         }
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
-            return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {
@@ -679,8 +679,8 @@ class OrderController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $order = [];
         if (Auth::user()->role_id == 5) {
@@ -1051,6 +1051,10 @@ class OrderController extends Controller {
             return redirect('change_password');
         }
 
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }        
+
         if (Auth::user()->role_id == 5) {
             $cust = Customer::where('owner_name', '=', Auth::user()->first_name)
                     ->where('phone_number1', '=', Auth::user()->mobile_number)
@@ -1083,8 +1087,8 @@ class OrderController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
 
@@ -1116,6 +1120,9 @@ class OrderController extends Controller {
      * Functioanlity: Update order details
      */
     public function update($id, PlaceOrderRequest $request) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $input_data = Input::all();
         $sms_flag = 1;
@@ -1487,6 +1494,9 @@ class OrderController extends Controller {
      * Functioanlity: Delete individual order details
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $inputData = Input::get('formData');
         $flag = 1;
@@ -1627,7 +1637,7 @@ class OrderController extends Controller {
     public function manual_complete_order() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
-            return redirect('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $sms_flag = 1;
         $product_category_ids = [];
@@ -1792,8 +1802,11 @@ class OrderController extends Controller {
      */
 
     public function create_delivery_order($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Auth::user()->role_id == 5) {
-            return redirect('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         /* old */
         //$order = Order::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer')->find($id);

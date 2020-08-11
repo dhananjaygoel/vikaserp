@@ -96,6 +96,13 @@
                             {{Session::get('success')}}
                         </div>
                         @endif
+                        @if(Session::has('error'))
+                        <div class="clearfix"> &nbsp;</div>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <strong> {{ Session::get('error') }} </strong>
+                        </div>
+                        @endif
                         @if(count((array)$purchase_challan) > 0)
                         <div class="table-responsive">
                             <table id="table-example" class="table table-hover">

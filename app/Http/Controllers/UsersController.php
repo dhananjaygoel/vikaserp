@@ -213,7 +213,7 @@ class UsersController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 7) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Input::get('search') != '') {
             $term = '%' . Input::get('search') . '%';

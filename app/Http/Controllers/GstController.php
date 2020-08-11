@@ -21,6 +21,9 @@ class GstController extends Controller {
 	 */
 	public function index()
 	{
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $gst = Gst::orderBy('id','DESC')->paginate(10);
         return view('gst', compact('gst'));
 	}
@@ -116,6 +119,9 @@ class GstController extends Controller {
 
 	public function create()
 	{
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
        /* require_once base_path('quickbook/vendor/autoload.php');
 	    //$quickgst = [];
         $dataService = $this->getToken();
@@ -163,6 +169,9 @@ class GstController extends Controller {
         //    // 'quick_gst_id'=>'required'
         // ]);
 
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $str_gst = $request->input('gst');
 		$str_igst = $request->input('igst');
         
@@ -203,6 +212,9 @@ class GstController extends Controller {
 	 */
 	public function show($id)
 	{
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
        return \redirect('gst');
 	}
 
@@ -227,7 +239,7 @@ class GstController extends Controller {
         }*/
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('gst')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $gst = Gst::find($id);
         return view('gst_edit', compact('gst'));
@@ -242,7 +254,7 @@ class GstController extends Controller {
 	public function update($id,Request $request)
 	{
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('gst')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $str_gst = $request->input('gst');
@@ -304,7 +316,7 @@ class GstController extends Controller {
 	public function destroy($id)
 	{
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('gst')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         if (Hash::check(Input::get('password'), Auth::user()->password)) {

@@ -60,8 +60,9 @@ class InquiryController extends Controller {
         }
 
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id <> 5) {
 
@@ -400,8 +401,9 @@ class InquiryController extends Controller {
      */
     public function show($id, InquiryRequest $request) {
         
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {
@@ -509,8 +511,9 @@ class InquiryController extends Controller {
      */
     public function edit($id, InquiryRequest $request) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
 
@@ -1437,8 +1440,9 @@ class InquiryController extends Controller {
 
     function place_order($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+            // return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {

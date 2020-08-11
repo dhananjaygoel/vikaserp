@@ -63,8 +63,12 @@
                                 @if (Session::has('flash_message'))
                                     <div id="flash_error" class="alert alert-info no_data_msg_container">{{ Session::get('flash_message') }}</div>
                                 @endif
-                                @if (Session::has('error'))
-                                    <div id="flash_error" class="alert alert-danger no_data_msg_container">{{ Session::get('error') }}</div>
+                                @if(Session::has('error'))
+                                    <div class="clearfix"> &nbsp;</div>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <strong> {{ Session::get('error') }} </strong>
+                                    </div>
                                 @endif
 
                                 @if (count($errors->all()) > 0)
