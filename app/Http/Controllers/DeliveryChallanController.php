@@ -285,9 +285,9 @@ class DeliveryChallanController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
-        if (Auth::user()->role_id == 5) {
-            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
-        }
+        // if (Auth::user()->role_id == 5) {
+        //     return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        // }
         if (Auth::user()->role_id == 6) {
             return Redirect::to('due-payment');
         }

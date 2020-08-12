@@ -669,7 +669,7 @@ class DeliveryOrderController extends Controller {
 
     public function pending_delivery_order() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $filteron = "";
