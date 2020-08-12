@@ -40,6 +40,9 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        if($_SERVER['REQUEST_URI'] == '/login'){
+            Session::put('logged_in',true);
+        }
         Session::forget('send_otp');
         $this->middleware('guest')->except('logout');
     }

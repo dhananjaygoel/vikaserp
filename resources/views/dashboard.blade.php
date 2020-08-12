@@ -63,11 +63,10 @@
             } else {
                 $ip_array = array($ipaddress);
             }
-            $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
             // print_r($ip_array);
             // exit;
             ?>
-            @if(in_array($ipaddress, $ip_array) || $otp_validate == true || Auth::user()->role_id == 0)
+            @if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0)
         @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 2)
         <div class="row">
             <!--            <div class="col-lg-3 col-sm-6 col-xs-12">

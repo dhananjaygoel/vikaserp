@@ -43,14 +43,13 @@ class validIpMiddleware {
                 $ipaddress = 'UNKNOWN';
 
             if ($ipaddress != 'UNKNOWN') {
-                $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
-                if (in_array($ipaddress, $ip_array) || $otp_validate == true || Auth::user()->role_id == 0 || Auth::user()->role_id == 5 ){
+                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5 ){
                     // return redirect('dashboard');
                     return $next($request);
-                }else if((in_array($ipaddress, $ip_array) || $otp_validate == true )&& Auth::user()->role_id == 10){
+                }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
                     return redirect('bulk-delete');
-                }else if((!in_array($ipaddress, $ip_array) || $otp_validate == true) && Auth::user()->role_id == 2){
+                }else if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
                     if($_SERVER['REQUEST_URI'] == '/dashboard' || $request->is('inquiry/*') || $request->is('orders/*') || $request->is('fetch_existing_customer*') || $request->is('fetch_products*')){
                         return $next($request);
                     }else{
@@ -64,7 +63,14 @@ class validIpMiddleware {
                 }
             }
         }
-        return $next($request);
+        $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
+        if($logged_in == true){
+            Session::put('send_otp', false);
+            Session::forget('logged_in');
+            return redirect('otp_verification');
+        }else{
+            return $next($request);
+        }
     }
 
 }

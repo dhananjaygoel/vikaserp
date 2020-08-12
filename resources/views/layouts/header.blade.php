@@ -303,7 +303,7 @@ $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
             </div>
             <div class="nav-no-collapse pull-right" id="header-nav">
                 <ul class="nav navbar-nav pull-right">
-                @if(in_array($ipaddress, $ip_array) || $otp_validate == true || Auth::user()->role_id == 0)
+                @if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0)
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9)
                     <li class="dropdown notify-dropdown">
                         
@@ -401,7 +401,7 @@ $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
 <?php 
-if(in_array($ipaddress, $ip_array) || $otp_validate == true || Auth::user()->role_id == 0 ){ 
+if(in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 ){ 
 ?>
 $(document).ready(function () {
 setTimeout(function(){get_fb();}, 2000);

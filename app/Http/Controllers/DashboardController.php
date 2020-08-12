@@ -23,6 +23,7 @@ use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
 use Carbon;
 use App\AllOrderProducts;
+use App\Security;
 
 class DashboardController extends Controller {
 
@@ -73,8 +74,8 @@ class DashboardController extends Controller {
                 )
             );
 
-            $str = "Your One Time Password(OTP) for login is : ".$otp.", valid for next 5 minutes.\nPlease do not share with others.\nCall our support team if not requested by you.\nVIKAS ASSOCIATES.";
-            
+            $str = $otp." is One Time Password (OTP) for your login. The OTP is valid for 5 mins.\nPLEASE DO NOT SHARE WITH ANYONE.\nIf you are not accessing, please call our support team.\nVIKAS ASSOCIATES.";
+
             $user = User::find($user_id);
             
             if (App::environment('local')) {
@@ -110,7 +111,7 @@ class DashboardController extends Controller {
                 'otp_generation_time' => $formatted_date,
             )
         );
-        $str = "Your One Time Password(OTP) for login is: ".$otp.", valid for next 5 minutes.\nPlease do not share with others.\nCall our support team if not requested by you.\nVIKAS ASSOCIATES.";
+        $str = $otp." is One Time Password (OTP) for your login. The OTP is valid for 5 mins.\nPLEASE DO NOT SHARE WITH ANYONE.\nIf you are not accessing, please call our support team.\nVIKAS ASSOCIATES.";
             
         $user = User::find($user_id);
         

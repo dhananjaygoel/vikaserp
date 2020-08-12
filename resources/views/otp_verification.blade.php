@@ -82,7 +82,17 @@
                             </header>
                             <div id="login-box-inner">
                                 <div class="prompt">
-                                    Enter the code sent to your registered mobile number below to log in!
+                                <?php 
+                                    $user = App\User::find(Auth::user()->id);
+                                    if ($user) {
+                                        $phone_number = $user->mobile_number;
+                                    }else{
+                                        $phone_number = '0123456789';
+                                    }
+                                    $masked =  str_pad(substr($phone_number, -4), strlen($phone_number), 'x', STR_PAD_LEFT);
+                                ?>
+                                    Please enter the OTP you’ve received on {{ $masked }}
+                                    <!-- Enter the code sent to your registered mobile number below to log in! -->
                                 </div>
                                 {!!Form::open(array('method'=>'POST','url'=>url('validate_otp/')))!!}
                                 <!-- <form action="{{ URL::action('DashboardController@validate_otp') }}" method="POST"> -->
