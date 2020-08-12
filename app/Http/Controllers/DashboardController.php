@@ -62,7 +62,9 @@ class DashboardController extends Controller {
     public function generate_otp(){
         $send_otp = Session::has('send_otp')?Session::get('send_otp'):false;
         if($send_otp == false){
-            $otp = rand(000000,999999);
+            // $otp = rand(000000,999999);
+            $digits = 6;
+            $otp = rand(pow(10, $digits-1), pow(10, $digits)-1);
             $user_id = Auth::user()->id;
             $date = new Carbon\Carbon;
             $formatted_date = $date->format('Y-m-d H:i:s');
@@ -101,7 +103,8 @@ class DashboardController extends Controller {
     }
 
     public function resend_otp(){
-        $otp = rand(000000,999999);
+        $digits = 6;
+        $otp = rand(pow(10, $digits-1), pow(10, $digits)-1);
         $user_id = Auth::user()->id;
         $date = new Carbon\Carbon;
         $formatted_date = $date->format('Y-m-d H:i:s');
@@ -112,7 +115,7 @@ class DashboardController extends Controller {
             )
         );
         $str = $otp." is One Time Password (OTP) for your login. The OTP is valid for 5 mins.\nPLEASE DO NOT SHARE WITH ANYONE.\nIf you are not accessing, please call our support team.\nVIKAS ASSOCIATES.";
-            
+
         $user = User::find($user_id);
         
         if (App::environment('local')) {

@@ -43,6 +43,7 @@ class validIpMiddleware {
                 $ipaddress = 'UNKNOWN';
 
             if ($ipaddress != 'UNKNOWN') {
+                $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
                 if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5 ){
                     // return redirect('dashboard');
@@ -57,20 +58,26 @@ class validIpMiddleware {
                     }
                 }
                 else{
-                    Session::put('send_otp', false);
-                    // return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
-                    return redirect('otp_verification');
+                    if($otp_validate == true){
+                        return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
+                    }else{
+                        Session::put('send_otp', false);
+                        return redirect('otp_verification');
+                    }
                 }
             }
         }
-        $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
-        if($logged_in == true){
-            Session::put('send_otp', false);
-            Session::forget('logged_in');
-            return redirect('otp_verification');
+        if(Auth::user()->role_id != 0){
+            $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
+            if($logged_in == true){
+                Session::put('send_otp', false);
+                Session::forget('logged_in');
+                return redirect('otp_verification');
+            }else{
+                return $next($request);
+            }
         }else{
             return $next($request);
-        }
+        }   
     }
-
 }
