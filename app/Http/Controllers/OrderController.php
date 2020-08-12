@@ -50,7 +50,7 @@ class OrderController extends Controller {
         define('SEND_SMS', Config::get('smsdata.send'));
         define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
         define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
-        $this->middleware('validIP', ['except' => ['create', 'store']]);
+        $this->middleware('validIP', ['except' => ['create', 'store','supervisor_count']]);
     }
 
     /**
