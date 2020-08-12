@@ -34,7 +34,7 @@ class DeliveryLocationController extends Controller {
      */
     public function index() {
         
-          if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 3) {
+          if (Auth::user()->role_id != 0) {
            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         
