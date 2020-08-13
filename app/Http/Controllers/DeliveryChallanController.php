@@ -1247,75 +1247,6 @@ class DeliveryChallanController extends Controller {
             $vat_clc=0;
             $gst_percentage=0;
 
-            $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
-            $hsn_array = $hsn_data->hsn;
-            if($hsn_data->vat_percentage!=0){
-                foreach($hsn_array as $del_products){
-                    if($del_products['actual_quantity'] != 0){
-                        $gst_percentage = $del_products['vat_percentage'];
-                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
-
-                        $productname = ltrim($del_products['id']);
-                        $item_query = "select * from Item where Name ='".$productname."'";
-                        $item_details = $dataService->Query($item_query);
-
-                        if(!empty($item_details)){
-                            $quickbook_item_id = $item_details[0]->Id;
-                        }
-
-                        $line[] = [
-                            "Description" => $del_products['actual_quantity']." KG",
-                            "Amount" => $del_products['amount'],
-                            "DetailType" => "SalesItemLineDetail",
-                            "SalesItemLineDetail" => [
-                                "ItemRef" => [
-                                    "name" => $productname,
-                                    "value" => $quickbook_item_id
-                                ],
-                                "UnitPrice" => $del_products['amount']/$del_products['count'],
-                                "Qty" => $del_products['count'],
-                                "TaxCodeRef" => [
-                                    "value" => 22
-                                ],
-                                "TaxClassificationRef" => $del_products['id']
-                            ]
-                        ];
-                    }
-                }
-            }else{
-                foreach($hsn_array as $del_products){
-                    if($del_products['actual_quantity'] != 0){
-                        $gst_percentage = $del_products['vat_percentage'];
-                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
-
-                        $productname = ltrim($del_products['id']);
-                        $item_query = "select * from Item where Name ='".$productname."'";
-                        $item_details = $dataService->Query($item_query);
-
-                        if(!empty($item_details)){
-                            $quickbook_item_id = $item_details[0]->Id;
-                        }
-                        $line[] = [
-                            "Description" => $del_products['actual_quantity']." KG",
-                            "Amount" => $del_products['amount'],
-                            "DetailType" => "SalesItemLineDetail",
-                            "SalesItemLineDetail" => [
-                                "ItemRef" => [
-                                    "name" => $productname,
-                                    "value" => $quickbook_item_id
-                                ],
-                                "UnitPrice" => $del_products['amount'],
-                                "Qty" => 1,
-                                "TaxCodeRef" => [
-                                    "value" => 9
-                                ],
-                                "TaxClassificationRef" => $del_products['id']
-                            ]
-                        ];
-                    }
-                }
-            }
-
             foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 if($del_products->actual_quantity != 0){
                 $TaxCodeRef = 0;
@@ -1429,6 +1360,74 @@ class DeliveryChallanController extends Controller {
                     ];
                 }*/
             }
+            }
+            $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
+            $hsn_array = $hsn_data->hsn;
+            if($hsn_data->vat_percentage!=0){
+                foreach($hsn_array as $del_products){
+                    if($del_products['actual_quantity'] != 0){
+                        $gst_percentage = $del_products['vat_percentage'];
+                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
+
+                        $productname = ltrim($del_products['id']);
+                        $item_query = "select * from Item where Name ='".$productname."'";
+                        $item_details = $dataService->Query($item_query);
+
+                        if(!empty($item_details)){
+                            $quickbook_item_id = $item_details[0]->Id;
+                        }
+
+                        $line[] = [
+                            "Description" => $del_products['actual_quantity']." KG",
+                            "Amount" => $del_products['amount'],
+                            "DetailType" => "SalesItemLineDetail",
+                            "SalesItemLineDetail" => [
+                                "ItemRef" => [
+                                    "name" => $productname,
+                                    "value" => $quickbook_item_id
+                                ],
+                                "UnitPrice" => $del_products['amount']/$del_products['count'],
+                                "Qty" => $del_products['count'],
+                                "TaxCodeRef" => [
+                                    "value" => $TaxCodeRef
+                                ],
+                                "TaxClassificationRef" => $del_products['id']
+                            ]
+                        ];
+                    }
+                }
+            }else{
+                foreach($hsn_array as $del_products){
+                    if($del_products['actual_quantity'] != 0){
+                        $gst_percentage = $del_products['vat_percentage'];
+                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
+
+                        $productname = ltrim($del_products['id']);
+                        $item_query = "select * from Item where Name ='".$productname."'";
+                        $item_details = $dataService->Query($item_query);
+
+                        if(!empty($item_details)){
+                            $quickbook_item_id = $item_details[0]->Id;
+                        }
+                        $line[] = [
+                            "Description" => $del_products['actual_quantity']." KG",
+                            "Amount" => $del_products['amount'],
+                            "DetailType" => "SalesItemLineDetail",
+                            "SalesItemLineDetail" => [
+                                "ItemRef" => [
+                                    "name" => $productname,
+                                    "value" => $quickbook_item_id
+                                ],
+                                "UnitPrice" => $del_products['amount'],
+                                "Qty" => 1,
+                                "TaxCodeRef" => [
+                                    "value" => 9
+                                ],
+                                "TaxClassificationRef" => $del_products['id']
+                            ]
+                        ];
+                    }
+                }
             }
 
             if($del_products->vat_percentage==0)
