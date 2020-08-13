@@ -237,6 +237,7 @@
                                     $total_amount=0;
                                     $total_qty=0;
                                     $total_inc_gst=0;
+                                    $vat_clc = 0;
                                 ?>
                                 @foreach($allorder['hsn'] as $hsn)
                                 @if($hsn['actual_quantity'] != 0)
@@ -250,6 +251,7 @@
                                 <?php
                                     $gst_percentage = $hsn['vat_percentage'];
                                     $total_amount += $hsn['amount'];
+                                    $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
                                     $total_qty += $hsn['actual_quantity'];
                                     $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
                                 ?>
@@ -314,7 +316,8 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = (float)$with_total * (float)$gst / 100;
+                                        // $vat = (float)$with_total * (float)$gst / 100;
+                                        $vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                         // $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                                         // $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>

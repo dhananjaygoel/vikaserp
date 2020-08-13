@@ -1243,12 +1243,17 @@ class DeliveryChallanController extends Controller {
 
             $line = [];
             $i = 0;
+            $vat_clc=0;
+            $gst_percentage=0;
 
             $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
             $hsn_array = $hsn_data->hsn;
             if($hsn_data->vat_percentage!=0){
                 foreach($hsn_array as $del_products){
                     if($del_products['actual_quantity'] != 0){
+                        $gst_percentage = $del_products['vat_percentage'];
+                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
+
                         $productname = ltrim($del_products['id']);
                         $item_query = "select * from Item where Name ='".$productname."'";
                         $item_details = $dataService->Query($item_query);
@@ -1279,6 +1284,9 @@ class DeliveryChallanController extends Controller {
             }else{
                 foreach($hsn_array as $del_products){
                     if($del_products['actual_quantity'] != 0){
+                        $gst_percentage = $del_products['vat_percentage'];
+                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
+
                         $productname = ltrim($del_products['id']);
                         $item_query = "select * from Item where Name ='".$productname."'";
                         $item_details = $dataService->Query($item_query);
@@ -1541,7 +1549,8 @@ class DeliveryChallanController extends Controller {
             }
                 $tax = 9;
                 $total = (float)$total_amount + (float)$update_delivery_challan->freight + (float)$update_delivery_challan->loading_charge + (float)$update_delivery_challan->discount;
-                $total_vat = $total * $gst_val / 100;
+                // $total_vat = $total * $gst_val / 100;
+                $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                 // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                 $tot = $total + $total_vat; 
                 $roundoff = round($tot,0) - $tot;
