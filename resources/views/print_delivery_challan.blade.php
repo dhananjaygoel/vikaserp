@@ -314,7 +314,7 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = $with_total * $gst / 100;
+                                        $vat = (float)$with_total * (float)$gst / 100;
                                         // $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                                         // $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>
