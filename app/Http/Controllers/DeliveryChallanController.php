@@ -1248,58 +1248,62 @@ class DeliveryChallanController extends Controller {
             $hsn_array = $hsn_data->hsn;
             if($hsn_data->vat_percentage!=0){
                 foreach($hsn_array as $del_products){
-                    $productname = ltrim($del_products['id']);
-                    $item_query = "select * from Item where Name ='".$productname."'";
-                    $item_details = $dataService->Query($item_query);
+                    if($del_products['actual_quantity'] != 0){
+                        $productname = ltrim($del_products['id']);
+                        $item_query = "select * from Item where Name ='".$productname."'";
+                        $item_details = $dataService->Query($item_query);
 
-                    if(!empty($item_details)){
-                        $quickbook_item_id = $item_details[0]->Id;
+                        if(!empty($item_details)){
+                            $quickbook_item_id = $item_details[0]->Id;
+                        }
+
+                        $line[] = [
+                            "Description" => $del_products['actual_quantity']." KG",
+                            "Amount" => $del_products['amount'],
+                            "DetailType" => "SalesItemLineDetail",
+                            "SalesItemLineDetail" => [
+                                "ItemRef" => [
+                                    "name" => $productname,
+                                    "value" => $quickbook_item_id
+                                ],
+                                "UnitPrice" => $del_products['amount']/$del_products['count'],
+                                "Qty" => $del_products['count'],
+                                "TaxCodeRef" => [
+                                    "value" => 22
+                                ],
+                                "TaxClassificationRef" => $del_products['id']
+                            ]
+                        ];
                     }
-
-                    $line[] = [
-                        "Description" => $del_products['actual_quantity']." KG",
-                        "Amount" => $del_products['amount'],
-                        "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => [
-                            "ItemRef" => [
-                                "name" => $productname,
-                                "value" => $quickbook_item_id
-                            ],
-                            "UnitPrice" => $del_products['amount']/$del_products['count'],
-                            "Qty" => $del_products['count'],
-                            "TaxCodeRef" => [
-                                "value" => 22
-                            ],
-                            "TaxClassificationRef" => $del_products['id']
-                        ]
-                    ];
                 }
             }else{
                 foreach($hsn_array as $del_products){
-                    $productname = ltrim($del_products['id']);
-                    $item_query = "select * from Item where Name ='".$productname."'";
-                    $item_details = $dataService->Query($item_query);
+                    if($del_products['actual_quantity'] != 0){
+                        $productname = ltrim($del_products['id']);
+                        $item_query = "select * from Item where Name ='".$productname."'";
+                        $item_details = $dataService->Query($item_query);
 
-                    if(!empty($item_details)){
-                        $quickbook_item_id = $item_details[0]->Id;
+                        if(!empty($item_details)){
+                            $quickbook_item_id = $item_details[0]->Id;
+                        }
+                        $line[] = [
+                            "Description" => $del_products['actual_quantity']." KG",
+                            "Amount" => $del_products['amount'],
+                            "DetailType" => "SalesItemLineDetail",
+                            "SalesItemLineDetail" => [
+                                "ItemRef" => [
+                                    "name" => $productname,
+                                    "value" => $quickbook_item_id
+                                ],
+                                "UnitPrice" => $del_products['amount'],
+                                "Qty" => 1,
+                                "TaxCodeRef" => [
+                                    "value" => 9
+                                ],
+                                "TaxClassificationRef" => $del_products['id']
+                            ]
+                        ];
                     }
-                    $line[] = [
-                        "Description" => $del_products['actual_quantity']." KG",
-                        "Amount" => $del_products['amount'],
-                        "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => [
-                            "ItemRef" => [
-                                "name" => $productname,
-                                "value" => $quickbook_item_id
-                            ],
-                            "UnitPrice" => $del_products['amount'],
-                            "Qty" => 1,
-                            "TaxCodeRef" => [
-                                "value" => 9
-                            ],
-                            "TaxClassificationRef" => $del_products['id']
-                        ]
-                    ];
                 }
             }
 
