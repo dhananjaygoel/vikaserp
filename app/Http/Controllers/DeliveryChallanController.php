@@ -1363,13 +1363,33 @@ class DeliveryChallanController extends Controller {
             }
             $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
             $hsn_array = $hsn_data->hsn;
-            if($hsn_data->vat_percentage!=0){
-                foreach($hsn_array as $del_products){
-                    if($del_products['actual_quantity'] != 0){
-                        $gst_percentage = $del_products['vat_percentage'];
-                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
+            if($del_products->vat_percentage!=0){
+                foreach($hsn_array as $hsn_products){
+                    if($hsn_products['actual_quantity'] != 0){
+                        if($gst){
+                            if(isset($gst->quick_gst_id) && isset($gst->quick_igst_id)){
+                                if($local_state == 1){
+                                    $TaxCodeRef = $gst->quick_gst_id;
+                                    $sgst = isset($gst->sgst)?$gst->sgst:0;
+                                    $cgst = isset($gst->cgst)?$gst->cgst:0;
+                                    $total_sgst_amount = round(($hsn_products['amount'] * $sgst / 100),2);
+                                    $total_cgst_amount = round(($hsn_products['amount'] * $cgst / 100),2);
+                                    $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                }else {
+                                    $TaxCodeRef = $gst->quick_igst_id;
+                                    $igst = isset($gst->igst)?$gst->igst:0;
+                                    $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                                }
+                            }else{
+                                $gst_percentage = $hsn_products['vat_percentage'];
+                                $vat_clc += round(($hsn_products['amount'] * $gst_percentage / 100),2);
+                            }
+                        }else{
+                            $gst_percentage = $hsn_products['vat_percentage'];
+                            $vat_clc += round(($hsn_products['amount'] * $gst_percentage / 100),2);
+                        }
 
-                        $productname = ltrim($del_products['id']);
+                        $productname = ltrim($hsn_products['id']);
                         $item_query = "select * from Item where Name ='".$productname."'";
                         $item_details = $dataService->Query($item_query);
 
@@ -1378,31 +1398,31 @@ class DeliveryChallanController extends Controller {
                         }
 
                         $line[] = [
-                            "Description" => $del_products['actual_quantity']." KG",
-                            "Amount" => $del_products['amount'],
+                            "Description" => $hsn_products['actual_quantity']." KG",
+                            "Amount" => $hsn_products['amount'],
                             "DetailType" => "SalesItemLineDetail",
                             "SalesItemLineDetail" => [
                                 "ItemRef" => [
                                     "name" => $productname,
                                     "value" => $quickbook_item_id
                                 ],
-                                "UnitPrice" => $del_products['amount']/$del_products['count'],
-                                "Qty" => $del_products['count'],
+                                "UnitPrice" => $hsn_products['amount']/$hsn_products['count'],
+                                "Qty" => $hsn_products['count'],
                                 "TaxCodeRef" => [
                                     "value" => $TaxCodeRef
                                 ],
-                                "TaxClassificationRef" => $del_products['id']
+                                "TaxClassificationRef" => $hsn_products['id']
                             ]
                         ];
                     }
                 }
             }else{
-                foreach($hsn_array as $del_products){
-                    if($del_products['actual_quantity'] != 0){
-                        $gst_percentage = $del_products['vat_percentage'];
-                        $vat_clc += round(($del_products['amount'] * $gst_percentage / 100),2);
+                foreach($hsn_array as $hsn_products){
+                    if($hsn_products['actual_quantity'] != 0){
+                        $gst_percentage = $hsn_products['vat_percentage'];
+                        $vat_clc += round(($hsn_products['amount'] * $gst_percentage / 100),2);
 
-                        $productname = ltrim($del_products['id']);
+                        $productname = ltrim($hsn_products['id']);
                         $item_query = "select * from Item where Name ='".$productname."'";
                         $item_details = $dataService->Query($item_query);
 
@@ -1410,20 +1430,20 @@ class DeliveryChallanController extends Controller {
                             $quickbook_item_id = $item_details[0]->Id;
                         }
                         $line[] = [
-                            "Description" => $del_products['actual_quantity']." KG",
-                            "Amount" => $del_products['amount'],
+                            "Description" => $hsn_products['actual_quantity']." KG",
+                            "Amount" => $hsn_products['amount'],
                             "DetailType" => "SalesItemLineDetail",
                             "SalesItemLineDetail" => [
                                 "ItemRef" => [
                                     "name" => $productname,
                                     "value" => $quickbook_item_id
                                 ],
-                                "UnitPrice" => $del_products['amount'],
+                                "UnitPrice" => $hsn_products['amount'],
                                 "Qty" => 1,
                                 "TaxCodeRef" => [
                                     "value" => 9
                                 ],
-                                "TaxClassificationRef" => $del_products['id']
+                                "TaxClassificationRef" => $hsn_products['id']
                             ]
                         ];
                     }
