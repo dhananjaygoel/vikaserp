@@ -155,6 +155,7 @@ class DashboardController extends Controller {
             $otp_time = $db_otp->otp_generation_time;
             if($otp == $otp_input){
                 Session::put('otp_validate', true);
+                Session::put('login_count',1);
                 return redirect('dashboard');
             }else{
                 return redirect('otp_verification')->with('errors','Invalid OTP. Please resend code to login again.');
