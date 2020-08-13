@@ -162,9 +162,11 @@
                                 if($local_state == 1){
                                     $sgst = (float)$gst_det->sgst;
                                     $cgst = (float)$gst_det->cgst;
+                                    $gst = (float)$gst_det->gst;
                                 }
                                 else{
                                     $igst = (float)(isset($gst_det->igst)?$gst_det->igst:0);
+                                    $gst = (float)$gst_det->gst;
                                 }
                             }
                         }
@@ -312,7 +314,9 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                                        $vat = $with_total * $gst / 100;
+                                        // $vat = $final_vat_amount + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
+                                        // $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>
                                     ₹ {{ round($vat,2) }}</td>
                                 </tr>

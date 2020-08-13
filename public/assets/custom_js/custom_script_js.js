@@ -1147,7 +1147,7 @@ function grand_total_challan() {
 //    total_price = parseFloat(total_price) + parseFloat(freight_value.toFixed(2));
     total_price = parseFloat(total_price.toFixed(2));
     var vat_val = 0;
-    
+    var vat_total = (total_price * vat_percentage) / 100;
     if (parseFloat($('#vat_percentage').val()) > 0) {
         vat_val = (total_price * parseFloat($('#vat_percentage').val())) / 100;
         $("#vat_val").html("" + vat_val + "")

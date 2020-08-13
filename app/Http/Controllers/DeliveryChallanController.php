@@ -1243,6 +1243,66 @@ class DeliveryChallanController extends Controller {
 
             $line = [];
             $i = 0;
+
+            $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
+            $hsn_array = $hsn_data->hsn;
+            if($hsn_data->vat_percentage!=0){
+                foreach($hsn_array as $del_products){
+                    $productname = ltrim($del_products['id']);
+                    $item_query = "select * from Item where Name ='".$productname."'";
+                    $item_details = $dataService->Query($item_query);
+
+                    if(!empty($item_details)){
+                        $quickbook_item_id = $item_details[0]->Id;
+                    }
+
+                    $line[] = [
+                        "Description" => $del_products['actual_quantity']." KG",
+                        "Amount" => $del_products['amount'],
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => $productname,
+                                "value" => $quickbook_item_id
+                            ],
+                            "UnitPrice" => $del_products['amount']/$del_products['count'],
+                            "Qty" => $del_products['count'],
+                            "TaxCodeRef" => [
+                                "value" => 22
+                            ],
+                            "TaxClassificationRef" => $del_products['id']
+                        ]
+                    ];
+                }
+            }else{
+                foreach($hsn_array as $del_products){
+                    $productname = ltrim($del_products['id']);
+                    $item_query = "select * from Item where Name ='".$productname."'";
+                    $item_details = $dataService->Query($item_query);
+
+                    if(!empty($item_details)){
+                        $quickbook_item_id = $item_details[0]->Id;
+                    }
+                    $line[] = [
+                        "Description" => $del_products['actual_quantity']." KG",
+                        "Amount" => $del_products['amount'],
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "name" => $productname,
+                                "value" => $quickbook_item_id
+                            ],
+                            "UnitPrice" => $del_products['amount'],
+                            "Qty" => 1,
+                            "TaxCodeRef" => [
+                                "value" => 9
+                            ],
+                            "TaxClassificationRef" => $del_products['id']
+                        ]
+                    ];
+                }
+            }
+
             foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 if($del_products->actual_quantity != 0){
                 $TaxCodeRef = 0;
@@ -1250,6 +1310,7 @@ class DeliveryChallanController extends Controller {
                 $sgst = 0;
                 $cgst = 0;
                 $igst = 0;
+                $gst_val = 0;
                 $price = ((isset($del_products->price) && $del_products->price != '0.00')?$del_products->price:$del_products['order_product_all_details']->product_category['price']);
                 $amount = (float)$del_products->actual_quantity * (float)$price;
                 $total_amount = round($amount + $total_amount, 2);
@@ -1275,12 +1336,14 @@ class DeliveryChallanController extends Controller {
                                     $TaxCodeRef = $gst->quick_gst_id;
                                     $sgst = isset($gst->sgst)?$gst->sgst:0;
                                     $cgst = isset($gst->cgst)?$gst->cgst:0;
+                                    $gst_val = isset($gst->gst)?$gst->gst:0;
                                     $total_sgst_amount = ((float)$amount * (float)$sgst) / 100;
                                     $total_cgst_amount = ((float)$amount * (float)$cgst) / 100;
                                     $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
                                 }else {
                                     $TaxCodeRef = $gst->quick_igst_id;
                                     $igst = isset($gst->igst)?$gst->igst:0;
+                                    $gst_val = isset($gst->gst)?$gst->gst:0;
                                     $total_igst_amount = ((float)$amount * (float)$igst) / 100;
                                     $total_vat_amount1 = round($total_igst_amount,2);
                                 }
@@ -1311,7 +1374,7 @@ class DeliveryChallanController extends Controller {
                 }*/
                 //print $item_details[0]->Id;
 
-                if($del_products->vat_percentage!=0){
+                /*if($del_products->vat_percentage!=0){
                     $line[] = [
                         // "HSN/SAC" => $del_products->hsn_code,
                         "Description" => $del_products->order_product_all_details->product_category->product_type->name,
@@ -1351,7 +1414,7 @@ class DeliveryChallanController extends Controller {
                             "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
                         ]
                     ];
-                }
+                }*/
             }
             }
 
@@ -1474,7 +1537,8 @@ class DeliveryChallanController extends Controller {
             }
                 $tax = 9;
                 $total = (float)$total_amount + (float)$update_delivery_challan->freight + (float)$update_delivery_challan->loading_charge + (float)$update_delivery_challan->discount;
-                $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                $total_vat = $total * $gst_val / 100;
+                // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                 $tot = $total + $total_vat; 
                 $roundoff = round($tot,0) - $tot;
 
@@ -1919,6 +1983,8 @@ class DeliveryChallanController extends Controller {
     function calc_hsn_wise($update_delivery_challan) {
         $hsn_list = array();
         $hsn_data = array();
+        $count = 1;
+        $hsn_count[] = 0;
         foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
             if(isset($delivery_challan_products['order_product_all_details']->hsn_code) && !empty($delivery_challan_products['order_product_all_details']->hsn_code)){
                 $temp_var = $delivery_challan_products['order_product_all_details']->hsn_code;
@@ -1960,10 +2026,12 @@ class DeliveryChallanController extends Controller {
                                 'actual_quantity' => $actual_quantity,
                                 'amount' => $final_amount,
                                 'vat_amount' => $vat_amount,
+                                'count' => $count + 1,
                             ];
                         }
                     }
                 } else {
+                    $count = 1;
                     if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
                         $hsn_list[] = $temp_var;
                         if($delivery_challan_products->vat_percentage == '1.00'){
@@ -1973,6 +2041,7 @@ class DeliveryChallanController extends Controller {
                                 'actual_quantity' => $delivery_challan_products->actual_quantity,
                                 'amount' => $amont,
                                 'vat_amount' => (float)$amont * (float)$gst / 100,
+                                'count' => $count,
                             ];
                         }else{
                             $hsn_data[] = [
@@ -1981,6 +2050,7 @@ class DeliveryChallanController extends Controller {
                                 'actual_quantity' => $delivery_challan_products->actual_quantity,
                                 'amount' => $amont,
                                 'vat_amount' => 0,
+                                'count' => $count,
                             ];
                         }
 
@@ -1992,8 +2062,10 @@ class DeliveryChallanController extends Controller {
                             'actual_quantity' => $delivery_challan_products->actual_quantity,
                             'amount' => $amont,
                             'vat_amount' => (float)$amont * (float)$gst / 100,
+                            'count' => $count,
                         ];
                     }
+                   
                 }
             }
         }

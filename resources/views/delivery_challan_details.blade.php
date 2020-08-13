@@ -201,6 +201,7 @@
                                                     $sgst = 0;
                                                     $cgst = 0;
                                                     $igst = 0;
+                                                    $gst = 0;
                                                     $rate = (float)$product->price;
                                                     $is_gst = false;
                                                     if(isset($product->vat_percentage) && $product->vat_percentage > 0){
@@ -214,9 +215,11 @@
                                                             if($local_state == 1){
                                                                 $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
                                                                 $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                                                $gst = isset($gst_det->gst)?$gst_det->gst:0;
                                                             }
                                                             else{
                                                                 $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                                                $gst = isset($gst_det->gst)?$gst_det->gst:0;
                                                             }
                                                         }
                                                     }
@@ -417,7 +420,8 @@
                         @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                         <div class="form-group">
                             <label for="total"><b class="challan">GST Amount: </b> <?php
-                            $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                            $total_vat = $total * $gst / 100;
+                            // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                             ?> ₹ {{round($total_vat,2)}}</label>
                         </div>
                         <hr/>

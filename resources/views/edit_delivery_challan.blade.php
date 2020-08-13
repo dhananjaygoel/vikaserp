@@ -145,6 +145,7 @@
                                             $sgst = 0;
                                             $cgst = 0;
                                             $igst = 0;
+                                            $gst = 0;
                                             $rate = (float)$product->price;
                                             $is_gst = false;
                                             if(isset($product->vat_percentage) && $product->vat_percentage > 0){
@@ -653,7 +654,9 @@
                             @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                             <div class="form-group">
                                 <label for="gst_total"><b class="challan">GST Amount : ₹</b> <?php
-                                $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                                $total = (float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount;
+                                $total_vat = $total * $gst / 100;
+                                // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                 ?></label>
                                 <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
                             </div>
