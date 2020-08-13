@@ -45,7 +45,7 @@ class validIpMiddleware {
             if ($ipaddress != 'UNKNOWN') {
                 $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
-                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5 ){
+                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0){
                     // return redirect('dashboard');
                     return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
