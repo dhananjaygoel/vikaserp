@@ -497,6 +497,7 @@ class DeliveryChallanController extends Controller {
         }
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
+        $allorder = $this->calc_hsn_wise($allorder);
 
         if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
@@ -582,7 +583,7 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
-
+        $allorder = $this->calc_hsn_wise($allorder);
         if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('validation_message', 'Inavalid delivery challan.');
         }

@@ -420,7 +420,16 @@
                         @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                         <div class="form-group">
                             <label for="total"><b class="challan">GST Amount: </b> <?php
-                            $total_vat = $total * $gst / 100;
+                            $gst_percentage=0;
+                            $vat_clc=0;
+                            foreach($allorder['hsn'] as $hsn){
+                                if($hsn['actual_quantity'] != 0){
+                                    $gst_percentage = $hsn['vat_percentage'];
+                                    $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
+                                }
+                            }
+                            $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);  
+                            // $total_vat = $total * $gst / 100;
                             // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                             ?> ₹ {{round($total_vat,2)}}</label>
                         </div>

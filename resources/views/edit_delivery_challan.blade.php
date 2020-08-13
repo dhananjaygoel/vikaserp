@@ -651,11 +651,27 @@
                                                             </label>
                                                         </div>-->
                             @endif
+                            
+                            <?php
+                            $gst_percentage=0;
+                            $vat_clc=0;
+                            $h=0;
+                            foreach($allorder['hsn'] as $hsn){
+                                if($hsn['actual_quantity'] != 0){?>
+                                <input id="hsn_{{$h}}" value="{{round($hsn['amount'],2)}}" type="hidden">
+                                <?php
+                                    $gst_percentage = $hsn['vat_percentage'];
+                                    $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
+                                }
+                                $h++;
+                            }
+                            ?>
+                            
                             @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                             <div class="form-group">
                                 <label for="gst_total"><b class="challan">GST Amount : ₹</b> <?php
-                                $total = (float)$total_amount + (float)$allorder->freight + (float)$allorder->loading_charge + (float)$allorder->discount;
-                                $total_vat = $total * $gst / 100;
+                                
+                                $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                 // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                 ?></label>
                                 <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
