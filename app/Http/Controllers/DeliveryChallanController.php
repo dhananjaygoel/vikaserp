@@ -1367,22 +1367,17 @@ class DeliveryChallanController extends Controller {
                 foreach($hsn_array as $hsn_products){
                     if($hsn_products['actual_quantity'] != 0){
                         if($gst){
-                            if(isset($gst->quick_gst_id) && isset($gst->quick_igst_id)){
-                                if($local_state == 1){
-                                    $TaxCodeRef = $gst->quick_gst_id;
-                                    $sgst = isset($gst->sgst)?$gst->sgst:0;
-                                    $cgst = isset($gst->cgst)?$gst->cgst:0;
-                                    $total_sgst_amount = round(($hsn_products['amount'] * $sgst / 100),2);
-                                    $total_cgst_amount = round(($hsn_products['amount'] * $cgst / 100),2);
-                                    $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
-                                }else {
-                                    $TaxCodeRef = $gst->quick_igst_id;
-                                    $igst = isset($gst->igst)?$gst->igst:0;
-                                    $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
-                                }
-                            }else{
-                                $gst_percentage = $hsn_products['vat_percentage'];
-                                $vat_clc += round(($hsn_products['amount'] * $gst_percentage / 100),2);
+                            if($local_state == 1){
+                                $TaxCodeRef = 15;
+                                $sgst = isset($gst->sgst)?$gst->sgst:0;
+                                $cgst = isset($gst->cgst)?$gst->cgst:0;
+                                $total_sgst_amount = round(($hsn_products['amount'] * $sgst / 100),2);
+                                $total_cgst_amount = round(($hsn_products['amount'] * $cgst / 100),2);
+                                $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                            }else {
+                                $TaxCodeRef = 22;
+                                $igst = isset($gst->igst)?$gst->igst:0;
+                                $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
                             }
                         }else{
                             $gst_percentage = $hsn_products['vat_percentage'];
