@@ -1035,9 +1035,9 @@ class OrderController extends Controller {
             else
                 $ipaddress = 'UNKNOWN';
         }    
-        // if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
-        //     return redirect('dashboard')->with('flash_success_message', 'Order details successfully added'.$whatsapp_error);
-        // }
+        if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
+            return redirect('dashboard')->with('flash_success_message', 'Order details successfully added'.$whatsapp_error);
+        }
 
         return redirect('orders')->with('flash_message', 'Order details successfully added'.$whatsapp_error);
     }

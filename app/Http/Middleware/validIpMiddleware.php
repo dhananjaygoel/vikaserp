@@ -54,7 +54,7 @@ class validIpMiddleware {
                     if($_SERVER['REQUEST_URI'] == '/dashboard' || $request->is('inquiry/*') || $request->is('orders/*') || $request->is('fetch_existing_customer*') || $request->is('fetch_products*')){
                         return $next($request);
                     }else{
-                        return redirect()->back()->with(['error'=>'you are not autherized.']);
+                        return redirect()->back()->with(['error'=>'You are not Autherized to access with this IP Address.']);
                     }
                 }
                 else{

@@ -122,6 +122,10 @@ $login_count = Session::has('login_count')?Session::get('login_count'):false;
 if($login_count == 1){
     Session::forget('login_count');
     Session::put('login_count',2);?>
+    history.pushState(null, null, location.href); 
+    history.back(); 
+    history.forward(); 
+    window.onpopstate = function () { history.go(1); }; 
     window.history.pushState(null, "", window.location.href);
     window.onpopstate = function () {
         window.history.pushState(null, "", window.location.href);
