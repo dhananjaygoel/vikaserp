@@ -69,11 +69,15 @@ class validIpMiddleware {
         }
         if(Auth::user()->role_id != 0){
             $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
+            $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
             if($logged_in == true){
                 Session::put('send_otp', false);
                 Session::forget('logged_in');
                 return redirect('otp_verification');
-            }else{
+            }elseif($otp_validate == false){
+                Session::put('send_otp', false);
+                return redirect('otp_verification');
+            }else {
                 return $next($request);
             }
         }else{
