@@ -1214,12 +1214,11 @@ class DeliveryChallanController extends Controller {
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
 
-            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
-
             if(Auth::user()->role_id != 0){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
 
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
         }
         else{
             $cust_id = $update_delivery_challan->customer_id;
