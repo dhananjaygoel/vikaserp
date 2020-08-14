@@ -433,7 +433,7 @@
                                     }
                                     else{
                                         $igst = isset($gst_det->igst)?$gst_det->igst:0;
-                                        $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                                        $vat_clc += round(($hsn['amount'] * $igst / 100),2);
                                     }
                                 }
                             }
