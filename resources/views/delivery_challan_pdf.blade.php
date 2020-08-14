@@ -227,8 +227,8 @@
                                         $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
                                     }
                                     else{
-                                        $igst = isset($gst_det->igst)?$gst_det->igst:0;
-                                        $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                                        $igst = isset($gst_det->igst)?$gst_det->igst:$hsn['vat_percentage'];
+                                        $vat_clc += round(($hsn['amount'] * $igst / 100),2);
                                     }
                                     
                                 ?>
