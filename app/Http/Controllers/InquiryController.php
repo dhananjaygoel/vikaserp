@@ -48,7 +48,7 @@ class InquiryController extends Controller {
         define('SEND_SMS', Config::get('smsdata.send'));
         define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
         define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
-        $this->middleware('validIP', ['except' => ['fetch_existing_customer', 'fetch_products']]);
+        $this->middleware('validIP', ['except' => ['create', 'store', 'fetch_existing_customer', 'fetch_products']]);
     }
 
     /**
@@ -152,6 +152,7 @@ class InquiryController extends Controller {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
+        $ip = Security::all();
         $units = Units::all();
         $inquiry = [];
         if (Auth::user()->role_id == 5) {
@@ -166,7 +167,7 @@ class InquiryController extends Controller {
                 return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
             }
         }
-        $ip = Security::all();
+        
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         return view('add_inquiry', compact('customers', 'units', 'ip', 'inquiry', 'delivery_locations'));
