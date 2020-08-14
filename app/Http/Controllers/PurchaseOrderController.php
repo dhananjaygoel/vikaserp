@@ -99,7 +99,7 @@ class PurchaseOrderController extends Controller {
             $q = $q->where('order_status', '=', 'pending');
         }
 
-        if (Auth::user()->role_id > 2) {
+        if (Auth::user()->role_id > 1) {
             $q->where('is_view_all', '=', 1);
         }
 
