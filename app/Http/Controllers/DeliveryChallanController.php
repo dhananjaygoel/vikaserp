@@ -1230,14 +1230,7 @@ class DeliveryChallanController extends Controller {
             $local_state = isset($local->local_state)?$local->local_state:0;
             $total_price = 0;
             $total_vat = 0;
-            if(isset($update_delivery_challan->delivery_challan_products[0]->vat_percentage) && $update_delivery_challan->delivery_challan_products[0]->vat_percentage > 0){
-                $loading_vat = 18;
-            }else{
-                $loading_vat = 0;
-            }
-            $loading_vat_amount = ((float)$update_delivery_challan->loading_charge * (float)$loading_vat) / 100;
-            $freight_vat_amount = ((float)$update_delivery_challan->freight * (float)$loading_vat) / 100;
-            $discount_vat_amount = ((float)$update_delivery_challan->discount * (float)$loading_vat) / 100;
+            
             $final_vat_amount = 0; 
             $final_total_amt = 0;
             $total_amount = 0;
@@ -1361,6 +1354,29 @@ class DeliveryChallanController extends Controller {
                 }*/
             }
             }
+            if(isset($update_delivery_challan->delivery_challan_products[0]->vat_percentage) && $update_delivery_challan->delivery_challan_products[0]->vat_percentage > 0){
+                $loading_vat = 18;
+            }else{
+                $loading_vat = 0;
+            }
+            if($local_state == 1) {
+                $loading_vat_amount_sgst = ((float)$update_delivery_challan->loading_charge * (float)$sgst) / 100;
+                $freight_vat_amount_sgst = ((float)$update_delivery_challan->freight * (float)$sgst) / 100;
+                $discount_vat_amount_sgst = ((float)$update_delivery_challan->discount * (float)$sgst) / 100;
+                
+                $loading_vat_amount_cgst = ((float)$update_delivery_challan->loading_charge * (float)$cgst) / 100;
+                $freight_vat_amount_cgst = ((float)$update_delivery_challan->freight * (float)$cgst) / 100;
+                $discount_vat_amount_cgst = ((float)$update_delivery_challan->discount * (float)$cgst) / 100;
+                
+                $loading_vat_amount = round($loading_vat_amount_sgst,2) + round($loading_vat_amount_cgst,2);
+                $freight_vat_amount = round($freight_vat_amount_sgst,2) + round($freight_vat_amount_cgst,2);
+                $discount_vat_amount = round($discount_vat_amount_sgst,2) + round($discount_vat_amount_cgst,2);
+            } else {
+                $loading_vat_amount = ((float)$update_delivery_challan->loading_charge * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$update_delivery_challan->freight * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$update_delivery_challan->discount * (float)$loading_vat) / 100;
+            }
+
             $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
             $hsn_array = $hsn_data->hsn;
             if($del_products->vat_percentage!=0){

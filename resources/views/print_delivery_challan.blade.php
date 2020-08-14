@@ -126,14 +126,15 @@
                 // $loading_vat_amount = ($allorder->loading_charge * $allorder->loading_vat_percentage) / 100;
                 // $freight_vat_amount = ($allorder->freight * $allorder->freight_vat_percentage) / 100;
                 // $discount_vat_amount = ($allorder->discount * $allorder->discount_vat_percentage) / 100;
-                if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0){
-                    $loading_vat = 18;
-                }else{
-                    $loading_vat = 0;
-                }
-                $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
-                $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
-                $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
+                // if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0){
+                //     $loading_vat = 18;
+                // }else{
+                //     $loading_vat = 0;
+                // }
+
+                // $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                // $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                // $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
                 $final_vat_amount = 0; 
                 $final_total_amt = 0;
             ?>
@@ -291,6 +292,33 @@
                                     <td class="lable">Loading</td>
                                     <td class="total-count">
                                     <?php
+                                    if(isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0){
+                                        $loading_vat = 18;
+                                    }else{
+                                        $loading_vat = 0;
+                                    }
+                                    if($local_state == 1) {
+                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+
+                                        $loading_vat_amount_sgst = ((float)$allorder->loading_charge * (float)$sgst) / 100;
+                                        $freight_vat_amount_sgst = ((float)$allorder->freight * (float)$sgst) / 100;
+                                        $discount_vat_amount_sgst = ((float)$allorder->discount * (float)$sgst) / 100;
+                                        
+                                        $loading_vat_amount_cgst = ((float)$allorder->loading_charge * (float)$cgst) / 100;
+                                        $freight_vat_amount_cgst = ((float)$allorder->freight * (float)$cgst) / 100;
+                                        $discount_vat_amount_cgst = ((float)$allorder->discount * (float)$cgst) / 100;
+                                        
+                                        $loading_vat_amount = round($loading_vat_amount_sgst,2) + round($loading_vat_amount_cgst,2);
+                                        $freight_vat_amount = round($freight_vat_amount_sgst,2) + round($freight_vat_amount_cgst,2);
+                                        $discount_vat_amount = round($discount_vat_amount_sgst,2) + round($discount_vat_amount_cgst,2);
+                                    } else {
+                                        $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                                        $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                                        $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
+                                    }
+                                    
+                                    
                                     $loading_charge = $allorder->loading_charge;
                                     $loading_vat = $allorder->loading_vat_percentage;
                                     ?>
