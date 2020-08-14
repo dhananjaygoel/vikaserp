@@ -424,8 +424,17 @@
                             $vat_clc=0;
                             foreach($allorder['hsn'] as $hsn){
                                 if($hsn['actual_quantity'] != 0){
-                                    $gst_percentage = $hsn['vat_percentage'];
-                                    $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
+                                    if($local_state == 1){
+                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                        $total_sgst_amount = round(($hsn['amount'] * $sgst / 100),2);
+                                        $total_cgst_amount = round(($hsn['amount'] * $cgst / 100),2);
+                                        $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                    }
+                                    else{
+                                        $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                        $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                                    }
                                 }
                             }
                             $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);  

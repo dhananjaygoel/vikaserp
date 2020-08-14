@@ -202,6 +202,7 @@
                                     $total_amount=0;
                                     $total_qty=0;
                                     $total_inc_gst=0;
+                                    $vat_clc = 0;
                                 ?>
                                 @foreach($allorder['hsn'] as $hsn)
                                 @if($hsn['actual_quantity'] != 0)
@@ -217,6 +218,19 @@
                                     $total_amount += $hsn['amount'];
                                     $total_qty += $hsn['actual_quantity'];
                                     $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
+                                    
+                                    if($local_state == 1){
+                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                        $total_sgst_amount = round(($hsn['amount'] * $sgst / 100),2);
+                                        $total_cgst_amount = round(($hsn['amount'] * $cgst / 100),2);
+                                        $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                    }
+                                    else{
+                                        $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                        $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                                    }
+                                    
                                 ?>
                                 @endif
                                 @endforeach
@@ -279,7 +293,7 @@
                                     </td>
                                     <td class="total-count">
                                     <?php
-                                        $vat = (float)$with_total * (float)$gst / 100;
+                                       $vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                         // $vat = $final_vat_amount + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                     ?>
                                     {{ round($vat,2) }}</td>

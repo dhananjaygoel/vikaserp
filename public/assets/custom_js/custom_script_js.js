@@ -1074,9 +1074,18 @@ function grand_total_challan() {
     }
     while(true){
         var hsn = $("#hsn_"+h).val();
+        var local_state = $("#local_state").val();
         if(hsn){
-            var vat_val = parseFloat(hsn * vat_percentage / 100);
-            vat_total =  parseFloat(vat_total) + parseFloat(vat_val.toFixed(2));
+            if(local_state == 1){
+                vat_percent = parseFloat(vat_percentage / 2 );
+                var vat_sgst = parseFloat(hsn * vat_percent / 100);
+                var vat_cgst = parseFloat(hsn * vat_percent / 100);
+                var vat_val = parseFloat(vat_sgst.toFixed(2)) + parseFloat(vat_cgst.toFixed(2));
+                vat_total =  parseFloat(vat_total) + parseFloat(vat_val.toFixed(2));
+            }else{
+                var vat_val = parseFloat(hsn * vat_percentage / 100);
+                vat_total =  parseFloat(vat_total) + parseFloat(vat_val.toFixed(2));
+            }
         }else{
             break;
         }

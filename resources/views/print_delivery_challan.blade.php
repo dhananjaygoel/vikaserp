@@ -251,9 +251,22 @@
                                 <?php
                                     $gst_percentage = $hsn['vat_percentage'];
                                     $total_amount += $hsn['amount'];
-                                    $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
+                                    // $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
                                     $total_qty += $hsn['actual_quantity'];
                                     $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
+                                    
+                                    if($local_state == 1){
+                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                        $total_sgst_amount = round(($hsn['amount'] * $sgst / 100),2);
+                                        $total_cgst_amount = round(($hsn['amount'] * $cgst / 100),2);
+                                        $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                    }
+                                    else{
+                                        $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                        $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                                    }
+                                    
                                 ?>
                                 @endif
                                 @endforeach
