@@ -1184,7 +1184,7 @@ class DeliveryChallanController extends Controller {
 
         if(Auth::user()->role_id != 0){
             if($update_delivery_challan->is_print_user != 0){
-                \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
+                // \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
                 // return redirect('delivery_challan?status_filter=completed');
                 return Redirect::back()->withInput()->with('error', 'You can not print many time, please contact your administrator');
             }
