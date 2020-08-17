@@ -1182,7 +1182,7 @@ class DeliveryChallanController extends Controller {
             }
         }
 
-        if(Auth::user()->role_id != 0 || Auth::user()->role_id != 11){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 11){
             if($update_delivery_challan->is_print_user != 0){
                 // \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
                 // return redirect('delivery_challan?status_filter=completed');
@@ -1215,7 +1215,7 @@ class DeliveryChallanController extends Controller {
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
 
-            if(Auth::user()->role_id != 0 || Auth::user()->role_id != 11){
+            if(Auth::user()->role_id != 0 && Auth::user()->role_id != 11){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
 
@@ -1679,7 +1679,7 @@ class DeliveryChallanController extends Controller {
             }
 
             DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
-            if(Auth::user()->role_id != 0 || Auth::user()->role_id != 11){
+            if(Auth::user()->role_id != 0 && Auth::user()->role_id != 11){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
             $pdf = $dataService->DownloadPDF($inv,base_path('public/upload/invoice/'));
