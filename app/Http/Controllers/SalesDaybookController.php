@@ -158,7 +158,7 @@ class SalesDaybookController extends Controller {
         }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 11) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
