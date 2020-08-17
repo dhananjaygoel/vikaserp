@@ -2087,7 +2087,7 @@ class WelcomeController extends Controller {
             $date = new Carbon\Carbon;
             $date->modify('-48 hours');
             $formatted_date = $date->format('Y-m-d H:i:s');
-            $file_data = DB::table('file_info')->where('status','<',3)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
+            $file_data = DB::table('file_info')->where('status','<',10)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
             if(isset($file_data) && !empty($file_data)){
                 $allowed = true;
                 $file_path = $file_data->file_path;
