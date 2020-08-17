@@ -255,17 +255,20 @@
                                     // $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
                                     $total_qty += $hsn['actual_quantity'];
                                     $total_inc_gst += $hsn['amount'] +$hsn['vat_amount'];
-                                    
-                                    if($local_state == 1){
-                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
-                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
-                                        $total_sgst_amount = round(($hsn['amount'] * $sgst / 100),2);
-                                        $total_cgst_amount = round(($hsn['amount'] * $cgst / 100),2);
-                                        $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
-                                    }
-                                    else{
-                                        $igst = isset($gst_det->igst)?$gst_det->igst:0;
-                                        $vat_clc += round(($hsn['amount'] * $igst / 100),2);
+                                    if((isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0) && empty($allorder['delivery_order']->vat_percentage)){
+                                        if($local_state == 1){
+                                            $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                            $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                            $total_sgst_amount = round(($hsn['amount'] * $sgst / 100),2);
+                                            $total_cgst_amount = round(($hsn['amount'] * $cgst / 100),2);
+                                            $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                        }
+                                        else{
+                                            $igst = isset($gst_det->igst)?$gst_det->igst:$gst_percentage;
+                                            $vat_clc += round(($hsn['amount'] * $igst / 100),2);
+                                        }
+                                    }else{
+                                        $vat_clc += round(($hsn['amount'] * $gst_percentage / 100),2);
                                     }
                                     
                                 ?>
@@ -297,22 +300,28 @@
                                     }else{
                                         $loading_vat = 0;
                                     }
-                                    if($local_state == 1) {
-                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
-                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                    if((isset($allorder['delivery_challan_products'][0]->vat_percentage) && $allorder['delivery_challan_products'][0]->vat_percentage > 0) && empty($allorder['delivery_order']->vat_percentage)){
+                                        if(isset($local_state) && $local_state == 1) {
+                                            $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                            $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
 
-                                        $loading_vat_amount_sgst = ((float)$allorder->loading_charge * (float)$sgst) / 100;
-                                        $freight_vat_amount_sgst = ((float)$allorder->freight * (float)$sgst) / 100;
-                                        $discount_vat_amount_sgst = ((float)$allorder->discount * (float)$sgst) / 100;
-                                        
-                                        $loading_vat_amount_cgst = ((float)$allorder->loading_charge * (float)$cgst) / 100;
-                                        $freight_vat_amount_cgst = ((float)$allorder->freight * (float)$cgst) / 100;
-                                        $discount_vat_amount_cgst = ((float)$allorder->discount * (float)$cgst) / 100;
-                                        
-                                        $loading_vat_amount = round($loading_vat_amount_sgst,2) + round($loading_vat_amount_cgst,2);
-                                        $freight_vat_amount = round($freight_vat_amount_sgst,2) + round($freight_vat_amount_cgst,2);
-                                        $discount_vat_amount = round($discount_vat_amount_sgst,2) + round($discount_vat_amount_cgst,2);
-                                    } else {
+                                            $loading_vat_amount_sgst = ((float)$allorder->loading_charge * (float)$sgst) / 100;
+                                            $freight_vat_amount_sgst = ((float)$allorder->freight * (float)$sgst) / 100;
+                                            $discount_vat_amount_sgst = ((float)$allorder->discount * (float)$sgst) / 100;
+                                            
+                                            $loading_vat_amount_cgst = ((float)$allorder->loading_charge * (float)$cgst) / 100;
+                                            $freight_vat_amount_cgst = ((float)$allorder->freight * (float)$cgst) / 100;
+                                            $discount_vat_amount_cgst = ((float)$allorder->discount * (float)$cgst) / 100;
+                                            
+                                            $loading_vat_amount = round($loading_vat_amount_sgst,2) + round($loading_vat_amount_cgst,2);
+                                            $freight_vat_amount = round($freight_vat_amount_sgst,2) + round($freight_vat_amount_cgst,2);
+                                            $discount_vat_amount = round($discount_vat_amount_sgst,2) + round($discount_vat_amount_cgst,2);
+                                        } else {
+                                            $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                                            $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                                            $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
+                                        }
+                                    }else {
                                         $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
                                         $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
                                         $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
