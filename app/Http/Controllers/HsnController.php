@@ -21,6 +21,9 @@ class HsnController extends Controller {
 
 	public function index()
 	{
+		if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $hsn = Hsn::orderBy('id','DESC')->paginate(10);
         return view('hsn', compact('hsn'));
 	}
@@ -33,6 +36,9 @@ class HsnController extends Controller {
 
 	public function create()
 	{
+		if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 		return view('hsn_add');
 	}
 
@@ -43,6 +49,9 @@ class HsnController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $this->validate($request, [
             'hsn_code' => 'required|unique:hsn,hsn_code',
             'gst' => 'required',
@@ -66,6 +75,9 @@ class HsnController extends Controller {
 	 */
 	public function show($id)
 	{
+		if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 		return redirect('hsn');
 	}
 
@@ -79,7 +91,7 @@ class HsnController extends Controller {
 	{
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('gst')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $hsn = Hsn::find($id);
         return view('hsn_edit', compact('hsn'));
@@ -94,7 +106,7 @@ class HsnController extends Controller {
 	public function update($id,Request $request)
 	{
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('gst')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $this->validate($request, [
@@ -121,7 +133,7 @@ class HsnController extends Controller {
 	public function destroy($id)
 	{
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('gst')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         if (Hash::check(Input::get('password'), Auth::user()->password)) {

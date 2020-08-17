@@ -804,4 +804,21 @@
 
     </div>
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+<?php 
+$login_count = Session::has('login_count')?Session::get('login_count'):false;
+if($login_count == 1){
+    Session::forget('login_count');
+    Session::put('login_count',2);?>
+    history.pushState(null, null, location.href); 
+    history.back(); 
+    history.forward(); 
+    window.onpopstate = function () { history.go(1); }; 
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+        window.history.pushState(null, "", window.location.href);
+    };  
+<?php } ?>
+</script>
 @stop

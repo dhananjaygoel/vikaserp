@@ -24,7 +24,6 @@
         else
             $ipaddress = 'UNKNOWN';
     }   
-     
 ?>
 <div class="row">
     <div class="col-lg-12">

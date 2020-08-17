@@ -279,6 +279,7 @@ if (isset($ip) && !$ip->isEmpty()) {
 } else {
     $ip_array = array($ipaddress);
 }  
+$otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
 ?>
 <header class="navbar" id="header-navbar">
     <div class="container">

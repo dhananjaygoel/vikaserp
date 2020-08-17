@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Auth;
+use Input;
+use App;
 use App\Order;
 use App\User;
 use App\Inquiry;
@@ -21,11 +23,19 @@ use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
 use Carbon;
 use App\AllOrderProducts;
+use App\Security;
 
 class DashboardController extends Controller {
 
     public function __construct() {
         date_default_timezone_set("Asia/Calcutta");
+        define('PROFILE_ID', Config::get('smsdata.profile_id'));
+        define('PASS', Config::get('smsdata.password'));
+        define('SENDER_ID', Config::get('smsdata.sender_id'));
+        define('SMS_URL', Config::get('smsdata.url'));
+        define('SEND_SMS', Config::get('smsdata.send'));
+        define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
+        define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
         // $this->middleware('validIP');
 
 //        if (Config::get('rollbar.send') === true) {
@@ -45,7 +55,114 @@ class DashboardController extends Controller {
      */
 
     public function ipvalid_dashboard(){
+
         return view('dashboard_ipvalid');
+    }
+
+    public function generate_otp(){
+        $send_otp = Session::has('send_otp')?Session::get('send_otp'):false;
+        if($send_otp == false){
+            // $otp = rand(000000,999999);
+            $digits = 6;
+            $otp = rand(pow(10, $digits-1), pow(10, $digits)-1);
+            $user_id = Auth::user()->id;
+            $date = new Carbon\Carbon;
+            $formatted_date = $date->format('Y-m-d H:i:s');
+            User::where('id',$user_id)->update(
+                array(
+                    'is_active'=>'0',
+                    'otp'=> $otp,
+                    'otp_generation_time' => $formatted_date,
+                )
+            );
+
+            $str = $otp." is One Time Password (OTP) for your login. The OTP is valid for 5 mins.\nPLEASE DO NOT SHARE WITH ANYONE.\nIf you are not accessing, please call our support team.\nVIKAS ASSOCIATES.";
+
+            $user = User::find($user_id);
+            
+            if (App::environment('local')) {
+                $phone_number = Config::get('smsdata.send_sms_to');
+            } else {
+                $phone_number = $user->mobile_number;
+            }
+            
+            $msg = urlencode($str);
+            if(SEND_SMS === true) {
+                $send_msg = new WelcomeController();
+                $send_msg->send_sms($phone_number,$msg);
+            }
+            Session::forget('send_otp');
+            Session::put('send_otp', true);
+            return view('otp_verification');
+
+        } else{
+            return view('otp_verification');
+        }
+            
+        
+    }
+
+    public function resend_otp(){
+        $digits = 6;
+        $otp = rand(pow(10, $digits-1), pow(10, $digits)-1);
+        $user_id = Auth::user()->id;
+        $date = new Carbon\Carbon;
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        User::where('id',$user_id)->update(
+            array(
+                'otp'=> $otp,
+                'otp_generation_time' => $formatted_date,
+            )
+        );
+        $str = $otp." is One Time Password (OTP) for your login. The OTP is valid for 5 mins.\nPLEASE DO NOT SHARE WITH ANYONE.\nIf you are not accessing, please call our support team.\nVIKAS ASSOCIATES.";
+
+        $user = User::find($user_id);
+        
+        if (App::environment('local')) {
+            $phone_number = Config::get('smsdata.send_sms_to');
+        } else {
+            $phone_number = $user->mobile_number;
+        }
+        
+        $msg = urlencode($str);
+        if(SEND_SMS === true) {
+            $send_msg = new WelcomeController();
+            $send_msg->send_sms($phone_number,$msg);
+        }
+        return redirect('otp_verification')->with('flash_message','OTP has been sent successfully.');
+    }
+
+    public function validate_otp(Request $request){
+        $input_data = Input::all();
+        $otp_array = [];
+
+        for($i = 1; $i < 7; $i++){
+            if($input_data['digit-'.$i] != ""){
+                array_push($otp_array, $input_data['digit-'.$i]);
+            }
+        }
+        if(count($otp_array) != 6){
+            return redirect('otp_verification')->with('errors','There were some problems with your input.');
+        }
+        $otp_input = implode("",$otp_array);
+
+        $date = new Carbon\Carbon;
+        $date->modify('-5 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        $db_otp = User::where('id',Auth::user()->id)->where('otp_generation_time','>',$formatted_date)->first();
+        if(isset($db_otp) && !empty($db_otp)){
+            $otp = $db_otp->otp;
+            $otp_time = $db_otp->otp_generation_time;
+            if($otp == $otp_input){
+                Session::put('otp_validate', true);
+                Session::put('login_count',1);
+                return redirect('dashboard');
+            }else{
+                return redirect('otp_verification')->with('errors','Invalid OTP. Please resend code to login again.');
+            }
+        }else{
+            return redirect('otp_verification')->with('errors','Your OTP has been expired. Please resend code to login again.');
+        }
     }
 
     public function index() {
@@ -55,7 +172,7 @@ class DashboardController extends Controller {
             return redirect('change_password');
         }
 
-        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9 || Auth::user()->role_id == 3){
+        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             User::where('id',Auth::user()->id)->update(['is_active'=>'1']);
             return Redirect::to('delivery_order');
         }
@@ -71,11 +188,56 @@ class DashboardController extends Controller {
             return Redirect::to('bulk-delete');
         }
 
-        if (Auth::user()->role_id == 4) {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 3) {
             return Redirect::to('delivery_order');
         }
         if (Auth::user()->role_id == 6) {
             return Redirect::to('due-payment');
+        }
+        if (Auth::user()->role_id == 11) {
+            return Redirect::to('daily_pro_forma_invoice');
+        }
+
+        if (Auth::user()->role_id == 2) {
+            $ip = Security::all();
+            $ip_array = [];
+            if (isset($ip) && !$ip->isEmpty()) {
+                foreach ($ip as $key => $value) {
+                    $ip_array[$key] = $value->ip_address;
+                }
+                $ipaddress = '';
+                if (getenv('HTTP_CLIENT_IP'))
+                    $ipaddress = getenv('HTTP_CLIENT_IP');
+                else if (getenv('HTTP_X_FORWARDED_FOR'))
+                    $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+                else if (getenv('HTTP_X_FORWARDED'))
+                    $ipaddress = getenv('HTTP_X_FORWARDED');
+                else if (getenv('HTTP_FORWARDED_FOR'))
+                    $ipaddress = getenv('HTTP_FORWARDED_FOR');
+                else if (getenv('HTTP_FORWARDED'))
+                    $ipaddress = getenv('HTTP_FORWARDED');
+                else if (getenv('REMOTE_ADDR'))
+                    $ipaddress = getenv('REMOTE_ADDR');
+                else
+                    $ipaddress = 'UNKNOWN';
+                if ($ipaddress != 'UNKNOWN') {
+                    if(!in_array($ipaddress, $ip_array)){
+                        $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
+                        if($logged_in == true){
+                            Session::put('send_otp', false);
+                            Session::forget('logged_in');
+                            return redirect('otp_verification');
+                        }
+                    }
+                }
+            }else{
+                $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
+                if($logged_in == true){
+                    Session::put('send_otp', false);
+                    Session::forget('logged_in');
+                    return redirect('otp_verification');
+                }
+            }
         }
 
 

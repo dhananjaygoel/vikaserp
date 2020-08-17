@@ -45,9 +45,12 @@ class ProductController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id == 5) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
+        // if (Auth::user()->role_id == 5 || Auth::user()->role_id == 2) {
+        //     return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        // }
         /* client want to delete 2 record so just elimated from query */
         // $product_cat = ProductCategory::orderBy('created_at', 'desc')->whereNotIn('product_category_name',['Local Coil- Light','Local Coil'])->Paginate(20);
         $product_cat = ProductCategory::orderBy('created_at', 'desc')->Paginate(20);
@@ -61,7 +64,7 @@ class ProductController extends Controller {
 
     public function create() {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $product_type = ProductType::all();
         return view('add_product_category', compact('product_type'));
@@ -74,7 +77,7 @@ class ProductController extends Controller {
     public function store(ProductCategoryRequest $request) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
             'product_category_name' => 'required|regex:/^[A-Za-z\s-]+$/',
@@ -150,6 +153,9 @@ class ProductController extends Controller {
      */
 
     public function show($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $product_cat = ProductCategory::with('product_sub_category', 'product_type')->find($id);
         if (count((array)$product_cat) < 1) {
             return redirect('product_category')->with('success', 'Product category does not exist.');
@@ -165,7 +171,7 @@ class ProductController extends Controller {
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Auth::attempt(['mobile_number' => Input::get('mobile'), 'password' => Input::get('model_pass')])) {
             $cat = ProductSubCategory::where('product_category_id', $id)->count();
@@ -186,7 +192,7 @@ class ProductController extends Controller {
 
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $product_cat = ProductCategory::where('id', $id)->get();
@@ -205,7 +211,7 @@ class ProductController extends Controller {
 
     public function update($id, ProductCategoryRequest $request) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $this->validate($request, [
             'product_category_name' => 'required|regex:/^[A-Za-z\s-]+$/',

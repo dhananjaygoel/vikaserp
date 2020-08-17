@@ -105,14 +105,14 @@
                                 $total_price = 0;
                                 $total_vat = 0;
 
-                                if(isset($allorder['all_order_products'][0]->vat_percentage) && $allorder['all_order_products'][0]->vat_percentage > 0){
-                                    $loading_vat = 18;
-                                }else{
-                                    $loading_vat = 0;
-                                }
-                                $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
-                                $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
-                                $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
+                                // if(isset($allorder['all_order_products'][0]->vat_percentage) && $allorder['all_order_products'][0]->vat_percentage > 0){
+                                //     $loading_vat = 18;
+                                // }else{
+                                //     $loading_vat = 0;
+                                // }
+                                // $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                                // $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                                // $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
                                 $final_vat_amount = 0; 
                                 $final_total_amt = 0;
                             ?>
@@ -145,6 +145,7 @@
                                             $sgst = 0;
                                             $cgst = 0;
                                             $igst = 0;
+                                            $gst = 0;
                                             $rate = (float)$product->price;
                                             $is_gst = false;
                                             if(isset($product->vat_percentage) && $product->vat_percentage > 0){
@@ -650,10 +651,64 @@
                                                             </label>
                                                         </div>-->
                             @endif
+                            
+                            <?php
+                            $gst_percentage=0;
+                            $vat_clc=0;
+                            $h=0;
+                            if(isset($allorder['all_order_products'][0]->vat_percentage) && $allorder['all_order_products'][0]->vat_percentage > 0){
+                                $loading_vat = 18;
+                            }else{
+                                $loading_vat = 0;
+                            }
+                            if($local_state == 1) {
+                                $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+
+                                $loading_vat_amount_sgst = ((float)$allorder->loading_charge * (float)$sgst) / 100;
+                                $freight_vat_amount_sgst = ((float)$allorder->freight * (float)$sgst) / 100;
+                                $discount_vat_amount_sgst = ((float)$allorder->discount * (float)$sgst) / 100;
+                                
+                                $loading_vat_amount_cgst = ((float)$allorder->loading_charge * (float)$cgst) / 100;
+                                $freight_vat_amount_cgst = ((float)$allorder->freight * (float)$cgst) / 100;
+                                $discount_vat_amount_cgst = ((float)$allorder->discount * (float)$cgst) / 100;
+                                
+                                $loading_vat_amount = round($loading_vat_amount_sgst,2) + round($loading_vat_amount_cgst,2);
+                                $freight_vat_amount = round($freight_vat_amount_sgst,2) + round($freight_vat_amount_cgst,2);
+                                $discount_vat_amount = round($discount_vat_amount_sgst,2) + round($discount_vat_amount_cgst,2);
+                            } else {
+                                $loading_vat_amount = ((float)$allorder->loading_charge * (float)$loading_vat) / 100;
+                                $freight_vat_amount = ((float)$allorder->freight * (float)$loading_vat) / 100;
+                                $discount_vat_amount = ((float)$allorder->discount * (float)$loading_vat) / 100;
+                            }
+
+                            foreach($allorder['hsn'] as $hsn){
+                                if($hsn['actual_quantity'] != 0){?>
+                                <input id="local_state" value="{{$local_state}}" type="hidden">
+                                <input id="hsn_{{$h}}" value="{{round($hsn['amount'],2)}}" type="hidden">
+                                <?php
+                                    if($local_state == 1){
+                                        $sgst = isset($gst_det->sgst)?$gst_det->sgst:0;
+                                        $cgst = isset($gst_det->cgst)?$gst_det->cgst:0;
+                                        $total_sgst_amount = round(($hsn['amount'] * $sgst / 100),2);
+                                        $total_cgst_amount = round(($hsn['amount'] * $cgst / 100),2);
+                                        $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                                    }
+                                    else{
+                                        $igst = isset($gst_det->igst)?$gst_det->igst:0;
+                                        $vat_clc += round(($hsn['amount'] * $igst / 100),2);
+                                    }
+                                }
+                                $h++;
+                            }
+                            ?>
+                            
                             @if(isset($product->vat_percentage) && $product->vat_percentage>0)                    
                             <div class="form-group">
                                 <label for="gst_total"><b class="challan">GST Amount : ₹</b> <?php
-                                $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                                
+                                $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                                // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                                 ?></label>
                                 <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
                             </div>

@@ -72,7 +72,7 @@ class DeliveryOrderController extends Controller {
         }
         gc_disable();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9) {
-            return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $session_sort_type_order = Session::get('order-sort-type');
         if (Input::get('order_status') != "") {
@@ -620,7 +620,7 @@ class DeliveryOrderController extends Controller {
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('delivery_order')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $data = Input::all();
@@ -669,7 +669,7 @@ class DeliveryOrderController extends Controller {
 
     public function pending_delivery_order() {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $filteron = "";

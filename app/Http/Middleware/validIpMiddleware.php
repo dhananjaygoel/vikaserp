@@ -6,6 +6,7 @@ use Closure;
 use App\Security;
 use App\Http\Requests\Request;
 use Auth;
+use Illuminate\Support\Facades\Session;
 
 class validIpMiddleware {
 
@@ -42,8 +43,9 @@ class validIpMiddleware {
                 $ipaddress = 'UNKNOWN';
 
             if ($ipaddress != 'UNKNOWN') {
+                $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
-                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5 ){
+                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0){
                     // return redirect('dashboard');
                     return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
@@ -52,15 +54,34 @@ class validIpMiddleware {
                     if($_SERVER['REQUEST_URI'] == '/dashboard' || $request->is('inquiry/*') || $request->is('orders/*') || $request->is('fetch_existing_customer*') || $request->is('fetch_products*')){
                         return $next($request);
                     }else{
-                        return redirect()->back()->with(['error'=>'you are not autherized.']);
+                        return redirect()->back()->with(['error'=>'You are not Autherized to access with this IP Address.']);
                     }
                 }
                 else{
-                    return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
+                    if($otp_validate == true){
+                        return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
+                    }else{
+                        Session::put('send_otp', false);
+                        return redirect('otp_verification');
+                    }
                 }
             }
         }
-        return $next($request);
+        if(Auth::user()->role_id != 0){
+            $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
+            $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
+            if($logged_in == true){
+                Session::put('send_otp', false);
+                Session::forget('logged_in');
+                return redirect('otp_verification');
+            }elseif($otp_validate == false){
+                Session::put('send_otp', false);
+                return redirect('otp_verification');
+            }else {
+                return $next($request);
+            }
+        }else{
+            return $next($request);
+        }   
     }
-
 }

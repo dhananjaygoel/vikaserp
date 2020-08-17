@@ -52,6 +52,7 @@ use Barryvdh\DomPDF\PDF;
 use Response;
 use Jenssegers\Agent\Agent;
 use App\Jobs\ProcessPDFDownload;
+use Browser;
 
 class WelcomeController extends Controller {
     /*
@@ -2080,27 +2081,55 @@ class WelcomeController extends Controller {
     }
 
     public function download_dc($uuid){
-        $allowed = false;
-        $date = new Carbon\Carbon;
-        $date->modify('-48 hours');
-        $formatted_date = $date->format('Y-m-d H:i:s');
-        $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
-        if(isset($file_data) && !empty($file_data)){
-            $allowed = true;
-            $file_path = $file_data->file_path;
-            $created_at = $file_data->created_at;
+        $browser = Browser::browserFamily();
+        if($browser == "MIUI Browser"){
+            $allowed = false;
+            $date = new Carbon\Carbon;
+            $date->modify('-48 hours');
+            $formatted_date = $date->format('Y-m-d H:i:s');
+            $file_data = DB::table('file_info')->where('status','<',4)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
+            if(isset($file_data) && !empty($file_data)){
+                $allowed = true;
+                $file_path = $file_data->file_path;
+                $created_at = $file_data->created_at;
+                $status = $file_data->status;
+                $status++;
+            }else{
+                $allowed = false;
+            }
+            if ($allowed) {
+                DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> $status,'created_at'=>$created_at,'updated_at'=>$date));
+                $file_name = $file_data->file_name;
+                $headers = [
+                    'Content-type' => 'application/force-download'];
+                return Storage::download(getcwd().$file_path, $file_name,$headers);
+                exit(); // downloadable file
+            } else {
+                return view('notfound');
+            }
         }else{
             $allowed = false;
-        }
-        if ($allowed) {
-            DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 1,'created_at'=>$created_at,'updated_at'=>$date));
-            $file_name = $file_data->file_name;
-            $headers = [
-                'Content-type' => 'application/force-download'];
-            return Storage::download(getcwd().$file_path, $file_name,$headers);
-            exit(); // downloadable file
-        } else {
-            return view('notfound');
+            $date = new Carbon\Carbon;
+            $date->modify('-48 hours');
+            $formatted_date = $date->format('Y-m-d H:i:s');
+            $file_data = DB::table('file_info')->where('status',0)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
+            if(isset($file_data) && !empty($file_data)){
+                $allowed = true;
+                $file_path = $file_data->file_path;
+                $created_at = $file_data->created_at;
+            }else{
+                $allowed = false;
+            }
+            if ($allowed) {
+                DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 4,'created_at'=>$created_at,'updated_at'=>$date));
+                $file_name = $file_data->file_name;
+                $headers = [
+                    'Content-type' => 'application/force-download'];
+                return Storage::download(getcwd().$file_path, $file_name,$headers);
+                exit(); // downloadable file
+            } else {
+                return view('notfound');
+            }
         }
     }
 }

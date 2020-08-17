@@ -37,6 +37,13 @@
                 </form>
             </div>
         </div>           
+        @if(Session::has('error'))
+        <div class="clearfix"> &nbsp;</div>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <strong> {{ Session::get('error') }} </strong>
+        </div>
+        @endif
 <!--        <div class="tab">
             <a href="{{url('vehicle-list')}}"><button class="tablinks active" onclick="openCity(event, 'DOLIST')">Delivery Order Vehicle List</button></a>
             <a href="{{url('pa-vehicle-list')}}"><button class="tablinks">Purchase Advise Vehicle List</button></a>
@@ -146,4 +153,21 @@ div.tab button.active {
     border-top: none;
 }
 </style>-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+<?php 
+$login_count = Session::has('login_count')?Session::get('login_count'):false;
+if($login_count == 1){
+    Session::forget('login_count');
+    Session::put('login_count',2);?>
+    history.pushState(null, null, location.href); 
+    history.back(); 
+    history.forward(); 
+    window.onpopstate = function () { history.go(1); }; 
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+        window.history.pushState(null, "", window.location.href);
+    };  
+<?php } ?>
+</script>
 @endsection

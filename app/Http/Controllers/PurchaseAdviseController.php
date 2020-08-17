@@ -56,7 +56,7 @@ class PurchaseAdviseController extends Controller {
             return redirect('change_password');
         }
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3 && Auth::user()->role_id != 4) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -145,6 +145,10 @@ class PurchaseAdviseController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+
 
         if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -160,6 +164,9 @@ class PurchaseAdviseController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StorePurchaseAdvise $request) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $input_data = Input::all();
         if (Session::has('forms_purchase_advise')) {
@@ -286,6 +293,9 @@ class PurchaseAdviseController extends Controller {
      * Display the specified resource.
      */
     public function show($id = "") {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
@@ -309,6 +319,9 @@ class PurchaseAdviseController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -327,6 +340,9 @@ class PurchaseAdviseController extends Controller {
      * Update the specified resource in storage.
      */
     public function update($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $input_data = Input::all();
         $sms_flag = 1;
@@ -496,13 +512,16 @@ class PurchaseAdviseController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
         $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if ($password == '') {
             return Redirect::to('purchaseorder_advise')->with('error', 'Please enter your password');
@@ -539,6 +558,9 @@ class PurchaseAdviseController extends Controller {
      */
 
     public function store_advise() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         $input_data = Input::all();
         if (Session::has('forms_purchase_advise')) {
@@ -697,6 +719,9 @@ class PurchaseAdviseController extends Controller {
      */
 
     public function pending_purchase_advice() {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -717,6 +742,9 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function purchaseorder_advise_challan($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         if (Auth::user()->role_id == 5) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
@@ -735,6 +763,9 @@ class PurchaseAdviseController extends Controller {
     }
 
     public function print_purchase_advise($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
 
         if (Input::has('vehicle_number')) {
             $vehicle_number = Input::get('vehicle_number');

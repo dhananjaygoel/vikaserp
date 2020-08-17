@@ -48,7 +48,7 @@ class DeleteDC extends Command
             $file_path = public_path("upload/invoices/dc/".$data->file_name);
             if(File::exists($file_path)){
                 File::delete($file_path);
-                DB::table('file_info')->where('uuid',$data->uuid)->update(array('status'=> 1));
+                DB::table('file_info')->where('uuid',$data->uuid)->update(array('status'=> 4));
             }else{
                 // echo $file_path."\n";
             }

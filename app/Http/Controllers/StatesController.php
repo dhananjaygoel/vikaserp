@@ -29,8 +29,8 @@ class StatesController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $states = States::orderBy('created_at', 'desc')->Paginate(20);
         $states->setPath('states');
@@ -42,7 +42,7 @@ class StatesController extends Controller {
      */
     public function create() {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         return view('add_states');
     }
@@ -53,7 +53,7 @@ class StatesController extends Controller {
     public function store(StatesRequest $staterequest) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('states')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $input = $staterequest->input();
@@ -87,6 +87,9 @@ class StatesController extends Controller {
      * Display the specified resource.
      */
     public function show($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         return redirect('states');
     }
 
@@ -95,7 +98,7 @@ class StatesController extends Controller {
      */
     public function edit($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('states')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $state = States::find($id);
         return view('edit_state', compact('state'));
@@ -106,7 +109,7 @@ class StatesController extends Controller {
      */
     public function update($id, EditStatesRequest $request) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('states')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         // $this->validate($request, [
         //     'state_name' => 'required|regex:/^[A-Za-z\s-_]+$/',
@@ -141,7 +144,7 @@ class StatesController extends Controller {
      */
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('states')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $state_association = City::where('state_id', '=', $id)->count();
         $location_association = DeliveryLocation::where('state_id', '=', $id)->count();

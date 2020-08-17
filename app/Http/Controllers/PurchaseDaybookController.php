@@ -94,7 +94,7 @@ class PurchaseDaybookController extends Controller {
             return redirect('change_password');
         }
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 ) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 11) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -153,7 +153,7 @@ class PurchaseDaybookController extends Controller {
 
     public function delete_all_daybook() {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $id = Input::all();
 
@@ -176,7 +176,7 @@ class PurchaseDaybookController extends Controller {
 
      public function delete_all_daybook_estimate() {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $id = Input::all();
 
@@ -204,7 +204,7 @@ class PurchaseDaybookController extends Controller {
 
     public function destroy($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();
@@ -216,7 +216,7 @@ class PurchaseDaybookController extends Controller {
 
     public function destroy_estimate($id) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Hash::check(Input::get('password'), Auth::user()->password)) {
             $delete_purchase_challan = PurchaseChallan::find($id)->delete();

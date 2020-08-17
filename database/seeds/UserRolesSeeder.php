@@ -59,6 +59,11 @@ class UserRolesSeeder extends Seeder {
                         'role_id' => '10',
                         'name' => 'Bulk Delete User'
                     ),
+                    array(
+                        'id' => '12',
+                        'role_id' => '11',
+                        'name' => 'Export User'
+                    ),
 
         ));
         

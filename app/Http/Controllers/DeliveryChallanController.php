@@ -282,9 +282,12 @@ class DeliveryChallanController extends Controller {
             return redirect('change_password');
         }
 
-        if (Auth::user()->role_id == 5) {
-            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
+        // if (Auth::user()->role_id == 5) {
+        //     return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        // }
         if (Auth::user()->role_id == 6) {
             return Redirect::to('due-payment');
         }
@@ -480,11 +483,21 @@ class DeliveryChallanController extends Controller {
      * Display the specified Delivery Challan Details.
      */
     public function show($id) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
 
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'delivery_order.user', 'user', 'order_details', 'order_details.createdby', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')->find($id);
+        $allorder = $this->calc_hsn_wise($allorder);
 
         if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('success', 'Invalid challan or challan not found');
@@ -547,7 +560,12 @@ class DeliveryChallanController extends Controller {
      */
     public function edit($id = "") {
         $idata = Input::all();
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         if (array_key_exists("task",$idata)) {
             $data['task'] = $idata['task'];
         } else {
@@ -565,7 +583,7 @@ class DeliveryChallanController extends Controller {
         $allorder = DeliveryChallan::with('all_order_products.unit', 'all_order_products.order_product_details', 'customer', 'delivery_order', 'challan_loaded_by.dc_loaded_by', 'challan_labours.dc_labour')
 //                ->where('challan_status', '=', 'pending')
                 ->find($id);
-
+        $allorder = $this->calc_hsn_wise($allorder);
         if (count((array)$allorder) < 1) {
             return redirect('delivery_challan')->with('validation_message', 'Inavalid delivery challan.');
         }
@@ -580,7 +598,15 @@ class DeliveryChallanController extends Controller {
      * Update Delivery Challan Details
      */
     public function update($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         $input_data = Input::all();
         $tasked = $input_data['task'];
 
@@ -1003,13 +1029,21 @@ class DeliveryChallanController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         $inputData = Input::get('formData');
         parse_str($inputData, $formFields);
         $password = $formFields['password'];
         $order_sort_type = $formFields['order_sort_type'];
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
-            return Redirect::to('delivery_challan')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if ($password == '') {
             return Redirect::to('delivery_challan')->with('error', 'Please enter your password');
@@ -1114,6 +1148,15 @@ class DeliveryChallanController extends Controller {
     }
 
     public function generate_invoice($id){
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 11) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         set_time_limit(0);
        $update_delivery_challan = DeliveryChallan::with('delivery_challan_products.order_product_all_details.product_category', 'customer', 'delivery_order.location')->find($id);
         require_once base_path('quickbook/vendor/autoload.php');
@@ -1139,10 +1182,11 @@ class DeliveryChallanController extends Controller {
             }
         }
 
-        if(Auth::user()->role_id != 0){
+        if(Auth::user()->role_id != 0 && Auth::user()->role_id != 11){
             if($update_delivery_challan->is_print_user != 0){
-                \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
-                return redirect('delivery_challan?status_filter=completed');
+                // \Illuminate\Support\Facades\Session::flash('flash_message_err', 'You can not print many time, please contact your administrator');
+                // return redirect('delivery_challan?status_filter=completed');
+                return Redirect::back()->withInput()->with('error', 'You can not print many time, please contact your administrator');
             }
         }
         if($update_delivery_challan->doc_number){
@@ -1171,12 +1215,11 @@ class DeliveryChallanController extends Controller {
             }
             $pdfNAme = explode('invoice/',$pdf)[1];
 
-            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
-
-            if(Auth::user()->role_id != 0){
+            if(Auth::user()->role_id != 0 && Auth::user()->role_id != 11){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
 
+            return redirect()->away(asset('upload/invoice/'.$pdfNAme));
         }
         else{
             $cust_id = $update_delivery_challan->customer_id;
@@ -1187,20 +1230,16 @@ class DeliveryChallanController extends Controller {
             $local_state = isset($local->local_state)?$local->local_state:0;
             $total_price = 0;
             $total_vat = 0;
-            if(isset($update_delivery_challan->delivery_challan_products[0]->vat_percentage) && $update_delivery_challan->delivery_challan_products[0]->vat_percentage > 0){
-                $loading_vat = 18;
-            }else{
-                $loading_vat = 0;
-            }
-            $loading_vat_amount = ((float)$update_delivery_challan->loading_charge * (float)$loading_vat) / 100;
-            $freight_vat_amount = ((float)$update_delivery_challan->freight * (float)$loading_vat) / 100;
-            $discount_vat_amount = ((float)$update_delivery_challan->discount * (float)$loading_vat) / 100;
+            
             $final_vat_amount = 0; 
             $final_total_amt = 0;
             $total_amount = 0;
 
             $line = [];
             $i = 0;
+            $vat_clc=0;
+            $gst_percentage=0;
+
             foreach ($update_delivery_challan->delivery_challan_products as  $del_products){
                 if($del_products->actual_quantity != 0){
                 $TaxCodeRef = 0;
@@ -1208,6 +1247,7 @@ class DeliveryChallanController extends Controller {
                 $sgst = 0;
                 $cgst = 0;
                 $igst = 0;
+                $gst_val = 0;
                 $price = ((isset($del_products->price) && $del_products->price != '0.00')?$del_products->price:$del_products['order_product_all_details']->product_category['price']);
                 $amount = (float)$del_products->actual_quantity * (float)$price;
                 $total_amount = round($amount + $total_amount, 2);
@@ -1233,12 +1273,14 @@ class DeliveryChallanController extends Controller {
                                     $TaxCodeRef = $gst->quick_gst_id;
                                     $sgst = isset($gst->sgst)?$gst->sgst:0;
                                     $cgst = isset($gst->cgst)?$gst->cgst:0;
+                                    $gst_val = isset($gst->gst)?$gst->gst:0;
                                     $total_sgst_amount = ((float)$amount * (float)$sgst) / 100;
                                     $total_cgst_amount = ((float)$amount * (float)$cgst) / 100;
                                     $total_vat_amount1 = (round($total_sgst_amount,2) + round($total_cgst_amount,2));
                                 }else {
                                     $TaxCodeRef = $gst->quick_igst_id;
                                     $igst = isset($gst->igst)?$gst->igst:0;
+                                    $gst_val = isset($gst->gst)?$gst->gst:0;
                                     $total_igst_amount = ((float)$amount * (float)$igst) / 100;
                                     $total_vat_amount1 = round($total_igst_amount,2);
                                 }
@@ -1269,7 +1311,7 @@ class DeliveryChallanController extends Controller {
                 }*/
                 //print $item_details[0]->Id;
 
-                if($del_products->vat_percentage!=0){
+                /*if($del_products->vat_percentage!=0){
                     $line[] = [
                         // "HSN/SAC" => $del_products->hsn_code,
                         "Description" => $del_products->order_product_all_details->product_category->product_type->name,
@@ -1309,8 +1351,114 @@ class DeliveryChallanController extends Controller {
                             "TaxClassificationRef" => $del_products->order_product_all_details->hsn_code
                         ]
                     ];
-                }
+                }*/
             }
+            }
+            if(isset($update_delivery_challan->delivery_challan_products[0]->vat_percentage) && $update_delivery_challan->delivery_challan_products[0]->vat_percentage > 0){
+                $loading_vat = 18;
+            }else{
+                $loading_vat = 0;
+            }
+            if($local_state == 1) {
+                $loading_vat_amount_sgst = ((float)$update_delivery_challan->loading_charge * (float)$sgst) / 100;
+                $freight_vat_amount_sgst = ((float)$update_delivery_challan->freight * (float)$sgst) / 100;
+                $discount_vat_amount_sgst = ((float)$update_delivery_challan->discount * (float)$sgst) / 100;
+                
+                $loading_vat_amount_cgst = ((float)$update_delivery_challan->loading_charge * (float)$cgst) / 100;
+                $freight_vat_amount_cgst = ((float)$update_delivery_challan->freight * (float)$cgst) / 100;
+                $discount_vat_amount_cgst = ((float)$update_delivery_challan->discount * (float)$cgst) / 100;
+                
+                $loading_vat_amount = round($loading_vat_amount_sgst,2) + round($loading_vat_amount_cgst,2);
+                $freight_vat_amount = round($freight_vat_amount_sgst,2) + round($freight_vat_amount_cgst,2);
+                $discount_vat_amount = round($discount_vat_amount_sgst,2) + round($discount_vat_amount_cgst,2);
+            } else {
+                $loading_vat_amount = ((float)$update_delivery_challan->loading_charge * (float)$loading_vat) / 100;
+                $freight_vat_amount = ((float)$update_delivery_challan->freight * (float)$loading_vat) / 100;
+                $discount_vat_amount = ((float)$update_delivery_challan->discount * (float)$loading_vat) / 100;
+            }
+
+            $hsn_data = $this->calc_hsn_wise($update_delivery_challan);
+            $hsn_array = $hsn_data->hsn;
+            if($del_products->vat_percentage!=0){
+                foreach($hsn_array as $hsn_products){
+                    if($hsn_products['actual_quantity'] != 0){
+                        if($gst){
+                            if($local_state == 1){
+                                $TaxCodeRef = 15;
+                                $sgst = isset($gst->sgst)?$gst->sgst:0;
+                                $cgst = isset($gst->cgst)?$gst->cgst:0;
+                                $total_sgst_amount = round(($hsn_products['amount'] * $sgst / 100),2);
+                                $total_cgst_amount = round(($hsn_products['amount'] * $cgst / 100),2);
+                                $vat_clc += (round($total_sgst_amount,2) + round($total_cgst_amount,2));
+                            }else {
+                                $TaxCodeRef = 22;
+                                $igst = isset($gst->igst)?$gst->igst:0;
+                                $vat_clc += round(($hsn_products['amount'] * $igst / 100),2);
+                            }
+                        }else{
+                            $gst_percentage = $hsn_products['vat_percentage'];
+                            $vat_clc += round(($hsn_products['amount'] * $gst_percentage / 100),2);
+                        }
+
+                        $productname = ltrim($hsn_products['id']);
+                        $item_query = "select * from Item where Name ='".$productname."'";
+                        $item_details = $dataService->Query($item_query);
+
+                        if(!empty($item_details)){
+                            $quickbook_item_id = $item_details[0]->Id;
+                        }
+
+                        $line[] = [
+                            "Description" => $hsn_products['actual_quantity']." KG",
+                            "Amount" => $hsn_products['amount'],
+                            "DetailType" => "SalesItemLineDetail",
+                            "SalesItemLineDetail" => [
+                                "ItemRef" => [
+                                    "name" => $productname,
+                                    "value" => $quickbook_item_id
+                                ],
+                                "UnitPrice" => $hsn_products['amount']/$hsn_products['count'],
+                                "Qty" => $hsn_products['count'],
+                                "TaxCodeRef" => [
+                                    "value" => $TaxCodeRef
+                                ],
+                                "TaxClassificationRef" => $hsn_products['id']
+                            ]
+                        ];
+                    }
+                }
+            }else{
+                foreach($hsn_array as $hsn_products){
+                    if($hsn_products['actual_quantity'] != 0){
+                        $gst_percentage = $hsn_products['vat_percentage'];
+                        $vat_clc += round(($hsn_products['amount'] * $gst_percentage / 100),2);
+
+                        $productname = ltrim($hsn_products['id']);
+                        $item_query = "select * from Item where Name ='".$productname."'";
+                        $item_details = $dataService->Query($item_query);
+
+                        if(!empty($item_details)){
+                            $quickbook_item_id = $item_details[0]->Id;
+                        }
+                        $line[] = [
+                            "Description" => $hsn_products['actual_quantity']." KG",
+                            "Amount" => $hsn_products['amount'],
+                            "DetailType" => "SalesItemLineDetail",
+                            "SalesItemLineDetail" => [
+                                "ItemRef" => [
+                                    "name" => $productname,
+                                    "value" => $quickbook_item_id
+                                ],
+                                "UnitPrice" => $hsn_products['amount'],
+                                "Qty" => 1,
+                                "TaxCodeRef" => [
+                                    "value" => 9
+                                ],
+                                "TaxClassificationRef" => $hsn_products['id']
+                            ]
+                        ];
+                    }
+                }
             }
 
             if($del_products->vat_percentage==0)
@@ -1432,7 +1580,9 @@ class DeliveryChallanController extends Controller {
             }
                 $tax = 9;
                 $total = (float)$total_amount + (float)$update_delivery_challan->freight + (float)$update_delivery_challan->loading_charge + (float)$update_delivery_challan->discount;
-                $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                // $total_vat = $total * $gst_val / 100;
+                $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
                 $tot = $total + $total_vat; 
                 $roundoff = round($tot,0) - $tot;
 
@@ -1529,7 +1679,7 @@ class DeliveryChallanController extends Controller {
             }
 
             DeliveryChallan::where('id',$id)->update(['doc_number'=>$doc_num]);
-            if(Auth::user()->role_id != 0){
+            if(Auth::user()->role_id != 0 && Auth::user()->role_id != 11){
                 DeliveryChallan::where('id',$id)->update(['is_print_user'=>1]);
             }
             $pdf = $dataService->DownloadPDF($inv,base_path('public/upload/invoice/'));
@@ -1545,6 +1695,15 @@ class DeliveryChallanController extends Controller {
 
 
     public function print_delivery_challan($id, DropboxStorageRepository $connection) {
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 5) {
+            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+        }
+        if (Auth::user()->role_id == 6) {
+            return Redirect::to('due-payment');
+        }
         $serial_number_delivery_order = Input::get('serial_number');
         $current_date = date("m/d/");
         $sms_flag = 1;
@@ -1868,6 +2027,8 @@ class DeliveryChallanController extends Controller {
     function calc_hsn_wise($update_delivery_challan) {
         $hsn_list = array();
         $hsn_data = array();
+        $count = 1;
+        $hsn_count[] = 0;
         foreach ($update_delivery_challan['delivery_challan_products'] as $key => $delivery_challan_products) {
             if(isset($delivery_challan_products['order_product_all_details']->hsn_code) && !empty($delivery_challan_products['order_product_all_details']->hsn_code)){
                 $temp_var = $delivery_challan_products['order_product_all_details']->hsn_code;
@@ -1909,10 +2070,12 @@ class DeliveryChallanController extends Controller {
                                 'actual_quantity' => $actual_quantity,
                                 'amount' => $final_amount,
                                 'vat_amount' => $vat_amount,
+                                'count' => $count + 1,
                             ];
                         }
                     }
                 } else {
+                    $count = 1;
                     if(isset($delivery_challan_products['order_product_all_details']['product_category']->product_type_id) && $delivery_challan_products['order_product_all_details']['product_category']->product_type_id==3){
                         $hsn_list[] = $temp_var;
                         if($delivery_challan_products->vat_percentage == '1.00'){
@@ -1922,6 +2085,7 @@ class DeliveryChallanController extends Controller {
                                 'actual_quantity' => $delivery_challan_products->actual_quantity,
                                 'amount' => $amont,
                                 'vat_amount' => (float)$amont * (float)$gst / 100,
+                                'count' => $count,
                             ];
                         }else{
                             $hsn_data[] = [
@@ -1930,6 +2094,7 @@ class DeliveryChallanController extends Controller {
                                 'actual_quantity' => $delivery_challan_products->actual_quantity,
                                 'amount' => $amont,
                                 'vat_amount' => 0,
+                                'count' => $count,
                             ];
                         }
 
@@ -1941,8 +2106,10 @@ class DeliveryChallanController extends Controller {
                             'actual_quantity' => $delivery_challan_products->actual_quantity,
                             'amount' => $amont,
                             'vat_amount' => (float)$amont * (float)$gst / 100,
+                            'count' => $count,
                         ];
                     }
+                   
                 }
             }
         }

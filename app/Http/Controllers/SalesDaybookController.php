@@ -40,7 +40,7 @@ class SalesDaybookController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -156,8 +156,9 @@ class SalesDaybookController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 2 && Auth::user()->role_id != 4 && Auth::user()->role_id != 11) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -202,7 +203,7 @@ class SalesDaybookController extends Controller {
 
     public function challan_date_sales_daybook() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
         $validator = Validator::make($input_data, DeliveryChallan::$challan_date_rules);
@@ -226,7 +227,7 @@ class SalesDaybookController extends Controller {
     }
     public function challan_date_daily_proforma() {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
         $validator = Validator::make($input_data, DeliveryChallan::$challan_date_rules);
@@ -256,7 +257,7 @@ class SalesDaybookController extends Controller {
     public function delete_multiple_challan_sales_daybook() {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $input_data = Input::all();
@@ -290,7 +291,7 @@ class SalesDaybookController extends Controller {
     public function delete_multiple_challan_daily_proforma() {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         $input_data = Input::all();
@@ -329,7 +330,7 @@ class SalesDaybookController extends Controller {
     public function delete_challan_sales_daybook($id) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
         if ($password == '') {
@@ -349,7 +350,7 @@ class SalesDaybookController extends Controller {
     public function delete_challan_daily_proforma($id) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $password = Input::get('password');
         if ($password == '') {
@@ -914,7 +915,7 @@ class SalesDaybookController extends Controller {
         set_time_limit(0);
         $data = Input::all();
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {
             $date1 = \DateTime::createFromFormat('m-d-Y', $data["export_from_date"])->format('Y-m-d');
@@ -947,7 +948,8 @@ class SalesDaybookController extends Controller {
     public function print_daily_proforma() {
         set_time_limit(0);
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
+
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 11) {
             return Redirect::to('orders')->with('error', 'You do not have permission.');
         }
         if (isset($data["export_from_date"]) && isset($data["export_to_date"]) && !empty($data["export_from_date"]) && !empty($data["export_to_date"])) {

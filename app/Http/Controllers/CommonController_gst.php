@@ -128,7 +128,7 @@ class CommonController_gst extends Controller {
         // StoreCustomer
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
        // $customer_data = Customer::where('quickbook_customer_id', '=', NULL)->get();
        //dd($customer_data);
@@ -232,7 +232,7 @@ class CommonController_gst extends Controller {
     public function product_store(Request $request) {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         //2782, 2671, 3684, 1759

@@ -31,9 +31,12 @@ class CityController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id == 5 ) {
-           return Redirect::back()->withInput()->with('error', 'You do not have permission.');
-           }     
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
+        // if (Auth::user()->role_id == 5 ) {
+        //    return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        //    }     
         
         $cities = City::with('states')->orderBy('created_at', 'desc')->Paginate(20);
         $cities->setPath('city');
@@ -49,7 +52,7 @@ class CityController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('city')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $states = States::orderBy('state_name', 'ASC')->get();
         return view('add_city', compact('states'));
@@ -60,7 +63,7 @@ class CityController extends Controller {
      */
     public function store(CityRequest $request) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('city')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if(City::where('city_name',$request->input('city_name'))->where('state_id',$request->input('state'))->count() > 0)
         {
@@ -83,7 +86,7 @@ class CityController extends Controller {
             return redirect('change_password');
         }
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('city')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $city = City::find($id);
         $states = States::orderBy('state_name', 'ASC')->get();
@@ -95,7 +98,7 @@ class CityController extends Controller {
      */
     public function update($id, EditCityRequest $request) {
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('city')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $check_city_exists = City::where('city_name', '=', $request->input('city_name'))->where('state_id','=',$request->input('state'))->where('id', '!=', $id)->count();
         if ($check_city_exists == 0) {
@@ -114,7 +117,7 @@ class CityController extends Controller {
     public function destroy($id) {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('city')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $location_association = DeliveryLocation::where('city_id', '=', $id)->count();
         if ($location_association == 0) {

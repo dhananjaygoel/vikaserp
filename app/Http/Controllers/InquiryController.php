@@ -60,8 +60,8 @@ class InquiryController extends Controller {
         }
 
         $data = Input::all();
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         if (Auth::user()->role_id <> 5) {
 
@@ -150,8 +150,9 @@ class InquiryController extends Controller {
     public function create() {
 
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
+        $ip = Security::all();
         $units = Units::all();
         $inquiry = [];
         if (Auth::user()->role_id == 5) {
@@ -166,7 +167,7 @@ class InquiryController extends Controller {
                 return redirect('inquiry')->with('flash_message', 'Inquiry does not exist.');
             }
         }
-        $ip = Security::all();
+        
         $delivery_locations = DeliveryLocation::orderBy('area_name', 'ASC')->get();
         $customers = Customer::orderBy('tally_name', 'ASC')->get();
         return view('add_inquiry', compact('customers', 'units', 'ip', 'inquiry', 'delivery_locations'));
@@ -365,33 +366,11 @@ class InquiryController extends Controller {
         $ec = new WelcomeController();
         $ec->set_updated_date_to_sync_table($tables);
         /* end code */
-
-        $ip = Security::all();
-        $ip_array = [];
-        $ipaddress = '';
-        if (isset($ip) && !$ip->isEmpty()) {
-            foreach ($ip as $key => $value) {
-                $ip_array[$key] = $value->ip_address;
-            }
-            if (getenv('HTTP_CLIENT_IP'))
-                $ipaddress = getenv('HTTP_CLIENT_IP');
-            else if (getenv('HTTP_X_FORWARDED_FOR'))
-                $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-            else if (getenv('HTTP_X_FORWARDED'))
-                $ipaddress = getenv('HTTP_X_FORWARDED');
-            else if (getenv('HTTP_FORWARDED_FOR'))
-                $ipaddress = getenv('HTTP_FORWARDED_FOR');
-            else if (getenv('HTTP_FORWARDED'))
-                $ipaddress = getenv('HTTP_FORWARDED');
-            else if (getenv('REMOTE_ADDR'))
-                $ipaddress = getenv('REMOTE_ADDR');
-            else
-                $ipaddress = 'UNKNOWN';
-        }    
-        if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
+        
+        if(Auth::user()->role_id == 2){
             return redirect('dashboard')->with('flash_success_message', 'Inquiry details successfully added'.$whatsapp_error);
         }
-
+  
         return redirect('inquiry')->with('flash_success_message', 'Inquiry details successfully added'.$whatsapp_error);
     }
 
@@ -400,8 +379,8 @@ class InquiryController extends Controller {
      */
     public function show($id, InquiryRequest $request) {
         
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {
@@ -509,8 +488,8 @@ class InquiryController extends Controller {
      */
     public function edit($id, InquiryRequest $request) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
 
@@ -859,7 +838,7 @@ class InquiryController extends Controller {
     public function destroy() {
 
         if (Auth::user()->role_id != 0) {
-            return Redirect::to('inquiry')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $whatsapp_error = '';
         $inquiry_filter=Input::get('inquiry_sort_type')!=""?Input::get('inquiry_sort_type'):"";
@@ -1437,8 +1416,8 @@ class InquiryController extends Controller {
 
     function place_order($id) {
 
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 5) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
         if (Auth::user()->role_id == 5) {
@@ -1474,7 +1453,7 @@ class InquiryController extends Controller {
 
     function store_place_order($id, InquiryRequest $request) {
         if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 5) {
-            return Redirect::to('orders')->with('error', 'You do not have permission.');
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
         $input_data = Input::all();
         $sms_flag = 1;

@@ -86,7 +86,7 @@ class InventoryController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
-        if (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 2 && Auth::user()->role_id != 3) {
+        if (Auth::user()->role_id != 0) {
             return Redirect::back()->withInput()->with('error', 'You do not have permission.');
         }
 
@@ -855,6 +855,9 @@ class InventoryController extends Controller {
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
         if (count((array)$product_cat) > 0) {
             $product_last = ProductCategory::with('product_sub_categories.product_inventory')->orderBy('created_at', 'asc')->first()->get();
@@ -862,6 +865,7 @@ class InventoryController extends Controller {
             $thickness_array = [];
             $report_arr = [];
             $final_arr = [];
+            $size_filter = '';
             $dropdown_filter = '';
             $product_id = $product_last[0]->id;
             $product_type = $product_last[0]->product_type_id;
@@ -944,6 +948,7 @@ class InventoryController extends Controller {
             return view('inventory_report')->with('product_cat', $product_cat)
                             ->with('product_id', $product_id)
                             ->with('dropdown_filter', $dropdown_filter)
+                            ->with('size_filter', $size_filter)
                             ->with('product_last', $product_last)
                             ->with('thickness_array', $thickness_array)
                             ->with('report_arr', $report_arr)
@@ -960,8 +965,12 @@ class InventoryController extends Controller {
     public function getInventoryReport(Request $request) { // Autocomplate
         $product_id = $request->input('product_id');
         $dropdown_filter = '';
+        $size_value = '';
         if(Input::has('dropdown_value') && Input::get('dropdown_value') != ''){
             $dropdown_filter = Input::get('dropdown_value');
+        }
+        if(Input::has('size_value') && Input::get('size_value') != ''){
+            $size_value = Input::get('size_value');
         }
         $product_cat = ProductCategory::orderBy('created_at', 'asc')->get();
         $product_last = ProductCategory::where('id', '=', $product_id)->with('product_sub_categories.product_inventory')->get();
@@ -979,7 +988,27 @@ class InventoryController extends Controller {
                     }
                 }
                 foreach ($product_last[0]['product_sub_categories']->sortBy('size') as $sub_cat) {
-                    if (!in_array($sub_cat->size, $size_array)) {
+                    $valid=1;
+                    $size_tmp=$sub_cat->size;
+                    $size_tmp=preg_replace('/[^0-9]/', ' ', $size_tmp);
+                    $size_tmp=trim($size_tmp);
+                    $size_tmp=substr($size_tmp,0,3);
+                    $size_tmp=trim($size_tmp);
+                    $size_tmp=(int)$size_tmp;
+                    if($size_value=='small'){
+                        if($size_tmp < 100){
+                            $valid=1;
+                        } else {
+                            $valid=0;
+                        }
+                    } else if($size_value=='large'){
+                        if($size_tmp >= 100){
+                            $valid=1;
+                        } else {
+                            $valid=0;
+                        }
+                    }
+                    if (!in_array($sub_cat->size, $size_array) && $valid==1) {
                         array_push($size_array, $sub_cat->size);
                     }
                 }
@@ -1036,7 +1065,28 @@ class InventoryController extends Controller {
                 $product_column = "Product Alias";
                 array_push($thickness_array, "NA");
                 foreach ($product_last[0]['product_sub_categories']->sortBy('alias_name') as $sub_cat) {
-                    if (!in_array($sub_cat->alias_name, $size_array)) {
+                    $valid=1;
+                    $size_tmp=$sub_cat->size;
+                    $size_tmp=preg_replace('/[^0-9]/', ' ', $size_tmp);
+                    $size_tmp=trim($size_tmp);
+                    $size_tmp=substr($size_tmp,0,3);
+                    $size_tmp=trim($size_tmp);
+                    $size_tmp=(int)$size_tmp;
+                    if($size_value=='small'){
+                        //dd($size_value);
+                        if($size_tmp < 100){
+                            $valid=1;
+                        } else {
+                            $valid=0;
+                        }
+                    } else if($size_value=='large'){
+                        if($size_tmp >= 100){
+                            $valid=1;
+                        } else {
+                            $valid=0;
+                        }
+                    }
+                    if (!in_array($sub_cat->alias_name, $size_array) && $valid==1) {
                         array_push($size_array, $sub_cat->alias_name);
                     }
                 }
@@ -1114,7 +1164,9 @@ class InventoryController extends Controller {
     }
 
     public function inventoryPriceList() {
-        
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }

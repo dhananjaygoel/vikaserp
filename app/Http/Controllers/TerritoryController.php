@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Input;
 use Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class TerritoryController extends Controller {
 
@@ -25,6 +26,9 @@ class TerritoryController extends Controller {
     }
 
     public function index(Request $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -46,6 +50,9 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function create() {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $locations = DeliveryLocation::all();
         return view('territory.add_territory')->with('locations', $locations);
     }
@@ -56,6 +63,9 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $input = $request->input();
         $message = array('territory_name.required' => 'Territory Name is required',
             'location.required' => 'Location is required');
@@ -91,6 +101,9 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function show($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $territory = Territory::with('territorylocation')->find($id);
         $locations = DeliveryLocation::all();
 //            dd($territories);
@@ -104,6 +117,9 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $locations = DeliveryLocation::all();
         $territory = Territory::with('territorylocation')->find($id);
         return view('territory.edit_territory')->with('territory', $territory)->with('locations', $locations);
@@ -116,6 +132,9 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function update($id, Request $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         $input = $request->input();
         $message = array('territory_name.required' => 'Territory Name is required',
             'location.required' => 'Location is required');
@@ -164,6 +183,9 @@ class TerritoryController extends Controller {
      * @return Response
      */
     public function destroy($id, Request $request) {
+        if (Auth::user()->role_id != 0) {
+            return Redirect::back()->withInput()->with('error', 'You do not have permission.');
+        }
         if (Hash::check(Input::get('model_pass'), Auth::user()->password)) {
             $territory = Territory::find($id);
             if(count((array)$territory) > 0)
