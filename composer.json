@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^0.8.5",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
+        "hisorange/browser-detect": "^4.2",
         "illuminate/support": "^6.6",
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^6.2",

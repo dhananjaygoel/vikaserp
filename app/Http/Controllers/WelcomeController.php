@@ -52,6 +52,7 @@ use Barryvdh\DomPDF\PDF;
 use Response;
 use Jenssegers\Agent\Agent;
 use App\Jobs\ProcessPDFDownload;
+use Browser;
 
 class WelcomeController extends Controller {
     /*
@@ -2080,6 +2081,8 @@ class WelcomeController extends Controller {
     }
 
     public function download_dc($uuid){
+        dd(Browser::detect());
+
         $allowed = false;
         $date = new Carbon\Carbon;
         $date->modify('-48 hours');
