@@ -172,7 +172,7 @@ class DashboardController extends Controller {
             return redirect('change_password');
         }
 
-        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9 || Auth::user()->role_id == 3){
+        if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             User::where('id',Auth::user()->id)->update(['is_active'=>'1']);
             return Redirect::to('delivery_order');
         }
@@ -188,12 +188,16 @@ class DashboardController extends Controller {
             return Redirect::to('bulk-delete');
         }
 
-        if (Auth::user()->role_id == 4) {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 3) {
             return Redirect::to('delivery_order');
         }
         if (Auth::user()->role_id == 6) {
             return Redirect::to('due-payment');
         }
+        if (Auth::user()->role_id == 11) {
+            return Redirect::to('daily_pro_forma_invoice');
+        }
+
         if (Auth::user()->role_id == 2) {
             $ip = Security::all();
             $ip_array = [];
@@ -235,6 +239,7 @@ class DashboardController extends Controller {
                 }
             }
         }
+
 
         $inquiries_stats_all = [];
         $orders_stats_all = [];

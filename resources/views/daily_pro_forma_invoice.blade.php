@@ -88,7 +88,7 @@
                                                     <th><input type="checkbox" class="table-link" id ="select_all_button" onclick="select_all_checkbox();" all_checked="allunchecked" ></th>
                                                     <th>#</th>
                                                 @endif
-                                                @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4 )
+                                                @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 11)
                                                     <th>#</th>
                                                 @endif
                                                 <th>Date</th>
@@ -104,7 +104,7 @@
                                                 <th>Bill Number</th>
                                                 <!-- <th>Remarks </th> -->
                                                 <th>Edited </th>
-                                                @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                                @if( Auth::user()->role_id == 0 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 11)
                                                     <th>Action </th>
                                                 @endif
                                             </tr>
@@ -124,7 +124,7 @@
                                                         <td><input type="checkbox" id ="checkbox_{{$k}}" name="challan_id[{{$k}}][checkbox]" value="{{$challan->id}}" > </td>
                                                         <td>{{$k++}}</td>
                                                     @endif
-                                                    @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+                                                    @if( Auth::user()->role_id == 2 || Auth::user()->role_id == 4 || Auth::user()->role_id == 11)
                                                         <td>{{$k++}}</td>
                                                     @endif
                                                     <td>{{ date('j F, Y',strtotime($challan['updated_at']))}}</td>
@@ -261,7 +261,7 @@
                                                             </a>
                                                             @endif -->
 
-                                                            @if(Auth::user()->role_id == 0)
+                                                            @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 11)
                                                                <a style="margin:0" target="_blank" href="{{URL::action('DeliveryChallanController@generate_invoice', ['id'=> $challan->id])}}" class="table-link normal_cursor" title="Generate Invoice">
                                                                     <span class="fa-stack">
                                                                         <i class="fa fa-square fa-stack-2x"></i>
