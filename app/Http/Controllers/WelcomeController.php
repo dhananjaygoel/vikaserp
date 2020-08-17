@@ -2087,7 +2087,7 @@ class WelcomeController extends Controller {
             $date = new Carbon\Carbon;
             $date->modify('-48 hours');
             $formatted_date = $date->format('Y-m-d H:i:s');
-            $file_data = DB::table('file_info')->where('status','<',10)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
+            $file_data = DB::table('file_info')->where('status','<',4)->where('uuid',$uuid)->where('created_at','>',$formatted_date)->first();
             if(isset($file_data) && !empty($file_data)){
                 $allowed = true;
                 $file_path = $file_data->file_path;
@@ -2121,7 +2121,7 @@ class WelcomeController extends Controller {
                 $allowed = false;
             }
             if ($allowed) {
-                DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 2,'created_at'=>$created_at,'updated_at'=>$date));
+                DB::table('file_info')->where('uuid',$uuid)->update(array('status'=> 4,'created_at'=>$created_at,'updated_at'=>$date));
                 $file_name = $file_data->file_name;
                 $headers = [
                     'Content-type' => 'application/force-download'];
