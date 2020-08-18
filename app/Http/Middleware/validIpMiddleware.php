@@ -66,7 +66,7 @@ class validIpMiddleware {
                         if($_SERVER['REQUEST_URI'] == '/dashboard' || $_SERVER['REQUEST_URI'] == '/delivery_order' || $request->is('delivery_order/*') || $request->is('create_load_truck/*') || $request->is('save_empty_truck*') || $request->is('save_product*') || $request->is('save_truck_weight*') || $request->is('del_boy_reload*') || $request->is('loaded_assign1')){
                             return $next($request);
                         }else{
-                            return redirect()->back()->with(['error'=>'You are not Autherized to access with this IP Address.']);
+                            return redirect('delivery_order')->with('error','You are not Autherized to access with this IP Address.');
                         }
                     }elseif($otp_validate == true){
                         return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
