@@ -48,6 +48,9 @@ class validIpMiddleware {
                 if (in_array($ipaddress, $ip_array) ){
                     // return redirect('dashboard');
                     return $next($request);
+                }elseif (in_array($ipaddress, $ip_array) && Auth::user()->role_id == 0 ){
+                    // return redirect('dashboard');
+                    return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
                     return redirect('bulk-delete');
                 }else if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
@@ -58,7 +61,9 @@ class validIpMiddleware {
                     }
                 }
                 else{
-                    if($otp_validate == true){
+                    if($otp_validate == true && Auth::user()->role_id == 0){
+                        return $next($request);
+                    }elseif($otp_validate == true){
                         return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
                     }else{
                         Session::put('send_otp', false);

@@ -36,7 +36,7 @@ class DashboardController extends Controller {
         define('SEND_SMS', Config::get('smsdata.send'));
         define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
         define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
-        // $this->middleware('validIP');
+        $this->middleware('validIP', ['except' => ['ipvalid_dashboard', 'generate_otp','resend_otp','validate_otp']]);
 
 //        if (Config::get('rollbar.send') === true) {
 //            $config = array(
