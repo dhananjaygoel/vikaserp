@@ -174,27 +174,34 @@ class DashboardController extends Controller {
 
         if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             User::where('id',Auth::user()->id)->update(['is_active'=>'1']);
+            Session::forget('logged_in');
             return Redirect::to('delivery_order');
         }
 
         if (Auth::user()->role_id == 7) {
+            Session::forget('logged_in');
             return Redirect::to('vehicle-list');
         }
         if (Auth::user()->role_id == 5) {
+            Session::forget('logged_in');
             return Redirect::to('inquiry');
         }
 
         if (Auth::user()->role_id == 10) {
+            Session::forget('logged_in');
             return Redirect::to('bulk-delete');
         }
 
         if (Auth::user()->role_id == 4 || Auth::user()->role_id == 3) {
+            Session::forget('logged_in');
             return Redirect::to('delivery_order');
         }
         if (Auth::user()->role_id == 6) {
+            Session::forget('logged_in');
             return Redirect::to('due-payment');
         }
         if (Auth::user()->role_id == 11) {
+            Session::forget('logged_in');
             return Redirect::to('daily_pro_forma_invoice');
         }
 
