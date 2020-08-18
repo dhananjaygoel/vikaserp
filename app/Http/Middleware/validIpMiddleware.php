@@ -45,7 +45,7 @@ class validIpMiddleware {
             if ($ipaddress != 'UNKNOWN') {
                 $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
-                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0){
+                if (in_array($ipaddress, $ip_array) ){
                     // return redirect('dashboard');
                     return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
@@ -67,7 +67,7 @@ class validIpMiddleware {
                 }
             }
         }
-        if(Auth::user()->role_id != 0){
+        // if(Auth::user()->role_id != 0){
             $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
             $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
             if($logged_in == true){
@@ -80,8 +80,8 @@ class validIpMiddleware {
             }else {
                 return $next($request);
             }
-        }else{
-            return $next($request);
-        }   
+        // }else{
+        //     return $next($request);
+        // }   
     }
 }
