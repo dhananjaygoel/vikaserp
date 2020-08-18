@@ -63,7 +63,7 @@ class validIpMiddleware {
                     if($otp_validate == true && Auth::user()->role_id == 0){
                         return $next($request);
                     }elseif(!in_array($ipaddress, $ip_array) && $otp_validate == true && (Auth::user()->role_id == 8 || Auth::user()->role_id == 9)){
-                        if($_SERVER['REQUEST_URI'] == '/delivery_order' || $request->is('delivery_order/*') || $request->is('create_load_truck/*') || $request->is('save_empty_truck*') || $request->is('save_product*') || $request->is('save_truck_weight*') || $request->is('del_boy_reload*') || $request->is('loaded_assign1')){
+                        if($_SERVER['REQUEST_URI'] == '/dashboard' || $_SERVER['REQUEST_URI'] == '/delivery_order' || $request->is('delivery_order/*') || $request->is('create_load_truck/*') || $request->is('save_empty_truck*') || $request->is('save_product*') || $request->is('save_truck_weight*') || $request->is('del_boy_reload*') || $request->is('loaded_assign1')){
                             return $next($request);
                         }else{
                             return redirect()->back()->with(['error'=>'You are not Autherized to access with this IP Address.']);
