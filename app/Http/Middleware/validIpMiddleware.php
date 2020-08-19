@@ -45,8 +45,10 @@ class validIpMiddleware {
             if ($ipaddress != 'UNKNOWN') {
                 $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
-                if (in_array($ipaddress, $ip_array) || Auth::user()->role_id == 0){
+                if (in_array($ipaddress, $ip_array) ){
                     // return redirect('dashboard');
+                    return $next($request);
+                }elseif (in_array($ipaddress, $ip_array) && Auth::user()->role_id == 0){
                     return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
                     return redirect('bulk-delete');
@@ -58,7 +60,15 @@ class validIpMiddleware {
                     }
                 }
                 else{
-                    if($otp_validate == true){
+                    if($otp_validate == true && Auth::user()->role_id == 0){
+                        return $next($request);
+                    }elseif(!in_array($ipaddress, $ip_array) && $otp_validate == true && (Auth::user()->role_id == 8 || Auth::user()->role_id == 9)){
+                        if($_SERVER['REQUEST_URI'] == '/dashboard' || $_SERVER['REQUEST_URI'] == '/delivery_order' || $request->is('delivery_order/*') || $request->is('create_load_truck/*') || $request->is('save_empty_truck*') || $request->is('save_product*') || $request->is('save_truck_weight*') || $request->is('del_boy_reload*') || $request->is('loaded_assign1')){
+                            return $next($request);
+                        }else{
+                            return redirect('delivery_order')->with('error','You are not Autherized to access with this IP Address.');
+                        }
+                    }elseif($otp_validate == true){
                         return redirect('ip_invalid')->with('flash_message','You are not Autherized to access with this IP Address.');
                     }else{
                         Session::put('send_otp', false);
@@ -67,7 +77,7 @@ class validIpMiddleware {
                 }
             }
         }
-        if(Auth::user()->role_id != 0){
+        // if(Auth::user()->role_id != 0){
             $logged_in = Session::has('logged_in')?Session::get('logged_in'):false;
             $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
             if($logged_in == true){
@@ -80,8 +90,8 @@ class validIpMiddleware {
             }else {
                 return $next($request);
             }
-        }else{
-            return $next($request);
-        }   
+        // }else{
+        //     return $next($request);
+        // }   
     }
 }

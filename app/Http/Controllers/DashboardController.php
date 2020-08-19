@@ -36,7 +36,7 @@ class DashboardController extends Controller {
         define('SEND_SMS', Config::get('smsdata.send'));
         define('TWILIO_SID', Config::get('smsdata.twilio_sid'));
         define('TWILIO_TOKEN', Config::get('smsdata.twilio_token'));
-        // $this->middleware('validIP');
+        $this->middleware('validIP', ['except' => ['ipvalid_dashboard', 'generate_otp','resend_otp','validate_otp']]);
 
 //        if (Config::get('rollbar.send') === true) {
 //            $config = array(
@@ -174,27 +174,34 @@ class DashboardController extends Controller {
 
         if(Auth::user()->role_id == 8 || Auth::user()->role_id == 9){
             User::where('id',Auth::user()->id)->update(['is_active'=>'1']);
+            Session::forget('logged_in');
             return Redirect::to('delivery_order');
         }
 
         if (Auth::user()->role_id == 7) {
+            Session::forget('logged_in');
             return Redirect::to('vehicle-list');
         }
         if (Auth::user()->role_id == 5) {
+            Session::forget('logged_in');
             return Redirect::to('inquiry');
         }
 
         if (Auth::user()->role_id == 10) {
+            Session::forget('logged_in');
             return Redirect::to('bulk-delete');
         }
 
         if (Auth::user()->role_id == 4 || Auth::user()->role_id == 3) {
+            Session::forget('logged_in');
             return Redirect::to('delivery_order');
         }
         if (Auth::user()->role_id == 6) {
+            Session::forget('logged_in');
             return Redirect::to('due-payment');
         }
         if (Auth::user()->role_id == 11) {
+            Session::forget('logged_in');
             return Redirect::to('daily_pro_forma_invoice');
         }
 
@@ -360,7 +367,7 @@ class DashboardController extends Controller {
         }
         $deliver_sum = $deliver_sum / 1000;
         $deliver_pending_sum = $deliver_pending_sum / 1000;
-
+        Session::forget('logged_in');
         return view('dashboard', compact('order_pending_sum', 'inquiry_pending_sum', 'deliver_pending_sum'));
 
 //        return view('dashboard', compact('order', 'pending_order','order_pending_sum', 'inquiry', 'pending_inquiry', 'inquiry_pending_sum', 'deliver_sum', 'deliver_pending_sum', 'delivery_challan_sum', 'purc_order_sum'));

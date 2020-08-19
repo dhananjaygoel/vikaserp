@@ -27,7 +27,7 @@
             } else {
                 $ip_array = array($ipaddress);
             }
-            $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
+            $otp_validate = Session::has('otp_validate')?Session::get('otp_validate'):false;
             // print_r($ip_array);
             // exit;
             ?>
@@ -178,7 +178,7 @@
                     @endif
                     @endif
                     @if(Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 5 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9 ||  Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4 || Auth::user()->role_id == 11)
-                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5)
+                    @if((isset($ip_array) && in_array($ipaddress, $ip_array)) || Auth::user()->role_id == 0 || Auth::user()->role_id == 5 || Auth::user()->role_id == 8 || Auth::user()->role_id == 9)
                     <li class="<?php
                     if (Request::is('orders*') || Request::is('*delivery_order*') || Request::is('*delivery_challan*') || Request::is('*pending_delivery_order*') || Request::is('*pending_order_report*') || Request::is('*sales_daybook*')|| Request::is('*daily_pro_forma_invoice*')) {
                         echo 'active';
