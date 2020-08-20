@@ -61,7 +61,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="thickness">Thickness<span class="mandatory">*</span></label>
+                                <label for="thickness">Thickness</label>
                                 <input id="thickness" class="form-control" placeholder="Thickness" name="thickness" value="{{ old('thickness') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
 
