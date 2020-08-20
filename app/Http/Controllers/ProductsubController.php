@@ -413,45 +413,45 @@ class ProductsubController extends Controller {
         $pcat = ProductCategory::where('id',$request->input('sub_product_name'))->first();
 
 
-       $Qdata = [
-            "Name" => $request->input('alias_name'),
-            "Active" => true,
-            "FullyQualifiedName" => $request->input('alias_name'),
-            "UnitPrice" => $pcat->price + $request->input('difference'),
-            "Type" => "NonInventory",
-            "TaxClassificationRef"=>$request->input('hsn_code'),
-            "IncomeAccountRef"=> [
-                "value"=> 3,
-                "name" => "IncomRef"
-            ],
-            "TrackQtyOnHand"=>false,
-        ];
-        $inclusiveitemid ="";
-        $gstitemid = "";
-        $dataService = $this->getTokenWihtoutGST();
-        $newItemObj = Item::create($Qdata);
-        $newitem = $dataService->add($newItemObj);
-        $error = $dataService->getLastError();
+    //    $Qdata = [
+    //         "Name" => $request->input('alias_name'),
+    //         "Active" => true,
+    //         "FullyQualifiedName" => $request->input('alias_name'),
+    //         "UnitPrice" => $pcat->price + $request->input('difference'),
+    //         "Type" => "NonInventory",
+    //         "TaxClassificationRef"=>$request->input('hsn_code'),
+    //         "IncomeAccountRef"=> [
+    //             "value"=> 3,
+    //             "name" => "IncomRef"
+    //         ],
+    //         "TrackQtyOnHand"=>false,
+    //     ];
+    //     $inclusiveitemid ="";
+    //     $gstitemid = "";
+    //     $dataService = $this->getTokenWihtoutGST();
+    //     $newItemObj = Item::create($Qdata);
+    //     $newitem = $dataService->add($newItemObj);
+    //     $error = $dataService->getLastError();
 
-        if ($error) {
-            $this->refresh_token_Wihtout_GST();
-            $dataService = $this->getTokenWihtoutGST();
-        }
-        else{
-            $inclusiveitemid =  $newitem->Id;
-        }
-        $nextdataservice = $this->getToken();
-        $newiteminclusive = $nextdataservice->add($newItemObj);
-        $error1 = $nextdataservice->getLastError();
-        if ($error1) {
-            $this->refresh_token();
-            $dataService = $this->getToken();
-        }
-        else{
-            $gstitemid  =  $newiteminclusive->Id;
-        }
-        $ProductSubCategory->quickbook_a_item_id = $inclusiveitemid;
-        $ProductSubCategory->quickbook_item_id  = $gstitemid;
+    //     if ($error) {
+    //         $this->refresh_token_Wihtout_GST();
+    //         $dataService = $this->getTokenWihtoutGST();
+    //     }
+    //     else{
+    //         $inclusiveitemid =  $newitem->Id;
+    //     }
+    //     $nextdataservice = $this->getToken();
+    //     $newiteminclusive = $nextdataservice->add($newItemObj);
+    //     $error1 = $nextdataservice->getLastError();
+    //     if ($error1) {
+    //         $this->refresh_token();
+    //         $dataService = $this->getToken();
+    //     }
+    //     else{
+    //         $gstitemid  =  $newiteminclusive->Id;
+    //     }
+    //     $ProductSubCategory->quickbook_a_item_id = $inclusiveitemid;
+    //     $ProductSubCategory->quickbook_item_id  = $gstitemid;
 
         /*$res = $this->quickbook_create_item($Qdata);
         if($res['status']){
@@ -667,31 +667,31 @@ class ProductsubController extends Controller {
             $quickbook_item_id=$ProductSubCategory->quickbook_item_id;
             $quickbook_a_item_id=$ProductSubCategory->quickbook_a_item_id;
 
-            if(!empty($quickbook_item_id) && !empty($quickbook_a_item_id)){
-                $Qdata = [
-                    "Name" => $data['alias_name'],
-                    "Active" => true,
-                    "sparse"=> false,
-                    "ReverseChargeRate"=> false,
-                    "FullyQualifiedName" => $data['alias_name'],
-                    "UnitPrice" => $pcat->price + $data['difference'],
-                    "Type" => "NonInventory",
-                    "TaxClassificationRef"=>$data['hsn_code'],
-                    "IncomeAccountRef"=> [
-                        "value"=> 3,
-                        "name" => "IncomRef"
-                    ],
-                    "TrackQtyOnHand"=>false,
+            // if(!empty($quickbook_item_id) && !empty($quickbook_a_item_id)){
+            //     $Qdata = [
+            //         "Name" => $data['alias_name'],
+            //         "Active" => true,
+            //         "sparse"=> false,
+            //         "ReverseChargeRate"=> false,
+            //         "FullyQualifiedName" => $data['alias_name'],
+            //         "UnitPrice" => $pcat->price + $data['difference'],
+            //         "Type" => "NonInventory",
+            //         "TaxClassificationRef"=>$data['hsn_code'],
+            //         "IncomeAccountRef"=> [
+            //             "value"=> 3,
+            //             "name" => "IncomRef"
+            //         ],
+            //         "TrackQtyOnHand"=>false,
 
-                ];
-                $this->refresh_token_Wihtout_GST();
-                $resultingObj = $this->quickbook_update_a_item($quickbook_a_item_id,$Qdata);
+            //     ];
+            //     $this->refresh_token_Wihtout_GST();
+            //     $resultingObj = $this->quickbook_update_a_item($quickbook_a_item_id,$Qdata);
 
-                //Plus GST account
-                $this->refresh_token();
-                $nextresultingItemObj = $this->quickbook_update_item($quickbook_item_id,$Qdata);
+            //     //Plus GST account
+            //     $this->refresh_token();
+            //     $nextresultingItemObj = $this->quickbook_update_item($quickbook_item_id,$Qdata);
 
-            }
+            // }
             
             ProductSubCategory::where('id', $id)->update($pro_sub_cat);
            

@@ -71,13 +71,14 @@
                                         <tr>
                                             <th class="col-md-1">#</th>
                                             <th class="col-md-2">Name</th>
-                                            <th class="col-md-2">Type</th>
+                                            <th class="col-md-1">Type</th>
 
                                             <th class="col-md-1">HSN Code</th>
                                             <th class="col-md-2">HSN DEScription</th>
 
-                                            <th class="col-md-3">Price</th>
-                                            <!--<th class="col-md-2">Created</th>-->
+                                            <th class="col-md-4">Price<span style="margin-left: 80px;">Thickness Diffrence</span></th>
+                                            <!-- <th class="col-md-3">Thickness</th> -->
+                                            <!-- <th class="col-md-1"></th> -->
                                             <th class="col-md-2">Updated</th>
                                             <th>Actions</th>
                                         </tr>
@@ -103,10 +104,13 @@
                                             <td>
                                                 @if(Auth::user()->role_id == 0)
                                                 <div class="row product-price">
-                                                    <div class="form-group col-md-6">
+                                                    <div class="form-group col-md-4">
                                                         <input type="tel" class="form-control" id="price_{{$product->id}}" name="price[{{$product->id}}][price]" value="{{ $product->price }}" onkeypress=" return numbersOnly(this,event,true,false);">
                                                         <input type="hidden" class="form-control" name="id[]" value="{{$product->id}}">
                                                         <input type="hidden" id="token" name="_token" value="{{csrf_token()}}">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <input type="tel" class="form-control" id="thickness_{{$product->id}}" name="thickness[{{$product->id}}][thickness]" value="{{ isset($product->thickness)?$product->thickness:'' }}" onkeypress=" return numbersOnly(this,event,true,false);">
                                                     </div>
                                                     <div class="form-group col-md-2 difference_form">
                                                         <input class="btn btn-primary" type="button" class="form-control" value="save" onclick="update_price({{$product->id}})">

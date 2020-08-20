@@ -349,11 +349,11 @@
                                     Product Size
                                 </a>
                             </li>
-                            <li class="{{ (Request::is('*thickness*') ? 'active' : '') }}">
+                            <!-- <li class="{{ (Request::is('*thickness*') ? 'active' : '') }}">
                                 <a href="{{url('/')}}/thickness">
                                     Product Thickness
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </li>
                     @endif

@@ -87,7 +87,8 @@
                         if(isset($prod_type->id) && $prod_type->id==2) echo 'display:none'; ?>">   
                             <div class="form-group ">
                                 <label for="thickness">Product Thickness</label>
-                                <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
+                                <input id="thickness" class="form-control" placeholder="Thickness" name="thickness" value="{{ $prod_sub_cat->thickness }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                                <!-- <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
                                     @foreach(\App\Thickness::all() as $thick)
                                         @if($thick->thickness==$prod_sub_cat->thickness)
                                             <option value="{{$prod_sub_cat->thickness.':'}}" selected> {{$prod_sub_cat->thickness}}</option>
@@ -95,7 +96,7 @@
                                             <option value="{{$thick->thickness.':'.$thick->diffrence}}"> {{$thick->thickness}}</option>
                                         @endif
                                     @endforeach
-                                </select>
+                                </select> -->
                             </div>
                         </div>
                         <div class="form-group">

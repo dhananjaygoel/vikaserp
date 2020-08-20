@@ -1152,23 +1152,29 @@ class InquiryController extends Controller {
                             $cust = $customer->difference_amount;
                         }
                     }
+                    $sign = substr($product['product_category']->thickness, 0, 1);
+                    if($sign == '-'){
+                        $prod_price = $product['product_category']->price - substr($product['product_category']->thickness,1);
+                    }else{
+                        $prod_price = $product['product_category']->price + $product['product_category']->thickness;
+                    }
                     if($discount!="" && $discount>0 ){
                         if($discount_type=='discount'){
                             if($discount_unit=='fixed'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - $discount;
+                                $product_price = $prod_price + $cust + $location_diff + $product->difference - $discount;
                             }elseif($discount_unit=='percent'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference - (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                                $product_price = $prod_price + $cust + $location_diff + $product->difference - (($prod_price + $cust + $location_diff + $product->difference)*$discount/100);
                             }
                         }
                         elseif($discount_type=='premium'){
                             if($discount_unit=='fixed'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + $discount;
+                                $product_price = $prod_price + $cust + $location_diff + $product->difference + $discount;
                             }elseif($discount_unit=='percent'){
-                                $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference + (($product['product_category']->price + $cust + $location_diff + $product->difference)*$discount/100);
+                                $product_price = $prod_price + $cust + $location_diff + $product->difference + (($prod_price + $cust + $location_diff + $product->difference)*$discount/100);
                             }
                         }
                     }else{
-                        $product_price = $product['product_category']->price + $cust + $location_diff + $product->difference;
+                        $product_price = $prod_price + $cust + $location_diff + $product->difference;
                     }
                     $data_array[] = [
                         'value' => $product->alias_name . " (" . $product['product_category']['product_type']->name . ") " . $product['product_category']->product_category_name,
@@ -1324,7 +1330,7 @@ class InquiryController extends Controller {
                         'value' => $product->alias_name,
                         'id' => $product->id,
                         'product_cat_id' => $product->product_category_id,
-                        'product_price' => round(($product['product_category']->price + $cust + Input::get('location_difference') + $product->difference),2),
+                        'product_price' => round(($prod_price + $cust + Input::get('location_difference') + $product->difference),2),
                         'type_id'=>$product['product_category']->product_type_id
                     ];
                 }

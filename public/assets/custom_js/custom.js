@@ -583,12 +583,13 @@ function state_option() {
 function update_price(product_id) {
 
     var price = $('#price_' + product_id).val();
+    var thickness = $('#thickness_' + product_id).val();
     var url = $('#site_url').val();
     var token = $('#token').val();
     $.ajax({
         type: "GET",
         url: url + '/update_price',
-        data: {price: price, product_id: product_id, _token: token},
+        data: {price: price, thickness:thickness, product_id: product_id, _token: token},
     }).done(function (data) {
             $('.alert-success1').show();
         setTimeout(function(){ 
