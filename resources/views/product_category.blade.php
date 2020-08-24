@@ -74,9 +74,9 @@
                                             <th class="col-md-1">Type</th>
 
                                             <th class="col-md-1">HSN Code</th>
-                                            <th class="col-md-2">HSN DEScription</th>
+                                            <th class="col-md-2">HSN Description</th>
 
-                                            <th class="col-md-4">Price<span style="margin-left: 80px;">Thickness Diffrence</span></th>
+                                            <th class="col-md-4">Price<span style="margin-left: 80px;">Thickness Difference</span></th>
                                             <!-- <th class="col-md-3">Thickness</th> -->
                                             <!-- <th class="col-md-1"></th> -->
                                             <th class="col-md-2">Updated</th>

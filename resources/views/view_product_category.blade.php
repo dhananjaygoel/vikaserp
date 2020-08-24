@@ -48,7 +48,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span>Thickness: </span>{{ $product_cat->thickness }}
+                                            <span>Thickness Difference: </span>{{ $product_cat->thickness }}
                                         </td>
                                     </tr>
                                     <tr>
