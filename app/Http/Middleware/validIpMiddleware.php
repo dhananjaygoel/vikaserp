@@ -46,12 +46,18 @@ class validIpMiddleware {
                 $otp_validate = Session::has('otp_validate')?Session::has('otp_validate'):false;
                 // if (!in_array($ipaddress, $ip_array) && (Auth::user()->role_id != 0 && Auth::user()->role_id != 1 && Auth::user()->role_id != 4 && Auth::user()->role_id != 8 && Auth::user()->role_id != 9 && Auth::user()->role_id != 2 && Auth::user()->role_id != 7)) {
                 if (in_array($ipaddress, $ip_array) ){
+					Session::put('send_otp', false);
+                    return redirect('otp_verification');
                     // return redirect('dashboard');
-                    return $next($request);
+                    //return $next($request);
                 }elseif (in_array($ipaddress, $ip_array) && Auth::user()->role_id == 0){
-                    return $next($request);
+					Session::put('send_otp', false);
+                    return redirect('otp_verification');
+                    //return $next($request);
                 }else if(in_array($ipaddress, $ip_array) && Auth::user()->role_id == 10){
-                    return redirect('bulk-delete');
+					Session::put('send_otp', false);
+                    return redirect('otp_verification');
+                    //return redirect('bulk-delete');
                 }else if(!in_array($ipaddress, $ip_array) && Auth::user()->role_id == 2){
                     if($_SERVER['REQUEST_URI'] == '/dashboard' || $request->is('inquiry/*') || $request->is('orders/*') || $request->is('fetch_existing_customer*') || $request->is('fetch_products*')){
                         return $next($request);
