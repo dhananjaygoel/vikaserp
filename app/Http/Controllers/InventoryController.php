@@ -72,6 +72,7 @@ class InventoryController extends Controller {
             //$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
             $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+			$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
         }
 
