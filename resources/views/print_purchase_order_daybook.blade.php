@@ -57,7 +57,7 @@
                 $lb_arr = [];
                 $lbr_arr = [];
                 $final_tot = 0;
-                if($obj->vat_percentage != ""){
+                if($title == 'Purchase Daybook'){
                     if($obj->vat_percentage == 1){
                         $tcs_amount = $obj->grand_total * $obj->tcs_percentage / 100;
                         $final_tot = $obj->grand_total + round($tcs_amount,2);
