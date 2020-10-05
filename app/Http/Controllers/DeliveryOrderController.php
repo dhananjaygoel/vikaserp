@@ -460,6 +460,8 @@ class DeliveryOrderController extends Controller {
             'other_location' => $location,
             'location_difference' => $location_difference,
             'vat_percentage' => $vat_price,
+            'tcs_applicable' => isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+            'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
             'estimate_price' => 0,
             'estimated_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
             'expected_delivery_date' => date_format(date_create(date("Y-m-d")), 'Y-m-d'),
@@ -820,6 +822,11 @@ class DeliveryOrderController extends Controller {
 
         //$delivery_challan->loaded_by = $input_data['loadedby'];
         //$delivery_challan->labours = $input_data['labour'];
+
+        if (isset($input_data['tcs_applicable'])){
+            $delivery_challan->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
+            $delivery_challan->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+        }
 
         if (isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != 0) {
             $delivery_challan->vat_percentage = $input_data['vat_percentage'];

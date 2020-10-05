@@ -514,6 +514,24 @@
 
                         @endif
                         <div class="clearfix"></div>
+                        @if($order->tcs_applicable == 1)
+                        <div class="checkbox">
+                                <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes" checked><span class="checksms">TCS Applicable</span></label>
+                        </div>
+                        <div class="tcs-applicable" id="tcs_percentage">
+                            <label for="tcs_percentage">TCS Percentage:</label>
+                            <input type="text" name="tcs_percentage" value="{{$order->tcs_percentage}}" class="form-control" id="tcs_percentage">
+                        </div>
+                        @else
+                        <div class="checkbox">
+                                <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms">TCS Applicable</span></label>
+                        </div>
+                        <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
+                            <label for="tcs_percentage">TCS Percentage:</label>
+                            <input type="text" name="tcs_percentage" value="0.075" class="form-control" id="tcs_percentage">
+                        </div>
+                        @endif
+                        <div class="clearfix"></div>
                         <div class="form-group col-md-4 targetdate">
                             <label for="date">Expected Delivery Date: </label>
                             <div class="input-group">

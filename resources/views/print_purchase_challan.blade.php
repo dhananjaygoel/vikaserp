@@ -170,6 +170,23 @@
                                     <td class="total-count">
                                     ₹ {{ round($grand_total, 0) }}</td>
                                 </tr>
+                                @if($purchase_challan->tcs_applicable == 1)
+                                <tr>
+                                    <td class="lable">TCS Percentage</td>
+                                    <td class="total-count">{{$purchase_challan->tcs_percentage}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="lable">Grand Total</td>
+                                    <td class="total-count">
+                                    <?php 
+                                    
+                                    $tcs_amount = ($grand_total * $purchase_challan->tcs_percentage) / 100 ;
+                                    $final_total = $grand_total + $tcs_amount;
+                                    ?>
+                                    ₹ {{ round($final_total,0) }}
+                                    </td>
+                                </tr>
+                                @endif
                             </tbody>
                         </table>
                     </td>

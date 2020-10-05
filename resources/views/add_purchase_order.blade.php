@@ -388,7 +388,19 @@ use Illuminate\Support\Facades\Session;
                                         </tbody>
                                     </table>
                                 </div>
+                                </div>
+                            <div class="row col-md-12">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms">   TCS Applicable</span></label>
+                                    </div>
+                                    <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
+                                        <label for="tcs_percentage">TCS Percentage:</label>
+                                        <input type="text" name="tcs_percentage" value="0.075" class="form-control" id="tcs_percentage">
+                                    </div>
+                                </div>
                             </div>
+                            <div class="clearfix"></div>
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>

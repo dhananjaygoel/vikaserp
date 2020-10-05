@@ -167,6 +167,10 @@
                                             <span>Total Amount: </span>₹ {{$total_amount}}
                                         </td>
                                     </tr>
+                                    @if ($purchase_challan['tcs_applicable'] == 1)
+                                        <tr><td><span>TCS Applicable: </span>Yes</td></tr>
+                                        <tr><td><span>TCS Percentage: </span>{{$purchase_challan['tcs_percentage']."%"}}</td></tr>
+                                    @endif
                                     <tr>
                                         <td><span>Discount: </span>₹ {{$purchase_challan->discount}}</td>
                                     </tr>

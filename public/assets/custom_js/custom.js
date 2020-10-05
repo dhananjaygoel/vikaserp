@@ -4391,3 +4391,13 @@ function get_fb(){
         })
 }
 
+
+$(document).ready(function () {
+    $('#tcs_applicable').click(function(){
+        if(this.checked) {
+            $('#tcs_percentage').show();
+        }else{
+            $('#tcs_percentage').hide();
+        }
+    });
+});

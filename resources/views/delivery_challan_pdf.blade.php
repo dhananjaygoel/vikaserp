@@ -327,7 +327,7 @@
                                     {{ round($roundoff,2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="lable">GT</td>
+                                    <td class="lable">Total</td>
                                     <td class="total-count">
                                     <?php
 
@@ -347,6 +347,26 @@
                                     ?>
                                     {{ round($grand_price + $vat, 0) }}</td>
                                 </tr>
+                                <?php 
+                                $tcs_applicable = $allorder->tcs_applicable;
+                                ?>
+                                @if($tcs_applicable == 1)
+                                <tr>
+                                    <td class="lable">TCS %</td>
+                                    <td class="total-count">{{$allorder->tcs_percentage}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="lable">Grand Total</td>
+                                    <td class="total-count">
+                                    <?php 
+                                    
+                                    $tcs_amount = (($grand_price + $vat) * $allorder->tcs_percentage) / 100 ;
+                                    $final_total = ($grand_price + $vat) + $tcs_amount;
+                                    ?>
+                                    ₹ {{ round($final_total,0) }}
+                                    </td>
+                                </tr>
+                                @endif
                             </tbody>
                         </table>
                     </td>

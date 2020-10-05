@@ -379,6 +379,12 @@ class PurchaseAdviseController extends Controller {
                     'remarks' => $input_data['remarks'],
                     'vehicle_number' => $input_data['vehicle_number']
         ));
+        if (isset($input_data['tcs_applicable'])){
+            $update_purchase_advice = PurchaseAdvise::where('id', $id)->update([
+                'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+            ]);
+        }
         foreach ($input_data['product'] as $product_data) {
             if ($product_data['name'] != "") {
                 if (isset($product_data['purchase_product_id']) && $product_data['purchase_product_id'] != '') {
@@ -609,6 +615,12 @@ class PurchaseAdviseController extends Controller {
             ];
             $add_purchase_advice = PurchaseAdvise::create($add_purchase_advice_array);
             $purchase_advice_id = DB::getPdo()->lastInsertId();
+            if (isset($input_data['tcs_applicable'])){
+                $add_purchase_advice = PurchaseAdvise::where('id', $purchase_advice_id)->update([
+                    'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+                    'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+                ]);
+            }
             $purchase_advice_products = array();
             $total_quantity = '';
             $total_present_shipping = '';

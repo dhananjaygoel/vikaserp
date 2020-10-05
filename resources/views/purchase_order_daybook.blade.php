@@ -208,8 +208,11 @@
                                                     }
                                                     
                                                     $grand_total = $total_gst_amount + $total_amount + (isset($daybook->freight)?$daybook->freight:0) + (isset($daybook->discount)?$daybook->discount:0) + $freight_vat + $discount_vat ;
+                                                    $tcs_amount = $grand_total * $daybook->tcs_percentage / 100;
+                                                    $final_tot = $grand_total + $tcs_amount;
                                                 ?>
-                                                <td>{{ round($grand_total,2) }}</td>
+
+                                                <td>{{ round($final_tot,0) }}</td>
                                                 <td>{{ $daybook->bill_number }}</td>
                                                 <td>
                                                     @if((strlen(trim($daybook->remarks))) > 50)

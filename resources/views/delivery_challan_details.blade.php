@@ -480,6 +480,18 @@
                             <?php $tot = $total + $total_vat; ?> ₹ {{round($tot,0)}}</label>
                         </div>
                         <hr/>
+                        @if($allorder->tcs_applicable == 1)
+                        <div class="form-group">
+                            <label for="tcs_applicable"><b class="challan">TCS Percentage: </b>
+                            <?php $tcs_amount = $tot * $allorder->tcs_percentage / 100?> {{($allorder->tcs_percentage)}} %</label>
+                        </div>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="total"><b class="challan"> Final Grand Total: </b>
+                            <?php $final_tot = $tot + $tcs_amount; ?> ₹ {{round($final_tot,0)}}</label>
+                        </div>
+                        <hr/>
+                        @endif
                         @if($url == 'daily_pro_forma_invoice')
                         @else
                         <div class="form-group">

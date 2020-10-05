@@ -158,6 +158,10 @@
 <!--                                        <tr>
                                             <td><span>Total: </span></td>
                                         </tr>-->
+                                        @if($order->tcs_applicable == 1)
+                                        <tr><td><span>TCS Applicable: </span>Yes</td></tr>
+                                        <tr><td><span>TCS Percentage: </span>{{ ($order->tcs_percentage) }}</td></tr>
+                                        @endif
                                         <tr><td><span>Expected Delivery Date: </span>{{ date("j F, Y", strtotime($order->expected_delivery_date)) }}</td></tr>
                                         <tr><td><span>Remark: </span>{{$order->remarks}}</td></tr>
                                         <tr><td><span>Order By : </span>{{(isset($order->createdby->first_name)?$order->createdby->first_name:'')." ".(isset($order->createdby->last_name)?$order->createdby->last_name:'')}}</td></tr>

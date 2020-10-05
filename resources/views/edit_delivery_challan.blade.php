@@ -728,6 +728,17 @@
                                     </span>
                                 </label>
                             </div>
+                            @if($allorder->tcs_applicable == 1)
+                            <div class="form-group">
+                                <label for="tcs_applicable"><b class="challan">TCS Percentage: </b>
+                                {{($allorder->tcs_percentage)}} %</label>
+                                <input type="hidden" value="{{($allorder->tcs_percentage)}}" id="tcs_percentage">
+                            </div>
+                            <div class="form-group">
+                                <label for="total"><b class="challan"> Final Grand Total: </b>
+                                <div id="final_total"></div>
+                            </div>
+                            @endif
                             @if(isset($allorder->delivery_order->vehicle_number) && $allorder->delivery_order->vehicle_number != "")
                                 @if(Auth::user()->role_id == 0)
                                     <div class="form-group">
