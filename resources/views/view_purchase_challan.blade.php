@@ -237,6 +237,8 @@
                                         if($purchase_challan->vat_percentage>0){
                                             $grand_total = $grand_total + ($total * (float)$purchase_challan->vat_percentage / 100);
                                         }
+                                        $tcs_amount = $grand_total * $purchase_challan->tcs_percentage / 100;
+                                        $grand_total = $grand_total + round($tcs_amount,2);
                                         $roundoff = round($grand_total,0) - $grand_total;
                                         
                                     ?>
