@@ -188,6 +188,8 @@
                             $total = (float)$total_amount + (float)$value->freight + (float)$value->loading_charge + (float)$value->discount;
                             $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                             $tot = $total + $total_vat;
+                            $tcs_amount = $tot * $value->tcs_percentage / 100;
+                            $final_tot = $tot + round($tcs_amount,2);
                             $round_off = round($tot,0) - $tot;
                         ?>
                     <td style="height:16px;">{{ round($total_vat,2) }}
@@ -229,7 +231,7 @@
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
-                    <td style="height:18px;border:2px solid #4fe24f;"><b>{{ round($tot,0) }}</b></td>
+                    <td style="height:18px;border:2px solid #4fe24f;"><b>{{ round($final_tot,0) }}</b></td>
                     <td style="height:18px;border:2px solid #4fe24f;">
                         <?php
                         if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
