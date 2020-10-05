@@ -289,9 +289,9 @@
                         </label>
                     </div>
                     <!-- <div class="form-group">
-                        <label for="labour"><b class="challan">Round Off : ₹</b></label>
-                        <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
-                    </div> -->
+                        <label for="labour"><b class="challan">Round Off : ₹</b></label> -->
+                        <input type="hidden" id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
+                    <!-- </div> -->
 
                     <div class="form-group">
                         <label for="total"><b class="challan">Grand Total : ₹</b> <div id="grand_total"></div>
