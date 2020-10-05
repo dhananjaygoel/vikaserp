@@ -731,7 +731,7 @@
                             @if(isset($product->vat_percentage) && $product->vat_percentage>0 && $allorder->tcs_applicable == 1)
                             <div class="form-group">
                                 <label for="tcs_applicable"><b class="challan">TCS Applicable: </b>Yes</label>
-                                <input type="hidden" value="{{($allorder->tcs_applicable)}}" id="tcs_applicable">
+                                <input type="hidden" value="{{($allorder->tcs_applicable)}}" id="tcs_applicable" name="tcs_applicable">
                             </div>
                             <div class="form-group">
                                 <label for="tcs_percentage"><b class="challan">TCS Percentage: </b></label>
