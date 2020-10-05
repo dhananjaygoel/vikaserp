@@ -259,6 +259,21 @@
             </td>
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
+        <tr>    
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
+            <td style="height:16px;"></td><td></td>
+            <td style="height:16px;">TCS</td>
+            <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
+            <td style="height:16px;text-align: left;">{{ round($tcs_amount,2) }}</td>
+            <td style="height:16px;">
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
+        </tr>
                     
         <tr style="border:2px solid black">    
             <td style="height:18px;border:2px solid #4fe24f;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>

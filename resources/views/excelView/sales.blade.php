@@ -220,6 +220,22 @@
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr>
                 <tr>    
+                    <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
+                    <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
+                    <td></td><td></td>
+                    <td style="height:16px;">TCS</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td style="height:16px;">{{ round($tcs_amount,2) }}</td>
+                    <td>
+                        <?php
+                        if ((isset($value['delivery_order']->vehicle_number)) && ($value['delivery_order']->vehicle_number != ""))
+                            echo "[" . $value['delivery_order']->vehicle_number . "]";  
+                        ?>
+                        {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+                    </td> 
+                    <td style="height:16px;">{{$VchNo}}</td>
+                </tr>
+                <tr>    
                     <td style="height:18px;border:2px solid #4fe24f;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:18px;border:2px solid #4fe24f;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td style="height:18px;border:2px solid #4fe24f;"></td>
@@ -245,6 +261,7 @@
         $VchNo++;
         }
     }
+    // dd('end');
 ?>
     </table>
 </html>
