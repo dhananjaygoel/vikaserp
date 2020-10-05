@@ -140,7 +140,7 @@
                 }
                 $grand_total = $total_gst_amount + $total_amount + (isset($value->freight)?$value->freight:0) + (isset($value->discount)?$value->discount:0) + $freight_vat + $discount_vat ;
                 $roundoff = round($grand_total,0) - $grand_total;
-                if($value->tcs_applicable == 1){
+                if($value->tcs_applicable == 1 && isset($value->vat_percentage) && !empty($value->vat_percentage)){
                     $tcs_amount = $grand_total * $value->tcs_percentage / 100;
                     $grand_total = $grand_total + round($tcs_amount,2);
                 }
