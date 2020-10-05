@@ -15,15 +15,15 @@ class AddNewColTcsToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->integer('tcs_applicable')->nullable()->after('vat_percentage');
-            $table->float('tcs_percentage')->nullable()->after('tcs_applicable');
+            $table->float('tcs_percentage',8,6)->nullable()->after('tcs_applicable');
         });
         Schema::table('delivery_order', function (Blueprint $table) {
             $table->integer('tcs_applicable')->nullable()->after('vat_percentage');
-            $table->float('tcs_percentage')->nullable()->after('tcs_applicable');
+            $table->float('tcs_percentage',8,6)->nullable()->after('tcs_applicable');
         });
         Schema::table('delivery_challan', function (Blueprint $table) {
             $table->integer('tcs_applicable')->nullable()->after('vat_percentage');
-            $table->float('tcs_percentage')->nullable()->after('tcs_applicable');
+            $table->float('tcs_percentage',8,6)->nullable()->after('tcs_applicable');
         });
     }
 
