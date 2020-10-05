@@ -188,7 +188,7 @@
                             $total = (float)$total_amount + (float)$value->freight + (float)$value->loading_charge + (float)$value->discount;
                             $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                             $tot = $total + $total_vat;
-                            if($value->tcs_applicable == 1){
+                            if($value->tcs_applicable == 1 && isset($value->vat_percentage) && $value->vat_percentage > 0){
                                 $tcs_amount = $tot * $value->tcs_percentage / 100;
                                 $tot = $tot + round($tcs_amount,2);
                             }
@@ -207,7 +207,7 @@
                     </td> 
                     <td style="height:16px;">{{$VchNo}}</td>                
                 </tr>
-                <tr>    
+                <!-- <tr>    
                     <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
                     <td></td><td></td>
@@ -222,7 +222,7 @@
                         {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
                     </td> 
                     <td style="height:16px;">{{$VchNo}}</td>
-                </tr>
+                </tr> -->
                 @if($value->tcs_applicable == 1)
                 <tr>    
                     <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>

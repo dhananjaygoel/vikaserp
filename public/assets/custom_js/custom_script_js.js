@@ -1287,8 +1287,9 @@ function purchase_challan_calculation() {
     }
     var tcs_percenatge = $('#tcs_percentage').val();
     var tcs_amount = parseFloat(grand_total) * parseFloat(tcs_percenatge) / 100;
-    
-    var grand_total = parseFloat(tcs_amount) + parseFloat(grand_total);
+    if(tcs_percenatge != undefined){
+        var grand_total = parseFloat(tcs_amount) + parseFloat(grand_total);
+    }
 
     $("#grand_total").html('' + parseFloat(grand_total).toFixed(0));
     $("#grand_total_val").val(grand_total);

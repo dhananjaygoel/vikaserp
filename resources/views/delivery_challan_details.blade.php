@@ -470,17 +470,17 @@
                         </div>
                         <hr/>
                         @endif
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="total"><b class="challan">Round Off: </b>
                             <?php $tot = $total + $total_vat; $roundoff = round($tot,0) - $tot; ?> ₹ {{round($roundoff,2)}}</label>
                         </div>
-                        <hr/>
+                        <hr/> -->
                         <div class="form-group">
                             <label for="total"><b class="challan">Grand Total: </b>
                             <?php $tot = $total + $total_vat; ?> ₹ {{round($tot,0)}}</label>
                         </div>
                         <hr/>
-                        @if($allorder->tcs_applicable == 1)
+                        @if($allorder->tcs_applicable == 1 && isset($product->vat_percentage) && $product->vat_percentage>0)
                         <div class="form-group">
                             <label for="tcs_applicable"><b class="challan">TCS Percentage: </b>
                             <?php $tcs_amount = $tot * $allorder->tcs_percentage / 100?> {{($allorder->tcs_percentage)}} %</label>

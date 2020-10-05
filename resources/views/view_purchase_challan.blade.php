@@ -167,7 +167,7 @@
                                             <span>Total Amount: </span>₹ {{$total_amount}}
                                         </td>
                                     </tr>
-                                    @if ($purchase_challan['tcs_applicable'] == 1)
+                                    @if (($purchase_challan->vat_percentage>0) && $purchase_challan['tcs_applicable'] == 1)
                                         <tr><td><span>TCS Applicable: </span>Yes</td></tr>
                                         <tr><td><span>TCS Percentage: </span>{{$purchase_challan['tcs_percentage']."%"}}</td></tr>
                                     @endif
@@ -236,15 +236,15 @@
                                         $roundoff = 0;
                                         if($purchase_challan->vat_percentage>0){
                                             $grand_total = $grand_total + ($total * (float)$purchase_challan->vat_percentage / 100);
+                                            $tcs_amount = $grand_total * $purchase_challan->tcs_percentage / 100;
+                                            $grand_total = $grand_total + round($tcs_amount,2);
                                         }
-                                        $tcs_amount = $grand_total * $purchase_challan->tcs_percentage / 100;
-                                        $grand_total = $grand_total + round($tcs_amount,2);
-                                        $roundoff = round($grand_total,0) - $grand_total;
+                                        // $roundoff = round($grand_total,0) - $grand_total;
                                         
                                     ?>
-                                    <tr>
+                                    <!-- <tr>
                                         <td><span>Round Off: </span>₹ {{ round($roundoff,2) }}</td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td><span>Grand Total: </span>₹ {{round($grand_total,0)}}</td>
                                     </tr>

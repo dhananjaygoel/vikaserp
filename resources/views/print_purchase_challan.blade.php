@@ -147,9 +147,9 @@
                                     <td class="total-count">
                                     ₹ {{($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0}} %</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td class="lable">Round Off</td>
-                                    <td class="total-count">
+                                    <td class="total-count"> -->
                                     <?php 
                                         if((isset($purchase_challan->vat_percentage) && $purchase_challan->vat_percentage != '')){
                                             if((isset($purchase_challan->freight) && $purchase_challan->freight != '0.00')){
@@ -163,8 +163,8 @@
                                         $grand_total = (float)$vat + (float)$total + $freight_vat + $discount_vat;
                                         $roundoff = round($grand_total,0) - $grand_total;
                                     ?>
-                                    ₹ {{ round($roundoff, 2) }}</td>
-                                </tr>
+                                    <!-- ₹ {{ round($roundoff, 2) }}</td> -->
+                                <!-- </tr> -->
                                 <tr>
                                     <td class="lable">GT</td>
                                     <td class="total-count">

@@ -817,7 +817,7 @@ class DeliveryOrderController extends Controller {
         $delivery_challan->discount = $input_data['discount'];
         $delivery_challan->freight = $input_data['freight'];
         $delivery_challan->loading_charge = $input_data['loading'];
-        $delivery_challan->round_off = $input_data['round_off'];
+        $delivery_challan->round_off = isset($input_data['round_off'])?$input_data['round_off']:0;
 
 
         //$delivery_challan->loaded_by = $input_data['loadedby'];
@@ -2400,7 +2400,7 @@ class DeliveryOrderController extends Controller {
 //            $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
             $all_vat_on_overhead_count = 0;
 
-            $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)$input_data['round_off'], 2);
+            $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)(isset($input_data['round_off'])?$input_data['round_off']:0), 2);
             
             if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
                 $loading_vat_amount = ((float)$input_data['loading'] * (float)$loading_vat) / 100;
@@ -2428,7 +2428,7 @@ class DeliveryOrderController extends Controller {
            // $all_vat_on_overhead_count = ($all_vat_share_overhead * $input_data['vat_percentage']) / 100;
             $all_vat_on_overhead_count = ($all_vat_share_overhead) / 100;
 
-            $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)$input_data['round_off'], 2);
+            $input_data['grand_total'] = $input_data['vat_total'] = round((float)$all_vat_share_overhead + (float)$all_vat_on_overhead_count + (float)(isset($input_data['round_off'])?$input_data['round_off']:0), 2);
             
             if(isset($input_data['loading']) || isset($input_data['discount']) || isset($input_data['freight'])){
                 $loading_vat_amount = ((float)$input_data['loading'] * (float)$loading_vat) / 100;
@@ -2492,7 +2492,7 @@ class DeliveryOrderController extends Controller {
                 $profile_input_data['discount'] = number_format((float) ((float)$ratio_profile * (float)$input_data['discount']) / 100, 2, '.', '');
                 $profile_input_data['freight'] = number_format((float) ((float)$ratio_profile * (float)$input_data['freight']) / 100, 2, '.', '');
                 $profile_input_data['loading'] = number_format((float) ((float)$ratio_profile * (float)$input_data['loading']) / 100, 2, '.', '');
-                $profile_input_data['round_off'] = number_format((float) ((float)$ratio_profile * (float)$input_data['round_off']) / 100, 2, '.', '');
+                $profile_input_data['round_off'] = number_format((float) ((float)$ratio_profile * (float)(isset($input_data['round_off'])?$input_data['round_off']:0)) / 100, 2, '.', '');
                 $profile_input_data['freight_vat_percentage'] = $profile_input_data['loading_vat_percentage'] = $profile_input_data['discount_vat_percentage'] = $profile_input_data['vat_percentage'] = number_format((float) $profile_vat_amount, 2, '.', '');
                 $profile_input_data['grand_total'] = number_format((float) ((float)$total_profile_price + (float)$profile_share_overhead + (float)$profile_input_data['round_off']), 2, '.', '');
                 
@@ -2514,7 +2514,7 @@ class DeliveryOrderController extends Controller {
                 $vat_input_data['discount'] = number_format((float) ((float)$ratio_with_vat * (float)$input_data['discount']) / 100, 2, '.', '');
                 $vat_input_data['freight'] = number_format((float) ((float)$ratio_with_vat * (float)$input_data['freight']) / 100, 2, '.', '');
                 $vat_input_data['loading'] = number_format((float) ((float)$ratio_with_vat * (float)$input_data['loading']) / 100, 2, '.', '');
-                $vat_input_data['round_off'] = number_format((float) ((float)$ratio_with_vat * (float)$input_data['round_off']) / 100, 2, '.', '');
+                $vat_input_data['round_off'] = number_format((float) ((float)$ratio_with_vat * (float)(isset($input_data['round_off'])?$input_data['round_off']:0)) / 100, 2, '.', '');
                 //$vat_input_data['freight_vat_percentage'] = $vat_input_data['loading_vat_percentage'] = $vat_input_data['discount_vat_percentage'] = number_format((float) $vat_input_data['vat_percentage'], 2, '.', '');
 //                $vat_input_data['grand_total'] = number_format((float) ($total_vat_price + $vat_on_price_count + $vat_share_overhead + $vat_on_overhead_count + $vat_input_data['round_off']), 2, '.', '');
                 $total_amnt= (float)$total_vat_price + (float)$vat_input_data['freight'] + (float)$vat_input_data['discount']+ (float)$vat_input_data['loading'];
@@ -2540,7 +2540,7 @@ class DeliveryOrderController extends Controller {
                 $without_vat_input_data['discount'] = number_format((float) ((float)$ratio_without_vat * (float)$input_data['discount']) / 100, 2, '.', '');
                 $without_vat_input_data['freight'] = number_format((float) ((float)$ratio_without_vat * (float)$input_data['freight']) / 100, 2, '.', '');
                 $without_vat_input_data['loading'] = number_format((float) ((float)$ratio_without_vat * (float)$input_data['loading']) / 100, 2, '.', '');
-                $without_vat_input_data['round_off'] = number_format((float) ((float)$ratio_without_vat * (float)$input_data['round_off']) / 100, 2, '.', '');
+                $without_vat_input_data['round_off'] = number_format((float) ((float)$ratio_without_vat * (float)(isset($input_data['round_off'])?$input_data['round_off']:0)) / 100, 2, '.', '');
                 //$without_vat_input_data['freight_vat_percentage'] = $without_vat_input_data['loading_vat_percentage'] = $without_vat_input_data['discount_vat_percentage'] = $without_vat_input_data['vat_percentage'] = 0.00;
                 $without_vat_input_data['grand_total'] = number_format((float) $total_without_vat_price + (float)$without_vat_share_overhead + (float)$without_vat_input_data['round_off'], 2, '.', '');
                 $total = (float)$without_vat_input_data['loading'] + (float)$without_vat_input_data['discount'] + (float)$without_vat_input_data['freight'];

@@ -184,7 +184,7 @@ class PurchaseChallanController extends Controller {
         $add_challan->order_status = 'pending';
         $add_challan->freight = $input_data['Freight'];
         $add_challan->is_editable = $purchase_advise_details->is_editable;
-        $add_challan->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
+        $add_challan->tcs_applicable = isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
         $add_challan->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075';
         
         // dd($add_challan);

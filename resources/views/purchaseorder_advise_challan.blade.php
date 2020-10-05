@@ -210,7 +210,7 @@
                         &nbsp;
                         <label for="total"><b class="challan">Total Amount : </b> <span id="total_price2">₹ {{ $total_price }}</span></label>
                     </div>
-                    @if ($purchase_advise['tcs_applicable'] == 1)
+                    @if ( ($purchase_advise->vat_percentage !=0 || $purchase_advise->vat_percentage != '') && $purchase_advise['tcs_applicable'] == 1)
                         <div class="form-group">
                             <label for="tcs_applicable"><b class="challan">TCS Applicable:</b> Yes</label>
                             <input type="hidden" name="tcs_applicable" value="yes">
@@ -288,10 +288,10 @@
 
                         </label>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="labour"><b class="challan">Round Off : ₹</b></label>
                         <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" value="" type="text" onblur="purchase_challan_calculation();" onkeypress=" return numbersOnly(this, event, true, true);">
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="total"><b class="challan">Grand Total : ₹</b> <div id="grand_total"></div>

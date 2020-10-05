@@ -246,7 +246,7 @@
            
         </tr>
          
-         <tr>    
+         <!-- <tr>    
             <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
@@ -260,7 +260,7 @@
                 {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
             </td>
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
-        </tr>
+        </tr> -->
         @if($value->tcs_applicable == 1)
         <tr>    
             <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>

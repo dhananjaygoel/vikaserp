@@ -317,15 +317,15 @@
                                     ?>
                                     {{ round($vat,2) }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td class="lable">Round Off</td>
-                                    <td class="total-count">
+                                    <td class="total-count"> -->
                                     <?php
                                         $roundoff = round($vat,2) + round($with_total,2);
                                         $roundoff = round($roundoff,0) - $roundoff;
                                     ?>
-                                    {{ round($roundoff,2) }}</td>
-                                </tr>
+                                    <!-- {{ round($roundoff,2) }}</td>
+                                </tr> -->
                                 <tr>
                                     <td class="lable">Total</td>
                                     <td class="total-count">

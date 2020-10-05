@@ -713,10 +713,10 @@
                                 <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
                             </div>
                             @endif
-                            <div class="form-group">
-                                <label for="roundoff"><b class="challan">Round Off : ₹</b></label>
-                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
-                            </div>
+                            <!-- <div class="form-group">
+                                <label for="roundoff"><b class="challan">Round Off : ₹</b></label> -->
+                                <input type="hidden" id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}"  onblur="grand_total_challan();" readonly="readonly">
+                            <!-- </div> -->
                             <div class="form-group" >
                                 <label for="Total"><b class="challan"> Grand Total : ₹</b></label>
                                 <div id="total_l_d_f"></div>
@@ -728,7 +728,7 @@
                                     </span>
                                 </label>
                             </div>
-                            @if($allorder->tcs_applicable == 1)
+                            @if(isset($product->vat_percentage) && $product->vat_percentage>0 && $allorder->tcs_applicable == 1)
                             <div class="form-group">
                                 <label for="tcs_applicable"><b class="challan">TCS Percentage: </b>
                                 {{($allorder->tcs_percentage)}} %</label>
