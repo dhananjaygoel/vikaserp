@@ -30,7 +30,8 @@
             <th style="height:20px;font-size:16px;color:#000080;">Total</th>
             <th style="height:20px;font-size:16px;color:#000080;">Loaded By</th>
             <th style="height:20px;font-size:16px;color:#000080;">Labour</th>
-            <th style="height:20px;font-size:16px;color:#000080;">Round Off</th>
+            <th style="height:20px;font-size:16px;color:#000080;">TCS Amount</th>
+            <!-- <th style="height:20px;font-size:16px;color:#000080;">Round Off</th> -->
             <th style="height:20px;font-size:16px;color:#000080;">Grand Total</th>
             <th style="height:20px;font-size:16px;color:#000080;">Vehicle Number</th>
             <th style="height:20px;font-size:16px;color:#000080;">Driver Contact</th>
@@ -98,13 +99,21 @@
             <?php
             $total_loading_charges = $allorder->loading_charge + (($allorder->loading_charge * $allorder->loading_vat_percentage) / 100);
             $total_amount = $total_amount + $total_loading_charges;
+            if($allorder->tcs_applicable == 1 && isset($allorder->vat_percentage) && !empty($allorder->vat_percentage)){
+                $tcs_amount = $allorder->grand_price * $allorder->tcs_percentage / 100;
+                $amount = $allorder->grand_price + round($tcs_amount,2);
+            }else{
+                $tcs_amount = 0;
+                $amount = $allorder->grand_price;
+            }
             ?>
             <td style="height:16px;">{{$total_loading_charges}}</td>
             <td style="height:16px;">{{$total_amount}}</td>
             <td style="height:16px;">{{isset($allorder->loaded_by) ?$allorder->loaded_by:'' }}</td>
             <td style="height:16px;">{{isset($allorder->labours) ? $allorder->labours:''}}</td>
-            <td style="height:16px;">{{isset($allorder->round_off) ? $allorder->round_off:''}}</td>
-            <td style="height:16px;">{{isset($allorder->grand_price) ? $allorder->grand_price:''}}</td>
+            <td style="height:16px;">{{ round($tcs_amount,2) }}</td>
+            <!-- <td style="height:16px;">{{isset($allorder->round_off) ? $allorder->round_off:''}}</td> -->
+            <td style="height:16px;">{{ round($amount,0) }}</td>
             <td style="height:16px;">{{isset($allorder->delivery_order->vehicle_number) ? $allorder->delivery_order->vehicle_number:''}}</td>
             <td style="height:16px;">{{isset($allorder->delivery_order->driver_contact_no) ? $allorder->delivery_order->driver_contact_no:''}}</td>
             <td style="height:16px;">{{isset($allorder->order_details->createdby->first_name) ? $allorder->order_details->createdby->first_name." ".$allorder->order_details->createdby->last_name:''}}</td>

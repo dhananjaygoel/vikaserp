@@ -223,7 +223,7 @@
                     </td> 
                     <td style="height:16px;">{{$VchNo}}</td>
                 </tr> -->
-                @if($value->tcs_applicable == 1)
+                @if($value->tcs_applicable == 1 && isset($value->vat_percentage) && !empty($value->vat_percentage))
                 <tr>    
                     <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
                     <td style="height:16px;">{{ isset($value->serial_number) ? $value->serial_number :'' }}</td>
