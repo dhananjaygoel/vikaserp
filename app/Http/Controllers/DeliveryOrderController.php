@@ -823,8 +823,11 @@ class DeliveryOrderController extends Controller {
         //$delivery_challan->loaded_by = $input_data['loadedby'];
         //$delivery_challan->labours = $input_data['labour'];
 
-        if (isset($input_data['tcs_applicable'])){
+        if (isset($input_data['tcs_applicable']) && isset($input_data['vat_percentage']) && $input_data['vat_percentage'] != 0){
             $delivery_challan->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
+            $delivery_challan->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+        }else{
+            $delivery_challan->tcs_applicable = 0;
             $delivery_challan->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
         }
 
