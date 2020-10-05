@@ -667,6 +667,12 @@ class DeliveryChallanController extends Controller {
             }
             $delivery_order->save();
         }
+        if (isset($input_data['tcs_applicable'])){
+            $delivery_challan_update = DeliveryChallan::where('id', $id)->update([
+                'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+            ]);
+        }
 
         // if (isset($delivery_challan->vat_percentage) && $delivery_challan->vat_percentage > 0) {
         //     $input_data['grand_total'] = (float)$input_data['grand_total'] + (float)($input_data['grand_total'] * $delivery_challan->vat_percentage / 100);
