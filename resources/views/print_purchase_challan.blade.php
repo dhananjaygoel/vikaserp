@@ -176,7 +176,7 @@
                                     $final_total = $grand_total + round($tcs_amount,2);
                                     ?>
                                 <tr>
-                                    <td class="lable">TCS Percentage</td>
+                                    <td class="lable">TCS</td>
                                     <td class="total-count">{{ round($tcs_amount,2) }}</td>
                                 </tr>
                                 <tr>
