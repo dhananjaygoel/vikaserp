@@ -413,7 +413,7 @@
                                 ?>
                                 <tr>
                                     <td class="lable">TCS</td>
-                                    <td class="total-count">{{ round($tcs_amount,2) }}</td>
+                                    <td class="total-count">₹ {{ round($tcs_amount,2) }}</td>
                                 </tr>
                                 <tr>
                                     <td class="lable">Grand Total</td>

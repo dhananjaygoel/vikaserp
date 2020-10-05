@@ -65,10 +65,10 @@
 //                    }
 //
 //                    $total_qty = $products->price;
-
-                        $tcs_amount = $obj->grand_price * $obj->tcs_percentage / 100;
-                        $final_tot = $obj->grand_price + round($tcs_amount,2);
+  
                 }
+                $tcs_amount = $obj->grand_price * $obj->tcs_percentage / 100;
+                $final_tot = $obj->grand_price + round($tcs_amount,2);
             ?>
             <tbody>
                 <tr>
