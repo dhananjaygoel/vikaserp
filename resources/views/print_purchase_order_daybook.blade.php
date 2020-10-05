@@ -56,8 +56,12 @@
                 $amount = 0;
                 $lb_arr = [];
                 $lbr_arr = [];
-                $tcs_amount = $obj->grand_total * $obj->tcs_percentage / 100;
-                $final_tot = $obj->grand_total + round($tcs_amount,2);
+                if($value->tcs_applicable == 1){
+                    $tcs_amount = $obj->grand_total * $obj->tcs_percentage / 100;
+                    $final_tot = $obj->grand_total + round($tcs_amount,2);
+                }else{
+                    $final_tot = $obj->grand_total;
+                }
             ?>                                                    
                 <tr>
                     <td>{{ $i++ }}</td>
