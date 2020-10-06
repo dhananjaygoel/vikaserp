@@ -598,7 +598,7 @@ class PurchaseOrderController extends Controller {
             'order_for' => $input_data['order_for'],
             'created_by' => Auth::id(),
             'vat_percentage' => $vat_percentage,
-            'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+            'tcs_applicable' => isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
             'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
