@@ -551,7 +551,7 @@
                              <div class="clearfix"></div>
                              @if($delivery_data->tcs_applicable == 1)
                                 <div class="checkbox">
-                                        <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes" checked><span class="checksms">TCS Applicable</span></label>
+                                        <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes" checked><span class="checksms tcs-class">TCS Applicable</span></label>
                                 </div>
                                 <div class="tcs-applicable" id="tcs_percentage">
                                     <label for="tcs_percentage">TCS Percentage:</label>
@@ -559,7 +559,7 @@
                                 </div>
                             @else
                                 <div class="checkbox">
-                                        <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms">TCS Applicable</span></label>
+                                        <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms tcs-class">TCS Applicable</span></label>
                                 </div>
                                 <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
                                     <label for="tcs_percentage">TCS Percentage:</label>

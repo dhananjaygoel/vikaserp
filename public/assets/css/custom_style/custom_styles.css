@@ -254,3 +254,6 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     width: 20%;
     margin-bottom: 1%;
 }
+.tcs-class {
+    vertical-align: middle;
+}
