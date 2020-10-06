@@ -360,8 +360,9 @@
                                         @else
                                             = IGST
                                         @endif
+                                        <?php $display_gt = 'Total (with GST)';?>
                                     @else
-                                            
+                                        <?php $display_gt = 'GT';?>
                                     @endif
                                     </td>
                                     <td class="total-count">
@@ -383,7 +384,7 @@
                                     <!-- ₹ {{ round($roundoff,2) }}</td>
                                 </tr> -->
                                 <tr>
-                                    <td class="lable">GT</td>
+                                    <td class="lable">{{ $display_gt }}</td>
                                     <td class="total-count">
                                     <?php
 

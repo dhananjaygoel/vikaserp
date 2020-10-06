@@ -151,6 +151,7 @@
                                     <td class="lable">Round Off</td>
                                     <td class="total-count"> -->
                                     <?php 
+                                        $display_gt = 'GT';
                                         if((isset($purchase_challan->vat_percentage) && $purchase_challan->vat_percentage != '')){
                                             if((isset($purchase_challan->freight) && $purchase_challan->freight != '0.00')){
                                                 $freight_vat = $purchase_challan->freight * $purchase_challan->vat_percentage / 100;
@@ -158,6 +159,7 @@
                                             if((isset($purchase_challan->discount) && $purchase_challan->discount != '0.00')){
                                                 $discount_vat = $purchase_challan->discount * $purchase_challan->vat_percentage / 100;
                                             }
+                                            $display_gt = 'Total (with GST)';
                                         }
                                         $vat = ($total_price * (($purchase_challan->vat_percentage != "")?round($purchase_challan->vat_percentage, 2):0) / 100 );
                                         $grand_total = (float)$vat + (float)$total + $freight_vat + $discount_vat;
@@ -166,7 +168,7 @@
                                     <!-- ₹ {{ round($roundoff, 2) }}</td> -->
                                 <!-- </tr> -->
                                 <tr>
-                                    <td class="lable">GT</td>
+                                    <td class="lable">{{ $display_gt }}</td>
                                     <td class="total-count">
                                     ₹ {{ round($grand_total, 0) }}</td>
                                 </tr>
