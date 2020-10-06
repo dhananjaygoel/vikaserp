@@ -145,6 +145,45 @@ class InventoryController extends Controller {
 
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist,'virtual_qty'=>$virtual_stock_qty, 'product_category' => $product_category]);
     }
+    public function get_inventory_table() {
+        $virtual_stock_qty = array();
+        $query = Inventory::query();
+        if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
+            $query->whereRaw('minimal < physical_closing_qty-pending_delivery_order_qty-pending_sales_order_qty+pending_purchase_advise_qty');
+        }
+        if (Input::has('product_category_filter') && Input::get('product_category_filter') != '') {
+            $categoryid = Input::get('product_category_filter');
+            $query->whereHas('product_sub_category', function($q) use($categoryid) {
+                $q->where('product_category_id', '=', $categoryid);
+            });
+        }
+        if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
+            $alias_name = '%' . Input::get('search_inventory') . '%';
+            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
+            if (count((array)$product_sub_id)) {
+                $query->where('product_sub_category_id', '=', $product_sub_id->id);
+            }
+        }
+        $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
+
+        $inventory_newlist = $query->with('product_sub_category')
+                ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
+                ->orderBy('product_sub_category.alias_name', 'ASC')
+                ->paginate(50);
+        $inventory_newlist->setPath('inventory');
+
+        if (count($inventory_newlist)) {
+
+            foreach ($inventory_newlist as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_sub_category_id;
+                $virtual_qty = ($product_categoriy->physical_closing_qty + $product_categoriy->pending_purchase_order_qty + $product_categoriy->pending_purchase_advise_qty) - ($product_categoriy->pending_sales_order_qty + $product_categoriy->pending_delivery_order_qty);
+                array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
+            }
+
+            $this->inventoryCalc((array)$product_category_ids);
+        }
+        return view('inventory_table')->with(['inventory_list' => $inventory_newlist,'virtual_qty'=>$virtual_stock_qty, 'product_category' => $product_category]);
+    }
 
     /* find latested updated records */
 

@@ -3147,6 +3147,13 @@ function update_inventory(e, value) {
                         $(".inventory_update").fadeTo(1500, 0).slideUp(500, function () {
                         });
                     }, 4000);
+                    $.ajax({
+                        url: 'inventory_table',
+                        success:function(data)
+                        {
+                         $('#inventory_html').html(data);
+                        }
+                    });
                 }
             });
         }
@@ -4400,4 +4407,14 @@ $(document).ready(function () {
             $('#tcs_percentage').hide();
         }
     });
+
+    setInterval(function() {
+        $.ajax({
+        url: 'inventory_table',
+        success:function(data)
+        {
+         $('#inventory_html').html(data);
+        }
+        });
+      }, 20000);
 });
