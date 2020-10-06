@@ -134,10 +134,10 @@
                                         @elseif($purchase_orders['vat_percentage'] != 0)
                                         <tr><td><span>Plus GST: </span>Yes</td></tr>
                                         <tr><td><span>GST Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
-                                        @endif
                                         @if ($purchase_orders['tcs_applicable'] == 1)
                                         <tr><td><span>TCS Applicable: </span>Yes</td></tr>
                                         <tr><td><span>TCS Percentage: </span>{{$purchase_orders['tcs_percentage']."%"}}</td></tr>
+                                        @endif
                                         @endif
                                         <tr><td><span>Expected Delivery Date: </span>{{date("j F, Y", strtotime($purchase_orders['expected_delivery_date']))}}</td></tr>
 
