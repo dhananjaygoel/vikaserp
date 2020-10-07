@@ -4409,7 +4409,10 @@ $(document).ready(function () {
     });
 
     setInterval(function() {
+        var page_number = $("input[name='pagenumber']").val();
+        console.log(page_number);
         $.ajax({
+        data: {page:page_number},
         url: 'inventory_table',
         success:function(data)
         {
