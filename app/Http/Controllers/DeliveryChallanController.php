@@ -1605,6 +1605,26 @@ class DeliveryChallanController extends Controller {
                     ],
                 ]
             ];
+            $tcs_item = ProductSubCategory::where('alias_name','TCS')->first();
+            $tcs_applicable = $update_delivery_challan->tcs_applicable;
+            if($del_products->vat_percentage!=0 && $tcs_applicable == 1){
+                $tcs_id = $tcs_item->quickbook_item_id;
+                $tax = 9;
+                $tcs_amount = ($tot * $update_delivery_challan->tcs_percentage) / 100;
+                $line[] = [
+                    "Amount" => round($tcs_amount,2),
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "ItemRef" => [
+                            "name" => "TCS",
+                            "value" => $tcs_id
+                        ],
+                        "TaxCodeRef"=>[
+                            "value" => $tax
+                        ],
+                    ]
+                ];
+            }
            /* if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
