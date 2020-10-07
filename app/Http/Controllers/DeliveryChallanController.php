@@ -1578,33 +1578,7 @@ class DeliveryChallanController extends Controller {
                         ]
                     ];
             }
-            $roundoff_item = ProductSubCategory::where('alias_name','Round Off')->first();
-            if($del_products->vat_percentage==0){
-                $roundoff_id=$roundoff_item->quickbook_a_item_id;
-            }else{
-                $roundoff_id=$roundoff_item->quickbook_item_id;
-            }
-                $tax = 9;
-                $total = (float)$total_amount + (float)$update_delivery_challan->freight + (float)$update_delivery_challan->loading_charge + (float)$update_delivery_challan->discount;
-                // $total_vat = $total * $gst_val / 100;
-                $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
-                // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
-                $tot = $total + $total_vat; 
-                $roundoff = round($tot,0) - $tot;
-
-                $line[] = [
-                "Amount" => $roundoff,
-                "DetailType" => "SalesItemLineDetail",
-                "SalesItemLineDetail" => [
-                    "ItemRef" => [
-                        "name" => "Round Off",
-                        "value" => $roundoff_id
-                    ],
-                    "TaxCodeRef"=>[
-                        "value" => $tax
-                    ],
-                ]
-            ];
+            $tcs_amount = 0;
             $tcs_item = ProductSubCategory::where('alias_name','TCS')->first();
             $tcs_applicable = $update_delivery_challan->tcs_applicable;
             if($del_products->vat_percentage!=0 && $tcs_applicable == 1){
@@ -1625,6 +1599,34 @@ class DeliveryChallanController extends Controller {
                     ]
                 ];
             }
+            $roundoff_item = ProductSubCategory::where('alias_name','Round Off')->first();
+            if($del_products->vat_percentage==0){
+                $roundoff_id=$roundoff_item->quickbook_a_item_id;
+            }else{
+                $roundoff_id=$roundoff_item->quickbook_item_id;
+            }
+                $tax = 9;
+                $total = (float)$total_amount + (float)$update_delivery_challan->freight + (float)$update_delivery_challan->loading_charge + (float)$update_delivery_challan->discount;
+                // $total_vat = $total * $gst_val / 100;
+                $total_vat = round($vat_clc,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                // $total_vat = round($total_price,2) + round($loading_vat_amount,2) + round($freight_vat_amount,2) + round($discount_vat_amount,2);
+                $tot = $total + $total_vat + $tcs_amount; 
+                $roundoff = round($tot,0) - $tot;
+
+                $line[] = [
+                "Amount" => $roundoff,
+                "DetailType" => "SalesItemLineDetail",
+                "SalesItemLineDetail" => [
+                    "ItemRef" => [
+                        "name" => "Round Off",
+                        "value" => $roundoff_id
+                    ],
+                    "TaxCodeRef"=>[
+                        "value" => $tax
+                    ],
+                ]
+            ];
+            
            /* if($del_products->vat_percentage==0)
             {
                 $quickbook_customer_id=$update_delivery_challan->customer->quickbook_a_customer_id;
