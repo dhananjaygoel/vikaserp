@@ -3132,9 +3132,9 @@ function update_inventory(e, value) {
                     } else {
                         $('#minimal_' + id).parent().parent().removeClass('minimum_reach');
                     }
-                    $('#sales_challan_' + id).text(response_array['sales_challan_qty']);
-                    $('#purchase_challan_' + id).text(response_array['purchase_challan_qty']);
-                    $('#physical_closing_' + id).text(response_array['physical_closing_qty']);
+                    $('#sales_challan_' + id).text(parseFloat(response_array['sales_challan_qty']));
+                    $('#purchase_challan_' + id).text(parseFloat(response_array['purchase_challan_qty']));
+                    $('#physical_closing_' + id).text((response_array['physical_closing_qty']));
                     $('#pending_order_' + id).text(response_array['pending_sales_order_qty']);
                     $('#pending_deliver_order_' + id).text(response_array['pending_delivery_order_qty']);
                     $('#pending_purchase_order_' + id).text(response_array['pending_purchase_order_qty']);

@@ -64,15 +64,15 @@ class InventoryController extends Controller {
 //        $inventory_details = Inventory::find(Input::get('id'));
         $inventory_details = Inventory::where('product_sub_category_id', '=', Input::get('id'))->first();
         if (!empty($inventory_details)) {
-            $inventory_details->opening_qty = $qty;
-            $inventory_details->minimal = $minimal;
+            $inventory_details->opening_qty = number_format($qty,2);
+            $inventory_details->minimal = number_format($minimal,2);
             $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
-            $inventory_details->physical_closing_qty = $physical_qty;
+            $inventory_details->physical_closing_qty = number_format($physical_qty,2);
             $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
             //$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
             $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
-			$inventory_details->virtual_qty = $virtual_qty;
+			$inventory_details->virtual_qty = number_format($virtual_qty,2);
             $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
         }
 
