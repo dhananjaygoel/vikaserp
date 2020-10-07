@@ -4409,16 +4409,4 @@ $(document).ready(function () {
             $('#tcs_percentage').hide();
         }
     });
-
-    setInterval(function() {
-        var page_number = $("input[name='pagenumber']").val();
-        $.ajax({
-        data: {page:page_number},
-        url: 'inventory_table',
-        success:function(data)
-        {
-         $('#inventory_html').html(data);
-        }
-        });
-      }, 20000);
 });
