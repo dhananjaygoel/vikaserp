@@ -239,7 +239,7 @@ $(document).ready(function () {
     });
     $('#expected_date').datepicker({
 //        startDate: new Date(),
-        'format': 'dd/mm/yyyy',
+        'format': 'dd-mm-yyyy',
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();
