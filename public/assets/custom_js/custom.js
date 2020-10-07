@@ -3147,12 +3147,14 @@ function update_inventory(e, value) {
                         $(".inventory_update").fadeTo(1500, 0).slideUp(500, function () {
                         });
                     }, 4000);
+                    var page_number = $("input[name='pagenumber']").val();
                     $.ajax({
-                        url: 'inventory_table',
-                        success:function(data)
-                        {
-                         $('#inventory_html').html(data);
-                        }
+                    data: {page:page_number},
+                    url: 'inventory_table',
+                    success:function(data)
+                    {
+                    $('#inventory_html').html(data);
+                    }
                     });
                 }
             });
@@ -4410,7 +4412,6 @@ $(document).ready(function () {
 
     setInterval(function() {
         var page_number = $("input[name='pagenumber']").val();
-        console.log(page_number);
         $.ajax({
         data: {page:page_number},
         url: 'inventory_table',
