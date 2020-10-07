@@ -139,6 +139,6 @@ $(document).ready(function () {
          $('#inventory_html').html(data);
         }
         });
-      }, 20000);
+      }, 60000);
 });
 </script>
