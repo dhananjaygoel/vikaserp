@@ -210,7 +210,8 @@
                         &nbsp;
                         <label for="total"><b class="challan">Total Amount : </b> <span id="total_price2">₹ {{ $total_price }}</span></label>
                     </div>
-                    @if ( ($purchase_advise->vat_percentage !=0 || $purchase_advise->vat_percentage != '') && $purchase_advise['tcs_applicable'] == 1)
+                    @if ( ($purchase_advise->vat_percentage !=0 || $purchase_advise->vat_percentage != ''))
+                    @if($purchase_advise['tcs_applicable'] == 1)
                         <div class="form-group">
                             <label for="tcs_applicable"><b class="challan">TCS Applicable:</b> Yes</label>
                             <input type="hidden" name="tcs_applicable" value="yes">
@@ -219,6 +220,17 @@
                             <label for="tcs_percentage"><b class="challan">TCS Percentage:</b></label>
                             <input type="text" name="tcs_percentage" value="{{$purchase_advise->tcs_percentage}}" class="form-control" id="tcs_percentage" onblur="purchase_challan_calculation();">
                         </div>
+                    @else
+                        <div class="form-group">
+                            <div class="checkbox">
+                                    <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms tcs-class">TCS Applicable</span></label>
+                            </div>
+                            <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
+                                <label for="tcs_percentage">TCS Percentage:</label>
+                                <input type="text" name="tcs_percentage" value="0.075" class="form-control" id="tcs_percentage">
+                            </div>
+                        </div>
+                    @endif
                     @endif
                     <div class="form-group">
                         <label for="vehicle_name"><b class="challan">Vehicle Number</b></label>
