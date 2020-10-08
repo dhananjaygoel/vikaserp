@@ -67,12 +67,12 @@ class InventoryController extends Controller {
             $inventory_details->opening_qty = $qty;
             $inventory_details->minimal = $minimal;
             $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
-            $inventory_details->physical_closing_qty = number_format($physical_qty,2);
+            $inventory_details->physical_closing_qty = number_format($physical_qty,2,'.','');
             $virtual_qty = (float)((float)($inventory_details->physical_closing_qty) + (float)($inventory_details->pending_purchase_order_qty) + (float)($inventory_details->pending_purchase_advise_qty)) - ((float)$inventory_details->pending_sales_order_qty + (float)$inventory_details->pending_delivery_order_qty);
             //$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
             $total = ((float)$inventory_details->physical_closing_qty + (float)$inventory_details->pending_purchase_advise_qty) - ((float)$inventory_details->pending_sales_order_qty + (float)$inventory_details->pending_delivery_order_qty);
-			$inventory_details->virtual_qty = number_format($virtual_qty,2);
+			$inventory_details->virtual_qty = number_format($virtual_qty,2,'.','');
             $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
         }
 
