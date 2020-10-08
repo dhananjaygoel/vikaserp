@@ -155,6 +155,9 @@
                                                         //$j++;
                                                     }
                                                 }
+                                                if($product->vat_percentage > 0){
+                                                    $is_gst = true;
+                                                }
                                                 // echo '<pre>';
                                                 // print_r($truck_weight_id." _ ".$truck_weight);
                                                 ?>
@@ -168,6 +171,7 @@
                                          $actualsum =  $actualsum + $actual_quantity;
                                          $total_dc = $product->actual_quantity * $product->price;   
                                          $actualtotal =  $actualtotal + $total_dc;
+
                                         ?>
                                         <tr id="add_row_{{$key}}" class="add_product_row" {{($product->present_shipping==0)?'':''}}>
                                             <td class="col-md-2">
@@ -274,6 +278,7 @@
                                 </table>
                             </div>
                         </div>
+                        @if($is_gst)
                         @if($delivery_data->tcs_applicable == 1)
                         <div class="clearfix"></div>
                         <div class="form-group">
@@ -285,6 +290,18 @@
                                 <input type="text" name="tcs_percentage" value="{{$delivery_data->tcs_percentage}}" class="form-control" id="tcs_percentage">
                             </div>
                         </div>
+                        @else
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                    <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms tcs-class">TCS Applicable</span></label>
+                            </div>
+                            <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
+                                <label for="tcs_percentage">TCS Percentage:</label>
+                                <input type="text" name="tcs_percentage" value="0.075" class="form-control" id="tcs_percentage">
+                            </div>
+                        </div>
+                        @endif
                         @endif
                         <div class="clearfix"></div>
                         <div class="form-group">
