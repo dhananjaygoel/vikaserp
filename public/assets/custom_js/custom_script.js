@@ -78,9 +78,13 @@ $(document).ready(function () {
     });
     $("#optionsRadios4").click(function () {
         $(".plusvat").show();
+        $(".tcs-chkbox").show();
     });
     $("#optionsRadios3").click(function () {
         $(".plusvat").hide();
+        $(".tcs-chkbox").hide();
+        $("#tcs_applicable").prop("checked",false);
+        $("#tcs_percentage").hide();
     });
     $("#existing_supplier").click(function () {
         $(".exist_field").hide();
@@ -92,10 +96,14 @@ $(document).ready(function () {
     });
     $("#exclusive_of_vat").click(function () {
         $(".plusvat").show();
+        $(".tcs-chkbox").show();
     });
     $("#inclusive_of_vat").click(function () {
         $("#price").val('');
         $(".plusvat").hide();
+        $(".tcs-chkbox").hide();
+        $("#tcs_applicable").prop("checked",false);
+        $("#tcs_percentage").hide();
     });
     /*
      * autocomplete
@@ -231,7 +239,7 @@ $(document).ready(function () {
     });
     $('#expected_date').datepicker({
 //        startDate: new Date(),
-        'format': 'dd/mm/yyyy',
+        'format': 'dd-mm-yyyy',
         autoclose: true
     });
     $('#datepickerDateComponent').datepicker();

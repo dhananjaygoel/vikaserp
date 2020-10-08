@@ -249,3 +249,11 @@ button.multiselect.dropdown-toggle.btn.btn-default {
 .product_type_col{
     width: 150px !important;
   } 
+
+.tcs-applicable {
+    width: 20%;
+    margin-bottom: 1%;
+}
+.tcs-class {
+    vertical-align: middle;
+}

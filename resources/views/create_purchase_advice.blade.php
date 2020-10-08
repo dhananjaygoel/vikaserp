@@ -216,7 +216,16 @@
                                         <tr class="cdtable"><td class="cdfirst"><span>Plus GST: </span>Yes</td><td></td></tr>
                                         <tr class="cdtable"><td class="cdfirst" colspan="5"><span>GST Percentage: </span>{{$purchase_orders['vat_percentage']."%"}}</td></tr>
                                         <input type="hidden" name="vat_percentage" value="{{$purchase_orders['vat_percentage']}}">
+                                        @if ($purchase_orders['tcs_applicable'] == 1)
+                                        <tr class="cdtable"><td class="cdfirst"><span>TCS Applicable: </span>Yes</td><td></td></tr>
+                                        <input type="hidden" name="tcs_applicable" value="yes">
+                                        <tr class="cdtable">
+                                            <td class="cdfirst"><span>TCS Percentage: </span></td>
+                                            <td><input type="text" name="tcs_percentage" value="{{$purchase_orders->tcs_percentage}}" class="form-control" id="tcs_percentage"></td>
+                                        </tr>
                                         @endif
+                                        @endif
+                                        
                                         <tr class="cdtable">
                                             <td class="cdfirst">Vehicle Number <span class="mandatory">*</span></td>
                                             <td><input id="vehicle_number" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="" type="text"></td>

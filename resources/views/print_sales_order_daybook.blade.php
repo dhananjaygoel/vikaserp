@@ -65,7 +65,10 @@
 //                    }
 //
 //                    $total_qty = $products->price;
+  
                 }
+                $tcs_amount = $obj->grand_price * $obj->tcs_percentage / 100;
+                $final_tot = $obj->grand_price + round($tcs_amount,2);
             ?>
             <tbody>
                 <tr>
@@ -80,7 +83,7 @@
                     </td>
                     <td>{{ isset($obj['delivery_order']['location']) ? $obj['delivery_order']['location']->area_name : '' }}</td>
                     <td>{{ round($obj["delivery_challan_products"]->sum('actual_quantity'), 2) }} KG</td>
-                    <td>₹ {{ isset($obj->grand_price) ? round($obj->grand_price, 2) : '' }}</td>
+                    <td>₹ {{ round($final_tot,0) }}</td>
                     <td>{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</td>
                     <td>{{ isset($obj['delivery_order']->vehicle_number) ? $obj['delivery_order']->vehicle_number : '' }}</td>
                     <td>{{ isset($obj->remarks) ? $obj->remarks : '' }}</td>

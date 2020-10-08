@@ -851,6 +851,10 @@ class OrderController extends Controller {
             $order->delivery_location_id = $input_data['add_order_location'];
             $order->location_difference = $input_data['location_difference'];
         }
+        if (isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes'){
+            $order->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
+            $order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+        }
         $order->save();
                     // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
         $order_id = $order->id;
@@ -1287,6 +1291,10 @@ class OrderController extends Controller {
             if (Auth::user()->role_id == 0 || Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {
                 $order->is_approved = 'yes';
             }
+        }
+        if (isset($input_data['tcs_applicable'])){
+            $order->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
+            $order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
         }
 
         $order->save();
@@ -1967,7 +1975,11 @@ class OrderController extends Controller {
             $delivery_order->labour_structure = $order->labour_structure;
 
             $delivery_order->is_editable = $order->is_editable;
-
+            if (isset($input_data['tcs_applicable'])){
+                $delivery_order->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
+                $delivery_order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+            }
+            
             $delivery_order->save();
             $delivery_order_id = $delivery_order->id;
             $created_at = $delivery_order->created_at;

@@ -70,12 +70,12 @@
                             <div class="thick12" style="display: none;">   
                                 <div class="form-group ">
                                     <label for="thickness">Product Thickness</label>
-
-                                    <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
+                                    <input id="thickness" class="form-control" placeholder="Thickness" name="thickness" value="{{ old('thickness') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                                    <!-- <select  class="form-control" name="thickness" id="thickness" onchange="setDiffrence(this.value)">
                                         @foreach(\App\Thickness::orderBy('thickness','ASC')->get() as $thick)
                                             <option value="{{$thick->thickness.':'.$thick->diffrence}}"> {{$thick->thickness}}</option>
                                         @endforeach
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class="form-group ">

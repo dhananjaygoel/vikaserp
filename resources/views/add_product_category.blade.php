@@ -55,14 +55,15 @@
                                 <input id="cat_name" class="form-control" placeholder="Product Category Name" name="product_category_name" value="{{ old('product_category_name') }}" type="text">
                             </div>
 
-
-
                             <div class="form-group">
                                 <label for="price">Price<span class="mandatory">*</span></label>
                                 <input id="price" class="form-control" placeholder="Price" name="price" value="{{ old('price') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                             </div>
 
-
+                            <div class="form-group">
+                                <label for="thickness">Thickness Difference</label>
+                                <input id="thickness" class="form-control" placeholder="Thickness" name="thickness" value="{{ old('thickness') }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                            </div>
 
                             <div class="form-group" >
                                 <label for="">HSN Code<span class="mandatory">*</span></label>

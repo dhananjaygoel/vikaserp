@@ -231,6 +231,10 @@
                                     @if($delivery_data->vat_percentage != "" || $delivery_data->vat_percentage > 0)
                                     <tr><td><span>GST Percentage: </span>{{ $delivery_data->vat_percentage }}</td></tr>
                                     @endif
+                                    @if($delivery_data->tcs_applicable == 1)
+                                        <tr><td><span>TCS Applicable: </span>Yes</td></tr>
+                                        <tr><td><span>TCS Percentage: </span>{{ ($delivery_data->tcs_percentage) }}</td></tr>
+                                    @endif
                                     <tr><td><b>Vehicle Number:</b> {{ $delivery_data->vehicle_number }} </td> </tr>
                                     <tr><td><b>Driver Contact:</b> {{ $delivery_data->driver_contact_no }} </td> </tr>
                                     <tr><td><span>Remark: </span>{{ $delivery_data->remarks }}</td></tr>

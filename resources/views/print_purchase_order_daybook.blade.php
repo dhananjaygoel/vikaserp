@@ -56,6 +56,17 @@
                 $amount = 0;
                 $lb_arr = [];
                 $lbr_arr = [];
+                $final_tot = 0;
+                if($title == 'Purchase Daybook'){
+                    if($obj->vat_percentage == 1){
+                        $tcs_amount = $obj->grand_total * $obj->tcs_percentage / 100;
+                        $final_tot = $obj->grand_total + round($tcs_amount,2);
+                    }else{
+                        $final_tot = $obj->grand_total;
+                    }
+                }else{
+                    $final_tot = $obj->grand_total;
+                }
             ?>                                                    
                 <tr>
                     <td>{{ $i++ }}</td>
@@ -68,7 +79,7 @@
                     </td>
                     <td>{{ ($obj->delivery_location_id == 0) ? $obj['purchase_advice']->other_location : $obj['delivery_location']->area_name }}
                     <td>{{ round($obj['all_purchase_products']->sum('quantity'), 2) }}</td>
-                    <td>{{ isset($obj->grand_total) ? $obj->grand_total : '' }}</td>
+                    <td>{{ round($final_tot,0) }}</td>
                     <td>{{ isset($obj->bill_number) ? $obj->bill_number : '' }}</td>
                     <td>{{ isset($obj->vehicle_number) ? $obj->vehicle_number : '' }}</td>
                     <td>@if(isset($obj['challan_loaded_by']))

@@ -170,14 +170,14 @@
 
                                             <td id="todays_price_{{$i}}">
                                                 <?php
-                                                $sign = substr($produ_sub->difference, 0, 1);
+                                                $sign = substr($produ_sub['product_category']->thickness, 0, 1);
                                                 ?>
                                                 @if($sign == '-')
-                                                {{ $produ_sub['product_category']->price - substr($produ_sub->difference,1) }}
-                                                <?php $prod_diff = $produ_sub['product_category']->price - substr($produ_sub->difference, 1); ?>
+                                                {{ $produ_sub['product_category']->price - substr($produ_sub['product_category']->thickness,1) }}
+                                                <?php $prod_diff = $produ_sub['product_category']->price - substr($produ_sub['product_category']->thickness, 1); ?>
                                                 @else
-                                                {{ $produ_sub['product_category']->price + $produ_sub->difference }}
-                                                <?php $prod_diff = $produ_sub['product_category']->price + $produ_sub->difference; ?>
+                                                {{ $produ_sub['product_category']->price + $produ_sub['product_category']->thickness }}
+                                                <?php $prod_diff = $produ_sub['product_category']->price + $produ_sub['product_category']->thickness; ?>
                                                 @endif
                                             </td>
                                             <td>

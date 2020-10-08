@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('daily:update_inventory')
-                 ->dailyAt('19:00');
+                 ->dailyAt('1:00');
         $schedule->command('quickbooks_token:update')
                  ->twiceDaily(8,20);
         $schedule->command('delivery_challan:delete')

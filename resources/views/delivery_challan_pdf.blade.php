@@ -317,17 +317,17 @@
                                     ?>
                                     {{ round($vat,2) }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td class="lable">Round Off</td>
-                                    <td class="total-count">
+                                    <td class="total-count"> -->
                                     <?php
                                         $roundoff = round($vat,2) + round($with_total,2);
                                         $roundoff = round($roundoff,0) - $roundoff;
                                     ?>
-                                    {{ round($roundoff,2) }}</td>
-                                </tr>
+                                    <!-- {{ round($roundoff,2) }}</td>
+                                </tr> -->
                                 <tr>
-                                    <td class="lable">GT</td>
+                                    <td class="lable">Total</td>
                                     <td class="total-count">
                                     <?php
 
@@ -347,6 +347,25 @@
                                     ?>
                                     {{ round($grand_price + $vat, 0) }}</td>
                                 </tr>
+                                <?php 
+                                $tcs_applicable = $allorder->tcs_applicable;
+                                ?>
+                                @if($tcs_applicable == 1)
+                                <?php 
+                                $tcs_amount = (($grand_price + $vat) * $allorder->tcs_percentage) / 100 ;
+                                $final_total = ($grand_price + $vat) + $tcs_amount;
+                                ?>
+                                <tr>
+                                    <td class="lable">TCS %</td>
+                                    <td class="total-count">{{ round($tcs_amount,2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="lable">Grand Total</td>
+                                    <td class="total-count">
+                                    ₹ {{ round($final_total,0) }}
+                                    </td>
+                                </tr>
+                                @endif
                             </tbody>
                         </table>
                     </td>

@@ -325,6 +325,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('export_Order_Based_On_Status', 'OrderController@exportOrderBasedOnStatus1');
     Route::get('get_product_type', 'ProductsubController@get_product_type');
     Route::resource('inventory', 'InventoryController');
+    Route::get('inventory_table', 'InventoryController@get_inventory_table');
     Route::get('fillinventorylist', 'InventoryController@fillInventoryList');
     Route::get('fetch_inventory_product_name', 'InventoryController@fetchInventoryProductName');
     Route::post('update_difference', 'ProductsubController@update_difference');

@@ -388,7 +388,9 @@ use Illuminate\Support\Facades\Session;
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                                </div>
+                            
+                            <div class="clearfix"></div>
                             <div class="row col-md-4">
                                 <div class="form-group">
                                     <label for="location">Delivery Location:<span class="mandatory">*</span></label>
@@ -447,6 +449,23 @@ use Illuminate\Support\Facades\Session;
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            <div class="row col-md-12 tcs-chkbox" style="display: none">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms tcs-class">TCS Applicable</span></label>
+                                    </div>
+                                    <div id="tcs_percentage" style="display:none;">
+                                        <table id="table-example" class="table ">
+                                            <tbody>
+                                                <tr class="cdtable">
+                                                    <td class="cdfirst">TCS Percentage:</td>
+                                                    <td><input id="tcs_percentage" class="form-control" placeholder="GST Percentage" name="tcs_percentage" value="0.075" type="text" onkeypress=" return numbersOnly(this, event, true, false);"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <?php Session::put('input_data', ''); ?>

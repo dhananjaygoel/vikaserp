@@ -189,7 +189,7 @@
                                                         <td>{{ round($daybook['all_purchase_products']->sum('quantity'), 2) }}</td>
                                                         <?php $grand_total = $total_amount + (isset($daybook->freight)?$daybook->freight:0) + (isset($daybook->discount)?$daybook->discount:0) ;
                                                         ?>
-                                                        <td>{{ round($grand_total,2) }}</td>
+                                                        <td>{{ round($grand_total,0) }}</td>
                                                         <td>{{ $daybook->bill_number }}</td>
                                                         <td>
                                                             @if((strlen(trim($daybook->remarks))) > 50)

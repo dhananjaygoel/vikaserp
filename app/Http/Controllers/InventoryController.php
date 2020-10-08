@@ -67,11 +67,12 @@ class InventoryController extends Controller {
             $inventory_details->opening_qty = $qty;
             $inventory_details->minimal = $minimal;
             $physical_qty = ($qty + $inventory_details->purchase_challan_qty) - $inventory_details->sales_challan_qty;
-            $inventory_details->physical_closing_qty = $physical_qty;
-            $virtual_qty = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_order_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+            $inventory_details->physical_closing_qty = number_format($physical_qty,2);
+            $virtual_qty = ((float)($inventory_details->physical_closing_qty) + (float)($inventory_details->pending_purchase_order_qty) + (float)($inventory_details->pending_purchase_advise_qty)) - ((float)$inventory_details->pending_sales_order_qty + (float)$inventory_details->pending_delivery_order_qty);
             //$inventory_details->virtual_qty = $virtual_qty;
             $inventory_details->save();
-            $total = ($inventory_details->physical_closing_qty + $inventory_details->pending_purchase_advise_qty) - ($inventory_details->pending_sales_order_qty + $inventory_details->pending_delivery_order_qty);
+            $total = ((float)$inventory_details->physical_closing_qty + (float)$inventory_details->pending_purchase_advise_qty) - ((float)$inventory_details->pending_sales_order_qty + (float)$inventory_details->pending_delivery_order_qty);
+			$inventory_details->virtual_qty = number_format($virtual_qty,2);
             $inventory_details['class'] = ($total < $inventory_details->minimal) ? 'yes' : 'no';
         }
 
@@ -143,6 +144,45 @@ class InventoryController extends Controller {
         }
 
         return view('add_inventory')->with(['inventory_list' => $inventory_newlist,'virtual_qty'=>$virtual_stock_qty, 'product_category' => $product_category]);
+    }
+    public function get_inventory_table() {
+        $virtual_stock_qty = array();
+        $query = Inventory::query();
+        if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
+            $query->whereRaw('minimal < physical_closing_qty-pending_delivery_order_qty-pending_sales_order_qty+pending_purchase_advise_qty');
+        }
+        if (Input::has('product_category_filter') && Input::get('product_category_filter') != '') {
+            $categoryid = Input::get('product_category_filter');
+            $query->whereHas('product_sub_category', function($q) use($categoryid) {
+                $q->where('product_category_id', '=', $categoryid);
+            });
+        }
+        if (Input::has('search_inventory') && Input::get('search_inventory') != '') {
+            $alias_name = '%' . Input::get('search_inventory') . '%';
+            $product_sub_id = ProductSubCategory::where('alias_name', 'LIKE', $alias_name)->first();
+            if (count((array)$product_sub_id)) {
+                $query->where('product_sub_category_id', '=', $product_sub_id->id);
+            }
+        }
+        $product_category = ProductCategory::orderBy('created_at', 'desc')->get();
+
+        $inventory_newlist = $query->with('product_sub_category')
+                ->join('product_sub_category', 'inventory.product_sub_category_id', '=', 'product_sub_category.id')
+                ->orderBy('product_sub_category.alias_name', 'ASC')
+                ->paginate(50);
+        $inventory_newlist->setPath('inventory');
+
+        if (count($inventory_newlist)) {
+
+            foreach ($inventory_newlist as $product_categoriy) {
+                $product_category_ids[] = $product_categoriy->product_sub_category_id;
+                $virtual_qty = ($product_categoriy->physical_closing_qty + $product_categoriy->pending_purchase_order_qty + $product_categoriy->pending_purchase_advise_qty) - ($product_categoriy->pending_sales_order_qty + $product_categoriy->pending_delivery_order_qty);
+                array_push($virtual_stock_qty,number_format($virtual_qty,2,'.', ''));
+            }
+
+            $this->inventoryCalc((array)$product_category_ids);
+        }
+        return view('inventory_table')->with(['inventory_list' => $inventory_newlist,'virtual_qty'=>$virtual_stock_qty, 'product_category' => $product_category]);
     }
 
     /* find latested updated records */
@@ -393,7 +433,7 @@ class InventoryController extends Controller {
                             if ($delivery_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
 //                                $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->quantity;                                    
-                                    $sales_challan_qty = $sales_challan_qty + $delivery_challan_product_details->actual_quantity;
+                                    $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->actual_quantity;
 //                                    if ($delivery_challan_product_details->unit_id == 1) {
 //                                        $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->quantity;
 //                                    }

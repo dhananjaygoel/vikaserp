@@ -152,6 +152,10 @@
                                             <td><span>GST Percentage: </span> {{$purchase_advise->vat_percentage.'%'}}</td>
                                         </tr>
                                     <?php } ?>
+                                    @if ($purchase_advise['tcs_applicable'] == 1)
+                                        <tr><td><span>TCS Applicable: </span>Yes</td></tr>
+                                        <tr><td><span>TCS Percentage: </span>{{$purchase_advise['tcs_percentage']."%"}}</td></tr>
+                                    @endif
                                     <tr>
                                         <td><span>Expected Delivery Date: </span>{{date("j F, Y", strtotime($purchase_advise->expected_delivery_date))}}</td>
                                     </tr>

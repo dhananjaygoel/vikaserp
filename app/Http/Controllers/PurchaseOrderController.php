@@ -310,6 +310,12 @@ class PurchaseOrderController extends Controller {
                 'other_location_difference' => '',
             ]);
         }
+        if (isset($input_data['tcs_applicable'])){
+            $add_delivery_location = PurchaseOrder::where('id', $purchase_order_id)->update([
+                'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+            ]);
+        }
         /*
          * ------------------- -----------------------
          * SEND SMS TO CUSTOMER FOR NEW PURCHASE ORDER
@@ -592,6 +598,8 @@ class PurchaseOrderController extends Controller {
             'order_for' => $input_data['order_for'],
             'created_by' => Auth::id(),
             'vat_percentage' => $vat_percentage,
+            'tcs_applicable' => isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+            'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",
@@ -688,6 +696,12 @@ class PurchaseOrderController extends Controller {
                 'delivery_location_id' => $input_data['purchase_order_location'],
                 'other_location' => '',
                 'other_location_difference' => '',
+            ]);
+        }
+        if (isset($input_data['tcs_applicable'])){
+            $update_purchase_order = PurchaseOrder::where('id', $purchase_order->id)->update([
+                'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
             ]);
         }
         $purchase_order_products = array();

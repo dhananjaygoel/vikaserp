@@ -53,7 +53,10 @@
                     <input id="price" class="form-control" placeholder="Price" name="price" value="{{ $product_cat[0]['price'] }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
                 </div>
 
-
+                <div class="form-group">
+                    <label for="thickness">Thickness Difference</label>
+                    <input id="thickness" class="form-control" placeholder="Thickness" name="thickness" value="{{ $product_cat[0]['thickness'] }}" type="tel" onkeypress=" return numbersOnly(this,event,true,false);">
+                </div>
 
                     <div class="form-group" >
                         <label for="">HSN Code<span class="mandatory">*</span></label>

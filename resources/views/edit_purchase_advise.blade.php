@@ -204,6 +204,17 @@
                                             <td>{{$purchase_advise->vat_percentage}}%</td>
                                         </tr>
                                     <?php } ?>
+                                    @if ($purchase_advise['tcs_applicable'] == 1)
+                                    <tr class="cdtable">
+                                        <td class="cdfirst">TCS Applicable:</td>
+                                        <td>Yes</td>
+                                        <input type="hidden" id="tcs_applicable" class="form-control" placeholder="Vehicle Number" name="tcs_applicable" value="yes">
+                                    </tr>
+                                    <tr class="cdtable">
+                                        <td class="cdfirst">TCS Percentage:</td>
+                                        <td><input id="tcs_percentage" class="form-control" placeholder="TCS Percentage" name="tcs_percentage" value="{{$purchase_advise->tcs_percentage}}" type="text"></td>
+                                    </tr>
+                                    @endif
                                     <tr class="cdtable">
                                         <td class="cdfirst">Vehicle Number:<span class="mandatory">*</span></td>
                                         <td><input id="price" class="form-control" placeholder="Vehicle Number" name="vehicle_number" value="{{$purchase_advise->vehicle_number}}" type="text"></td>

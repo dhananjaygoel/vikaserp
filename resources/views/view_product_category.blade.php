@@ -48,6 +48,11 @@
                                     </tr>
                                     <tr>
                                         <td>
+                                            <span>Thickness Difference: </span>{{ $product_cat->thickness }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <span>HSN Code: </span>{{ $product_cat->hsn_code }}
                                         </td>
                                     </tr>

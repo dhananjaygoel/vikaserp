@@ -229,7 +229,7 @@
                                                     ?>
                                                     @endforeach
                                                     <!-- <td >{{round(isset($challan->grand_price)?$challan->grand_price:0, 2)}}</td> -->
-                                                    <td>{{ $total }}</td>
+                                                    <td>{{ round($total,0) }}</td>
                                                     <td >{{$challan->bill_number}}</td>
                                                     <!-- <td>
                                                         @if((strlen(trim($challan->remarks))) > 50)

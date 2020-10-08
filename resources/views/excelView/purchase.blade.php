@@ -140,6 +140,10 @@
                 }
                 $grand_total = $total_gst_amount + $total_amount + (isset($value->freight)?$value->freight:0) + (isset($value->discount)?$value->discount:0) + $freight_vat + $discount_vat ;
                 $roundoff = round($grand_total,0) - $grand_total;
+                if($value->tcs_applicable == 1 && isset($value->vat_percentage) && !empty($value->vat_percentage)){
+                    $tcs_amount = $grand_total * $value->tcs_percentage / 100;
+                    $grand_total = $grand_total + round($tcs_amount,2);
+                }
             ?>
    
         <tr>
@@ -227,6 +231,7 @@
                 ?> -->
                 <?php
                     $grand_vat_amt = $total_gst_amount + $freight_vat + $discount_vat ;
+                    
                 ?>
                 {{ round($grand_vat_amt,2) }}
             
@@ -241,7 +246,7 @@
            
         </tr>
          
-         <tr>    
+         <!-- <tr>    
             <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:16px;text-align: left;">{{$VchNo}}</td>
             <td style="height:16px;"></td><td></td>
@@ -255,8 +260,24 @@
                 {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
             </td>
             <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
+        </tr> -->
+        @if($value->tcs_applicable == 1 && isset($value->vat_percentage) && !empty($value->vat_percentage))
+        <tr>    
+            <td style="height:16px;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
+            <td style="height:16px;text-align: left;">{{$VchNo}}</td>
+            <td style="height:16px;"></td><td></td>
+            <td style="height:16px;">TCS</td>
+            <td style="height:16px;"></td><td></td><td></td><td></td><td></td><td></td>
+            <td style="height:16px;text-align: left;">{{ round($tcs_amount,2) }}</td>
+            <td style="height:16px;">
+                <?php
+                 if ((isset($value['purchase_advice']->vehicle_number)) && ($value['purchase_advice']->vehicle_number != ""))
+                            echo "[" . $value['purchase_advice']->vehicle_number . "]";                  ?>
+                {{ (isset($value->remarks)&& $value->remarks!='')? '/ '.$value->remarks : '' }}
+            </td>
+            <td style="height:16px;">{{isset($value->serial_number)?$value->serial_number:''}}</td>
         </tr>
-                    
+        @endif      
         <tr style="border:2px solid black">    
             <td style="height:18px;border:2px solid #4fe24f;">{{ date("j F, Y", strtotime($value->updated_at)) }}</td>
             <td style="height:18px;border:2px solid #4fe24f;text-align: left;">{{$VchNo}}</td>

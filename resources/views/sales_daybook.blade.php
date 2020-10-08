@@ -282,9 +282,10 @@
                                                 $total = (float)$total_amount + (float)$challan->freight + (float)$challan->loading_charge + (float)$challan->discount;
                                                 $total_vat = $total_price + $loading_vat_amount + $freight_vat_amount + $discount_vat_amount;
                                                 $tot = $total + $total_vat;
-
+                                                $tcs_amount = $tot * $challan->tcs_percentage / 100;
+                                                $final_tot = $tot + $tcs_amount;
                                             ?>
-                                            {{round($tot,2)}}
+                                            {{round($final_tot,0)}}
                                             </td>
                                             <td >{{$challan->bill_number}}</td>
                                             <td>

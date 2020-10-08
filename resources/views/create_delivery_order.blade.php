@@ -153,7 +153,7 @@
                                             <td><span><b>Select Product(Alias)</b></span></td>
                                             <td><span><b>Unit</b></span></td>
                                             <td><span><b>Length</b></span></td>
-                                            <td><span><b>Quantity</b></span></td>
+                                            <!-- <td><span><b>Quantity</b></span></td> -->
                                             <td><span><b>Present Shipping</b></span></td>
                                             <td><span><b>Price</b></span></td>
                                             <td class="inquiry_vat_chkbox"><span><b>GST</b></span></td>
@@ -190,7 +190,7 @@
                                                     <input id="length_{{$key}}" class="form-control" placeholder="length" name="product[{{$key}}][length]" value="{{$product->length?$product->length:0}}" type="hidden" >
                                                 </div>
                                             </td>
-                                            <td class="col-md-1">
+                                            <td class="col-md-1" style="display:none">
                                                 <div class="form-group">
                                                     <!--{{$product->pending_quantity}}-->
                                                     {{$product->quantity}}
@@ -290,6 +290,24 @@
                                         <input id="vat_percentage" class="form-control" placeholder="VAT Percentage" name="vat_percentage" value="{{$order->vat_percentage}}" type="hidden" readonly="readonly" onblur="grand_total_delivery_order();">
                                     </td>
                                 </tr>-->
+                                @endif
+                                <tr class="cdtable">
+                                @if($order->tcs_applicable == 1)
+                                    <div class="checkbox">
+                                            <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes" checked><span class="checksms tcs-class">TCS Applicable</span></label>
+                                    </div>
+                                    <div class="tcs-applicable" id="tcs_percentage">
+                                        <label for="tcs_percentage">TCS Percentage:</label>
+                                        <input type="text" name="tcs_percentage" value="{{$order->tcs_percentage}}" class="form-control" id="tcs_percentage">
+                                    </div>
+                                    @else
+                                    <div class="checkbox">
+                                            <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes"><span class="checksms tcs-class">TCS Applicable</span></label>
+                                    </div>
+                                    <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
+                                        <label for="tcs_percentage">TCS Percentage:</label>
+                                        <input type="text" name="tcs_percentage" value="0.075" class="form-control" id="tcs_percentage">
+                                    </div>
                                 @endif
                                 <tr class="cdtable">
                                 <td class="cdfirst">Vehicle Number:</td>

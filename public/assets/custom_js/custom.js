@@ -583,12 +583,13 @@ function state_option() {
 function update_price(product_id) {
 
     var price = $('#price_' + product_id).val();
+    var thickness = $('#thickness_' + product_id).val();
     var url = $('#site_url').val();
     var token = $('#token').val();
     $.ajax({
         type: "GET",
         url: url + '/update_price',
-        data: {price: price, product_id: product_id, _token: token},
+        data: {price: price, thickness:thickness, product_id: product_id, _token: token},
     }).done(function (data) {
             $('.alert-success1').show();
         setTimeout(function(){ 
@@ -3131,9 +3132,9 @@ function update_inventory(e, value) {
                     } else {
                         $('#minimal_' + id).parent().parent().removeClass('minimum_reach');
                     }
-                    $('#sales_challan_' + id).text(response_array['sales_challan_qty']);
-                    $('#purchase_challan_' + id).text(response_array['purchase_challan_qty']);
-                    $('#physical_closing_' + id).text(response_array['physical_closing_qty']);
+                    $('#sales_challan_' + id).text(parseFloat(response_array['sales_challan_qty']));
+                    $('#purchase_challan_' + id).text(parseFloat(response_array['purchase_challan_qty']));
+                    $('#physical_closing_' + id).text((response_array['physical_closing_qty']));
                     $('#pending_order_' + id).text(response_array['pending_sales_order_qty']);
                     $('#pending_deliver_order_' + id).text(response_array['pending_delivery_order_qty']);
                     $('#pending_purchase_order_' + id).text(response_array['pending_purchase_order_qty']);
@@ -4390,3 +4391,13 @@ function get_fb(){
         })
 }
 
+
+$(document).ready(function () {
+    $('#tcs_applicable').click(function(){
+        if(this.checked) {
+            $('#tcs_percentage').show();
+        }else{
+            $('#tcs_percentage').hide();
+        }
+    });
+});

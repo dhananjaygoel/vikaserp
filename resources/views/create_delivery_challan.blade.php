@@ -136,8 +136,7 @@
                                             <td><span>Length</span></td>
                                             <td><span>Amount</span></td>
                                         </tr>
-                                        <?php $key = 1; $actualsum =0; $actualtotal =0; $total_average_qnty=0;
-
+                                        <?php $key = 1; $actualsum =0; $actualtotal =0; $total_average_qnty=0;$is_gst = false;
                                         ?>
                                         @foreach($delivery_data['delivery_product'] as $product)
                                         @if($product->order_type =='delivery_order')
@@ -275,6 +274,18 @@
                                 </table>
                             </div>
                         </div>
+                        @if($delivery_data->tcs_applicable == 1)
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                    <label class="marginsms"><input type="checkbox" id="tcs_applicable" name="tcs_applicable" value="yes" checked><span class="checksms tcs-class">TCS Applicable</span></label>
+                            </div>
+                            <div class="tcs-applicable" id="tcs_percentage">
+                                <label for="tcs_percentage">TCS Percentage:</label>
+                                <input type="text" name="tcs_percentage" value="{{$delivery_data->tcs_percentage}}" class="form-control" id="tcs_percentage">
+                            </div>
+                        </div>
+                        @endif
                         <div class="clearfix"></div>
                         <div class="form-group">
 
@@ -378,10 +389,10 @@
                                         </span>
                                     </label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="RoundOff"><b class="challan">Round Off : ₹</b></label>
-                                    <input id="round_off1" class="form-control" placeholder="Round Off" name="round_off" value="" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
-                                </div>
+                                <!-- <div class="form-group">
+                                    <label for="RoundOff"><b class="challan">Round Off : ₹</b></label> -->
+                                    <input type="hidden" id="round_off1" class="form-control" placeholder="Round Off" name="round_off" value=""  onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                                <!-- </div> -->
                                 <div class="form-group" style="display: none">
                                     <label for="Grand_total"><b class="challan">Grand Total : ₹</b>
                                         <span class="gtotal">

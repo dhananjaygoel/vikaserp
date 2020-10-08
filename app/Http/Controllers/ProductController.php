@@ -112,6 +112,7 @@ class ProductController extends Controller {
             $product_category->product_type_id = $request->input('product_type');
             $product_category->product_category_name = $request->input('product_category_name');
             $product_category->price = $request->input('price');
+            $product_category->thickness = $request->input('thickness');
             $product_category->gst = $gst;
             $product_category->hsn_code = explode(':',$request->input('hsn_code'))[0];
             $product_category->hsn_desc = $request->input('hsn_desc');
@@ -222,6 +223,7 @@ class ProductController extends Controller {
             'product_type_id' => $request->input('product_type'),
             'product_category_name' => $request->input('product_category_name'),
             'price' => $request->input('price'),
+            'thickness' => $request->input('thickness'),
             'hsn_code' => explode(':',$request->input('hsn_code'))[0],
             'hsn_desc' => $request->input('hsn_desc'),
         );
@@ -237,8 +239,9 @@ class ProductController extends Controller {
     public function update_price() {
 
         $val = Input::get('price');
+        $thickness = Input::get('thickness');
         $key = Input::get('product_id');
-        ProductCategory::where('id', $key)->update(array('price' => $val));
+        ProductCategory::where('id', $key)->update(array('price' => $val,'thickness' => $thickness));
 
 
         $id = $key;
@@ -278,9 +281,15 @@ class ProductController extends Controller {
     public function update_all_price() {
 
         $price = Input::get('price');
+        $thickness = Input::get('thickness');
         foreach ($price as $key => $value) {
             foreach ($value as $val) {
                 ProductCategory::where('id', $key)->update(array('price' => $val));
+            }
+        }
+        foreach ($thickness as $key => $thick) {
+            foreach ($thick as $thick_val) {
+                ProductCategory::where('id', $key)->update(array('thickness' => $thick_val));
             }
         }
     }

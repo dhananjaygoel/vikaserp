@@ -713,10 +713,10 @@
                                 <input id="gst_total" class="form-control" name="gst_total" type="tel" value="{{round($total_vat,2)}}" readonly="readonly">
                             </div>
                             @endif
-                            <div class="form-group">
-                                <label for="roundoff"><b class="challan">Round Off : ₹</b></label>
-                                <input id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}" type="tel" onblur="grand_total_challan();" readonly="readonly">
-                            </div>
+                            <!-- <div class="form-group">
+                                <label for="roundoff"><b class="challan">Round Off : ₹</b></label> -->
+                                <input type="hidden" id="round_off" class="form-control" placeholder="Round Off" name="round_off" onkeypress=" return numbersOnly(this, event, true, true);" value="{{($allorder->round_off != '')?$allorder->round_off:''}}"  onblur="grand_total_challan();" readonly="readonly">
+                            <!-- </div> -->
                             <div class="form-group" >
                                 <label for="Total"><b class="challan"> Grand Total : ₹</b></label>
                                 <div id="total_l_d_f"></div>
@@ -728,6 +728,20 @@
                                     </span>
                                 </label>
                             </div>
+                            @if(isset($product->vat_percentage) && $product->vat_percentage>0 && $allorder->tcs_applicable == 1)
+                            <div class="form-group">
+                                <label for="tcs_applicable"><b class="challan">TCS Applicable: </b>Yes</label>
+                                <input type="hidden" value="yes" id="tcs_applicable" name="tcs_applicable">
+                            </div>
+                            <div class="form-group">
+                                <label for="tcs_percentage"><b class="challan">TCS Percentage: </b></label>
+                                <input id="tcs_percentage" class="form-control" placeholder="TCS Percenatge" name="tcs_percentage" value="{{isset($allorder->tcs_percentage)?$allorder->tcs_percentage:'0.075'}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                            </div>
+                            <div class="form-group">
+                                <label for="total"><b class="challan"> Final Grand Total: </b>
+                                <div id="final_total"></div>
+                            </div>
+                            @endif
                             @if(isset($allorder->delivery_order->vehicle_number) && $allorder->delivery_order->vehicle_number != "")
                                 @if(Auth::user()->role_id == 0)
                                     <div class="form-group">
