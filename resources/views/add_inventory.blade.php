@@ -128,16 +128,15 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-        var page_number = $("input[name='pagenumber']").val();
-        $.ajax({
+    var page_number = $("input[name='pagenumber']").val();
+    $.ajax({
         data: {page:page_number},
         url: 'inventory_table',
         success:function(data)
         {
-         $('#inventory_html').html(data);
+        $('#inventory_html').html(data);
         }
-        });
-      });
+    });
 });
 </script>
 @endsection
