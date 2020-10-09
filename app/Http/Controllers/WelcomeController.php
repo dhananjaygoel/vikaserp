@@ -52,7 +52,8 @@ use Barryvdh\DomPDF\PDF;
 use Response;
 use Jenssegers\Agent\Agent;
 use App\Jobs\ProcessPDFDownload;
-use Browser;
+use hisorange\BrowserDetect\Parser as Browser;
+// use Browser;
 
 class WelcomeController extends Controller {
     /*

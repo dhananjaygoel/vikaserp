@@ -1220,11 +1220,12 @@ function grand_total_challan() {
     $("#total_l_d_f").html("<span class='text-center'>" + grand_total.toFixed(0) + "</span>");
 
     var tcs_percenatge = $('#tcs_percentage').val();
-    var tcs_amount = parseFloat(grand_total) * parseFloat(tcs_percenatge) / 100;
+    if(tcs_percenatge != "" && !isNaN(tcs_percenatge)){
+        var tcs_amount = parseFloat(grand_total) * parseFloat(tcs_percenatge) / 100;
 
-    var final_amount = parseFloat(tcs_amount) + parseFloat(grand_total);
-    $("#final_total").html("<span class='text-center'>" + final_amount.toFixed(0) + "</span>");
-
+        var final_amount = parseFloat(tcs_amount) + parseFloat(grand_total);
+        $("#final_total").html("<span class='text-center'>" + final_amount.toFixed(0) + "</span>");
+    }
 }
 
 /**
@@ -1286,8 +1287,8 @@ function purchase_challan_calculation() {
         // grand_total = parseFloat(grand_total).toFixed(2) + parseFloat(round_off).toFixed(2);
     }
     var tcs_percenatge = $('#tcs_percentage').val();
-    var tcs_amount = parseFloat(grand_total) * parseFloat(tcs_percenatge) / 100;
-    if(tcs_percenatge != undefined){
+    if(tcs_percenatge != "" && !isNaN(tcs_percenatge)){
+        var tcs_amount = parseFloat(grand_total) * parseFloat(tcs_percenatge) / 100;
         var grand_total = parseFloat(tcs_amount) + parseFloat(grand_total);
     }
 

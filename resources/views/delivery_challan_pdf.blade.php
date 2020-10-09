@@ -362,7 +362,7 @@
                                 <tr>
                                     <td class="lable">Grand Total</td>
                                     <td class="total-count">
-                                    ₹ {{ round($final_total,0) }}
+                                    {{ round($final_total,0) }}
                                     </td>
                                 </tr>
                                 @endif
