@@ -708,12 +708,12 @@ class ProductsubController extends Controller {
         $productsubcat = ProductSubCategory::find(Input::get('id'));
         $productcat = ProductCategory::find($productsubcat->product_category_id);
         $sign = substr( Input::get('difference'), 0, 1);
+        $todays_price = $productcat->price + $productcat->thickness;
         if($sign == '-'){
-            $todays_price = $productcat->price - substr(Input::get('difference'),1);
+            $total_price = $todays_price - substr(Input::get('difference'),1);
         } else {
-            $todays_price = $productcat->price + Input::get('difference');
+            $total_price = $todays_price + Input::get('difference');
         }
-        $total_price = $todays_price + Input::get('difference');
         $arr = array('todays_price' => round($todays_price,2), 'total_price' => round($total_price,2));
         echo json_encode($arr);
 
@@ -726,7 +726,7 @@ class ProductsubController extends Controller {
         $input = Input::all();
 
         $admins = User::where('role_id', '=', 0)->get();
-        if (count((array)$admins) > 0) {
+        /*if (count((array)$admins) > 0) {
             foreach ($admins as $key => $admin) {
                 $productsubcategory = ProductSubCategory::find(Input::get('id'));
                 $product_category = ProductCategory::with('product_type')->find($productsubcategory->product_category_id);
@@ -761,7 +761,7 @@ class ProductsubController extends Controller {
                     curl_close($ch);
                 }
             }
-        }
+        }*/
 
 
 //        return redirect('product_sub_category')->with('success', 'Product sub category difference successfully updated.');
