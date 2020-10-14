@@ -63,17 +63,19 @@ $(document).ready(function () {
 //        jQuery('#add_purchase_advice_product_row')[0].click();
 //    }
 
+
+
 $(".btn_save_truck").click(function () {
-    
+
     var $inputs = $('.dynamic_field :input');
      $inputs.each(function() {
-    
+
         var weight = $(this).val();
         var textinput = $(this).attr('id');
         var delboy_id  = textinput.split("truck_weight");
         var delivery_id = $("#delivery_id").val();
         var empty_truck_weight = $("#empty_truck_weight").val();
-     
+
          /* $.ajax({
                 type: 'POST',
                 url: url + '/truck_load_bydelboy',
@@ -86,7 +88,7 @@ $(".btn_save_truck").click(function () {
                 success: function (data) {
                     console.log("success");
                 }
-       
+
     });*/
 });
  });
@@ -97,45 +99,45 @@ $(".btn_save_truck").click(function () {
 	  $(".modal-body #delivery_id").val( deliverid );
   });
  $(".assign_load").click(function () {
-     
+
      var deliverid = $(this).data('delivery_id');
      var supervisor_id = $(this).data('supervisor_id');
      var delboy_id = $(this).data('delivery_boy');
      var roleid = $(this).data('role_id');
-     
+
      $(".modal-body #delivery_id").val( deliverid );
      if(roleid ==0 || roleid ==2 ){
 
         $(".del_supervisor").val(supervisor_id);
-         
+
         //$(".del_supervisor").val(supervisor_id);
      }
     //  else{
-        
+
     //         $(".del_supervisor").val(delboy_id);
-         
-        
+
+
     //  }
     // $(".del_supervisor").val(delboy_id);
-    
-    
+
+
 });
 $(".assign_load1").click(function () {
-     
+
     var deliverid = $(this).data('delivery_id');
     var supervisor_id = $(this).data('supervisor_id');
     var delboy_id = $(this).data('delivery_boy');
     var roleid = $(this).data('role_id');
-    
+
     $(".modal-body #delivery_id").val( deliverid );
     if(roleid ==0 || roleid ==8){
-       
+
            $("#del_boy").val(delboy_id);
-       
+
     }
    // $(".del_supervisor").val(delboy_id);
-   
-   
+
+
 });
     window.setTimeout(function () {
         $(".alert-autohide").fadeTo(1500, 0).slideUp(500, function () {
@@ -187,13 +189,13 @@ $(".assign_load1").click(function () {
                 var str2 = '<option value=""> --select-- </option>';
                 for (var key in prod) {
                     str += '<option value="' + prod[key].id + '"> ' + prod[key].product_category_name + ' </option>';
-                    
+
                 }
                 $('#select_product_categroy').html(str);
                 var subid = prod[0].id;
                 //console.log(subid);
-               
-          
+
+
         $.ajax({
             type: 'get',
             url: url + '/get_hsn_code',
@@ -205,9 +207,9 @@ $(".assign_load1").click(function () {
             }
         });
 
-       
+
     });
-  
+
 
     $("#select_product_categroy").on('change',function () {
         var id = this.value;
@@ -412,6 +414,7 @@ $(document).ready(function () {
         }
     });
     $('.save_all_inventory').on("click", function (e) {
+
         $('#frm_inventory_save_all').submit();
     });
     $('.delete_records_modal').on("click", function (e) {
@@ -592,7 +595,7 @@ function update_price(product_id) {
         data: {price: price, thickness:thickness, product_id: product_id, _token: token},
     }).done(function (data) {
             $('.alert-success1').show();
-        setTimeout(function(){ 
+        setTimeout(function(){
             $('.alert-success1').hide();
         }, 2000);
     });
@@ -1572,7 +1575,7 @@ $('body').delegate(".btn_edit_delivery_order", "click", function () {
             status_form = 1;
             console.log('#name' + status_form);
         }
-       
+
         if ($('#contact_person').val() == '') {
             $('#contact_person').addClass('error_validation');
             status_form = 1;
@@ -2162,14 +2165,14 @@ $('body').delegate(".btn_purorder_to_puradvice", "click", function () {
     var present_shippein_zero_count = 0;
     var actual_pieces_count = 0;
     for (i = 0; i <= tot_products; i++) {
-        
+
         if (($("#add_product_id_" + i).val() == "") && ($("#product_price_" + i).val() == "")) {
             j++;
         } else {
             if ($("#add_product_id_" + i).val() == "" || $('#add_purchase_product_name_' + i).val() == "") {
                 $('#add_purchase_product_name_' + i).addClass('error_validation');
                 status_form = 1;
-            } 
+            }
             // else {
             //     if ($("#add_purchase_product_name_" + i).val() == "") {
             //         $('#add_purchase_product_name_' + i).addClass('error_validation');
@@ -2416,12 +2419,12 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
                 $('#quantity_' + i).addClass('error_validation');
                 status_form = 1;
             }
-            
+
             if ($('#units_' + i).val() == "") {
                 $('#units_' + i).addClass('error_validation');
                 status_form = 1;
             }else{$('#units_' + i).removeClass('error_validation');}
-            
+
             if ($('#length_' + i).val() == "" && $('#length_' + i).is(':enabled')) {
                 $('#length_' + i).addClass('error_validation');
                 status_form = 1;
@@ -2452,7 +2455,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     //         if ($("#add_product_id_" + i).val() == "") {
     //             $('#add_product_name_' + i).addClass('error_validation');
     //             status_form = 1;
-    //         } 
+    //         }
     //         if ($("#add_product_id_" + i).val() != "") {
     //             if ($('#add_product_name_' + i).val() == "") {
     //                 $('#add_product_name_' + i).addClass('error_validation');
@@ -2480,7 +2483,7 @@ $('body').delegate(".btn_order_to_delorder", "click", function () {
     //                 $('.unit').addClass('error_validation');
     //                 status_form = 1;
     //             }else{$('.unit').removeClass('error_validation');}
-            
+
     //         }
     //         if ($("#quantity_" + i).val() == "") {
     //             $('#quantity_' + i).addClass('error_validation');
@@ -3574,10 +3577,10 @@ function loaded_truck(order_id) {
 }
 function order_assign(){
     var delivery_id = $("#delivery_id").val();
-    var del_supervisor =$("#del_supervisor").val(); 
+    var del_supervisor =$("#del_supervisor").val();
     var token = $('#_token').val();
     if(del_supervisor){
-        
+
          $.ajax({
                 type: 'POST',
                 url: url + '/order_assign',
@@ -3588,7 +3591,7 @@ function order_assign(){
                 },
                 success: function (data) {
                     // alert(data);
-                    
+
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);
                         $(".err-p").removeClass('text-danger').addClass('text-success').html('Order assigned.');
@@ -3620,7 +3623,7 @@ function fetch_actual_qty() {
     var total_qty = 0;
 
     for (var j = 1; j < current_row_count + 1; j++) {
-        
+
         var actual_pieces = $("#actual_pieces_" + j).val();
         var average_weight = $("#average_weight_" + j).val();
         var total = actual_pieces * average_weight;
@@ -3693,7 +3696,7 @@ $("body").on('click',"button", function() {
                     }else {
                         $('.error-success1').show();
                     }
-                } 
+                }
             })
         }
     }
@@ -3740,7 +3743,7 @@ $("body").on('click',"button", function() {
                             $('.error-success1').hide();
                         }, 5000);
                     }
-                } 
+                }
             })
         }
     }
@@ -3783,7 +3786,7 @@ $("body").on('click',"button", function() {
                             $('.error-success1').hide();
                         }, 5000);
                     }
-                } 
+                }
             })
         }
     }
@@ -3818,7 +3821,7 @@ $("body").on('click',"button", function() {
         }else{
             product_ids = '';
         }
-        
+
         if (truck_weight == "" || truck_weight == 0) {
             $('#truck_weight_'+delboy_id+"_"+truck_sequence).addClass('error_validation');
             status_form = 1;
@@ -3914,7 +3917,7 @@ $("body").on('click',"button", function() {
                         setTimeout(function(){
                             $('.alert-success-truck-weight').hide();
                         }, 5000);
-                       
+
                         // $('#truck_weight_'+delboy_id+'_'+truck_sequence).attr('disabled',true);
                         // $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
                         // $('#labour_select_'+delboy_id+'_'+truck_sequence).prop('disabled',true);
@@ -3977,7 +3980,7 @@ $("body").on('click',"button", function() {
                         //     }
 
                         // });
-                        
+
                             window.onbeforeunload = null;
                             // return false;
                     }else {
@@ -3987,7 +3990,7 @@ $("body").on('click',"button", function() {
                         }, 5000);
                         // $('#btn_truck_weight_'+delboy_id+'_'+truck_sequence).prop('disabled',false);
                     }
-                } 
+                }
             })
         }
     }
@@ -4087,7 +4090,7 @@ $(".assign_load1").click(function(e){
         },
         dataType: 'json',
         success: function (data) {
-            
+
             select.append('<option value="">Select Delivery boy</option>')
             if(delivery_boy != ''){
                 select.append('<option id="opt'+delivery_boy+'" value="' + delivery_boy + '" style="color:red;" selected>' + title +'</option>');
@@ -4144,11 +4147,11 @@ $(".assign_load").click(function(e){
 function loaded_assign(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();
-    var del_supervisor =$(".modal-body #del_supervisor").val(); 
+    var del_supervisor =$(".modal-body #del_supervisor").val();
 
     var token = $('#_token').val();
     if(del_supervisor){
-        
+
          $.ajax({
                 type: 'POST',
                 url: url + '/loaded_assign',
@@ -4160,7 +4163,7 @@ function loaded_assign(){
                 },
                 success: function (data) {
                     // alert(data);
-                    
+
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);
                         $(".err-p").removeClass('text-danger').addClass('text-success').html('Order assigned.');
@@ -4189,11 +4192,11 @@ function loaded_assign(){
 function loaded_assign1(){
     var delivery_id = $("#delivery_id").val();
     var assigntype = $("#assign_type").val();
-    var del_boy =$(".modal-body #del_boy").val(); 
-  
+    var del_boy =$(".modal-body #del_boy").val();
+
     var token = $('#_token').val();
     if(del_boy){
-        
+
          $.ajax({
                 type: 'POST',
                 url: url + '/loaded_assign1',
@@ -4205,7 +4208,7 @@ function loaded_assign1(){
                 },
                 success: function (data) {
                     // alert(data);
-                    
+
                     if(data=='success'){
                         $("#final-submit").prop('disabled',false);
                         $(".err-p").removeClass('text-danger').addClass('text-success').html('Order assigned.');
@@ -4236,7 +4239,7 @@ function loaded_truck_delivery() {
     // var del_spervisor = $(".del_supervisor").val();
     // var del_boy = $(".del_boy").val();
     //var vehicle_number = $("#vehicle_number").val();
-    var final_truck_weight = $("#final_truck_weight").val();   
+    var final_truck_weight = $("#final_truck_weight").val();
     // var product_detail_table = $("#product_detail_table").val();
     // var labour_pipe = $("#labour_pipe").val();
     // var labour_structure = $("#labour_structure").val();
@@ -4301,7 +4304,7 @@ function del_super_change(elem) {
         type: 'POST',
         url: url + '/delivery_order_spervisor',
         data: {
-            del_spervisor: del_spervisor,                        
+            del_spervisor: del_spervisor,
             order_id:order_id,
             delivery_id:delivery_id,
             _token: token
@@ -4319,7 +4322,7 @@ function del_boy_change(elem) {
         type: 'POST',
         url: url + '/delivery_order_del_boy',
         data: {
-            del_boy: del_boy,                        
+            del_boy: del_boy,
             order_id:order_id,
             delivery_id:delivery_id,
             _token: token
@@ -4372,24 +4375,24 @@ document.querySelector('button').addEventListener('click', function(){
     //         });
 // });
 
-function get_fb(){
-    url = '';
-    var feedback = $.ajax({
-        type: 'GET',
-        url: url + '/supervisor_count'
-        }).success(function (data) {
-            if(data == 0){
-                $('.notification').removeClass('show-count');
-            }else if(data == 1){
-                $('.notification').addClass('show-count');
-                $('.notification').attr('onclick','return notification_msg();');
-            }
-            $('.notification').attr('data-count',data);
-            // alert(data);
-            setTimeout(function(){get_fb();}, 2000);
-            
-        })
-}
+// function get_fb(){
+//     url = '';
+//     var feedback = $.ajax({
+//         type: 'GET',
+//         url: url + '/supervisor_count'
+//         }).success(function (data) {
+//             if(data == 0){
+//                 $('.notification').removeClass('show-count');
+//             }else if(data == 1){
+//                 $('.notification').addClass('show-count');
+//                 $('.notification').attr('onclick','return notification_msg();');
+//             }
+//             $('.notification').attr('data-count',data);
+//             // alert(data);
+//             setTimeout(function(){get_fb();}, 2000);
+
+//         })
+// }
 
 
 $(document).ready(function () {

@@ -30,6 +30,7 @@ use DB;
 use Illuminate\Support\Facades\Mail;
 use Config;
 use Carbon\Carbon;
+use Symfony\Component\Console\Input\Input as InputInput;
 
 class InventoryController extends Controller {
 
@@ -83,7 +84,7 @@ class InventoryController extends Controller {
      * Display a all product inventory with stock details
      */
     public function index() {
-        
+
         if (Auth::user()->hasOldPassword()) {
             return redirect('change_password');
         }
@@ -97,7 +98,7 @@ class InventoryController extends Controller {
         // }
 
 //        $this->updateOpeningStock();
-        
+
         $virtual_stock_qty = array();
         $query = Inventory::query();
         if (Input::has('inventory_filter') && Input::get('inventory_filter') == 'minimal') {
@@ -225,14 +226,14 @@ class InventoryController extends Controller {
 //                        ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_category_ids) {
 //                                $q->whereIn('product_category_id', $product_category_ids);
 //                            }])->get();
-        $today = Carbon::now()->toDateString();                            
+        $today = Carbon::now()->toDateString();
         $delivery_challan = DeliveryChallan::where('challan_status', '=', 'pending')
                             ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
                                     $q->whereIn('product_category_id', $product_category_ids);
                                 }])
                             ->whereRaw('DATE(delivery_challan.created_at) = ?', [$today])
                             ->get();
-                                
+
         $delivery_challan_completed = DeliveryChallan::where('challan_status', '=', 'completed')
                 ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['delivery_challan_products.product_sub_category', 'delivery_challan_products' => function($q) use($product_category_ids) {
@@ -242,7 +243,7 @@ class InventoryController extends Controller {
 //                            ->whereRaw("Date(delivery_challan.created_at)","=","CURDATE()")
                             ->whereRaw('DATE(delivery_challan.created_at) = ?', [$today])
                             ->get();
-                            
+
         $purchase_orders = PurchaseOrder::where('order_status', '=', 'pending')
                         ->with(['purchase_products.product_sub_category', 'purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
@@ -258,9 +259,9 @@ class InventoryController extends Controller {
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
                                 $q->whereIn('product_category_id', $product_category_ids);
                             }])
-                            ->whereRaw('DATE(purchase_challan.created_at) = ?', [$today])        
+                            ->whereRaw('DATE(purchase_challan.created_at) = ?', [$today])
                             ->get();
-                            
+
         $purchase_challan_completed = PurchaseChallan::where('order_status', '=', 'completed')
                 ->whereRaw('Date(updated_at) = CURDATE()')
                         ->with(['all_purchase_products.product_sub_category', 'all_purchase_products' => function($q) use($product_category_ids) {
@@ -432,7 +433,7 @@ class InventoryController extends Controller {
                         foreach ($delivery_challan_details->delivery_challan_products as $delivery_challan_product_details) {
                             if ($delivery_challan_product_details['product_category_id'] == $product_sub_id) {
                                 if (isset($delivery_challan_product_details) && $delivery_challan_product_details->quantity != '') {
-//                                $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->quantity;                                    
+//                                $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->quantity;
                                     $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->actual_quantity;
 //                                    if ($delivery_challan_product_details->unit_id == 1) {
 //                                        $sales_challan_qty_completed = $sales_challan_qty_completed + $delivery_challan_product_details->quantity;
@@ -458,7 +459,7 @@ class InventoryController extends Controller {
 //                            ->with(['delivery_product.product_sub_category', 'delivery_product' => function($q) use($product_sub_id) {
 //                                    $q->where('product_category_id', '=', $product_sub_id);
 //                                }])->get();
-//           
+//
 //            if (isset($delivery_orders) && count((array)$delivery_orders) > 0) {
 //                foreach ($delivery_orders as $delivery_orders_details) {
 //                    if (isset($delivery_orders_details->delivery_product) && count((array)$delivery_orders_details->delivery_product) > 0) {
@@ -699,7 +700,7 @@ class InventoryController extends Controller {
         }
     }
 
-   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -713,7 +714,6 @@ class InventoryController extends Controller {
      * Update all inventory list
      */
     public function store() {
-
         $data = Input::all();
         $data_dup = Input::all();
         $token = $data['_token'];
@@ -759,7 +759,7 @@ class InventoryController extends Controller {
      * @return Response
      */
     public function show($id) {
-        
+
     }
 
     /**
@@ -1406,7 +1406,7 @@ class InventoryController extends Controller {
 //         })->export('xls');
     }
 
-    public function exportInventoryReport(Request $request) { //Export 
+    public function exportInventoryReport(Request $request) { //Export
 
         return Excel::download(new InventoryReportExport, 'Inventory_Report.xls');
 
@@ -1635,12 +1635,12 @@ class InventoryController extends Controller {
                         ->with('product_column', $product_column)
                         ->with('report_arr', $report_arr);
     }
-    
+
     public function reset_minimal_and_opening() {
-        
+
 //        $count = DB::table('inventory')->update(array('minimal' => 0,'opening_qty' => 0));
 //        echo $count." records updated";
-        
+
     }
-    
+
 }

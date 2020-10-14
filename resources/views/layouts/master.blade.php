@@ -4,7 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta name="_token" content="<?php echo csrf_token(); ?>" id="csrf_token" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <?php
         // echo "slkhfkj";
         // exit;
@@ -375,9 +376,9 @@
         // var_dump ($currentPath);
         // var_dump (Route::current());
         if (Route::current()) {
-            
+
             $path = Route::getFacadeRoot()->current()->uri();
-            
+
             if ($path == "dashboard") {
                 ?>
                  {{ HTML::script("assets/custom_js/graph.js") }}
