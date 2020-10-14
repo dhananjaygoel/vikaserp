@@ -2,7 +2,7 @@
 @section('title','Inventory')
 @section('content')
 <style>
-    @media only screen and (max-width : 1024px)  { 
+    @media only screen and (max-width : 1024px)  {
         .inventoryExport { display: none !important;}
     }
 </style>
@@ -38,7 +38,7 @@
                                             @foreach($product_category as $category)
                                             @if((Input::has('product_category_filter')) && (Input::get('product_category_filter')!=''))
                                             <option value="{{$category->id}}" {{($category->id==Input::get('product_category_filter'))?'selected':''}} >{{$category->product_category_name}}</option>
-                                            @else                        
+                                            @else
                                             <option value="{{$category->id}}">{{$category->product_category_name}}</option>
                                             @endif
                                             @endforeach
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
         <!--        <form method="POST" action="{{url('inventory')}}" id="frm_inventory_update">
@@ -75,12 +75,12 @@
                     <div class="main-box-body clearfix">
                         @if (Session::has('success'))
                         <div class="alert alert-success alert-autohide">
-                            {{Session::get('success')}}                            
+                            {{Session::get('success')}}
                         </div>
                         @endif
                         @if (Session::has('error'))
                         <div class="alert alert-danger alert-autohide">
-                            {{Session::get('error')}}                            
+                            {{Session::get('error')}}
                         </div>
                         @endif
                         <div class="alert alert-success inventory_update">
@@ -130,6 +130,7 @@
 $(document).ready(function () {
     var page_number = $("input[name='pagenumber']").val();
     $.ajax({
+        preventDefault(); //Prevent default behavior
         data: {page:page_number},
         url: 'inventory_table',
         success:function(data)
