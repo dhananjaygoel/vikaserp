@@ -130,6 +130,7 @@
 $(document).ready(function () {
     var page_number = $("input[name='pagenumber']").val();
     $.ajax({
+        preventDefault(); //Prevent default behavior
         data: {page:page_number},
         url: 'inventory_table',
         success:function(data)
