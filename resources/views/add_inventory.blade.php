@@ -2,9 +2,12 @@
 @section('title','Inventory')
 @section('content')
 <style>
-    @media only screen and (max-width : 1024px)  {
-        .inventoryExport { display: none !important;}
+    @media only screen and (max-width : 1024px) {
+        .inventoryExport {
+            display: none !important;
+        }
     }
+
 </style>
 <div class="row">
     <div class="col-lg-12">
@@ -22,25 +25,36 @@
                                 <form method="GET" action="{{url('inventory')}}" id="filter_search">
 
                                     <div class="form-group col-md-2">
-                                        <input class="form-control" placeholder="Product Alias Name" autocomplete="off" type="text" name="search_inventory" id="search_inventory" type="text" value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}" onblur="this.form.submit();">
+                                        <input class="form-control" placeholder="Product Alias Name" autocomplete="off"
+                                            type="text" name="search_inventory" id="search_inventory" type="text"
+                                            value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}"
+                                            onblur="this.form.submit();">
                                         <!--                                        <a onclick="this.form.submit();" style="cursor: pointer;">
                                                                                     <i class="fa fa-search search-icon"></i>
                                                                                 </a>-->
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <select class="form-control" name="inventory_filter" onchange="this.form.submit();">
+                                        <select class="form-control" name="inventory_filter"
+                                            onchange="this.form.submit();">
                                             <option value="all">All</option>
-                                            <option value="minimal" {{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'selected' : ''}}>Minimal Only</option>
+                                            <option value="minimal"
+                                                {{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'selected' : ''}}>
+                                                Minimal Only</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <select class="form-control" name="product_category_filter" onchange="this.form.submit();">
+                                        <select class="form-control" name="product_category_filter"
+                                            onchange="this.form.submit();">
                                             <option value="">-- Select Product Category --</option>
                                             @foreach($product_category as $category)
-                                            @if((Input::has('product_category_filter')) && (Input::get('product_category_filter')!=''))
-                                            <option value="{{$category->id}}" {{($category->id==Input::get('product_category_filter'))?'selected':''}} >{{$category->product_category_name}}</option>
+                                            @if((Input::has('product_category_filter')) &&
+                                            (Input::get('product_category_filter')!=''))
+                                            <option value="{{$category->id}}"
+                                                {{($category->id==Input::get('product_category_filter'))?'selected':''}}>
+                                                {{$category->product_category_name}}</option>
                                             @else
-                                            <option value="{{$category->id}}">{{$category->product_category_name}}</option>
+                                            <option value="{{$category->id}}">{{$category->product_category_name}}
+                                            </option>
                                             @endif
                                             @endforeach
                                         </select>
@@ -49,23 +63,23 @@
                                 <form action="{{URL::action('InventoryController@export_inventory')}}">
 
                                     <div class="form-group col-md-4">
-                                        <input type="hidden" id="search_inventory" name="search_inventory"  value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}">
-                                        <input type="hidden" name="inventory_filter" value="{{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'minimal' : 'all'}}">
-                                        <input type="hidden" name="product_category_filter" value="{{Input::get('product_category_filter')}}">
-                                        <input type="submit" class="btn btn-primary form_button_footer " value="Export Inventory List">
+                                        <input type="hidden" id="search_inventory" name="search_inventory"
+                                            value="{{(Input::get('search_inventory') != '' )? Input::get('search_inventory'): ''}}">
+                                        <input type="hidden" name="inventory_filter"
+                                            value="{{((Input::has('inventory_filter')) && (Input::get('inventory_filter')=='minimal'))? 'minimal' : 'all'}}">
+                                        <input type="hidden" name="product_category_filter"
+                                            value="{{Input::get('product_category_filter')}}">
+                                        <input type="submit" class="btn btn-primary form_button_footer "
+                                            value="Export Inventory List">
                                         <!-- <a href="{{url('export_inventory')}}" class="btn btn-primary form_button_footer ">Export Inventory List</a> -->
                                         <!-- <input type="hidden" id="export-data-field" name="export_data" value="" class="btn btn-primary form_button_footer"> -->
                                         <!-- <a class="btn btn-primary" id="export-inventory-list">Export Inventory List</a>                                         -->
-                                        {{-- @if(auth()->user()->role_id == 0)
+                                        @if(auth()->user()->role_id == 0)
                                         <a class="btn btn-primary save_all_inventory">Save all</a>
-                                        @endif --}}
+                                        @endif
                                     </div>
                                 </form>
-                                <a  class="btn btn-sm btn-alt-success" href="#" data-toggle="tooltip" title="Delete"
-                            onclick="if (confirm('Are you sure you want to delete?')) { event.preventDefault();
-                                document.getElementById('frm_inventory_save_all').submit();}">
-                                <i class="fa fa-fw fa-save text-danger"></i>
-                            Save </a>
+
 
                             </div>
                         </div>
@@ -73,11 +87,11 @@
                 </div>
             </div>
         </div>
-               {{-- <form method="POST" action="{{url('inventory')}}" id="frm_inventory_update">
-                @csrf
-                    <input type="hidden" name="input_product_stock" id="input_product_stock">
-                    <input type="hidden" name="input_product" id="input_product">
-                </form> --}}
+        {{-- <form method="POST" action="{{url('inventory')}}" id="frm_inventory_update">
+        @csrf
+        <input type="hidden" name="input_product_stock" id="input_product_stock">
+        <input type="hidden" name="input_product" id="input_product">
+        </form> --}}
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -102,10 +116,10 @@
                         <div class="alert alert-danger inventory_update_max">
                             <strong>Error!</strong> Maximum 6 digits allowed.
                         </div>
-                        <br/>
+                        <br />
                         <div class="table-responsive">
                             <table class="table" id="inventory_html">
-                            @include('inventory_table')
+                                @include('inventory_table')
                             </table>
                         </div>
                         <span class="pagination pull-right">
@@ -115,18 +129,19 @@
                         </span>
                         <div class="clearfix"></div>
                         @if($inventory_list->lastPage() > 1)
-                            <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
-                                <form class="form-inline" method="GET" action="{{url('inventory')}}" id="filter_search">
-                                    <div class="form-group">
-                                        <label for="exampleInputName2"><b>Go To</b></label>
-                                        &nbsp;
-                                        <input style="width: 50px;" type="text" class="form-control" placeholder="" value="{{Input::get('page')}}" name="page" type="text">
-                                        &nbsp;
-                                        <label for="exampleInputName2"><b>of {{ $inventory_list->lastPage()}} </b></label>
-                                        <a onclick="this.form.submit()"></a>
-                                    </div>
-                                </form>
-                            </span>
+                        <span style="margin-top:0px; margin-right: 0; padding-right: 0;" class="small pull-right">
+                            <form class="form-inline" method="GET" action="{{url('inventory')}}" id="filter_search">
+                                <div class="form-group">
+                                    <label for="exampleInputName2"><b>Go To</b></label>
+                                    &nbsp;
+                                    <input style="width: 50px;" type="text" class="form-control" placeholder=""
+                                        value="{{Input::get('page')}}" name="page" type="text">
+                                    &nbsp;
+                                    <label for="exampleInputName2"><b>of {{ $inventory_list->lastPage()}} </b></label>
+                                    <a onclick="this.form.submit()"></a>
+                                </div>
+                            </form>
+                        </span>
                         @endif
                     </div>
                 </div>
@@ -135,17 +150,20 @@
     </div>
 </div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-{{-- <script type="text/javascript">
-$(document).ready(function () {
+<script type="text/javascript">
     var page_number = $("input[name='pagenumber']").val();
+
     $.ajax({
-        data: {page:page_number},
+        preventDefault(); //new code
+        data: {
+            page: page_number
+        },
         url: 'inventory_table',
-        success:function(data)
-        {
-        $('#inventory_html').html(data);
+        type: 'GET',
+        success: function (data) {
+            $('#inventory_html').html(data);
         }
     });
-});
-</script> --}}
+
+</script>
 @endsection
