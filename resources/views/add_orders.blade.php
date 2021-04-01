@@ -433,7 +433,7 @@
                             </div>
                             <div class="tcs-applicable" id="tcs_percentage" style="display:none;">
                                 <label for="tcs_percentage">TCS Percentage:</label>
-                                <input type="text" name="tcs_percentage" value="0.075" class="form-control" id="tcs_percentage">
+                                <input type="text" name="tcs_percentage" value="0.1" class="form-control" id="tcs_percentage">
                             </div>
                             <div class="form-group col-md-4 targetdate">
                                 <label for="time">Expected Delivery Date:<span class="mandatory">*</span> </label>
