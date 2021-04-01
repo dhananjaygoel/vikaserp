@@ -670,7 +670,7 @@ class DeliveryChallanController extends Controller {
         if (isset($input_data['tcs_applicable'])){
             $delivery_challan_update = DeliveryChallan::where('id', $id)->update([
                 'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
-                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1',
             ]);
         }
 
