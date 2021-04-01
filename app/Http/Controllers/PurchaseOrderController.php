@@ -313,7 +313,7 @@ class PurchaseOrderController extends Controller {
         if (isset($input_data['tcs_applicable'])){
             $add_delivery_location = PurchaseOrder::where('id', $purchase_order_id)->update([
                 'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
-                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1',
             ]);
         }
         /*
@@ -599,7 +599,7 @@ class PurchaseOrderController extends Controller {
             'created_by' => Auth::id(),
             'vat_percentage' => $vat_percentage,
             'tcs_applicable' => isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
-            'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+            'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1',
             'expected_delivery_date' => $datetime->format('Y-m-d'),
             'remarks' => $input_data['purchase_order_remark'],
             'order_status' => "pending",
@@ -701,7 +701,7 @@ class PurchaseOrderController extends Controller {
         if (isset($input_data['tcs_applicable'])){
             $update_purchase_order = PurchaseOrder::where('id', $purchase_order->id)->update([
                 'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
-                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1',
             ]);
         }
         $purchase_order_products = array();
