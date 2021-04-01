@@ -505,7 +505,7 @@
                                     <tbody>
                                         <tr class="cdtable">
                                             <td class="cdfirst">TCS Percentage:</td>
-                                            <td><input id="tcs_percentage" class="form-control" placeholder="GST Percentage" name="tcs_percentage" value="0.075" type="text" onkeypress=" return numbersOnly(this, event, true, false);"></td>
+                                            <td><input id="tcs_percentage" class="form-control" placeholder="GST Percentage" name="tcs_percentage" value="0.1" type="text" onkeypress=" return numbersOnly(this, event, true, false);"></td>
                                         </tr>
                                     </tbody>
                                 </table>
