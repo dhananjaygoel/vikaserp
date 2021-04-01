@@ -735,7 +735,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="tcs_percentage"><b class="challan">TCS Percentage: </b></label>
-                                <input id="tcs_percentage" class="form-control" placeholder="TCS Percenatge" name="tcs_percentage" value="{{isset($allorder->tcs_percentage)?$allorder->tcs_percentage:'0.075'}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
+                                <input id="tcs_percentage" class="form-control" placeholder="TCS Percenatge" name="tcs_percentage" value="{{isset($allorder->tcs_percentage)?$allorder->tcs_percentage:'0.1'}}" type="tel" onkeypress=" return numbersOnly(this, event, true, true);" onblur="grand_total_challan();">
                             </div>
                             <div class="form-group">
                                 <label for="total"><b class="challan"> Final Grand Total: </b>
