@@ -853,7 +853,7 @@ class OrderController extends Controller {
         }
         if (isset($input_data['tcs_applicable']) && $input_data['tcs_applicable'] == 'yes'){
             $order->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
-            $order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+            $order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1'; 
         }
         $order->save();
                     // 'length' => (isset($product_data['length']) && $product_data['length'] == $product_data['length']) ? $product_data['length'] : 0,
@@ -1294,7 +1294,7 @@ class OrderController extends Controller {
         }
         if (isset($input_data['tcs_applicable'])){
             $order->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
-            $order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+            $order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1'; 
         }
 
         $order->save();
@@ -1977,7 +1977,7 @@ class OrderController extends Controller {
             $delivery_order->is_editable = $order->is_editable;
             if (isset($input_data['tcs_applicable'])){
                 $delivery_order->tcs_applicable = $input_data['tcs_applicable'] == 'yes' ? 1 : 0;
-                $delivery_order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075'; 
+                $delivery_order->tcs_percentage = isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1'; 
             }
             
             $delivery_order->save();
