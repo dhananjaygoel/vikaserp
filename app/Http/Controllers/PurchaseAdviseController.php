@@ -382,7 +382,7 @@ class PurchaseAdviseController extends Controller {
         if (isset($input_data['tcs_applicable'])){
             $update_purchase_advice = PurchaseAdvise::where('id', $id)->update([
                 'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
-                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+                'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1',
             ]);
         }
         foreach ($input_data['product'] as $product_data) {
@@ -618,7 +618,7 @@ class PurchaseAdviseController extends Controller {
             if (isset($input_data['tcs_applicable'])){
                 $add_purchase_advice = PurchaseAdvise::where('id', $purchase_advice_id)->update([
                     'tcs_applicable' => $input_data['tcs_applicable'] == 'yes' ? 1 : 0,
-                    'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.075',
+                    'tcs_percentage' => isset($input_data['tcs_percentage']) ? $input_data['tcs_percentage'] : '0.1',
                 ]);
             }
             $purchase_advice_products = array();
